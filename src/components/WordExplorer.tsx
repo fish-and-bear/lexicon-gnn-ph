@@ -89,7 +89,7 @@ const WordExplorer: React.FC = () => {
         <div className="graph-container">
           <div className="graph-content">
             {wordNetwork && mainWord && (
-              <WordGraph wordNetwork={wordNetwork} mainWord={mainWord} onNodeClick={handleNodeClick} />
+              <WordGraph key={mainWord} wordNetwork={wordNetwork} mainWord={mainWord} onNodeClick={handleNodeClick} />
             )}
           </div>
         </div>
