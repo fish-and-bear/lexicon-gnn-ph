@@ -105,7 +105,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
       .force("collide", d3.forceCollide().radius(60).strength(0.7))
       .force("x", d3.forceX(width / 2).strength(0.1))
       .force("y", d3.forceY(height / 2).strength(0.1))
-      .velocityDecay(0.3);
 
     const link = g
       .selectAll(".link")

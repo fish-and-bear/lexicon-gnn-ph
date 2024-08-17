@@ -21,7 +21,8 @@ const WordExplorer: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://localhost:5000/api/words/${searchTerm}`);
+      //const response = await fetch(`http://localhost:5000/api/words/${searchTerm}`);
+      const response = await fetch(`https://fil-relex.onrender.com/api/words/${searchTerm}`);
       if (!response.ok) {
         throw new Error('Word not found');
       }
