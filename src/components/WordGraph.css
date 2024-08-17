@@ -12,10 +12,17 @@
   flex-grow: 1; /* Ensures it grows to match the height of the right container */
 }
 
+.details-container {
+  max-height: 500px;
+  height: 500px; /* Fixed height */
+  overflow-y: auto;
+  flex-grow: 1; /* Ensures it grows to match the height of the left container */
+}
+
 svg {
   width: 100%;
   height: 100%;
-  display: block;
+  display: block; /* Prevents any extra space below the SVG */
   overflow: hidden; /* Prevent the SVG from overflowing its container */
 }
 
@@ -31,7 +38,7 @@ svg {
 }
 
 .node text {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   fill: var(--node-text-color);
   pointer-events: none;
