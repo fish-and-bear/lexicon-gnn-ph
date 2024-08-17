@@ -23,7 +23,6 @@ interface CustomLink extends d3.SimulationLinkDatum<CustomNode> {
 const WordGraph: React.FC<WordGraphProps> = ({ wordNetwork, mainWord, onNodeClick }) => {
   const { theme } = useTheme();
   const svgRef = useRef<SVGSVGElement>(null);
-  const gRef = useRef<SVGGElement | null>(null);
   const [hoveredNode, setHoveredNode] = useState<CustomNode | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
@@ -62,134 +61,154 @@ const WordGraph: React.FC<WordGraphProps> = ({ wordNetwork, mainWord, onNodeClic
 
   const updateGraph = useCallback(() => {
     if (!svgRef.current) return;
-
+  
+    // Clear the entire SVG
     const svg = d3.select(svgRef.current);
+    svg.selectAll('*').remove();
+  
     const containerRect = svgRef.current.parentElement?.getBoundingClientRect();
     const width = containerRect ? containerRect.width : 800;
     const height = containerRect ? containerRect.height : 600;
-
+  
     svg.attr('width', width).attr('height', height);
-
-    const zoom = d3.zoom<SVGSVGElement, unknown>()
-      .scaleExtent([1, 1]) // Prevent zooming by user
-      .translateExtent([[0, 0], [width, height]]) // Constrain panning
-      .on('zoom', (event) => {
-        if (gRef.current) {
-          d3.select(gRef.current).attr('transform', event.transform.toString());
-        }
-      });
-
-    svg.call(zoom);
-
-    const g = gRef.current || svg.append('g').node();
-    gRef.current = g;
-
-    const simulation = d3.forceSimulation<CustomNode>(nodes)
-      .force('link', d3.forceLink<CustomNode, CustomLink>(links).id(d => d.id).distance(80)) 
-      .force('charge', d3.forceManyBody().strength(-50)) 
+  
+    const g = svg.append('g');
+  
+    // Create a new simulation for each update
+    const simulation = d3.forceSimulation<CustomNode>()
+      .force('link', d3.forceLink<CustomNode, CustomLink>().id(d => d.id).distance(100))
+      .force('charge', d3.forceManyBody().strength(-300))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collide', d3.forceCollide().radius(70).strength(0.7)) 
-      .force('x', d3.forceX(width / 2).strength(0.05)) 
-      .force('y', d3.forceY(height / 2).strength(0.05)) 
-      .alphaDecay(0.02) 
-      .velocityDecay(0.4); 
-
-    const link = d3.select(g!).selectAll('.link')
+      .force('collide', d3.forceCollide().radius(50).strength(0.7))
+      .alphaDecay(0.01)
+      .velocityDecay(0.3);
+  
+    // Create links
+    const link = g.selectAll('.link')
       .data(links)
       .join('line')
       .attr('class', 'link')
       .attr('stroke', d => getRelationColor(d.type));
-
-    const node = d3.select(g!).selectAll('.node')
+  
+    // Create nodes
+    const node = g.selectAll('.node')
       .data(nodes)
       .join('g')
-      .attr('class', 'node')
+      .attr('class', d => `node ${d.id === selectedNodeId ? 'selected' : ''}`)
       .call(d3.drag<SVGGElement, CustomNode>()
         .on('start', dragstarted)
         .on('drag', dragged)
         .on('end', dragended) as any);
-
-    node.selectAll('circle')
-      .data(d => [d])
-      .join('circle')
+  
+    node.append('circle')
       .attr('r', d => d.group.includes('main') ? 30 : 25)
       .attr('fill', d => getNodeColor(d.group));
-
-    node.selectAll('text')
-      .data(d => [d])
-      .join('text')
+  
+    node.append('text')
       .text(d => d.id)
       .attr('dy', 35)
       .attr('text-anchor', 'middle')
       .attr('fill', theme === 'dark' ? '#e0e0e0' : '#333');
-
+  
     node.on('click', (event, d) => {
       setSelectedNodeId(d.id);
       onNodeClick(d.info);
-
-      const currentTransform = d3.zoomTransform(svg.node() as any);
-      const translateX = width / 2 - d.x! * currentTransform.k;
-      const translateY = height / 2 - d.y! * currentTransform.k;
-      svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(translateX, translateY));
     })
     .on('mouseover', (event, d) => setHoveredNode(d))
     .on('mouseout', () => setHoveredNode(null));
-
-    simulation.on('tick', () => {
+  
+    function ticked() {
       link
-        .attr('x1', d => (d.source as CustomNode).x!)
-        .attr('y1', d => (d.source as CustomNode).y!)
-        .attr('x2', d => (d.target as CustomNode).x!)
-        .attr('y2', d => (d.target as CustomNode).y!);
+        .attr('x1', d => Math.max(50, Math.min(width - 50, (d.source as CustomNode).x!)))
+        .attr('y1', d => Math.max(50, Math.min(height - 50, (d.source as CustomNode).y!)))
+        .attr('x2', d => Math.max(50, Math.min(width - 50, (d.target as CustomNode).x!)))
+        .attr('y2', d => Math.max(50, Math.min(height - 50, (d.target as CustomNode).y!)));
       
-      node.attr('transform', d => `translate(${d.x},${d.y})`);
-
-      nodes.forEach((d) => {
-        d.x = Math.max(70, Math.min(width - 70, d.x!));
-        d.y = Math.max(70, Math.min(height - 70, d.y!));
-      });
-    });
-
-    node.classed('selected', d => d.id === selectedNodeId);
-
+      node.attr('transform', d => `translate(${Math.max(50, Math.min(width - 50, d.x!))},${Math.max(50, Math.min(height - 50, d.y!))})`);
+    }
+  
+    // Set up the simulation
+    simulation.nodes(nodes).on('tick', ticked);
+    simulation.force<d3.ForceLink<CustomNode, CustomLink>>('link')!.links(links);
+  
     function dragstarted(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
       if (!event.active) simulation.alphaTarget(0.3).restart();
       event.subject.fx = event.subject.x;
       event.subject.fy = event.subject.y;
     }
-
+  
     function dragged(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
-      event.subject.fx = Math.max(70, Math.min(width - 70, event.x));
-      event.subject.fy = Math.max(70, Math.min(height - 70, event.y));
+      const x = Math.max(50, Math.min(width - 50, event.x));
+      const y = Math.max(50, Math.min(height - 50, event.y));
+      
+      // Add playful movement
+      const dx = x - event.subject.x!;
+      const dy = y - event.subject.y!;
+      const angle = Math.atan2(dy, dx);
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const springForce = 0.1;
+      
+      event.subject.vx = Math.cos(angle) * distance * springForce;
+      event.subject.vy = Math.sin(angle) * distance * springForce;
+      
+      event.subject.fx = x;
+      event.subject.fy = y;
     }
-
+  
     function dragended(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
       if (!event.active) simulation.alphaTarget(0);
       event.subject.fx = null;
       event.subject.fy = null;
     }
+  
+    // Start the simulation
+    simulation.alpha(1).restart();
+  
+    return () => {
+      simulation.stop();
+    };
   }, [nodes, links, theme, onNodeClick, selectedNodeId]);
-
+  
+  
+  
   useEffect(() => {
-    updateGraph();
+    const cleanupFunction = updateGraph();
     window.addEventListener('resize', updateGraph);
-    return () => window.removeEventListener('resize', updateGraph);
-  }, [updateGraph]);
+    return () => {
+      if (typeof cleanupFunction === 'function') {
+        cleanupFunction();
+      }
+      window.removeEventListener('resize', updateGraph);
+    };
+  }, [updateGraph, wordNetwork]);
+  
+  
+  
+  useEffect(() => {
+    const cleanupFunction = updateGraph();
+    window.addEventListener('resize', updateGraph);
+    return () => {
+      if (typeof cleanupFunction === 'function') {
+        cleanupFunction();
+      }
+      window.removeEventListener('resize', updateGraph);
+    };
+  }, [updateGraph, wordNetwork]);
 
   function getNodeColor(group: string[]): string {
-    if (group.includes('main')) return '#ff4f00';
-    if (group.includes('derivative')) return '#4a4a4a';
-    if (group.includes('etymology')) return '#ffa500';
-    if (group.includes('root')) return '#00ced1';
-    return '#9370db'; 
+    if (group.includes('main')) return 'var(--color-main)';
+    if (group.includes('derivative')) return 'var(--color-derivative)';
+    if (group.includes('etymology')) return 'var(--color-etymology)';
+    if (group.includes('root')) return 'var(--color-root)';
+    return 'var(--color-associated)';
   }
 
   function getRelationColor(type: string): string {
     switch (type) {
-      case 'derivative': return '#4a4a4a';
-      case 'etymology': return '#ffa500';
-      case 'root': return '#00ced1';
-      default: return '#9370db';
+      case 'derivative': return 'var(--color-derivative)';
+      case 'etymology': return 'var(--color-etymology)';
+      case 'root': return 'var(--color-root)';
+      default: return 'var(--color-associated)';
     }
   }
 
