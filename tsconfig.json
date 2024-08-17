@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/components/WordExplorer.tsx", "frontend/src/components/WordGraph.tsx", "src/App.tsx", "frontend/src/index.tsx", "components_oldd"  ]
 }

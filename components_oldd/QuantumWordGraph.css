@@ -1,0 +1,108 @@
+.quantum-word-graph {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 16px;
+    padding: 10px;
+    margin-right: 10px;
+    width: 300px;
+  }
+  
+  .search-button {
+    background: linear-gradient(135deg, #ffd700, #ffa500);
+    border: none;
+    border-radius: 4px;
+    color: #0a192f;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .search-button:hover {
+    background: linear-gradient(135deg, #ffa500, #ffd700);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  }
+  
+  .graph-container {
+    flex-grow: 1;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(10, 25, 47, 0.7);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .link {
+    stroke: rgba(224, 224, 224, 0.3);
+    stroke-width: 1px;
+  }
+  
+  .node text {
+    fill: #e0e0e0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .node.root text {
+    fill: #ffd700;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .node text {
+    filter: drop-shadow(0 0 8px rgba(224, 224, 224, 0.8));
+  }
+  
+  .node.root text {
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.8));
+  }
+  
+  .node.hover text {
+    font-size: 16px;
+    filter: drop-shadow(0 0 15px rgba(224, 224, 224, 1));
+  }
+  
+  .node.root.hover text {
+    font-size: 20px;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 1));
+  }
+  
+  .word-details {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .word-details h2 {
+    color: #ffd700;
+    margin-bottom: 10px;
+  }
+  
+  .word-details p {
+    color: #e0e0e0;
+    line-height: 1.6;
+  }
