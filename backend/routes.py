@@ -35,33 +35,6 @@ logger = logging.getLogger(__name__)
 
 bp = Blueprint("api", __name__)
 
-# List of language codes to ignore (case-sensitive)
-IGNORE_CODES = ("Esp", "Ing", "Tag", "Hil", "Seb", "War", "Kap", "Bik")
-
-
-# Rate limiting decorator
-def rate_limit(limit=100, per=60):
-    def decorator(f):
-        @wraps(f)
-        def wrapped(*args, **kwargs):
-            now = time.time()
-            key = f"{request.remote_addr}:{f.__name__}"
-            calls = getattr(current_app, "rate_limit_calls", {})
-            if key not in calls:
-                calls[key] = [(now, 1)]
-            else:
-                calls[key] = [(t, c) for t, c in calls[key] if now - t < per]
-                if len(calls[key]) >= limit:
-                    return jsonify({"error": "Rate limit exceeded"}), 429
-                calls[key].append((now, len(calls[key]) + 1))
-            setattr(current_app, "rate_limit_calls", calls)
-            return f(*args, **kwargs)
-
-        return wrapped
-
-    return decorator
-
-
 # Error handling within blueprint
 @bp.app_errorhandler(404)
 def not_found_error(error):
@@ -302,7 +275,6 @@ def get_related_words(word, depth=2, breadth=10):
     return network
 
 @bp.route("/api/v1/words", methods=["GET"])
-@rate_limit()
 def get_words():
     page = int(request.args.get("page", 1))
     per_page = min(int(request.args.get("per_page", 20)), 100)
@@ -341,7 +313,6 @@ def get_words():
 
 
 @bp.route("/api/v1/words/<word>", methods=["GET"])
-@rate_limit()
 def get_word(word):
     try:
         normalized_word = normalize_word(word)
@@ -403,7 +374,6 @@ def check_word(word):
 
 
 @bp.route('/api/v1/word_network/<word>', methods=['GET'])
-@rate_limit()
 def get_word_network(word):
     depth = min(int(request.args.get('depth', 2)), 5)
     breadth = min(int(request.args.get('breadth', 10)), 20)
@@ -419,7 +389,6 @@ def get_word_network(word):
     return jsonify(network)
 
 @bp.route("/api/v1/etymology/<word>", methods=["GET"])
-@rate_limit()
 def get_etymology(word):
     normalized_word = normalize_word(word)
     word_entry = (
@@ -457,7 +426,6 @@ def get_etymology(word):
 
 
 @bp.route("/api/v1/bulk_words", methods=["POST"])
-@rate_limit(limit=10, per=60)  # Stricter rate limit for bulk operations
 def bulk_get_words():
     words = request.json.get("words", [])
     if not words or not isinstance(words, list):
