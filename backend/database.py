@@ -1,21 +1,31 @@
-import os
-from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+import os
+from dotenv import load_dotenv
+import logging
 
-load_dotenv()  # This loads the variables from .env
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+load_dotenv()
 
 DATABASE_URL = os.getenv('DATABASE_URL')
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL is not set in the environment variables")
 
-engine = create_engine(DATABASE_URL)
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine))
+try:
+    engine = create_engine(DATABASE_URL)
+    logger.info("Database engine created successfully")
+except Exception as e:
+    logger.error(f"Error creating database engine: {str(e)}")
+    raise
 
+db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
 
 def init_db():
-    import models  # Import models so that they are registered with SQLAlchemy
+    import models
     Base.metadata.create_all(bind=engine)
+    logger.info("Database tables created")

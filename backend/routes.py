@@ -1,14 +1,20 @@
-from flask import Blueprint, jsonify, request, current_app
-from sqlalchemy.orm import joinedload
+from flask import Blueprint, jsonify, request, current_app, abort
+from sqlalchemy.orm import joinedload, subqueryload
 from sqlalchemy import or_
 from models import (
-    Word, Definition, Meaning, Source, Language, Pronunciation, Etymology,
-    EtymologyComponent, EtymologyTemplate, Form, HeadTemplate, Derivative,
-    Example, Hypernym, Hyponym, Meronym, Holonym, AssociatedWord
+    Word, Definition, Meaning, Source, Language, Etymology,
+    EtymologyComponent, Form, HeadTemplate, Derivative,
+    Example, Hypernym, Hyponym, Meronym, Holonym, AssociatedWord,
+    AlternateForm, Inflection
 )
 from database import db_session
 from functools import wraps
 import time
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 bp = Blueprint('api', __name__)
 
@@ -41,47 +47,78 @@ def not_found(error):
 def internal_error(error):
     return jsonify({"error": "Internal server error"}), 500
 
+
 def get_word_details(word_entry):
     return {
-        "word": word_entry.word,
-        "pronunciation": word_entry.pronunciation,
-        "audio_pronunciation": word_entry.audio_pronunciation,
-        "etymologies": [{
-            "etymology_text": etym.etymology_text,
-            "components": [
-                {"component": comp.component, "order": comp.order}
-                for comp in etym.components
-            ]
-        } for etym in word_entry.etymologies],
-        "kaikki_etymology": word_entry.kaikki_etymology,
-        "languages": [lang.code for lang in word_entry.languages],
-        "definitions": [{
-            "part_of_speech": d.part_of_speech,
-            "meanings": [{"meaning": m.meaning, "source": m.source.source_name} for m in d.meanings],
-            "usage_notes": d.usage_notes,
-            "tags": d.tags,
-            "examples": [e.example for e in d.examples]
-        } for d in word_entry.definitions],
-        "forms": [{"form": f.form, "tags": f.tags} for f in word_entry.forms],
-        "head_templates": [{"name": ht.template_name, "args": ht.args, "expansion": ht.expansion} for ht in word_entry.head_templates],
-        "derivatives": [d.derivative for d in word_entry.derivatives],
-        "examples": [e.example for e in word_entry.examples],
-        "hypernyms": [h.hypernym for h in word_entry.hypernyms],
-        "hyponyms": [h.hyponym for h in word_entry.hyponyms],
-        "meronyms": [m.meronym for m in word_entry.meronyms],
-        "holonyms": [h.holonym for h in word_entry.holonyms],
-        "associated_words": [aw.associated_word for aw in word_entry.associated_words],
-        "synonyms": [w.word for w in word_entry.synonyms],
-        "antonyms": [w.word for w in word_entry.antonyms],
-        "related_terms": [w.word for w in word_entry.related_terms],
-        "root_word": word_entry.root_word,
-        "tags": word_entry.tags,
-        "variant": word_entry.variant,
-        "alternate_forms": [af.alternate_form for af in word_entry.alternate_forms],
-        "inflections": [{
-            "name": infl.name,
-            "args": infl.args
-        } for infl in word_entry.inflections]
+        "meta": {
+            "version": "1.0",
+            "word": word_entry.word,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        },
+        "data": {
+            "word": word_entry.word,
+            "pronunciation": {
+                "text": word_entry.pronunciation,
+                "ipa": ", ".join([p for p in word_entry.audio_pronunciation if p.startswith('/')]),
+                "audio": [p for p in word_entry.audio_pronunciation if p and not p.startswith('/')]
+            },
+            "etymology": {
+                "kaikki": word_entry.kaikki_etymology,
+                "components": [
+                    {"component": comp.component, "order": comp.order}
+                    for etym in word_entry.etymologies
+                    for comp in etym.components
+                ],
+                "text": [etym.etymology_text for etym in word_entry.etymologies]
+            },
+            "definitions": [
+                {
+                    "partOfSpeech": d.part_of_speech,
+                    "meanings": [
+                        {"definition": m.meaning, "source": m.source.source_name}
+                        for m in d.meanings
+                    ],
+                    "usageNotes": d.usage_notes or [],
+                    "examples": [e.example for e in d.examples],
+                    "tags": d.tags or []
+                }
+                for d in word_entry.definitions
+            ],
+            "relationships": {
+                "rootWord": word_entry.root_word,
+                "derivatives": [d.derivative for d in word_entry.derivatives],
+                "synonyms": [w.word for w in word_entry.synonyms],
+                "antonyms": [w.word for w in word_entry.antonyms],
+                "associatedWords": [aw.associated_word for aw in word_entry.associated_words],
+                "relatedTerms": [w.word for w in word_entry.related_terms],
+                "hypernyms": [h.hypernym for h in word_entry.hypernyms],
+                "hyponyms": [h.hyponym for h in word_entry.hyponyms],
+                "meronyms": [m.meronym for m in word_entry.meronyms],
+                "holonyms": [h.holonym for h in word_entry.holonyms]
+            },
+            "forms": [
+                {"form": f.form, "tags": f.tags}
+                for f in word_entry.forms
+            ],
+            "languages": [lang.code for lang in word_entry.languages],
+            "tags": word_entry.tags or [],
+            "headTemplates": [
+                {
+                    "name": ht.template_name,
+                    "args": ht.args,
+                    "expansion": ht.expansion
+                }
+                for ht in word_entry.head_templates
+            ],
+            "inflections": [
+                {
+                    "name": infl.name,
+                    "args": infl.args
+                }
+                for infl in word_entry.inflections
+            ],
+            "alternateForms": [af.alternate_form for af in word_entry.alternate_forms]
+        }
     }
 
 def get_word_network_data(word_entry):
@@ -163,31 +200,57 @@ def get_words():
         "total": total
     })
 
+
 @bp.route('/api/v1/words/<word>', methods=['GET'])
 @rate_limit()
 def get_word(word):
-    word_entry = Word.query.options(
-        joinedload(Word.languages),
-        joinedload(Word.definitions).joinedload(Definition.meanings).joinedload(Meaning.source),
-        joinedload(Word.definitions).joinedload(Definition.examples),
-        joinedload(Word.forms),
-        joinedload(Word.head_templates),
-        joinedload(Word.derivatives),
-        joinedload(Word.examples),
-        joinedload(Word.hypernyms),
-        joinedload(Word.hyponyms),
-        joinedload(Word.meronyms),
-        joinedload(Word.holonyms),
-        joinedload(Word.associated_words),
-        joinedload(Word.synonyms),
-        joinedload(Word.antonyms),
-        joinedload(Word.related_terms),
-        joinedload(Word.etymologies).joinedload(Etymology.components),
-        joinedload(Word.alternate_forms),
-        joinedload(Word.inflections)
-    ).filter_by(word=word.lower()).first_or_404()
+    try:
+        # First, fetch the main word entry
+        word_entry = Word.query.filter_by(word=word.lower()).first()
+        
+        if word_entry is None:
+            logger.info(f"Word not found: {word}")
+            return jsonify({"error": "Word not found"}), 404
 
-    return jsonify(get_word_details(word_entry))
+        # Then, fetch related data in separate queries
+        word_entry = Word.query.options(
+            joinedload(Word.languages),
+            subqueryload(Word.definitions).joinedload(Definition.meanings).joinedload(Meaning.source),
+            subqueryload(Word.definitions).joinedload(Definition.examples),
+            subqueryload(Word.forms),
+            subqueryload(Word.head_templates),
+            subqueryload(Word.derivatives),
+            subqueryload(Word.examples),
+            subqueryload(Word.hypernyms),
+            subqueryload(Word.hyponyms),
+            subqueryload(Word.meronyms),
+            subqueryload(Word.holonyms),
+            subqueryload(Word.associated_words),
+            subqueryload(Word.synonyms),
+            subqueryload(Word.antonyms),
+            subqueryload(Word.related_terms),
+            subqueryload(Word.etymologies).joinedload(Etymology.components),
+            subqueryload(Word.alternate_forms),
+            subqueryload(Word.inflections)
+        ).filter_by(id=word_entry.id).first()
+
+        return jsonify(get_word_details(word_entry))
+    except Exception as e:
+        logger.error(f"Error in get_word: {str(e)}", exc_info=True)
+        return jsonify({"error": "An unexpected error occurred"}), 500
+
+@bp.route('/api/v1/check_word/<word>', methods=['GET'])
+def check_word(word):
+    try:
+        word_entry = Word.query.filter_by(word=word.lower()).first()
+        if word_entry:
+            return jsonify({"exists": True, "word": word_entry.word}), 200
+        else:
+            return jsonify({"exists": False}), 404
+    except Exception as e:
+        logging.error(f"Error in check_word: {str(e)}", exc_info=True)
+        return jsonify({"error": "An unexpected error occurred"}), 500
+    
 
 @bp.route('/api/v1/word_network/<word>', methods=['GET'])
 @rate_limit()
@@ -234,6 +297,19 @@ def bulk_get_words():
     return jsonify({
         "words": [get_word_details(w) for w in word_entries]
     })
+
+@bp.route('/favicon.ico')
+def favicon():
+    return '', 204
+
+@bp.errorhandler(404)
+def not_found_error(error):
+    return jsonify({"error": "Resource not found"}), 404
+
+@bp.errorhandler(500)
+def internal_error(error):
+    logger.error('Server Error: %s', (error), exc_info=True)
+    return jsonify({"error": "An unexpected error occurred"}), 500
 
 @bp.teardown_request
 def remove_session(exception=None):

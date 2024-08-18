@@ -1,12 +1,12 @@
 import os
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Table, JSON, ARRAY
-from sqlalchemy.orm import relationship, declarative_base, sessionmaker
+from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.associationproxy import association_proxy
 from dotenv import load_dotenv
+from database import Base  # This is important
 
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
-Base = declarative_base()
 
 # Association Tables
 word_language_table = Table(

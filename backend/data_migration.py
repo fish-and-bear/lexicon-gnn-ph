@@ -1,14 +1,14 @@
 import json
 import logging
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import inspect
 from models import (
-    get_engine, create_tables, Word, Definition, Meaning, Source, Form,
+    Word, Definition, Meaning, Source, Form,
     HeadTemplate, Etymology, EtymologyComponent, Language, Derivative, 
     Example, Hypernym, Hyponym, Meronym, Holonym, AssociatedWord, 
     AlternateForm, Inflection
 )
+from database import db_session, engine
 from sqlalchemy.orm.exc import FlushError
 from tqdm import tqdm
 
@@ -315,27 +315,23 @@ def update_existing_word(session, existing_word, word_data):
     session.add(existing_word)
 
 def migrate_data(json_data):
-    engine = get_engine()
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
     try:
         inspector = inspect(engine)
         existing_tables = inspector.get_table_names()
         
         if 'words' not in existing_tables:
             logger.warning("'words' table not found in the database. Creating tables...")
-            create_tables()
+            Base.metadata.create_all(engine)
 
         total_words = len(json_data)
         with tqdm(total=total_words, desc="Migrating words") as pbar:
             for word_key, word_data in json_data.items():
-                migrate_word(session, word_data)
+                migrate_word(db_session, word_data)
                 pbar.update(1)
     except Exception as e:
         logger.error(f"Error occurred during migration: {e}")
     finally:
-        session.close()
+        db_session.remove()
 
 if __name__ == "__main__":
     file_path = '../data/processed_filipino_dictionary.json'
