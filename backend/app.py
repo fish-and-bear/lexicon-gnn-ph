@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from routes import bp
 from database import db_session, init_db
@@ -25,9 +25,22 @@ def index():
 def favicon():
     return '', 204  # No content response
 
+# Register your blueprint
 app.register_blueprint(bp)
-app.register_error_handler(404, bp.error_handlers[404])
-app.register_error_handler(500, bp.error_handlers[500])
+# Register the error handlers directly
+app.register_error_handler(404, bp.errorhandler)
+app.register_error_handler(500, bp.errorhandler)
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return jsonify({"error": "Resource not found"}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    logger.error('Server Error: %s', error)
+    return jsonify({"error": "Internal server error"}), 500
+
 
 # Teardown the database session after each request
 @app.teardown_appcontext

@@ -1,149 +1,262 @@
-import React, { useState, ChangeEvent, useMemo } from 'react';
-import WordGraph from './WordGraph';
-import { useTheme } from '../contexts/ThemeContext';
-import './WordExplorer.css';
-import { WordNetwork, WordInfo, Definition } from '../types';
+import React, { useState, useCallback } from "react";
+import WordGraph from "./WordGraph";
+import { useTheme } from "../contexts/ThemeContext";
+import "./WordExplorer.css";
+import { WordNetwork, WordInfo } from "../types";
+
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL_PROD || "http://localhost:10000/api/v1";
 
 const WordExplorer: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [wordNetwork, setWordNetwork] = useState<WordNetwork | null>(null);
-  const [mainWord, setMainWord] = useState<string>('');
-  const [selectedWordInfo, setSelectedWordInfo] = useState<WordInfo | null>(null);
+  const [mainWord, setMainWord] = useState<string>("");
+  const [selectedWordInfo, setSelectedWordInfo] = useState<WordInfo | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
 
+  const fetchWordNetwork = useCallback(async (word: string) => {
+    const response = await fetch(`${API_BASE_URL}/word_network/${word}`);
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error("Word not found");
+      }
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  }, []);
+
+  const fetchWordDetails = useCallback(async (word: string) => {
+    const response = await fetch(`${API_BASE_URL}/words/${word}`);
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error("Word not found");
+      }
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  }, []);
+
   const handleSearch = async () => {
     if (!searchTerm.trim()) {
-      setError('Please enter a word to search');
+      setError("Please enter a word to search");
       return;
     }
     setIsLoading(true);
     setError(null);
     try {
-      //const response = await fetch(`http://localhost:5000/api/words/${searchTerm}`);
-      const response = await fetch(`https://fil-relex.onrender.com/api/words/${searchTerm}`);
-      if (!response.ok) {
-        throw new Error('Word not found');
+      const [networkData, detailsData] = await Promise.all([
+        fetchWordNetwork(searchTerm),
+        fetchWordDetails(searchTerm),
+      ]);
+
+      if (
+        !detailsData.data.definitions ||
+        detailsData.data.definitions.length === 0
+      ) {
+        setError("No definitions found for this word.");
+        setSelectedWordInfo(null);
+      } else {
+        setWordNetwork(networkData);
+        setMainWord(searchTerm);
+        setSelectedWordInfo(detailsData);
       }
-      const data: WordNetwork = await response.json();
-      setWordNetwork(data);
-      setMainWord(searchTerm);
-      setSelectedWordInfo(null);
     } catch (error) {
-      console.error('Error fetching word data:', error);
-      setError('Failed to fetch word data. Please try again.');
+      console.error("Error fetching data:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch word data. Please try again."
+      );
       setWordNetwork(null);
+      setSelectedWordInfo(null);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleNodeClick = (wordInfo: WordInfo) => {
-    setSelectedWordInfo(wordInfo);
+  const handleNodeClick = async (word: string) => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      const detailsData = await fetchWordDetails(word);
+      setSelectedWordInfo(detailsData);
+    } catch (error) {
+      console.error("Error fetching word details:", error);
+      setError(error instanceof Error ? error.message : "Failed to fetch word details. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderDefinitions = (wordInfo: WordInfo) => {
-    if (!wordInfo.definitions) return null;
+    if (!wordInfo.data.definitions) return null;
 
-    return wordInfo.definitions.map((definition: Definition, index: number) => (
+    return wordInfo.data.definitions.map((definition, index) => (
       <div key={index} className="definition-card">
-        <h3>{definition.part_of_speech}</h3>
+        {definition.partOfSpeech && <h3>{definition.partOfSpeech}</h3>}
         <ol>
-          {definition.meanings.map((meaning: string, idx: number) => (
-            <li key={idx}>{meaning}</li>
-          ))}
+          {definition.meanings
+            ?.filter(
+              (meaning) =>
+                meaning.definition && meaning.definition.trim() !== "0"
+            )
+            .map((meaning, idx) => (
+              <li key={idx}>
+                {meaning.definition}
+                {meaning.source && (
+                  <span className="source">Source: {meaning.source}</span>
+                )}
+              </li>
+            ))}
         </ol>
-        {definition.sources && definition.sources.length > 0 && (
-          <p className="sources">Sources: {definition.sources.join(', ')}</p>
+        {definition.usageNotes && definition.usageNotes.length > 0 && (
+          <p className="usage-notes">
+            <strong>Usage notes:</strong> {definition.usageNotes.join(", ")}
+          </p>
+        )}
+        {definition.examples && definition.examples.length > 0 && (
+          <p className="examples">
+            <strong>Examples:</strong> {definition.examples.join("; ")}
+          </p>
         )}
       </div>
     ));
   };
 
-  // Memoize the theme class to avoid unnecessary re-renders
-  const themeClass = useMemo(() => `word-explorer ${theme}`, [theme]);
+  const renderArraySection = (title: string, items?: string[]) => {
+    if (!items || items.length === 0) return null;
+    return (
+      <div className={title.toLowerCase().replace(/\s+/g, "-")}>
+        <h3>{title}:</h3>
+        <ul className="word-list">
+          {items
+            .filter((item) => item.trim() !== "" && item.trim() !== "0")
+            .map((item, index) => (
+              <li
+                key={index}
+                onClick={() => handleNodeClick(item)}
+                className="clickable-word"
+              >
+                {item}
+              </li>
+            ))}
+        </ul>
+      </div>
+    );
+  };
 
   return (
-    <div className={themeClass}>
+    <div className={`word-explorer ${theme}`}>
       <header className="header-content">
         <h1>Filipino Root Word Explorer</h1>
-        <button onClick={toggleTheme} className="theme-toggle">
-          {theme === 'light' ? '🌙' : '☀️'}
+        <button
+          onClick={toggleTheme}
+          className="theme-toggle"
+          aria-label="Toggle theme"
+        >
+          {theme === "light" ? "🌙" : "☀️"}
         </button>
       </header>
       <div className="search-container">
         <input
           type="text"
           value={searchTerm}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && handleSearch()}
           placeholder="Enter a word"
           className="search-input"
+          aria-label="Search word"
         />
-        <button onClick={handleSearch} disabled={isLoading} className="search-button">
-          {isLoading ? 'Loading...' : 'Explore'}
+        <button
+          onClick={handleSearch}
+          disabled={isLoading}
+          className="search-button"
+        >
+          {isLoading ? "Loading..." : "Explore"}
         </button>
       </div>
       {error && <p className="error-message">{error}</p>}
       <main>
-        <div className="graph-container">
+      <div className="graph-container">
           <div className="graph-content">
             {wordNetwork && mainWord && (
-              <WordGraph key={mainWord} wordNetwork={wordNetwork} mainWord={mainWord} onNodeClick={handleNodeClick} />
+              <WordGraph
+                wordNetwork={wordNetwork}
+                mainWord={mainWord}
+                onNodeClick={handleNodeClick}
+              />
             )}
           </div>
         </div>
         <div className="details-container">
           <div className="details-content">
-            {selectedWordInfo ? (
+            {isLoading ? (
+              <div className="loading-spinner">Loading...</div>
+            ) : selectedWordInfo ? (
               <div className="word-details">
-                <h2>{selectedWordInfo.word}</h2>
-                {selectedWordInfo.pronunciation && (
-                  <p><strong>Pronunciation:</strong> {selectedWordInfo.pronunciation}</p>
+                <h2>{selectedWordInfo.data.word}</h2>
+                {selectedWordInfo.data.pronunciation?.text && (
+                  <p className="pronunciation">
+                    <strong>Pronunciation:</strong>{" "}
+                    {selectedWordInfo.data.pronunciation.text}
+                  </p>
                 )}
-                {selectedWordInfo.etymology && selectedWordInfo.etymology.length > 2 && (
-                  <p><strong>Etymology:</strong> {selectedWordInfo.etymology}</p>
-                )}
-                {selectedWordInfo.language_codes && (
-                  <p><strong>Language Codes:</strong> {selectedWordInfo.language_codes}</p>
-                )}
+                {selectedWordInfo.data.etymology?.text &&
+                  selectedWordInfo.data.etymology.text.length > 0 && (
+                    <p>
+                      <strong>Etymology:</strong>{" "}
+                      {selectedWordInfo.data.etymology.text}
+                    </p>
+                  )}
+                {selectedWordInfo.data.languages &&
+                  selectedWordInfo.data.languages.length > 0 && (
+                    <p>
+                      <strong>Language Codes:</strong>{" "}
+                      {selectedWordInfo.data.languages.join(", ")}
+                    </p>
+                  )}
                 {renderDefinitions(selectedWordInfo)}
-                {selectedWordInfo.derivatives && Object.keys(selectedWordInfo.derivatives).length > 0 && (
-                  <div className="derivatives">
-                    <h3>Derivatives:</h3>
-                    <ul>
-                      {Object.keys(selectedWordInfo.derivatives).map((derivative, index) => (
-                        <li key={index}>{derivative}</li>
-                      ))}
-                    </ul>
-                  </div>
+                {renderArraySection(
+                  "Synonyms",
+                  selectedWordInfo.data.relationships?.synonyms
                 )}
-                {selectedWordInfo.associated_words && selectedWordInfo.associated_words.length > 0 && (
-                  <div className="associated-words">
-                    <h3>Associated Words:</h3>
-                    <ul>
-                      {selectedWordInfo.associated_words.map((associatedWord, index) => (
-                        <li key={index}>{associatedWord}</li>
-                      ))}
-                    </ul>
-                  </div>
+                {renderArraySection(
+                  "Antonyms",
+                  selectedWordInfo.data.relationships?.antonyms
                 )}
-                {selectedWordInfo.root_words && selectedWordInfo.root_words.length > 0 && (
-                  <div className="root-words">
-                    <h3>Root Words:</h3>
-                    <ul>
-                      {selectedWordInfo.root_words.map((rootWord, index) => (
-                        <li key={index}>{rootWord}</li>
-                      ))}
-                    </ul>
-                  </div>
+                {renderArraySection(
+                  "Associated Words",
+                  selectedWordInfo.data.relationships?.associatedWords
                 )}
-                {selectedWordInfo.root_word && (
-                  <p><strong>Root Word:</strong> {selectedWordInfo.root_word}</p>
+                {renderArraySection(
+                  "Derivatives",
+                  selectedWordInfo.data.relationships?.derivatives
+                )}
+                {selectedWordInfo.data.relationships?.rootWord && (
+                  <p>
+                    <strong>Root Word:</strong>{" "}
+                    <span
+                      className="clickable-word"
+                      onClick={() =>
+                        handleNodeClick(
+                          selectedWordInfo.data.relationships.rootWord!
+                        )
+                      }
+                    >
+                      {selectedWordInfo.data.relationships.rootWord}
+                    </span>
+                  </p>
                 )}
               </div>
             ) : (
-              <p>Click on a node to see the details.</p>
+              <p>
+                Enter a word to explore or click on a node in the graph to see
+                details.
+              </p>
             )}
           </div>
         </div>
