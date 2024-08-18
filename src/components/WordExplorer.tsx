@@ -184,15 +184,11 @@ const WordExplorer: React.FC = () => {
       <div className="graph-container">
           <div className="graph-content">
             {wordNetwork && mainWord && (
-<<<<<<< HEAD
               <WordGraph
                 wordNetwork={wordNetwork}
                 mainWord={mainWord}
                 onNodeClick={handleNodeClick}
               />
-=======
-              <WordGraph key={mainWord} wordNetwork={wordNetwork} mainWord={mainWord} onNodeClick={handleNodeClick} />
->>>>>>> 33c89b29aa7b7ca2e048673ecd692aae13cbc91c
             )}
           </div>
         </div>
