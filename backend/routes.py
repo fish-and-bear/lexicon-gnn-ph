@@ -44,19 +44,14 @@ def internal_error(error):
 def get_word_details(word_entry):
     return {
         "word": word_entry.word,
-        "pronunciation": word_entry.pronunciation.pronunciation if word_entry.pronunciation else None,
+        "pronunciation": word_entry.pronunciation,
         "audio_pronunciation": word_entry.audio_pronunciation,
         "etymologies": [{
             "etymology_text": etym.etymology_text,
-            "language": etym.language.code if etym.language else None,
             "components": [
                 {"component": comp.component, "order": comp.order}
                 for comp in etym.components
-            ],
-            "template": {
-                "name": etym.template.template_name,
-                "args": etym.template.args
-            } if etym.template else None
+            ]
         } for etym in word_entry.etymologies],
         "kaikki_etymology": word_entry.kaikki_etymology,
         "languages": [lang.code for lang in word_entry.languages],
@@ -64,7 +59,8 @@ def get_word_details(word_entry):
             "part_of_speech": d.part_of_speech,
             "meanings": [{"meaning": m.meaning, "source": m.source.source_name} for m in d.meanings],
             "usage_notes": d.usage_notes,
-            "tags": d.tags
+            "tags": d.tags,
+            "examples": [e.example for e in d.examples]
         } for d in word_entry.definitions],
         "forms": [{"form": f.form, "tags": f.tags} for f in word_entry.forms],
         "head_templates": [{"name": ht.template_name, "args": ht.args, "expansion": ht.expansion} for ht in word_entry.head_templates],
@@ -74,18 +70,24 @@ def get_word_details(word_entry):
         "hyponyms": [h.hyponym for h in word_entry.hyponyms],
         "meronyms": [m.meronym for m in word_entry.meronyms],
         "holonyms": [h.holonym for h in word_entry.holonyms],
-        "associated_words": [{"word": aw.associated_word, "type": aw.relationship_type} for aw in word_entry.associated_words],
+        "associated_words": [aw.associated_word for aw in word_entry.associated_words],
         "synonyms": [w.word for w in word_entry.synonyms],
         "antonyms": [w.word for w in word_entry.antonyms],
         "related_terms": [w.word for w in word_entry.related_terms],
         "root_word": word_entry.root_word,
-        "tags": word_entry.tags
+        "tags": word_entry.tags,
+        "variant": word_entry.variant,
+        "alternate_forms": [af.alternate_form for af in word_entry.alternate_forms],
+        "inflections": [{
+            "name": infl.name,
+            "args": infl.args
+        } for infl in word_entry.inflections]
     }
 
 def get_word_network_data(word_entry):
     return {
         "word": word_entry.word,
-        "pronunciation": word_entry.pronunciation.pronunciation if word_entry.pronunciation else None,
+        "pronunciation": word_entry.pronunciation,
         "languages": [lang.code for lang in word_entry.languages],
         "definitions": [{"part_of_speech": d.part_of_speech, "meaning": m.meaning} 
                         for d in word_entry.definitions 
@@ -165,9 +167,9 @@ def get_words():
 @rate_limit()
 def get_word(word):
     word_entry = Word.query.options(
-        joinedload(Word.pronunciation),
         joinedload(Word.languages),
         joinedload(Word.definitions).joinedload(Definition.meanings).joinedload(Meaning.source),
+        joinedload(Word.definitions).joinedload(Definition.examples),
         joinedload(Word.forms),
         joinedload(Word.head_templates),
         joinedload(Word.derivatives),
@@ -181,8 +183,8 @@ def get_word(word):
         joinedload(Word.antonyms),
         joinedload(Word.related_terms),
         joinedload(Word.etymologies).joinedload(Etymology.components),
-        joinedload(Word.etymologies).joinedload(Etymology.template),
-        joinedload(Word.etymologies).joinedload(Etymology.language)
+        joinedload(Word.alternate_forms),
+        joinedload(Word.inflections)
     ).filter_by(word=word.lower()).first_or_404()
 
     return jsonify(get_word_details(word_entry))
@@ -204,22 +206,15 @@ def get_word_network(word):
 @rate_limit()
 def get_etymology(word):
     word_entry = Word.query.options(
-        joinedload(Word.etymologies).joinedload(Etymology.components),
-        joinedload(Word.etymologies).joinedload(Etymology.template),
-        joinedload(Word.etymologies).joinedload(Etymology.language)
+        joinedload(Word.etymologies).joinedload(Etymology.components)
     ).filter_by(word=word.lower()).first_or_404()
 
     etymologies = [{
         "etymology_text": etym.etymology_text,
-        "language": etym.language.code if etym.language else None,
         "components": [
             {"component": comp.component, "order": comp.order}
             for comp in etym.components
-        ],
-        "template": {
-            "name": etym.template.template_name,
-            "args": etym.template.args
-        } if etym.template else None
+        ]
     } for etym in word_entry.etymologies]
 
     return jsonify({
