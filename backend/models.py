@@ -15,12 +15,6 @@ word_language_table = Table(
     Column('language_id', Integer, ForeignKey('languages.id'), primary_key=True)
 )
 
-word_association_table = Table(
-    'word_associations', Base.metadata,
-    Column('word_id', Integer, ForeignKey('words.id'), primary_key=True),
-    Column('associated_word_id', Integer, ForeignKey('words.id'), primary_key=True)
-)
-
 synonym_table = Table(
     'synonyms', Base.metadata,
     Column('word_id', Integer, ForeignKey('words.id'), primary_key=True),
@@ -39,28 +33,29 @@ related_term_table = Table(
     Column('related_term_id', Integer, ForeignKey('words.id'), primary_key=True)
 )
 
-# Models
 class Word(Base):
     __tablename__ = 'words'
     
     id = Column(Integer, primary_key=True)
     word = Column(String, unique=True, nullable=False)
-    pronunciation_id = Column(Integer, ForeignKey('pronunciations.id'))
+    pronunciation = Column(Text)
     root_word = Column(String, ForeignKey('words.word'))
     audio_pronunciation = Column(ARRAY(String))
     tags = Column(ARRAY(String))
     kaikki_etymology = Column(Text)
+    variant = Column(String)
 
-    pronunciation = relationship("Pronunciation", foreign_keys=[pronunciation_id])
-    definitions = relationship("Definition", back_populates="word", cascade="all, delete-orphan")
     etymologies = relationship("Etymology", back_populates="word", cascade="all, delete-orphan")
+    definitions = relationship("Definition", back_populates="word", cascade="all, delete-orphan")
     forms = relationship("Form", back_populates="word", cascade="all, delete-orphan")
     head_templates = relationship("HeadTemplate", back_populates="word", cascade="all, delete-orphan")
     derivatives = relationship("Derivative", back_populates="word", cascade="all, delete-orphan")
     examples = relationship("Example", back_populates="word", cascade="all, delete-orphan")
+    associated_words = relationship("AssociatedWord", back_populates="word", cascade="all, delete-orphan")
+    alternate_forms = relationship("AlternateForm", back_populates="word", cascade="all, delete-orphan")
+    inflections = relationship("Inflection", back_populates="word", cascade="all, delete-orphan")
 
     languages = relationship("Language", secondary=word_language_table, back_populates="words")
-    associated_words = relationship("AssociatedWord", back_populates="word", cascade="all, delete-orphan")
     synonyms = relationship("Word", secondary=synonym_table,
                             primaryjoin=(id==synonym_table.c.word_id),
                             secondaryjoin=(id==synonym_table.c.synonym_id))
@@ -81,13 +76,10 @@ class Etymology(Base):
 
     id = Column(Integer, primary_key=True)
     word_id = Column(Integer, ForeignKey('words.id'), nullable=False)
-    etymology_text = Column(Text, nullable=False)
-    language_id = Column(Integer, ForeignKey('languages.id'))
+    etymology_text = Column(Text)
 
     word = relationship("Word", back_populates="etymologies")
-    language = relationship("Language")
     components = relationship("EtymologyComponent", back_populates="etymology", cascade="all, delete-orphan")
-    template = relationship("EtymologyTemplate", back_populates="etymology", uselist=False, cascade="all, delete-orphan")
 
 class EtymologyComponent(Base):
     __tablename__ = 'etymology_components'
@@ -98,16 +90,6 @@ class EtymologyComponent(Base):
     order = Column(Integer, nullable=False)
 
     etymology = relationship("Etymology", back_populates="components")
-
-class EtymologyTemplate(Base):
-    __tablename__ = 'etymology_templates'
-
-    id = Column(Integer, primary_key=True)
-    etymology_id = Column(Integer, ForeignKey('etymologies.id'), nullable=False)
-    template_name = Column(String, nullable=False)
-    args = Column(JSON)
-
-    etymology = relationship("Etymology", back_populates="template")
 
 class Definition(Base):
     __tablename__ = 'definitions'
@@ -120,14 +102,7 @@ class Definition(Base):
     
     word = relationship("Word", back_populates="definitions")
     meanings = relationship("Meaning", back_populates="definition", cascade="all, delete-orphan")
-
-class Pronunciation(Base):
-    __tablename__ = 'pronunciations'
-
-    id = Column(Integer, primary_key=True)
-    pronunciation = Column(String, nullable=False)
-    
-    words = relationship("Word", back_populates="pronunciation")
+    examples = relationship("Example", back_populates="definition", cascade="all, delete-orphan")
 
 class Meaning(Base):
     __tablename__ = 'meanings'
@@ -157,16 +132,6 @@ class Form(Base):
     tags = Column(ARRAY(String))
     
     word = relationship("Word", back_populates="forms")
-
-class AssociatedWord(Base):
-    __tablename__ = 'associated_words'
-
-    id = Column(Integer, primary_key=True)
-    word_id = Column(Integer, ForeignKey('words.id'), nullable=False)
-    associated_word = Column(String, nullable=False)
-    relationship_type = Column(String)  # To specify the type of association if needed
-
-    word = relationship("Word", back_populates="associated_words")
 
 class HeadTemplate(Base):
     __tablename__ = 'head_templates'
@@ -202,9 +167,39 @@ class Example(Base):
 
     id = Column(Integer, primary_key=True)
     word_id = Column(Integer, ForeignKey('words.id'), nullable=False)
+    definition_id = Column(Integer, ForeignKey('definitions.id'), nullable=True)
     example = Column(Text, nullable=False)
 
     word = relationship("Word", back_populates="examples")
+    definition = relationship("Definition", back_populates="examples")
+
+class AssociatedWord(Base):
+    __tablename__ = 'associated_words'
+
+    id = Column(Integer, primary_key=True)
+    word_id = Column(Integer, ForeignKey('words.id'), nullable=False)
+    associated_word = Column(String, nullable=False)
+
+    word = relationship("Word", back_populates="associated_words")
+
+class AlternateForm(Base):
+    __tablename__ = 'alternate_forms'
+
+    id = Column(Integer, primary_key=True)
+    word_id = Column(Integer, ForeignKey('words.id'), nullable=False)
+    alternate_form = Column(String, nullable=False)
+
+    word = relationship("Word", back_populates="alternate_forms")
+
+class Inflection(Base):
+    __tablename__ = 'inflections'
+
+    id = Column(Integer, primary_key=True)
+    word_id = Column(Integer, ForeignKey('words.id'), nullable=False)
+    name = Column(String, nullable=False)
+    args = Column(JSON)
+
+    word = relationship("Word", back_populates="inflections")
 
 class Hypernym(Base):
     __tablename__ = 'hypernyms'
