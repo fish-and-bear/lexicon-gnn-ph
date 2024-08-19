@@ -52,9 +52,19 @@ svg {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
   border-radius: 4px;
   padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.legend.light {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+.legend.dark {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
 }
 
 .legend-item {
@@ -71,7 +81,6 @@ svg {
 }
 
 .legend-item span {
-  color: #fff;
   font-size: 14px;
 }
 
@@ -100,4 +109,14 @@ svg {
 
 .zoom-button:hover {
   background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* Dark mode specific styles */
+.dark .zoom-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.dark .zoom-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
 }

@@ -38,14 +38,31 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
   const links: CustomLink[] = useMemo(() => {
     const tempLinks: CustomLink[] = [];
     Object.entries(wordNetwork).forEach(([word, info]) => {
+      if (info.derivatives) {
+        info.derivatives.forEach(derivative => {
+          if (wordNetwork[derivative]) {
+            tempLinks.push({ source: word, target: derivative, type: 'derivative' });
+          }
+        });
+      }
+      if (info.etymology?.parsed) {
+        info.etymology.parsed.forEach(etymWord => {
+          if (wordNetwork[etymWord]) {
+            tempLinks.push({ source: word, target: etymWord, type: 'etymology' });
+          }
+        });
+      }
+      if (info.root_word && wordNetwork[info.root_word]) {
+        tempLinks.push({ source: word, target: info.root_word, type: 'root' });
+      }
       info.related_words.forEach((relatedWord) => {
         if (wordNetwork[relatedWord]) {
-          tempLinks.push({ source: word, target: relatedWord, type: getNodeGroup(relatedWord, wordNetwork[relatedWord], mainWord) });
+          tempLinks.push({ source: word, target: relatedWord, type: 'associated' });
         }
       });
     });
     return tempLinks;
-  }, [wordNetwork, mainWord]);
+  }, [wordNetwork]);
 
   const updateGraph = useCallback(() => {
     if (!svgRef.current) return;
@@ -80,7 +97,7 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
       .data(links)
       .join('line')
       .attr('class', 'link')
-      .attr('stroke', '#999')
+      .attr('stroke', (d) => getNodeColor(d.type))
       .attr('stroke-width', 1);
 
     const node = g.selectAll('.node')
@@ -99,24 +116,18 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
       .attr('stroke-width', 2);
 
     node.append('text')
-      .text((d) => d.id)
+      .text((d) => {
+        try {
+          return decodeURIComponent(JSON.parse(`"${d.id}"`));
+        } catch {
+          return d.id;
+        }
+      })
       .attr('dy', 40)
       .attr('text-anchor', 'middle')
       .attr('fill', theme === 'dark' ? '#e0e0e0' : '#333')
       .style('font-size', '12px')
-      .style('font-weight', 'bold')
-      .each(function(d) {
-        const self = d3.select(this);
-        const textLength = (self.node() as SVGTextElement).getComputedTextLength();
-        const circleRadius = d.group === 'main' ? 35 : 25;
-        if (textLength > circleRadius * 2) {
-          let text = d.id;
-          while (text.length > 3 && (self.node() as SVGTextElement).getComputedTextLength() > circleRadius * 2) {
-            text = text.slice(0, -1);
-            self.text(text + '...');
-          }
-        }
-      });
+      .style('font-weight', 'bold');
 
     node.on('click', (event, d) => {
       setSelectedNodeId(d.id);
@@ -179,9 +190,9 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
 
   function getNodeGroup(word: string, info: NetworkWordInfo, mainWord: string): string {
     if (word === mainWord) return 'main';
-    if (info.root_word === mainWord) return 'root';
-    if (info.etymology?.parsed?.includes(mainWord)) return 'etymology';
     if (info.derivatives?.includes(mainWord)) return 'derivative';
+    if (info.etymology?.parsed?.includes(word)) return 'etymology';
+    if (info.root_word === mainWord) return 'root';
     return 'associated';
   }
 
@@ -243,7 +254,7 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
           <p>Relation: {hoveredNode.group}</p>
         </div>
       )}
-      <div className="legend">
+      <div className={`legend ${theme}`}>
         {legendItems.map(item => (
           <div key={item.key} className="legend-item">
             <div className={`color-box ${item.key}`} style={{ backgroundColor: getNodeColor(item.key) }}></div>
