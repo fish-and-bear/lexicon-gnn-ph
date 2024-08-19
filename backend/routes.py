@@ -213,19 +213,20 @@ def get_word_network_data(word_entry):
             for d in word_entry.definitions
             for m in d.meanings[:1]
         ],
-        "related_words": [
-            *[aw.associated_word for aw in word_entry.associated_words],
-            *[w.word for w in word_entry.synonyms],
-            *[w.word for w in word_entry.antonyms],
-            *[d.derivative for d in word_entry.derivatives],
-            *[f.form for f in word_entry.forms],
-            word_entry.root_word,
-        ]
-        + parse_etymology(
+        "derivatives": [d.derivative for d in word_entry.derivatives],
+        "root_word": word_entry.root_word,
+        "synonyms": [w.word for w in word_entry.synonyms],
+        "antonyms": [w.word for w in word_entry.antonyms],
+        "associated_words": [aw.associated_word for aw in word_entry.associated_words],
+        "related_terms": [w.word for w in word_entry.related_terms],
+        "hypernyms": [h.hypernym for h in word_entry.hypernyms],
+        "hyponyms": [h.hyponym for h in word_entry.hyponyms],
+        "meronyms": [m.meronym for m in word_entry.meronyms],
+        "holonyms": [h.holonym for h in word_entry.holonyms],
+        "etymology": parse_etymology(
             word_entry.etymologies[0].etymology_text if word_entry.etymologies else ""
         ),
     }
-
 
 def get_related_words(word, depth=2, breadth=10):
     visited = set()
@@ -252,7 +253,12 @@ def get_related_words(word, depth=2, breadth=10):
             joinedload(Word.antonyms),
             joinedload(Word.derivatives),
             joinedload(Word.forms),
-            joinedload(Word.etymologies)
+            joinedload(Word.etymologies),
+            joinedload(Word.related_terms),
+            joinedload(Word.hypernyms),
+            joinedload(Word.hyponyms),
+            joinedload(Word.meronyms),
+            joinedload(Word.holonyms)
         ).outerjoin(Word.definitions).outerjoin(Definition.meanings).filter(
             func.lower(func.unaccent(Word.word)) == normalized_word
         ).first()
@@ -261,7 +267,20 @@ def get_related_words(word, depth=2, breadth=10):
             network[current_word] = get_word_network_data(word_entry)
             
             if current_depth < depth:
-                related_words = set(network[current_word]["related_words"])
+                related_words = set()
+                related_words.update(network[current_word].get("derivatives", []))
+                related_words.update(network[current_word].get("synonyms", []))
+                related_words.update(network[current_word].get("antonyms", []))
+                related_words.update(network[current_word].get("associated_words", []))
+                related_words.update(network[current_word].get("related_terms", []))
+                related_words.update(network[current_word].get("hypernyms", []))
+                related_words.update(network[current_word].get("hyponyms", []))
+                related_words.update(network[current_word].get("meronyms", []))
+                related_words.update(network[current_word].get("holonyms", []))
+                related_words.update(network[current_word].get("etymology", []))
+                if network[current_word].get("root_word"):
+                    related_words.add(network[current_word]["root_word"])
+                
                 new_words = list(related_words - visited)[:breadth]
                 queue.extend((w, current_depth + 1) for w in new_words if w is not None)
 

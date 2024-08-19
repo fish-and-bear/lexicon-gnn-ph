@@ -17,6 +17,8 @@ interface CustomNode extends d3.SimulationNodeDatum {
 }
 
 interface CustomLink extends d3.SimulationLinkDatum<CustomNode> {
+  source: string | CustomNode;
+  target: string | CustomNode;
   type: string;
 }
 
@@ -27,40 +29,43 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
 
+  const getNodeRelation = useCallback((word: string, info: NetworkWordInfo, mainWord: string): string => {
+    if (word === mainWord) return 'main';
+    if (info.derivatives?.includes(mainWord)) return 'derivative';
+    if (info.root_word === mainWord) return 'root';
+    if (info.etymology?.parsed?.includes(mainWord)) return 'etymology';
+    if (info.associated_words?.includes(mainWord)) return 'associated';
+    if (info.synonyms?.includes(mainWord)) return 'synonym';
+    if (info.antonyms?.includes(mainWord)) return 'antonym';
+    return 'other';
+  }, []);
+
   const nodes: CustomNode[] = useMemo(() => {
     return Object.entries(wordNetwork).map(([word, info]) => ({
       id: word,
-      group: getNodeGroup(word, info, mainWord),
+      group: getNodeRelation(word, info, mainWord),
       info: info,
     }));
-  }, [wordNetwork, mainWord]);
+  }, [wordNetwork, mainWord, getNodeRelation]);
 
   const links: CustomLink[] = useMemo(() => {
     const tempLinks: CustomLink[] = [];
     Object.entries(wordNetwork).forEach(([word, info]) => {
-      if (info.derivatives) {
-        info.derivatives.forEach(derivative => {
-          if (wordNetwork[derivative]) {
-            tempLinks.push({ source: word, target: derivative, type: 'derivative' });
-          }
-        });
-      }
-      if (info.etymology?.parsed) {
-        info.etymology.parsed.forEach(etymWord => {
-          if (wordNetwork[etymWord]) {
-            tempLinks.push({ source: word, target: etymWord, type: 'etymology' });
-          }
-        });
-      }
-      if (info.root_word && wordNetwork[info.root_word]) {
-        tempLinks.push({ source: word, target: info.root_word, type: 'root' });
-      }
-      info.related_words.forEach((relatedWord) => {
-        if (wordNetwork[relatedWord]) {
-          tempLinks.push({ source: word, target: relatedWord, type: 'associated' });
+      console.log(`Processing word: ${word}`, info);
+      const addLink = (target: string, type: string) => {
+        if (wordNetwork[target]) {
+          tempLinks.push({ source: word, target, type });
         }
-      });
+      };
+
+      info.derivatives?.forEach(derivative => addLink(derivative, 'derivative'));
+      if (info.root_word) addLink(info.root_word, 'root');
+      info.etymology?.parsed?.forEach(etymWord => addLink(etymWord, 'etymology'));
+      info.associated_words?.forEach(assocWord => addLink(assocWord, 'associated'));
+      info.synonyms?.forEach(synonym => addLink(synonym, 'synonym'));
+      info.antonyms?.forEach(antonym => addLink(antonym, 'antonym'));
     });
+    console.log('Created links:', tempLinks);
     return tempLinks;
   }, [wordNetwork]);
 
@@ -87,63 +92,58 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
     svg.call(zoom);
     zoomRef.current = zoom;
 
-    const simulation = d3.forceSimulation(nodes)
-      .force('link', d3.forceLink(links).id((d: any) => d.id).distance(100))
-      .force('charge', d3.forceManyBody().strength(-500))
+    const simulation = d3.forceSimulation<CustomNode>(nodes)
+      .force('link', d3.forceLink<CustomNode, CustomLink>(links).id(d => d.id).distance(100))
+      .force('charge', d3.forceManyBody().strength(-300))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collide', d3.forceCollide().radius(50).strength(0.7));
+      .force('collide', d3.forceCollide().radius(30).strength(0.7));
 
     const link = g.selectAll('.link')
       .data(links)
       .join('line')
       .attr('class', 'link')
-      .attr('stroke', (d) => getNodeColor(d.type))
+      .attr('stroke', (d: CustomLink) => getNodeColor(d.type))
       .attr('stroke-width', 1);
 
     const node = g.selectAll('.node')
       .data(nodes)
       .join('g')
-      .attr('class', (d) => `node ${d.id === selectedNodeId ? 'selected' : ''}`)
+      .attr('class', (d: CustomNode) => `node ${d.id === selectedNodeId ? 'selected' : ''}`)
       .call(d3.drag<SVGGElement, CustomNode>()
         .on('start', dragstarted)
         .on('drag', dragged)
         .on('end', dragended) as any);
 
     node.append('circle')
-      .attr('r', (d) => d.group === 'main' ? 35 : 25)
-      .attr('fill', (d) => getNodeColor(d.group))
+      .attr('r', (d: CustomNode) => d.group === 'main' ? 25 : 15)
+      .attr('fill', (d: CustomNode) => getNodeColor(d.group))
       .attr('stroke', '#fff')
       .attr('stroke-width', 2);
 
     node.append('text')
-      .text((d) => {
-        try {
-          return decodeURIComponent(JSON.parse(`"${d.id}"`));
-        } catch {
-          return d.id;
-        }
-      })
-      .attr('dy', 40)
+      .text((d: CustomNode) => d.id)
+      .attr('dy', 25)
       .attr('text-anchor', 'middle')
       .attr('fill', theme === 'dark' ? '#e0e0e0' : '#333')
-      .style('font-size', '12px')
+      .style('font-size', '10px')
       .style('font-weight', 'bold');
 
-    node.on('click', (event, d) => {
+    node.on('click', (event: MouseEvent, d: CustomNode) => {
       setSelectedNodeId(d.id);
       onNodeClick(d.id);
     })
-    .on('mouseover', (event, d) => setHoveredNode(d))
+    .on('mouseover', (event: MouseEvent, d: CustomNode) => setHoveredNode(d))
     .on('mouseout', () => setHoveredNode(null));
 
     function ticked() {
+      console.log('Tick');
       link
-        .attr('x1', (d) => (d.source as CustomNode).x!)
-        .attr('y1', (d) => (d.source as CustomNode).y!)
-        .attr('x2', (d) => (d.target as CustomNode).x!)
-        .attr('y2', (d) => (d.target as CustomNode).y!);
+        .attr('x1', d => (d.source as CustomNode).x!)
+        .attr('y1', d => (d.source as CustomNode).y!)
+        .attr('x2', d => (d.target as CustomNode).x!)
+        .attr('y2', d => (d.target as CustomNode).y!);
 
-      node.attr('transform', (d) => `translate(${d.x!},${d.y!})`);
+      node.attr('transform', (d: CustomNode) => `translate(${d.x!},${d.y!})`);
     }
 
     simulation.nodes(nodes).on('tick', ticked);
@@ -188,14 +188,6 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
     };
   }, [updateGraph]);
 
-  function getNodeGroup(word: string, info: NetworkWordInfo, mainWord: string): string {
-    if (word === mainWord) return 'main';
-    if (info.derivatives?.includes(mainWord)) return 'derivative';
-    if (info.etymology?.parsed?.includes(word)) return 'etymology';
-    if (info.root_word === mainWord) return 'root';
-    return 'associated';
-  }
-
   function getNodeColor(group: string): string {
     switch (group) {
       case 'main': return '#FF6B6B';
@@ -203,17 +195,11 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
       case 'associated': return '#45B7D1';
       case 'etymology': return '#F9C74F';
       case 'derivative': return '#9B5DE5';
+      case 'synonym': return '#66BB6A';
+      case 'antonym': return '#EF5350';
       default: return '#A0A0A0';
     }
   }
-
-  const legendItems = [
-    { key: 'main', label: 'Main Word' },
-    { key: 'derivative', label: 'Derivative' },
-    { key: 'etymology', label: 'Etymology' },
-    { key: 'root', label: 'Root' },
-    { key: 'associated', label: 'Associated Word' },
-  ];
 
   const handleZoom = useCallback((scale: number) => {
     if (zoomRef.current && svgRef.current) {
@@ -232,11 +218,11 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
   const centerNode = useCallback((node: CustomNode) => {
     if (zoomRef.current && svgRef.current) {
       const svg = d3.select(svgRef.current);
-      const width = svg.attr('width');
-      const height = svg.attr('height');
-      const scale = 0.5;
-      const x = Number(width) / 2 - node.x! * scale;
-      const y = Number(height) / 2 - node.y! * scale;
+      const width = Number(svg.attr('width'));
+      const height = Number(svg.attr('height'));
+      const scale = 0.8;
+      const x = width / 2 - (node.x || 0) * scale;
+      const y = height / 2 - (node.y || 0) * scale;
       svg.transition().duration(750).call(
         zoomRef.current.transform,
         d3.zoomIdentity.translate(x, y).scale(scale)
@@ -254,14 +240,6 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
           <p>Relation: {hoveredNode.group}</p>
         </div>
       )}
-      <div className={`legend ${theme}`}>
-        {legendItems.map(item => (
-          <div key={item.key} className="legend-item">
-            <div className={`color-box ${item.key}`} style={{ backgroundColor: getNodeColor(item.key) }}></div>
-            <span>{item.label}</span>
-          </div>
-        ))}
-      </div>
       <div className="zoom-controls">
         <button onClick={() => handleZoom(1.2)} className="zoom-button">+</button>
         <button onClick={() => handleZoom(1/1.2)} className="zoom-button">-</button>

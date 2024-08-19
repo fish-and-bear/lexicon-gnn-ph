@@ -85,20 +85,21 @@ export interface Meaning {
         source?: string;
       }[];
     }[];
-    related_words: string[];
     derivatives?: string[];
     root_word?: string;
-    holonyms?: string[];
-    hypernyms?: string[];
-    hyponyms?: string[];
-    meronyms?: string[];
-    etymology?: {
-      parsed?: string[];
-    };
     synonyms?: string[];
     antonyms?: string[];
     associated_words?: string[];
     related_terms?: string[];
+    hypernyms?: string[];
+    hyponyms?: string[];
+    meronyms?: string[];
+    holonyms?: string[];
+    etymology?: {
+      parsed?: string[];
+      text?: string[];
+      components?: { component: string; order: number }[];
+    };
   }
   
   export interface WordNetwork {

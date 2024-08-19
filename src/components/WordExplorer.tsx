@@ -5,7 +5,7 @@ import "./WordExplorer.css";
 import { WordNetwork, WordInfo } from "../types";
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL_PROD || "http://localhost:10000/api/v1";
+  process.env.DATABASE_URL_PROD || "http://localhost:10000/api/v1";
 
 const WordExplorer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
