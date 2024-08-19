@@ -232,8 +232,9 @@ def get_related_words(word, depth=2, breadth=10):
     visited = set()
     queue = [(word, 0)]
     network = {}
+    max_network_size = current_app.config.get('MAX_NETWORK_SIZE', 100)
 
-    while queue and len(network) < 100:  # Limit total network size
+    while queue and len(network) < max_network_size:
         current_word, current_depth = queue.pop(0)
         
         if current_word is None or current_word in visited or current_depth > depth:
@@ -245,44 +246,45 @@ def get_related_words(word, depth=2, breadth=10):
         if normalized_word is None:
             continue
 
-        word_entry = Word.query.options(
-            contains_eager(Word.definitions).contains_eager(Definition.meanings),
-            joinedload(Word.languages),
-            joinedload(Word.associated_words),
-            joinedload(Word.synonyms),
-            joinedload(Word.antonyms),
-            joinedload(Word.derivatives),
-            joinedload(Word.forms),
-            joinedload(Word.etymologies),
-            joinedload(Word.related_terms),
-            joinedload(Word.hypernyms),
-            joinedload(Word.hyponyms),
-            joinedload(Word.meronyms),
-            joinedload(Word.holonyms)
-        ).outerjoin(Word.definitions).outerjoin(Definition.meanings).filter(
-            func.lower(func.unaccent(Word.word)) == normalized_word
-        ).first()
-        
-        if word_entry:
-            network[current_word] = get_word_network_data(word_entry)
+        try:
+            word_entry = Word.query.options(
+                contains_eager(Word.definitions).contains_eager(Definition.meanings),
+                joinedload(Word.languages),
+                joinedload(Word.associated_words),
+                joinedload(Word.synonyms),
+                joinedload(Word.antonyms),
+                joinedload(Word.derivatives),
+                joinedload(Word.forms),
+                joinedload(Word.etymologies),
+                joinedload(Word.related_terms),
+                joinedload(Word.hypernyms),
+                joinedload(Word.hyponyms),
+                joinedload(Word.meronyms),
+                joinedload(Word.holonyms)
+            ).outerjoin(Word.definitions).outerjoin(Definition.meanings).filter(
+                func.lower(func.unaccent(Word.word)) == normalized_word
+            ).first()
             
-            if current_depth < depth:
-                related_words = set()
-                related_words.update(network[current_word].get("derivatives", []))
-                related_words.update(network[current_word].get("synonyms", []))
-                related_words.update(network[current_word].get("antonyms", []))
-                related_words.update(network[current_word].get("associated_words", []))
-                related_words.update(network[current_word].get("related_terms", []))
-                related_words.update(network[current_word].get("hypernyms", []))
-                related_words.update(network[current_word].get("hyponyms", []))
-                related_words.update(network[current_word].get("meronyms", []))
-                related_words.update(network[current_word].get("holonyms", []))
-                related_words.update(network[current_word].get("etymology", []))
-                if network[current_word].get("root_word"):
-                    related_words.add(network[current_word]["root_word"])
+            if word_entry:
+                network[current_word] = get_word_network_data(word_entry)
                 
-                new_words = list(related_words - visited)[:breadth]
-                queue.extend((w, current_depth + 1) for w in new_words if w is not None)
+                if current_depth < depth:
+                    related_words = set()
+                    for relation in ['derivatives', 'synonyms', 'antonyms', 'associated_words', 
+                                     'related_terms', 'hypernyms', 'hyponyms', 'meronyms', 'holonyms']:
+                        related_words.update(network[current_word].get(relation, []))
+                    related_words.update(network[current_word].get("etymology", []))
+                    if network[current_word].get("root_word"):
+                        related_words.add(network[current_word]["root_word"])
+                    
+                    new_words = list(related_words - visited)[:breadth]
+                    queue.extend((w, current_depth + 1) for w in new_words if w is not None)
+
+            db_session.remove()  # Release the database connection
+
+        except Exception as e:
+            logging.error(f"Error processing word '{current_word}': {str(e)}")
+            db_session.remove()  # Ensure the database connection is released even if an error occurs
 
     return network
 
@@ -387,18 +389,23 @@ def check_word(word):
 
 @bp.route('/api/v1/word_network/<word>', methods=['GET'])
 def get_word_network(word):
-    depth = min(int(request.args.get('depth', 2)), 5)
-    breadth = min(int(request.args.get('breadth', 10)), 20)
-    
-    if word is None:
-        return jsonify({"error": "Word not provided"}), 400
+    try:
+        depth = min(int(request.args.get('depth', 2)), 5)
+        breadth = min(int(request.args.get('breadth', 10)), 20)
+        
+        if word is None:
+            return jsonify({"error": "Word not provided"}), 400
 
-    network = get_related_words(word, depth, breadth)
-    
-    if not network:
-        return jsonify({"error": "Word not found"}), 404
+        network = get_related_words(word, depth, breadth)
+        
+        if not network:
+            return jsonify({"error": "Word not found"}), 404
 
-    return jsonify(network)
+        return jsonify(network)
+    except Exception as e:
+        logging.error(f"Error in get_word_network: {str(e)}")
+        return jsonify({"error": "An unexpected error occurred"}), 500
+
 
 @bp.route("/api/v1/etymology/<word>", methods=["GET"])
 def get_etymology(word):
