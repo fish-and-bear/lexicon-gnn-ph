@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, current_app, abort
+from flask import Blueprint, jsonify, request, current_app
 from sqlalchemy.orm import joinedload, subqueryload, contains_eager
 from sqlalchemy import or_, func
 from models import (
@@ -22,8 +22,6 @@ from models import (
     Inflection,
 )
 from database import db_session
-from functools import wraps
-import time
 import logging
 from datetime import datetime
 from unidecode import unidecode
@@ -35,62 +33,54 @@ logger = logging.getLogger(__name__)
 
 bp = Blueprint("api", __name__)
 
-# Error handling within blueprint
-@bp.app_errorhandler(404)
+
+# Error handling
+@bp.errorhandler(404)
 def not_found_error(error):
     return jsonify({"error": "Resource not found"}), 404
 
 
-@bp.app_errorhandler(500)
+@bp.errorhandler(500)
 def internal_error(error):
-    logger.error("Server Error: %s", error)
+    logger.error("Server Error: %s", error, exc_info=True)
     return jsonify({"error": "Internal server error"}), 500
 
 
 def normalize_word(word):
-    if word is None:
-        return None
-    return unidecode(str(word).lower())
+    return unidecode(str(word).lower()) if word else None
+
 
 def parse_etymology(etymology):
+    if not etymology:
+        return []
     cleaned_etymology = etymology.strip("[]")
     parts = re.split(r"\s*\+\s*|\s*-\s*", cleaned_etymology)
-    filtered_parts = [part.strip() for part in parts if part.strip()]
-    return filtered_parts
+    return [part.strip() for part in parts if part.strip()]
 
 
 def filter_valid_meanings(meanings):
-    valid_meanings = []
-    for m in meanings:
-        if m.meaning and m.meaning.strip() and m.meaning.strip() != "0":
-            valid_meanings.append(
-                {
-                    "definition": m.meaning,
-                    "source": m.source.source_name if m.source else None,
-                }
-            )
-    return valid_meanings
+    return [
+        {
+            "definition": m.meaning,
+            "source": m.source.source_name if m.source else None,
+        }
+        for m in meanings
+        if m.meaning and m.meaning.strip() and m.meaning.strip() != "0"
+    ]
 
 
 def filter_valid_definitions(definitions):
-    valid_definitions = []
-    for d in definitions:
-        valid_meanings = filter_valid_meanings(d.meanings)
-        if valid_meanings:
-            valid_definitions.append(
-                {
-                    "partOfSpeech": d.part_of_speech,
-                    "meanings": valid_meanings,
-                    "usageNotes": d.usage_notes or [],
-                    "examples": [e.example for e in d.examples],
-                    "tags": d.tags or [],
-                }
-            )
-    return valid_definitions
-
-
-def filter_empty_values(data):
-    return {k: v for k, v in data.items() if v not in (None, [], "", {}, "0")}
+    return [
+        {
+            "partOfSpeech": d.part_of_speech,
+            "meanings": filter_valid_meanings(d.meanings),
+            "usageNotes": d.usage_notes or [],
+            "examples": [e.example for e in d.examples],
+            "tags": d.tags or [],
+        }
+        for d in definitions
+        if filter_valid_meanings(d.meanings)
+    ]
 
 
 def get_word_details(word_entry):
@@ -129,22 +119,18 @@ def get_word_details(word_entry):
             "word": word_entry.word,
             "pronunciation": {
                 "text": word_entry.pronunciation,
-                "ipa": (
-                    ", ".join(
-                        [p for p in word_entry.audio_pronunciation if p.startswith("/")]
-                    )
-                    if word_entry.audio_pronunciation
-                    else ""
-                ),
-                "audio": (
+                "ipa": ", ".join(
                     [
                         p
-                        for p in word_entry.audio_pronunciation
-                        if p and not p.startswith("/")
+                        for p in word_entry.audio_pronunciation or []
+                        if p.startswith("/")
                     ]
-                    if word_entry.audio_pronunciation
-                    else []
                 ),
+                "audio": [
+                    p
+                    for p in word_entry.audio_pronunciation or []
+                    if p and not p.startswith("/")
+                ],
             },
             "etymology": {
                 "kaikki": word_entry.kaikki_etymology,
@@ -228,69 +214,89 @@ def get_word_network_data(word_entry):
         ),
     }
 
+
 def get_related_words(word, depth=2, breadth=10):
     visited = set()
     queue = [(word, 0)]
     network = {}
-    max_network_size = current_app.config.get('MAX_NETWORK_SIZE', 100)
+    max_network_size = current_app.config.get("MAX_NETWORK_SIZE", 100)
 
     while queue and len(network) < max_network_size:
         current_word, current_depth = queue.pop(0)
-        
+
         if current_word is None or current_word in visited or current_depth > depth:
             continue
-        
+
         visited.add(current_word)
-        
+
         normalized_word = normalize_word(current_word)
         if normalized_word is None:
             continue
 
         try:
-            word_entry = Word.query.options(
-                contains_eager(Word.definitions).contains_eager(Definition.meanings),
-                joinedload(Word.languages),
-                joinedload(Word.associated_words),
-                joinedload(Word.synonyms),
-                joinedload(Word.antonyms),
-                joinedload(Word.derivatives),
-                joinedload(Word.forms),
-                joinedload(Word.etymologies),
-                joinedload(Word.related_terms),
-                joinedload(Word.hypernyms),
-                joinedload(Word.hyponyms),
-                joinedload(Word.meronyms),
-                joinedload(Word.holonyms)
-            ).outerjoin(Word.definitions).outerjoin(Definition.meanings).filter(
-                func.lower(func.unaccent(Word.word)) == normalized_word
-            ).first()
-            
+            word_entry = (
+                Word.query.options(
+                    contains_eager(Word.definitions).contains_eager(
+                        Definition.meanings
+                    ),
+                    joinedload(Word.languages),
+                    joinedload(Word.associated_words),
+                    joinedload(Word.synonyms),
+                    joinedload(Word.antonyms),
+                    joinedload(Word.derivatives),
+                    joinedload(Word.forms),
+                    joinedload(Word.etymologies),
+                    joinedload(Word.related_terms),
+                    joinedload(Word.hypernyms),
+                    joinedload(Word.hyponyms),
+                    joinedload(Word.meronyms),
+                    joinedload(Word.holonyms),
+                )
+                .outerjoin(Word.definitions)
+                .outerjoin(Definition.meanings)
+                .filter(func.lower(func.unaccent(Word.word)) == normalized_word)
+                .first()
+            )
+
             if word_entry:
                 network[current_word] = get_word_network_data(word_entry)
-                
+
                 if current_depth < depth:
                     related_words = set()
-                    for relation in ['derivatives', 'synonyms', 'antonyms', 'associated_words', 
-                                     'related_terms', 'hypernyms', 'hyponyms', 'meronyms', 'holonyms']:
+                    for relation in [
+                        "derivatives",
+                        "synonyms",
+                        "antonyms",
+                        "associated_words",
+                        "related_terms",
+                        "hypernyms",
+                        "hyponyms",
+                        "meronyms",
+                        "holonyms",
+                    ]:
                         related_words.update(network[current_word].get(relation, []))
                     related_words.update(network[current_word].get("etymology", []))
                     if network[current_word].get("root_word"):
                         related_words.add(network[current_word]["root_word"])
-                    
-                    new_words = list(related_words - visited)[:breadth]
-                    queue.extend((w, current_depth + 1) for w in new_words if w is not None)
 
-            db_session.remove()  # Release the database connection
+                    new_words = list(related_words - visited)[:breadth]
+                    queue.extend(
+                        (w, current_depth + 1) for w in new_words if w is not None
+                    )
 
         except Exception as e:
-            logging.error(f"Error processing word '{current_word}': {str(e)}")
-            db_session.remove()  # Ensure the database connection is released even if an error occurs
+            logger.error(
+                f"Error processing word '{current_word}': {str(e)}", exc_info=True
+            )
+        finally:
+            db_session.remove()
 
     return network
 
+
 @bp.route("/api/v1/words", methods=["GET"])
 def get_words():
-    page = int(request.args.get("page", 1))
+    page = max(int(request.args.get("page", 1)), 1)
     per_page = min(int(request.args.get("per_page", 20)), 100)
     search = request.args.get("search", "")
 
@@ -378,83 +384,93 @@ def check_word(word):
         word_entry = Word.query.filter(
             func.lower(func.unaccent(Word.word)) == normalized_word
         ).first()
-        if word_entry:
-            return jsonify({"exists": True, "word": word_entry.word}), 200
-        else:
-            return jsonify({"exists": False}), 404
+        return jsonify(
+            {
+                "exists": bool(word_entry),
+                "word": word_entry.word if word_entry else None,
+            }
+        )
     except Exception as e:
-        logging.error(f"Error in check_word: {str(e)}", exc_info=True)
+        logger.error(f"Error in check_word: {str(e)}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 
-@bp.route('/api/v1/word_network/<word>', methods=['GET'])
+@bp.route("/api/v1/word_network/<word>", methods=["GET"])
 def get_word_network(word):
     try:
-        depth = min(int(request.args.get('depth', 2)), 5)
-        breadth = min(int(request.args.get('breadth', 10)), 20)
-        
-        if word is None:
+        depth = min(int(request.args.get("depth", 2)), 5)
+        breadth = min(int(request.args.get("breadth", 10)), 20)
+
+        if not word:
             return jsonify({"error": "Word not provided"}), 400
 
         network = get_related_words(word, depth, breadth)
-        
+
         if not network:
             return jsonify({"error": "Word not found"}), 404
 
         return jsonify(network)
     except Exception as e:
-        logging.error(f"Error in get_word_network: {str(e)}")
+        logger.error(f"Error in get_word_network: {str(e)}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 
 @bp.route("/api/v1/etymology/<word>", methods=["GET"])
 def get_etymology(word):
-    normalized_word = normalize_word(word)
-    word_entry = (
-        Word.query.options(
-            joinedload(Word.etymologies).joinedload(Etymology.components)
+    try:
+        normalized_word = normalize_word(word)
+        word_entry = (
+            Word.query.options(
+                joinedload(Word.etymologies).joinedload(Etymology.components)
+            )
+            .filter(func.lower(func.unaccent(Word.word)) == normalized_word)
+            .first_or_404()
         )
-        .filter(func.lower(func.unaccent(Word.word)) == normalized_word)
-        .first_or_404()
-    )
 
-    etymologies = [
-        {
-            "etymology_text": etym.etymology_text,
-            "components": [
-                {"component": comp.component, "order": comp.order}
-                for comp in etym.components
-            ],
-        }
-        for etym in word_entry.etymologies
-    ]
+        etymologies = [
+            {
+                "etymology_text": etym.etymology_text,
+                "components": [
+                    {"component": comp.component, "order": comp.order}
+                    for comp in etym.components
+                ],
+            }
+            for etym in word_entry.etymologies
+        ]
 
-    parsed_etymology = set()
-    for etym in etymologies:
-        parsed_etymology.update(parse_etymology(etym["etymology_text"]))
-        parsed_etymology.update(comp["component"] for comp in etym["components"])
+        parsed_etymology = set()
+        for etym in etymologies:
+            parsed_etymology.update(parse_etymology(etym["etymology_text"]))
+            parsed_etymology.update(comp["component"] for comp in etym["components"])
 
-    return jsonify(
-        {
-            "word": word_entry.word,
-            "etymologies": etymologies,
-            "kaikki_etymology": word_entry.kaikki_etymology,
-            "parsed_etymology": list(parsed_etymology),
-        }
-    )
+        return jsonify(
+            {
+                "word": word_entry.word,
+                "etymologies": etymologies,
+                "kaikki_etymology": word_entry.kaikki_etymology,
+                "parsed_etymology": list(parsed_etymology),
+            }
+        )
+    except Exception as e:
+        logger.error(f"Error in get_etymology: {str(e)}", exc_info=True)
+        return jsonify({"error": "An unexpected error occurred"}), 500
 
 
 @bp.route("/api/v1/bulk_words", methods=["POST"])
 def bulk_get_words():
-    words = request.json.get("words", [])
-    if not words or not isinstance(words, list):
-        return jsonify({"error": "Invalid input"}), 400
+    try:
+        words = request.json.get("words", [])
+        if not words or not isinstance(words, list):
+            return jsonify({"error": "Invalid input"}), 400
 
-    normalized_words = [normalize_word(w) for w in words]
-    word_entries = Word.query.filter(
-        func.lower(func.unaccent(Word.word)).in_(normalized_words)
-    ).all()
-    return jsonify({"words": [get_word_details(w) for w in word_entries]})
+        normalized_words = [normalize_word(w) for w in words]
+        word_entries = Word.query.filter(
+            func.lower(func.unaccent(Word.word)).in_(normalized_words)
+        ).all()
+        return jsonify({"words": [get_word_details(w) for w in word_entries]})
+    except Exception as e:
+        logger.error(f"Error in bulk_get_words: {str(e)}", exc_info=True)
+        return jsonify({"error": "An unexpected error occurred"}), 500
 
 
 @bp.route("/favicon.ico")
@@ -465,3 +481,13 @@ def favicon():
 @bp.teardown_request
 def remove_session(exception=None):
     db_session.remove()
+
+
+# Add this at the end of the file
+if __name__ == "__main__":
+    # This block will only be executed if the script is run directly
+    from flask import Flask
+
+    app = Flask(__name__)
+    app.register_blueprint(bp)
+    app.run(debug=True)
