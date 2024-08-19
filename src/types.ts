@@ -1,137 +1,106 @@
-// Define the structure for a single meaning and its source
 export interface Meaning {
-  definition: string;
-  source?: string;
-}
-
-// Define the structure for a single definition, including part of speech, meanings, and examples
-export interface Definition {
-  partOfSpeech: string;
-  meanings: Meaning[];
-  usageNotes?: string[];
-  examples?: string[];
-  tags?: string[];
-}
-
-// Define the structure for pronunciation
-export interface Pronunciation {
-  text?: string;
-  ipa?: string;
-  audio?: string[];
-}
-
-// Define the structure for etymology
-export interface Etymology {
-  kaikki?: string;
-  components?: { component: string; order: number }[];
-  text?: string[];
-}
-
-// Define the structure for relationships
-export interface Relationships {
-  rootWord?: string;
-  derivatives?: string[];
-  synonyms?: string[];
-  antonyms?: string[];
-  associatedWords?: string[];
-  relatedTerms?: string[];
-  hypernyms?: string[];
-  hyponyms?: string[];
-  meronyms?: string[];
-  holonyms?: string[];
-}
-
-// Define the structure for forms
-export interface Form {
-  form: string;
-  tags?: string[];
-}
-
-// Define the structure for head templates
-export interface HeadTemplate {
-  name: string;
-  args?: Record<string, any>;
-  expansion?: string;
-}
-
-// Define the structure for inflections
-export interface Inflection {
-  name: string;
-  args?: Record<string, any>;
-}
-
-// Define the structure for the simplified word information used in the network
-export interface NetworkWordInfo {
-  word: string;
-  pronunciation?: string;
-  languages?: string[];
-  definitions?: {
-    part_of_speech: string;
-    meanings: {
-      definition: string;
-      source?: string;
-    }[];
-  }[];
-  related_words: string[];
-}
-// Define the structure for the word network, mapping words to their simplified info
-export interface WordNetwork {
-  [key: string]: NetworkWordInfo;
-}
-
-export interface WordInfo {
-  meta: {
-    version: string;
-    word: string;
-    timestamp: string;
-  };
-  data: {
-    word: string;
-    pronunciation?: {
-      text?: string;
-      ipa?: string;
-      audio?: string[];
+    definition: string;
+    source?: string;
+  }
+  
+  export interface Definition {
+    partOfSpeech: string;
+    meanings: Meaning[];
+    usageNotes?: string[];
+    examples?: string[];
+    tags?: string[];
+  }
+  
+  export interface Pronunciation {
+    text?: string;
+    ipa?: string;
+    audio?: string[];
+  }
+  
+  export interface Etymology {
+    kaikki?: string;
+    components?: { component: string; order: number }[];
+    text?: string[];
+    parsed?: string[];
+  }
+  
+  export interface Relationships {
+    rootWord?: string;
+    derivatives?: string[];
+    synonyms?: string[];
+    antonyms?: string[];
+    associatedWords?: string[];
+    relatedTerms?: string[];
+    hypernyms?: string[];
+    hyponyms?: string[];
+    meronyms?: string[];
+    holonyms?: string[];
+  }
+  
+  export interface Form {
+    form: string;
+    tags?: string[];
+  }
+  
+  export interface HeadTemplate {
+    name: string;
+    args?: Record<string, any>;
+    expansion?: string;
+  }
+  
+  export interface Inflection {
+    name: string;
+    args?: Record<string, any>;
+  }
+  
+  export interface WordInfo {
+    meta: {
+      version: string;
+      word: string;
+      timestamp: string;
     };
-    etymology?: {
-      kaikki?: string;
-      components?: { component: string; order: number }[];
-      text?: string[];
-      parsed?: string[];
+    data: {
+      word: string;
+      pronunciation?: Pronunciation;
+      etymology?: Etymology;
+      definitions: Definition[];
+      relationships: Relationships;
+      forms?: Form[];
+      languages?: string[];
+      tags?: string[];
+      headTemplates?: HeadTemplate[];
+      inflections?: Inflection[];
+      alternateForms?: string[];
     };
-    definitions: {
-      partOfSpeech: string;
+  }
+  
+  export interface NetworkWordInfo {
+    word: string;
+    pronunciation?: string;
+    languages?: string[];
+    definitions?: {
+      part_of_speech: string;
       meanings: {
         definition: string;
         source?: string;
       }[];
-      usageNotes?: string[];
-      examples?: string[];
-      tags?: string[];
     }[];
-    relationships: {
-      rootWord?: string;
-      derivatives?: string[];
-      synonyms?: string[];
-      antonyms?: string[];
-      associatedWords?: string[];
-      relatedTerms?: string[];
-      hypernyms?: string[];
-      hyponyms?: string[];
-      meronyms?: string[];
-      holonyms?: string[];
+    related_words: string[];
+    derivatives?: string[];
+    root_word?: string;
+    holonyms?: string[];
+    hypernyms?: string[];
+    hyponyms?: string[];
+    meronyms?: string[];
+    etymology?: {
+      parsed?: string[];
     };
-    forms?: { form: string; tags: string[] }[];
-    languages?: string[];
-    tags?: string[];
-    headTemplates?: {
-      name: string;
-      args?: Record<string, any>;
-      expansion?: string;
-    }[];
-    inflections?: {
-      name: string;
-      args?: Record<string, any>;
-    }[];
-    alternateForms?: string[];
-  };
-}
+    synonyms?: string[];
+    antonyms?: string[];
+    associated_words?: string[];
+    related_terms?: string[];
+  }
+  
+  export interface WordNetwork {
+    [key: string]: NetworkWordInfo;
+  }

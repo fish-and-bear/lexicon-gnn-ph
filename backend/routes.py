@@ -52,15 +52,8 @@ def normalize_word(word):
         return None
     return unidecode(str(word).lower())
 
-def remove_language_codes(etymology):
-    pattern = r"\b(?:" + "|".join(re.escape(code) for code in IGNORE_CODES) + r")\b\s*"
-    cleaned_etymology = re.sub(pattern, "", etymology).strip()
-    return cleaned_etymology
-
-
 def parse_etymology(etymology):
     cleaned_etymology = etymology.strip("[]")
-    cleaned_etymology = remove_language_codes(cleaned_etymology)
     parts = re.split(r"\s*\+\s*|\s*-\s*", cleaned_etymology)
     filtered_parts = [part.strip() for part in parts if part.strip()]
     return filtered_parts
