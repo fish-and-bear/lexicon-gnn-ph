@@ -15,7 +15,7 @@ if not DATABASE_URL:
     raise ValueError("DATABASE_URL is not set in the environment variables")
 
 try:
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(DATABASE_URL, pool_pre_ping=True)
     logger.info("Database engine created successfully")
 except Exception as e:
     logger.error(f"Error creating database engine: {str(e)}")
