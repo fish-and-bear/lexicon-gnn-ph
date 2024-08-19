@@ -4,7 +4,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo } from "../types";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:10000/api/v1";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "https://fil-relex.onrender.com/api/v1/";
 
 const WordExplorer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
