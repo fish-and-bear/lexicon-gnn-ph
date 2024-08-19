@@ -76,15 +76,14 @@ export interface Meaning {
   
   export interface NetworkWordInfo {
     word: string;
-    pronunciation?: string;
-    languages?: string[];
-    definitions?: {
-      part_of_speech: string;
-      meanings: {
+    definition?: string;  // Add this line
+    definitions?: Array<{
+      partOfSpeech: string;
+      meanings: Array<{
         definition: string;
         source?: string;
-      }[];
-    }[];
+      }>;
+    }>;
     derivatives?: string[];
     root_word?: string;
     synonyms?: string[];

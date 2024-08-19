@@ -26,6 +26,8 @@ import logging
 from datetime import datetime
 from unidecode import unidecode
 import re
+from cachetools import TTLCache, cached
+from functools import lru_cache
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -33,6 +35,9 @@ logger = logging.getLogger(__name__)
 
 bp = Blueprint("api", __name__)
 
+# Create caches
+word_cache = TTLCache(maxsize=1000, ttl=3600)  # Cache words for 1 hour
+network_cache = TTLCache(maxsize=500, ttl=1800)  # Cache networks for 30 minutes
 
 # Error handling
 @bp.errorhandler(404)
@@ -50,6 +55,11 @@ def normalize_word(word):
     return unidecode(str(word).lower()) if word else None
 
 
+@lru_cache(maxsize=1000)
+def normalize_word(word):
+    return unidecode(str(word).lower()) if word else None
+
+@lru_cache(maxsize=1000)
 def parse_etymology(etymology):
     if not etymology:
         return []
@@ -57,6 +67,15 @@ def parse_etymology(etymology):
     parts = re.split(r"\s*\+\s*|\s*-\s*", cleaned_etymology)
     return [part.strip() for part in parts if part.strip()]
 
+def filter_valid_meanings(meanings):
+    return [
+        {
+            "definition": m.meaning,
+            "source": m.source.source_name if m.source else None,
+        }
+        for m in meanings
+        if m.meaning and m.meaning.strip() and m.meaning.strip() != "0"
+    ]
 
 def filter_valid_meanings(meanings):
     return [
@@ -81,7 +100,6 @@ def filter_valid_definitions(definitions):
         for d in definitions
         if filter_valid_meanings(d.meanings)
     ]
-
 
 def get_word_details(word_entry):
     def filter_existing_words(words):
@@ -189,32 +207,41 @@ def get_word_details(word_entry):
     }
 
 
+@cached(cache=word_cache)
 def get_word_network_data(word_entry):
-    return {
+    if not word_entry:
+        logger.warning(f"No word entry found for {word_entry}")
+        return None
+
+    # Get the first valid definition
+    first_definition = next((m.meaning for d in word_entry.definitions for m in d.meanings 
+                             if m.meaning and m.meaning.strip() and m.meaning.strip() != "0"), 
+                            "No definition available")
+
+    logger.info(f"Definition for {word_entry.word}: {first_definition}")
+
+    network_data = {
         "word": word_entry.word,
-        "pronunciation": word_entry.pronunciation,
-        "languages": [lang.code for lang in word_entry.languages],
-        "definitions": [
-            {"part_of_speech": d.part_of_speech, "meaning": m.meaning}
-            for d in word_entry.definitions
-            for m in d.meanings[:1]
-        ],
+        "definition": first_definition,
         "derivatives": [d.derivative for d in word_entry.derivatives],
         "root_word": word_entry.root_word,
         "synonyms": [w.word for w in word_entry.synonyms],
         "antonyms": [w.word for w in word_entry.antonyms],
         "associated_words": [aw.associated_word for aw in word_entry.associated_words],
-        "related_terms": [w.word for w in word_entry.related_terms],
-        "hypernyms": [h.hypernym for h in word_entry.hypernyms],
-        "hyponyms": [h.hyponym for h in word_entry.hyponyms],
-        "meronyms": [m.meronym for m in word_entry.meronyms],
-        "holonyms": [h.holonym for h in word_entry.holonyms],
         "etymology": parse_etymology(
             word_entry.etymologies[0].etymology_text if word_entry.etymologies else ""
         ),
     }
+    
+    # Add reverse relationships
+    network_data.update({
+        "derived_from": [w.word for w in Word.query.filter(Word.derivatives.any(derivative=word_entry.word)).all()],
+    })
+    
+    return network_data
 
 
+@cached(cache=network_cache)
 def get_related_words(word, depth=2, breadth=10):
     visited = set()
     queue = [(word, 0)]
@@ -224,7 +251,7 @@ def get_related_words(word, depth=2, breadth=10):
     while queue and len(network) < max_network_size:
         current_word, current_depth = queue.pop(0)
 
-        if current_word is None or current_word in visited or current_depth > depth:
+        if current_word in visited or current_depth > depth:
             continue
 
         visited.add(current_word)
@@ -233,66 +260,49 @@ def get_related_words(word, depth=2, breadth=10):
         if normalized_word is None:
             continue
 
-        try:
-            word_entry = (
-                Word.query.options(
-                    contains_eager(Word.definitions).contains_eager(
-                        Definition.meanings
-                    ),
-                    joinedload(Word.languages),
-                    joinedload(Word.associated_words),
-                    joinedload(Word.synonyms),
-                    joinedload(Word.antonyms),
-                    joinedload(Word.derivatives),
-                    joinedload(Word.forms),
-                    joinedload(Word.etymologies),
-                    joinedload(Word.related_terms),
-                    joinedload(Word.hypernyms),
-                    joinedload(Word.hyponyms),
-                    joinedload(Word.meronyms),
-                    joinedload(Word.holonyms),
-                )
-                .outerjoin(Word.definitions)
-                .outerjoin(Definition.meanings)
-                .filter(func.lower(func.unaccent(Word.word)) == normalized_word)
-                .first()
-            )
+        word_entry = Word.query.filter(func.lower(func.unaccent(Word.word)) == normalized_word).first()
 
-            if word_entry:
-                network[current_word] = get_word_network_data(word_entry)
+        if word_entry:
+            network_data = get_word_network_data(word_entry)
+            if network_data:
+                network[current_word] = network_data
 
                 if current_depth < depth:
                     related_words = set()
                     for relation in [
-                        "derivatives",
-                        "synonyms",
-                        "antonyms",
-                        "associated_words",
-                        "related_terms",
-                        "hypernyms",
-                        "hyponyms",
-                        "meronyms",
-                        "holonyms",
+                        "derivatives", "synonyms", "antonyms", "associated_words",
+                        "etymology", "derived_from"
                     ]:
                         related_words.update(network[current_word].get(relation, []))
-                    related_words.update(network[current_word].get("etymology", []))
                     if network[current_word].get("root_word"):
                         related_words.add(network[current_word]["root_word"])
 
                     new_words = list(related_words - visited)[:breadth]
-                    queue.extend(
-                        (w, current_depth + 1) for w in new_words if w is not None
-                    )
+                    queue.extend((w, current_depth + 1) for w in new_words if w)
 
-        except Exception as e:
-            logger.error(
-                f"Error processing word '{current_word}': {str(e)}", exc_info=True
-            )
-        finally:
-            db_session.remove()
+    # Ensure all nodes are connected to the main word
+    connected_nodes = set([word])
+    to_remove = set()
+    for node, data in network.items():
+        is_connected = False
+        for relation in data.values():
+            if isinstance(relation, list):
+                if any(r in connected_nodes for r in relation):
+                    is_connected = True
+                    connected_nodes.add(node)
+                    break
+            elif isinstance(relation, str) and relation in connected_nodes:
+                is_connected = True
+                connected_nodes.add(node)
+                break
+        if not is_connected:
+            to_remove.add(node)
 
+    for node in to_remove:
+        del network[node]
+
+    logger.info(f"Network for {word}: {network}")
     return network
-
 
 @bp.route("/api/v1/words", methods=["GET"])
 def get_words():
@@ -309,67 +319,50 @@ def get_words():
                 func.lower(func.unaccent(Word.word)).ilike(f"%{normalized_search}%"),
                 Word.definitions.any(
                     Definition.meanings.any(
-                        func.lower(func.unaccent(Meaning.meaning)).ilike(
-                            f"%{normalized_search}%"
-                        )
+                        func.lower(func.unaccent(Meaning.meaning)).ilike(f"%{normalized_search}%")
                     )
                 ),
             )
         )
 
     total = query.count()
-    words = (
-        query.order_by(Word.word).offset((page - 1) * per_page).limit(per_page).all()
-    )
+    words = query.order_by(Word.word).offset((page - 1) * per_page).limit(per_page).all()
 
-    return jsonify(
-        {
-            "words": [{"word": w.word, "id": w.id} for w in words],
-            "page": page,
-            "per_page": per_page,
-            "total": total,
-        }
-    )
-
+    return jsonify({
+        "words": [{"word": w.word, "id": w.id} for w in words],
+        "page": page,
+        "per_page": per_page,
+        "total": total,
+    })
 
 @bp.route("/api/v1/words/<word>", methods=["GET"])
 def get_word(word):
     try:
         normalized_word = normalize_word(word)
-        word_entry = Word.query.filter(
-            func.lower(func.unaccent(Word.word)) == normalized_word
-        ).first()
+        word_entry = Word.query.options(
+            joinedload(Word.languages),
+            subqueryload(Word.definitions).joinedload(Definition.meanings).joinedload(Meaning.source),
+            subqueryload(Word.definitions).joinedload(Definition.examples),
+            subqueryload(Word.forms),
+            subqueryload(Word.head_templates),
+            subqueryload(Word.derivatives),
+            subqueryload(Word.examples),
+            subqueryload(Word.hypernyms),
+            subqueryload(Word.hyponyms),
+            subqueryload(Word.meronyms),
+            subqueryload(Word.holonyms),
+            subqueryload(Word.associated_words),
+            subqueryload(Word.synonyms),
+            subqueryload(Word.antonyms),
+            subqueryload(Word.related_terms),
+            subqueryload(Word.etymologies).joinedload(Etymology.components),
+            subqueryload(Word.alternate_forms),
+            subqueryload(Word.inflections),
+        ).filter(func.lower(func.unaccent(Word.word)) == normalized_word).first()
 
         if word_entry is None:
             logger.info(f"Word not found: {word}")
             return jsonify({"error": "Word not found"}), 404
-
-        word_entry = (
-            Word.query.options(
-                joinedload(Word.languages),
-                subqueryload(Word.definitions)
-                .joinedload(Definition.meanings)
-                .joinedload(Meaning.source),
-                subqueryload(Word.definitions).joinedload(Definition.examples),
-                subqueryload(Word.forms),
-                subqueryload(Word.head_templates),
-                subqueryload(Word.derivatives),
-                subqueryload(Word.examples),
-                subqueryload(Word.hypernyms),
-                subqueryload(Word.hyponyms),
-                subqueryload(Word.meronyms),
-                subqueryload(Word.holonyms),
-                subqueryload(Word.associated_words),
-                subqueryload(Word.synonyms),
-                subqueryload(Word.antonyms),
-                subqueryload(Word.related_terms),
-                subqueryload(Word.etymologies).joinedload(Etymology.components),
-                subqueryload(Word.alternate_forms),
-                subqueryload(Word.inflections),
-            )
-            .filter_by(id=word_entry.id)
-            .first()
-        )
 
         return jsonify(get_word_details(word_entry))
     except Exception as e:

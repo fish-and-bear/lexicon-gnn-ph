@@ -3,11 +3,17 @@ import * as d3 from 'd3';
 import './WordGraph.css';
 import { WordNetwork, NetworkWordInfo } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 interface WordGraphProps {
   wordNetwork: WordNetwork;
   mainWord: string;
   onNodeClick: (word: string) => void;
+  onNetworkChange: (depth: number, breadth: number) => void;
+  initialDepth: number;
+  initialBreadth: number;
 }
 
 interface CustomNode extends d3.SimulationNodeDatum {
@@ -22,52 +28,77 @@ interface CustomLink extends d3.SimulationLinkDatum<CustomNode> {
   type: string;
 }
 
-const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord, onNodeClick }) => {
+const WordGraph: React.FC<WordGraphProps> = React.memo(({ 
+  wordNetwork, 
+  mainWord, 
+  onNodeClick, 
+  onNetworkChange,
+  initialDepth,
+  initialBreadth
+}) => {
   const { theme } = useTheme();
   const svgRef = useRef<SVGSVGElement>(null);
   const [hoveredNode, setHoveredNode] = useState<CustomNode | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  const [depth, setDepth] = useState<number>(initialDepth);
+  const [breadth, setBreadth] = useState<number>(initialBreadth);
 
-  const getNodeRelation = useCallback((word: string, info: NetworkWordInfo, mainWord: string): string => {
+  const getNodeRelation = useCallback((word: string, info: NetworkWordInfo): string => {
     if (word === mainWord) return 'main';
-    if (info.derivatives?.includes(mainWord)) return 'derivative';
-    if (info.root_word === mainWord) return 'root';
-    if (info.etymology?.parsed?.includes(mainWord)) return 'etymology';
-    if (info.associated_words?.includes(mainWord)) return 'associated';
-    if (info.synonyms?.includes(mainWord)) return 'synonym';
-    if (info.antonyms?.includes(mainWord)) return 'antonym';
+    if (info.derivatives?.includes(mainWord)) return 'root';
+    if (wordNetwork[mainWord]?.derivatives?.includes(word)) return 'derivative';
+    if (info.etymology?.parsed?.includes(mainWord) || wordNetwork[mainWord]?.etymology?.parsed?.includes(word)) return 'etymology';
+    if (info.associated_words?.includes(mainWord) || wordNetwork[mainWord]?.associated_words?.includes(word)) return 'associated';
     return 'other';
+  }, [wordNetwork, mainWord]);
+
+  const getNodeColor = useCallback((group: string): string => {
+    switch (group) {
+      case 'main': return '#FF6B6B';
+      case 'root': return '#4ECDC4';
+      case 'associated': return '#45B7D1';
+      case 'etymology': return '#F9C74F';
+      case 'derivative': return '#9B5DE5';
+      default: return '#A0A0A0';
+    }
   }, []);
 
   const nodes: CustomNode[] = useMemo(() => {
     return Object.entries(wordNetwork).map(([word, info]) => ({
       id: word,
-      group: getNodeRelation(word, info, mainWord),
+      group: getNodeRelation(word, info),
       info: info,
     }));
-  }, [wordNetwork, mainWord, getNodeRelation]);
+  }, [wordNetwork, getNodeRelation]);
 
   const links: CustomLink[] = useMemo(() => {
     const tempLinks: CustomLink[] = [];
-    Object.entries(wordNetwork).forEach(([word, info]) => {
-      console.log(`Processing word: ${word}`, info);
-      const addLink = (target: string, type: string) => {
-        if (wordNetwork[target]) {
-          tempLinks.push({ source: word, target, type });
-        }
-      };
+    const addLink = (source: string, target: string, type: string) => {
+      if (wordNetwork[target]) {
+        tempLinks.push({ source, target, type });
+      }
+    };
 
-      info.derivatives?.forEach(derivative => addLink(derivative, 'derivative'));
-      if (info.root_word) addLink(info.root_word, 'root');
-      info.etymology?.parsed?.forEach(etymWord => addLink(etymWord, 'etymology'));
-      info.associated_words?.forEach(assocWord => addLink(assocWord, 'associated'));
-      info.synonyms?.forEach(synonym => addLink(synonym, 'synonym'));
-      info.antonyms?.forEach(antonym => addLink(antonym, 'antonym'));
+    nodes.forEach(node => {
+      const { id: word, info } = node;
+      info.derivatives?.forEach(derivative => addLink(word, derivative, 'derivative'));
+      if (info.root_word) addLink(word, info.root_word, 'root');
+      info.etymology?.parsed?.forEach(etymWord => addLink(word, etymWord, 'etymology'));
+      info.associated_words?.forEach(assocWord => addLink(word, assocWord, 'associated'));
     });
-    console.log('Created links:', tempLinks);
+
     return tempLinks;
-  }, [wordNetwork]);
+  }, [nodes, wordNetwork]);
+
+  const filteredNodes = useMemo(() => {
+    const connectedNodes = new Set<string>([mainWord]);
+    links.forEach(link => {
+      connectedNodes.add(typeof link.source === 'string' ? link.source : link.source.id);
+      connectedNodes.add(typeof link.target === 'string' ? link.target : link.target.id);
+    });
+    return nodes.filter(node => connectedNodes.has(node.id));
+  }, [nodes, links, mainWord]);
 
   const updateGraph = useCallback(() => {
     if (!svgRef.current) return;
@@ -92,21 +123,21 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
     svg.call(zoom);
     zoomRef.current = zoom;
 
-    const simulation = d3.forceSimulation<CustomNode>(nodes)
+    const simulation = d3.forceSimulation<CustomNode>(filteredNodes)
       .force('link', d3.forceLink<CustomNode, CustomLink>(links).id(d => d.id).distance(100))
       .force('charge', d3.forceManyBody().strength(-300))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collide', d3.forceCollide().radius(30).strength(0.7));
+      .force('collide', d3.forceCollide<CustomNode>().radius(30).strength(0.7));
 
     const link = g.selectAll('.link')
       .data(links)
       .join('line')
       .attr('class', 'link')
-      .attr('stroke', (d: CustomLink) => getNodeColor(d.type))
+      .attr('stroke', (d: CustomLink) => getNodeColor((d.target as CustomNode).group))
       .attr('stroke-width', 1);
 
     const node = g.selectAll('.node')
-      .data(nodes)
+      .data(filteredNodes)
       .join('g')
       .attr('class', (d: CustomNode) => `node ${d.id === selectedNodeId ? 'selected' : ''}`)
       .call(d3.drag<SVGGElement, CustomNode>()
@@ -132,11 +163,13 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
       setSelectedNodeId(d.id);
       onNodeClick(d.id);
     })
-    .on('mouseover', (event: MouseEvent, d: CustomNode) => setHoveredNode(d))
+    .on('mouseover', (event: MouseEvent, d: CustomNode) => {
+      const [x, y] = d3.pointer(event, svg.node());
+      setHoveredNode({ ...d, x, y });
+    })
     .on('mouseout', () => setHoveredNode(null));
 
     function ticked() {
-      console.log('Tick');
       link
         .attr('x1', d => (d.source as CustomNode).x!)
         .attr('y1', d => (d.source as CustomNode).y!)
@@ -146,36 +179,13 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
       node.attr('transform', (d: CustomNode) => `translate(${d.x!},${d.y!})`);
     }
 
-    simulation.nodes(nodes).on('tick', ticked);
+    simulation.nodes(filteredNodes).on('tick', ticked);
     simulation.force<d3.ForceLink<CustomNode, CustomLink>>('link')?.links(links);
-
-    function dragstarted(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      event.subject.fx = event.subject.x;
-      event.subject.fy = event.subject.y;
-    }
-
-    function dragged(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
-      event.subject.fx = event.x;
-      event.subject.fy = event.y;
-    }
-
-    function dragended(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
-      if (!event.active) simulation.alphaTarget(0);
-      event.subject.fx = null;
-      event.subject.fy = null;
-    }
-
-    // Center the graph on the main word
-    const mainNode = nodes.find(n => n.id === mainWord);
-    if (mainNode) {
-      centerNode(mainNode);
-    }
 
     return () => {
       simulation.stop();
     };
-  }, [nodes, links, theme, onNodeClick, selectedNodeId, mainWord]);
+  }, [filteredNodes, links, theme, onNodeClick, selectedNodeId, getNodeColor]);
 
   useEffect(() => {
     const cleanupFunction = updateGraph();
@@ -187,19 +197,6 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
       window.removeEventListener('resize', updateGraph);
     };
   }, [updateGraph]);
-
-  function getNodeColor(group: string): string {
-    switch (group) {
-      case 'main': return '#FF6B6B';
-      case 'root': return '#4ECDC4';
-      case 'associated': return '#45B7D1';
-      case 'etymology': return '#F9C74F';
-      case 'derivative': return '#9B5DE5';
-      case 'synonym': return '#66BB6A';
-      case 'antonym': return '#EF5350';
-      default: return '#A0A0A0';
-    }
-  }
 
   const handleZoom = useCallback((scale: number) => {
     if (zoomRef.current && svgRef.current) {
@@ -215,38 +212,99 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(({ wordNetwork, mainWord,
     }
   }, []);
 
-  const centerNode = useCallback((node: CustomNode) => {
-    if (zoomRef.current && svgRef.current) {
-      const svg = d3.select(svgRef.current);
-      const width = Number(svg.attr('width'));
-      const height = Number(svg.attr('height'));
-      const scale = 0.8;
-      const x = width / 2 - (node.x || 0) * scale;
-      const y = height / 2 - (node.y || 0) * scale;
-      svg.transition().duration(750).call(
-        zoomRef.current.transform,
-        d3.zoomIdentity.translate(x, y).scale(scale)
-      );
-    }
-  }, []);
+  const handleDepthChange = (event: Event, newValue: number | number[]) => {
+    const newDepth = Array.isArray(newValue) ? newValue[0] : newValue;
+    setDepth(newDepth);
+    onNetworkChange(newDepth, breadth);
+  };
+
+  const handleBreadthChange = (event: Event, newValue: number | number[]) => {
+    const newBreadth = Array.isArray(newValue) ? newValue[0] : newValue;
+    setBreadth(newBreadth);
+    onNetworkChange(depth, newBreadth);
+  };
+
+  const legendItems = useMemo(() => [
+    { key: 'main', label: 'Main Word' },
+    { key: 'derivative', label: 'Derivative' },
+    { key: 'etymology', label: 'Etymology' },
+    { key: 'root', label: 'Root' },
+    { key: 'associated', label: 'Associated Word' },
+    { key: 'other', label: 'Other' },
+  ], []);
 
   return (
-    <div className={`graph-container ${theme}`}>
-      <svg ref={svgRef}></svg>
+    <div className="graph-container">
+      <div className="graph-svg-container">
+        <svg ref={svgRef}></svg>
+      </div>
+      <div className="controls-container">
+        <div className="zoom-controls">
+          <button onClick={() => handleZoom(1.2)} className="zoom-button">+</button>
+          <button onClick={() => handleZoom(1/1.2)} className="zoom-button">-</button>
+          <button onClick={handleResetZoom} className="zoom-button">Reset</button>
+        </div>
+        <div className="graph-controls">
+          <div className="slider-container">
+            <Typography variant="caption">Depth: {depth}</Typography>
+            <Slider
+              value={depth}
+              onChange={handleDepthChange}
+              aria-labelledby="depth-slider"
+              step={1}
+              marks
+              min={1}
+              max={5}
+              size="small"
+            />
+          </div>
+          <div className="slider-container">
+            <Typography variant="caption">Breadth: {breadth}</Typography>
+            <Slider
+              value={breadth}
+              onChange={handleBreadthChange}
+              aria-labelledby="breadth-slider"
+              step={1}
+              marks
+              min={5}
+              max={20}
+              size="small"
+            />
+          </div>
+        </div>
+      </div>
+      <div className={`legend ${theme}`}>
+        {legendItems.map(item => (
+          <div key={item.key} className="legend-item">
+            <div className="color-box" style={{ backgroundColor: getNodeColor(item.key) }}></div>
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
       {hoveredNode && (
         <div className="node-tooltip" style={{ left: hoveredNode.x, top: hoveredNode.y }}>
-          <h3>{hoveredNode.id}</h3>
-          <p>{hoveredNode.info.definitions?.[0]?.meanings?.[0]?.definition || "No definition available"}</p>
+          <h3 style={{ color: getNodeColor(hoveredNode.group) }}>{hoveredNode.id}</h3>
+          <p>{hoveredNode.info.definition || "No definition available"}</p>
           <p>Relation: {hoveredNode.group}</p>
         </div>
       )}
-      <div className="zoom-controls">
-        <button onClick={() => handleZoom(1.2)} className="zoom-button">+</button>
-        <button onClick={() => handleZoom(1/1.2)} className="zoom-button">-</button>
-        <button onClick={handleResetZoom} className="zoom-button">Reset</button>
-      </div>
     </div>
   );
 });
+
+function dragstarted(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
+  if (!event.active) event.subject.fx = event.subject.x;
+  if (!event.active) event.subject.fy = event.subject.y;
+}
+
+function dragged(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
+  event.subject.fx = event.x;
+  event.subject.fy = event.y;
+}
+
+function dragended(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
+  if (!event.active) event.subject.fx = null;
+  if (!event.active) event.subject.fy = null;
+}
 
 export default WordGraph;

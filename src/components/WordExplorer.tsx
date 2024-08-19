@@ -1,25 +1,25 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import WordGraph from "./WordGraph";
 import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo } from "../types";
 
-const API_BASE_URL =
-  process.env.DATABASE_URL_PROD || "http://localhost:10000/api/v1";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:10000/api/v1";
 
 const WordExplorer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [wordNetwork, setWordNetwork] = useState<WordNetwork | null>(null);
   const [mainWord, setMainWord] = useState<string>("");
-  const [selectedWordInfo, setSelectedWordInfo] = useState<WordInfo | null>(
-    null
-  );
+  const [selectedWordInfo, setSelectedWordInfo] = useState<WordInfo | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
+  const [inputValue, setInputValue] = useState<string>("");
+  const [depth, setDepth] = useState<number>(2);
+  const [breadth, setBreadth] = useState<number>(10);
 
-  const fetchWordNetwork = useCallback(async (word: string) => {
-    const response = await fetch(`${API_BASE_URL}/word_network/${word}`);
+  const fetchWordNetwork = useCallback(async (word: string, depth: number, breadth: number) => {
+    const response = await fetch(`${API_BASE_URL}/word_network/${word}?depth=${depth}&breadth=${breadth}`);
     if (!response.ok) {
       if (response.status === 404) {
         throw new Error("Word not found");
@@ -40,8 +40,8 @@ const WordExplorer: React.FC = () => {
     return await response.json();
   }, []);
 
-  const handleSearch = async () => {
-    if (!searchTerm.trim()) {
+  const handleSearch = useCallback(async () => {
+    if (!inputValue.trim()) {
       setError("Please enter a word to search");
       return;
     }
@@ -49,36 +49,29 @@ const WordExplorer: React.FC = () => {
     setError(null);
     try {
       const [networkData, detailsData] = await Promise.all([
-        fetchWordNetwork(searchTerm),
-        fetchWordDetails(searchTerm),
+        fetchWordNetwork(inputValue, depth, breadth),
+        fetchWordDetails(inputValue),
       ]);
 
-      if (
-        !detailsData.data.definitions ||
-        detailsData.data.definitions.length === 0
-      ) {
+      if (!detailsData.data.definitions || detailsData.data.definitions.length === 0) {
         setError("No definitions found for this word.");
         setSelectedWordInfo(null);
       } else {
         setWordNetwork(networkData);
-        setMainWord(searchTerm);
+        setMainWord(inputValue);
         setSelectedWordInfo(detailsData);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Failed to fetch word data. Please try again."
-      );
+      setError(error instanceof Error ? error.message : "Failed to fetch word data. Please try again.");
       setWordNetwork(null);
       setSelectedWordInfo(null);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [inputValue, fetchWordNetwork, fetchWordDetails, depth, breadth]);
 
-  const handleNodeClick = async (word: string) => {
+  const handleNodeClick = useCallback(async (word: string) => {
     setError(null);
     setIsLoading(true);
     try {
@@ -90,9 +83,28 @@ const WordExplorer: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [fetchWordDetails]);
 
-  const renderDefinitions = (wordInfo: WordInfo) => {
+  const handleNetworkChange = useCallback((newDepth: number, newBreadth: number) => {
+    setDepth(newDepth);
+    setBreadth(newBreadth);
+    if (mainWord) {
+      setIsLoading(true);
+      fetchWordNetwork(mainWord, newDepth, newBreadth)
+        .then(networkData => {
+          setWordNetwork(networkData);
+        })
+        .catch(error => {
+          console.error("Error updating network:", error);
+          setError("Failed to update network. Please try again.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [mainWord, fetchWordNetwork]);
+
+  const renderDefinitions = useCallback((wordInfo: WordInfo) => {
     if (!wordInfo.data.definitions) return null;
 
     return wordInfo.data.definitions.map((definition, index) => (
@@ -100,10 +112,7 @@ const WordExplorer: React.FC = () => {
         {definition.partOfSpeech && <h3>{definition.partOfSpeech}</h3>}
         <ol>
           {definition.meanings
-            ?.filter(
-              (meaning) =>
-                meaning.definition && meaning.definition.trim() !== "0"
-            )
+            ?.filter((meaning) => meaning.definition && meaning.definition.trim() !== "0")
             .map((meaning, idx) => (
               <li key={idx}>
                 {meaning.definition}
@@ -125,9 +134,9 @@ const WordExplorer: React.FC = () => {
         )}
       </div>
     ));
-  };
+  }, []);
 
-  const renderArraySection = (title: string, items?: string[]) => {
+  const renderArraySection = useCallback((title: string, items?: string[]) => {
     if (!items || items.length === 0) return null;
     return (
       <div className={title.toLowerCase().replace(/\s+/g, "-")}>
@@ -147,7 +156,13 @@ const WordExplorer: React.FC = () => {
         </ul>
       </div>
     );
-  };
+  }, [handleNodeClick]);
+
+  useEffect(() => {
+    if (searchTerm) {
+      handleSearch();
+    }
+  }, [searchTerm, handleSearch]);
 
   return (
     <div className={`word-explorer ${theme}`}>
@@ -164,8 +179,8 @@ const WordExplorer: React.FC = () => {
       <div className="search-container">
         <input
           type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSearch()}
           placeholder="Enter a word"
           className="search-input"
@@ -181,13 +196,16 @@ const WordExplorer: React.FC = () => {
       </div>
       {error && <p className="error-message">{error}</p>}
       <main>
-      <div className="graph-container">
+        <div className="graph-container">
           <div className="graph-content">
             {wordNetwork && mainWord && (
               <WordGraph
                 wordNetwork={wordNetwork}
                 mainWord={mainWord}
                 onNodeClick={handleNodeClick}
+                onNetworkChange={handleNetworkChange}
+                initialDepth={depth}
+                initialBreadth={breadth}
               />
             )}
           </div>
@@ -262,7 +280,8 @@ const WordExplorer: React.FC = () => {
         </div>
       </main>
       <footer className="footer">
-        © 2024 Filipino Root Word Explorer. All Rights Reserved.
+        © {new Date().getFullYear()} Filipino Root Word Explorer. All Rights
+        Reserved.
       </footer>
     </div>
   );
