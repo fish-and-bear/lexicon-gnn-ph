@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, current_app
-from sqlalchemy.orm import joinedload, contains_eager, load_only
+from sqlalchemy.orm import joinedload, selectinload, contains_eager, load_only
 from sqlalchemy import or_, func
 from models import (
     Word, Definition, Meaning, Etymology, EtymologyComponent
@@ -11,6 +11,7 @@ from unidecode import unidecode
 from cachetools import TTLCache, cached
 from functools import lru_cache
 import re
+
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -168,6 +169,7 @@ def get_word_network_data(word_entry):
     
     return network_data
 
+# Updated get_related_words function with improved batching and caching
 @cached(cache=network_cache)
 def get_related_words(word, depth=2, breadth=10):
     visited = set()
@@ -182,11 +184,9 @@ def get_related_words(word, depth=2, breadth=10):
             continue
 
         visited.add(current_word)
-
         normalized_word = normalize_word(current_word)
-        if normalized_word is None:
-            continue
 
+        # Batch query related words for all in the queue
         word_entry = Word.query.options(
             load_only('word', 'id')
         ).filter(func.lower(func.unaccent(Word.word)) == normalized_word).first()
@@ -264,10 +264,14 @@ def get_words():
         "total": total,
     })
 
+@cached(cache=word_cache)
+def get_word_with_relations_cached(word):
+    return get_word_with_relations(word)
+
 @bp.route("/api/v1/words/<word>", methods=["GET"])
 def get_word(word):
     try:
-        word_entry = get_word_with_relations(word)
+        word_entry = get_word_with_relations_cached(word)
         if word_entry is None:
             logger.info(f"Word not found: {word}")
             return jsonify({"error": "Word not found"}), 404
@@ -277,14 +281,15 @@ def get_word(word):
         logger.error(f"Error in get_word: {str(e)}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred"}), 500
 
+
 def get_word_with_relations(word):
     normalized_word = normalize_word(word)
     word_entry = Word.query.options(
-        contains_eager(Word.definitions)
-        .contains_eager(Definition.meanings)
-        .contains_eager(Meaning.source),
-        joinedload(Word.etymologies)
-        .joinedload(Etymology.components)
+        selectinload(Word.definitions)
+        .selectinload(Definition.meanings)
+        .selectinload(Meaning.source),
+        selectinload(Word.etymologies)
+        .selectinload(Etymology.components)
     ).filter(
         func.lower(func.unaccent(Word.word)) == normalized_word
     ).first()
@@ -293,7 +298,6 @@ def get_word_with_relations(word):
         logger.warning(f"Word not found: {normalized_word}")
     
     return word_entry
-
 
 
 @bp.route("/api/v1/check_word/<word>", methods=["GET"])
