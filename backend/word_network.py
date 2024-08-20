@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})  # Allow all origins for API endpoints
 
 # Initialize the database
 logger.info("Initializing database...")
@@ -29,6 +29,7 @@ def favicon():
 # Register your blueprint
 app.register_blueprint(bp)
 
+# Error Handlers
 @app.errorhandler(404)
 def not_found_error(error):
     return jsonify({"error": "Resource not found"}), 404

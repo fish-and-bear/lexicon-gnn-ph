@@ -4,7 +4,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo } from "../types";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "https://fil-relex.onrender.com/api/v1/";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:10000/api/v1';
 
 const WordExplorer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -20,14 +20,20 @@ const WordExplorer: React.FC = () => {
 
   const fetchWordNetwork = useCallback(async (word: string, depth: number, breadth: number) => {
     const response = await fetch(`${API_BASE_URL}/word_network/${word}?depth=${depth}&breadth=${breadth}`);
+    const contentType = response.headers.get("content-type");
     if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error("Word not found");
-      }
-      throw new Error("Network response was not ok");
+        if (response.status === 404) {
+            throw new Error("Word not found");
+        }
+        throw new Error("Network response was not ok");
+    }
+    if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Unexpected response format, expected JSON");
     }
     return await response.json();
-  }, []);
+}, []);
+
+  
 
   const fetchWordDetails = useCallback(async (word: string) => {
     const response = await fetch(`${API_BASE_URL}/words/${word}`);

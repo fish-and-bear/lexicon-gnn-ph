@@ -1,33 +1,16 @@
 from flask import Blueprint, jsonify, request, current_app
-from sqlalchemy.orm import joinedload, subqueryload, contains_eager
+from sqlalchemy.orm import joinedload, contains_eager, load_only
 from sqlalchemy import or_, func
 from models import (
-    Word,
-    Definition,
-    Meaning,
-    Source,
-    Language,
-    Etymology,
-    EtymologyComponent,
-    Form,
-    HeadTemplate,
-    Derivative,
-    Example,
-    Hypernym,
-    Hyponym,
-    Meronym,
-    Holonym,
-    AssociatedWord,
-    AlternateForm,
-    Inflection,
+    Word, Definition, Meaning, Etymology, EtymologyComponent
 )
 from database import db_session
 import logging
 from datetime import datetime
 from unidecode import unidecode
-import re
 from cachetools import TTLCache, cached
 from functools import lru_cache
+import re
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -38,22 +21,6 @@ bp = Blueprint("api", __name__)
 # Create caches
 word_cache = TTLCache(maxsize=1000, ttl=3600)  # Cache words for 1 hour
 network_cache = TTLCache(maxsize=500, ttl=1800)  # Cache networks for 30 minutes
-
-# Error handling
-@bp.errorhandler(404)
-def not_found_error(error):
-    return jsonify({"error": "Resource not found"}), 404
-
-
-@bp.errorhandler(500)
-def internal_error(error):
-    logger.error("Server Error: %s", error, exc_info=True)
-    return jsonify({"error": "Internal server error"}), 500
-
-
-def normalize_word(word):
-    return unidecode(str(word).lower()) if word else None
-
 
 @lru_cache(maxsize=1000)
 def normalize_word(word):
@@ -77,17 +44,6 @@ def filter_valid_meanings(meanings):
         if m.meaning and m.meaning.strip() and m.meaning.strip() != "0"
     ]
 
-def filter_valid_meanings(meanings):
-    return [
-        {
-            "definition": m.meaning,
-            "source": m.source.source_name if m.source else None,
-        }
-        for m in meanings
-        if m.meaning and m.meaning.strip() and m.meaning.strip() != "0"
-    ]
-
-
 def filter_valid_definitions(definitions):
     return [
         {
@@ -102,15 +58,6 @@ def filter_valid_definitions(definitions):
     ]
 
 def get_word_details(word_entry):
-    def filter_existing_words(words):
-        return [
-            word
-            for word in words
-            if Word.query.filter(
-                func.lower(func.unaccent(Word.word)) == normalize_word(word)
-            ).first()
-        ]
-
     etymologies = [
         {
             "text": etym.etymology_text,
@@ -163,33 +110,15 @@ def get_word_details(word_entry):
             "definitions": filter_valid_definitions(word_entry.definitions),
             "relationships": {
                 "rootWord": word_entry.root_word,
-                "derivatives": filter_existing_words(
-                    [d.derivative for d in word_entry.derivatives]
-                ),
-                "synonyms": filter_existing_words(
-                    [w.word for w in word_entry.synonyms]
-                ),
-                "antonyms": filter_existing_words(
-                    [w.word for w in word_entry.antonyms]
-                ),
-                "associatedWords": filter_existing_words(
-                    [aw.associated_word for aw in word_entry.associated_words]
-                ),
-                "relatedTerms": filter_existing_words(
-                    [w.word for w in word_entry.related_terms]
-                ),
-                "hypernyms": filter_existing_words(
-                    [h.hypernym for h in word_entry.hypernyms]
-                ),
-                "hyponyms": filter_existing_words(
-                    [h.hyponym for h in word_entry.hyponyms]
-                ),
-                "meronyms": filter_existing_words(
-                    [m.meronym for m in word_entry.meronyms]
-                ),
-                "holonyms": filter_existing_words(
-                    [h.holonym for h in word_entry.holonyms]
-                ),
+                "derivatives": [d.derivative for d in word_entry.derivatives],
+                "synonyms": [w.word for w in word_entry.synonyms],
+                "antonyms": [w.word for w in word_entry.antonyms],
+                "associatedWords": [aw.associated_word for aw in word_entry.associated_words],
+                "relatedTerms": [w.word for w in word_entry.related_terms],
+                "hypernyms": [h.hypernym for h in word_entry.hypernyms],
+                "hyponyms": [h.hyponym for h in word_entry.hyponyms],
+                "meronyms": [m.meronym for m in word_entry.meronyms],
+                "holonyms": [h.holonym for h in word_entry.holonyms],
             },
             "forms": [{"form": f.form, "tags": f.tags} for f in word_entry.forms],
             "languages": [lang.code for lang in word_entry.languages],
@@ -205,7 +134,6 @@ def get_word_details(word_entry):
             "alternateForms": [af.alternate_form for af in word_entry.alternate_forms],
         },
     }
-
 
 @cached(cache=word_cache)
 def get_word_network_data(word_entry):
@@ -235,11 +163,10 @@ def get_word_network_data(word_entry):
     
     # Add reverse relationships
     network_data.update({
-        "derived_from": [w.word for w in Word.query.filter(Word.derivatives.any(derivative=word_entry.word)).all()],
+        "derived_from": [w.word for w in Word.query.with_entities(Word.word).filter(Word.derivatives.any(derivative=word_entry.word)).all()],
     })
     
     return network_data
-
 
 @cached(cache=network_cache)
 def get_related_words(word, depth=2, breadth=10):
@@ -260,7 +187,9 @@ def get_related_words(word, depth=2, breadth=10):
         if normalized_word is None:
             continue
 
-        word_entry = Word.query.filter(func.lower(func.unaccent(Word.word)) == normalized_word).first()
+        word_entry = Word.query.options(
+            load_only('word', 'id')
+        ).filter(func.lower(func.unaccent(Word.word)) == normalized_word).first()
 
         if word_entry:
             network_data = get_word_network_data(word_entry)
@@ -310,7 +239,7 @@ def get_words():
     per_page = min(int(request.args.get("per_page", 20)), 100)
     search = request.args.get("search", "")
 
-    query = Word.query
+    query = Word.query.options(load_only('word', 'id'))
 
     if search:
         normalized_search = normalize_word(search)
@@ -338,28 +267,7 @@ def get_words():
 @bp.route("/api/v1/words/<word>", methods=["GET"])
 def get_word(word):
     try:
-        normalized_word = normalize_word(word)
-        word_entry = Word.query.options(
-            joinedload(Word.languages),
-            subqueryload(Word.definitions).joinedload(Definition.meanings).joinedload(Meaning.source),
-            subqueryload(Word.definitions).joinedload(Definition.examples),
-            subqueryload(Word.forms),
-            subqueryload(Word.head_templates),
-            subqueryload(Word.derivatives),
-            subqueryload(Word.examples),
-            subqueryload(Word.hypernyms),
-            subqueryload(Word.hyponyms),
-            subqueryload(Word.meronyms),
-            subqueryload(Word.holonyms),
-            subqueryload(Word.associated_words),
-            subqueryload(Word.synonyms),
-            subqueryload(Word.antonyms),
-            subqueryload(Word.related_terms),
-            subqueryload(Word.etymologies).joinedload(Etymology.components),
-            subqueryload(Word.alternate_forms),
-            subqueryload(Word.inflections),
-        ).filter(func.lower(func.unaccent(Word.word)) == normalized_word).first()
-
+        word_entry = get_word_with_relations(word)
         if word_entry is None:
             logger.info(f"Word not found: {word}")
             return jsonify({"error": "Word not found"}), 404
@@ -368,6 +276,24 @@ def get_word(word):
     except Exception as e:
         logger.error(f"Error in get_word: {str(e)}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred"}), 500
+
+def get_word_with_relations(word):
+    normalized_word = normalize_word(word)
+    word_entry = Word.query.options(
+        contains_eager(Word.definitions)
+        .contains_eager(Definition.meanings)
+        .contains_eager(Meaning.source),
+        joinedload(Word.etymologies)
+        .joinedload(Etymology.components)
+    ).filter(
+        func.lower(func.unaccent(Word.word)) == normalized_word
+    ).first()
+    
+    if not word_entry:
+        logger.warning(f"Word not found: {normalized_word}")
+    
+    return word_entry
+
 
 
 @bp.route("/api/v1/check_word/<word>", methods=["GET"])
@@ -459,8 +385,13 @@ def bulk_get_words():
         normalized_words = [normalize_word(w) for w in words]
         word_entries = Word.query.filter(
             func.lower(func.unaccent(Word.word)).in_(normalized_words)
+        ).options(
+            load_only('word', 'id')
         ).all()
-        return jsonify({"words": [get_word_details(w) for w in word_entries]})
+
+        word_details = [get_word_details(w) for w in word_entries]
+
+        return jsonify({"words": word_details})
     except Exception as e:
         logger.error(f"Error in bulk_get_words: {str(e)}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred"}), 500
@@ -474,13 +405,3 @@ def favicon():
 @bp.teardown_request
 def remove_session(exception=None):
     db_session.remove()
-
-
-# Add this at the end of the file
-if __name__ == "__main__":
-    # This block will only be executed if the script is run directly
-    from flask import Flask
-
-    app = Flask(__name__)
-    app.register_blueprint(bp)
-    app.run(debug=True)
