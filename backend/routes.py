@@ -9,6 +9,7 @@ from unidecode import unidecode
 from cachetools import TTLCache, cached
 from functools import lru_cache
 import re
+from app import cache
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -226,6 +227,7 @@ def get_related_words(word, depth=2, breadth=10):
     return network
 
 @bp.route("/api/v1/words", methods=["GET"])
+@cache.cached(timeout=300)  # Cache for 5 minutes
 def get_words():
     page = max(int(request.args.get("page", 1)), 1)
     per_page = min(int(request.args.get("per_page", 20)), 100)
@@ -261,6 +263,7 @@ def get_word_with_relations_cached(word):
     return get_word_with_relations(word)
 
 @bp.route("/api/v1/words/<word>", methods=["GET"])
+@cache.cached(timeout=3600)  # Cache for 1 hour
 def get_word(word):
     try:
         word_entry = get_word_with_relations_cached(word)
@@ -293,6 +296,7 @@ def get_word_with_relations(word):
     return word_entry
 
 @bp.route("/api/v1/check_word/<word>", methods=["GET"])
+@cache.cached(timeout=3600)  # Cache for 1 hour
 def check_word(word):
     try:
         normalized_word = normalize_word(word)
@@ -310,6 +314,7 @@ def check_word(word):
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 @bp.route("/api/v1/word_network/<word>", methods=["GET"])
+@cache.cached(timeout=1800)  # Cache for 30 minutes
 def get_word_network(word):
     try:
         depth = min(int(request.args.get("depth", 2)), 5)
@@ -330,6 +335,7 @@ def get_word_network(word):
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 @bp.route("/api/v1/etymology/<word>", methods=["GET"])
+@cache.cached(timeout=3600)  # Cache for 1 hour
 def get_etymology(word):
     try:
         normalized_word = normalize_word(word)

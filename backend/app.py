@@ -3,12 +3,21 @@ from flask_cors import CORS
 from routes import bp
 from database import db_session, init_db
 import logging
+from flask_caching import Cache
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app)
+
+
+# Configure caching
+cache_config = {
+    'CACHE_TYPE': 'redis',
+    'CACHE_REDIS_URL': os.getenv('REDIS_URL')
+}
+cache = Cache(app, config=cache_config)
 
 # Initialize the database
 logger.info("Initializing database...")
