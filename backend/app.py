@@ -1,23 +1,18 @@
+import os
 from flask import Flask, jsonify
 from flask_cors import CORS
-from routes import bp
 from database import db_session, init_db
 import logging
-from flask_caching import Cache
+from caching import cache
+from routes import bp
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
+# Initialize the Flask app
 app = Flask(__name__)
 CORS(app)
 
-
-# Configure caching
-cache_config = {
-    'CACHE_TYPE': 'redis',
-    'CACHE_REDIS_URL': os.getenv('REDIS_URL')
-}
-cache = Cache(app, config=cache_config)
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Initialize the database
 logger.info("Initializing database...")
@@ -52,5 +47,26 @@ def internal_error(error):
 def shutdown_session(exception=None):
     db_session.remove()
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+@app.errorhandler(404)
+def not_found_error(error):
+    return jsonify({"error": "Resource not found"}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    logger.error('Server Error: %s', error)
+    return jsonify({"error": "Internal server error"}), 500
+
+# Teardown the database session after each request
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
+
+# Define any additional routes or logic
+@app.route('/health')
+def health_check():
+    """A simple health check route."""
+    return {"status": "OK"}
+
+if __name__ == '__main__':
+    # Run the Flask app
+    app.run(host='0.0.0.0', port=10000, debug=True)

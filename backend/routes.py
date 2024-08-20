@@ -6,20 +6,15 @@ from database import db_session
 import logging
 from datetime import datetime
 from unidecode import unidecode
-from cachetools import TTLCache, cached
 from functools import lru_cache
 import re
-from app import cache
+from caching import multi_level_cache
+
+bp = Blueprint("api", __name__)
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-bp = Blueprint("api", __name__)
-
-# Create caches
-word_cache = TTLCache(maxsize=1000, ttl=3600)  # Cache words for 1 hour
-network_cache = TTLCache(maxsize=500, ttl=1800)  # Cache networks for 30 minutes
 
 @lru_cache(maxsize=1000)
 def normalize_word(word):
@@ -134,7 +129,7 @@ def get_word_details(word_entry):
         },
     }
 
-@cached(cache=word_cache)
+@multi_level_cache
 def get_word_network_data(word_entry):
     if not word_entry:
         logger.warning(f"No word entry found for {word_entry}")
@@ -164,7 +159,7 @@ def get_word_network_data(word_entry):
     
     return network_data
 
-@cached(cache=network_cache)
+@multi_level_cache
 def get_related_words(word, depth=2, breadth=10):
     visited = set()
     queue = [(word, 0)]
@@ -227,7 +222,7 @@ def get_related_words(word, depth=2, breadth=10):
     return network
 
 @bp.route("/api/v1/words", methods=["GET"])
-@cache.cached(timeout=300)  # Cache for 5 minutes
+@multi_level_cache
 def get_words():
     page = max(int(request.args.get("page", 1)), 1)
     per_page = min(int(request.args.get("per_page", 20)), 100)
@@ -258,15 +253,11 @@ def get_words():
         "total": total,
     })
 
-@cached(cache=word_cache)
-def get_word_with_relations_cached(word):
-    return get_word_with_relations(word)
-
 @bp.route("/api/v1/words/<word>", methods=["GET"])
-@cache.cached(timeout=3600)  # Cache for 1 hour
+@multi_level_cache
 def get_word(word):
     try:
-        word_entry = get_word_with_relations_cached(word)
+        word_entry = get_word_with_relations(word)
         if word_entry is None:
             logger.info(f"Word not found: {word}")
             return jsonify({"error": "Word not found"}), 404
@@ -279,7 +270,6 @@ def get_word(word):
 def get_word_with_relations(word):
     normalized_word = normalize_word(word)
     
-    # Attempt to find the word in the normalized form
     word_entry = Word.query.options(
         selectinload(Word.definitions)
         .selectinload(Definition.meanings)
@@ -296,7 +286,7 @@ def get_word_with_relations(word):
     return word_entry
 
 @bp.route("/api/v1/check_word/<word>", methods=["GET"])
-@cache.cached(timeout=3600)  # Cache for 1 hour
+@multi_level_cache
 def check_word(word):
     try:
         normalized_word = normalize_word(word)
@@ -314,7 +304,7 @@ def check_word(word):
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 @bp.route("/api/v1/word_network/<word>", methods=["GET"])
-@cache.cached(timeout=1800)  # Cache for 30 minutes
+@multi_level_cache
 def get_word_network(word):
     try:
         depth = min(int(request.args.get("depth", 2)), 5)
@@ -335,7 +325,7 @@ def get_word_network(word):
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 @bp.route("/api/v1/etymology/<word>", methods=["GET"])
-@cache.cached(timeout=3600)  # Cache for 1 hour
+@multi_level_cache
 def get_etymology(word):
     try:
         normalized_word = normalize_word(word)

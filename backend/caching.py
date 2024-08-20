@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Initialize the cache
+cache = TTLCache(maxsize=1000, ttl=3600)
+
 # In-memory cache
 local_cache = TTLCache(maxsize=1000, ttl=3600)
 
@@ -46,3 +49,22 @@ def multi_level_cache(func):
         
         return result
     return wrapper
+
+# Optionally, you can add helper functions to interact with the cache.
+
+def get_from_cache(key):
+    """Retrieve an item from the cache by key."""
+    return cache.get(key)
+
+def add_to_cache(key, value):
+    """Add an item to the cache with a specified key and value."""
+    cache[key] = value
+
+def remove_from_cache(key):
+    """Remove an item from the cache by key."""
+    if key in cache:
+        del cache[key]
+
+def clear_cache():
+    """Clear the entire cache."""
+    cache.clear()
