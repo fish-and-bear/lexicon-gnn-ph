@@ -3,6 +3,7 @@ import WordGraph from "./WordGraph";
 import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo } from "../types";
+import unidecode from "unidecode"; // Import unidecode for normalizing input
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:10000/api/v1';
 
@@ -18,6 +19,9 @@ const WordExplorer: React.FC = () => {
   const [depth, setDepth] = useState<number>(2);
   const [breadth, setBreadth] = useState<number>(10);
 
+  // Function to normalize input
+  const normalizeInput = (input: string) => unidecode(input.toLowerCase());
+
   const fetchWordNetwork = useCallback(async (word: string, depth: number, breadth: number) => {
     const response = await fetch(`${API_BASE_URL}/word_network/${word}?depth=${depth}&breadth=${breadth}`);
     const contentType = response.headers.get("content-type");
@@ -31,9 +35,7 @@ const WordExplorer: React.FC = () => {
         throw new Error("Unexpected response format, expected JSON");
     }
     return await response.json();
-}, []);
-
-  
+  }, []);
 
   const fetchWordDetails = useCallback(async (word: string) => {
     const response = await fetch(`${API_BASE_URL}/words/${word}`);
@@ -51,12 +53,16 @@ const WordExplorer: React.FC = () => {
       setError("Please enter a word to search");
       return;
     }
+    
+    // Normalize the input value
+    const normalizedInput = normalizeInput(inputValue);
+
     setIsLoading(true);
     setError(null);
     try {
       const [networkData, detailsData] = await Promise.all([
-        fetchWordNetwork(inputValue, depth, breadth),
-        fetchWordDetails(inputValue),
+        fetchWordNetwork(normalizedInput, depth, breadth),
+        fetchWordDetails(normalizedInput),
       ]);
 
       if (!detailsData.data.definitions || detailsData.data.definitions.length === 0) {
@@ -64,7 +70,7 @@ const WordExplorer: React.FC = () => {
         setSelectedWordInfo(null);
       } else {
         setWordNetwork(networkData);
-        setMainWord(inputValue);
+        setMainWord(inputValue); // Keep the original input for display purposes
         setSelectedWordInfo(detailsData);
       }
     } catch (error) {
@@ -81,7 +87,8 @@ const WordExplorer: React.FC = () => {
     setError(null);
     setIsLoading(true);
     try {
-      const detailsData = await fetchWordDetails(word);
+      const normalizedWord = normalizeInput(word); // Normalize the clicked word
+      const detailsData = await fetchWordDetails(normalizedWord);
       setSelectedWordInfo(detailsData);
     } catch (error) {
       console.error("Error fetching word details:", error);
@@ -96,7 +103,7 @@ const WordExplorer: React.FC = () => {
     setBreadth(newBreadth);
     if (mainWord) {
       setIsLoading(true);
-      fetchWordNetwork(mainWord, newDepth, newBreadth)
+      fetchWordNetwork(normalizeInput(mainWord), newDepth, newBreadth)
         .then(networkData => {
           setWordNetwork(networkData);
         })
