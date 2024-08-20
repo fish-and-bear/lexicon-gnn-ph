@@ -20,7 +20,7 @@
   --color-default: #6c757d;
   --node-text-color: #1d3557;
   --link-color: #1d3557;
-  --selected-node-border-color: #fca311;
+  --selected-node-border-color: #e6e8eb;
 }
 
 .dark {
@@ -238,7 +238,7 @@ svg {
 
 .dark .definition-card .source {
   font-size: 0.8rem;
-  color: var(--color-other);
+  color: var(--link-color);
   font-style: italic;
   display: block;
   margin-top: 0.25rem;
