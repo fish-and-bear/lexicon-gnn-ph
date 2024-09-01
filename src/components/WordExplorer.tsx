@@ -5,6 +5,7 @@ import "./WordExplorer.css";
 import { WordNetwork, WordInfo } from "../types";
 import unidecode from "unidecode";
 import { fetchWordNetwork, fetchWordDetails } from "../api/wordApi";
+import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://54.252.249.125:10000/api/v1';
 
@@ -28,7 +29,14 @@ const WordExplorer: React.FC = () => {
       return await fetchWordNetwork(word, depth, breadth);
     } catch (error) {
       console.error("Error fetching word network:", error);
-      throw error;
+      if (axios.isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+          throw new Error(`Failed to fetch word network: Request timed out. Please try again.`);
+        }
+        throw new Error(`Failed to fetch word network: ${error.message}`);
+      } else {
+        throw new Error('Failed to fetch word network: Unknown error occurred');
+      }
     }
   }, []);
 
@@ -59,7 +67,7 @@ const WordExplorer: React.FC = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError(error instanceof Error ? error.message : "Failed to fetch word data. Please try again.");
+      setError(error instanceof Error ? `Failed to fetch word data: ${error.message}` : "Failed to fetch word data. Please try again.");
       setWordNetwork(null);
       setSelectedWordInfo(null);
     } finally {
