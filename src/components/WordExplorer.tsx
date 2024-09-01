@@ -6,7 +6,7 @@ import { WordNetwork, WordInfo } from "../types";
 import unidecode from "unidecode";
 import { fetchWordNetwork, fetchWordDetails } from "../api/wordApi";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:10000/api/v1';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_BASE_URL_PROD : 'http://localhost:10000/api/v1');
 
 const WordExplorer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
