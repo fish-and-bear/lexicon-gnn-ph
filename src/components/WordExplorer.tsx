@@ -54,7 +54,7 @@ const WordExplorer: React.FC = () => {
       setError("Please enter a word to search");
       return;
     }
-    
+  
     // Normalize the input value
     const normalizedInput = normalizeInput(inputValue);
 
@@ -172,12 +172,6 @@ const WordExplorer: React.FC = () => {
     );
   }, [handleNodeClick]);
 
-  useEffect(() => {
-    if (inputValue) {
-      handleSearch();
-    }
-  }, [inputValue, handleSearch]);
-
   return (
     <div className={`word-explorer ${theme}`}>
       <header className="header-content">
@@ -195,7 +189,12 @@ const WordExplorer: React.FC = () => {
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSearch();
+            }
+          }}
           placeholder="Enter a word"
           className="search-input"
           aria-label="Search word"
