@@ -12,6 +12,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import axios from 'axios';
 
 interface WordGraphProps {
   wordNetwork: WordNetwork;
