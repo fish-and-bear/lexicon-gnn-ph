@@ -6,7 +6,7 @@ import { WordNetwork, WordInfo } from "../types";
 import unidecode from "unidecode";
 import { fetchWordNetwork, fetchWordDetails } from "../api/wordApi";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_BASE_URL_PROD : 'http://localhost:10000/api/v1');
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://54.252.249.125:10000/api/v1';
 
 const WordExplorer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -23,30 +23,13 @@ const WordExplorer: React.FC = () => {
   // Function to normalize input
   const normalizeInput = (input: string) => unidecode(input.toLowerCase());
 
-  const fetchWordNetwork = useCallback(async (word: string, depth: number, breadth: number) => {
-    const response = await fetch(`${API_BASE_URL}/word_network/${word}?depth=${depth}&breadth=${breadth}`);
-    const contentType = response.headers.get("content-type");
-    if (!response.ok) {
-        if (response.status === 404) {
-            throw new Error("Word not found");
-        }
-        throw new Error("Network response was not ok");
+  const fetchWordNetworkData = useCallback(async (word: string, depth: number, breadth: number) => {
+    try {
+      return await fetchWordNetwork(word, depth, breadth);
+    } catch (error) {
+      console.error("Error fetching word network:", error);
+      throw error;
     }
-    if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("Unexpected response format, expected JSON");
-    }
-    return await response.json();
-  }, []);
-
-  const fetchWordDetails = useCallback(async (word: string) => {
-    const response = await fetch(`${API_BASE_URL}/words/${word}`);
-    if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error("Word not found");
-      }
-      throw new Error("Network response was not ok");
-    }
-    return await response.json();
   }, []);
 
   const handleSearch = useCallback(async () => {
@@ -62,7 +45,7 @@ const WordExplorer: React.FC = () => {
     setError(null);
     try {
       const [networkData, detailsData] = await Promise.all([
-        fetchWordNetwork(normalizedInput, depth, breadth),
+        fetchWordNetworkData(normalizedInput, depth, breadth),
         fetchWordDetails(normalizedInput),
       ]);
 
@@ -82,7 +65,7 @@ const WordExplorer: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [inputValue, fetchWordNetwork, fetchWordDetails, depth, breadth]);
+  }, [inputValue, fetchWordNetworkData, fetchWordDetails, depth, breadth]);
 
   const handleNodeClick = useCallback(async (word: string) => {
     setError(null);
@@ -104,7 +87,7 @@ const WordExplorer: React.FC = () => {
     setBreadth(newBreadth);
     if (mainWord) {
       setIsLoading(true);
-      fetchWordNetwork(normalizeInput(mainWord), newDepth, newBreadth)
+      fetchWordNetworkData(normalizeInput(mainWord), newDepth, newBreadth)
         .then(networkData => {
           setWordNetwork(networkData);
         })
@@ -116,7 +99,7 @@ const WordExplorer: React.FC = () => {
           setIsLoading(false);
         });
     }
-  }, [mainWord, fetchWordNetwork]);
+  }, [mainWord, fetchWordNetworkData]);
 
   const renderDefinitions = useCallback((wordInfo: WordInfo) => {
     if (!wordInfo.data.definitions) return null;
