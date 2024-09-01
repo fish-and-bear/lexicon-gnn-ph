@@ -3,7 +3,8 @@ import WordGraph from "./WordGraph";
 import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo } from "../types";
-import unidecode from "unidecode"; // Import unidecode for normalizing input
+import unidecode from "unidecode";
+import { fetchWordNetwork, fetchWordDetails } from "../api/wordApi";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:10000/api/v1';
 
@@ -172,10 +173,10 @@ const WordExplorer: React.FC = () => {
   }, [handleNodeClick]);
 
   useEffect(() => {
-    if (searchTerm) {
+    if (inputValue) {
       handleSearch();
     }
-  }, [searchTerm, handleSearch]);
+  }, [inputValue, handleSearch]);
 
   return (
     <div className={`word-explorer ${theme}`}>
