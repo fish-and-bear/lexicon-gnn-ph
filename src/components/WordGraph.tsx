@@ -53,26 +53,14 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
     const [depth, setDepth] = useState<number>(initialDepth);
     const [breadth, setBreadth] = useState<number>(initialBreadth);
 
-    const getNodeRelation = useCallback(
-      (word: string, info: NetworkWordInfo): string => {
-        if (word === mainWord) return "main";
-        if (info.derivatives?.includes(mainWord)) return "root";
-        if (wordNetwork[mainWord]?.derivatives?.includes(word))
-          return "derivative";
-        if (
-          info.etymology?.parsed?.includes(mainWord) ||
-          wordNetwork[mainWord]?.etymology?.parsed?.includes(word)
-        )
-          return "etymology";
-        if (
-          info.associated_words?.includes(mainWord) ||
-          wordNetwork[mainWord]?.associated_words?.includes(word)
-        )
-          return "associated";
-        return "other";
-      },
-      [wordNetwork, mainWord]
-    );
+    const getNodeRelation = useCallback((word: string, info: NetworkWordInfo): string => {
+      if (word === mainWord) return "main";
+      if (info.derivatives?.includes(mainWord)) return "root";
+      if (wordNetwork[mainWord]?.derivatives?.includes(word)) return "derivative";
+      if (info.etymology?.parsed?.includes(mainWord) || wordNetwork[mainWord]?.etymology?.parsed?.includes(word)) return "etymology";
+      if (info.associated_words?.includes(mainWord) || wordNetwork[mainWord]?.associated_words?.includes(word)) return "associated";
+      return "other";
+    }, [wordNetwork, mainWord]);
 
     const getNodeColor = useCallback((group: string): string => {
       switch (group) {
@@ -126,16 +114,50 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
 
     const filteredNodes = useMemo(() => {
       const connectedNodes = new Set<string>([mainWord]);
-      links.forEach((link) => {
-        connectedNodes.add(
-          typeof link.source === "string" ? link.source : link.source.id
-        );
-        connectedNodes.add(
-          typeof link.target === "string" ? link.target : link.target.id
-        );
-      });
+      const queue: [string, number][] = [[mainWord, 0]];
+      const visited = new Set<string>();
+
+      while (queue.length > 0) {
+        const [currentWord, currentDepth] = queue.shift()!;
+        if (currentDepth >= depth) break;
+        visited.add(currentWord);
+
+        const relatedWords = links
+          .filter(link => 
+            (typeof link.source === 'string' ? link.source : link.source.id) === currentWord ||
+            (typeof link.target === 'string' ? link.target : link.target.id) === currentWord
+          )
+          .map(link => {
+            const otherWord = (typeof link.source === 'string' ? link.source : link.source.id) === currentWord
+              ? (typeof link.target === 'string' ? link.target : link.target.id)
+              : (typeof link.source === 'string' ? link.source : link.source.id);
+            return otherWord;
+          })
+          .filter(word => !visited.has(word))
+          .slice(0, breadth);
+
+        relatedWords.forEach(word => {
+          connectedNodes.add(word);
+          queue.push([word, currentDepth + 1]);
+        });
+      }
+
       return nodes.filter((node) => connectedNodes.has(node.id));
-    }, [nodes, links, mainWord]);
+    }, [nodes, links, mainWord, depth, breadth]);
+
+    const dragBehavior = d3.drag<SVGGElement, CustomNode>()
+      .on("start", (event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) => {
+        if (!event.active) event.subject.fx = event.subject.x;
+        if (!event.active) event.subject.fy = event.subject.y;
+      })
+      .on("drag", (event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) => {
+        event.subject.fx = event.x;
+        event.subject.fy = event.y;
+      })
+      .on("end", (event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) => {
+        if (!event.active) event.subject.fx = null;
+        if (!event.active) event.subject.fy = null;
+      });
 
     const updateGraph = useCallback(() => {
       if (!svgRef.current) return;
@@ -143,122 +165,134 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
       const svg = d3.select(svgRef.current);
       svg.selectAll("*").remove();
 
-      const containerRect =
-        svgRef.current.parentElement?.getBoundingClientRect();
-      const width = containerRect ? containerRect.width : 800;
-      const height = containerRect ? containerRect.height : 600;
-
-      svg.attr("width", width).attr("height", height);
-
+      const { width, height } = setupSvgDimensions(svg);
       const g = svg.append("g");
-
-      const zoom = d3
-        .zoom<SVGSVGElement, unknown>()
-        .scaleExtent([0.1, 4])
-        .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
-          g.attr("transform", event.transform.toString());
-        });
-
-      svg.call(zoom);
+      const zoom = setupZoom(svg, g);
       zoomRef.current = zoom;
 
-      const simulation = d3
-        .forceSimulation<CustomNode>(filteredNodes)
-        .force(
-          "link",
-          d3
-            .forceLink<CustomNode, CustomLink>(links)
-            .id((d) => d.id)
-            .distance(100)
-        )
-        .force("charge", d3.forceManyBody().strength(-300))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force(
-          "collide",
-          d3.forceCollide<CustomNode>().radius(30).strength(0.7)
-        );
+      const simulation = setupSimulation(width, height);
+      const link = createLinks(g);
+      const node = createNodes(g);
 
-      const link = g
-        .selectAll(".link")
-        .data(links)
-        .join("line")
-        .attr("class", "link")
-        .attr("stroke", (d: CustomLink) =>
-          getNodeColor((d.target as CustomNode).group)
-        )
-        .attr("stroke-width", 1);
+      setupNodeInteractions(node, svg);
 
-      const borderColor = getComputedStyle(document.documentElement)
-        .getPropertyValue("--selected-node-border-color")
-        .trim();
-
-      const node = g
-        .selectAll(".node")
-        .data(filteredNodes)
-        .join("g")
-        .attr(
-          "class",
-          (d: CustomNode) => `node ${d.id === selectedNodeId ? "selected" : ""}`
-        )
-        .call(
-          d3
-            .drag<SVGGElement, CustomNode>()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended) as any
-        );
-
-      node
-        .append("circle")
-        .attr("r", (d: CustomNode) => (d.group === "main" ? 25 : 15))
-        .attr("fill", (d: CustomNode) => getNodeColor(d.group))
-
-      node
-        .append("text")
-        .text((d: CustomNode) => d.id)
-        .attr("dy", 30)
-        .attr("text-anchor", "middle")
-        .attr("fill", theme === "dark" ? "#e0e0e0" : "#333")
-        .style("font-size", "10px")
-        .style("font-weight", "bold");
-
-      node
-        .on("click", (event: MouseEvent, d: CustomNode) => {
-          setSelectedNodeId(d.id);
-          onNodeClick(d.id);
-        })
-        .on("mouseover", (event: MouseEvent, d: CustomNode) => {
-          const [x, y] = d3.pointer(event, svg.node());
-          setHoveredNode({ ...d, x, y });
-        })
-        .on("mouseout", () => setHoveredNode(null));
-
-      function ticked() {
-        link
-          .attr("x1", (d) => (d.source as CustomNode).x!)
-          .attr("y1", (d) => (d.source as CustomNode).y!)
-          .attr("x2", (d) => (d.target as CustomNode).x!)
-          .attr("y2", (d) => (d.target as CustomNode).y!);
-
-        node.attr("transform", (d: CustomNode) => `translate(${d.x!},${d.y!})`);
-      }
-
-      simulation.nodes(filteredNodes).on("tick", ticked);
-      simulation
-        .force<d3.ForceLink<CustomNode, CustomLink>>("link")
-        ?.links(links);
+      simulation.nodes(filteredNodes);
+      simulation.force<d3.ForceLink<CustomNode, CustomLink>>("link")?.links(links.filter(link => 
+        filteredNodes.some(node => node.id === (typeof link.source === 'string' ? link.source : link.source.id)) &&
+        filteredNodes.some(node => node.id === (typeof link.target === 'string' ? link.target : link.target.id))
+      ));
 
       return () => {
         simulation.stop();
       };
-    }, [
-      filteredNodes,
-      links,
-      theme,
-      onNodeClick,
-      selectedNodeId,
-      getNodeColor,
-    ]);
+
+      function setupSvgDimensions(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) {
+        const containerRect = svg.node()?.parentElement?.getBoundingClientRect();
+        const width = containerRect ? containerRect.width : 800;
+        const height = containerRect ? containerRect.height : 600;
+        svg.attr("width", width).attr("height", height);
+        return { width, height };
+      }
+
+      function setupZoom(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, g: d3.Selection<SVGGElement, unknown, null, undefined>) {
+        const zoom = d3
+          .zoom<SVGSVGElement, unknown>()
+          .scaleExtent([0.1, 4])
+          .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+            g.attr("transform", event.transform.toString());
+          });
+
+        svg.call(zoom);
+        return zoom;
+      }
+
+      function setupSimulation(width: number, height: number) {
+        const validLinks = links.filter(link => 
+          filteredNodes.some(node => node.id === (typeof link.source === 'string' ? link.source : link.source.id)) &&
+          filteredNodes.some(node => node.id === (typeof link.target === 'string' ? link.target : link.target.id))
+        );
+
+        return d3
+          .forceSimulation<CustomNode>(filteredNodes)
+          .force(
+            "link",
+            d3.forceLink<CustomNode, CustomLink>(validLinks).id((d) => d.id).distance(100)
+          )
+          .force("charge", d3.forceManyBody().strength(-300))
+          .force("center", d3.forceCenter(width / 2, height / 2))
+          .force(
+            "collide",
+            d3.forceCollide<CustomNode>().radius(30).strength(0.7)
+          )
+          .on("tick", () => {
+            link
+              .attr("x1", (d) => (d.source as CustomNode).x!)
+              .attr("y1", (d) => (d.source as CustomNode).y!)
+              .attr("x2", (d) => (d.target as CustomNode).x!)
+              .attr("y2", (d) => (d.target as CustomNode).y!);
+
+            node.attr("transform", (d) => `translate(${d.x!},${d.y!})`);
+          });
+      }
+
+      function createLinks(g: d3.Selection<SVGGElement, unknown, null, undefined>) {
+        const validLinks = links.filter(link => 
+          filteredNodes.some(node => node.id === (typeof link.source === 'string' ? link.source : link.source.id)) &&
+          filteredNodes.some(node => node.id === (typeof link.target === 'string' ? link.target : link.target.id))
+        );
+
+        return g
+          .selectAll(".link")
+          .data(validLinks)
+          .join("line")
+          .attr("class", "link")
+          .attr("stroke", (d: CustomLink) =>
+            getNodeColor((d.target as CustomNode).group)
+          )
+          .attr("stroke-width", 1);
+      }
+
+      function createNodes(g: d3.Selection<SVGGElement, unknown, null, undefined>) {
+        const node = g
+          .selectAll<SVGGElement, CustomNode>(".node")
+          .data(filteredNodes)
+          .join("g")
+          .attr(
+            "class",
+            (d: CustomNode) => `node ${d.id === selectedNodeId ? "selected" : ""}`
+          )
+          .call(dragBehavior as any);
+
+        node
+          .append("circle")
+          .attr("r", (d: CustomNode) => (d.group === "main" ? 25 : 15))
+          .attr("fill", (d: CustomNode) => getNodeColor(d.group));
+
+        node
+          .append("text")
+          .text((d: CustomNode) => d.id)
+          .attr("dy", 30)
+          .attr("text-anchor", "middle")
+          .attr("fill", theme === "dark" ? "#e0e0e0" : "#333")
+          .style("font-size", "10px")
+          .style("font-weight", "bold");
+
+        return node;
+      }
+
+      function setupNodeInteractions(node: d3.Selection<SVGGElement, CustomNode, SVGGElement, unknown>, svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) {
+        node
+          .on("click", (event: MouseEvent, d: CustomNode) => {
+            setSelectedNodeId(d.id);
+            onNodeClick(d.id);
+          })
+          .on("mouseover", (event: MouseEvent, d: CustomNode) => {
+            const [x, y] = d3.pointer(event, svg.node());
+            setHoveredNode({ ...d, x, y });
+          })
+          .on("mouseout", () => setHoveredNode(null));
+      }
+    }, [filteredNodes, links, theme, onNodeClick, selectedNodeId, getNodeColor, depth, breadth]);
 
     useEffect(() => {
       const cleanupFunction = updateGraph();
@@ -288,17 +322,17 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
       }
     }, []);
 
-    const handleDepthChange = (event: Event, newValue: number | number[]) => {
+    const handleDepthChange = useCallback((event: Event, newValue: number | number[]) => {
       const newDepth = Array.isArray(newValue) ? newValue[0] : newValue;
       setDepth(newDepth);
       onNetworkChange(newDepth, breadth);
-    };
+    }, [onNetworkChange, breadth]);
 
-    const handleBreadthChange = (event: Event, newValue: number | number[]) => {
+    const handleBreadthChange = useCallback((event: Event, newValue: number | number[]) => {
       const newBreadth = Array.isArray(newValue) ? newValue[0] : newValue;
       setBreadth(newBreadth);
       onNetworkChange(depth, newBreadth);
-    };
+    }, [onNetworkChange, depth]);
 
     const legendItems = useMemo(
       () => [
@@ -385,22 +419,5 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
     );
   }
 );
-
-function dragstarted(
-  event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>
-) {
-  if (!event.active) event.subject.fx = event.subject.x;
-  if (!event.active) event.subject.fy = event.subject.y;
-}
-
-function dragged(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
-  event.subject.fx = event.x;
-  event.subject.fy = event.y;
-}
-
-function dragended(event: d3.D3DragEvent<SVGGElement, CustomNode, CustomNode>) {
-  if (!event.active) event.subject.fx = null;
-  if (!event.active) event.subject.fy = null;
-}
 
 export default WordGraph;
