@@ -47,8 +47,8 @@ const WordExplorer: React.FC = () => {
 
     setIsLoading(true);
     setError(null);
-    setWordNetwork(null);  // Reset word network
-    
+    setWordNetwork(null); // Reset word network
+
     try {
       const detailsData = await fetchWordDetails(normalizedInput);
       
@@ -59,26 +59,22 @@ const WordExplorer: React.FC = () => {
       setSelectedWordInfo(detailsData);
       setMainWord(detailsData.data.word);
       
+      let networkData;
       try {
-        const networkData = await fetchWordNetworkData(normalizedInput, depth, breadth);
-        setWordNetwork(networkData);
+        networkData = await fetchWordNetworkData(normalizedInput, depth, breadth);
       } catch (networkError) {
         console.error("Error fetching word network:", networkError);
-        // Create a single-node network for the main word
-        const singleNodeNetwork = {
+        networkData = {
           [detailsData.data.word]: {
             word: detailsData.data.word,
             definition: detailsData.data.definitions[0]?.meanings[0]?.definition || '',
             // Add other properties as needed
           }
         };
-        setWordNetwork(singleNodeNetwork);
-        // Only set an error if we couldn't fetch the network at all
-        if (Object.keys(singleNodeNetwork).length === 0) {
-          setError("Failed to fetch word network. Please try again.");
-        }
       }
-      
+
+      setWordNetwork(networkData);
+
       setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
       setCurrentHistoryIndex(prevIndex => prevIndex + 1);
     } catch (error) {
@@ -262,7 +258,7 @@ const WordExplorer: React.FC = () => {
       <main>
         <div className="graph-container">
           <div className="graph-content">
-            {wordNetwork && mainWord && (
+            {wordNetwork && mainWord && Object.keys(wordNetwork).length > 0 && (
               <WordGraph
                 wordNetwork={wordNetwork}
                 mainWord={mainWord}
