@@ -2,6 +2,7 @@ import axios from 'axios';
 import { WordNetwork, WordInfo } from "../types";
 import rateLimit from 'axios-rate-limit';
 import { sanitizeInput } from '../utils/sanitizer';
+import { getCachedData, setCachedData } from '../utils/caching';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.hapinas.net/api/v1';
 
@@ -18,24 +19,26 @@ export async function fetchWordNetwork(word: string, depth: number, breadth: num
     const sanitizedBreadth = Math.min(Math.max(5, breadth), 20);
 
     const cacheKey = `wordNetwork-${sanitizedWord}-${sanitizedDepth}-${sanitizedBreadth}`;
-    if (cache.has(cacheKey)) {
-      return cache.get(cacheKey);
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+      return cachedData;
     }
+
     const encodedWord = encodeURIComponent(sanitizedWord);
     console.log(`Fetching word network for: ${encodedWord}, depth: ${sanitizedDepth}, breadth: ${sanitizedBreadth}`);
     const response = await api.get(`/word_network/${encodedWord}`, { 
       params: { depth: sanitizedDepth, breadth: sanitizedBreadth },
-      timeout: 5000
+      timeout: 10000 // Increase timeout to 10 seconds
     });
     console.log('Response received:', response.status, response.statusText);
     console.log('Response data:', response.data);
-    cache.set(cacheKey, response.data);
+
+    setCachedData(cacheKey, response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching word network:', error);
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        console.error('Response error data:', error.response.data);
         throw new Error(`Failed to fetch word network: ${error.response.status} ${error.response.statusText}`);
       } else if (error.request) {
         throw new Error('Failed to fetch word network: No response received');
@@ -43,7 +46,7 @@ export async function fetchWordNetwork(word: string, depth: number, breadth: num
         throw new Error(`Failed to fetch word network: ${error.message}`);
       }
     }
-    throw error; // Re-throw the original error if it's not an Axios error
+    throw error;
   }
 }
 
