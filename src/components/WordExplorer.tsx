@@ -20,6 +20,8 @@ const WordExplorer: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [depth, setDepth] = useState<number>(2);
   const [breadth, setBreadth] = useState<number>(10);
+  const [wordHistory, setWordHistory] = useState<string[]>([]);
+  const [currentHistoryIndex, setCurrentHistoryIndex] = useState<number>(-1);
 
   // Function to normalize input
   const normalizeInput = (input: string) => unidecode(input.trim().toLowerCase());
@@ -68,6 +70,10 @@ const WordExplorer: React.FC = () => {
         setWordNetwork(networkData);
         setMainWord(detailsData.data.word); // Use the word returned from the API
         setSelectedWordInfo(detailsData);
+        
+        // Update word history
+        setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
+        setCurrentHistoryIndex(prevIndex => prevIndex + 1);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -77,7 +83,7 @@ const WordExplorer: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [inputValue, fetchWordNetworkData, fetchWordDetails, depth, breadth]);
+  }, [inputValue, fetchWordNetworkData, fetchWordDetails, depth, breadth, currentHistoryIndex]);
 
   const handleNodeClick = useCallback(async (word: string) => {
     setError(null);
@@ -91,13 +97,17 @@ const WordExplorer: React.FC = () => {
       // Fetch new network data for the clicked word
       const networkData = await fetchWordNetworkData(normalizedWord, depth, breadth);
       setWordNetwork(networkData);
+
+      // Update word history
+      setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
+      setCurrentHistoryIndex(prevIndex => prevIndex + 1);
     } catch (error) {
       console.error("Error fetching word details:", error);
       setError(error instanceof Error ? error.message : "Failed to fetch word details. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  }, [fetchWordDetails, fetchWordNetworkData, depth, breadth]);
+  }, [fetchWordDetails, fetchWordNetworkData, depth, breadth, currentHistoryIndex]);
 
   const handleNetworkChange = useCallback((newDepth: number, newBreadth: number) => {
     setDepth(newDepth);
@@ -172,6 +182,22 @@ const WordExplorer: React.FC = () => {
     );
   }, [handleNodeClick]);
 
+  const handleBack = useCallback(() => {
+    if (currentHistoryIndex > 0) {
+      setCurrentHistoryIndex(prevIndex => prevIndex - 1);
+      const previousWord = wordHistory[currentHistoryIndex - 1];
+      handleNodeClick(previousWord);
+    }
+  }, [currentHistoryIndex, wordHistory, handleNodeClick]);
+
+  const handleForward = useCallback(() => {
+    if (currentHistoryIndex < wordHistory.length - 1) {
+      setCurrentHistoryIndex(prevIndex => prevIndex + 1);
+      const nextWord = wordHistory[currentHistoryIndex + 1];
+      handleNodeClick(nextWord);
+    }
+  }, [currentHistoryIndex, wordHistory, handleNodeClick]);
+
   return (
     <div className={`word-explorer ${theme}`}>
       <header className="header-content">
@@ -185,6 +211,22 @@ const WordExplorer: React.FC = () => {
         </button>
       </header>
       <div className="search-container">
+        <button
+          onClick={handleBack}
+          disabled={currentHistoryIndex <= 0}
+          className="history-button"
+          aria-label="Go back"
+        >
+          ←
+        </button>
+        <button
+          onClick={handleForward}
+          disabled={currentHistoryIndex >= wordHistory.length - 1}
+          className="history-button"
+          aria-label="Go forward"
+        >
+          →
+        </button>
         <input
           type="text"
           value={inputValue}
