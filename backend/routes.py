@@ -314,11 +314,14 @@ def get_word_network(word):
             return jsonify({"error": "Word not provided"}), 400
 
         normalized_word = normalize_word(word)
+        logger.info(f"Fetching word network for: {normalized_word}, depth: {depth}, breadth: {breadth}")
         network = get_related_words(normalized_word, depth, breadth)
 
         if not network:
+            logger.warning(f"Word network not found for: {normalized_word}")
             return jsonify({"error": "Word not found"}), 404
 
+        logger.info(f"Successfully fetched word network for: {normalized_word}")
         return jsonify(network)
     except Exception as e:
         logger.error(f"Error in get_word_network: {str(e)}", exc_info=True)
