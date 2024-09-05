@@ -29,7 +29,7 @@ except Exception as e:
 init_cache(os.getenv('REDIS_URL'))
 
 # Configure CORS
-CORS(app, resources={r"/api/*": {"origins": os.getenv('ALLOWED_ORIGINS', '*').split(',')}})
+CORS(app, resources={r"/api/*": {"origins": ["https://explorer.hapinas.net", "http://localhost:3000"]}}, supports_credentials=True)
 
 @app.route('/')
 def index():
