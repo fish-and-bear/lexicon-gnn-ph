@@ -7,7 +7,7 @@ import unidecode from "unidecode";
 import { fetchWordNetwork, fetchWordDetails } from "../api/wordApi";
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://54.252.249.125:10000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.hapinas.net/api/v1';
 
 const WordExplorer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
