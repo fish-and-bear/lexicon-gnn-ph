@@ -304,7 +304,7 @@ def check_word(word):
         logger.error(f"Error in check_word: {str(e)}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred"}), 500
 
-@bp.route("/api/v1/word_network/<word>", methods=["GET"])
+@bp.route("/api/v1/word_network/<path:word>", methods=["GET"])
 @multi_level_cache
 def get_word_network(word):
     try:
@@ -314,7 +314,7 @@ def get_word_network(word):
         if not word:
             return jsonify({"error": "Word not provided"}), 400
 
-        decoded_word = unquote(word)
+        decoded_word = unquote(word).strip()
         normalized_word = normalize_word(decoded_word)
         logger.info(f"Fetching word network for: {normalized_word}, depth: {depth}, breadth: {breadth}")
         network = get_related_words(normalized_word, depth, breadth)

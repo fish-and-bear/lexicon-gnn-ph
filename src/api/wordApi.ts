@@ -1,23 +1,37 @@
 import axios from 'axios';
 import { WordNetwork, WordInfo } from "../types";
+import rateLimit from 'axios-rate-limit';
+import { sanitizeInput } from '../utils/sanitizer';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.hapinas.net/api/v1';
 
-const api = axios.create({
-  baseURL: API_BASE_URL
-});
+const api = rateLimit(axios.create({
+  baseURL: API_BASE_URL,
+}), { maxRequests: 100, perMilliseconds: 60000 });
 
 const cache = new Map<string, any>();
 
 export async function fetchWordNetwork(word: string, depth: number, breadth: number): Promise<WordNetwork> {
-  const cacheKey = `wordNetwork-${word}-${depth}-${breadth}`;
-  if (cache.has(cacheKey)) {
-    return cache.get(cacheKey);
+  try {
+    const sanitizedWord = sanitizeInput(word);
+    const sanitizedDepth = Math.min(Math.max(1, depth), 5);
+    const sanitizedBreadth = Math.min(Math.max(5, breadth), 20);
+
+    const cacheKey = `wordNetwork-${sanitizedWord}-${sanitizedDepth}-${sanitizedBreadth}`;
+    if (cache.has(cacheKey)) {
+      return cache.get(cacheKey);
+    }
+    const encodedWord = encodeURIComponent(sanitizedWord);
+    const response = await api.get(`/word_network/${encodedWord}`, { 
+      params: { depth: sanitizedDepth, breadth: sanitizedBreadth },
+      timeout: 5000
+    });
+    cache.set(cacheKey, response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching word network:', error);
+    throw new Error('Failed to fetch word network');
   }
-  const encodedWord = encodeURIComponent(word);
-  const response = await api.get(`/word_network/${encodedWord}`, { params: { depth, breadth } });
-  cache.set(cacheKey, response.data);
-  return response.data;
 }
 
 export async function fetchWordDetails(word: string): Promise<WordInfo> {

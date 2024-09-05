@@ -1,3 +1,36 @@
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from flask_talisman import Talisman
+from werkzeug.middleware.proxy_fix import ProxyFix
+import os
+
+app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
+# Secure headers
+Talisman(app, content_security_policy={
+    'default-src': "'self'",
+    'script-src': "'self' 'unsafe-inline'",
+    'style-src': "'self' 'unsafe-inline'",
+})
+
+# CORS settings
+CORS(app, resources={r"/api/*": {"origins": os.environ.get("ALLOWED_ORIGINS", "").split(",")}})
+
+# Input validation middleware
+@app.before_request
+def validate_input():
+    # Implement input validation logic here
+    pass
+
+# Error handling
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # Log the error
+    app.logger.error(f"Unhandled exception: {str(e)}")
+    # Return a generic error message
+    return jsonify({"error": "An unexpected error occurred"}), 500
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 from routes import bp

@@ -6,6 +6,7 @@ import { WordNetwork, WordInfo } from "../types";
 import unidecode from "unidecode";
 import { fetchWordNetwork, fetchWordDetails } from "../api/wordApi";
 import axios from 'axios';
+import DOMPurify from 'dompurify';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.hapinas.net/api/v1';
 
@@ -50,9 +51,8 @@ const WordExplorer: React.FC = () => {
       return;
     }
   
-    // Normalize the input value
-    const normalizedInput = normalizeInput(inputValue);
-    const originalInput = inputValue.trim();
+    const sanitizedInput = DOMPurify.sanitize(inputValue.trim());
+    const normalizedInput = normalizeInput(sanitizedInput);
 
     setIsLoading(true);
     setError(null);
