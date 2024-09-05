@@ -14,11 +14,15 @@
 }
 
 .graph-svg {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
-.graph-svg-container:hover .graph-svg {
+.graph-svg.loading {
+  opacity: 0.3;
+}
+
+.graph-svg.loaded {
   opacity: 1;
 }
 
@@ -195,8 +199,12 @@ svg {
 }
 
 .graph-svg {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.graph-svg.loading {
+  opacity: 0.3;
 }
 
 .graph-svg.loaded {

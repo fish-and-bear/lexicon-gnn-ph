@@ -162,9 +162,9 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const updateGraph = useCallback(() => {
     if (!svgRef.current) return;
 
-    setIsLoading(true);
-
     const svg = d3.select(svgRef.current);
+    
+    setIsLoading(true);
     svg.selectAll("*").remove();
 
     const { width, height } = setupSvgDimensions(svg);
