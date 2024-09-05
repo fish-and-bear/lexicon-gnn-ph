@@ -14,7 +14,8 @@ export async function fetchWordNetwork(word: string, depth: number, breadth: num
   if (cache.has(cacheKey)) {
     return cache.get(cacheKey);
   }
-  const response = await api.get(`/word_network/${word}`, { params: { depth, breadth } });
+  const encodedWord = encodeURIComponent(word);
+  const response = await api.get(`/word_network/${encodedWord}`, { params: { depth, breadth } });
   cache.set(cacheKey, response.data);
   return response.data;
 }

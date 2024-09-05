@@ -9,6 +9,7 @@ from unidecode import unidecode
 from functools import lru_cache
 import re
 from caching import multi_level_cache
+from urllib.parse import unquote
 
 bp = Blueprint("api", __name__)
 
@@ -313,7 +314,8 @@ def get_word_network(word):
         if not word:
             return jsonify({"error": "Word not provided"}), 400
 
-        normalized_word = normalize_word(word)
+        decoded_word = unquote(word)
+        normalized_word = normalize_word(decoded_word)
         logger.info(f"Fetching word network for: {normalized_word}, depth: {depth}, breadth: {breadth}")
         network = get_related_words(normalized_word, depth, breadth)
 
