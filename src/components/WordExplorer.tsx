@@ -47,7 +47,7 @@ const WordExplorer: React.FC = () => {
 
     setIsLoading(true);
     setError(null);
-    setWordNetwork(null); // Reset word network
+    setWordNetwork(null);
 
     try {
       const detailsData = await fetchWordDetails(normalizedInput);
@@ -59,21 +59,15 @@ const WordExplorer: React.FC = () => {
       setSelectedWordInfo(detailsData);
       setMainWord(detailsData.data.word);
       
-      let networkData;
-      try {
-        networkData = await fetchWordNetworkData(normalizedInput, depth, breadth);
-      } catch (networkError) {
-        console.error("Error fetching word network:", networkError);
-        networkData = {
-          [detailsData.data.word]: {
-            word: detailsData.data.word,
-            definition: detailsData.data.definitions[0]?.meanings[0]?.definition || '',
-            // Add other properties as needed
-          }
-        };
-      }
-
+      // Start with a smaller network
+      let networkData = await fetchWordNetworkData(normalizedInput, 1, 5);
       setWordNetwork(networkData);
+
+      // Expand the network progressively
+      for (let i = 2; i <= depth; i++) {
+        networkData = await fetchWordNetworkData(normalizedInput, i, breadth);
+        setWordNetwork(networkData);
+      }
 
       setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
       setCurrentHistoryIndex(prevIndex => prevIndex + 1);
