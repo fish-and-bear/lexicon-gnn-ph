@@ -12,6 +12,7 @@
 # production
 /build
 /backend/venv/
+/venv/
 
 # misc
 .DS_Store
