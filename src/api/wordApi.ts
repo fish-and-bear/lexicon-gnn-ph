@@ -22,15 +22,28 @@ export async function fetchWordNetwork(word: string, depth: number, breadth: num
       return cache.get(cacheKey);
     }
     const encodedWord = encodeURIComponent(sanitizedWord);
+    console.log(`Fetching word network for: ${encodedWord}, depth: ${sanitizedDepth}, breadth: ${sanitizedBreadth}`);
     const response = await api.get(`/word_network/${encodedWord}`, { 
       params: { depth: sanitizedDepth, breadth: sanitizedBreadth },
       timeout: 5000
     });
+    console.log('Response received:', response.status, response.statusText);
+    console.log('Response data:', response.data);
     cache.set(cacheKey, response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching word network:', error);
-    throw new Error('Failed to fetch word network');
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        console.error('Response error data:', error.response.data);
+        throw new Error(`Failed to fetch word network: ${error.response.status} ${error.response.statusText}`);
+      } else if (error.request) {
+        throw new Error('Failed to fetch word network: No response received');
+      } else {
+        throw new Error(`Failed to fetch word network: ${error.message}`);
+      }
+    }
+    throw error; // Re-throw the original error if it's not an Axios error
   }
 }
 

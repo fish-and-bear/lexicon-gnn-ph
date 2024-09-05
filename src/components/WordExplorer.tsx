@@ -31,17 +31,8 @@ const WordExplorer: React.FC = () => {
     try {
       return await fetchWordNetwork(word, depth, breadth);
     } catch (error) {
-      console.error("Error fetching word network:", error);
-      if (axios.isAxiosError(error)) {
-        if (error.code === 'ECONNABORTED') {
-          throw new Error(`Failed to fetch word network: Request timed out. Please try again.`);
-        } else if (error.response) {
-          throw new Error(`Failed to fetch word network: ${error.response.status} ${error.response.statusText}`);
-        } else if (error.request) {
-          throw new Error(`Failed to fetch word network: No response received. Please check your internet connection and ensure the API server is running.`);
-        }
-      }
-      throw new Error(`Failed to fetch word network: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
+      console.error("Error in fetchWordNetworkData:", error);
+      throw error; // Pass the error through instead of creating a new one
     }
   }, []);
 
@@ -56,28 +47,45 @@ const WordExplorer: React.FC = () => {
 
     setIsLoading(true);
     setError(null);
+    setWordNetwork(null);  // Reset word network
+    
     try {
-      const [networkData, detailsData] = await Promise.all([
-        fetchWordNetworkData(normalizedInput, depth, breadth),
-        fetchWordDetails(normalizedInput),
-      ]);
-
-      if (!detailsData.data.definitions || detailsData.data.definitions.length === 0) {
-        setError("No definitions found for this word.");
-        setSelectedWordInfo(null);
-        setWordNetwork(null);
-      } else {
-        setWordNetwork(networkData);
-        setMainWord(detailsData.data.word); // Use the word returned from the API
-        setSelectedWordInfo(detailsData);
-        
-        // Update word history
-        setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
-        setCurrentHistoryIndex(prevIndex => prevIndex + 1);
+      const detailsData = await fetchWordDetails(normalizedInput);
+      
+      if (!detailsData.data || !detailsData.data.definitions || detailsData.data.definitions.length === 0) {
+        throw new Error("No definitions found for this word.");
       }
+
+      setSelectedWordInfo(detailsData);
+      setMainWord(detailsData.data.word);
+      
+      try {
+        const networkData = await fetchWordNetworkData(normalizedInput, depth, breadth);
+        setWordNetwork(networkData);
+      } catch (networkError) {
+        console.error("Error fetching word network:", networkError);
+        // Create a single-node network for the main word
+        const singleNodeNetwork = {
+          [detailsData.data.word]: {
+            word: detailsData.data.word,
+            definition: detailsData.data.definitions[0]?.meanings[0]?.definition || '',
+            // Add other properties as needed
+          }
+        };
+        setWordNetwork(singleNodeNetwork);
+        setError("Failed to fetch full word network. Displaying only the searched word.");
+      }
+      
+      setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
+      setCurrentHistoryIndex(prevIndex => prevIndex + 1);
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError(error instanceof Error ? `Failed to fetch word data: ${error.message}` : "Failed to fetch word data. Please try again.");
+      let errorMessage = "Failed to fetch word data. Please try again.";
+      if (error instanceof Error) {
+        console.error("Error details:", error.message);
+        errorMessage = `Failed to fetch word data: ${error.message}`;
+      }
+      setError(errorMessage);
       setWordNetwork(null);
       setSelectedWordInfo(null);
     } finally {
@@ -92,13 +100,11 @@ const WordExplorer: React.FC = () => {
       const normalizedWord = normalizeInput(word);
       const detailsData = await fetchWordDetails(normalizedWord);
       setSelectedWordInfo(detailsData);
-      setMainWord(detailsData.data.word); // Use the word returned from the API
-      setWordNetwork(null); // Clear the current network
-      // Fetch new network data for the clicked word
+      setMainWord(detailsData.data.word);
+      setWordNetwork(null);
       const networkData = await fetchWordNetworkData(normalizedWord, depth, breadth);
       setWordNetwork(networkData);
 
-      // Update word history
       setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
       setCurrentHistoryIndex(prevIndex => prevIndex + 1);
     } catch (error) {
