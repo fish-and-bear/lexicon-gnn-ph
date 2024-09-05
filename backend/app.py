@@ -1,10 +1,13 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_cors import CORS
 from database import db_session, init_db
 import logging
-from caching import cache
+from caching import multi_level_cache as cache, init_cache
 from routes import bp
+
+load_dotenv()
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -21,6 +24,12 @@ try:
     logger.info("Database initialized successfully")
 except Exception as e:
     logger.error(f"Error initializing database: {str(e)}")
+
+# Initialize cache
+init_cache(os.getenv('REDIS_URL'))
+
+# Configure CORS
+CORS(app, resources={r"/api/*": {"origins": os.getenv('ALLOWED_ORIGINS', '*')}})
 
 @app.route('/')
 def index():

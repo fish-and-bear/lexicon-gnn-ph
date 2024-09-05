@@ -22,7 +22,7 @@ const WordExplorer: React.FC = () => {
   const [breadth, setBreadth] = useState<number>(10);
 
   // Function to normalize input
-  const normalizeInput = (input: string) => unidecode(input.toLowerCase());
+  const normalizeInput = (input: string) => unidecode(input.trim().toLowerCase());
 
   const fetchWordNetworkData = useCallback(async (word: string, depth: number, breadth: number) => {
     try {
@@ -32,11 +32,13 @@ const WordExplorer: React.FC = () => {
       if (axios.isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
           throw new Error(`Failed to fetch word network: Request timed out. Please try again.`);
+        } else if (error.response) {
+          throw new Error(`Failed to fetch word network: ${error.response.status} ${error.response.statusText}`);
+        } else if (error.request) {
+          throw new Error(`Failed to fetch word network: No response received. Please check your internet connection and ensure the API server is running.`);
         }
-        throw new Error(`Failed to fetch word network: ${error.message}`);
-      } else {
-        throw new Error('Failed to fetch word network: Unknown error occurred');
       }
+      throw new Error(`Failed to fetch word network: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
     }
   }, []);
 
@@ -48,6 +50,7 @@ const WordExplorer: React.FC = () => {
   
     // Normalize the input value
     const normalizedInput = normalizeInput(inputValue);
+    const originalInput = inputValue.trim();
 
     setIsLoading(true);
     setError(null);
@@ -60,9 +63,10 @@ const WordExplorer: React.FC = () => {
       if (!detailsData.data.definitions || detailsData.data.definitions.length === 0) {
         setError("No definitions found for this word.");
         setSelectedWordInfo(null);
+        setWordNetwork(null);
       } else {
         setWordNetwork(networkData);
-        setMainWord(inputValue); // Keep the original input for display purposes
+        setMainWord(detailsData.data.word); // Use the word returned from the API
         setSelectedWordInfo(detailsData);
       }
     } catch (error) {
@@ -79,16 +83,21 @@ const WordExplorer: React.FC = () => {
     setError(null);
     setIsLoading(true);
     try {
-      const normalizedWord = normalizeInput(word); // Normalize the clicked word
+      const normalizedWord = normalizeInput(word);
       const detailsData = await fetchWordDetails(normalizedWord);
       setSelectedWordInfo(detailsData);
+      setMainWord(detailsData.data.word); // Use the word returned from the API
+      setWordNetwork(null); // Clear the current network
+      // Fetch new network data for the clicked word
+      const networkData = await fetchWordNetworkData(normalizedWord, depth, breadth);
+      setWordNetwork(networkData);
     } catch (error) {
       console.error("Error fetching word details:", error);
       setError(error instanceof Error ? error.message : "Failed to fetch word details. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  }, [fetchWordDetails]);
+  }, [fetchWordDetails, fetchWordNetworkData, depth, breadth]);
 
   const handleNetworkChange = useCallback((newDepth: number, newBreadth: number) => {
     setDepth(newDepth);

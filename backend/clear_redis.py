@@ -1,7 +1,13 @@
 import redis
+import os
+from dotenv import load_dotenv
 
-# Replace with your Redis URL and credentials
-redis_url = "rediss://red-cr22c6ogph6c73belo30:c4Z6nAsWRAHkWNHk7bCTUyvVPCuYoLuM@oregon-redis.render.com:6379"
+load_dotenv()
+
+redis_url = os.getenv('REDIS_URL')
+if not redis_url:
+    raise ValueError("REDIS_URL is not set in the environment variables")
+
 client = redis.Redis.from_url(redis_url)
 
 # Clear the cache

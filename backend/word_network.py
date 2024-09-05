@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})  # Allow all origins for API endpoints
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)  # Allow all origins for API endpoints
 
 # Initialize the database
 logger.info("Initializing database...")

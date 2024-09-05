@@ -4,6 +4,8 @@ import redis
 import pickle
 import os
 from dotenv import load_dotenv
+import json
+
 
 load_dotenv()
 
@@ -15,39 +17,28 @@ local_cache = TTLCache(maxsize=1000, ttl=3600)
 
 # Redis cache
 redis_url = os.getenv('REDIS_URL')
-if redis_url:
-    redis_client = redis.from_url(redis_url)
-else:
-    redis_client = None
+redis_client = redis.Redis.from_url(redis_url)
+
+def init_cache(redis_url):
+    global redis_client
+    redis_client = redis.Redis.from_url(redis_url)
 
 def multi_level_cache(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        key = f"{func.__name__}:{args}:{kwargs}"
-        
-        # Check local cache
-        if key in local_cache:
-            return local_cache[key]
-        
-        # Check Redis cache
-        if redis_client:
-            redis_result = redis_client.get(key)
-            if redis_result:
-                result = pickle.loads(redis_result)
-                local_cache[key] = result
-                return result
-        
-        # If not in cache, call the function
+        if not redis_client:
+            return func(*args, **kwargs)
+
+        cache_key = f"{func.__name__}:{json.dumps(args)}:{json.dumps(kwargs)}"
+        cached_result = redis_client.get(cache_key)
+
+        if cached_result:
+            return json.loads(cached_result)
+
         result = func(*args, **kwargs)
-        
-        # Store in local cache
-        local_cache[key] = result
-        
-        # Store in Redis cache if available
-        if redis_client:
-            redis_client.set(key, pickle.dumps(result), ex=3600)
-        
+        redis_client.setex(cache_key, int(os.getenv('CACHE_EXPIRATION', 3600)), json.dumps(result))
         return result
+
     return wrapper
 
 # Optionally, you can add helper functions to interact with the cache.
