@@ -52,6 +52,8 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
     );
     const [depth, setDepth] = useState<number>(initialDepth);
     const [breadth, setBreadth] = useState<number>(initialBreadth);
+    const [graphKey, setGraphKey] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     const getNodeRelation = useCallback((word: string, info: NetworkWordInfo): string => {
       if (word === mainWord) return "main";
@@ -162,6 +164,9 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
     const updateGraph = useCallback(() => {
       if (!svgRef.current) return;
 
+      setIsLoading(true);
+      setGraphKey(prevKey => prevKey + 1);
+
       const svg = d3.select(svgRef.current);
       svg.selectAll("*").remove();
 
@@ -181,6 +186,9 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
         filteredNodes.some(node => node.id === (typeof link.source === 'string' ? link.source : link.source.id)) &&
         filteredNodes.some(node => node.id === (typeof link.target === 'string' ? link.target : link.target.id))
       ));
+
+      // Set loading to false when the graph is fully rendered
+      setTimeout(() => setIsLoading(false), 100);
 
       return () => {
         simulation.stop();
@@ -349,7 +357,10 @@ const WordGraph: React.FC<WordGraphProps> = React.memo(
     return (
       <div className="graph-container">
         <div className="graph-svg-container">
-          <svg ref={svgRef}></svg>
+          {isLoading && <div className="loading-overlay">Loading...</div>}
+          <svg ref={svgRef} key={graphKey} className={`graph-svg ${isLoading ? 'loading' : 'loaded'}`}>
+            {/* SVG content will be rendered here by D3 */}
+          </svg>
         </div>
         <div className="controls-container">
           <div className="zoom-controls">
