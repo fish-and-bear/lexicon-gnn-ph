@@ -52,6 +52,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const [depth, setDepth] = useState<number>(initialDepth);
   const [breadth, setBreadth] = useState<number>(initialBreadth);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const getNodeRelation = useCallback((word: string, info: NetworkWordInfo): string => {
     if (word === mainWord) return "main";
@@ -354,6 +355,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     <div className="graph-container">
       <div className="graph-svg-container">
         {isLoading && <div className="loading-overlay">Loading...</div>}
+        {error && <div className="error-message">{error}</div>}
         <svg ref={svgRef} className={`graph-svg ${isLoading ? 'loading' : 'loaded'}`}>
           {/* SVG content will be rendered here by D3 */}
         </svg>
@@ -426,4 +428,4 @@ const WordGraph: React.FC<WordGraphProps> = ({
   );
 };
 
-export default WordGraph;
+export default React.memo(WordGraph);
