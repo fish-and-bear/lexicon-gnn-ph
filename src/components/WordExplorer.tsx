@@ -73,7 +73,10 @@ const WordExplorer: React.FC = () => {
           }
         };
         setWordNetwork(singleNodeNetwork);
-        setError("Failed to fetch full word network. Displaying only the searched word.");
+        // Only set an error if we couldn't fetch the network at all
+        if (Object.keys(singleNodeNetwork).length === 0) {
+          setError("Failed to fetch word network. Please try again.");
+        }
       }
       
       setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
