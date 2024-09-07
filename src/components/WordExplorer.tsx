@@ -43,13 +43,15 @@ const WordExplorer: React.FC = () => {
     debounce(async (query: string) => {
       if (query.length > 1) {
         setIsLoading(true);
+        setError(null);
         try {
-          const results = await searchWords(query);
+          const results = await searchWords(query, 10);
           setSearchResults(results.words);
           setShowSuggestions(true);
         } catch (error) {
           console.error("Error fetching search results:", error);
           setError("Failed to fetch search results. Please try again.");
+          setSearchResults([]);
         } finally {
           setIsLoading(false);
         }

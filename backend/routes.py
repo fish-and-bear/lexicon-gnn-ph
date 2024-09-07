@@ -10,7 +10,7 @@ from functools import lru_cache
 import re
 from caching import multi_level_cache
 from urllib.parse import unquote
-from fuzzywuzzy import fuzz
+from fuzzywuzzy import fuzz, process
 
 bp = Blueprint("api", __name__)
 
@@ -224,46 +224,32 @@ def get_related_words(word, depth=2, breadth=10):
     return network
 
 @bp.route("/api/v1/words", methods=["GET"])
-@multi_level_cache
 def get_words():
     page = max(int(request.args.get("page", 1)), 1)
     per_page = min(int(request.args.get("per_page", 20)), 100)
     search = request.args.get("search", "")
-    fuzzy_threshold = int(request.args.get("fuzzy_threshold", 80))
+    fuzzy = request.args.get("fuzzy", "false").lower() == "true"
 
     query = Word.query.options(load_only('word', 'id'))
 
     if search:
         normalized_search = normalize_word(search)
-        query = query.filter(
-            or_(
-                func.lower(func.unaccent(Word.word)).ilike(f"%{normalized_search}%"),
-                Word.definitions.any(
-                    Definition.meanings.any(
-                        func.lower(func.unaccent(Meaning.meaning)).ilike(f"%{normalized_search}%")
-                    )
-                ),
-            )
-        )
+        if fuzzy:
+            # Fetch all words for fuzzy matching
+            all_words = [w.word for w in query.all()]
+            # Perform fuzzy matching
+            fuzzy_matches = process.extract(normalized_search, all_words, limit=per_page)
+            # Filter words based on fuzzy matches
+            matched_words = [match[0] for match in fuzzy_matches if match[1] >= 70]  # 70% similarity threshold
+            query = query.filter(Word.word.in_(matched_words))
+        else:
+            query = query.filter(func.lower(func.unaccent(Word.word)).ilike(f"%{normalized_search}%"))
 
     total = query.count()
     words = query.order_by(Word.word).offset((page - 1) * per_page).limit(per_page).all()
 
-    # Apply fuzzy matching
-    if search:
-        fuzzy_results = []
-        for word in words:
-            ratio = fuzz.partial_ratio(normalized_search, normalize_word(word.word))
-            if ratio >= fuzzy_threshold:
-                fuzzy_results.append({"word": word.word, "id": word.id, "match_ratio": ratio})
-        
-        fuzzy_results.sort(key=lambda x: x['match_ratio'], reverse=True)
-        words = fuzzy_results
-    else:
-        words = [{"word": w.word, "id": w.id} for w in words]
-
     return jsonify({
-        "words": words,
+        "words": [{"word": w.word, "id": w.id} for w in words],
         "page": page,
         "per_page": per_page,
         "total": total,
