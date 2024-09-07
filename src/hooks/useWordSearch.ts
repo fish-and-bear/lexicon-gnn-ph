@@ -1,22 +1,11 @@
 import { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { searchWords } from '../api/wordApi';
-
-interface SearchResult {
-  word: string;
-  id: number;
-}
+import { SearchOptions, SearchResult } from '../types';
 
 interface SearchResults {
   words: SearchResult[];
   total: number;
-}
-
-interface SearchOptions {
-  page: number;
-  per_page: number;
-  fuzzy: boolean;
-  filter: string; // Added filter property
 }
 
 export function useWordSearch(initialQuery: string = '') {
@@ -24,13 +13,14 @@ export function useWordSearch(initialQuery: string = '') {
   const [page, setPage] = useState(1);
   const perPage = 20;
 
-  const { data, isLoading, error } = useQuery<SearchResults, Error>(
+  const { data, isLoading, error } = useQuery<SearchResult, Error>(
     ['wordSearch', query, page],
     () => searchWords(query, { 
       page, 
       per_page: perPage,
-      fuzzy: true
-    }),
+      filter: '',
+      exclude_baybayin: true
+    } as SearchOptions),
     { keepPreviousData: true }
   );
 

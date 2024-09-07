@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import WordGraph from "./WordGraph";
 import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
-import { WordNetwork, WordInfo, SearchResult } from "../types";
+import { WordNetwork, WordInfo, SearchResult, SearchOptions } from "../types";
 import unidecode from "unidecode";
 import { fetchWordNetwork, fetchWordDetails, searchWords } from "../api/wordApi";
 import axios from 'axios';
@@ -46,7 +46,7 @@ const WordExplorer: React.FC = () => {
         setError(null);
         console.log('Searching for:', query);
         try {
-          const results = await searchWords(query, { page: 1, per_page: 10, fuzzy: true });
+          const results = await searchWords(query, { page: 1, per_page: 10, exclude_baybayin: true });
           console.log('API response:', results);
           
           const searchResults = results.words.map((word: { id: number; word: string }) => ({

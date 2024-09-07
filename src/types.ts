@@ -107,10 +107,9 @@ export interface Meaning {
   
   // Add these types to your types.ts file
   export interface SearchOptions {
-    page: number;
-    per_page: number;
-    fuzzy?: boolean;
-    filter?: string;
+    page?: number;
+    per_page?: number;
+    exclude_baybayin?: boolean;
   }
 
   export interface SearchResult {

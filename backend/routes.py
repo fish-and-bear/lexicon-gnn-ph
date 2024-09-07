@@ -229,15 +229,20 @@ def get_words():
     per_page = min(int(request.args.get("per_page", 20)), 100)
     search = request.args.get("search", "")
     fuzzy = request.args.get("fuzzy", "false").lower() == "true"
+    exclude_baybayin = request.args.get("exclude_baybayin", "false").lower() == "true"
 
-    logger.info(f"Searching words: search={search}, fuzzy={fuzzy}, page={page}, per_page={per_page}")
+    logger.info(f"Searching words: search={search}, fuzzy={fuzzy}, page={page}, per_page={per_page}, exclude_baybayin={exclude_baybayin}")
 
     query = Word.query.options(
         joinedload(Word.definitions).joinedload(Definition.meanings)
     )
 
     # Filter out Baybayin words at the database level
-    query = query.filter(~Word.word.op('~')(r'[\u1700-\u171F]'))
+    if exclude_baybayin:
+        query = query.filter(~Word.word.op('~')(r'[\u1700-\u171F]+'))
+
+    # Ensure only words with Latin characters are returned
+    query = query.filter(Word.word.op('~')(r'^[a-zA-Z\u00C0-\u1FFF]+$'))
 
     # Filter for words with valid definitions
     query = query.filter(Word.definitions.any(Definition.meanings.any(Meaning.meaning != '')))
