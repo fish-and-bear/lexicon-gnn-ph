@@ -65,13 +65,13 @@ export async function bulkFetchWordDetails(words: string[]): Promise<WordInfo[]>
   return response.data.words;
 }
 
-export async function searchWords(query: string, page: number = 1, perPage: number = 20): Promise<{ words: { word: string, id: number }[], total: number }> {
+export const searchWords = async (query: string, options: { page: number; per_page: number; fuzzy: boolean }) => {
   const response = await api.get('/words', { 
     params: { 
       search: query, 
-      page, 
-      per_page: perPage,
-      fuzzy: true, // Enable fuzzy search if your API supports it
+      page: options.page, 
+      per_page: options.per_page,
+      fuzzy: options.fuzzy, // Enable fuzzy search if your API supports it
       normalize: true // Normalize input if your API supports it
     } 
   });
