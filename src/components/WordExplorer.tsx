@@ -72,6 +72,12 @@ const WordExplorer: React.FC = () => {
     setInputValue(value);
     setError(null);
     debouncedSearch(value);
+    console.log('Input changed:', value); // Add this line
+    if (value.length > 0) {
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
   };
 
   const handleSuggestionClick = (word: string) => {
@@ -235,6 +241,10 @@ const WordExplorer: React.FC = () => {
     }
   }, [currentHistoryIndex, wordHistory, handleNodeClick]);
 
+  console.log('Search query:', inputValue);
+  console.log('Search results:', searchResults);
+  console.log('Show suggestions:', showSuggestions);
+
   return (
     <div className={`word-explorer ${theme}`}>
       <header className="header-content">
@@ -281,13 +291,19 @@ const WordExplorer: React.FC = () => {
           />
           {isLoading && <div className="search-loading">Loading...</div>}
           {showSuggestions && searchResults.length > 0 && (
-            <ul className="search-suggestions">
-              {searchResults.map((result) => (
-                <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
-                  {result.word}
-                </li>
-              ))}
-            </ul>
+            <>
+              <p>Debug: Suggestions should be visible</p>
+              <ul className="search-suggestions">
+                {searchResults.map((result) => (
+                  <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
+                    {result.word}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {showSuggestions && searchResults.length === 0 && (
+            <p>Debug: No suggestions available</p>
           )}
         </div>
         <button

@@ -226,12 +226,14 @@ main {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  display: block !important; /* Force display for debugging */
 }
 
 .search-suggestions li {
   padding: 10px;
   cursor: pointer;
-  color: #333; /* Dark text color for light background */
+  color: #333 !important; /* Force color for debugging */
+  display: block !important; /* Force display for debugging */
 }
 
 .search-suggestions li:hover {
@@ -245,7 +247,7 @@ main {
 }
 
 .word-explorer.dark .search-suggestions li {
-  color: #fff; /* Light text color for dark background */
+  color: #fff !important; /* Force color for debugging */
 }
 
 .word-explorer.dark .search-suggestions li:hover {
