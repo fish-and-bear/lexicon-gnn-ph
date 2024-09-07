@@ -19,7 +19,7 @@ export function useWordSearch(initialQuery: string = '') {
 
   const { data, isLoading, error } = useQuery<SearchResults, Error>(
     ['wordSearch', query, page],
-    () => searchWords(query, page, perPage),
+    () => searchWords(query, { page, per_page: perPage, fuzzy: false }),
     { keepPreviousData: true }
   );
 
