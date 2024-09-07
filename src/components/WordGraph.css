@@ -49,7 +49,6 @@ svg {
   z-index: 10;
 }
 
-
 .zoom-controls {
   display: flex;
   gap: 5px;
@@ -163,8 +162,16 @@ svg {
 @media (max-width: 768px) {
   .controls-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+  }
+
+  .zoom-controls {
+    justify-content: center;
   }
 
   .graph-container {
@@ -182,6 +189,64 @@ svg {
 
   .MuiSlider-root {
     width: 100% !important;
+  }
+
+  .legend {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    padding: 5px;
+    max-width: none;
+    margin-top: 10px;
+  }
+
+  .legend-item {
+    font-size: 10px;
+  }
+
+  .node-tooltip {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls-container {
+    padding: 5px;
+  }
+
+  .zoom-button {
+    padding: 3px 6px;
+    font-size: 12px;
+  }
+
+  .slider-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .MuiTypography-caption {
+    font-size: 10px;
+  }
+
+  .node-tooltip {
+    font-size: 10px;
+    padding: 5px;
+    max-width: 120px;
+  }
+
+  .node-tooltip h3 {
+    font-size: 12px;
+  }
+
+  .legend {
+    font-size: 9px;
+  }
+
+  .color-box {
+    width: 10px;
+    height: 10px;
   }
 }
 
@@ -233,32 +298,4 @@ svg {
 
 .retry-button:hover {
   background-color: var(--primary-color);
-}
-
-@media (max-width: 480px) {
-  .controls-container {
-    padding: 5px;
-  }
-
-  .zoom-button {
-    padding: 3px 6px;
-    font-size: 12px;
-  }
-
-  .slider-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .MuiSlider-root {
-    width: 100% !important;
-  }
-
-  .legend {
-    top: 5px;
-    right: 5px;
-    padding: 5px;
-    font-size: 10px;
-    max-width: 120px;
-  }
 }
