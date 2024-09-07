@@ -232,24 +232,36 @@ def get_words():
 
     query = Word.query.options(load_only('word', 'id'))
     
-    # Add filter for real words and non-baybayin
-    query = query.filter(Word.is_real_word == True, Word.is_baybayin == False)
+    # Function to check if a word contains Baybayin characters
+    def is_baybayin(word):
+        baybayin_range = re.compile(r'[\u1700-\u171F]')
+        return bool(baybayin_range.search(word))
+
+    # Function to check if a word is likely a real word
+    def is_real_word(word):
+        # This is a simple check. You might want to expand this based on your criteria
+        return len(word) > 1 and not word.isdigit() and not is_baybayin(word)
+
+    # Apply filters
+    query = query.filter(Word.word.op('~')(r'^[a-zA-Z\u00C0-\u1FFF]+$'))
 
     if search:
         normalized_search = normalize_word(search)
         if fuzzy:
-            all_words = [w.word for w in query.all()]
+            all_words = [w.word for w in query.all() if is_real_word(w.word)]
             fuzzy_matches = process.extract(normalized_search, all_words, limit=per_page * 2, scorer=fuzz.ratio)
             matched_words = [match[0] for match in fuzzy_matches if match[1] >= 80]
             query = query.filter(Word.word.in_(matched_words))
         else:
             query = query.filter(func.lower(func.unaccent(Word.word)).like(f"{normalized_search}%"))
 
-    total = query.count()
-    words = query.order_by(Word.word).offset((page - 1) * per_page).limit(per_page).all()
+    # Apply the real word filter
+    words = [w for w in query.all() if is_real_word(w.word)]
+    total = len(words)
+    paginated_words = words[(page - 1) * per_page : page * per_page]
 
     return jsonify({
-        "words": [{"word": w.word, "id": w.id} for w in words],
+        "words": [{"word": w.word, "id": w.id} for w in paginated_words],
         "page": page,
         "per_page": per_page,
         "total": total,
