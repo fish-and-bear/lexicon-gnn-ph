@@ -12,6 +12,12 @@ interface SearchResults {
   total: number;
 }
 
+interface SearchOptions {
+  page: number;
+  per_page: number;
+  fuzzy: boolean;
+}
+
 export function useWordSearch(initialQuery: string = '') {
   const [query, setQuery] = useState(initialQuery);
   const [page, setPage] = useState(1);
@@ -19,7 +25,7 @@ export function useWordSearch(initialQuery: string = '') {
 
   const { data, isLoading, error } = useQuery<SearchResults, Error>(
     ['wordSearch', query, page],
-    () => searchWords(query, { page, per_page: perPage, fuzzy: false }),
+    () => searchWords(query, { page, per_page: perPage }),
     { keepPreviousData: true }
   );
 

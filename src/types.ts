@@ -104,3 +104,16 @@ export interface Meaning {
   export interface WordNetwork {
     [key: string]: NetworkWordInfo;
   }
+  
+  // Add these types to your types.ts file
+  export interface SearchOptions {
+    page: number;
+    per_page: number;
+  }
+
+  export interface SearchResult {
+    words: Array<{ id: number; word: string }>;
+    page: number;
+    perPage: number;
+    total: number;
+  }

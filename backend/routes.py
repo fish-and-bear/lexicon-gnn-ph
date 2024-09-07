@@ -235,15 +235,12 @@ def get_words():
     if search:
         normalized_search = normalize_word(search)
         if fuzzy:
-            # Fetch all words for fuzzy matching
             all_words = [w.word for w in query.all()]
-            # Perform fuzzy matching
-            fuzzy_matches = process.extract(normalized_search, all_words, limit=per_page)
-            # Filter words based on fuzzy matches
-            matched_words = [match[0] for match in fuzzy_matches if match[1] >= 70]  # 70% similarity threshold
+            fuzzy_matches = process.extract(normalized_search, all_words, limit=per_page * 2, scorer=fuzz.ratio)
+            matched_words = [match[0] for match in fuzzy_matches if match[1] >= 80]
             query = query.filter(Word.word.in_(matched_words))
         else:
-            query = query.filter(func.lower(func.unaccent(Word.word)).ilike(f"%{normalized_search}%"))
+            query = query.filter(func.lower(func.unaccent(Word.word)).like(f"{normalized_search}%"))
 
     total = query.count()
     words = query.order_by(Word.word).offset((page - 1) * per_page).limit(per_page).all()

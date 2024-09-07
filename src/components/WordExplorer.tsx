@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import WordGraph from "./WordGraph";
 import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
-import { WordNetwork, WordInfo } from "../types";
+import { WordNetwork, WordInfo, SearchResult } from "../types";
 import unidecode from "unidecode";
 import { fetchWordNetwork, fetchWordDetails, searchWords } from "../api/wordApi";
 import axios from 'axios';
@@ -24,7 +24,7 @@ const WordExplorer: React.FC = () => {
   const [breadth, setBreadth] = useState<number>(10);
   const [wordHistory, setWordHistory] = useState<string[]>([]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState<number>(-1);
-  const [searchResults, setSearchResults] = useState<Array<{ word: string; id: number }>>([]);
+  const [searchResults, setSearchResults] = useState<Array<{ id: number; word: string }>>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Function to normalize input
@@ -45,18 +45,15 @@ const WordExplorer: React.FC = () => {
         setIsLoading(true);
         setError(null);
         try {
-          const results = await searchWords(query, { page: 1, per_page: 10, fuzzy: true });
-          console.log('API response:', results); // Keep this log
+          const results = await searchWords(query, { page: 1, per_page: 10 });
+          console.log('API response:', results);
           
-          // Ensure we're accessing the correct property of the results
-          const words = Array.isArray(results.words) ? results.words : [];
+          const searchResults = results.words.map((word: { id: number; word: string }) => ({
+            id: word.id,
+            word: word.word.trim()
+          })).filter((result) => result.word !== '');
           
-          const searchResults = words.map((word: string | { word: string }, index: number) => ({
-            id: index,
-            word: typeof word === 'string' ? word : (word.word || '').toString().trim()
-          })).filter((result: { word: string }) => result.word !== '');
-          
-          console.log('Processed search results:', searchResults); // Add this log
+          console.log('Processed search results:', searchResults);
           
           setSearchResults(searchResults);
           setShowSuggestions(searchResults.length > 0);
@@ -303,7 +300,7 @@ const WordExplorer: React.FC = () => {
             <ul className="search-suggestions">
               {searchResults.map((result) => (
                 <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
-                  {result.word || 'Unknown word'}
+                  {result.word}
                 </li>
               ))}
             </ul>

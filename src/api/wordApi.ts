@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { WordNetwork, WordInfo } from "../types";
+import { WordNetwork, WordInfo, SearchOptions, SearchResult } from "../types";
 import rateLimit from 'axios-rate-limit';
 import { sanitizeInput } from '../utils/sanitizer';
 import { getCachedData, setCachedData } from '../utils/caching';
@@ -65,15 +65,19 @@ export async function bulkFetchWordDetails(words: string[]): Promise<WordInfo[]>
   return response.data.words;
 }
 
-export const searchWords = async (query: string, options: { page: number; per_page: number; fuzzy: boolean }) => {
-  const response = await api.get('/words', { 
-    params: { 
-      search: query, 
-      page: options.page, 
-      per_page: options.per_page,
-      fuzzy: options.fuzzy, // Enable fuzzy search if your API supports it
-      normalize: true // Normalize input if your API supports it
-    } 
-  });
-  return response.data;
+export async function searchWords(query: string, options: SearchOptions): Promise<SearchResult> {
+  try {
+    const response = await api.get('/words', {
+      params: {
+        search: query,
+        ...options,
+        fuzzy: true,
+        min_score: 0.8,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error searching words:", error);
+    throw error;
+  }
 }
