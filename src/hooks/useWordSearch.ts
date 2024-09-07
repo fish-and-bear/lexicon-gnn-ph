@@ -28,8 +28,8 @@ export function useWordSearch(initialQuery: string = '') {
     ['wordSearch', query, page],
     () => searchWords(query, { 
       page, 
-      per_page: perPage, 
-      filter: 'is_real_word:true' 
+      per_page: perPage,
+      fuzzy: true
     }),
     { keepPreviousData: true }
   );

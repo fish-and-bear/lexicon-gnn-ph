@@ -235,7 +235,6 @@ def get_words():
     )
 
     def is_valid_word(word):
-        # Check if the word contains any Baybayin characters
         if re.search(r'[\u1700-\u171F]', word.word):
             return False
         
@@ -252,7 +251,6 @@ def get_words():
             )
         )
 
-    # Apply initial filter for Latin and extended Latin characters, excluding Baybayin
     query = query.filter(Word.word.op('~')(r'^[a-zA-Z\u00C0-\u1FFF]+$'))
     query = query.filter(~Word.word.op('~')(r'[\u1700-\u171F]'))
 
