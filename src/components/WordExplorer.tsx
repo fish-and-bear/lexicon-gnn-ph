@@ -46,15 +46,17 @@ const WordExplorer: React.FC = () => {
         setError(null);
         try {
           const results = await searchWords(query, { page: 1, per_page: 10, fuzzy: true });
-          console.log('API response:', results);
+          console.log('API response:', results); // Keep this log
           
           // Ensure we're accessing the correct property of the results
           const words = Array.isArray(results.words) ? results.words : [];
           
           const searchResults = words.map((word: string | { word: string }, index: number) => ({
             id: index,
-            word: typeof word === 'string' ? word : word.word
-          }));
+            word: typeof word === 'string' ? word : (word.word || '').toString().trim()
+          })).filter((result: { word: string }) => result.word !== '');
+          
+          console.log('Processed search results:', searchResults); // Add this log
           
           setSearchResults(searchResults);
           setShowSuggestions(searchResults.length > 0);
@@ -301,7 +303,7 @@ const WordExplorer: React.FC = () => {
             <ul className="search-suggestions">
               {searchResults.map((result) => (
                 <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
-                  {result.word}
+                  {result.word || 'Unknown word'}
                 </li>
               ))}
             </ul>
