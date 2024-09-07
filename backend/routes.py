@@ -230,33 +230,36 @@ def get_words():
     search = request.args.get("search", "")
     fuzzy = request.args.get("fuzzy", "false").lower() == "true"
 
-    query = Word.query.options(load_only('word', 'id'))
-    
-    # Function to check if a word contains Baybayin characters
-    def is_baybayin(word):
-        baybayin_range = re.compile(r'[\u1700-\u171F]')
-        return bool(baybayin_range.search(word))
+    query = Word.query.options(
+        joinedload(Word.definitions).joinedload(Definition.meanings)
+    )
 
-    # Function to check if a word is likely a real word
-    def is_real_word(word):
-        # This is a simple check. You might want to expand this based on your criteria
-        return len(word) > 1 and not word.isdigit() and not is_baybayin(word)
+    def is_valid_word(word):
+        return any(
+            definition.meanings and any(
+                meaning.meaning and meaning.meaning.strip() and meaning.meaning.strip() != "0"
+                for meaning in definition.meanings
+            )
+            for definition in word.definitions
+        )
 
-    # Apply filters
+    # Apply initial filter for Latin and extended Latin characters
     query = query.filter(Word.word.op('~')(r'^[a-zA-Z\u00C0-\u1FFF]+$'))
 
     if search:
         normalized_search = normalize_word(search)
         if fuzzy:
-            all_words = [w.word for w in query.all() if is_real_word(w.word)]
-            fuzzy_matches = process.extract(normalized_search, all_words, limit=per_page * 2, scorer=fuzz.ratio)
+            all_words = query.all()
+            valid_words = [w for w in all_words if is_valid_word(w)]
+            fuzzy_matches = process.extract(normalized_search, [w.word for w in valid_words], limit=per_page * 2, scorer=fuzz.ratio)
             matched_words = [match[0] for match in fuzzy_matches if match[1] >= 80]
-            query = query.filter(Word.word.in_(matched_words))
+            words = [w for w in valid_words if w.word in matched_words]
         else:
             query = query.filter(func.lower(func.unaccent(Word.word)).like(f"{normalized_search}%"))
+            words = [w for w in query.all() if is_valid_word(w)]
+    else:
+        words = [w for w in query.all() if is_valid_word(w)]
 
-    # Apply the real word filter
-    words = [w for w in query.all() if is_real_word(w.word)]
     total = len(words)
     paginated_words = words[(page - 1) * per_page : page * per_page]
 
