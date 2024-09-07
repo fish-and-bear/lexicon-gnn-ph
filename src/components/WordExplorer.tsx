@@ -42,6 +42,7 @@ const WordExplorer: React.FC = () => {
   const debouncedSearch = useCallback(
     debounce(async (query: string) => {
       if (query.length > 1) {
+        setIsLoading(true);
         try {
           const results = await searchWords(query);
           setSearchResults(results.words);
@@ -49,6 +50,8 @@ const WordExplorer: React.FC = () => {
         } catch (error) {
           console.error("Error fetching search results:", error);
           setError("Failed to fetch search results. Please try again.");
+        } finally {
+          setIsLoading(false);
         }
       } else {
         setSearchResults([]);
@@ -61,6 +64,7 @@ const WordExplorer: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
+    setError(null);
     debouncedSearch(value);
   };
 
@@ -254,38 +258,41 @@ const WordExplorer: React.FC = () => {
         >
           →
         </button>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              handleSearch();
-            }
-          }}
-          placeholder="Enter a word"
-          className="search-input"
-          aria-label="Search word"
-        />
+        <div className="search-input-container">
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSearch();
+              }
+            }}
+            placeholder="Enter a word"
+            className="search-input"
+            aria-label="Search word"
+          />
+          {isLoading && <div className="search-loading">Loading...</div>}
+          {showSuggestions && searchResults.length > 0 && (
+            <ul className="search-suggestions">
+              {searchResults.map((result) => (
+                <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
+                  {result.word}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <button
           onClick={() => handleSearch()}
           disabled={isLoading}
           className="search-button"
         >
-          {isLoading ? "Loading..." : "Explore"}
+          Explore
         </button>
       </div>
       {error && <p className="error-message">{error}</p>}
-      {showSuggestions && (
-        <ul className="search-suggestions">
-          {searchResults.map((result) => (
-            <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
-              {result.word}
-            </li>
-          ))}
-        </ul>
-      )}
       <main>
         <div className="graph-container">
           <div className="graph-content">
