@@ -36,59 +36,67 @@ svg {
 
 .controls-container {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background-color: rgba(var(--card-bg-color-rgb), 0.9);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  background-color: rgba(var(--card-bg-color-rgb), 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
 }
 
 .zoom-controls {
   display: flex;
-  gap: 5px;
+  gap: 10px;
 }
 
 .zoom-button {
-  padding: 5px 10px;
+  padding: 8px 15px;
   font-size: 14px;
   cursor: pointer;
   background-color: var(--button-color);
   color: var(--button-text-color);
   border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  border-radius: 6px;
+  transition: background-color 0.3s, transform 0.1s;
 }
 
 .zoom-button:hover {
   background-color: var(--primary-color);
 }
 
+.zoom-button:active {
+  transform: scale(0.95);
+}
+
 .graph-controls {
   display: flex;
-  gap: 15px;
+  gap: 30px;
+  flex-grow: 1;
+  margin-left: 30px;
 }
 
 .slider-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  flex-grow: 1;
 }
 
 .MuiSlider-root {
-  width: 120px !important;
+  width: 100% !important;
   color: var(--accent-color) !important;
 }
 
 .MuiTypography-caption {
-  font-size: 0.75rem !important;
+  font-size: 0.9rem !important;
   color: var(--text-color) !important;
+  min-width: 90px;
 }
 
 .node circle {
@@ -164,11 +172,12 @@ svg {
   .controls-container {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 15px;
     bottom: 0;
     left: 0;
     right: 0;
-    border-radius: 0;
+    border-radius: 12px 12px 0 0;
+    padding: 15px;
   }
 
   .zoom-controls {
@@ -182,6 +191,8 @@ svg {
   .graph-controls {
     flex-direction: column;
     width: 100%;
+    margin-left: 0;
+    gap: 15px;
   }
 
   .slider-container {
@@ -197,52 +208,55 @@ svg {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 5px;
-    padding: 5px;
+    gap: 10px;
+    padding: 10px;
     max-width: none;
-    margin-top: 10px;
+    margin-top: 15px;
   }
 
   .legend-item {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .node-tooltip {
-    max-width: 150px;
+    max-width: 200px;
   }
 }
 
 @media (max-width: 480px) {
   .controls-container {
-    padding: 5px;
+    padding: 10px;
   }
 
   .zoom-button {
-    padding: 3px 6px;
-    font-size: 12px;
+    padding: 6px 12px;
+    font-size: 13px;
   }
 
   .slider-container {
     flex-direction: column;
     align-items: flex-start;
+    gap: 5px;
   }
 
   .MuiTypography-caption {
-    font-size: 10px;
+    font-size: 0.8rem !important;
+    min-width: auto;
   }
 
   .node-tooltip {
-    font-size: 10px;
-    padding: 5px;
-    max-width: 120px;
+    font-size: 11px;
+    padding: 8px;
+    max-width: 150px;
   }
 
   .node-tooltip h3 {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .legend {
-    font-size: 9px;
+    font-size: 10px;
+    gap: 8px;
   }
 
   .color-box {
