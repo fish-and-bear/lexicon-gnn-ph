@@ -235,12 +235,17 @@ def get_words():
     )
 
     def is_valid_word(word):
-        return any(
-            definition.meanings and any(
-                meaning.meaning and meaning.meaning.strip() and meaning.meaning.strip() != "0"
-                for meaning in definition.meanings
+        return (
+            word.word and
+            word.word.strip() and
+            not word.word.isdigit() and
+            any(
+                definition.meanings and any(
+                    meaning.meaning and meaning.meaning.strip() and meaning.meaning.strip() != "0"
+                    for meaning in definition.meanings
+                )
+                for definition in word.definitions
             )
-            for definition in word.definitions
         )
 
     # Apply initial filter for Latin and extended Latin characters
@@ -249,7 +254,7 @@ def get_words():
     if search:
         normalized_search = normalize_word(search)
         if fuzzy:
-            all_words = query.all()
+            all_words = query.filter(Word.word.ilike(f"%{normalized_search}%")).all()
             valid_words = [w for w in all_words if is_valid_word(w)]
             fuzzy_matches = process.extract(normalized_search, [w.word for w in valid_words], limit=per_page * 2, scorer=fuzz.ratio)
             matched_words = [match[0] for match in fuzzy_matches if match[1] >= 80]
