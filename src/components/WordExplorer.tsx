@@ -46,11 +46,26 @@ const WordExplorer: React.FC = () => {
         setError(null);
         try {
           const results = await searchWords(query, { page: 1, per_page: 10, fuzzy: true });
-          const decodedWords = results.words
-            .map((word: string) => decodeURIComponent(escape(word)))
+          console.log('API response:', results); // Log the entire response
+          
+          // Ensure we're accessing the correct property of the results
+          const words = Array.isArray(results.words) ? results.words : [];
+          
+          const decodedWords = words
+            .map((word: string) => {
+              try {
+                return decodeURIComponent(escape(word));
+              } catch (e) {
+                console.error('Error decoding word:', word, e);
+                return word; // Return the original word if decoding fails
+              }
+            })
             .filter((word: string) => word.trim() !== '');
-          setSearchResults(decodedWords);
-          setShowSuggestions(decodedWords.length > 0); // Only show if there are actual results
+          
+          console.log('Decoded words:', decodedWords);
+          
+          setSearchResults(decodedWords.map((word: string, index: number) => ({ id: index, word })));
+          setShowSuggestions(decodedWords.length > 0);
         } catch (error) {
           console.error("Error fetching search results:", error);
           setError("Failed to fetch search results. Please try again.");
