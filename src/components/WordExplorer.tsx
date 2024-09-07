@@ -42,9 +42,14 @@ const WordExplorer: React.FC = () => {
   const debouncedSearch = useCallback(
     debounce(async (query: string) => {
       if (query.length > 1) {
-        const results = await searchWords(query);
-        setSearchResults(results.words);
-        setShowSuggestions(true);
+        try {
+          const results = await searchWords(query);
+          setSearchResults(results.words);
+          setShowSuggestions(true);
+        } catch (error) {
+          console.error("Error fetching search results:", error);
+          setError("Failed to fetch search results. Please try again.");
+        }
       } else {
         setSearchResults([]);
         setShowSuggestions(false);
@@ -53,13 +58,26 @@ const WordExplorer: React.FC = () => {
     []
   );
 
-  const handleSearch = useCallback(async () => {
-    if (!inputValue.trim()) {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    debouncedSearch(value);
+  };
+
+  const handleSuggestionClick = (word: string) => {
+    setInputValue(word);
+    setShowSuggestions(false);
+    handleSearch(word);
+  };
+
+  const handleSearch = useCallback(async (searchWord?: string) => {
+    const wordToSearch = searchWord || inputValue.trim();
+    if (!wordToSearch) {
       setError("Please enter a word to search");
       return;
     }
   
-    const sanitizedInput = DOMPurify.sanitize(inputValue.trim());
+    const sanitizedInput = DOMPurify.sanitize(wordToSearch);
     const normalizedInput = normalizeInput(sanitizedInput);
 
     setIsLoading(true);
@@ -76,15 +94,8 @@ const WordExplorer: React.FC = () => {
       setSelectedWordInfo(detailsData);
       setMainWord(detailsData.data.word);
       
-      // Start with a smaller network
-      let networkData = await fetchWordNetworkData(normalizedInput, 1, 5);
+      let networkData = await fetchWordNetworkData(normalizedInput, depth, breadth);
       setWordNetwork(networkData);
-
-      // Expand the network progressively
-      for (let i = 2; i <= depth; i++) {
-        networkData = await fetchWordNetworkData(normalizedInput, i, breadth);
-        setWordNetwork(networkData);
-      }
 
       setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
       setCurrentHistoryIndex(prevIndex => prevIndex + 1);
@@ -246,10 +257,7 @@ const WordExplorer: React.FC = () => {
         <input
           type="text"
           value={inputValue}
-          onChange={(e) => {
-            setInputValue(e.target.value);
-            debouncedSearch(e.target.value);
-          }}
+          onChange={handleInputChange}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
@@ -261,7 +269,7 @@ const WordExplorer: React.FC = () => {
           aria-label="Search word"
         />
         <button
-          onClick={handleSearch}
+          onClick={() => handleSearch()}
           disabled={isLoading}
           className="search-button"
         >
@@ -272,11 +280,7 @@ const WordExplorer: React.FC = () => {
       {showSuggestions && (
         <ul className="search-suggestions">
           {searchResults.map((result) => (
-            <li key={result.id} onClick={() => {
-              setInputValue(result.word);
-              setShowSuggestions(false);
-              handleSearch();
-            }}>
+            <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
               {result.word}
             </li>
           ))}
