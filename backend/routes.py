@@ -10,6 +10,7 @@ from functools import lru_cache
 import re
 from caching import multi_level_cache
 from urllib.parse import unquote
+from fuzzywuzzy import fuzz
 
 bp = Blueprint("api", __name__)
 
@@ -228,6 +229,7 @@ def get_words():
     page = max(int(request.args.get("page", 1)), 1)
     per_page = min(int(request.args.get("per_page", 20)), 100)
     search = request.args.get("search", "")
+    fuzzy_threshold = int(request.args.get("fuzzy_threshold", 80))
 
     query = Word.query.options(load_only('word', 'id'))
 
@@ -247,8 +249,21 @@ def get_words():
     total = query.count()
     words = query.order_by(Word.word).offset((page - 1) * per_page).limit(per_page).all()
 
+    # Apply fuzzy matching
+    if search:
+        fuzzy_results = []
+        for word in words:
+            ratio = fuzz.partial_ratio(normalized_search, normalize_word(word.word))
+            if ratio >= fuzzy_threshold:
+                fuzzy_results.append({"word": word.word, "id": word.id, "match_ratio": ratio})
+        
+        fuzzy_results.sort(key=lambda x: x['match_ratio'], reverse=True)
+        words = fuzzy_results
+    else:
+        words = [{"word": w.word, "id": w.id} for w in words]
+
     return jsonify({
-        "words": [{"word": w.word, "id": w.id} for w in words],
+        "words": words,
         "page": page,
         "per_page": per_page,
         "total": total,

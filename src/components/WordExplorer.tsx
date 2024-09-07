@@ -4,9 +4,10 @@ import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo } from "../types";
 import unidecode from "unidecode";
-import { fetchWordNetwork, fetchWordDetails } from "../api/wordApi";
+import { fetchWordNetwork, fetchWordDetails, searchWords } from "../api/wordApi";
 import axios from 'axios';
 import DOMPurify from 'dompurify';
+import { debounce } from "lodash";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.hapinas.net/api/v1';
 
@@ -23,6 +24,8 @@ const WordExplorer: React.FC = () => {
   const [breadth, setBreadth] = useState<number>(10);
   const [wordHistory, setWordHistory] = useState<string[]>([]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState<number>(-1);
+  const [searchResults, setSearchResults] = useState<Array<{ word: string; id: number }>>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Function to normalize input
   const normalizeInput = (input: string) => unidecode(input.trim().toLowerCase());
@@ -35,6 +38,20 @@ const WordExplorer: React.FC = () => {
       throw error; // Pass the error through instead of creating a new one
     }
   }, []);
+
+  const debouncedSearch = useCallback(
+    debounce(async (query: string) => {
+      if (query.length > 1) {
+        const results = await searchWords(query);
+        setSearchResults(results.words);
+        setShowSuggestions(true);
+      } else {
+        setSearchResults([]);
+        setShowSuggestions(false);
+      }
+    }, 300),
+    []
+  );
 
   const handleSearch = useCallback(async () => {
     if (!inputValue.trim()) {
@@ -229,7 +246,10 @@ const WordExplorer: React.FC = () => {
         <input
           type="text"
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+            debouncedSearch(e.target.value);
+          }}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
@@ -249,6 +269,19 @@ const WordExplorer: React.FC = () => {
         </button>
       </div>
       {error && <p className="error-message">{error}</p>}
+      {showSuggestions && (
+        <ul className="search-suggestions">
+          {searchResults.map((result) => (
+            <li key={result.id} onClick={() => {
+              setInputValue(result.word);
+              setShowSuggestions(false);
+              handleSearch();
+            }}>
+              {result.word}
+            </li>
+          ))}
+        </ul>
+      )}
       <main>
         <div className="graph-container">
           <div className="graph-content">
