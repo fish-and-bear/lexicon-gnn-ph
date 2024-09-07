@@ -4,8 +4,10 @@ import { searchWords } from '../api/wordApi';
 import { SearchOptions, SearchResult } from '../types';
 
 interface SearchResults {
-  words: SearchResult[];
+  words: { id: number; word: string; }[];
   total: number;
+  page: number;
+  perPage: number;
 }
 
 export function useWordSearch(initialQuery: string = '') {
@@ -13,15 +15,18 @@ export function useWordSearch(initialQuery: string = '') {
   const [page, setPage] = useState(1);
   const perPage = 20;
 
-  const { data, isLoading, error } = useQuery<SearchResult, Error>(
+  const { data, isLoading, error } = useQuery<SearchResults, Error>(
     ['wordSearch', query, page],
     () => searchWords(query, { 
       page, 
       per_page: perPage,
-      filter: '',
-      exclude_baybayin: true
-    } as SearchOptions),
-    { keepPreviousData: true }
+      exclude_baybayin: true,
+      is_real_word: true // Add this line
+    }),
+    { 
+      keepPreviousData: true,
+      enabled: query.length > 0 // Only run query when there's input
+    }
   );
 
   const handleSearch = useCallback((newQuery: string) => {

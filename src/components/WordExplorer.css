@@ -217,8 +217,8 @@ main {
   top: 100%;
   left: 0;
   right: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: var(--input-bg-color);
+  border: 1px solid var(--input-border-color);
   border-top: none;
   max-height: 200px;
   overflow-y: auto;
@@ -226,32 +226,28 @@ main {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  display: block !important; /* Force display for debugging */
+  display: block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .search-suggestions li {
   padding: 10px;
   cursor: pointer;
-  color: #333 !important; /* Force color for debugging */
-  display: block !important; /* Force display for debugging */
+  color: var(--text-color);
 }
 
 .search-suggestions li:hover {
-  background-color: #f0f0f0;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
 }
 
-/* Dark mode styles */
 .word-explorer.dark .search-suggestions {
-  background-color: #333;
-  border-color: #555;
-}
-
-.word-explorer.dark .search-suggestions li {
-  color: #fff !important; /* Force color for debugging */
+  background-color: var(--card-bg-color);
+  border-color: var(--card-border-color);
 }
 
 .word-explorer.dark .search-suggestions li:hover {
-  background-color: #444;
+  background-color: var(--primary-color);
 }
 
 .search-loading {

@@ -46,7 +46,7 @@ const WordExplorer: React.FC = () => {
         setError(null);
         console.log('Searching for:', query);
         try {
-          const results = await searchWords(query, { page: 1, per_page: 10, exclude_baybayin: true });
+          const results = await searchWords(query, { page: 1, per_page: 10, exclude_baybayin: true, is_real_word: true });
           console.log('API response:', results);
           
           const searchResults = results.words.map((word: { id: number; word: string }) => ({
@@ -57,7 +57,7 @@ const WordExplorer: React.FC = () => {
           console.log('Processed search results:', searchResults);
           
           setSearchResults(searchResults);
-          setShowSuggestions(searchResults.length > 0);
+          setShowSuggestions(prevState => searchResults.length > 0);
         } catch (error) {
           console.error("Error fetching search results:", error);
           setError("Failed to fetch search results. Please try again.");
@@ -79,12 +79,14 @@ const WordExplorer: React.FC = () => {
     setInputValue(value);
     setError(null);
     debouncedSearch(value);
-    console.log('Input changed:', value); // Add this line
+    console.log('Input changed:', value);
+    console.log('showSuggestions before:', showSuggestions);
     if (value.length > 0) {
       setShowSuggestions(true);
     } else {
       setShowSuggestions(false);
     }
+    console.log('showSuggestions after:', showSuggestions);
   };
 
   const handleSuggestionClick = (word: string) => {

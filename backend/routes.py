@@ -230,8 +230,9 @@ def get_words():
     search = request.args.get("search", "")
     fuzzy = request.args.get("fuzzy", "false").lower() == "true"
     exclude_baybayin = request.args.get("exclude_baybayin", "false").lower() == "true"
+    is_real_word = request.args.get("is_real_word", "false").lower() == "true"
 
-    logger.info(f"Searching words: search={search}, fuzzy={fuzzy}, page={page}, per_page={per_page}, exclude_baybayin={exclude_baybayin}")
+    logger.info(f"Searching words: search={search}, fuzzy={fuzzy}, page={page}, per_page={per_page}, exclude_baybayin={exclude_baybayin}, is_real_word={is_real_word}")
 
     query = Word.query.options(
         joinedload(Word.definitions).joinedload(Definition.meanings)
@@ -246,6 +247,9 @@ def get_words():
 
     # Filter for words with valid definitions
     query = query.filter(Word.definitions.any(Definition.meanings.any(Meaning.meaning != '')))
+
+    if is_real_word:
+        query = query.filter(Word.is_real_word == True)
 
     if search:
         normalized_search = normalize_word(search)

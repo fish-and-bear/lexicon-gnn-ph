@@ -70,7 +70,6 @@ export async function searchWords(query: string, options: SearchOptions): Promis
     const response = await api.get('/words', {
       params: {
         search: query,
-        exclude_baybayin: true,
         ...options,
       }
     });
