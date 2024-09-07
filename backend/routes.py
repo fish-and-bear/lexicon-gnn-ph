@@ -230,49 +230,33 @@ def get_words():
     search = request.args.get("search", "")
     fuzzy = request.args.get("fuzzy", "false").lower() == "true"
 
+    logger.info(f"Searching words: search={search}, fuzzy={fuzzy}, page={page}, per_page={per_page}")
+
     query = Word.query.options(
         joinedload(Word.definitions).joinedload(Definition.meanings)
     )
 
-    def is_valid_word(word):
-        if re.search(r'[\u1700-\u171F]', word.word):
-            return False
-        
-        return (
-            word.word and
-            word.word.strip() and
-            not word.word.isdigit() and
-            any(
-                definition.meanings and any(
-                    meaning.meaning and meaning.meaning.strip() and meaning.meaning.strip() != "0"
-                    for meaning in definition.meanings
-                )
-                for definition in word.definitions
-            )
-        )
-
-    query = query.filter(Word.word.op('~')(r'^[a-zA-Z\u00C0-\u1FFF]+$'))
+    # Filter out Baybayin words at the database level
     query = query.filter(~Word.word.op('~')(r'[\u1700-\u171F]'))
+
+    # Filter for words with valid definitions
+    query = query.filter(Word.definitions.any(Definition.meanings.any(Meaning.meaning != '')))
 
     if search:
         normalized_search = normalize_word(search)
         if fuzzy:
-            all_words = query.filter(Word.word.ilike(f"%{normalized_search}%")).all()
-            valid_words = [w for w in all_words if is_valid_word(w)]
-            fuzzy_matches = process.extract(normalized_search, [w.word for w in valid_words], limit=per_page * 2, scorer=fuzz.ratio)
-            matched_words = [match[0] for match in fuzzy_matches if match[1] >= 80]
-            words = [w for w in valid_words if w.word in matched_words]
+            query = query.filter(Word.word.ilike(f"%{normalized_search}%"))
         else:
             query = query.filter(func.lower(func.unaccent(Word.word)).like(f"{normalized_search}%"))
-            words = [w for w in query.all() if is_valid_word(w)]
-    else:
-        words = [w for w in query.all() if is_valid_word(w)]
 
-    total = len(words)
-    paginated_words = words[(page - 1) * per_page : page * per_page]
+    total = query.count()
+    logger.info(f"Total words found: {total}")
+
+    words = query.order_by(Word.word).offset((page - 1) * per_page).limit(per_page).all()
+    logger.info(f"Words returned: {[w.word for w in words]}")
 
     return jsonify({
-        "words": [{"word": w.word, "id": w.id} for w in paginated_words],
+        "words": [{"word": w.word, "id": w.id} for w in words],
         "page": page,
         "per_page": per_page,
         "total": total,

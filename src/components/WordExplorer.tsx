@@ -44,8 +44,9 @@ const WordExplorer: React.FC = () => {
       if (query.length > 1) {
         setIsLoading(true);
         setError(null);
+        console.log('Searching for:', query);
         try {
-          const results = await searchWords(query, { page: 1, per_page: 10 });
+          const results = await searchWords(query, { page: 1, per_page: 10, fuzzy: true });
           console.log('API response:', results);
           
           const searchResults = results.words.map((word: { id: number; word: string }) => ({
