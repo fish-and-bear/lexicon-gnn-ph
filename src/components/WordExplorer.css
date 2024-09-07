@@ -112,8 +112,8 @@ main {
 }
 
 .details-container {
-  width: 300px;
-  padding: 1rem;
+  width: 400px;
+  padding: 1.5rem;
   overflow-y: auto;
   background-color: var(--card-bg-color);
   border-left: 1px solid var(--card-border-color);
@@ -308,6 +308,9 @@ button:hover {
   .details-container {
     border-left: none;
     border-top: 1px solid var(--card-border-color);
+    box-shadow: none;
+    max-height: 50vh;
+    overflow-y: auto;
   }
 }
 
@@ -342,7 +345,7 @@ button:hover {
   }
 
   .details-container {
-    padding: 0.5rem;
+    padding: 1rem;
   }
 
   .word-details h2 {
@@ -350,7 +353,7 @@ button:hover {
   }
 
   .definition-card {
-    padding: 0.5rem;
+    padding: 0.75rem;
   }
 
   .definition-card h3 {
@@ -358,8 +361,8 @@ button:hover {
   }
 
   .word-list li {
-    font-size: 0.8rem;
-    padding: 0.2rem 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
   }
 }
 
@@ -382,8 +385,8 @@ button:hover {
   }
 
   .word-list li {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
   }
 
   .footer {
