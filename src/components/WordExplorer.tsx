@@ -46,26 +46,18 @@ const WordExplorer: React.FC = () => {
         setError(null);
         try {
           const results = await searchWords(query, { page: 1, per_page: 10, fuzzy: true });
-          console.log('API response:', results); // Log the entire response
+          console.log('API response:', results);
           
           // Ensure we're accessing the correct property of the results
           const words = Array.isArray(results.words) ? results.words : [];
           
-          const decodedWords = words
-            .map((word: string) => {
-              try {
-                return decodeURIComponent(escape(word));
-              } catch (e) {
-                console.error('Error decoding word:', word, e);
-                return word; // Return the original word if decoding fails
-              }
-            })
-            .filter((word: string) => word.trim() !== '');
+          const searchResults = words.map((word: string | { word: string }, index: number) => ({
+            id: index,
+            word: typeof word === 'string' ? word : word.word
+          }));
           
-          console.log('Decoded words:', decodedWords);
-          
-          setSearchResults(decodedWords.map((word: string, index: number) => ({ id: index, word })));
-          setShowSuggestions(decodedWords.length > 0);
+          setSearchResults(searchResults);
+          setShowSuggestions(searchResults.length > 0);
         } catch (error) {
           console.error("Error fetching search results:", error);
           setError("Failed to fetch search results. Please try again.");
@@ -306,19 +298,13 @@ const WordExplorer: React.FC = () => {
           />
           {isLoading && <div className="search-loading">Loading...</div>}
           {showSuggestions && searchResults.length > 0 && (
-            <>
-              <p>Debug: Suggestions should be visible</p>
-              <ul className="search-suggestions">
-                {searchResults.map((result) => (
-                  <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
-                    {result.word}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          {showSuggestions && searchResults.length === 0 && (
-            <p>Debug: No suggestions available</p>
+            <ul className="search-suggestions">
+              {searchResults.map((result) => (
+                <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
+                  {result.word}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
         <button
