@@ -180,9 +180,15 @@ def resolve_get_word(_, info, word):
 
 
 @query.field("searchWords")
-def resolve_search_words(_, info, query, page=1, perPage=20):
-    total = Word.query.filter(Word.word.ilike(f"%{query}%")).count()
-    words = Word.query.filter(Word.word.ilike(f"%{query}%")).offset((page - 1) * perPage).limit(perPage).all()
+def resolve_search_words(_, info, query, page=1, perPage=20, filter=None):
+    base_query = Word.query.filter(Word.word.ilike(f"%{query}%"))
+    
+    if filter == 'is_real_word:true':
+        base_query = base_query.filter(Word.is_real_word == True)
+    
+    total = base_query.count()
+    words = base_query.offset((page - 1) * perPage).limit(perPage).all()
+    
     return {
         "words": [{"word": w.word, "id": w.id} for w in words],
         "page": page,

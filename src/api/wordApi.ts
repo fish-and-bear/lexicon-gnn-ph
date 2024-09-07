@@ -71,6 +71,8 @@ export async function searchWords(query: string, options: SearchOptions): Promis
       params: {
         search: query,
         ...options,
+        is_real_word: true,
+        is_baybayin: false
       }
     });
     return response.data;

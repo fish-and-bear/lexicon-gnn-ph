@@ -231,6 +231,9 @@ def get_words():
     fuzzy = request.args.get("fuzzy", "false").lower() == "true"
 
     query = Word.query.options(load_only('word', 'id'))
+    
+    # Add filter for real words and non-baybayin
+    query = query.filter(Word.is_real_word == True, Word.is_baybayin == False)
 
     if search:
         normalized_search = normalize_word(search)
