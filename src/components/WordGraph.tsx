@@ -81,33 +81,41 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, []);
 
   const nodes: CustomNode[] = useMemo(() => {
-    return Object.entries(wordNetwork).map(([word, info]) => ({
-      id: word,
-      group: getNodeRelation(word, info),
-      info: info,
-    }));
+    const nodeMap = new Map<string, CustomNode>();
+
+    const addNode = (word: string, info: NetworkWordInfo) => {
+      if (!nodeMap.has(word)) {
+        nodeMap.set(word, {
+          id: word,
+          group: getNodeRelation(word, info),
+          info: info,
+        });
+      }
+    };
+
+    Object.entries(wordNetwork).forEach(([word, info]) => {
+      addNode(word, info);
+      info.etymology?.parsed?.forEach(etymWord => addNode(etymWord, wordNetwork[etymWord] || { word: etymWord }));
+      info.associated_words?.forEach(assocWord => addNode(assocWord, wordNetwork[assocWord] || { word: assocWord }));
+    });
+
+    return Array.from(nodeMap.values());
   }, [wordNetwork, getNodeRelation]);
 
   const links: CustomLink[] = useMemo(() => {
     const tempLinks: CustomLink[] = [];
     const addLink = (source: string, target: string, type: string) => {
-      if (wordNetwork[target]) {
+      if (nodes.some(node => node.id === target)) {
         tempLinks.push({ source, target, type });
       }
     };
 
     nodes.forEach((node) => {
       const { id: word, info } = node;
-      info.derivatives?.forEach((derivative) =>
-        addLink(word, derivative, "derivative")
-      );
+      info.derivatives?.forEach((derivative) => addLink(word, derivative, "derivative"));
       if (info.root_word) addLink(word, info.root_word, "root");
-      info.etymology?.parsed?.forEach((etymWord) =>
-        addLink(word, etymWord, "etymology")
-      );
-      info.associated_words?.forEach((assocWord) =>
-        addLink(word, assocWord, "associated")
-      );
+      info.etymology?.parsed?.forEach((etymWord) => addLink(word, etymWord, "etymology"));
+      info.associated_words?.forEach((assocWord) => addLink(word, assocWord, "associated"));
     });
 
     return tempLinks;
@@ -134,10 +142,18 @@ const WordGraph: React.FC<WordGraphProps> = ({
             : (typeof link.source === 'string' ? link.source : link.source.id);
           return otherWord;
         })
-        .filter(word => !visited.has(word))
-        .slice(0, breadth);
+        .filter(word => !visited.has(word));
 
-      relatedWords.forEach(word => {
+      const sortedWords = relatedWords.sort((a, b) => {
+        const aNode = nodes.find(node => node.id === a);
+        const bNode = nodes.find(node => node.id === b);
+        const aGroup = aNode ? aNode.group : 'other';
+        const bGroup = bNode ? bNode.group : 'other';
+        const groupOrder = ['main', 'root', 'derivative', 'etymology', 'associated', 'other'];
+        return groupOrder.indexOf(aGroup) - groupOrder.indexOf(bGroup);
+      });
+
+      sortedWords.slice(0, breadth).forEach(word => {
         connectedNodes.add(word);
         queue.push([word, currentDepth + 1]);
       });
