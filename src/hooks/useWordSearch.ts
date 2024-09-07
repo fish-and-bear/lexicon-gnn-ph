@@ -16,6 +16,7 @@ interface SearchOptions {
   page: number;
   per_page: number;
   fuzzy: boolean;
+  filter: string; // Added filter property
 }
 
 export function useWordSearch(initialQuery: string = '') {
@@ -25,7 +26,11 @@ export function useWordSearch(initialQuery: string = '') {
 
   const { data, isLoading, error } = useQuery<SearchResults, Error>(
     ['wordSearch', query, page],
-    () => searchWords(query, { page, per_page: perPage }),
+    () => searchWords(query, { 
+      page, 
+      per_page: perPage, 
+      filter: 'is_real_word:true' 
+    }),
     { keepPreviousData: true }
   );
 

@@ -71,8 +71,6 @@ export async function searchWords(query: string, options: SearchOptions): Promis
       params: {
         search: query,
         ...options,
-        fuzzy: true,
-        min_score: 0.8,
       }
     });
     return response.data;

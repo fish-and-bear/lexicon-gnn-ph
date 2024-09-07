@@ -109,6 +109,8 @@ export interface Meaning {
   export interface SearchOptions {
     page: number;
     per_page: number;
+    fuzzy?: boolean;
+    filter?: string;
   }
 
   export interface SearchResult {
