@@ -247,18 +247,19 @@ def get_words():
 
     if search:
         normalized_search = normalize_word(search)
-        # Use more strict matching
         query = query.filter(func.lower(func.unaccent(Word.word)).like(f"{normalized_search}%"))
 
     total = query.count()
     words = query.offset((page - 1) * per_page).limit(per_page).all()
 
-    return jsonify({
+    result = {
         "words": [{"word": w.word, "id": w.id} for w in words],
         "page": page,
         "perPage": per_page,
         "total": total,
-    })
+    }
+    logger.info(f"Search result: {result}")
+    return jsonify(result)
 
 @bp.route("/api/v1/words/<word>", methods=["GET"])
 @multi_level_cache

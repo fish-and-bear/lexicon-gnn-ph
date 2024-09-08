@@ -49,18 +49,24 @@ const WordExplorer: React.FC = () => {
           const results = await searchWords(query, { page: 1, per_page: 10, exclude_baybayin: true, is_real_word: true });
           console.log('API response:', results);
           
-          const searchResults = results.words
-            .filter((word: { id: number; word: string }) => word.word.toLowerCase().startsWith(query.toLowerCase()))
-            .map((word: { id: number; word: string }) => ({
-              id: word.id,
-              word: word.word.trim()
-            }))
-            .filter((result) => result.word !== '');
-          
-          console.log('Processed search results:', searchResults);
-          
-          setSearchResults(searchResults);
-          setShowSuggestions(prevState => searchResults.length > 0);
+          if (results && results.words) {
+            const searchResults = results.words
+              .filter((word: { id: number; word: string }) => word.word.toLowerCase().startsWith(query.toLowerCase()))
+              .map((word: { id: number; word: string }) => ({
+                id: word.id,
+                word: word.word.trim()
+              }))
+              .filter((result) => result.word !== '');
+            
+            console.log('Processed search results:', searchResults);
+            
+            setSearchResults(searchResults);
+            setShowSuggestions(searchResults.length > 0);
+          } else {
+            console.error('Invalid API response:', results);
+            setSearchResults([]);
+            setShowSuggestions(false);
+          }
         } catch (error) {
           console.error("Error fetching search results:", error);
           setError("Failed to fetch search results. Please try again.");

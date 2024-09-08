@@ -67,6 +67,7 @@ export async function bulkFetchWordDetails(words: string[]): Promise<WordInfo[]>
 
 export async function searchWords(query: string, options: SearchOptions): Promise<SearchResult> {
   try {
+    console.log('Sending search request:', query, options);
     const response = await api.get('/words', {
       params: {
         search: query,
@@ -75,6 +76,7 @@ export async function searchWords(query: string, options: SearchOptions): Promis
         is_real_word: true
       }
     });
+    console.log('Search API response:', response.data);
     return response.data;
   } catch (error) {
     console.error("Error searching words:", error);
