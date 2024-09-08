@@ -185,7 +185,7 @@ main {
 
 .search-container {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0.5rem;
   padding: 0.5rem;
   background-color: var(--card-bg-color);
@@ -195,6 +195,7 @@ main {
 .search-input-container {
   position: relative;
   flex-grow: 1;
+  display: flex;
 }
 
 .search-input {
@@ -210,6 +211,27 @@ main {
   outline: none;
   border-color: #4a90e2;
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  height: 100%;
+  align-self: stretch;
+}
+
+.search-button:hover {
+  background-color: var(--primary-color);
+}
+
+.search-button:active {
+  transform: scale(0.95);
 }
 
 .search-suggestions {
