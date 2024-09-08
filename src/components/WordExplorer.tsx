@@ -317,7 +317,7 @@ const WordExplorer: React.FC = () => {
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
                 handleSearch();
