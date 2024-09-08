@@ -88,11 +88,26 @@ const WordExplorer: React.FC = () => {
     setError(null);
     if (value.length > 1) {
       debouncedSearch(value);
+      setShowSuggestions(true);
     } else {
       setSearchResults([]);
       setShowSuggestions(false);
     }
   };
+
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    const searchContainer = document.querySelector('.search-input-container');
+    if (searchContainer && !searchContainer.contains(event.target as Node)) {
+      setShowSuggestions(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   const handleSuggestionClick = (word: string) => {
     setInputValue(word);
