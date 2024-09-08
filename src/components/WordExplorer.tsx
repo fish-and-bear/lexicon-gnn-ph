@@ -51,7 +51,6 @@ const WordExplorer: React.FC = () => {
           
           if (results && results.words) {
             const searchResults = results.words
-              .filter((word: { id: number; word: string }) => word.word.toLowerCase().startsWith(query.toLowerCase()))
               .map((word: { id: number; word: string }) => ({
                 id: word.id,
                 word: word.word.trim()
@@ -116,7 +115,9 @@ const WordExplorer: React.FC = () => {
     setWordNetwork(null);
 
     try {
+      console.log('Fetching word details for:', normalizedInput);
       const detailsData = await fetchWordDetails(normalizedInput);
+      console.log('Word details:', detailsData);
       
       if (!detailsData.data || !detailsData.data.definitions || detailsData.data.definitions.length === 0) {
         throw new Error("No definitions found for this word.");
@@ -125,7 +126,9 @@ const WordExplorer: React.FC = () => {
       setSelectedWordInfo(detailsData);
       setMainWord(detailsData.data.word);
       
+      console.log('Fetching word network for:', normalizedInput);
       let networkData = await fetchWordNetworkData(normalizedInput, depth, breadth);
+      console.log('Word network:', networkData);
       setWordNetwork(networkData);
 
       setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
@@ -143,7 +146,7 @@ const WordExplorer: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [inputValue, fetchWordNetworkData, fetchWordDetails, depth, breadth, currentHistoryIndex]);
+  }, [inputValue, depth, breadth, currentHistoryIndex, fetchWordNetworkData]);
 
   const handleNodeClick = useCallback(async (word: string) => {
     setError(null);

@@ -249,6 +249,8 @@ def get_words():
         normalized_search = normalize_word(search)
         query = query.filter(func.lower(func.unaccent(Word.word)).like(f"{normalized_search}%"))
 
+    logger.info(f"SQL Query: {query}")
+
     total = query.count()
     words = query.offset((page - 1) * per_page).limit(per_page).all()
 
