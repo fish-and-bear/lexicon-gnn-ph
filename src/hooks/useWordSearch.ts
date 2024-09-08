@@ -21,7 +21,7 @@ export function useWordSearch(initialQuery: string = '') {
       page, 
       per_page: perPage,
       exclude_baybayin: true,
-      is_real_word: true // Add this line
+      is_real_word: true
     }),
     { 
       keepPreviousData: true,

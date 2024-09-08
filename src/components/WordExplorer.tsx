@@ -78,15 +78,12 @@ const WordExplorer: React.FC = () => {
     const value = e.target.value;
     setInputValue(value);
     setError(null);
-    debouncedSearch(value);
-    console.log('Input changed:', value);
-    console.log('showSuggestions before:', showSuggestions);
-    if (value.length > 0) {
-      setShowSuggestions(true);
+    if (value.length > 1) {
+      debouncedSearch(value);
     } else {
+      setSearchResults([]);
       setShowSuggestions(false);
     }
-    console.log('showSuggestions after:', showSuggestions);
   };
 
   const handleSuggestionClick = (word: string) => {

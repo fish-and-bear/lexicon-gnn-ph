@@ -228,17 +228,16 @@ def get_words():
     page = max(int(request.args.get("page", 1)), 1)
     per_page = min(int(request.args.get("per_page", 20)), 100)
     search = request.args.get("search", "")
-    fuzzy = request.args.get("fuzzy", "false").lower() == "true"
-    exclude_baybayin = request.args.get("exclude_baybayin", "false").lower() == "true"
-    is_real_word = request.args.get("is_real_word", "false").lower() == "true"
+    exclude_baybayin = request.args.get("exclude_baybayin", "true").lower() == "true"
+    is_real_word = request.args.get("is_real_word", "true").lower() == "true"
 
-    logger.info(f"Searching words: search={search}, fuzzy={fuzzy}, page={page}, per_page={per_page}, exclude_baybayin={exclude_baybayin}, is_real_word={is_real_word}")
+    logger.info(f"Searching words: search={search}, page={page}, per_page={per_page}, exclude_baybayin={exclude_baybayin}, is_real_word={is_real_word}")
 
     query = Word.query.options(
         joinedload(Word.definitions).joinedload(Definition.meanings)
     )
 
-    # Filter out Baybayin words at the database level
+    # Exclude Baybayin words
     if exclude_baybayin:
         query = query.filter(~Word.word.op('~')(r'[\u1700-\u171F]+'))
 
@@ -253,21 +252,16 @@ def get_words():
 
     if search:
         normalized_search = normalize_word(search)
-        if fuzzy:
-            query = query.filter(Word.word.ilike(f"%{normalized_search}%"))
-        else:
-            query = query.filter(func.lower(func.unaccent(Word.word)).like(f"{normalized_search}%"))
+        # Use more strict matching
+        query = query.filter(func.lower(func.unaccent(Word.word)) == normalized_search)
 
     total = query.count()
-    logger.info(f"Total words found: {total}")
-
-    words = query.order_by(Word.word).offset((page - 1) * per_page).limit(per_page).all()
-    logger.info(f"Words returned: {[w.word for w in words]}")
+    words = query.offset((page - 1) * per_page).limit(per_page).all()
 
     return jsonify({
         "words": [{"word": w.word, "id": w.id} for w in words],
         "page": page,
-        "per_page": per_page,
+        "perPage": per_page,
         "total": total,
     })
 
