@@ -237,15 +237,10 @@ def get_words():
         joinedload(Word.definitions).joinedload(Definition.meanings)
     )
 
-    # Exclude Baybayin words
     if exclude_baybayin:
         query = query.filter(~Word.word.op('~')(r'[\u1700-\u171F]+'))
 
-    # Ensure only words with Latin characters are returned
     query = query.filter(Word.word.op('~')(r'^[a-zA-Z\u00C0-\u1FFF]+$'))
-
-    # Filter for words with valid definitions
-    query = query.filter(Word.definitions.any(Definition.meanings.any(Meaning.meaning != '')))
 
     if is_real_word:
         query = query.filter(Word.is_real_word == True)
@@ -253,7 +248,7 @@ def get_words():
     if search:
         normalized_search = normalize_word(search)
         # Use more strict matching
-        query = query.filter(func.lower(func.unaccent(Word.word)) == normalized_search)
+        query = query.filter(func.lower(func.unaccent(Word.word)).like(f"{normalized_search}%"))
 
     total = query.count()
     words = query.offset((page - 1) * per_page).limit(per_page).all()
