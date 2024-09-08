@@ -46,11 +46,14 @@ const WordExplorer: React.FC = () => {
         setError(null);
         console.log('Searching for:', query);
         try {
-          const results = await searchWords(query, { page: 1, per_page: 10, exclude_baybayin: true, is_real_word: true });
+          const results = await searchWords(query, { page: 1, per_page: 20, exclude_baybayin: true, is_real_word: true });
           console.log('API response:', results);
           
           if (results && results.words) {
             const searchResults = results.words
+              .filter((word: { id: number; word: string }) => 
+                word.word.toLowerCase().includes(query.toLowerCase())
+              )
               .map((word: { id: number; word: string }) => ({
                 id: word.id,
                 word: word.word.trim()
