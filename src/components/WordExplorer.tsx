@@ -151,6 +151,7 @@ const WordExplorer: React.FC = () => {
 
       setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), detailsData.data.word]);
       setCurrentHistoryIndex(prevIndex => prevIndex + 1);
+      setInputValue(detailsData.data.word); // Update input value with the searched word
     } catch (error) {
       console.error("Error fetching data:", error);
       let errorMessage = "Failed to fetch word data. Please try again.";
@@ -163,6 +164,7 @@ const WordExplorer: React.FC = () => {
       setSelectedWordInfo(null);
     } finally {
       setIsLoading(false);
+      setShowSuggestions(false); // Hide suggestions after search
     }
   }, [inputValue, depth, breadth, currentHistoryIndex, fetchWordNetworkData]);
 
@@ -341,7 +343,7 @@ const WordExplorer: React.FC = () => {
           disabled={isLoading}
           className="search-button"
         >
-          Explore
+          Search
         </button>
       </div>
       {error && <p className="error-message">{error}</p>}
