@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import inspect
 from models import (
@@ -8,13 +9,35 @@ from models import (
     Example, Hypernym, Hyponym, Meronym, Holonym, AssociatedWord, 
     AlternateForm, Inflection
 )
-from database import db_session, engine
+from database import db_session, engine, Base
 from sqlalchemy.orm.exc import FlushError
 from tqdm import tqdm
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+os.makedirs('logs', exist_ok=True)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Create handlers
+success_handler = logging.FileHandler('logs/success.log')
+error_handler = logging.FileHandler('logs/error.log')
+overall_handler = logging.FileHandler('logs/overall.log')
+
+# Set levels
+success_handler.setLevel(logging.INFO)
+error_handler.setLevel(logging.ERROR)
+overall_handler.setLevel(logging.DEBUG)
+
+# Create formatters and add to handlers
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+success_handler.setFormatter(formatter)
+error_handler.setFormatter(formatter)
+overall_handler.setFormatter(formatter)
+
+# Add handlers to the logger
+logger.addHandler(success_handler)
+logger.addHandler(error_handler)
+logger.addHandler(overall_handler)
 
 def load_json_data(file_path):
     logger.info(f"Loading JSON data from {file_path}...")
@@ -30,122 +53,160 @@ def load_json_data(file_path):
         logger.error(f"Error reading file: {e}")
         raise
 
-def get_or_create(session, model, **kwargs):
+def get_or_create(session, model, create_new=True, **kwargs):
     instance = session.query(model).filter_by(**kwargs).first()
     if instance:
         return instance
-    else:
+    elif create_new:
         instance = model(**kwargs)
         session.add(instance)
-        session.flush()
         return instance
+    else:
+        return None
 
 def process_etymology(session, etymology_data, word):
-    logger.info(f"Processing etymology for word: {word.word}")
-    logger.debug(f"Etymology data: {etymology_data}")
-
     if not etymology_data:
-        logger.info(f"No etymology data for word: {word.word}")
         return
-
-    etymology = Etymology(word=word, etymology_text=str(etymology_data))
-    session.add(etymology)
-
-    if isinstance(etymology_data, str):
-        # If it's a string, we just save it as etymology_text
-        logger.info(f"Saved string etymology for word: {word.word}")
-        return
-    
-    if isinstance(etymology_data, dict):
-        # If it's a dictionary, look for 'etymology_components' key
-        components = etymology_data.get('etymology_components', [])
-    elif isinstance(etymology_data, list):
-        # If it's a list, treat it as components directly
-        components = etymology_data
-    else:
-        logger.warning(f"Unexpected etymology data type for word {word.word}: {type(etymology_data)}")
-        return
-
-    for i, component in enumerate(components):
-        etym_component = EtymologyComponent(
-            etymology=etymology,
-            component=str(component),
-            order=i
-        )
-        session.add(etym_component)
-    
-    logger.info(f"Processed {len(components)} etymology components for word: {word.word}")
-
-    session.flush()
-
-def process_definitions(session, definitions_data, word):
-    for definition_data in definitions_data:
-        definition = Definition(
-            word=word,
-            part_of_speech=definition_data['part_of_speech'],
-            usage_notes=definition_data.get('usage_notes', []),
-            tags=definition_data.get('tags', [])
-        )
-        session.add(definition)
-
-        for source_name, meanings in definition_data.get('meanings_by_source', {}).items():
-            source = get_or_create(session, Source, source_name=source_name)
-            for meaning_text in meanings:
-                meaning = Meaning(definition=definition, source=source, meaning=meaning_text)
-                session.add(meaning)
-
-        for example in definition_data.get('examples', []):
-            ex = Example(word=word, definition=definition, example=example)
-            session.add(ex)
-
-def process_forms(session, forms_data, word):
-    for form_data in forms_data:
-        form = Form(
-            word=word,
-            form=form_data['form'],
-            tags=form_data.get('tags', [])
-        )
-        session.add(form)
-
-def process_head_templates(session, templates_data, word):
-    for template_data in templates_data:
-        template = HeadTemplate(
-            word=word,
-            template_name=template_data['name'],
-            args=template_data.get('args', {}),
-            expansion=template_data.get('expansion', '')
-        )
-        session.add(template)
-
-def process_associated_words(session, associated_words_data, word):
-    for associated_word in associated_words_data:
-        assoc = AssociatedWord(word=word, associated_word=associated_word)
-        session.add(assoc)
-
-def process_alternate_forms(session, alternate_forms_data, word):
-    for alternate_form in alternate_forms_data:
-        alt_form = AlternateForm(word=word, alternate_form=alternate_form)
-        session.add(alt_form)
-
-def process_semantic_relations(session, relations_data, word, relation_class):
-    for relation in relations_data:
-        rel = relation_class(word=word, **{relation_class.__tablename__[:-1]: relation})
-        session.add(rel)
-
-def process_inflections(session, inflections_data, word):
-    for inflection_data in inflections_data:
-        inflection = Inflection(
-            word=word,
-            name=inflection_data['name'],
-            args=inflection_data.get('args', {})
-        )
-        session.add(inflection)
-
-def migrate_word(session, word_data):
-    logger.info(f"Processing word: {word_data['word']}")
 
     try:
-        # Create or get the word
+        etymology = Etymology(word=word, etymology_text=str(etymology_data))
+        session.add(etymology)
+
+        if isinstance(etymology_data, (list, dict)):
+            components = []
+            if isinstance(etymology_data, dict):
+                components = etymology_data.get('etymology_components', [])
+            elif isinstance(etymology_data, list):
+                components = etymology_data
+
+            etym_components = []
+            for i, component in enumerate(components):
+                etym_component = EtymologyComponent(
+                    etymology=etymology,
+                    component=str(component),
+                    order=i
+                )
+                etym_components.append(etym_component)
+            session.add_all(etym_components)
+    except Exception as e:
+        logger.error(f"Error processing etymology for word '{word.word}': {e}")
+        raise
+
+def process_definitions(session, definitions_data, word):
+    try:
+        definitions = []
+        meanings = []
+        examples = []
+
+        for definition_data in definitions_data:
+            definition = Definition(
+                word=word,
+                part_of_speech=definition_data.get('part_of_speech'),
+                usage_notes=definition_data.get('usage_notes', []),
+                tags=definition_data.get('tags', [])
+            )
+            definitions.append(definition)
+
+            for source_name, meaning_texts in definition_data.get('meanings_by_source', {}).items():
+                source = get_or_create(session, Source, source_name=source_name)
+                for meaning_text in meaning_texts:
+                    meaning = Meaning(definition=definition, source=source, meaning=meaning_text)
+                    meanings.append(meaning)
+
+            for example_text in definition_data.get('examples', []):
+                example = Example(word=word, definition=definition, example=example_text)
+                examples.append(example)
+
+        session.add_all(definitions)
+        session.add_all(meanings)
+        session.add_all(examples)
+    except Exception as e:
+        logger.error(f"Error processing definitions for word '{word.word}': {e}")
+        raise
+
+def process_forms(session, forms_data, word):
+    try:
+        forms = []
+        for form_data in forms_data:
+            form = Form(
+                word=word,
+                form=form_data.get('form'),
+                tags=form_data.get('tags', [])
+            )
+            forms.append(form)
+        session.add_all(forms)
+    except Exception as e:
+        logger.error(f"Error processing forms for word '{word.word}': {e}")
+        raise
+
+def process_head_templates(session, templates_data, word):
+    try:
+        templates = []
+        for template_data in templates_data:
+            template = HeadTemplate(
+                word=word,
+                template_name=template_data.get('name'),
+                args=template_data.get('args', {}),
+                expansion=template_data.get('expansion', '')
+            )
+            templates.append(template)
+        session.add_all(templates)
+    except Exception as e:
+        logger.error(f"Error processing head templates for word '{word.word}': {e}")
+        raise
+
+def process_associated_words(session, associated_words_data, word):
+    try:
+        associated_words = []
+        for associated_word in associated_words_data:
+            assoc = AssociatedWord(word=word, associated_word=associated_word)
+            associated_words.append(assoc)
+        session.add_all(associated_words)
+    except Exception as e:
+        logger.error(f"Error processing associated words for '{word.word}': {e}")
+        raise
+
+def process_alternate_forms(session, alternate_forms_data, word):
+    try:
+        alternate_forms = []
+        for alternate_form in alternate_forms_data:
+            alt_form = AlternateForm(word=word, alternate_form=alternate_form)
+            alternate_forms.append(alt_form)
+        session.add_all(alternate_forms)
+    except Exception as e:
+        logger.error(f"Error processing alternate forms for '{word.word}': {e}")
+        raise
+
+def process_semantic_relations(session, relations_data, word, relation_class):
+    try:
+        relations = []
+        field_name = relation_class.__tablename__[:-1]  # Remove 's' from table name to get field name
+        for relation in relations_data:
+            rel = relation_class(word=word, **{field_name: relation})
+            relations.append(rel)
+        session.add_all(relations)
+    except Exception as e:
+        logger.error(f"Error processing {relation_class.__name__} for '{word.word}': {e}")
+        raise
+
+def process_inflections(session, inflections_data, word):
+    try:
+        inflections = []
+        for inflection_data in inflections_data:
+            inflection = Inflection(
+                word=word,
+                name=inflection_data.get('name'),
+                args=inflection_data.get('args', {})
+            )
+            inflections.append(inflection)
+        session.add_all(inflections)
+    except Exception as e:
+        logger.error(f"Error processing inflections for '{word.word}': {e}")
+        raise
+
+def migrate_word(session, word_data):
+    try:
+        # Try to get the word, or create if not exists
         word = get_or_create(session, Word, word=word_data['word'])
 
         # Update word attributes
@@ -162,10 +223,6 @@ def migrate_word(session, word_data):
 
         # Process etymology
         process_etymology(session, word_data.get('etymology'), word)
-    
-        # Process etymology components separately if they exist
-        if 'etymology_components' in word_data:
-            process_etymology(session, word_data['etymology_components'], word)
 
         # Process definitions
         process_definitions(session, word_data.get('definitions', []), word)
@@ -183,15 +240,19 @@ def migrate_word(session, word_data):
                 word.languages.append(language)
 
         # Process derivatives
+        derivatives = []
         for derivative in word_data.get('derivatives', []):
             if isinstance(derivative, str):
                 deriv = Derivative(word=word, derivative=derivative)
-                session.add(deriv)
+                derivatives.append(deriv)
+        session.add_all(derivatives)
 
         # Process examples
+        examples = []
         for example in word_data.get('examples', []):
             ex = Example(word=word, example=example)
-            session.add(ex)
+            examples.append(ex)
+        session.add_all(examples)
 
         # Process associated words
         process_associated_words(session, word_data.get('associated_words', []), word)
@@ -226,116 +287,189 @@ def migrate_word(session, word_data):
             if rel not in word.related_terms:
                 word.related_terms.append(rel)
 
-        session.commit()
-        logger.info(f"Successfully processed word: {word.word}")
-
-    except FlushError as e:
-        session.rollback()
-        logger.error(f"Flush error while processing word '{word_data['word']}': {e}")
-        # Attempt to update the existing record
-        try:
-            existing_word = session.query(Word).filter(Word.word == word_data['word']).first()
-            if existing_word:
-                update_existing_word(session, existing_word, word_data)
-                session.commit()
-                logger.info(f"Updated existing word: {existing_word.word}")
-        except Exception as update_error:
-            session.rollback()
-            logger.error(f"Error updating existing word '{word_data['word']}': {update_error}")
-    except SQLAlchemyError as e:
-        session.rollback()
-        logger.error(f"Database error while processing word '{word_data['word']}': {e}")
+        return True, None
     except Exception as e:
-        session.rollback()
-        logger.error(f"Unexpected error while processing word '{word_data['word']}': {e}")
-
-def update_existing_word(session, existing_word, word_data):
+        logger.error(f"Error migrating word '{word_data.get('word')}': {e}")
+        return False, str(e)
+    
+def update_word_data(existing_word, new_word_data):
+    logger.info(f"Updating data for word: {existing_word.word}")
+    
     # Update basic attributes
-    existing_word.pronunciation = word_data.get('pronunciation')
-    existing_word.audio_pronunciation = word_data.get('audio_pronunciation', [])
-    existing_word.tags = word_data.get('tags', [])
-    existing_word.kaikki_etymology = word_data.get('kaikki_etymology')
-    existing_word.variant = word_data.get('variant')
+    basic_attrs = ['pronunciation', 'audio_pronunciation', 'tags', 'kaikki_etymology', 'variant', 'root_word']
+    for attr in basic_attrs:
+        new_value = new_word_data.get(attr)
+        if new_value is not None:
+            setattr(existing_word, attr, new_value)
+            logger.info(f"Updated {attr} for word {existing_word.word}")
 
-    # Clear existing relationships
-    existing_word.etymologies.clear()
-    existing_word.definitions.clear()
-    existing_word.forms.clear()
-    existing_word.head_templates.clear()
-    existing_word.languages.clear()
-    existing_word.derivatives.clear()
-    existing_word.examples.clear()
-    existing_word.associated_words.clear()
-    existing_word.alternate_forms.clear()
-    existing_word.synonyms.clear()
-    existing_word.antonyms.clear()
-    existing_word.related_terms.clear()
-    existing_word.inflections.clear()
+    # Update or append related entities
+    related_entities = [
+        ('definitions', 'definitions', Definition), ('forms', 'forms', Form),
+        ('head_templates', 'head_templates', HeadTemplate), ('languages', 'language_codes', Language),
+        ('derivatives', 'derivatives', Derivative), ('examples', 'examples', Example),
+        ('associated_words', 'associated_words', AssociatedWord), 
+        ('alternate_forms', 'alternate_forms', AlternateForm),
+        ('hypernyms', 'hypernyms', Hypernym), ('hyponyms', 'hyponyms', Hyponym),
+        ('meronyms', 'meronyms', Meronym), ('holonyms', 'holonyms', Holonym),
+        ('inflections', 'inflections', Inflection), ('synonyms', 'synonyms', Word),
+        ('antonyms', 'antonyms', Word), ('related_terms', 'related_terms', Word)
+    ]
 
-    # Re-process all relationships
-    process_etymology(session, word_data.get('etymology'), existing_word)
-    process_definitions(session, word_data.get('definitions', []), existing_word)
-    process_forms(session, word_data.get('forms', []), existing_word)
-    process_head_templates(session, word_data.get('head_templates', []), existing_word)
-    process_inflections(session, word_data.get('inflections', []), existing_word)
+    for existing_attr, new_attr, model in related_entities:
+        existing_items = getattr(existing_word, existing_attr)
+        new_items = new_word_data.get(new_attr, [])
+        
+        for new_item in new_items:
+            if isinstance(new_item, dict):
+                # For complex objects like definitions
+                existing_item = next((item for item in existing_items if item.matches(new_item)), None)
+                if existing_item:
+                    existing_item.update(new_item)
+                    logger.info(f"Updated existing {existing_attr} for word {existing_word.word}")
+                else:
+                    new_obj = model(**new_item)
+                    existing_items.append(new_obj)
+                    logger.info(f"Added new {existing_attr} for word {existing_word.word}")
+            else:
+                # For simple objects like synonyms
+                if new_item not in existing_items:
+                    new_obj = model(word=new_item) if model == Word else model(**{existing_attr.rstrip('s'): new_item})
+                    existing_items.append(new_obj)
+                    logger.info(f"Added new {existing_attr} for word {existing_word.word}")
 
-    for language_code in word_data.get('language_codes', []):
-        language = get_or_create(session, Language, code=language_code)
-        existing_word.languages.append(language)
+    logger.info(f"Finished updating data for word: {existing_word.word}")
 
-    for derivative in word_data.get('derivatives', []):
-        if isinstance(derivative, str):
-            deriv = Derivative(word=existing_word, derivative=derivative)
-            session.add(deriv)
 
-    for example in word_data.get('examples', []):
-        ex = Example(word=existing_word, example=example)
-        session.add(ex)
+def migrate_single_word(session, word_key, word_data):
+    logger.info(f"Starting migration for word: {word_key}")
+    if not isinstance(word_data, dict) or 'word' not in word_data:
+        error_message = f"Invalid entry structure for key: {word_key}"
+        logger.error(error_message)
+        return False, error_message
 
-    process_associated_words(session, word_data.get('associated_words', []), existing_word)
-    process_alternate_forms(session, word_data.get('alternate_forms', []), existing_word)
+    # Check if the word already exists in the database
+    existing_word = session.query(Word).filter_by(word=word_data['word']).first()
+    if existing_word:
+        logger.info(f"Word '{word_data['word']}' already exists in the database")
+        # Compare the existing word data with the new data
+        if compare_word_data(existing_word, word_data):
+            logger.info(f"Word '{word_data['word']}' has identical data. Skipping.")
+            return True, None
+        else:
+            logger.info(f"Word '{word_data['word']}' has different data. Updating.")
+            update_word_data(existing_word, word_data)
+            return True, None
 
-    process_semantic_relations(session, word_data.get('hypernyms', []), existing_word, Hypernym)
-    process_semantic_relations(session, word_data.get('hyponyms', []), existing_word, Hyponym)
-    process_semantic_relations(session, word_data.get('meronyms', []), existing_word, Meronym)
-    process_semantic_relations(session, word_data.get('holonyms', []), existing_word, Holonym)
+    logger.info(f"Migrating new word: {word_data['word']}")
+    success, error_message = migrate_word(session, word_data)
+    if success:
+        logger.info(f"Successfully migrated word: {word_data['word']}")
+    else:
+        logger.error(f"Failed to migrate word '{word_data['word']}': {error_message}")
+    return success, error_message
 
-    for synonym in word_data.get('synonyms', []):
-        syn = get_or_create(session, Word, word=synonym)
-        existing_word.synonyms.append(syn)
 
-    for antonym in word_data.get('antonyms', []):
-        ant = get_or_create(session, Word, word=antonym)
-        existing_word.antonyms.append(ant)
+def compare_word_data(existing_word, new_word_data):
+    logger.info(f"Comparing data for word: {existing_word.word}")
+    
+    # Compare basic attributes
+    basic_attrs = ['pronunciation', 'audio_pronunciation', 'tags', 'kaikki_etymology', 'variant', 'root_word']
+    for attr in basic_attrs:
+        existing_value = getattr(existing_word, attr)
+        new_value = new_word_data.get(attr)
+        if existing_value != new_value:
+            logger.info(f"Difference found in {attr}: Existing: {existing_value}, New: {new_value}")
+            return False
 
-    for related_term in word_data.get('related_terms', []):
-        rel = get_or_create(session, Word, word=related_term)
-        existing_word.related_terms.append(rel)
+    # Compare related entities
+    related_entities = [
+        ('definitions', 'definitions'), ('forms', 'forms'), ('head_templates', 'head_templates'),
+        ('languages', 'language_codes'), ('derivatives', 'derivatives'), ('examples', 'examples'),
+        ('associated_words', 'associated_words'), ('alternate_forms', 'alternate_forms'),
+        ('hypernyms', 'hypernyms'), ('hyponyms', 'hyponyms'), ('meronyms', 'meronyms'),
+        ('holonyms', 'holonyms'), ('inflections', 'inflections'), ('synonyms', 'synonyms'),
+        ('antonyms', 'antonyms'), ('related_terms', 'related_terms')
+    ]
 
-    session.add(existing_word)
+    for existing_attr, new_attr in related_entities:
+        existing_count = len(getattr(existing_word, existing_attr))
+        new_count = len(new_word_data.get(new_attr, []))
+        if existing_count != new_count:
+            logger.info(f"Difference found in {existing_attr}: Existing count: {existing_count}, New count: {new_count}")
+            return False
+
+    logger.info(f"No differences found for word: {existing_word.word}")
+    return True
 
 def migrate_data(json_data):
-    try:
-        inspector = inspect(engine)
-        existing_tables = inspector.get_table_names()
-        
-        if 'words' not in existing_tables:
-            logger.warning("'words' table not found in the database. Creating tables...")
-            Base.metadata.create_all(engine)
+    inspector = inspect(engine)
+    existing_tables = inspector.get_table_names()
+    
+    if 'words' not in existing_tables:
+        logger.warning("'words' table not found in the database. Creating tables...")
+        Base.metadata.create_all(engine)
 
-        total_words = len(json_data)
-        with tqdm(total=total_words, desc="Migrating words") as pbar:
-            for word_key, word_data in json_data.items():
-                migrate_word(db_session, word_data)
-                pbar.update(1)
-    except Exception as e:
-        logger.error(f"Error occurred during migration: {e}")
-    finally:
-        db_session.remove()
+    total_words = len(json_data)
+    successful_migrations = 0
+    failed_migrations = []
+
+    batch_size = 1000
+    batch_counter = 0
+
+    with tqdm(total=total_words, desc="Migrating words") as pbar:
+        for word_key, word_data in json_data.items():
+            success, error_message = migrate_single_word(db_session, word_key, word_data)
+            if success:
+                successful_migrations += 1
+                logger.info(f"Successfully migrated word: {word_data.get('word')}")
+                logger.info(f"Word '{word_data.get('word')}' migration details: {word_data}")
+            else:
+                failed_migrations.append((word_key, error_message))
+                db_session.rollback()  # Rollback any partial changes for this word
+                logger.error(f"Failed to migrate word '{word_key}': {error_message}")
+
+            batch_counter += 1
+            if batch_counter >= batch_size:
+                try:
+                    db_session.commit()
+                    batch_counter = 0
+                except Exception as e:
+                    db_session.rollback()
+                    logger.error(f"Error committing batch at word '{word_key}': {e}")
+                    # Collect all words in this batch as failed
+                    failed_migrations.extend([(word_key, str(e))])
+                    batch_counter = 0  # Reset batch counter
+            pbar.update(1)
+    # Commit any remaining words
+    if batch_counter > 0:
+        try:
+            db_session.commit()
+        except Exception as e:
+            db_session.rollback()
+            logger.error(f"Error committing final batch: {e}")
+
+    # Log results
+    logger.info(f"Migration completed. Successful: {successful_migrations}, Failed: {len(failed_migrations)}")
+
+    if failed_migrations:
+        logger.warning("The following entries failed to migrate:")
+        for word_key, error_message in failed_migrations:
+            logger.warning(f"  - {word_key}: {error_message}")
+
+        # Write failed migrations to a file for later review
+        with open('logs/failed_migrations.log', 'w', encoding='utf-8') as f:
+            for word_key, error_message in failed_migrations:
+                f.write(f"{word_key}: {error_message}\n")
+        logger.info("Failed migrations have been logged to 'logs/failed_migrations.log'")
+
+    db_session.remove()
 
 if __name__ == "__main__":
     file_path = '../data/processed_filipino_dictionary.json'
-    json_data = load_json_data(file_path)
-    
-    migrate_data(json_data)
-    logger.info("Data migration completed successfully.")
+    try:
+        json_data = load_json_data(file_path)
+        migrate_data(json_data)
+        logger.info("Data migration process completed successfully.")
+    except Exception as e:
+        logger.error(f"Data migration process failed: {e}")

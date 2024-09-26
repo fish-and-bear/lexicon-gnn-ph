@@ -104,6 +104,15 @@ class Definition(Base):
     meanings = relationship("Meaning", back_populates="definition", cascade="all, delete-orphan")
     examples = relationship("Example", back_populates="definition", cascade="all, delete-orphan")
 
+    def matches(self, new_data):
+        return self.part_of_speech == new_data.get('part_of_speech')
+
+    def update(self, new_data):
+        self.part_of_speech = new_data.get('part_of_speech', self.part_of_speech)
+        self.usage_notes = new_data.get('usage_notes', self.usage_notes)
+        self.tags = new_data.get('tags', self.tags)
+        # Update meanings if necessary
+
 class Meaning(Base):
     __tablename__ = 'meanings'
     
