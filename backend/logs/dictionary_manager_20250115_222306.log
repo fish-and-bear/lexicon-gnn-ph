@@ -1,0 +1,48 @@
+2025-01-15 22:23:06,297 - INFO - Starting data migration process
+2025-01-15 22:23:06,299 - INFO - Duplicate checking is disabled - will process all entries
+2025-01-15 22:23:06,301 - INFO - Attempting database connection...
+2025-01-15 22:23:06,303 - INFO - Database configuration:
+2025-01-15 22:23:06,304 - INFO -   Database Name: fil_dict_db
+2025-01-15 22:23:06,306 - INFO -   User: postgres
+2025-01-15 22:23:06,307 - INFO -   Host: localhost
+2025-01-15 22:23:06,309 - INFO -   Password: ********
+2025-01-15 22:23:06,465 - INFO - Successfully established database connection
+2025-01-15 22:23:06,468 - INFO - Setting up PostgreSQL extensions...
+2025-01-15 22:23:06,470 - INFO - Checking extension: pg_trgm
+2025-01-15 22:23:06,502 - INFO - Extension already installed: pg_trgm
+2025-01-15 22:23:06,504 - INFO - Checking extension: unaccent
+2025-01-15 22:23:06,507 - INFO - Extension already installed: unaccent
+2025-01-15 22:23:06,509 - INFO - Checking extension: fuzzystrmatch
+2025-01-15 22:23:06,511 - INFO - Extension already installed: fuzzystrmatch
+2025-01-15 22:23:06,513 - INFO - Extensions setup completed
+2025-01-15 22:23:06,514 - INFO - Creating/updating database tables
+2025-01-15 22:23:06,516 - INFO - Starting table creation/update process
+2025-01-15 22:23:06,523 - INFO - Tables created or updated successfully
+2025-01-15 22:23:06,524 - INFO - Beginning data processing
+2025-01-15 22:23:06,526 - INFO - 1. Processing Tagalog words
+2025-01-15 22:23:06,527 - INFO - Starting to process Tagalog words file: data/tagalog-words.json
+2025-01-15 22:23:06,529 - INFO - Using source identifier: tagalog-words.json
+2025-01-15 22:23:07,216 - INFO - Successfully loaded JSON data with 65328 entries
+2025-01-15 22:27:21,272 - INFO - Completed processing Tagalog words file: data/tagalog-words.json
+2025-01-15 22:27:21,320 - INFO - 2. Processing Root words
+2025-01-15 22:27:21,321 - INFO - Starting to process Root Words file: data/root_words_with_associated_words_cleaned.json
+2025-01-15 22:27:21,322 - INFO - Using source identifier: root_words_with_associated_words_cleaned.json
+2025-01-15 22:27:21,376 - INFO - Successfully loaded JSON data with 2238 entries
+2025-01-15 22:28:13,058 - INFO - Completed processing Root Words file: data/root_words_with_associated_words_cleaned.json
+2025-01-15 22:28:13,063 - INFO - 3. Processing KWF Dictionary
+2025-01-15 22:28:13,065 - INFO - Starting to process KWF Dictionary: data/kwf_dictionary.json
+2025-01-15 22:28:13,066 - INFO - Using source identifier: kwf_dictionary.json
+2025-01-15 22:28:13,836 - INFO - Successfully loaded KWF data with 30734 entries
+2025-01-15 22:30:21,017 - INFO - Completed processing KWF Dictionary
+2025-01-15 22:30:21,079 - INFO - 4. Processing Kaikki (Tagalog)
+2025-01-15 22:30:21,080 - INFO - Starting to process Kaikki data from: data/kaikki.jsonl
+2025-01-15 22:30:21,081 - INFO - Using source identifier: kaikki.jsonl
+2025-01-15 22:30:21,436 - INFO - Found 27,964 entries to process
+2025-01-15 22:33:07,412 - INFO - Completed processing kaikki.jsonl
+2025-01-15 22:33:07,413 - INFO - 5. Processing Kaikki (Cebuano)
+2025-01-15 22:33:07,413 - INFO - Starting to process Kaikki data from: data/kaikki-ceb.jsonl
+2025-01-15 22:33:07,414 - INFO - Using source identifier: kaikki-ceb.jsonl
+2025-01-15 22:33:07,502 - INFO - Found 17,909 entries to process
+2025-01-15 22:34:13,493 - INFO - Completed processing kaikki-ceb.jsonl
+2025-01-15 22:34:13,502 - INFO - Migration completed successfully
+2025-01-15 22:34:13,505 - INFO - Database connection closed

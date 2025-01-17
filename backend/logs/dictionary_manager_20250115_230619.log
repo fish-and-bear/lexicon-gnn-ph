@@ -1,0 +1,58 @@
+2025-01-15 23:06:19,154 - INFO - Starting fresh data migration process
+2025-01-15 23:06:19,156 - INFO - Attempting database connection...
+2025-01-15 23:06:19,157 - INFO - Database configuration:
+2025-01-15 23:06:19,158 - INFO -   Database Name: fil_dict_db
+2025-01-15 23:06:19,159 - INFO -   User: postgres
+2025-01-15 23:06:19,160 - INFO -   Host: localhost
+2025-01-15 23:06:19,161 - INFO -   Password: ********
+2025-01-15 23:06:19,336 - INFO - Successfully established database connection
+2025-01-15 23:06:19,337 - INFO - Dropping all existing tables...
+2025-01-15 23:06:19,404 - INFO - Setting up PostgreSQL extensions...
+2025-01-15 23:06:19,406 - INFO - Checking extension: pg_trgm
+2025-01-15 23:06:19,420 - INFO - Extension already installed: pg_trgm
+2025-01-15 23:06:19,421 - INFO - Checking extension: unaccent
+2025-01-15 23:06:19,423 - INFO - Extension already installed: unaccent
+2025-01-15 23:06:19,425 - INFO - Checking extension: fuzzystrmatch
+2025-01-15 23:06:19,427 - INFO - Extension already installed: fuzzystrmatch
+2025-01-15 23:06:19,428 - INFO - Extensions setup completed
+2025-01-15 23:06:19,429 - INFO - Creating new database tables
+2025-01-15 23:06:19,430 - INFO - Starting table creation/update process
+2025-01-15 23:06:19,563 - INFO - Tables created or updated successfully
+2025-01-15 23:06:19,564 - INFO - Beginning data processing
+2025-01-15 23:06:19,565 - INFO - 1. Processing Tagalog words
+2025-01-15 23:06:19,566 - INFO - Starting to process Tagalog words file: data/tagalog-words.json
+2025-01-15 23:06:19,567 - INFO - Using source identifier: tagalog-words.json
+2025-01-15 23:06:20,175 - INFO - Successfully loaded JSON data with 65328 entries
+2025-01-15 23:10:47,235 - INFO - Completed processing Tagalog words file: data/tagalog-words.json
+2025-01-15 23:10:47,364 - INFO - Processing Baybayin entries from recent import...
+2025-01-15 23:10:47,365 - INFO - Processing Baybayin entries...
+2025-01-15 23:10:47,442 - INFO - 2. Processing Root words
+2025-01-15 23:10:47,444 - INFO - Starting to process Root Words file: data/root_words_with_associated_words_cleaned.json
+2025-01-15 23:10:47,446 - INFO - Using source identifier: root_words_with_associated_words_cleaned.json
+2025-01-15 23:10:47,515 - INFO - Successfully loaded JSON data with 2238 entries
+2025-01-15 23:11:30,107 - INFO - Completed processing Root Words file: data/root_words_with_associated_words_cleaned.json
+2025-01-15 23:11:30,114 - INFO - Processing Baybayin entries from recent import...
+2025-01-15 23:11:30,116 - INFO - Processing Baybayin entries...
+2025-01-15 23:11:30,206 - INFO - 3. Processing KWF Dictionary
+2025-01-15 23:11:30,208 - INFO - Starting to process KWF Dictionary: data/kwf_dictionary.json
+2025-01-15 23:11:30,209 - INFO - Using source identifier: kwf_dictionary.json
+2025-01-15 23:11:31,473 - INFO - Successfully loaded KWF data with 30734 entries
+2025-01-15 23:13:42,839 - INFO - Completed processing KWF Dictionary
+2025-01-15 23:13:42,993 - INFO - Processing Baybayin entries from recent import...
+2025-01-15 23:13:42,995 - INFO - Processing Baybayin entries...
+2025-01-15 23:13:43,046 - INFO - 4. Processing Kaikki (Tagalog)
+2025-01-15 23:13:43,047 - INFO - Starting to process Kaikki data from: data/kaikki.jsonl
+2025-01-15 23:13:43,048 - INFO - Using source identifier: kaikki.jsonl
+2025-01-15 23:13:43,365 - INFO - Found 27,964 entries to process
+2025-01-15 23:15:53,366 - INFO - Completed processing kaikki.jsonl
+2025-01-15 23:15:53,389 - INFO - Processing Baybayin entries from recent import...
+2025-01-15 23:15:53,391 - INFO - Processing Baybayin entries...
+2025-01-15 23:15:55,585 - INFO - 5. Processing Kaikki (Cebuano)
+2025-01-15 23:15:55,587 - INFO - Starting to process Kaikki data from: data/kaikki-ceb.jsonl
+2025-01-15 23:15:55,588 - INFO - Using source identifier: kaikki-ceb.jsonl
+2025-01-15 23:15:55,742 - INFO - Found 17,909 entries to process
+2025-01-15 23:16:57,452 - INFO - Completed processing kaikki-ceb.jsonl
+2025-01-15 23:16:57,453 - INFO - Processing Baybayin entries from recent import...
+2025-01-15 23:16:57,454 - INFO - Processing Baybayin entries...
+2025-01-15 23:16:59,962 - INFO - Migration completed successfully
+2025-01-15 23:16:59,968 - INFO - Database connection closed

@@ -1,0 +1,18 @@
+2025-01-15 21:59:32,374 - WARNING - Starting database purge process
+2025-01-15 21:59:33,557 - INFO - Attempting database connection...
+2025-01-15 21:59:33,558 - INFO - Database configuration:
+2025-01-15 21:59:33,558 - INFO -   Database Name: fil_dict_db
+2025-01-15 21:59:33,559 - INFO -   User: postgres
+2025-01-15 21:59:33,559 - INFO -   Host: localhost
+2025-01-15 21:59:33,559 - INFO -   Password: ********
+2025-01-15 21:59:33,625 - INFO - Successfully established database connection
+2025-01-15 21:59:33,627 - INFO - Disabling triggers...
+2025-01-15 21:59:33,632 - INFO - Deleting data from all tables...
+2025-01-15 21:59:33,633 - INFO - Purging table: etymologies
+2025-01-15 21:59:33,657 - INFO - Purging table: relations
+2025-01-15 21:59:33,671 - INFO - Purging table: definitions
+2025-01-15 21:59:33,686 - INFO - Purging table: words
+2025-01-15 21:59:33,746 - INFO - Resetting sequences...
+2025-01-15 21:59:33,753 - INFO - Re-enabling triggers...
+2025-01-15 21:59:33,855 - INFO - Database purge completed successfully
+2025-01-15 21:59:33,857 - INFO - Database connection closed

@@ -1,0 +1,15 @@
+2025-01-17 03:34:25,307 - INFO - Attempting database connection...
+2025-01-17 03:34:25,308 - INFO - Database configuration:
+2025-01-17 03:34:25,308 - INFO -   Database Name: fil_dict_db
+2025-01-17 03:34:25,308 - INFO -   User: postgres
+2025-01-17 03:34:25,309 - INFO -   Host: localhost
+2025-01-17 03:34:25,309 - INFO -   Password: ********
+2025-01-17 03:34:25,367 - INFO - Successfully established database connection
+2025-01-17 03:34:25,463 - ERROR - Error processing word information: column d.part_of_speech does not exist
+LINE 9:                 ARRAY_AGG(DISTINCT d.part_of_speech) FILTER ...
+                                           ^
+
+2025-01-17 03:34:25,464 - ERROR - Error during word lookup: column d.part_of_speech does not exist
+LINE 9:                 ARRAY_AGG(DISTINCT d.part_of_speech) FILTER ...
+                                           ^
+

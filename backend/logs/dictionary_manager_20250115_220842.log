@@ -1,0 +1,11 @@
+2025-01-15 22:08:42,153 - INFO - Attempting database connection...
+2025-01-15 22:08:42,155 - INFO - Database configuration:
+2025-01-15 22:08:42,156 - INFO -   Database Name: fil_dict_db
+2025-01-15 22:08:42,157 - INFO -   User: postgres
+2025-01-15 22:08:42,157 - INFO -   Host: localhost
+2025-01-15 22:08:42,159 - INFO -   Password: ********
+2025-01-15 22:08:42,261 - INFO - Successfully established database connection
+2025-01-15 22:08:42,546 - ERROR - Error during word lookup: invalid input syntax for type integer: "tl"
+LINE 1: SELECT lemma FROM words WHERE id = 'tl'
+                                           ^
+

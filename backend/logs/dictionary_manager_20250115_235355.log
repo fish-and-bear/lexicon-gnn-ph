@@ -1,0 +1,12 @@
+2025-01-15 23:53:55,328 - INFO - Attempting database connection...
+2025-01-15 23:53:55,330 - INFO - Database configuration:
+2025-01-15 23:53:55,330 - INFO -   Database Name: fil_dict_db
+2025-01-15 23:53:55,331 - INFO -   User: postgres
+2025-01-15 23:53:55,332 - INFO -   Host: localhost
+2025-01-15 23:53:55,333 - INFO -   Password: ********
+2025-01-15 23:53:55,479 - INFO - Successfully established database connection
+2025-01-15 23:53:57,248 - ERROR - Error gathering statistics: function round(double precision, integer) does not exist
+LINE 19:                 ROUND((standalone_count::float / NULLIF(tota...
+                         ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+

@@ -1,0 +1,11 @@
+2025-01-15 22:48:42,480 - INFO - Attempting database connection...
+2025-01-15 22:48:42,481 - INFO - Database configuration:
+2025-01-15 22:48:42,482 - INFO -   Database Name: fil_dict_db
+2025-01-15 22:48:42,483 - INFO -   User: postgres
+2025-01-15 22:48:42,485 - INFO -   Host: localhost
+2025-01-15 22:48:42,486 - INFO -   Password: ********
+2025-01-15 22:48:42,690 - INFO - Successfully established database connection
+2025-01-15 22:48:50,386 - ERROR - Error gathering leaderboard data: column "e.language_codes" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 10:                          COALESCE(NULLIF(TRIM(e.language_cod...
+                                                       ^
+
