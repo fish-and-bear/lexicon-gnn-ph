@@ -1,310 +1,76 @@
 """Language classification and standardization systems for Filipino dictionary."""
 
-from typing import Dict, List, Optional, Set, Tuple
-import re
-
-# Language classification mappings
-LANGUAGE_FAMILIES = {
-    'Austronesian': {
-        'Malayo-Polynesian': {
-            'Philippine': {
-                'Greater Central Philippine': {
-                    'Central Philippine': [
-                        'Tagálog', 'Bíkol', 'Sebwáno', 'Hiligaynón', 'Waráy'
-                    ],
-                    'Mansakan': [
-                        'Mandayá', 'Kalagan'
-                    ]
-                },
-                'Northern Luzon': {
-                    'Cordilleran': [
-                        'Ilokáno', 'Ifugáw', 'Kankanáëy', 'Balangáw', 'Gáddang', 'Isnë́g'
-                    ],
-                    'Cagayan Valley': [
-                        'Ibanág', 'Itáwit', 'Ivatán'
-                    ]
-                },
-                'Central Luzon': [
-                    'Kapampángan', 'Sambali'
-                ],
-                'Manobo': [
-                    'Binúkid', 'Agutaynë́n'
-                ],
-                'Danao': [
-                    'Mëranáw', 'Magindanáw'
-                ]
-            }
-        }
-    },
-    'Indo-European': {
-        'Romance': ['Español', 'Portugués', 'French', 'Italian'],
-        'Germanic': ['Ingles', 'German', 'Dutch'],
-        'Indo-Iranian': ['Sanskrit', 'Hindi'],
-        'Hellenic': ['Griego']
-    },
-    'Sino-Tibetan': {
-        'Sinitic': ['Chinese', 'Chino']
-    },
-    'Afro-Asiatic': {
-        'Semitic': ['Arabic', 'Hebrew']
-    },
-    'Historical': {
-        'Classical': ['Latin'],
-        'Ancient Philippine': ['Sinaunang Tagalog']
-    }
-}
-
-# Regional distribution mapping
-REGIONAL_MAPPING = {
-    'Luzon': {
-        'Metro Manila': ['Tagálog'],
-        'Central Luzon': ['Kapampángan', 'Sambali'],
-        'Southern Luzon': ['Bíkol'],
-        'Cordillera': ['Ifugáw', 'Kankanáëy', 'Balangáw', 'Gáddang', 'Isnë́g'],
-        'Ilocos': ['Ilokáno'],
-        'Cagayan Valley': ['Ibanág', 'Itáwit', 'Ivatán']
-    },
-    'Visayas': {
-        'Western': ['Hiligaynón', 'Kinaráy-a', 'Aklánon'],
-        'Central': ['Sebwáno', 'Waráy'],
-        'Eastern': ['Waráy']
-    },
-    'Mindanao': {
-        'Northern': ['Binúkid', 'Mandayá'],
-        'Southern': ['Magindanáw', 'Mëranáw'],
-        'Western': ['Súg', 'Tausug'],
-        'Eastern': ['Mandayá', 'Mansaka']
-    }
-}
-
-# Writing system mappings
-WRITING_SYSTEMS = {
-    'Native Scripts': {
-        'Baybayin': {
-            'Languages': ['Tagálog', 'Sinaunang Tagalog', 'Bíkol', 'Ilokáno'],
-            'Period': 'Pre-colonial to Early Spanish Period',
-            'Status': 'Historical/Revival'
-        },
-        'Kulitan': {
-            'Languages': ['Kapampángan'],
-            'Period': 'Pre-colonial to Early Spanish Period',
-            'Status': 'Historical/Limited Use'
-        },
-        'Tagbanwa': {
-            'Languages': ['Tagbanwá'],
-            'Period': 'Pre-colonial to Present',
-            'Status': 'Limited Use'
-        }
-    },
-    'Adapted Scripts': {
-        'Latin': {
-            'Languages': ['Tagálog', 'Sebwáno', 'Hiligaynón', 'Waráy', 'Ilokáno'],
-            'Period': 'Spanish Period to Present',
-            'Status': 'Primary'
-        },
-        'Arabic': {
-            'Languages': ['Mëranáw', 'Magindanáw', 'Tausug'],
-            'Period': 'Islamic Period to Present',
-            'Status': 'Traditional/Limited'
-        }
-    }
-}
-
-# Language standardization mapping
-LANGUAGE_STANDARDIZATION = {
-    # Historical Tagalog variations
-    'ST': 'Sinaunang Tagalog', 'STl': 'Sinaunang Tagalog',
-    'old_tagalog': 'Sinaunang Tagalog', 'classical_tagalog': 'Sinaunang Tagalog',
-    
-    # English variations
-    'en': 'Ingles', 'eng': 'Ingles', 'english': 'Ingles', 
-    'lng': 'Ingles', 'Ing': 'Ingles',
-    
-    # Spanish variations
-    'es': 'Español', 'spa': 'Español', 'spanish': 'Español',
-    'Esp': 'Español',
-    
-    # Chinese variations
-    'zh': 'Chinese', 'cmn': 'Chinese', 'Chi': 'Chinese',
-    'Tsi': 'Chinese', 'Tsino': 'Chinese', 'Chino': 'Chinese',
-    
-    # Cebuano variations
-    'ceb': 'Sebwáno', 'Seb': 'Sebwáno', 'Cebuano': 'Sebwáno',
-    'bisaya': 'Sebwáno', 'Bis': 'Sebwáno',
-    
-    # Russian variations
-    'ru': 'Russian', 'Rus': 'Russian', 'rus': 'Russian',
-    
-    # Hindi variations
-    'hi': 'Hindi', 'Hin': 'Hindi', 'hin': 'Hindi',
-    
-    # Japanese variations
-    'ja': 'Japanese', 'jp': 'Japanese', 'jpn': 'Japanese',
-    'Jap': 'Japanese',
-    
-    # Arabic variations
-    'ar': 'Arabic', 'ara': 'Arabic', 'Ara': 'Arabic',
-    
-    # Sanskrit variations
-    'sa': 'Sanskrit', 'san': 'Sanskrit', 'San': 'Sanskrit',
-    'Skr': 'Sanskrit',
-    
-    # Latin variations
-    'la': 'Latin', 'lat': 'Latin', 'Lat': 'Latin',
-    
-    # Greek variations
-    'el': 'Griego', 'grc': 'Griego', 'Gre': 'Griego',
-    'Gri': 'Griego',
-    
-    # German variations
-    'de': 'German', 'deu': 'German', 'ger': 'German',
-    'Ger': 'German',
-    
-    # French variations
-    'fr': 'French', 'fra': 'French', 'fre': 'French',
-    'Fre': 'French',
-    
-    # Turkish variations
-    'tr': 'Turkish', 'tur': 'Turkish', 'Tur': 'Turkish',
-    
-    # Hebrew variations
-    'he': 'Hebrew', 'heb': 'Hebrew', 'Heb': 'Hebrew',
-    
-    # Indonesian/Malay variations
-    'id': 'Bahása', 'ind': 'Bahása', 'Ind': 'Bahása',
-    'ms': 'Malay', 'msa': 'Malay', 'Mal': 'Malay',
-    
-    # Philippine languages - major
-    'tl': 'Tagálog', 'tag': 'Tagálog', 'Tag': 'Tagálog',
-    'bik': 'Bíkol', 'bcl': 'Bíkol', 'Bik': 'Bíkol',
-    'war': 'Waráy', 'War': 'Waráy',
-    'hil': 'Hiligaynón', 'Hil': 'Hiligaynón', 'Hik': 'Hiligaynón',
-    'pag': 'Pangasinán', 'Pan': 'Pangasinán', 'Png': 'Pangasinán',
-    
-    # Philippine languages - Mindanao
-    'Mag': 'Magindanáw', 'mdh': 'Magindanáw', 'Mgd': 'Magindanáw', 'Mgn': 'Magindanáw',
-    'Mrw': 'Mëranáw', 'Mrs': 'Mëranáw', 'meranao': 'Mëranáw', 'Mar': 'Mëranáw',
-    'Kuy': 'Kuyunón', 'kuy': 'Kuyunón',
-    'Tbn': 'Tagbanwá', 'Tagbanwá': 'Tagbanwá', 'Tbo': 'Tagbanwá', 'Tbw': 'Tagbanwá',
-    'Mnd': 'Mandayá', 'Man': 'Mandayá',
-    'Sub': 'Subanen', 'Súg': 'Tausug', 'Tau': 'Tausug',
-    'Tgb': 'Tagabanwa', 'Tgk': 'Tagakaulo',
-    
-    # Philippine languages - Luzon
-    'Ilo': 'Ilokáno', 'Ilk': 'Ilokáno',
-    'Ifg': 'Ifugáw', 'Ifu': 'Ifugáw',
-    'Isn': 'Isnë́g', 'Isg': 'Isnë́g',
-    'Iva': 'Ivatán', 'Itw': 'Itáwit',
-    'Kap': 'Kapampángan', 'pam': 'Kapampángan', 'Pny': 'Kapampángan',
-    'Ibl': 'Ibalóy', 'Ibg': 'Ibanág', 'Ibn': 'Ibanág',
-    'Iby': 'Ibatan', 'Itn': 'Itneg', 'Ilt': 'Ilongot',
-    'Igo': 'Igorot', 'Iwa': 'Iwatan',
-    
-    # Philippine languages - Other
-    'Agt': 'Agta', 'Agu': 'Agutaynë́n',
-    'Akl': 'Aklánon', 'Bal': 'Balangáw',
-    'Buh': 'Búhid', 'Gad': 'Gáddang',
-    'Kan': 'Kankanáëy', 'Kal': 'Kalíngga', 'Kbn': 'Kankanáëy',
-    'Btk': 'Batakan', 'Bat': 'Batak', 'Btg': 'Batangan',
-    'Bin': 'Binúkid', 'Bag': 'Bagóbo', 'Buk': 'Bukidnon',
-    
-    # Manobo variations
-    'Mnb': 'Manobo', 'Mny': 'Manobo', 'Mbk': 'Manobo',
-    
-    # Mangyan variations
-    'Mgk': 'Mangyán', 'Mng': 'Mangyán',
-    
-    # Additional Philippine ethnic groups
-    'Aby': 'Abaknon', 'Akn': 'Akaean',
-    'Apa': 'Apayao', 'Ayt': 'Ayta',
-    'Baj': 'Bajau', 'Ben': 'Benguet',
-    'Bil': 'Bilaan', 'Boh': 'Boholano',
-    'Bon': 'Bontok', 'Cha': 'Chavacano',
-    'Cor': 'Cordilleran', 'Cot': 'Cotabato',
-    'Csi': 'Coastal', 'Cuy': 'Cuyunon',
-    'Dum': 'Dumagat', 'Dus': 'Dusun',
-    'Han': 'Hanunoo', 'Hgn': 'Higaonon',
-    'Hwi': 'Hawaiian', 'Kay': 'Kayapa',
-    'Kem': 'Keley-i', 'Klg': 'Kalinga',
-    'Kol': 'Kolbulano', 'Krw': 'Karaw',
-    'Mad': 'Madalum', 'Mam': 'Mambabuid',
-    'Min': 'Minangkabau', 'Mmw': 'Mamanwa',
-    'Mns': 'Mansaka', 'Mts': 'Matigsalug',
-    'Mwr': 'Marwari', 'Pal': 'Palawan',
-    'Plw': 'Palawano', 'Sam': 'Samar',
-    'Sbl': 'Sambali', 'Sma': 'Samar',
-    'Sml': 'Samal', 'Sul': 'Sulu',
-    'Tin': 'Tinggian', 'Tir': 'Tiruray',
-    'Tng': 'Tinguian', 'Tua': 'Tuali',
-    'Yak': 'Yakan', 'Yógad': 'Yogad',
-    'Zam': 'Zambal',
-    
-    # Other languages and variations
-    'AmI': 'Ami', 'Eva': 'Evangelical',
-    'Exp': 'Expressive', 'Gui': 'Guinaang',
-    'Kor': 'Korean', 'Mex': 'Mexican',
-    'Noe': 'Northern', 'Nor': 'Norwegian',
-    'Por': 'Portugués', 'Rom': 'Romanian',
-    'Sco': 'Scottish', 'Snk': 'Sankrityayan',
-    'Swa': 'Swahili', 'Tha': 'Thai',
-    'Tib': 'Tibetan', 'Zoo': 'Zoological'
-}
-
-# Valid language codes
-VALID_CODES = set((
-    'Aby','Agt','Agu','Agutaynë́n','Akl','Aklánon','Akn','AmI','Apa','Ara','Arabic',
-    'Ata','Ayt','Bag','Bahása','Baj','Bal','Balangáw','Bat','Ben','Bik','Bil',
-    'Binúkid','Bis','Boh','Bon','Btg','Btk','Buh','Buk','Bíkol','Búhid','Cha','Chi',
-    'Chino','Cor','Cot','Csi','Cuy','Dum','Dus','Dutch','Eso','Esp','Español','Eva',
-    'Exp','Fre','French','Gad','Ger','German','Gre','Gri','Griego','Gui','Gáddang',
-    'Han','Heb','Hebrew','Hgn','Higa-ónon','Hik','Hil','Hiligaynón','Hin','Hindi',
-    'Hwi','Iba','Ibalóy','Ibanág','Ibg','Ibn','Iby','Ifu','Ifugáw','Igo','Ilk','Ilo',
-    'Ilokáno','Ilt','Ind','Ing','Ingles','Isg','Isn','Isnë́g','Isp','Ita','Italian',
-    'Itn','Itw','Itáwit','Iva','Ivatán','Iwa','Jap','Japanese','Javanese','Kal',
-    'Kalíngga','Kan','Kankanáëy','Kap','Kapampángan','Karáw','Kas','Kay','Kbn','Kem',
-    'Kinaráy-a','Klg','Kol','Kor','Krw','Kry','Kuy','Kuyunón','Lat','Latin','MOc',
-    'Mad','Mag','Magindanáw','Mal','Malay','Mam','Man','Mandayá','Mangyán','Mar',
-    'Mbk','Mex','Mexican','Mgd','Mgk','Mgn','Min','Mmw','Mnb','Mnd','Mng','Mns','Mny',
-    'Mrs','Mrw','Mts','Mwr','Mëranáw','Noe','Nor','Pal','Paláw-an','Pan','Pangasinán',
-    'Plw','Png','Pny','Por','Portugués','Rom','Rus','ST','STl','Sam','San','Sanskrit',
-    'Sbl','Sco','Seb','Sebwáno','Sinadánga','Sinaunang Tagalog','Skr','Slavic','Sma',
-    'Sml','Snk','Sub','Sul','Swa','Súg','Tag','Tagabáwa','Tagbanwá','Tagálog','Tau',
-    'Tbn','Tbo','Tbw','Ted','Tgb','Tgk','Tha','Tib','Tin','Tir','Tng','Tsi','Tua',
-    'Tur','Turkish','Tëduráy','War','Waráy','Yak','Yógad','Zam','Zoo','lng',
-))
+import functools
+from typing import Dict, List, Optional, Set
+from language_types import (
+    LanguageMetadata, WritingSystemInfo, 
+    LanguageSystemError, InvalidLanguageCode, InvalidLanguageMapping
+)
+from language_config import LanguageSystemConfig
+from language_validator import LanguageSystemValidator
 
 class LanguageSystem:
     """Manages language classification, standardization, and metadata."""
     
     def __init__(self):
-        self.families = LANGUAGE_FAMILIES
-        self.regions = REGIONAL_MAPPING
-        self.writing_systems = WRITING_SYSTEMS
-        self.standardization = LANGUAGE_STANDARDIZATION
+        # Load configuration
+        config = LanguageSystemConfig.load_config()
+        self.families = config['families']
+        self.regions = config['regions']
+        self.writing_systems = config['writing_systems']
+        self.standardization = config['standardization']
+        self.valid_codes = set(config['valid_codes'])
         
+        # Initialize validator
+        self.validator = LanguageSystemValidator(self.valid_codes)
+        
+        # Validate all mappings
+        self._validate_mappings()
+        
+        # Initialize cache
+        self._cache = {}
+
+    def _validate_mappings(self) -> None:
+        """Validate consistency of all language mappings."""
+        try:
+            self.validator.validate_family_tree(self.families)
+            self.validator.validate_writing_systems(self.writing_systems)
+            self.validator.validate_regions(self.regions)
+            self.validator.validate_standardization(self.standardization)
+        except LanguageSystemError as e:
+            raise InvalidLanguageMapping(f"Invalid language mappings: {str(e)}")
+
+    @functools.lru_cache(maxsize=128)
     def standardize_code(self, code: str) -> str:
         """Standardize a language code to its canonical form."""
         if not code:
             return "-"
-        return self.standardization.get(code.lower(), code)
-    
+        normalized = code.lower().strip()
+        return self.standardization.get(normalized, code)
+
+    @functools.lru_cache(maxsize=128)
     def get_family_tree(self, language: str) -> List[str]:
         """Get full language family tree path."""
+        self.validator.validate_language_code(language)
+        
         def search_tree(tree: Dict, target: str) -> Optional[List[str]]:
+            paths = []
             for key, value in tree.items():
                 if isinstance(value, list) and target in value:
-                    return [key]
+                    paths.append([key])
                 elif isinstance(value, dict):
-                    result = search_tree(value, target)
-                    if result:
-                        return [key] + result
-            return None
-            
-        result = search_tree(self.families, language)
-        return result if result else ["Unclassified"]
-    
-    def get_writing_systems(self, language: str) -> List[Dict]:
+                    for path in search_tree(value, target) or []:
+                        paths.append([key] + path)
+            return paths
+
+        paths = search_tree(self.families, language)
+        return paths[0] if paths else ["Unclassified"]
+
+    @functools.lru_cache(maxsize=128)
+    def get_writing_systems(self, language: str) -> List[WritingSystemInfo]:
         """Get writing system information for a language."""
+        self.validator.validate_language_code(language)
+        
         systems = []
         for category, script_types in self.writing_systems.items():
             for script, details in script_types.items():
@@ -316,16 +82,31 @@ class LanguageSystem:
                         'status': details['Status']
                     })
         return systems
-    
+
+    @functools.lru_cache(maxsize=128)
     def get_regions(self, language: str) -> List[str]:
         """Get regions where a language is spoken."""
+        self.validator.validate_language_code(language)
+        
         regions = []
         for region, subregions in self.regions.items():
             for subregion, languages in subregions.items():
                 if language in languages:
                     regions.append(f"{region} ({subregion})")
         return regions
-    
+
+    def get_language_metadata(self, language: str) -> LanguageMetadata:
+        """Get comprehensive metadata for a language."""
+        self.validator.validate_language_code(language)
+        
+        return LanguageMetadata(
+            code=language,
+            name=self.standardize_code(language),
+            family=self.get_family_tree(language),
+            regions=self.get_regions(language),
+            writing_systems=self.get_writing_systems(language)
+        )
+
     def standardize_language_codes(self, codes_str: str) -> str:
         """Standardize and deduplicate language codes."""
         if not codes_str:
@@ -335,35 +116,11 @@ class LanguageSystem:
         cleaned_codes = []
         
         for code in codes:
-            standardized = self.standardize_code(code)
-            if standardized in VALID_CODES:
-                cleaned_codes.append(standardized)
+            try:
+                standardized = self.standardize_code(code)
+                if standardized in self.valid_codes:
+                    cleaned_codes.append(standardized)
+            except InvalidLanguageCode:
+                continue
         
-        # Remove duplicates while preserving order
-        seen = set()
-        unique_codes = [x for x in cleaned_codes if not (x in seen or seen.add(x))]
-        
-        return ", ".join(unique_codes) if unique_codes else "-"
-    
-    def extract_and_remove_language_codes(self, text: str) -> Tuple[List[str], str]:
-        """
-        Extract known language codes from the text and remove them (as word-bound matches).
-        Returns (list_of_found_codes, cleaned_text).
-        """
-        if not text:
-            return [], text
-
-        found_codes = []
-        cleaned = text
-
-        for code in VALID_CODES:
-            # Word boundary match
-            pattern = r'\b(' + re.escape(code) + r')\b'
-            matches = re.findall(pattern, cleaned)
-            if matches:
-                found_codes.extend(matches)
-                cleaned = re.sub(pattern, '', cleaned)
-
-        # Clean up extra whitespace
-        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
-        return list(set(found_codes)), cleaned 
+        return ", ".join(sorted(set(cleaned_codes))) if cleaned_codes else "-" 

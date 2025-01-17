@@ -39,6 +39,13 @@ import codecs
 import locale
 from typing import Optional
 from language_systems import LanguageSystem
+from typing import Optional, List, Tuple, Dict, Any
+from dataclasses import dataclass
+import functools
+from psycopg2.errors import UniqueViolation
+import psycopg2.extras
+import re
+from enum import Enum
 
 # -------------------------------------------------------------------
 # (NEW) Instantiate a LanguageSystem from language_systems
@@ -89,7 +96,6 @@ def setup_logging():
     return logger
 
 logger = setup_logging()
-
 
 # -------------------------------------------------------------------
 # 1. Database Credentials (adjust for your environment)
@@ -158,8 +164,7 @@ CREATE TABLE IF NOT EXISTS parts_of_speech (
     id SERIAL PRIMARY KEY,
     code VARCHAR(32) NOT NULL UNIQUE,
     name_en VARCHAR(64) NOT NULL,
-    name_tl VARCHAR(64) NOT NULL,
-    CONSTRAINT pos_code_uniq UNIQUE (code)
+    name_tl VARCHAR(64) NOT NULL
 );
 
 -- words table
@@ -167,8 +172,9 @@ CREATE TABLE IF NOT EXISTS words (
     id                SERIAL PRIMARY KEY,
     lemma             VARCHAR(255) NOT NULL,
     normalized_lemma  VARCHAR(255) NOT NULL,
-    romanized_form    VARCHAR(255),
     has_baybayin      BOOLEAN DEFAULT FALSE,
+    baybayin_form     VARCHAR(255),
+    romanized_form    VARCHAR(255), -- Added column
     language_code     VARCHAR(16)  NOT NULL,
     root_word_id      INT REFERENCES words(id),
     preferred_spelling VARCHAR(255),
@@ -179,9 +185,8 @@ CREATE TABLE IF NOT EXISTS words (
 -- (NEW) Composite index for faster lookups by (language_code, normalized_lemma)
 CREATE INDEX IF NOT EXISTS idx_words_lang_norm_lemma 
     ON words(language_code, normalized_lemma);
-
--- Add index for Baybayin search
-CREATE INDEX IF NOT EXISTS idx_words_baybayin ON words(has_baybayin);
+CREATE INDEX IF NOT EXISTS idx_words_baybayin 
+    ON words(baybayin_form) WHERE has_baybayin = TRUE;
 
 -- Modified definitions table
 CREATE TABLE IF NOT EXISTS definitions (
@@ -307,21 +312,6 @@ POS_MAPPING = {
     '': {'en': 'Uncategorized', 'tl': 'Hindi Tiyak'}
 }
 
-def normalize_lemma(lemma: str) -> str:
-    """
-    Remove diacritics and convert to lowercase, e.g. "sumagíp" -> "sumagip"
-    """
-    if not lemma:
-        return ""
-    return unidecode.unidecode(lemma).lower()
-
-def clean_lemma_if_baybayin_spelling(lemma: str) -> str:
-    """Strip the prefix 'Baybayin spelling of' if present."""
-    prefix = "Baybayin spelling of"
-    if lemma.lower().startswith(prefix.lower()):
-        return lemma[len(prefix):].strip()
-    return lemma
-
 def entry_exists_and_identical(cur, lemma, normalized_lemma, language_code, entry_data):
     """
     Check if an entry already exists and is identical to avoid duplicate processing.
@@ -399,107 +389,375 @@ def entry_exists_and_identical(cur, lemma, normalized_lemma, language_code, entr
         logger.error(f"Error checking entry existence: {str(e)}")
         return False, None
 
-def get_or_create_word_id(
-    cur,
-    lemma,
-    lang_code="tl",
-    root_word_id=None,
-    preferred_spelling=None,
-    tags=None,
-    entry_data=None,
-    check_exists=False,
-    has_baybayin=None,
-    romanized_form=None
-):
-    """
-    Retrieve or create a row in the 'words' table. 
-    This version assumes that if 'has_baybayin' is not provided, it's False, 
-    i.e., do NOT attempt to auto-detect Baybayin unless explicitly told.
+def clean_baybayin_lemma(lemma: str) -> str:
+    """Clean Baybayin lemma by removing any prefixes."""
+    prefix = "Baybayin spelling of"
+    if lemma.lower().startswith(prefix.lower()):
+        return lemma[len(prefix):].strip()
+    return lemma
 
+@dataclass
+class WordEntry:
+    """Data class to represent a word entry with validation."""
+    lemma: str
+    normalized_lemma: str
+    language_code: str
+    root_word_id: Optional[int] = None
+    preferred_spelling: Optional[str] = None
+    tags: Optional[str] = None
+    has_baybayin: bool = False
+    baybayin_form: Optional[str] = None
+
+    def __post_init__(self):
+        """Validate the word entry data."""
+        if not self.lemma or not isinstance(self.lemma, str):
+            raise ValueError("Lemma must be a non-empty string")
+        if not self.language_code in ('tl', 'ceb'):
+            raise ValueError(f"Unsupported language code: {self.language_code}")
+        if self.has_baybayin and not self.baybayin_form:
+            raise ValueError("Baybayin form required when has_baybayin is True")
+
+def with_transaction(commit=True):
+    """
+    Improved transaction decorator with commit control and proper cleanup.
+    """
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(cur, *args, **kwargs):
+            conn = cur.connection
+            savepoint_name = f"sp_{func.__name__}"
+            try:
+                # Create savepoint for nested transactions
+                cur.execute(f"SAVEPOINT {savepoint_name}")
+                result = func(cur, *args, **kwargs)
+                if commit:
+                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+                return result
+            except Exception as e:
+                cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
+                if not isinstance(e, UniqueViolation):
+                    logger.error(f"Error in {func.__name__}: {str(e)}")
+                raise
+        return wrapper
+    return decorator
+
+def normalize_lemma(text: str) -> str:
+    """
+    Normalize text by removing diacritics and converting to lowercase.
+    
     Args:
-        cur (cursor): Database cursor
-        lemma (str): The original lemma or word form
-        lang_code (str): e.g. "tl", "ceb", ...
-        root_word_id (int): If this lemma is derived from another word, pass that ID
-        preferred_spelling (str): If there is a known official or standardized spelling
-        tags (str): Arbitrary tags or metadata
-        entry_data (dict): Additional metadata for possible comparisons (optional)
-        check_exists (bool): Whether to check for identical existing entries 
-                             before inserting (optional)
-        has_baybayin (bool): If explicitly True, we mark the entry as Baybayin
-        romanized_form (str): If has_baybayin=True, you can provide a known romanization
-
+        text: Input text to normalize
+        
     Returns:
-        int: The ID of the record in the 'words' table.
+        Normalized text string
+    
+    Raises:
+        ValueError: If input is None or empty
     """
-    # Default to not Baybayin if not explicitly stated
-    if has_baybayin is None:
-        has_baybayin = False
+    if not text:
+        raise ValueError("Input text cannot be None or empty")
+    return unidecode.unidecode(text).lower()
 
-    # Normalize lemma (remove diacritics, lowercase)
-    norm_lemma = normalize_lemma(lemma)
-
-    # If has_baybayin is false, don't do any auto-detection
-    processed_lemma = lemma
-    if has_baybayin and romanized_form is None:
-        # If the caller said it's Baybayin but didn't provide a romanized form,
-        # you could do a fallback or detection. For example:
-        processed_lemma, auto_romanized, _ = process_baybayin_text(lemma)
-        romanized_form = auto_romanized
-    else:
-        # Otherwise, no change to the lemma
-        processed_lemma = lemma
-
-    # Check if there's an existing row with the same normalized lemma & language
-    cur.execute("""
-        SELECT id, lemma, preferred_spelling, romanized_form
-          FROM words
-         WHERE normalized_lemma = %s
-           AND language_code = %s
-         LIMIT 1
-    """, (norm_lemma, lang_code))
-    existing = cur.fetchone()
-
-    if existing:
-        existing_id = existing[0]
-        existing_lemma = existing[1]
-        existing_pref = existing[2]
-        existing_rom = existing[3]
-
-        # If the caller explicitly says "Yes, it has Baybayin" but existing doesn't,
-        # update that entry with the new romanized form.
-        if has_baybayin and not existing_rom:
-            cur.execute("""
-                UPDATE words
-                   SET romanized_form = %s,
-                       has_baybayin = TRUE
-                 WHERE id = %s
-            """, (romanized_form, existing_id))
-        return existing_id
-
-    # Otherwise, insert a new row
-    insert_sql = """
-        INSERT INTO words
-            (lemma, normalized_lemma, romanized_form, has_baybayin,
-             language_code, root_word_id, preferred_spelling, tags)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        RETURNING id
+def validate_word_data(data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    cur.execute(
-        insert_sql,
-        (
-            processed_lemma,
-            norm_lemma,
-            romanized_form,
-            has_baybayin,
-            lang_code,
-            root_word_id,
-            preferred_spelling,
-            tags,
+    Comprehensive input validation for word data.
+    """
+    if not isinstance(data, dict):
+        raise ValueError("Word data must be a dictionary")
+        
+    required_fields = ['lemma', 'language_code']
+    for field in required_fields:
+        if field not in data:
+            raise ValueError(f"Missing required field: {field}")
+            
+    # Lemma validation
+    if not data['lemma'] or not isinstance(data['lemma'], str):
+        raise ValueError("Lemma must be a non-empty string")
+    data['lemma'] = data['lemma'].strip()
+    
+    # Language code validation
+    if data['language_code'] not in ('tl', 'ceb'):
+        raise ValueError(f"Unsupported language code: {data['language_code']}")
+        
+    # Baybayin validation
+    if data.get('has_baybayin'):
+        if not data.get('baybayin_form'):
+            raise ValueError("Baybayin form required when has_baybayin is True")
+            
+    return data
+
+def validate_word_entry(
+    lemma: str,
+    language_code: str,
+    root_word_id: Optional[int] = None,
+    preferred_spelling: Optional[str] = None,
+    tags: Optional[str] = None,
+    has_baybayin: bool = False,
+    baybayin_form: Optional[str] = None
+) -> WordEntry:
+    """
+    Validate word entry data and create a WordEntry instance.
+    
+    Args:
+        lemma: The word lemma
+        language_code: Language code (tl or ceb)
+        root_word_id: Optional ID of root word
+        preferred_spelling: Optional preferred spelling
+        tags: Optional tags
+        has_baybayin: Whether entry has Baybayin form
+        baybayin_form: Optional Baybayin form
+        
+    Returns:
+        WordEntry instance with validated data
+        
+    Raises:
+        ValueError: If validation fails
+    """
+    try:
+        normalized_lemma = normalize_lemma(lemma)
+        return WordEntry(
+            lemma=lemma,
+            normalized_lemma=normalized_lemma,
+            language_code=language_code,
+            root_word_id=root_word_id,
+            preferred_spelling=preferred_spelling,
+            tags=tags,
+            has_baybayin=has_baybayin,
+            baybayin_form=baybayin_form
         )
-    )
-    new_id = cur.fetchone()[0]
-    return new_id
+    except ValueError as e:
+        raise ValueError(f"Word entry validation failed: {str(e)}")
+
+@with_transaction(commit=True)
+def get_or_create_word_id(
+    cur: psycopg2.extensions.cursor,
+    lemma: str,
+    language_code: str = "tl",
+    root_word_id: Optional[int] = None,
+    preferred_spelling: Optional[str] = None,
+    tags: Optional[str] = None,
+    check_exists: bool = False,
+    has_baybayin: bool = False,
+    baybayin_form: Optional[str] = None,
+    entry_data: Optional[Dict[str, Any]] = None
+) -> int:
+    """
+    Get existing word ID or create new word entry with proper validation and error handling.
+    
+    Args:
+        cur: Database cursor
+        lemma: Word lemma
+        language_code: Language code (default: "tl")
+        root_word_id: Optional ID of root word
+        preferred_spelling: Optional preferred spelling
+        tags: Optional tags
+        check_exists: Whether to check for existing identical entries
+        has_baybayin: Whether entry has Baybayin form
+        baybayin_form: Optional Baybayin form
+        entry_data: Optional additional entry data for comparison
+        
+    Returns:
+        Word ID (either existing or newly created)
+        
+    Raises:
+        ValueError: If input validation fails
+        psycopg2.Error: If database operation fails
+    """
+    try:
+        # Validate input and create WordEntry
+        word_entry = validate_word_entry(
+            lemma=lemma,
+            language_code=language_code,
+            root_word_id=root_word_id,
+            preferred_spelling=preferred_spelling,
+            tags=tags,
+            has_baybayin=has_baybayin,
+            baybayin_form=baybayin_form
+        )
+
+        # Check for existing entry
+        cur.execute("""
+            SELECT id 
+            FROM words 
+            WHERE normalized_lemma = %s AND language_code = %s
+            LIMIT 1
+        """, (word_entry.normalized_lemma, word_entry.language_code))
+        
+        existing = cur.fetchone()
+        
+        if existing:
+            existing_id = existing[0]
+            
+            # If entry exists and has Baybayin form, update it
+            if word_entry.has_baybayin and word_entry.baybayin_form:
+                cur.execute("""
+                    UPDATE words
+                    SET has_baybayin = TRUE,
+                        baybayin_form = COALESCE(baybayin_form, %s)
+                    WHERE id = %s
+                """, (word_entry.baybayin_form, existing_id))
+                
+            # If checking for identical entries
+            if check_exists and entry_data:
+                is_identical, compare_result = entry_exists_and_identical(
+                    cur, 
+                    word_entry.lemma,
+                    word_entry.normalized_lemma,
+                    word_entry.language_code,
+                    entry_data
+                )
+                if is_identical and compare_result:
+                    logger.info(f"Skipping identical entry for {word_entry.lemma}")
+                    return existing_id
+                
+            return existing_id
+
+        # Insert new entry
+        cur.execute("""
+            INSERT INTO words (
+                lemma, normalized_lemma, has_baybayin, baybayin_form,
+                language_code, root_word_id, preferred_spelling, tags
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING id
+        """, (
+            word_entry.lemma,
+            word_entry.normalized_lemma,
+            word_entry.has_baybayin,
+            word_entry.baybayin_form,
+            word_entry.language_code,
+            word_entry.root_word_id,
+            word_entry.preferred_spelling,
+            word_entry.tags
+        ))
+        
+        new_id = cur.fetchone()[0]
+        logger.debug(f"Created new word entry for {word_entry.lemma} with ID {new_id}")
+        return new_id
+
+    except UniqueViolation:
+        # Handle race condition where entry was created between our check and insert
+        cur.execute("""
+            SELECT id 
+            FROM words 
+            WHERE normalized_lemma = %s AND language_code = %s
+            LIMIT 1
+        """, (word_entry.normalized_lemma, word_entry.language_code))
+        return cur.fetchone()[0]
+        
+    except ValueError as e:
+        logger.error(f"Validation error for lemma '{lemma}': {str(e)}")
+        raise
+        
+    except Exception as e:
+        logger.error(f"Unexpected error processing lemma '{lemma}': {str(e)}")
+        raise
+
+def batch_process_entries(cur, entries: List[Dict], batch_size: int = 1000):
+    """
+    Process entries in efficient batches with error recovery.
+    """
+    processed = []
+    failed = []
+    
+    for i in range(0, len(entries), batch_size):
+        batch = entries[i:i + batch_size]
+        
+        try:
+            # Prepare batch data
+            values = [(
+                entry['lemma'],
+                normalize_lemma(entry['lemma']),
+                entry.get('language_code', 'tl'),
+                entry.get('root_word_id'),
+                entry.get('has_baybayin', False),
+                entry.get('baybayin_form')
+            ) for entry in batch]
+            
+            # Bulk insert using executemany
+            cur.executemany("""
+                INSERT INTO words (
+                    lemma, normalized_lemma, language_code,
+                    root_word_id, has_baybayin, baybayin_form
+                ) VALUES (%s, %s, %s, %s, %s, %s)
+                ON CONFLICT (language_code, normalized_lemma) 
+                DO UPDATE SET 
+                    has_baybayin = EXCLUDED.has_baybayin,
+                    baybayin_form = COALESCE(words.baybayin_form, EXCLUDED.baybayin_form)
+                RETURNING id
+            """, values)
+            
+            processed.extend(cur.fetchall())
+            
+        except Exception as e:
+            logger.error(f"Batch processing error: {str(e)}")
+            failed.extend(batch)
+            
+    return processed, failed
+
+def batch_get_or_create_word_ids(
+    cur: psycopg2.extensions.cursor,
+    entries: list[tuple[str, str]],
+    batch_size: int = 1000
+) -> dict[tuple[str, str], int]:
+    """
+    Batch process multiple word entries efficiently.
+    
+    Args:
+        cur: Database cursor
+        entries: List of (lemma, language_code) tuples
+        batch_size: Size of each batch (default: 1000)
+        
+    Returns:
+        Dictionary mapping (lemma, language_code) to word ID
+    """
+    result = {}
+    
+    # Process in batches
+    for i in range(0, len(entries), batch_size):
+        batch = entries[i:i + batch_size]
+        
+        # Prepare normalized forms
+        normalized_entries = [
+            (lemma, normalize_lemma(lemma), lang_code)
+            for lemma, lang_code in batch
+        ]
+        
+        # Check existing entries
+        cur.execute("""
+            SELECT lemma, language_code, id
+            FROM words
+            WHERE (normalized_lemma, language_code) IN %s
+        """, (tuple((norm, lang) for _, norm, lang in normalized_entries),))
+        
+        # Process existing entries
+        existing = {(lemma, lang): id for lemma, lang, id in cur.fetchall()}
+        
+        # Prepare entries to insert
+        to_insert = [
+            (lemma, norm_lemma, lang)
+            for lemma, norm_lemma, lang in normalized_entries
+            if (lemma, lang) not in existing
+        ]
+        
+        if to_insert:
+            # Batch insert new entries
+            psycopg2.extras.execute_values(
+                cur,
+                """
+                INSERT INTO words (lemma, normalized_lemma, language_code)
+                VALUES %s
+                RETURNING lemma, language_code, id
+                """,
+                [(lemma, norm, lang) for lemma, norm, lang in to_insert]
+            )
+            
+            # Add newly inserted entries to results
+            for lemma, lang, id in cur.fetchall():
+                existing[(lemma, lang)] = id
+        
+        result.update(existing)
+    
+    return result
 
 def has_diacritics(text):
     """Check if text contains diacritical marks."""
@@ -554,18 +812,21 @@ def get_uncategorized_pos_id(cur) -> int:
     cur.execute("SELECT id FROM parts_of_speech WHERE code = 'unc'")
     return cur.fetchone()[0]
 
-def insert_definition(cur,
-                     word_id: int,
-                     definition_text: str,
-                     part_of_speech: str = "",
-                     examples: str = None,
-                     usage_notes: str = None,
-                     sources: str = "") -> int:
-    """Insert a definition with both original and standardized POS."""
-    # Get standardized POS ID while keeping original
+def insert_definition(
+    cur,
+    word_id: int,
+    definition_text: str,
+    part_of_speech: str = "",
+    examples: str = None,
+    usage_notes: str = None,
+    sources: str = ""
+) -> int:
+    """Insert a definition, skipping if it's a Baybayin alternative."""
+    if 'Baybayin spelling of' in definition_text:
+        return None
+        
     std_pos_id = get_standardized_pos_id(cur, part_of_speech)
     
-    # Insert new definition
     cur.execute("""
         INSERT INTO definitions 
             (word_id, definition_text, original_pos, standardized_pos_id,
@@ -575,8 +836,8 @@ def insert_definition(cur,
     """, (
         word_id,
         definition_text,
-        part_of_speech,  # Keep original POS string
-        std_pos_id,      # Store standardized reference
+        part_of_speech,
+        std_pos_id,
         examples,
         usage_notes,
         sources
@@ -600,40 +861,362 @@ def insert_relation(cur,
     """
     cur.execute(sql, (from_word_id, to_word_id, relation_type, sources))
 
-def insert_etymology(cur, word_id, original_text, language_codes="", normalized_components=None, sources=""):
-    """Insert etymology with standardized language codes."""
-    try:
-        # Standardize language codes before insertion
-        standardized_codes = standardize_language_codes(language_codes)
+def insert_etymology(cur, word_id, etymology_text, sources=""):
+    """Process etymology with Baybayin handling."""
+    if not etymology_text:
+        return
         
-        cur.execute("""
-    INSERT INTO etymologies
-        (word_id, original_text, normalized_components, language_codes, sources)
-            VALUES 
-                (%s, %s, %s, %s, %s)
-            ON CONFLICT (word_id, original_text) DO UPDATE
-            SET 
-                normalized_components = EXCLUDED.normalized_components,
-                language_codes = EXCLUDED.language_codes,
-                sources = CASE 
-                    WHEN etymologies.sources IS NULL THEN EXCLUDED.sources
-                    WHEN EXCLUDED.sources IS NULL THEN etymologies.sources
-                    ELSE etymologies.sources || ' | ' || EXCLUDED.sources
-                END
-            RETURNING id
-        """, (
-            word_id,
-            original_text,
-            normalized_components,
-            standardized_codes,
-            sources
-        ))
+    # Skip if it's just describing Baybayin spelling
+    if 'Baybayin spelling of' in etymology_text:
+        return
         
-        return cur.fetchone()[0]
-    except Exception as e:
-        logger.error(f"Error inserting etymology: {str(e)}")
-        raise
+    codes, cleaned_ety = lsys.extract_and_remove_language_codes(etymology_text)
+    
+    cur.execute("""
+        INSERT INTO etymologies
+            (word_id, original_text, language_codes, sources)
+        VALUES (%s, %s, %s, %s)
+        ON CONFLICT (word_id, original_text) DO UPDATE
+        SET language_codes = EXCLUDED.language_codes,
+            sources = COALESCE(etymologies.sources || ' | ' || EXCLUDED.sources, EXCLUDED.sources)
+        RETURNING id
+    """, (
+        word_id,
+        cleaned_ety,
+        ", ".join(codes) if codes else "",
+        sources
+    ))
 
+# -------------------------------------------------------------------
+# BAYBAYIN PROCESSING
+# -------------------------------------------------------------------
+
+def verify_baybayin_data(cur):
+    """Verify Baybayin data after migration."""
+    # Check for orphaned Baybayin forms
+    cur.execute("""
+        SELECT id, lemma, baybayin_form 
+        FROM words 
+        WHERE has_baybayin = TRUE AND baybayin_form IS NULL
+    """)
+    
+    orphaned = cur.fetchall()
+    if orphaned:
+        logger.warning(f"Found {len(orphaned)} words marked as Baybayin but missing baybayin_form")
+        for word_id, lemma, _ in orphaned:
+            logger.warning(f"Word ID {word_id}: {lemma}")
+            
+    # Check for duplicate Baybayin forms
+    cur.execute("""
+        SELECT baybayin_form, COUNT(*) 
+        FROM words 
+        WHERE has_baybayin = TRUE 
+        GROUP BY baybayin_form 
+        HAVING COUNT(*) > 1
+    """)
+    
+    duplicates = cur.fetchall()
+    if duplicates:
+        logger.warning(f"Found {len(duplicates)} Baybayin forms with multiple entries")
+        for baybayin_form, count in duplicates:
+            logger.warning(f"Baybayin form {baybayin_form} appears {count} times")
+
+def cleanup_baybayin_data(cur):
+    """Clean up problematic Baybayin data."""
+    # Remove Baybayin flag from entries without Baybayin form
+    cur.execute("""
+        UPDATE words 
+        SET has_baybayin = FALSE 
+        WHERE has_baybayin = TRUE AND baybayin_form IS NULL
+    """)
+    
+    # Merge duplicate Baybayin entries
+    cur.execute("""
+        WITH dupes AS (
+            SELECT DISTINCT w1.id as id1, w2.id as id2
+            FROM words w1
+            JOIN words w2 ON w1.baybayin_form = w2.baybayin_form
+            WHERE w1.has_baybayin AND w2.has_baybayin
+            AND w1.id < w2.id
+        )
+        SELECT id1, id2 FROM dupes
+    """)
+    
+    for word1_id, word2_id in cur.fetchall():
+        logger.info(f"Merging duplicate Baybayin entries: {word1_id} and {word2_id}")
+        cur.execute("""
+            UPDATE definitions SET word_id = %s WHERE word_id = %s;
+            UPDATE relations SET from_word_id = %s WHERE from_word_id = %s;
+            UPDATE relations SET to_word_id = %s WHERE to_word_id = %s;
+            DELETE FROM words WHERE id = %s;
+        """, (word1_id, word2_id, word1_id, word2_id, word1_id, word2_id, word2_id))
+
+class BaybayinCharType(Enum):
+    """Enum for different types of Baybayin characters"""
+    CONSONANT = "consonant"
+    VOWEL = "vowel"
+    VOWEL_MARK = "vowel_mark"
+    VIRAMA = "virama"
+    PUNCTUATION = "punctuation"
+    UNKNOWN = "unknown"
+
+@dataclass
+class BaybayinChar:
+    """Represents a single Baybayin character with its properties"""
+    char: str
+    char_type: BaybayinCharType
+    default_sound: str
+    possible_sounds: List[str]
+    
+    def __post_init__(self):
+        if not self.char:
+            raise ValueError("Character cannot be empty")
+        if not isinstance(self.char_type, BaybayinCharType):
+            raise ValueError(f"Invalid character type: {self.char_type}")
+
+class BaybayinRomanizer:
+    """
+    Handles romanization of Baybayin text with proper character combination rules.
+    Implements all valid Baybayin syllable patterns and combinations.
+    """
+    
+    # Comprehensive character mappings
+    VOWELS = {
+        'ᜀ': BaybayinChar('ᜀ', BaybayinCharType.VOWEL, 'a', ['a']),
+        'ᜁ': BaybayinChar('ᜁ', BaybayinCharType.VOWEL, 'i', ['i', 'e']),
+        'ᜂ': BaybayinChar('ᜂ', BaybayinCharType.VOWEL, 'u', ['u', 'o'])
+    }
+    
+    CONSONANTS = {
+        'ᜃ': BaybayinChar('ᜃ', BaybayinCharType.CONSONANT, 'ka', ['ka']),
+        'ᜄ': BaybayinChar('ᜄ', BaybayinCharType.CONSONANT, 'ga', ['ga']),
+        'ᜅ': BaybayinChar('ᜅ', BaybayinCharType.CONSONANT, 'nga', ['nga']),
+        'ᜆ': BaybayinChar('ᜆ', BaybayinCharType.CONSONANT, 'ta', ['ta']),
+        'ᜇ': BaybayinChar('ᜇ', BaybayinCharType.CONSONANT, 'da', ['da']),
+        'ᜈ': BaybayinChar('ᜈ', BaybayinCharType.CONSONANT, 'na', ['na']),
+        'ᜉ': BaybayinChar('ᜉ', BaybayinCharType.CONSONANT, 'pa', ['pa']),
+        'ᜊ': BaybayinChar('ᜊ', BaybayinCharType.CONSONANT, 'ba', ['ba']),
+        'ᜋ': BaybayinChar('ᜋ', BaybayinCharType.CONSONANT, 'ma', ['ma']),
+        'ᜌ': BaybayinChar('ᜌ', BaybayinCharType.CONSONANT, 'ya', ['ya']),
+        'ᜎ': BaybayinChar('ᜎ', BaybayinCharType.CONSONANT, 'la', ['la']),
+        'ᜏ': BaybayinChar('ᜏ', BaybayinCharType.CONSONANT, 'wa', ['wa']),
+        'ᜐ': BaybayinChar('ᜐ', BaybayinCharType.CONSONANT, 'sa', ['sa']),
+        'ᜑ': BaybayinChar('ᜑ', BaybayinCharType.CONSONANT, 'ha', ['ha'])
+    }
+    
+    VOWEL_MARKS = {
+        'ᜒ': BaybayinChar('ᜒ', BaybayinCharType.VOWEL_MARK, 'i', ['i', 'e']),
+        'ᜓ': BaybayinChar('ᜓ', BaybayinCharType.VOWEL_MARK, 'u', ['u', 'o'])
+    }
+    
+    VIRAMA = BaybayinChar('᜔', BaybayinCharType.VIRAMA, '', [])
+    
+    PUNCTUATION = {
+        '᜵': BaybayinChar('᜵', BaybayinCharType.PUNCTUATION, ',', [',']),
+        '᜶': BaybayinChar('᜶', BaybayinCharType.PUNCTUATION, '.', ['.'])
+    }
+
+    def __init__(self):
+        """Initialize the romanizer with validation."""
+        # Validate character sets for overlaps
+        all_chars = set()
+        for char_set in [self.VOWELS, self.CONSONANTS, self.VOWEL_MARKS, 
+                        {self.VIRAMA.char: self.VIRAMA}, self.PUNCTUATION]:
+            for char in char_set:
+                if char in all_chars:
+                    raise ValueError(f"Duplicate character in mappings: {char}")
+                all_chars.add(char)
+
+    def is_baybayin(self, text: str) -> bool:
+        """
+        Check if text contains Baybayin characters.
+        
+        Args:
+            text: Input text to check
+            
+        Returns:
+            bool: True if text contains Baybayin characters
+        """
+        if not text:
+            return False
+        return any(ord(c) >= 0x1700 and ord(c) <= 0x171F for c in text)
+
+    def get_char_info(self, char: str) -> Optional[BaybayinChar]:
+        """
+        Get information about a Baybayin character.
+        
+        Args:
+            char: Single character to look up
+            
+        Returns:
+            Optional[BaybayinChar]: Character information or None if not found
+        """
+        if char in self.VOWELS:
+            return self.VOWELS[char]
+        elif char in self.CONSONANTS:
+            return self.CONSONANTS[char]
+        elif char in self.VOWEL_MARKS:
+            return self.VOWEL_MARKS[char]
+        elif char == self.VIRAMA.char:
+            return self.VIRAMA
+        elif char in self.PUNCTUATION:
+            return self.PUNCTUATION[char]
+        return None
+
+    def process_syllable(self, chars: List[str]) -> Tuple[str, int]:
+        """
+        Process a syllable of Baybayin characters.
+        
+        Args:
+            chars: List of characters in the syllable
+            
+        Returns:
+            Tuple[str, int]: (romanized syllable, number of characters processed)
+        """
+        if not chars:
+            return '', 0
+
+        # Get first character info
+        first_char_info = self.get_char_info(chars[0])
+        if not first_char_info:
+            return chars[0], 1
+
+        # Handle vowels
+        if first_char_info.char_type == BaybayinCharType.VOWEL:
+            return first_char_info.default_sound, 1
+
+        # Handle consonants
+        if first_char_info.char_type == BaybayinCharType.CONSONANT:
+            if len(chars) == 1:
+                return first_char_info.default_sound, 1
+
+            # Check next character
+            next_char_info = self.get_char_info(chars[1]) if len(chars) > 1 else None
+            
+            if next_char_info:
+                if next_char_info.char_type == BaybayinCharType.VOWEL_MARK:
+                    # Consonant + vowel mark
+                    base = first_char_info.default_sound[:-1]  # Remove inherent 'a'
+                    return base + next_char_info.default_sound, 2
+                elif next_char_info.char_type == BaybayinCharType.VIRAMA:
+                    # Consonant + virama (kills vowel)
+                    return first_char_info.default_sound[:-1], 2
+
+            return first_char_info.default_sound, 1
+
+        # Handle punctuation
+        if first_char_info.char_type == BaybayinCharType.PUNCTUATION:
+            return first_char_info.default_sound, 1
+
+        return chars[0], 1
+
+    def romanize(self, text: str) -> str:
+        """
+        Convert Baybayin text to romanized form.
+        
+        Args:
+            text: Baybayin text to romanize
+            
+        Returns:
+            str: Romanized text
+        
+        Raises:
+            ValueError: If text is empty or invalid
+        """
+        if not text:
+            raise ValueError("Input text cannot be empty")
+
+        result = []
+        chars = list(text)
+        i = 0
+        
+        while i < len(chars):
+            # Skip spaces and preserve them
+            if chars[i].isspace():
+                result.append(chars[i])
+                i += 1
+                continue
+
+            # Process next syllable
+            romanized, chars_processed = self.process_syllable(chars[i:])
+            result.append(romanized)
+            i += chars_processed
+
+        return ''.join(result)
+
+    def validate_text(self, text: str) -> bool:
+        """
+        Validate Baybayin text for correct character combinations.
+        
+        Args:
+            text: Text to validate
+            
+        Returns:
+            bool: True if text is valid Baybayin
+        """
+        if not text:
+            return False
+
+        prev_char_info = None
+        for char in text:
+            if char.isspace():
+                continue
+
+            char_info = self.get_char_info(char)
+            if not char_info:
+                return False
+
+            # Check invalid combinations
+            if prev_char_info:
+                # Can't have two vowels in a row
+                if (prev_char_info.char_type == BaybayinCharType.VOWEL and 
+                    char_info.char_type == BaybayinCharType.VOWEL):
+                    return False
+                
+                # Can't have vowel mark after anything except consonant
+                if (char_info.char_type == BaybayinCharType.VOWEL_MARK and 
+                    prev_char_info.char_type != BaybayinCharType.CONSONANT):
+                    return False
+                
+                # Can't have virama after anything except consonant
+                if (char_info.char_type == BaybayinCharType.VIRAMA and 
+                    prev_char_info.char_type != BaybayinCharType.CONSONANT):
+                    return False
+
+            prev_char_info = char_info
+
+        return True
+
+def process_baybayin_text(text: str) -> Tuple[str, Optional[str], bool]:
+    """
+    Process Baybayin text with proper romanization.
+    
+    Args:
+        text: Text that might contain Baybayin
+        
+    Returns:
+        Tuple[str, Optional[str], bool]: (processed_text, romanized_text, has_baybayin)
+    """
+    if not text:
+        return text, None, False
+        
+    romanizer = BaybayinRomanizer()
+    has_baybayin = romanizer.is_baybayin(text)
+    
+    if not has_baybayin:
+        return text, None, False
+        
+    if not romanizer.validate_text(text):
+        logger.warning(f"Invalid Baybayin text detected: {text}")
+        return text, None, True
+        
+    try:
+        romanized = romanizer.romanize(text)
+        return text, romanized, True
+    except ValueError as e:
+        logger.error(f"Error romanizing Baybayin text: {str(e)}")
+        return text, None, True
+   
 # -------------------------------------------------------------------
 # 4. Processing Tagalog Words (New)
 # -------------------------------------------------------------------
@@ -892,90 +1475,7 @@ def process_kwf_file(cur, filename, check_exists=False):
 # -------------------------------------------------------------------
 # MIGRATE SUBCOMMAND
 # -------------------------------------------------------------------
-
-def process_baybayin_entries(cur):
-    """
-    Process and clean Baybayin entries in the database.
-    - Fix entries with lemmas starting with "Baybayin spelling of".
-    - Merge or update Baybayin entries as needed.
-    """
-    logger.info("Processing Baybayin entries...")
-
-    # Step 1: Fix lemmas starting with "Baybayin spelling of"
-    cur.execute("""
-        SELECT id, lemma
-        FROM words
-        WHERE lower(lemma) LIKE 'baybayin spelling of%'
-    """)
-    rows = cur.fetchall()
-
-    for row_id, old_lemma in rows:
-        new_lemma = clean_lemma_if_baybayin_spelling(old_lemma)
-        if not new_lemma:
-            continue
-        norm_lemma = normalize_lemma(new_lemma)
-
-        # Check for existing word with the cleaned lemma
-        cur.execute("""
-            SELECT id FROM words 
-            WHERE normalized_lemma = %s 
-              AND language_code = 'tl'
-            LIMIT 1
-        """, (norm_lemma,))
-        existing = cur.fetchone()
-
-        if existing:
-            existing_id = existing[0]
-            # Merge the problematic entry with the existing one
-            logger.info(f"Merging word ID {row_id} ('{old_lemma}') into existing ID {existing_id}")
-            merge_baybayin_entries(cur, row_id, existing_id)
-        else:
-            logger.info(f"Updating lemma for word ID {row_id} from '{old_lemma}' to '{new_lemma}'")
-            cur.execute("""
-                UPDATE words
-                   SET lemma = %s,
-                       normalized_lemma = %s
-                 WHERE id = %s
-            """, (new_lemma, norm_lemma, row_id))
-
-    # Step 2: Process standard Baybayin entries (existing logic)
-    cur.execute("""
-        SELECT id, lemma 
-        FROM words 
-        WHERE lemma ~ '[\u1700-\u171F]'
-    """)
-    baybayin_entries = cur.fetchall()
-
-    for baybayin_id, baybayin_lemma in baybayin_entries:
-        processed_text, romanized, has_baybayin = process_baybayin_text(baybayin_lemma)
-        if not romanized:
-            continue
-
-        normalized_romanized = normalize_lemma(romanized)
-        cur.execute("""
-            SELECT id 
-            FROM words 
-            WHERE normalized_lemma = %s 
-              AND id != %s
-              AND NOT (lemma ~ '[\u1700-\u171F]')
-            ORDER BY id ASC
-            LIMIT 1
-        """, (normalized_romanized, baybayin_id))
-        existing = cur.fetchone()
-
-        if existing:
-            logger.info(f"Merging Baybayin entry ID {baybayin_id} ('{baybayin_lemma}') with Romanized ID {existing[0]}")
-            merge_baybayin_entries(cur, baybayin_id, existing[0])
-        else:
-            logger.info(f"Updating standalone Baybayin entry ID {baybayin_id}")
-            cur.execute("""
-                UPDATE words 
-                SET romanized_form = %s,
-                    has_baybayin = TRUE,
-                    normalized_lemma = %s
-                WHERE id = %s
-            """, (romanized, normalized_romanized, baybayin_id))
-
+ 
 def setup_extensions(conn):
     """Set up required PostgreSQL extensions."""
     logger.info("Setting up PostgreSQL extensions...")
@@ -1019,59 +1519,40 @@ def setup_extensions(conn):
         cur.close()
 
 def migrate_data(args):
-    """
-    Migrate data with complete database reset for clean installation.
-    """
-    logger.info("Starting fresh data migration process")
-        
+    """Migrate data with proper Baybayin handling."""
+    logger.info("Starting fresh data migration")
+    
     conn = get_connection()
     cur = conn.cursor()
 
     try:
-        # First drop all tables to ensure clean slate
-        logger.info("Dropping all existing tables...")
+        # Drop existing tables
         cur.execute("""
             DROP TABLE IF EXISTS 
-                etymologies,
-                relations, 
-                definitions,
-                words CASCADE;
-                
-            DROP TYPE IF EXISTS word_type CASCADE;
+                etymologies, relations, definitions, words CASCADE;
         """)
         conn.commit()
         
-        # Set up extensions
-        setup_extensions(conn)
-        
-        # Create fresh tables
-        logger.info("Creating new database tables")
+        # Create fresh tables with Baybayin support
         create_or_update_tables(conn)
-        
-        # Proceed with data migration
-        logger.info("Beginning data processing")
         
         # Process each source file
         source_files = [
-            ("1. Processing Tagalog words", "data/tagalog-words.json", process_tagalog_words_file),
-            ("2. Processing Root words", "data/root_words_with_associated_words_cleaned.json", process_root_words_file),
-            ("3. Processing KWF Dictionary", "data/kwf_dictionary.json", process_kwf_file),
-            ("4. Processing Kaikki (Tagalog)", "data/kaikki.jsonl", process_kaikki_jsonl_new),
-            ("5. Processing Kaikki (Cebuano)", "data/kaikki-ceb.jsonl", process_kaikki_jsonl_new)
+            ("Processing Tagalog words", "data/tagalog-words.json", process_tagalog_words_file),
+            ("Processing Root words", "data/root_words_with_associated_words_cleaned.json", process_root_words_file),
+            ("Processing KWF Dictionary", "data/kwf_dictionary.json", process_kwf_file),
+            ("Processing Kaikki (Tagalog)", "data/kaikki.jsonl", process_kaikki_jsonl_new),
+            ("Processing Kaikki (Cebuano)", "data/kaikki-ceb.jsonl", process_kaikki_jsonl_new)
         ]
         
         for message, filename, processor in source_files:
             logger.info(message)
             processor(cur, filename, args.check_exists)
-            
-            # After each file is processed, handle any Baybayin entries
-            logger.info("Processing Baybayin entries from recent import...")
-            process_baybayin_entries(cur)
-        conn.commit()
-
-        # After all data is processed
-        logger.info("Standardizing etymology language codes...")
-        standardize_existing_etymologies(cur)
+            conn.commit()
+        
+        # Verify and clean up Baybayin data
+        verify_baybayin_data(cur)
+        cleanup_baybayin_data(cur)
         conn.commit()
         
         logger.info("Migration completed successfully")
@@ -1083,7 +1564,6 @@ def migrate_data(args):
     finally:
         cur.close()
         conn.close()
-        logger.info("Database connection closed")
 
 # -------------------------------------------------------------------
 # VERIFY SUBCOMMAND
@@ -2219,8 +2699,6 @@ def main():
         display_leaderboard(args)
     elif args.command == "help":
         display_help(args)
-    elif args.command == "explore":
-        explore_dictionary(args)
     else:
         parser.print_help()
 
@@ -2262,82 +2740,6 @@ def get_standardized_source_sql():
             ELSE sources
         END
     """
-
-def get_romanized_text(text):
-    """
-    Convert Baybayin characters to their romanized form with full character support.
-    """
-    baybayin_to_roman = {
-        # Basic vowels
-        'ᜀ': 'a',     # A
-        'ᜁ': 'i/e',   # I/E
-        'ᜂ': 'o/u',   # O/U
-        
-        # Basic consonants (with default 'a' vowel)
-        'ᜃ': 'ka',    # KA
-        'ᜄ': 'ga',    # GA
-        'ᜅ': 'nga',   # NGA
-        'ᜆ': 'ta',    # TA
-        'ᜇ': 'da',    # DA
-        'ᜈ': 'na',    # NA
-        'ᜉ': 'pa',    # PA
-        'ᜊ': 'ba',    # BA
-        'ᜋ': 'ma',    # MA
-        'ᜌ': 'ya',    # YA
-        'ᜎ': 'la',    # LA
-        'ᜏ': 'wa',    # WA
-        'ᜐ': 'sa',    # SA
-        'ᜑ': 'ha',    # HA
-        
-        # Vowel markers
-        'ᜒ': 'i',     # I/E marker
-        'ᜓ': 'u',     # U/O marker
-        '᜔': '',      # Virama (removes inherent 'a' vowel)
-        
-        # Special characters
-        '᜵': ',',     # Comma
-        '᜶': '.',     # Period
-        ' ': ' ',     # Space
-    }
-    
-    # Process text character by character
-    result = []
-    i = 0
-    while i < len(text):
-        # Try three-character combinations first
-        if i + 2 < len(text):
-            three_chars = text[i:i+3]
-            if three_chars in baybayin_to_roman:
-                result.append(baybayin_to_roman[three_chars])
-                i += 3
-                continue
-        
-        # Try two-character combinations
-        if i + 1 < len(text):
-            two_chars = text[i:i+2]
-            # Handle consonant + vowel marker combinations
-            if text[i] in 'ᜃᜄᜅᜆᜇᜈᜉᜊᜋᜌᜎᜏᜐᜑ':
-                if text[i+1] == 'ᜒ':  # I/E marker
-                    result.append(baybayin_to_roman[text[i]].replace('a', 'i'))
-                    i += 2
-                    continue
-                elif text[i+1] == 'ᜓ':  # U/O marker
-                    result.append(baybayin_to_roman[text[i]].replace('a', 'u'))
-                    i += 2
-                    continue
-                elif text[i+1] == '᜔':  # Virama
-                    result.append(baybayin_to_roman[text[i]][0])  # Just the consonant
-                    i += 2
-                    continue
-        
-        # Single character
-        if text[i] in baybayin_to_roman:
-            result.append(baybayin_to_roman[text[i]])
-        else:
-            result.append(text[i])
-        i += 1
-    
-    return ''.join(result)
 
 def format_word_display(word, show_baybayin=True):
     """
@@ -2403,23 +2805,6 @@ def clean_language_codes(codes):
             cleaned.append(code)
     
     return ', '.join(sorted(set(cleaned))) if cleaned else None
-
-def process_baybayin_text(text):
-    """
-    Process Baybayin text for storage and display.
-    
-    Args:
-        text: Text that might contain Baybayin
-        
-    Returns:
-        tuple: (processed_text, romanized_text, has_baybayin)
-    """
-    has_baybayin = any(ord(c) >= 0x1700 and ord(c) <= 0x171F for c in text)
-    if not has_baybayin:
-        return text, None, False
-        
-    romanized = get_romanized_text(text)
-    return text, romanized, True
 
 def merge_baybayin_entries(cur, baybayin_id, romanized_id):
     """
@@ -2517,825 +2902,7 @@ def process_baybayin_entries(cur):
                     normalized_lemma = %s
                 WHERE id = %s
             """, (romanized, normalized_romanized, baybayin_id))
-
-def explore_dictionary(args):
-    """
-    Interactive dictionary exploration with rich visual interface.
-    """
-    console = Console()
-    conn = get_connection()
-    cur = conn.cursor()
-
-    try:
-        while True:
-            console.clear()
-            
-            # Create a visually appealing header
-            header = Panel(
-                Align.center(
-                    Text.from_markup(
-                        "\n[bold cyan]📚 Filipino Dictionary Explorer[/]\n"
-                        "[dim]Discover the richness of Filipino languages[/]\n"
-                    )
-                ),
-                box=box.ROUNDED,
-                border_style="cyan",
-                padding=(1, 2)
-            )
-            console.print(header)
-            
-            # Show quick stats in a horizontal layout
-            cur.execute("""
-                SELECT 
-                    COUNT(DISTINCT w.id) as words,
-                    COUNT(DISTINCT d.id) as definitions,
-                    COUNT(DISTINCT e.id) as etymologies,
-                    COUNT(DISTINCT CASE WHEN w.lemma ~ '[\u1700-\u171F]' THEN w.id END) as baybayin
-                FROM words w
-                LEFT JOIN definitions d ON w.id = d.word_id
-                LEFT JOIN etymologies e ON w.id = e.word_id
-            """)
-            stats = cur.fetchone()
-            
-            stats_layout = Table.grid(padding=2)
-            stats_layout.add_column(justify="center")
-            stats_layout.add_column(justify="center")
-            stats_layout.add_column(justify="center")
-            stats_layout.add_column(justify="center")
-            
-            stats_layout.add_row(
-                f"[bold yellow]📝 {stats[0]:,}[/]\n[dim]Words[/]",
-                f"[bold green]📖 {stats[1]:,}[/]\n[dim]Definitions[/]",
-                f"[bold magenta]🌱 {stats[2]:,}[/]\n[dim]Etymologies[/]",
-                f"[bold cyan]🔤 {stats[3]:,}[/]\n[dim]Baybayin[/]"
-            )
-            
-            console.print(Panel(stats_layout, border_style="blue"))
-            console.print()
-            
-            # Create an attractive menu layout
-            menu_grid = Table.grid(padding=1)
-            menu_grid.add_column(ratio=1)
-            menu_grid.add_column(ratio=1)
-            
-            # Left column - Basic exploration
-            basic_menu = Table(
-                title="Basic Exploration",
-                box=box.ROUNDED,
-                border_style="cyan",
-                show_header=False
-            )
-            basic_menu.add_column("Option", style="bold yellow")
-            basic_menu.add_column("Description", style="white")
-            
-            basic_options = [
-                ("1", "Browse by Language", "🌏"),
-                ("2", "Search by Word Type", "📑"),
-                ("3", "Recent Additions", "✨"),
-                ("4", "Popular Words", "⭐")
-            ]
-            
-            for num, desc, icon in basic_options:
-                basic_menu.add_row(f"{icon} [{num}]", desc)
-            
-            # Right column - Advanced features
-            advanced_menu = Table(
-                title="Advanced Features",
-                box=box.ROUNDED,
-                border_style="magenta",
-                show_header=False
-            )
-            advanced_menu.add_column("Option", style="bold yellow")
-            advanced_menu.add_column("Description", style="white")
-            
-            advanced_options = [
-                ("5", "Etymology Search", "🔍"),
-                ("6", "Baybayin Browser", "🔤"),
-                ("7", "Word Relationships", "🔄"),
-                ("8", "Pattern Explorer", "📊")
-            ]
-            
-            for num, desc, icon in advanced_options:
-                advanced_menu.add_row(f"{icon} [{num}]", desc)
-            
-            menu_grid.add_row(basic_menu, advanced_menu)
-            console.print(menu_grid)
-            
-            # Help footer
-            footer = Table.grid()
-            footer.add_column()
-            footer.add_row("[dim]Enter a number to explore or 'q' to quit[/]")
-            footer.add_row("[dim]Type 'help' for detailed information[/]")
-            console.print("\n", Align.center(footer))
-            
-            # Get user choice with enhanced feedback
-            choice = input("\n[→] Your choice: ").strip().lower()
-            
-            if choice == 'q':
-                console.print("\n[yellow]Thanks for exploring! Goodbye![/]")
-                break
-            elif choice == 'help':
-                display_explorer_help(console)
-                input("\nPress Enter to continue...")
-                continue
-            
-            # Process numeric choices
-            try:
-                choice_num = int(choice)
-                if choice_num == 1:
-                    browse_by_language_pos(cur, console)
-                elif choice_num == 2:
-                    browse_by_word_type(cur, console)
-                elif choice_num == 3:
-                    view_recent_additions(cur, console)
-                elif choice_num == 4:
-                    view_popular_words(cur, console)
-                elif choice_num == 5:
-                    search_by_etymology(cur, console)
-                elif choice_num == 6:
-                    browse_baybayin(cur, console)
-                elif choice_num == 7:
-                    explore_relationships(cur, console)
-                elif choice_num == 8:
-                    explore_patterns(cur, console)
-                else:
-                    console.print("[red]Invalid option. Please try again.[/]")
-                    input("\nPress Enter to continue...")
-            except ValueError:
-                console.print("[red]Please enter a valid number or command.[/]")
-                input("\nPress Enter to continue...")
-
-    finally:
-        cur.close()
-        conn.close()
-
-def display_explorer_help(console):
-    """Display detailed help for the explorer interface."""
-    help_text = """
-[bold cyan]Dictionary Explorer Help[/]
-
-[bold yellow]Basic Exploration:[/]
-  🌏 [bold]Browse by Language[/]
-     • View words by language and part of speech
-     • Filter and sort by various criteria
-     • Explore word definitions and usage
-
-  📑 [bold]Search by Word Type[/]
-     • Find nouns, verbs, adjectives, etc.
-     • See common patterns and forms
-     • Explore word formation rules
-
-  ✨ [bold]Recent Additions[/]
-     • Latest entries in the dictionary
-     • New words and definitions
-     • Track dictionary growth
-
-  ⭐ [bold]Popular Words[/]
-     • Most frequently referenced words
-     • Common root words
-     • Words with rich definitions
-
-[bold yellow]Advanced Features:[/]
-  🔍 [bold]Etymology Search[/]
-     • Trace word origins
-     • Explore language influences
-     • Find cognates and borrowed words
-
-  🔤 [bold]Baybayin Browser[/]
-     • Explore Baybayin script
-     • View romanized pairs
-     • Learn character meanings
-
-  🔄 [bold]Word Relationships[/]
-     • Find related words
-     • Explore word families
-     • Discover semantic connections
-
-  📊 [bold]Pattern Explorer[/]
-     • Analyze word formation
-     • Find similar patterns
-     • Study language structure
-
-[bold yellow]Navigation Tips:[/]
-  • Use numbers [1-8] to select options
-  • Press 'b' to go back in any menu
-  • Type 'q' to quit the explorer
-  • Type 'help' for this information
-    """
     
-    console.print(Panel(
-        Text.from_markup(help_text),
-        title="Explorer Help",
-        border_style="cyan",
-        padding=(1, 2)
-    ))
-
-def browse_by_language_pos(cur, console):
-    """Browse words by language and part of speech."""
-    while True:
-        console.clear()
-        console.print("\n[bold cyan]Browse by Language & Part of Speech[/]\n")
-        
-        # Get languages with word counts
-        cur.execute("""
-            SELECT 
-                language_code,
-                COUNT(*) as words,
-                COUNT(DISTINCT d.standardized_pos_id) as pos_count
-            FROM words w
-            LEFT JOIN definitions d ON w.id = d.word_id
-            GROUP BY language_code
-            ORDER BY words DESC
-        """)
-        
-        # Display languages
-        lang_table = Table(box=box.ROUNDED)
-        lang_table.add_column("Language", style="bold yellow")
-        lang_table.add_column("Words", justify="right", style="cyan")
-        lang_table.add_column("Parts of Speech", justify="right", style="green")
-        
-        for lang, words, pos in cur.fetchall():
-            lang_name = {'tl': 'Tagalog', 'ceb': 'Cebuano'}.get(lang, lang)
-            lang_table.add_row(lang, f"{words:,}", f"{pos:,}")
-        
-        console.print(lang_table)
-        
-        # Get language choice
-        lang = input("\nEnter language code (or 'b' to go back): ").strip().lower()
-        if lang == 'b':
-            break
-            
-        # Show parts of speech for chosen language
-        cur.execute("""
-            SELECT part_of_speech, COUNT(*) as count
-            FROM words w
-            JOIN definitions d ON w.id = d.word_id
-            WHERE language_code = %s AND part_of_speech IS NOT NULL
-            GROUP BY part_of_speech
-            ORDER BY count DESC
-        """, (lang,))
-        
-        pos_results = cur.fetchall()
-        if not pos_results:
-            console.print("[yellow]No parts of speech found for this language[/]")
-            continue
-            
-        pos_table = Table(box=box.ROUNDED)
-        pos_table.add_column("Part of Speech", style="bold yellow")
-        pos_table.add_column("Count", justify="right", style="cyan")
-        
-        for pos, count in pos_results:
-            pos_table.add_row(pos, f"{count:,}")
-        
-        console.print("\n", pos_table)
-        
-        # Get POS choice and show words
-        pos = input("\nEnter part of speech (or 'b' to go back): ").strip()
-        if pos == 'b':
-            continue
-            
-        cur.execute("""
-            SELECT DISTINCT w.lemma, d.definition_text
-            FROM words w
-            JOIN definitions d ON w.id = d.word_id
-            WHERE w.language_code = %s AND d.standardized_pos_id = %s
-            ORDER BY w.lemma
-            LIMIT 50
-        """, (lang, pos))
-        
-        words_table = Table(box=box.ROUNDED)
-        words_table.add_column("Word", style="bold yellow")
-        words_table.add_column("Definition", style="white")
-        
-        for word, definition in cur.fetchall():
-            words_table.add_row(
-                format_word_display(word),
-                Text(definition[:100] + "..." if len(definition) > 100 else definition)
-            )
-        
-        console.print("\n", words_table)
-        input("\nPress Enter to continue...")
-
-def browse_by_word_type(cur, console):
-    """Browse words by their part of speech and type."""
-    while True:
-        console.clear()
-        console.print("\n[bold cyan]Browse by Word Type[/]\n")
-        
-        # Get all parts of speech with counts
-        cur.execute("""
-            SELECT 
-                part_of_speech,
-                COUNT(*) as count,
-                COUNT(DISTINCT w.language_code) as lang_count
-            FROM definitions d
-            JOIN words w ON w.id = d.word_id
-            WHERE part_of_speech IS NOT NULL
-            GROUP BY part_of_speech
-            ORDER BY count DESC
-        """)
-        
-        # Display POS table
-        pos_table = Table(box=box.ROUNDED)
-        pos_table.add_column("Part of Speech", style="bold yellow")
-        pos_table.add_column("Words", justify="right", style="cyan")
-        pos_table.add_column("Languages", justify="right", style="green")
-        
-        for pos, count, langs in cur.fetchall():
-            pos_table.add_row(pos, f"{count:,}", f"{langs}")
-        
-        console.print(pos_table)
-        
-        # Get POS choice
-        pos = input("\nEnter part of speech (or 'b' to go back): ").strip()
-        if pos == 'b':
-            break
-            
-        # Show words for chosen POS
-        cur.execute("""
-            SELECT 
-                w.lemma,
-                w.language_code,
-                d.definition_text
-            FROM words w
-            JOIN definitions d ON w.id = d.word_id
-            WHERE d.standardized_pos_id = %s
-            ORDER BY w.language_code, w.lemma
-            LIMIT 50
-        """, (pos,))
-        
-        words_table = Table(box=box.ROUNDED)
-        words_table.add_column("Word", style="bold yellow")
-        words_table.add_column("Language", style="cyan")
-        words_table.add_column("Definition", style="white")
-        
-        for word, lang, definition in cur.fetchall():
-            words_table.add_row(
-                format_word_display(word),
-                lang,
-                Text(definition[:100] + "..." if len(definition) > 100 else definition)
-            )
-        
-        console.print("\n", words_table)
-        input("\nPress Enter to continue...")
-
-def view_recent_additions(cur, console):
-    """Display recently added dictionary entries."""
-    console.clear()
-    console.print("\n[bold cyan]Recent Dictionary Additions[/]\n")
-    
-    cur.execute("""
-        SELECT 
-            w.lemma,
-            w.language_code,
-            d.definition_text,
-            d.standardized_pos_id,
-            w.id
-        FROM words w
-        LEFT JOIN definitions d ON w.id = d.word_id
-        ORDER BY w.id DESC
-        LIMIT 50
-    """)
-    
-    results_table = Table(box=box.ROUNDED)
-    results_table.add_column("Word", style="bold yellow")
-    results_table.add_column("Language", style="cyan")
-    results_table.add_column("Definition", style="white")
-    results_table.add_column("Type", style="green")
-    
-    for word, lang, definition, pos, _ in cur.fetchall():
-        results_table.add_row(
-            format_word_display(word),
-            lang,
-            Text(definition[:100] + "..." if definition and len(definition) > 100 else (definition or "-")),
-            pos or "-"
-        )
-    
-    console.print(results_table)
-    input("\nPress Enter to continue...")
-
-def view_popular_words(cur, console):
-    """Display most frequently referenced words."""
-    console.clear()
-    console.print("\n[bold cyan]Popular Dictionary Words[/]\n")
-    
-    cur.execute("""
-        SELECT 
-            w.lemma,
-            w.language_code,
-            COUNT(DISTINCT d.id) as def_count,
-            COUNT(DISTINCT r.id) as rel_count,
-            STRING_AGG(DISTINCT d.definition_text, ' | ') as definitions
-        FROM words w
-        LEFT JOIN definitions d ON w.id = d.word_id
-        LEFT JOIN relations r ON w.id = r.from_word_id OR w.id = r.to_word_id
-        GROUP BY w.id, w.lemma, w.language_code
-        ORDER BY (COUNT(DISTINCT d.id) + COUNT(DISTINCT r.id)) DESC
-        LIMIT 50
-    """)
-    
-    results_table = Table(box=box.ROUNDED)
-    results_table.add_column("Word", style="bold yellow")
-    results_table.add_column("Language", style="cyan")
-    results_table.add_column("Definitions", justify="right", style="green")
-    results_table.add_column("Relations", justify="right", style="magenta")
-    results_table.add_column("Sample Definition", style="white")
-    
-    for word, lang, def_count, rel_count, defs in cur.fetchall():
-        first_def = defs.split(' | ')[0] if defs else "-"
-        results_table.add_row(
-            format_word_display(word),
-            lang,
-            str(def_count),
-            str(rel_count),
-            Text(first_def[:100] + "..." if len(first_def) > 100 else first_def)
-        )
-    
-    console.print(results_table)
-    input("\nPress Enter to continue...")
-
-def search_by_etymology(cur, console):
-    """Search words by their etymology and language origins."""
-    while True:
-        console.clear()
-        console.print("\n[bold cyan]Search by Etymology Origins[/]\n")
-        
-        # Get available language origins
-        cur.execute("""
-            WITH RECURSIVE split_langs AS (
-                SELECT DISTINCT 
-                    regexp_split_to_table(language_codes, ',\s*') as lang_code,
-                    COUNT(*) as word_count
-                FROM etymologies
-                WHERE language_codes IS NOT NULL
-                GROUP BY lang_code
-            )
-            SELECT 
-                lang_code,
-                word_count,
-                ROUND(word_count::numeric / 
-                    (SELECT COUNT(DISTINCT word_id) FROM etymologies) * 100, 1) as percentage
-            FROM split_langs
-            ORDER BY word_count DESC
-        """)
-        
-        # Display language origins table
-        origins_table = Table(box=box.ROUNDED)
-        origins_table.add_column("Language", style="bold yellow")
-        origins_table.add_column("Words", justify="right", style="cyan")
-        origins_table.add_column("Percentage", justify="right", style="green")
-        
-        for lang, count, pct in cur.fetchall():
-            origins_table.add_row(lang.strip(), f"{count:,}", f"{pct}%")
-        
-        console.print(origins_table)
-        
-        # Get language choice
-        lang_choice = input("\nEnter language code to explore (or 'b' to go back): ").strip()
-        if lang_choice.lower() == 'b':
-            break
-            
-        # Show words with this origin
-        cur.execute("""
-            SELECT 
-                w.lemma,
-                w.language_code,
-                e.original_text,
-                e.language_codes
-            FROM words w
-            JOIN etymologies e ON w.id = e.word_id
-            WHERE e.language_codes ILIKE %s
-            ORDER BY w.lemma
-            LIMIT 50
-        """, (f'%{lang_choice}%',))
-        
-        results_table = Table(box=box.ROUNDED)
-        results_table.add_column("Word", style="bold yellow")
-        results_table.add_column("Language", style="cyan")
-        results_table.add_column("Etymology", style="white")
-        results_table.add_column("Path", style="green")
-        
-        for word, lang, ety, langs in cur.fetchall():
-            results_table.add_row(
-                format_word_display(word),
-                lang,
-                Text(ety[:100] + "..." if len(ety) > 100 else ety),
-                langs
-            )
-        
-        if results_table.row_count:
-            console.print("\n", results_table)
-        else:
-            console.print(f"\n[yellow]No words found with {lang_choice} origin[/]")
-        
-        input("\nPress Enter to continue...")
-
-def browse_baybayin(cur, console):
-    """Browse and explore Baybayin entries."""
-    while True:
-        console.clear()
-        console.print("\n[bold cyan]Browse Baybayin Entries[/]\n")
-        
-        # Get Baybayin statistics
-        cur.execute("""
-            SELECT 
-                COUNT(*) as total,
-                COUNT(*) FILTER (WHERE romanized_form IS NOT NULL) as with_romanized,
-                COUNT(*) FILTER (WHERE 
-                    normalized_lemma NOT IN (
-                        SELECT normalized_lemma 
-                        FROM words w2 
-                        WHERE NOT (w2.lemma ~ '[\u1700-\u171F]')
-                    )
-                ) as standalone
-            FROM words
-            WHERE lemma ~ '[\u1700-\u171F]'
-        """)
-        
-        stats = cur.fetchone()
-        
-        # Show statistics
-        stats_table = Table(title="Baybayin Statistics", box=box.ROUNDED)
-        stats_table.add_column("Metric", style="bold yellow")
-        stats_table.add_column("Count", justify="right", style="cyan")
-        
-        stats_table.add_row("Total Entries", f"{stats[0]:,}")
-        stats_table.add_row("With Romanization", f"{stats[1]:,}")
-        stats_table.add_row("Standalone Entries", f"{stats[2]:,}")
-        
-        console.print(stats_table)
-        console.print()
-        
-        # Show options
-        options = [
-            ("1", "View All Baybayin Entries"),
-            ("2", "View Standalone Entries"),
-            ("3", "View Entries with Romanized Pairs"),
-            ("4", "Search Baybayin"),
-            ("b", "Back to Main Menu")
-        ]
-        
-        for opt, desc in options:
-            console.print(f"[cyan]{opt}[/] {desc}")
-        
-        choice = input("\nEnter your choice: ").strip().lower()
-        
-        if choice == 'b':
-            break
-            
-        # Build query based on choice
-        query = """
-            SELECT 
-                w.lemma,
-                w.romanized_form,
-                w.language_code,
-                STRING_AGG(DISTINCT d.definition_text, ' | ') as definitions,
-                EXISTS (
-                    SELECT 1 
-                    FROM words w2 
-                    WHERE w2.normalized_lemma = w.normalized_lemma 
-                    AND NOT (w2.lemma ~ '[\u1700-\u171F]')
-                ) as has_pair
-            FROM words w
-            LEFT JOIN definitions d ON w.id = d.word_id
-            WHERE w.lemma ~ '[\u1700-\u171F]'
-        """
-        
-        if choice == '2':  # Standalone only
-            query += " AND NOT EXISTS (SELECT 1 FROM words w2 WHERE w2.normalized_lemma = w.normalized_lemma AND NOT (w2.lemma ~ '[\u1700-\u171F]'))"
-        elif choice == '3':  # With pairs only
-            query += " AND EXISTS (SELECT 1 FROM words w2 WHERE w2.normalized_lemma = w.normalized_lemma AND NOT (w2.lemma ~ '[\u1700-\u171F]'))"
-        elif choice == '4':  # Search
-            search = input("\nEnter search term: ").strip()
-            if not search:
-                continue
-            query += f" AND (w.lemma LIKE '%{search}%' OR w.romanized_form LIKE '%{search}%')"
-        
-        query += " GROUP BY w.lemma, w.romanized_form, w.language_code ORDER BY w.lemma LIMIT 50"
-        
-        cur.execute(query)
-        entries = cur.fetchall()
-        
-        if entries:
-            results_table = Table(box=box.ROUNDED)
-            results_table.add_column("Baybayin", style="bold cyan")
-            results_table.add_column("Romanized", style="yellow")
-            results_table.add_column("Language", style="green")
-            results_table.add_column("Definitions", style="white")
-            results_table.add_column("Status", style="magenta")
-            
-            for baybayin, roman, lang, defs, has_pair in entries:
-                status = "Paired" if has_pair else "Standalone"
-                results_table.add_row(
-                    baybayin,
-                    roman or "-",
-                    lang,
-                    Text(defs[:100] + "..." if defs and len(defs) > 100 else (defs or "-")),
-                    status
-                )
-            
-            console.print("\n", results_table)
-        else:
-            console.print("\n[yellow]No entries found[/]")
-        
-        input("\nPress Enter to continue...")
-
-def explore_relationships(cur, console):
-    """Explore word relationships and connections."""
-    while True:
-        console.clear()
-        console.print("\n[bold cyan]Explore Word Relationships[/]\n")
-        
-        # Get relationship types and counts
-        cur.execute("""
-            SELECT relation_type, COUNT(*) as count
-            FROM relations
-            GROUP BY relation_type
-            ORDER BY count DESC
-        """)
-        
-        # Display relationship types
-        types_table = Table(box=box.ROUNDED)
-        types_table.add_column("Relationship", style="bold yellow")
-        types_table.add_column("Count", justify="right", style="cyan")
-        
-        for rel_type, count in cur.fetchall():
-            types_table.add_row(rel_type, f"{count:,}")
-        
-        console.print(types_table)
-        
-        # Get relationship choice
-        rel_type = input("\nEnter relationship type (or 'b' to go back): ").strip()
-        if rel_type.lower() == 'b':
-            break
-            
-        # Show word pairs with this relationship
-        cur.execute("""
-            SELECT 
-                w1.lemma as from_word,
-                w2.lemma as to_word,
-                w1.language_code,
-                STRING_AGG(DISTINCT d.definition_text, ' | ') as definitions
-            FROM relations r
-            JOIN words w1 ON r.from_word_id = w1.id
-            JOIN words w2 ON r.to_word_id = w2.id
-            LEFT JOIN definitions d ON w1.id = d.word_id
-            WHERE r.relation_type = %s
-            GROUP BY w1.lemma, w2.lemma, w1.language_code
-            ORDER BY w1.lemma
-            LIMIT 50
-        """, (rel_type,))
-        
-        pairs_table = Table(box=box.ROUNDED)
-        pairs_table.add_column("From", style="bold yellow")
-        pairs_table.add_column("To", style="bold cyan")
-        pairs_table.add_column("Language", style="green")
-        pairs_table.add_column("Definition", style="white")
-        
-        for from_word, to_word, lang, defs in cur.fetchall():
-            pairs_table.add_row(
-                format_word_display(from_word),
-                format_word_display(to_word),
-                lang,
-                Text(defs[:100] + "..." if defs and len(defs) > 100 else (defs or "-"))
-            )
-        
-        console.print("\n", pairs_table)
-        input("\nPress Enter to continue...")
-
-def explore_patterns(cur, console):
-    """Explore word formation patterns and structures."""
-    while True:
-        console.clear()
-        console.print("\n[bold cyan]Word Pattern Explorer[/]\n")
-        
-        # Show pattern options
-        pattern_table = Table(box=box.ROUNDED)
-        pattern_table.add_column("Pattern", style="bold yellow")
-        pattern_table.add_column("Description", style="white")
-        pattern_table.add_column("Example", style="cyan")
-        
-        patterns = [
-            ("Prefix", "Words starting with...", "mag-, pag-, ka-"),
-            ("Suffix", "Words ending with...", "-an, -in, -han"),
-            ("Length", "Words of length...", "5 letters, 10+ chars"),
-            ("Infix", "Words containing...", "-um-, -in-"),
-            ("Reduplicated", "Repeated syllables", "kaka-, papa-")
-        ]
-        
-        for pat, desc, ex in patterns:
-            pattern_table.add_row(pat, desc, ex)
-        
-        console.print(pattern_table)
-        
-        pattern = input("\nEnter pattern type (or 'b' to go back): ").strip().lower()
-        if pattern == 'b':
-            break
-            
-        search = input("Enter specific pattern to search: ").strip()
-        if not search:
-            continue
-            
-        # Build query based on pattern type
-        query = """
-            SELECT 
-                w.lemma,
-                w.language_code,
-                STRING_AGG(DISTINCT d.definition_text, ' | ') as definitions
-            FROM words w
-            LEFT JOIN definitions d ON w.id = d.word_id
-            WHERE """
-            
-        if pattern.startswith('p'):  # prefix
-            query += "w.lemma LIKE %s"
-            search = f"{search}%"
-        elif pattern.startswith('s'):  # suffix
-            query += "w.lemma LIKE %s"
-            search = f"%{search}"
-        elif pattern.startswith('l'):  # length
-            try:
-                length = int(search)
-                query += "LENGTH(w.lemma) = %s"
-                search = length
-            except ValueError:
-                console.print("[red]Please enter a valid number for length[/]")
-                continue
-        elif pattern.startswith('i'):  # infix
-            query += "w.lemma LIKE %s"
-            search = f"%{search}%"
-        elif pattern.startswith('r'):  # reduplicated
-            query += "w.lemma ~ %s"
-            search = f"^{search}.*{search}"
-            
-        query += " GROUP BY w.lemma, w.language_code ORDER BY w.lemma LIMIT 50"
-        
-        cur.execute(query, (search,))
-        results = cur.fetchall()
-        
-        if results:
-            results_table = Table(box=box.ROUNDED)
-            results_table.add_column("Word", style="bold yellow")
-            results_table.add_column("Language", style="cyan")
-            results_table.add_column("Definition", style="white")
-            
-            for word, lang, defs in results:
-                results_table.add_row(
-                    format_word_display(word),
-                    lang,
-                    Text(defs[:100] + "..." if defs and len(defs) > 100 else (defs or "-"))
-                )
-            
-            console.print("\n", results_table)
-        else:
-            console.print("\n[yellow]No matching words found[/]")
-            
-        input("\nPress Enter to continue...")
-
-def display_help():
-    """Display help information about available commands."""
-    console = Console()
-    
-    console.print("\n[bold cyan]📚 Dictionary Manager Help[/]\n")
-    
-    commands = Table(box=box.ROUNDED)
-    commands.add_column("Command", style="bold yellow")
-    commands.add_column("Description", style="white")
-    commands.add_column("Example", style="cyan")
-    
-    commands.add_row(
-        "migrate",
-        "Reset and rebuild the database with fresh data",
-        "python dictionary_manager.py migrate"
-    )
-    commands.add_row(
-        "stats",
-        "Display dictionary statistics and metrics",
-        "python dictionary_manager.py stats"
-    )
-    commands.add_row(
-        "inspect",
-        "Look up detailed information about a word",
-        "python dictionary_manager.py inspect --word \"bahay\""
-    )
-    commands.add_row(
-        "explore",
-        "Interactive exploration of the dictionary",
-        "python dictionary_manager.py explore"
-    )
-    commands.add_row(
-        "verify",
-        "Run database integrity checks",
-        "python dictionary_manager.py verify"
-    )
-    commands.add_row(
-        "help",
-        "Show this help information",
-        "python dictionary_manager.py help"
-    )
-    
-    console.print(commands)
-    console.print("\n[bold green]For more information, visit: https://github.com/jrdndj/fil-relex[/]\n")
-
 def handle_invalid_command():
     """Handle invalid or missing command arguments."""
     console = Console()
@@ -3416,10 +2983,7 @@ def standardize_existing_etymologies(cur):
     logger.info(f"Standardized {len(etymologies)} etymology entries")
 
 def process_kaikki_jsonl_new(cur, filename, check_exists=False):
-    """
-    Process Kaikki dictionary entries from a JSONL file.
-    Properly extracts synonyms, derived terms, etc., even if they are dictionaries.
-    """
+    """Process Kaikki dictionary entries from JSONL file with proper Baybayin handling."""
     logger.info(f"Starting to process Kaikki file: {filename}")
 
     if not os.path.exists(filename):
@@ -3427,225 +2991,178 @@ def process_kaikki_jsonl_new(cur, filename, check_exists=False):
         return
 
     src = os.path.basename(filename)
-    # Determine language code: "tl" if the filename is "kaikki.jsonl", otherwise "ceb"
     lang_code = "tl" if "kaikki.jsonl" in filename else "ceb"
+
+    def extract_baybayin_info(entry):
+        """Extract Baybayin information from entry."""
+        # Check directly provided Baybayin form first
+        baybayin = entry.get("baybayin") or entry.get("script", {}).get("baybayin")
+        
+        # Check pronunciation for Baybayin characters
+        pronunciation = entry.get("pronunciation", "")
+        if pronunciation and any(char in pronunciation for char in "ᜀᜁᜂᜃᜄᜅᜆᜇᜈᜉᜊᜋᜌᜎᜏ"):
+            baybayin = baybayin or pronunciation
+
+        # Check senses for "Baybayin spelling of X"
+        romanized = entry.get("romanized")
+        if romanized:
+            return baybayin, romanized
+
+        for sense in entry.get("senses", []):
+            # Check alt_of field first
+            for alt in sense.get("alt_of", []):
+                if isinstance(alt, dict) and "word" in alt:
+                    romanized = alt["word"]
+                    break
+            if romanized:
+                break
+            
+            # Check glosses
+            for gloss in sense.get("glosses", []):
+                if "Baybayin spelling of" in gloss:
+                    romanized = gloss.replace("Baybayin spelling of", "").strip()
+                    break
+            if romanized:
+                break
+
+        return baybayin, romanized
+
+    def process_entry(cur, entry):
+        """Process a single dictionary entry."""
+        try:
+            lemma = entry.get("word", "").strip()
+            if not lemma:
+                return
+
+            # Handle Baybayin entries
+            baybayin_form, romanized = extract_baybayin_info(entry)
+            has_baybayin = bool(baybayin_form)
+            
+            # If this is a Baybayin entry, look for existing romanized form
+            if has_baybayin and romanized:
+                # Check for existing romanized entry
+                cur.execute("""
+                    SELECT id FROM words 
+                    WHERE normalized_lemma = %s AND language_code = %s
+                    AND NOT has_baybayin
+                """, (normalize_lemma(romanized), lang_code))
+                
+                result = cur.fetchone()
+                if result:
+                    # Update existing entry with Baybayin form
+                    romanized_id = result[0]
+                    cur.execute("""
+                        UPDATE words 
+                        SET has_baybayin = TRUE,
+                            baybayin_form = %s
+                        WHERE id = %s
+                    """, (baybayin_form, romanized_id))
+                    return
+                else:
+                    # Create romanized entry with Baybayin form
+                    word_id = get_or_create_word_id(
+                        cur,
+                        romanized,
+                        lang_code=lang_code,
+                        has_baybayin=True,
+                        baybayin_form=baybayin_form
+                    )
+                    return
+
+            # For non-Baybayin entries, process normally
+            is_root = entry.get("is_root", False) or ("root word" in entry.get("tags", []))
+            root_word_id = None if is_root else get_root_word_id(cur, lemma, lang_code)
+
+            word_id = get_or_create_word_id(
+                cur,
+                lemma,
+                lang_code=lang_code,
+                root_word_id=root_word_id,
+                check_exists=check_exists
+            )
+
+            # Process definitions (skip if pure Baybayin entry)
+            entry_pos = entry.get("pos", "").strip()
+            for sense in entry.get("senses", []):
+                if all('Baybayin spelling of' in gloss for gloss in sense.get("glosses", [])):
+                    continue
+
+                pos = sense.get("pos", entry_pos).strip()
+                pos = ", ".join(filter(None, [p.strip() for p in pos.split(",")]))
+
+                examples = []
+                for ex in sense.get("examples", []):
+                    if isinstance(ex, dict):
+                        example_text = ex.get("text", "")
+                        if example_text:
+                            examples.append(example_text)
+                    elif isinstance(ex, str):
+                        examples.append(ex)
+
+                for gloss in sense.get("glosses", []):
+                    if gloss and not "Baybayin spelling of" in gloss:
+                        insert_definition(
+                            cur, 
+                            word_id, 
+                            gloss.strip(),
+                            pos,
+                            examples="\n".join(examples) if examples else None,
+                            usage_notes=None,
+                            sources=src
+                        )
+
+            # Process etymology
+            etymology = entry.get("etymology_text", "")
+            if etymology:
+                codes, cleaned_ety = lsys.extract_and_remove_language_codes(etymology)
+                insert_etymology(
+                    cur,
+                    word_id,
+                    cleaned_ety,
+                    language_codes=", ".join(codes) if codes else "",
+                    sources=src,
+                )
+
+            # Process relations
+            for derived in entry.get("derived", []):
+                der_word = derived.get("word", "") if isinstance(derived, dict) else str(derived)
+                if der_word := der_word.strip():
+                    der_id = get_or_create_word_id(cur, der_word, lang_code)
+                    insert_relation(cur, word_id, der_id, "derived_from", src)
+
+            for syn in entry.get("synonyms", []):
+                syn_word = syn.get("word", "") if isinstance(syn, dict) else str(syn)
+                if syn_word := syn_word.strip():
+                    syn_id = get_or_create_word_id(cur, syn_word, lang_code)
+                    insert_relation(cur, word_id, syn_id, "synonym", src)
+
+            for rel in entry.get("related", []):
+                rel_word = rel.get("word", "") if isinstance(rel, dict) else str(rel)
+                if rel_word := rel_word.strip():
+                    rel_id = get_or_create_word_id(cur, rel_word, lang_code)
+                    insert_relation(cur, word_id, rel_id, "related", src)
+
+            # Process hyponyms/hypernyms
+            for hyper in entry.get("hypernyms", []):
+                hyper_word = hyper.get("word", "") if isinstance(hyper, dict) else str(hyper)
+                if hyper_word := hyper_word.strip():
+                    hyper_id = get_or_create_word_id(cur, hyper_word, lang_code)
+                    insert_relation(cur, word_id, hyper_id, "hypernym", src)
+
+            for hypo in entry.get("hyponyms", []):
+                hypo_word = hypo.get("word", "") if isinstance(hypo, dict) else str(hypo)
+                if hypo_word := hypo_word.strip():
+                    hypo_id = get_or_create_word_id(cur, hypo_word, lang_code)
+                    insert_relation(cur, word_id, hypo_id, "hyponym", src)
+
+        except Exception as e:
+            logger.error(f"Error processing entry '{lemma}': {str(e)}")
+            return
 
     try:
         with open(filename, "r", encoding="utf-8") as f:
             for line in tqdm(f, desc=f"Processing {lang_code} entries"):
-                try:
-                    entry = json.loads(line)
-                    lemma = entry.get("word", "").strip()
-                    if not lemma:
-                        continue
-
-                    # Get the entry-level POS first
-                    entry_pos = entry.get("pos", "").strip()
-
-                    # Check for Baybayin script
-                    has_baybayin = False
-                    baybayin_form = entry.get("baybayin") or entry.get("script", {}).get("baybayin")
-                    romanized = entry.get("romanized")
-
-                    pronunciation = entry.get("pronunciation", "")
-                    if pronunciation and any(char in pronunciation for char in "ᜀᜁᜂᜃᜄᜅᜆᜇᜈᜉᜊᜋᜌᜎᜏ"):
-                        baybayin_form = baybayin_form or pronunciation
-
-                    if baybayin_form:
-                        has_baybayin = True
-                        romanized = romanized or lemma
-
-                    is_root = entry.get("is_root", False) or ("root word" in entry.get("tags", []))
-                    root_word_id = None
-                    if not is_root:
-                        root_word_id = get_root_word_id(cur, lemma, lang_code)
-
-                    word_id = get_or_create_word_id(
-                        cur,
-                        lemma,
-                        lang_code,
-                        has_baybayin=has_baybayin,
-                        romanized_form=romanized,
-                        root_word_id=root_word_id,
-                        check_exists=check_exists,
-                    )
-
-                    if baybayin_form or pronunciation:
-                        tag_lines = []
-                        if baybayin_form:
-                            tag_lines.append(f"baybayin: {baybayin_form}")
-                        if pronunciation and pronunciation != baybayin_form:
-                            tag_lines.append(f"pronunciation: {pronunciation}")
-
-                        if tag_lines:
-                            joined_tags = "\n".join(tag_lines)
-                            cur.execute(
-                                """
-                                UPDATE words 
-                                   SET tags = CASE 
-                                       WHEN tags IS NULL THEN %s
-                                       ELSE tags || E'\n' || %s
-                                   END
-                                 WHERE id = %s
-                                """,
-                                (joined_tags, joined_tags, word_id),
-                            )
-
-                    for sense in entry.get("senses", []):
-                        pos = sense.get("pos", entry_pos).strip()
-                        if has_baybayin and not pos:
-                            pos = "Baybayin"
-
-                        if not pos:
-                            logger.debug(f"No part of speech found for sense in entry: {lemma}")
-                            continue
-
-                        pos = ", ".join(filter(None, [p.strip() for p in pos.split(",")]))
-
-                        glosses = sense.get("glosses", [])
-                        raw_examples = sense.get("examples", [])
-
-                        examples = []
-                        for ex in raw_examples:
-                            if isinstance(ex, dict):
-                                example_text = ex.get("text", "")
-                                if example_text:
-                                    examples.append(example_text)
-                            elif isinstance(ex, str):
-                                examples.append(ex)
-
-                        sense_tags = sense.get("tags", [])
-
-                        for gloss in glosses:
-                            if gloss:
-                                insert_definition(
-                                    cur, 
-                                    word_id, 
-                                    gloss.strip(),
-                                    pos,
-                                    examples="\n".join(examples) if examples else None,
-                                    usage_notes=", ".join(sense_tags) if sense_tags else None,
-                                    sources=src
-                                )
-
-                    etymology = entry.get("etymology_text", "")
-                    if etymology:
-                        codes, cleaned_ety = lsys.extract_and_remove_language_codes(etymology)
-                        insert_etymology(
-                            cur,
-                            word_id,
-                            cleaned_ety,
-                            language_codes=", ".join(codes) if codes else "",
-                            sources=src,
-                        )
-
-                    def extract_wordlist(lst):
-                        results = []
-                        for item in lst:
-                            if isinstance(item, dict):
-                                w = item.get("word", "").strip()
-                            else:
-                                w = str(item).strip()
-                            if w:
-                                results.append(w)
-                        return results
-
-                    derived_list = extract_wordlist(entry.get("derived", []))
-                    for derived_lemma in derived_list:
-                        derived_id = get_or_create_word_id(cur, derived_lemma, lang_code)
-                        insert_relation(cur, word_id, derived_id, "derived_from", src)
-
-                    related_list = extract_wordlist(entry.get("related", []))
-                    for related_lemma in related_list:
-                        related_id = get_or_create_word_id(cur, related_lemma, lang_code)
-                        insert_relation(cur, word_id, related_id, "related", src)
-
-                    synonyms_list = extract_wordlist(entry.get("synonyms", []))
-                    for syn_lemma in synonyms_list:
-                        syn_id = get_or_create_word_id(cur, syn_lemma, lang_code)
-                        insert_relation(cur, word_id, syn_id, "synonym", src)
-
-                    alt_forms = entry.get("forms", [])
-                    for form_obj in alt_forms:
-                        if isinstance(form_obj, dict):
-                            form_str = form_obj.get("form", "")
-                        else:
-                            form_str = str(form_obj)
-                        form_str = form_str.strip()
-                        if form_str and form_str != lemma:
-                            alt_id = get_or_create_word_id(cur, form_str, lang_code, preferred_spelling=lemma)
-                            insert_relation(cur, word_id, alt_id, "alternative_form", src)
-
-                    head_templates = entry.get("head_templates", [])
-                    for template in head_templates:
-                        template_name = template.get("name", "")
-                        template_expansion = template.get("expansion", "")
-                        if template_name and template_expansion:
-                            tag_line = f"template: {template_name} - {template_expansion}"
-                            cur.execute(
-                                """
-                                UPDATE words 
-                                   SET tags = CASE 
-                                       WHEN tags IS NULL THEN %s
-                                       ELSE tags || E'\n' || %s
-                                   END
-                                 WHERE id = %s
-                                """,
-                                (tag_line, tag_line, word_id),
-                            )
-
-                    hyphenation = entry.get("hyphenation", [])
-                    if hyphenation:
-                        hyph_str = " ".join(hyphenation)
-                        cur.execute(
-                            """
-                            UPDATE words 
-                               SET tags = CASE 
-                                   WHEN tags IS NULL THEN %s
-                                   ELSE tags || E'\n' || %s
-                               END
-                             WHERE id = %s
-                            """,
-                            (f"hyphenation: {hyph_str}", f"hyphenation: {hyph_str}", word_id),
-                        )
-
-                    categories = entry.get("categories", [])
-                    for cat_obj in categories:
-                        if isinstance(cat_obj, dict):
-                            category_name = cat_obj.get("name", "")
-                        else:
-                            category_name = str(cat_obj)
-                        if category_name:
-                            cur.execute(
-                                """
-                                UPDATE words 
-                                   SET tags = CASE 
-                                       WHEN tags IS NULL THEN %s
-                                       ELSE tags || E'\n' || %s
-                                   END
-                                 WHERE id = %s
-                                """,
-                                (
-                                    f"category: {category_name}",
-                                    f"category: {category_name}",
-                                    word_id
-                                ),
-                            )
-
-                    hypernyms_list = extract_wordlist(entry.get("hypernyms", []))
-                    for hypernym_lemma in hypernyms_list:
-                        hypernym_id = get_or_create_word_id(cur, hypernym_lemma, lang_code)
-                        insert_relation(cur, word_id, hypernym_id, "hypernym", src)
-
-                    hyponyms_list = extract_wordlist(entry.get("hyponyms", []))
-                    for hyponym_lemma in hyponyms_list:
-                        hyponym_id = get_or_create_word_id(cur, hyponym_lemma, lang_code)
-                        insert_relation(cur, word_id, hyponym_id, "hyponym", src)
-
-                except Exception as e:
-                    logger.error(f"Error processing entry '{lemma}': {str(e)}")
-                    continue
-
+                process_entry(cur, json.loads(line))
     except Exception as e:
         logger.error(f"Error processing file {filename}: {str(e)}")
         raise
@@ -3660,6 +3177,14 @@ def get_root_word_id(cur, lemma: str, lang_code: str) -> Optional[int]:
     """, (normalize_lemma(lemma), lang_code))
     result = cur.fetchone()
     return result[0] if result else None
+
+def get_romanized_text(text: str) -> str:
+    """Convert Baybayin text to romanized form."""
+    romanizer = BaybayinRomanizer()
+    try:
+        return romanizer.romanize(text)
+    except ValueError:
+        return text
 
 if __name__ == "__main__":
     main()
