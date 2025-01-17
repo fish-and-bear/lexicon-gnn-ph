@@ -1,7 +1,8 @@
 """Language classification and standardization systems for Filipino dictionary."""
 
 import functools
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, Tuple
+import re
 from language_types import (
     LanguageMetadata, WritingSystemInfo, 
     LanguageSystemError, InvalidLanguageCode, InvalidLanguageMapping
@@ -124,3 +125,31 @@ class LanguageSystem:
                 continue
         
         return ", ".join(sorted(set(cleaned_codes))) if cleaned_codes else "-" 
+
+    def extract_and_remove_language_codes(self, text: str) -> Tuple[List[str], str]:
+        """
+        Extract language codes from text and return both codes and cleaned text.
+        
+        Args:
+            text: Text containing language codes in brackets/parentheses
+            
+        Returns:
+            Tuple of (list of language codes, cleaned text)
+        """
+        codes = []
+        cleaned_text = text
+        
+        # Match patterns like [es], (fr), <tl>, etc.
+        code_pattern = r'[\[\(\<]([\w\-]+)[\]\)\>]'
+        
+        for match in re.finditer(code_pattern, text):
+            code = match.group(1).strip()
+            if code:
+                standardized = self.standardize_code(code)
+                if standardized in self.valid_codes:
+                    codes.append(standardized)
+        
+        # Remove the code markers from text
+        cleaned_text = re.sub(code_pattern, '', cleaned_text).strip()
+        
+        return codes, cleaned_text 

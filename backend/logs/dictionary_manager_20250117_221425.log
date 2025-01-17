@@ -1,0 +1,12 @@
+2025-01-17 22:14:25,060 - INFO - Attempting database connection...
+2025-01-17 22:14:25,061 - INFO - Database configuration:
+2025-01-17 22:14:25,062 - INFO -   Database Name: fil_dict_db
+2025-01-17 22:14:25,063 - INFO -   User: postgres
+2025-01-17 22:14:25,063 - INFO -   Host: localhost
+2025-01-17 22:14:25,064 - INFO -   Password: ********
+2025-01-17 22:14:25,204 - INFO - Successfully established database connection
+2025-01-17 22:14:25,205 - INFO - Resetting database...
+2025-01-17 22:14:25,266 - INFO - All tables dropped successfully
+2025-01-17 22:14:25,267 - INFO - Starting table creation/update process.
+2025-01-17 22:14:25,424 - INFO - Tables created or updated successfully.
+2025-01-17 22:14:25,424 - INFO - Tables recreated successfully

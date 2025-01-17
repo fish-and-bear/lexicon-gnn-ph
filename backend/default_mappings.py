@@ -108,158 +108,94 @@ LANGUAGE_STANDARDIZATION = {
     'ST': 'Sinaunang Tagalog', 'STl': 'Sinaunang Tagalog',
     'old_tagalog': 'Sinaunang Tagalog', 'classical_tagalog': 'Sinaunang Tagalog',
     
-    # English variations
-    'en': 'Ingles', 'eng': 'Ingles', 'english': 'Ingles', 
-    'lng': 'Ingles', 'Ing': 'Ingles',
-    
-    # Spanish variations
-    'es': 'Español', 'spa': 'Español', 'spanish': 'Español',
-    'Esp': 'Español',
-    
-    # Chinese variations
-    'zh': 'Chinese', 'cmn': 'Chinese', 'Chi': 'Chinese',
-    'Tsi': 'Chinese', 'Tsino': 'Chinese', 'Chino': 'Chinese',
-    
-    # Cebuano variations
-    'ceb': 'Sebwáno', 'Seb': 'Sebwáno', 'Cebuano': 'Sebwáno',
-    'bisaya': 'Sebwáno', 'Bis': 'Sebwáno',
-    
-    # Russian variations
-    'ru': 'Russian', 'Rus': 'Russian', 'rus': 'Russian',
-    
-    # Hindi variations
-    'hi': 'Hindi', 'Hin': 'Hindi', 'hin': 'Hindi',
-    
-    # Japanese variations
-    'ja': 'Japanese', 'jp': 'Japanese', 'jpn': 'Japanese',
-    'Jap': 'Japanese',
-    
-    # Arabic variations
-    'ar': 'Arabic', 'ara': 'Arabic', 'Ara': 'Arabic',
-    
-    # Sanskrit variations
-    'sa': 'Sanskrit', 'san': 'Sanskrit', 'San': 'Sanskrit',
-    'Skr': 'Sanskrit',
-    
-    # Latin variations
-    'la': 'Latin', 'lat': 'Latin', 'Lat': 'Latin',
-    
-    # Greek variations
-    'el': 'Griego', 'grc': 'Griego', 'Gre': 'Griego',
-    'Gri': 'Griego',
-    
-    # German variations
-    'de': 'German', 'deu': 'German', 'ger': 'German',
-    'Ger': 'German',
-    
-    # French variations
-    'fr': 'French', 'fra': 'French', 'fre': 'French',
-    'Fre': 'French',
-    
-    # Turkish variations
-    'tr': 'Turkish', 'tur': 'Turkish', 'Tur': 'Turkish',
-    
-    # Hebrew variations
-    'he': 'Hebrew', 'heb': 'Hebrew', 'Heb': 'Hebrew',
-    
-    # Indonesian/Malay variations
-    'id': 'Bahása', 'ind': 'Bahása', 'Ind': 'Bahása',
-    'ms': 'Malay', 'msa': 'Malay', 'Mal': 'Malay',
-    
     # Philippine languages - major
     'tl': 'Tagálog', 'tag': 'Tagálog', 'Tag': 'Tagálog',
     'bik': 'Bíkol', 'bcl': 'Bíkol', 'Bik': 'Bíkol',
     'war': 'Waráy', 'War': 'Waráy',
     'hil': 'Hiligaynón', 'Hil': 'Hiligaynón', 'Hik': 'Hiligaynón',
-    'pag': 'Pangasinán', 'Pan': 'Pangasinán', 'Png': 'Pangasinán',
-    
-    # Philippine languages - Mindanao
-    'Mag': 'Magindanáw', 'mdh': 'Magindanáw', 'Mgd': 'Magindanáw', 'Mgn': 'Magindanáw',
-    'Mrw': 'Mëranáw', 'Mrs': 'Mëranáw', 'meranao': 'Mëranáw', 'Mar': 'Mëranáw',
-    'Kuy': 'Kuyunón', 'kuy': 'Kuyunón',
-    'Tbn': 'Tagbanwá', 'Tagbanwá': 'Tagbanwá', 'Tbo': 'Tagbanwá', 'Tbw': 'Tagbanwá',
-    'Mnd': 'Mandayá', 'Man': 'Mandayá',
-    'Sub': 'Subanen', 'Súg': 'Tausug', 'Tau': 'Tausug',
-    'Tgb': 'Tagabanwa', 'Tgk': 'Tagakaulo',
+    'ceb': 'Sebwáno', 'Seb': 'Sebwáno',
+    'klg': 'Kalagan', 'Klg': 'Kalagan',
+    'tgb': 'Tagbanwá', 'Tgb': 'Tagbanwá', 'Tbw': 'Tagbanwá',
     
     # Philippine languages - Luzon
     'Ilo': 'Ilokáno', 'Ilk': 'Ilokáno',
     'Ifg': 'Ifugáw', 'Ifu': 'Ifugáw',
     'Isn': 'Isnë́g', 'Isg': 'Isnë́g',
     'Iva': 'Ivatán', 'Itw': 'Itáwit',
-    'Kap': 'Kapampángan', 'pam': 'Kapampángan', 'Pny': 'Kapampángan',
-    'Ibl': 'Ibalóy', 'Ibg': 'Ibanág', 'Ibn': 'Ibanág',
-    'Iby': 'Ibatan', 'Itn': 'Itneg', 'Ilt': 'Ilongot',
-    'Igo': 'Igorot', 'Iwa': 'Iwatan',
+    'Kap': 'Kapampángan', 'pam': 'Kapampángan',
+    'Gad': 'Gáddang',
+    'Kan': 'Kankanáëy', 'Kbn': 'Kankanáëy',
+    'Sbl': 'Sambali',
     
-    # Philippine languages - Other
-    'Agt': 'Agta', 'Agu': 'Agutaynë́n',
-    'Akl': 'Aklánon', 'Bal': 'Balangáw',
-    'Buh': 'Búhid', 'Gad': 'Gáddang',
-    'Kan': 'Kankanáëy', 'Kal': 'Kalíngga', 'Kbn': 'Kankanáëy',
-    'Btk': 'Batakan', 'Bat': 'Batak', 'Btg': 'Batangan',
-    'Bin': 'Binúkid', 'Bag': 'Bagóbo', 'Buk': 'Bukidnon',
+    # Philippine languages - Mindanao
+    'Mag': 'Magindanáw', 'mdh': 'Magindanáw',
+    'Mrw': 'Mëranáw', 'Mrs': 'Mëranáw',
+    'Mnd': 'Mandayá', 'Man': 'Mandayá',
+    'Bin': 'Binúkid',
+    'Agu': 'Agutaynë́n',
+    'Tau': 'Tausug', 'Tsg': 'Tausug', 'Súg': 'Tausug',
     
-    # Manobo variations
-    'Mnb': 'Manobo', 'Mny': 'Manobo', 'Mbk': 'Manobo',
-    
-    # Mangyan variations
-    'Mgk': 'Mangyán', 'Mng': 'Mangyán',
-    
-    # Additional Philippine ethnic groups
-    'Aby': 'Abaknon', 'Akn': 'Akaean',
-    'Apa': 'Apayao', 'Ayt': 'Ayta',
-    'Baj': 'Bajau', 'Ben': 'Benguet',
-    'Bil': 'Bilaan', 'Boh': 'Boholano',
-    'Bon': 'Bontok', 'Cha': 'Chavacano',
-    'Cor': 'Cordilleran', 'Cot': 'Cotabato',
-    'Csi': 'Coastal', 'Cuy': 'Cuyunon',
-    'Dum': 'Dumagat', 'Dus': 'Dusun',
-    'Han': 'Hanunoo', 'Hgn': 'Higaonon',
-    'Hwi': 'Hawaiian', 'Kay': 'Kayapa',
-    'Kem': 'Keley-i', 'Klg': 'Kalinga',
-    'Kol': 'Kolbulano', 'Krw': 'Karaw',
-    'Mad': 'Madalum', 'Mam': 'Mambabuid',
-    'Min': 'Minangkabau', 'Mmw': 'Mamanwa',
-    'Mns': 'Mansaka', 'Mts': 'Matigsalug',
-    'Mwr': 'Marwari', 'Pal': 'Palawan',
-    'Plw': 'Palawano', 'Sam': 'Samar',
-    'Sbl': 'Sambali', 'Sma': 'Samar',
-    'Sml': 'Samal', 'Sul': 'Sulu',
-    'Tin': 'Tinggian', 'Tir': 'Tiruray',
-    'Tng': 'Tinguian', 'Tua': 'Tuali',
-    'Yak': 'Yakan', 'Yógad': 'Yogad',
-    'Zam': 'Zambal',
-    
-    # Other languages and variations
-    'AmI': 'Ami', 'Eva': 'Evangelical',
-    'Exp': 'Expressive', 'Gui': 'Guinaang',
-    'Kor': 'Korean', 'Mex': 'Mexican',
-    'Noe': 'Northern', 'Nor': 'Norwegian',
-    'Por': 'Portugués', 'Rom': 'Romanian',
-    'Sco': 'Scottish', 'Snk': 'Sankrityayan',
-    'Swa': 'Swahili', 'Tha': 'Thai',
-    'Tib': 'Tibetan', 'Zoo': 'Zoological'
+    # Foreign languages
+    'en': 'Ingles', 'eng': 'Ingles', 'Ing': 'Ingles',
+    'es': 'Español', 'spa': 'Español', 'Esp': 'Español',
+    'fr': 'French', 'fra': 'French', 'Fre': 'French',
+    'de': 'German', 'deu': 'German', 'Ger': 'German',
+    'la': 'Latin', 'lat': 'Latin', 'Lat': 'Latin',
+    'el': 'Griego', 'grc': 'Griego', 'Gre': 'Griego',
+    'pt': 'Portugués', 'por': 'Portugués', 'Por': 'Portugués',
+    'nl': 'Dutch', 'dut': 'Dutch', 'nld': 'Dutch',
+    'sa': 'Sanskrit', 'san': 'Sanskrit', 'Skr': 'Sanskrit',
+    'hi': 'Hindi', 'hin': 'Hindi', 'Hin': 'Hindi',
+    'zh': 'Chinese', 'cmn': 'Chinese', 'Chi': 'Chinese',
+    'ar': 'Arabic', 'ara': 'Arabic', 'Ara': 'Arabic',
+    'he': 'Hebrew', 'heb': 'Hebrew', 'Heb': 'Hebrew',
+    'it': 'Italian', 'ita': 'Italian', 'Ita': 'Italian'
 }
 
 VALID_CODES = set((
-    'Aby','Agt','Agu','Agutaynë́n','Akl','Aklánon','Akn','AmI','Apa','Ara','Arabic',
-    'Ata','Ayt','Bag','Bahása','Baj','Bal','Balangáw','Bat','Ben','Bik','Bil',
-    'Binúkid','Bis','Boh','Bon','Btg','Btk','Buh','Buk','Bíkol','Búhid','Cha','Chi',
-    'Chino','Cor','Cot','Csi','Cuy','Dum','Dus','Dutch','Eso','Esp','Español','Eva',
-    'Exp','Fre','French','Gad','Ger','German','Gre','Gri','Griego','Gui','Gáddang',
-    'Han','Heb','Hebrew','Hgn','Higa-ónon','Hik','Hil','Hiligaynón','Hin','Hindi',
-    'Hwi','Iba','Ibalóy','Ibanág','Ibg','Ibn','Iby','Ifu','Ifugáw','Igo','Ilk','Ilo',
-    'Ilokáno','Ilt','Ind','Ing','Ingles','Isg','Isn','Isnë́g','Isp','Ita','Italian',
-    'Itn','Itw','Itáwit','Iva','Ivatán','Iwa','Jap','Japanese','Javanese','Kal',
-    'Kalíngga','Kan','Kankanáëy','Kap','Kapampángan','Karáw','Kas','Kay','Kbn','Kem',
-    'Kinaráy-a','Klg','Kol','Kor','Krw','Kry','Kuy','Kuyunón','Lat','Latin','MOc',
-    'Mad','Mag','Magindanáw','Mal','Malay','Mam','Man','Mandayá','Mangyán','Mar',
-    'Mbk','Mex','Mexican','Mgd','Mgk','Mgn','Min','Mmw','Mnb','Mnd','Mng','Mns','Mny',
-    'Mrs','Mrw','Mts','Mwr','Mëranáw','Noe','Nor','Pal','Paláw-an','Pan','Pangasinán',
-    'Plw','Png','Pny','Por','Portugués','Rom','Rus','ST','STl','Sam','San','Sanskrit',
-    'Sbl','Sco','Seb','Sebwáno','Sinadánga','Sinaunang Tagalog','Skr','Slavic','Sma',
-    'Sml','Snk','Sub','Sul','Swa','Súg','Tag','Tagabáwa','Tagbanwá','Tagálog','Tau',
-    'Tbn','Tbo','Tbw','Ted','Tgb','Tgk','Tha','Tib','Tin','Tir','Tng','Tsi','Tua',
-    'Tur','Turkish','Tëduráy','War','Waráy','Yak','Yógad','Zam','Zoo','lng',
+    # Main Philippine Languages
+    'Tagálog', 'Bíkol', 'Sebwáno', 'Hiligaynón', 'Waráy',
+    'Kalagan', 'Mandayá', 'Ilokáno', 'Ifugáw', 'Kankanáëy',
+    'Balangáw', 'Gáddang', 'Isnë́g', 'Ibanág', 'Itáwit',
+    'Ivatán', 'Kapampángan', 'Sambali', 'Binúkid', 'Agutaynë́n',
+    'Mëranáw', 'Magindanáw', 'Sinaunang Tagalog', 'Tagbanwá',
+    'Tausug', 'Súg', 'Kinaráy-a', 'Aklánon', 'Mansaka',
+    
+    # Foreign Languages
+    'Ingles', 'Español', 'French', 'German', 'Latin',
+    'Griego', 'Portugués', 'Dutch', 'Sanskrit', 'Hindi',
+    'Chinese', 'Chino', 'Arabic', 'Hebrew', 'Italian',
+    
+    # Alternative codes - Philippine
+    'tl', 'tag', 'Tag', 'bik', 'bcl', 'Bik',
+    'ceb', 'Seb', 'hil', 'Hil', 'Hik',
+    'war', 'War', 'klg', 'Klg', 'Mnd', 'Man',
+    'Ilo', 'Ilk', 'Ifg', 'Ifu', 'Isn', 'Isg',
+    'Iva', 'Itw', 'Kap', 'pam', 'Gad',
+    'Kan', 'Kbn', 'Sbl', 'Mag', 'mdh',
+    'Mrw', 'Mrs', 'Bin', 'Agu', 'Knr',
+    'ST', 'STl', 'tgb', 'Tgb', 'Tbw',
+    'Tau', 'Tsg', 'Súg', 'Akl', 'Msk',
+    
+    # Alternative codes - Foreign
+    'en', 'eng', 'Ing', 'es', 'spa', 'Esp',
+    'fr', 'fra', 'Fre', 'de', 'deu', 'Ger',
+    'la', 'lat', 'Lat', 'el', 'grc', 'Gre',
+    'pt', 'por', 'Por', 'nl', 'dut', 'nld',
+    'sa', 'san', 'Skr', 'hi', 'hin', 'Hin',
+    'zh', 'cmn', 'Chi', 'ar', 'ara', 'Ara',
+    'he', 'heb', 'Heb', 'it', 'ita', 'Ita'
 ))
+
+# Add standardization entries for new languages
+LANGUAGE_STANDARDIZATION.update({
+    # Additional Philippine languages
+    'Knr': 'Kinaráy-a', 'Kin': 'Kinaráy-a',
+    'Akl': 'Aklánon', 'Akn': 'Aklánon',
+    'Msk': 'Mansaka', 'Man': 'Mansaka',
+    
+    # Ensure all regional languages have standardization
+    'Kinaráy-a': 'Kinaráy-a',
+    'Aklánon': 'Aklánon',
+    'Mansaka': 'Mansaka'
+})

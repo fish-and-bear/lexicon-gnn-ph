@@ -217,12 +217,11 @@ CREATE TABLE IF NOT EXISTS relations (
 CREATE TABLE IF NOT EXISTS etymologies (
     id                   SERIAL PRIMARY KEY,
     word_id              INT NOT NULL REFERENCES words(id),
-    original_text        TEXT NOT NULL,
+    etymology_text       TEXT NOT NULL,  -- Changed from original_text
     normalized_components TEXT,
     language_codes       TEXT,
-    sources              TEXT NOT NULL,
-    -- Here's the new line:
-    CONSTRAINT etymologies_wordid_originaltext_uniq UNIQUE (word_id, original_text)
+    sources             TEXT NOT NULL,
+    CONSTRAINT etymologies_wordid_etymtext_uniq UNIQUE (word_id, etymology_text)  -- Updated constraint name
 );
 """
 
@@ -343,7 +342,7 @@ def entry_exists_and_identical(cur, lemma, normalized_lemma, language_code, entr
         
         # Check etymologies
         cur.execute("""
-            SELECT COUNT(*), array_agg(original_text), array_agg(language_codes)
+            SELECT COUNT(*), array_agg(etymology_text), array_agg(language_codes)
             FROM etymologies
             WHERE word_id = %s
         """, (word_id,))
@@ -696,9 +695,9 @@ def batch_process_entries(cur, entries: List[Dict], batch_size: int = 1000):
 
 def batch_get_or_create_word_ids(
     cur: psycopg2.extensions.cursor,
-    entries: list[tuple[str, str]],
+    entries: List[Tuple[str, str]],
     batch_size: int = 1000
-) -> dict[tuple[str, str], int]:
+) -> Dict[Tuple[str, str], int]:
     """
     Batch process multiple word entries efficiently.
     
@@ -861,8 +860,9 @@ def insert_relation(cur,
     """
     cur.execute(sql, (from_word_id, to_word_id, relation_type, sources))
 
-def insert_etymology(cur, word_id, etymology_text, sources=""):
-    """Process etymology with Baybayin handling."""
+def insert_etymology(cur, word_id: int, etymology_text: str, normalized_components: Optional[str] = None, 
+                    language_codes: str = "", sources: str = "") -> None:
+    """Insert etymology information for a word."""
     if not etymology_text:
         return
         
@@ -870,22 +870,18 @@ def insert_etymology(cur, word_id, etymology_text, sources=""):
     if 'Baybayin spelling of' in etymology_text:
         return
         
-    codes, cleaned_ety = lsys.extract_and_remove_language_codes(etymology_text)
-    
-    cur.execute("""
-        INSERT INTO etymologies
-            (word_id, original_text, language_codes, sources)
-        VALUES (%s, %s, %s, %s)
-        ON CONFLICT (word_id, original_text) DO UPDATE
-        SET language_codes = EXCLUDED.language_codes,
-            sources = COALESCE(etymologies.sources || ' | ' || EXCLUDED.sources, EXCLUDED.sources)
-        RETURNING id
-    """, (
-        word_id,
-        cleaned_ety,
-        ", ".join(codes) if codes else "",
-        sources
-    ))
+    try:
+        cur.execute("""
+            INSERT INTO etymologies 
+                (word_id, etymology_text, normalized_components, language_codes, sources)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (word_id, etymology_text) DO UPDATE 
+            SET normalized_components = EXCLUDED.normalized_components,
+                language_codes = EXCLUDED.language_codes,
+                sources = EXCLUDED.sources
+        """, (word_id, etymology_text, normalized_components, language_codes, sources))
+    except Exception as e:
+        logger.error(f"Error inserting etymology for word_id {word_id}: {str(e)}")
 
 # -------------------------------------------------------------------
 # BAYBAYIN PROCESSING
@@ -1238,7 +1234,12 @@ def process_tagalog_words_file(cur, filename, check_exists=False):
             for lemma, info in tqdm(data.items(), desc="Processing Tagalog words"):
                 try:
                     logger.debug(f"Processing lemma: {lemma}")
-                    word_id = get_or_create_word_id(cur, lemma, "tl", check_exists=check_exists)
+                    word_id = get_or_create_word_id(
+                        cur, 
+                        lemma, 
+                        language_code="tl",  # Changed from lang_code to language_code
+                        check_exists=check_exists
+                    )
                     logger.debug(f"Got word_id: {word_id} for lemma: {lemma}")
 
                     part_of_speech = info.get("part_of_speech", "").strip()
@@ -1252,7 +1253,7 @@ def process_tagalog_words_file(cur, filename, check_exists=False):
                         insert_etymology(
                             cur,
                             word_id,
-                            original_text=cleaned_ety,
+                            etymology_text=cleaned_ety,  # Changed from original_text to etymology_text
                             language_codes=", ".join(codes) if codes else "",
                             sources=src,
                         )
@@ -1307,13 +1308,21 @@ def process_root_words_file(cur, filename, check_exists=False):
             for root_lemma, assoc_dict in tqdm(data.items(), desc="Processing root words"):
                 try:
                     logger.debug(f"Processing root lemma: {root_lemma}")
-                    root_id = get_or_create_word_id(cur, root_lemma, "tl", check_exists=check_exists)
+                    root_id = get_or_create_word_id(
+                        cur, 
+                        root_lemma, 
+                        language_code="tl",  # Changed from positional to keyword arg
+                        check_exists=check_exists
+                    )
                     logger.debug(f"Got root_id: {root_id} for lemma: {root_lemma}")
 
                     for derived_lemma, details in assoc_dict.items():
                         logger.debug(f"Processing derived lemma: {derived_lemma}")
                         derived_id = get_or_create_word_id(
-                            cur, derived_lemma, "tl", root_word_id=root_id
+                            cur, 
+                            derived_lemma, 
+                            language_code="tl",  # Changed from positional to keyword arg
+                            root_word_id=root_id
                         )
 
                         definition_txt = details.get("definition", "")
@@ -1405,7 +1414,7 @@ def process_kwf_file(cur, filename, check_exists=False):
                             insert_etymology(
                                 cur,
                                 word_id,
-                                original_text=cleaned_ety,
+                                etymology_text=cleaned_ety,  # Changed from original_text to etymology_text
                                 language_codes=", ".join(codes) if codes else "",
                                 sources=src
                             )
@@ -1653,7 +1662,7 @@ def verify_database(args):
         cur.execute("""
             SELECT COUNT(*) 
             FROM etymologies 
-            WHERE original_text IS NULL OR original_text = ''
+            WHERE etymology_text IS NULL OR etymology_text = ''
         """)
         empty_etys = cur.fetchone()[0]
         if empty_etys:
@@ -1698,18 +1707,18 @@ def update_database(args):
         # }
         src = os.path.basename(update_file)
         for lemma, entry in data.items():
-            word_id = get_or_create_word_id(cur, lemma, "tl")
+            word_id = get_or_create_word_id(cur, lemma, language_code="tl")  # Changed to keyword arg
             # Insert definitions
             for def_txt in entry.get("definitions", []):
                 insert_definition(cur, word_id, def_txt, "", None, None, src)
             # Insert synonyms
             for syn_lemma in entry.get("synonyms", []):
-                syn_id = get_or_create_word_id(cur, syn_lemma, "tl")
+                syn_id = get_or_create_word_id(cur, syn_lemma, language_code="tl")  # Changed to keyword arg
                 insert_relation(cur, word_id, syn_id, "synonym", src)
             # Possibly set root word
             if "root_word" in entry:
                 root_lemma = entry["root_word"]
-                root_id = get_or_create_word_id(cur, root_lemma, "tl")
+                root_id = get_or_create_word_id(cur, root_lemma, language_code="tl")  # Changed to keyword arg
                 upd_sql = "UPDATE words SET root_word_id=%s WHERE id=%s"
                 cur.execute(upd_sql, (root_id, word_id))
         conn.commit()
@@ -1833,7 +1842,7 @@ def display_word_info(cur, word_id, lemma):
                 w.tags,
                 ARRAY_AGG(DISTINCT d.definition_text) FILTER (WHERE d.definition_text IS NOT NULL) AS definitions,
                 STRING_AGG(DISTINCT p.name_en, ', ') FILTER (WHERE p.name_en IS NOT NULL) AS pos_names,
-                ARRAY_AGG(DISTINCT e.original_text) FILTER (WHERE e.original_text IS NOT NULL) AS etymologies,
+                ARRAY_AGG(DISTINCT e.etymology_text) FILTER (WHERE e.etymology_text IS NOT NULL) AS etymologies,
                 ARRAY_AGG(DISTINCT e.language_codes) FILTER (WHERE e.language_codes IS NOT NULL) AS etymology_langs,
                 STRING_AGG(DISTINCT e.sources, ', ') FILTER (WHERE e.sources IS NOT NULL) AS etymology_sources
             FROM words w
@@ -2991,7 +3000,7 @@ def process_kaikki_jsonl_new(cur, filename, check_exists=False):
         return
 
     src = os.path.basename(filename)
-    lang_code = "tl" if "kaikki.jsonl" in filename else "ceb"
+    language_code = "tl" if "kaikki.jsonl" in filename else "ceb"  # Changed variable name for consistency
 
     def extract_baybayin_info(entry):
         """Extract Baybayin information from entry."""
@@ -3045,7 +3054,7 @@ def process_kaikki_jsonl_new(cur, filename, check_exists=False):
                     SELECT id FROM words 
                     WHERE normalized_lemma = %s AND language_code = %s
                     AND NOT has_baybayin
-                """, (normalize_lemma(romanized), lang_code))
+                """, (normalize_lemma(romanized), language_code))
                 
                 result = cur.fetchone()
                 if result:
@@ -3063,7 +3072,7 @@ def process_kaikki_jsonl_new(cur, filename, check_exists=False):
                     word_id = get_or_create_word_id(
                         cur,
                         romanized,
-                        lang_code=lang_code,
+                        language_code=language_code,  # Changed from lang_code to language_code
                         has_baybayin=True,
                         baybayin_form=baybayin_form
                     )
@@ -3071,12 +3080,12 @@ def process_kaikki_jsonl_new(cur, filename, check_exists=False):
 
             # For non-Baybayin entries, process normally
             is_root = entry.get("is_root", False) or ("root word" in entry.get("tags", []))
-            root_word_id = None if is_root else get_root_word_id(cur, lemma, lang_code)
+            root_word_id = None if is_root else get_root_word_id(cur, lemma, language_code)
 
             word_id = get_or_create_word_id(
                 cur,
                 lemma,
-                lang_code=lang_code,
+                language_code=language_code,  # Changed from lang_code to language_code
                 root_word_id=root_word_id,
                 check_exists=check_exists
             )
@@ -3116,43 +3125,44 @@ def process_kaikki_jsonl_new(cur, filename, check_exists=False):
             if etymology:
                 codes, cleaned_ety = lsys.extract_and_remove_language_codes(etymology)
                 insert_etymology(
-                    cur,
-                    word_id,
-                    cleaned_ety,
+                    cur=cur,
+                    word_id=word_id,
+                    etymology_text=cleaned_ety,
+                    normalized_components=None,
                     language_codes=", ".join(codes) if codes else "",
-                    sources=src,
+                    sources=src
                 )
 
             # Process relations
             for derived in entry.get("derived", []):
                 der_word = derived.get("word", "") if isinstance(derived, dict) else str(derived)
                 if der_word := der_word.strip():
-                    der_id = get_or_create_word_id(cur, der_word, lang_code)
+                    der_id = get_or_create_word_id(cur, der_word, language_code)
                     insert_relation(cur, word_id, der_id, "derived_from", src)
 
             for syn in entry.get("synonyms", []):
                 syn_word = syn.get("word", "") if isinstance(syn, dict) else str(syn)
                 if syn_word := syn_word.strip():
-                    syn_id = get_or_create_word_id(cur, syn_word, lang_code)
+                    syn_id = get_or_create_word_id(cur, syn_word, language_code)
                     insert_relation(cur, word_id, syn_id, "synonym", src)
 
             for rel in entry.get("related", []):
                 rel_word = rel.get("word", "") if isinstance(rel, dict) else str(rel)
                 if rel_word := rel_word.strip():
-                    rel_id = get_or_create_word_id(cur, rel_word, lang_code)
+                    rel_id = get_or_create_word_id(cur, rel_word, language_code)
                     insert_relation(cur, word_id, rel_id, "related", src)
 
             # Process hyponyms/hypernyms
             for hyper in entry.get("hypernyms", []):
                 hyper_word = hyper.get("word", "") if isinstance(hyper, dict) else str(hyper)
                 if hyper_word := hyper_word.strip():
-                    hyper_id = get_or_create_word_id(cur, hyper_word, lang_code)
+                    hyper_id = get_or_create_word_id(cur, hyper_word, language_code)
                     insert_relation(cur, word_id, hyper_id, "hypernym", src)
 
             for hypo in entry.get("hyponyms", []):
                 hypo_word = hypo.get("word", "") if isinstance(hypo, dict) else str(hypo)
                 if hypo_word := hypo_word.strip():
-                    hypo_id = get_or_create_word_id(cur, hypo_word, lang_code)
+                    hypo_id = get_or_create_word_id(cur, hypo_word, language_code)
                     insert_relation(cur, word_id, hypo_id, "hyponym", src)
 
         except Exception as e:
@@ -3161,20 +3171,20 @@ def process_kaikki_jsonl_new(cur, filename, check_exists=False):
 
     try:
         with open(filename, "r", encoding="utf-8") as f:
-            for line in tqdm(f, desc=f"Processing {lang_code} entries"):
+            for line in tqdm(f, desc=f"Processing {language_code} entries"):
                 process_entry(cur, json.loads(line))
     except Exception as e:
         logger.error(f"Error processing file {filename}: {str(e)}")
         raise
 
-def get_root_word_id(cur, lemma: str, lang_code: str) -> Optional[int]:
+def get_root_word_id(cur, lemma: str, language_code: str) -> Optional[int]:  # Changed parameter name
     """Get root word ID if it exists."""
     cur.execute("""
         SELECT id FROM words 
         WHERE normalized_lemma = %s 
         AND language_code = %s 
         AND root_word_id IS NULL
-    """, (normalize_lemma(lemma), lang_code))
+    """, (normalize_lemma(lemma), language_code))
     result = cur.fetchone()
     return result[0] if result else None
 
