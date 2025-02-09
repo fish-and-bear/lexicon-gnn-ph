@@ -1,0 +1,11 @@
+2025-02-09 00:44:15,991 - INFO - Attempting database connection...
+2025-02-09 00:44:15,992 - INFO - Database configuration:
+2025-02-09 00:44:15,992 - INFO -   Database Name: fil_dict_db
+2025-02-09 00:44:15,992 - INFO -   User: postgres
+2025-02-09 00:44:15,992 - INFO -   Host: localhost
+2025-02-09 00:44:15,992 - INFO -   Password: ********
+2025-02-09 00:44:16,036 - INFO - Successfully established database connection
+2025-02-09 00:44:16,052 - ERROR - Error during lookup: column "definition" does not exist
+LINE 2:             SELECT definition, pos, examples, usage_notes, s...
+                           ^
+

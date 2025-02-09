@@ -1,0 +1,30 @@
+2025-02-09 11:35:09,664 - INFO - Attempting database connection...
+2025-02-09 11:35:09,665 - INFO - Database configuration:
+2025-02-09 11:35:09,666 - INFO -   Database Name: fil_dict_db
+2025-02-09 11:35:09,666 - INFO -   User: postgres
+2025-02-09 11:35:09,667 - INFO -   Host: localhost
+2025-02-09 11:35:09,668 - INFO -   Password: ********
+2025-02-09 11:35:09,792 - INFO - Successfully established database connection
+2025-02-09 11:35:09,793 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 11:35:09,794 - INFO - Checking extension: pg_trgm
+2025-02-09 11:35:09,801 - INFO - Extension already installed: pg_trgm
+2025-02-09 11:35:09,802 - INFO - Checking extension: unaccent
+2025-02-09 11:35:09,803 - INFO - Extension already installed: unaccent
+2025-02-09 11:35:09,803 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 11:35:09,804 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 11:35:09,805 - INFO - Extensions setup completed
+2025-02-09 11:35:09,806 - INFO - Starting table creation/update process.
+2025-02-09 11:35:09,891 - INFO - Tables created or updated successfully.
+2025-02-09 11:35:09,901 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-09 11:35:11,673 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 11:35:11,675 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 11:35:11,676 - ERROR - Error processing entry for ábar: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+

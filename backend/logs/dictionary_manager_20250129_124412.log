@@ -1,0 +1,24 @@
+2025-01-29 12:44:12,580 - INFO - Attempting database connection...
+2025-01-29 12:44:12,581 - INFO - Database configuration:
+2025-01-29 12:44:12,581 - INFO -   Database Name: fil_dict_db
+2025-01-29 12:44:12,581 - INFO -   User: postgres
+2025-01-29 12:44:12,581 - INFO -   Host: localhost
+2025-01-29 12:44:12,582 - INFO -   Password: ********
+2025-01-29 12:44:12,786 - INFO - Successfully established database connection
+2025-01-29 12:44:17,055 - INFO - Setting up PostgreSQL extensions...
+2025-01-29 12:44:17,056 - INFO - Checking extension: pg_trgm
+2025-01-29 12:44:17,103 - INFO - Installing extension: pg_trgm
+2025-01-29 12:44:17,318 - INFO - Successfully installed extension: pg_trgm
+2025-01-29 12:44:17,320 - INFO - Checking extension: unaccent
+2025-01-29 12:44:17,322 - INFO - Installing extension: unaccent
+2025-01-29 12:44:17,370 - INFO - Successfully installed extension: unaccent
+2025-01-29 12:44:17,371 - INFO - Checking extension: fuzzystrmatch
+2025-01-29 12:44:17,373 - INFO - Installing extension: fuzzystrmatch
+2025-01-29 12:44:17,402 - INFO - Successfully installed extension: fuzzystrmatch
+2025-01-29 12:44:17,403 - INFO - Extensions setup completed
+2025-01-29 12:44:17,404 - INFO - Starting table creation/update process.
+2025-01-29 12:44:17,636 - INFO - Tables created or updated successfully.
+2025-01-29 12:44:17,696 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-01-29 12:44:18,379 - ERROR - Error processing Tagalog words file: 'str' object has no attribute 'get'
+2025-01-29 12:44:18,379 - ERROR - Error processing file data/tagalog-words.json: 'str' object has no attribute 'get'
+2025-01-29 12:44:18,381 - ERROR - Error during migration: 'str' object has no attribute 'get'

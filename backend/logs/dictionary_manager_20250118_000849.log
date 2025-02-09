@@ -1,0 +1,7 @@
+2025-01-18 00:08:49,096 - INFO - Attempting database connection...
+2025-01-18 00:08:49,097 - INFO - Database configuration:
+2025-01-18 00:08:49,097 - INFO -   Database Name: fil_dict_db
+2025-01-18 00:08:49,097 - INFO -   User: postgres
+2025-01-18 00:08:49,097 - INFO -   Host: localhost
+2025-01-18 00:08:49,097 - INFO -   Password: ********
+2025-01-18 00:08:49,131 - INFO - Successfully established database connection

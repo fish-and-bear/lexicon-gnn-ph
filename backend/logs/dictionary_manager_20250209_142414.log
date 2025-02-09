@@ -1,0 +1,18 @@
+2025-02-09 14:24:14,042 - INFO - Attempting database connection...
+2025-02-09 14:24:14,043 - INFO - Database configuration:
+2025-02-09 14:24:14,043 - INFO -   Database Name: fil_dict_db
+2025-02-09 14:24:14,044 - INFO -   User: postgres
+2025-02-09 14:24:14,044 - INFO -   Host: localhost
+2025-02-09 14:24:14,045 - INFO -   Password: ********
+2025-02-09 14:24:14,115 - INFO - Successfully established database connection
+2025-02-09 14:24:14,116 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 14:24:14,116 - INFO - Checking extension: pg_trgm
+2025-02-09 14:24:14,121 - INFO - Extension already installed: pg_trgm
+2025-02-09 14:24:14,122 - INFO - Checking extension: unaccent
+2025-02-09 14:24:14,123 - INFO - Extension already installed: unaccent
+2025-02-09 14:24:14,124 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 14:24:14,125 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 14:24:14,125 - INFO - Extensions setup completed
+2025-02-09 14:24:14,126 - INFO - Starting table creation/update process.
+2025-02-09 14:24:14,144 - INFO - Tables created or updated successfully.
+2025-02-09 14:24:14,149 - INFO - Processing Tagalog words from: data/tagalog-words.json

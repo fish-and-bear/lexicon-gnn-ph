@@ -1,0 +1,1120 @@
+2025-02-09 10:52:54,233 - INFO - Attempting database connection...
+2025-02-09 10:52:54,233 - INFO - Database configuration:
+2025-02-09 10:52:54,234 - INFO -   Database Name: fil_dict_db
+2025-02-09 10:52:54,234 - INFO -   User: postgres
+2025-02-09 10:52:54,235 - INFO -   Host: localhost
+2025-02-09 10:52:54,235 - INFO -   Password: ********
+2025-02-09 10:52:54,366 - INFO - Successfully established database connection
+2025-02-09 10:52:54,367 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 10:52:54,367 - INFO - Checking extension: pg_trgm
+2025-02-09 10:52:54,472 - INFO - Extension already installed: pg_trgm
+2025-02-09 10:52:54,473 - INFO - Checking extension: unaccent
+2025-02-09 10:52:54,474 - INFO - Extension already installed: unaccent
+2025-02-09 10:52:54,474 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 10:52:54,475 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 10:52:54,475 - INFO - Extensions setup completed
+2025-02-09 10:52:54,476 - INFO - Starting table creation/update process.
+2025-02-09 10:52:54,633 - INFO - Tables created or updated successfully.
+2025-02-09 10:52:54,648 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-09 10:52:55,253 - ERROR - Error processing Tagalog words file: Unsupported data format in tagalog-words.json
+2025-02-09 10:52:55,259 - ERROR - Error processing file data/tagalog-words.json: Unsupported data format in tagalog-words.json
+2025-02-09 10:52:55,260 - WARNING - Skipping file data/tagalog-words.json due to errors.
+2025-02-09 10:52:55,322 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json
+2025-02-09 10:52:55,521 - ERROR - Error creating word entry for na: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,523 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,525 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,525 - ERROR - Error processing root word na: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,527 - ERROR - Error creating word entry for ito: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,529 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,530 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,531 - ERROR - Error processing root word ito: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,533 - ERROR - Error creating word entry for iyon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,535 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,536 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,537 - ERROR - Error processing root word iyon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,539 - ERROR - Error creating word entry for lang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,540 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,541 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,542 - ERROR - Error processing root word lang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,544 - ERROR - Error creating word entry for ako: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,545 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,546 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,547 - ERROR - Error processing root word ako: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,549 - ERROR - Error creating word entry for ka: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,550 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,552 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,553 - ERROR - Error processing root word ka: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,554 - ERROR - Error creating word entry for may: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,555 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,556 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,556 - ERROR - Error processing root word may: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,558 - ERROR - Error creating word entry for din: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,559 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,561 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,561 - ERROR - Error processing root word din: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,563 - ERROR - Error creating word entry for kaya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,564 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,565 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,566 - ERROR - Error processing root word kaya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,568 - ERROR - Error creating word entry for naman: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,569 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,570 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,571 - ERROR - Error processing root word naman: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,573 - ERROR - Error creating word entry for tapos: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,575 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,576 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,576 - ERROR - Error processing root word tapos: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,578 - ERROR - Error creating word entry for hindi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,579 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,581 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,582 - ERROR - Error processing root word hindi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,584 - ERROR - Error creating word entry for siya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,585 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,587 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,587 - ERROR - Error processing root word siya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,589 - ERROR - Error creating word entry for ano: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,591 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,593 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,593 - ERROR - Error processing root word ano: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,595 - ERROR - Error creating word entry for para: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,596 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,597 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,598 - ERROR - Error processing root word para: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,600 - ERROR - Error creating word entry for wala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,601 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,602 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,603 - ERROR - Error processing root word wala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,605 - ERROR - Error creating word entry for sila: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,606 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,608 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,609 - ERROR - Error processing root word sila: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,611 - ERROR - Error creating word entry for sabi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,613 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,615 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,616 - ERROR - Error processing root word sabi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,618 - ERROR - Error creating word entry for pala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,620 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,622 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,623 - ERROR - Error processing root word pala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,631 - ERROR - Error creating word entry for talaga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,632 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,633 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,634 - ERROR - Error processing root word talaga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,636 - ERROR - Error creating word entry for gawa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,644 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,645 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,646 - ERROR - Error processing root word gawa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,648 - ERROR - Error creating word entry for isa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,649 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,650 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,650 - ERROR - Error processing root word isa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,653 - ERROR - Error creating word entry for nga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,654 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,655 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,656 - ERROR - Error processing root word nga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,658 - ERROR - Error creating word entry for tayo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,659 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,660 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,661 - ERROR - Error processing root word tayo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,663 - ERROR - Error creating word entry for maging: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,664 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,665 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,666 - ERROR - Error processing root word maging: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,667 - ERROR - Error creating word entry for amin: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,669 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,671 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,672 - ERROR - Error processing root word amin: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,674 - ERROR - Error creating word entry for iba: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,675 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,676 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,677 - ERROR - Error processing root word iba: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,679 - ERROR - Error creating word entry for alam: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,680 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,681 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,682 - ERROR - Error processing root word alam: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,685 - ERROR - Error creating word entry for gusto: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,687 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,688 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,689 - ERROR - Error processing root word gusto: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,690 - ERROR - Error creating word entry for kita: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,691 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,692 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,693 - ERROR - Error processing root word kita: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,695 - ERROR - Error creating word entry for ganda: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,696 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,698 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,698 - ERROR - Error processing root word ganda: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,700 - ERROR - Error creating word entry for dahil: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,701 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,702 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,703 - ERROR - Error processing root word dahil: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,704 - ERROR - Error creating word entry for ngayon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,706 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,707 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,708 - ERROR - Error processing root word ngayon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,711 - ERROR - Error creating word entry for dami: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,713 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,714 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,716 - ERROR - Error processing root word dami: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,718 - ERROR - Error creating word entry for dito: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,719 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,720 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,721 - ERROR - Error processing root word dito: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,722 - ERROR - Error creating word entry for sama: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,723 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,724 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,724 - ERROR - Error processing root word sama: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,726 - ERROR - Error creating word entry for tao: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,728 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,729 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,730 - ERROR - Error processing root word tao: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,739 - ERROR - Error creating word entry for lahat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,740 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,741 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,742 - ERROR - Error processing root word lahat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,743 - ERROR - Error creating word entry for po: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,744 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,748 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,749 - ERROR - Error processing root word po: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,751 - ERROR - Error creating word entry for gamit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,752 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,753 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,754 - ERROR - Error processing root word gamit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,756 - ERROR - Error creating word entry for bili: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,757 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,758 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,759 - ERROR - Error processing root word bili: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,760 - ERROR - Error creating word entry for sana: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,762 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,763 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,764 - ERROR - Error processing root word sana: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,766 - ERROR - Error creating word entry for baka: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,767 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,768 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,769 - ERROR - Error processing root word baka: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,771 - ERROR - Error creating word entry for kayo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,772 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,773 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,773 - ERROR - Error processing root word kayo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,775 - ERROR - Error creating word entry for sobra: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,777 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,777 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,778 - ERROR - Error processing root word sobra: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,779 - ERROR - Error creating word entry for hirap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,780 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,781 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,781 - ERROR - Error processing root word hirap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,783 - ERROR - Error creating word entry for bakit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,783 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,784 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,785 - ERROR - Error processing root word bakit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,786 - ERROR - Error creating word entry for bago: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,787 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,789 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,789 - ERROR - Error processing root word bago: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,791 - ERROR - Error creating word entry for dapat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,793 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,794 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,795 - ERROR - Error processing root word dapat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,796 - ERROR - Error creating word entry for isip: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,797 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,798 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,799 - ERROR - Error processing root word isip: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,801 - ERROR - Error creating word entry for labas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,802 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,803 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,804 - ERROR - Error processing root word labas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,806 - ERROR - Error creating word entry for buhay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,807 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,808 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,809 - ERROR - Error processing root word buhay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,811 - ERROR - Error creating word entry for galing: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,813 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,814 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,814 - ERROR - Error processing root word galing: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,816 - ERROR - Error creating word entry for kanya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,817 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,817 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,818 - ERROR - Error processing root word kanya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,819 - ERROR - Error creating word entry for punta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,820 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,821 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,822 - ERROR - Error processing root word punta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,823 - ERROR - Error creating word entry for ayaw: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,825 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,826 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,827 - ERROR - Error processing root word ayaw: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,829 - ERROR - Error creating word entry for man: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,830 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,831 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,832 - ERROR - Error processing root word man: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,839 - ERROR - Error creating word entry for kuha: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,840 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,841 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,841 - ERROR - Error processing root word kuha: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,843 - ERROR - Error creating word entry for kain: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,844 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,845 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,846 - ERROR - Error processing root word kain: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,848 - ERROR - Error creating word entry for bahay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,850 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,851 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,852 - ERROR - Error processing root word bahay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,853 - ERROR - Error creating word entry for kailangan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,854 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,859 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,860 - ERROR - Error processing root word kailangan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,863 - ERROR - Error creating word entry for bigay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,864 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,866 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,867 - ERROR - Error processing root word bigay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,869 - ERROR - Error creating word entry for basa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,871 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,872 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,873 - ERROR - Error processing root word basa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,875 - ERROR - Error creating word entry for siguro: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,876 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,877 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,878 - ERROR - Error processing root word siguro: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,879 - ERROR - Error creating word entry for ganyan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,880 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,881 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,882 - ERROR - Error processing root word ganyan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,884 - ERROR - Error creating word entry for sakit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,885 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,886 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,887 - ERROR - Error processing root word sakit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,888 - ERROR - Error creating word entry for hanap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,890 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,891 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,891 - ERROR - Error processing root word hanap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,894 - ERROR - Error creating word entry for kaso: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,895 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,896 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,897 - ERROR - Error processing root word kaso: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,898 - ERROR - Error creating word entry for lagi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,899 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,900 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,901 - ERROR - Error processing root word lagi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,902 - ERROR - Error creating word entry for laki: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,903 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,904 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,905 - ERROR - Error processing root word laki: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,906 - ERROR - Error creating word entry for ayos: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,907 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,908 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,908 - ERROR - Error processing root word ayos: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,909 - ERROR - Error creating word entry for bola: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,910 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,911 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,912 - ERROR - Error processing root word bola: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,913 - ERROR - Error creating word entry for minsan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,914 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,915 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,916 - ERROR - Error processing root word minsan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,918 - ERROR - Error creating word entry for abot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,919 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,920 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,920 - ERROR - Error processing root word abot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,922 - ERROR - Error creating word entry for anak: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,923 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,924 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,925 - ERROR - Error processing root word anak: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,926 - ERROR - Error creating word entry for baba: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,927 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,928 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,929 - ERROR - Error processing root word baba: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,931 - ERROR - Error creating word entry for una: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,932 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,933 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,934 - ERROR - Error processing root word una: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,940 - ERROR - Error creating word entry for daan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,941 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,943 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,943 - ERROR - Error processing root word daan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,945 - ERROR - Error creating word entry for tanong: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,946 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,947 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,948 - ERROR - Error processing root word tanong: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,949 - ERROR - Error creating word entry for dating: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,950 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,951 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,952 - ERROR - Error processing root word dating: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,954 - ERROR - Error creating word entry for pasok: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,954 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,955 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,956 - ERROR - Error processing root word pasok: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,957 - ERROR - Error creating word entry for bata: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,958 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,959 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,960 - ERROR - Error processing root word bata: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,962 - ERROR - Error creating word entry for lalo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,967 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,968 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,969 - ERROR - Error processing root word lalo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,970 - ERROR - Error creating word entry for bayad: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,971 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,972 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,973 - ERROR - Error processing root word bayad: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,975 - ERROR - Error creating word entry for kilala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,976 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,978 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,978 - ERROR - Error processing root word kilala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,980 - ERROR - Error creating word entry for saan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,981 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,982 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,983 - ERROR - Error processing root word saan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,984 - ERROR - Error creating word entry for saya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,985 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,987 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,987 - ERROR - Error processing root word saya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,989 - ERROR - Error creating word entry for taon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,990 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,991 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,992 - ERROR - Error processing root word taon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,993 - ERROR - Error creating word entry for bukas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,995 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,996 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,997 - ERROR - Error processing root word bukas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,998 - ERROR - Error creating word entry for trabaho: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:55,999 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,000 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,001 - ERROR - Error processing root word trabaho: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,004 - ERROR - Error creating word entry for usap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,005 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,007 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,008 - ERROR - Error processing root word usap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,009 - ERROR - Error creating word entry for dala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,010 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,011 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,012 - ERROR - Error processing root word dala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,013 - ERROR - Error creating word entry for huli: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,015 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,015 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,016 - ERROR - Error processing root word huli: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,018 - ERROR - Error creating word entry for agad: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,019 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,020 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,021 - ERROR - Error processing root word agad: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,022 - ERROR - Error creating word entry for araw: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,023 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,024 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,025 - ERROR - Error processing root word araw: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,027 - ERROR - Error creating word entry for mahal: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,028 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,029 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,030 - ERROR - Error processing root word mahal: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,031 - ERROR - Error creating word entry for ulit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,032 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,033 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,034 - ERROR - Error processing root word ulit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,042 - ERROR - Error creating word entry for lagay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,044 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,045 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,045 - ERROR - Error processing root word lagay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,046 - ERROR - Error creating word entry for tama: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,047 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,048 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,049 - ERROR - Error processing root word tama: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,051 - ERROR - Error creating word entry for mukha: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,052 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,052 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,053 - ERROR - Error processing root word mukha: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,054 - ERROR - Error creating word entry for uwi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,055 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,056 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,057 - ERROR - Error processing root word uwi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,058 - ERROR - Error creating word entry for sarili: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,059 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,060 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,061 - ERROR - Error processing root word sarili: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,062 - ERROR - Error creating word entry for sarap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,064 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,065 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,066 - ERROR - Error processing root word sarap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,067 - ERROR - Error creating word entry for pera: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,068 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,069 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,073 - ERROR - Error processing root word pera: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,074 - ERROR - Error creating word entry for balik: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,075 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,077 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,077 - ERROR - Error processing root word balik: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,079 - ERROR - Error creating word entry for tuloy: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,080 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,081 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,081 - ERROR - Error processing root word tuloy: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,083 - ERROR - Error creating word entry for galit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,084 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,085 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,085 - ERROR - Error processing root word galit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,086 - ERROR - Error creating word entry for patay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,087 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,088 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,089 - ERROR - Error processing root word patay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,090 - ERROR - Error creating word entry for tagal: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,092 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,092 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,093 - ERROR - Error processing root word tagal: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,094 - ERROR - Error creating word entry for taas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,095 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,096 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,097 - ERROR - Error processing root word taas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,098 - ERROR - Error creating word entry for tingin: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,099 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,101 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,101 - ERROR - Error processing root word tingin: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,103 - ERROR - Error creating word entry for bilang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,104 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,104 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,105 - ERROR - Error processing root word bilang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,106 - ERROR - Error creating word entry for ganito: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,107 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,108 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,108 - ERROR - Error processing root word ganito: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,110 - ERROR - Error creating word entry for sakay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,111 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,112 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,112 - ERROR - Error processing root word sakay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,114 - ERROR - Error creating word entry for tulog: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,115 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,116 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,117 - ERROR - Error processing root word tulog: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,118 - ERROR - Error creating word entry for saka: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,119 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,121 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,121 - ERROR - Error processing root word saka: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,123 - ERROR - Error creating word entry for sunod: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,124 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,126 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,126 - ERROR - Error processing root word sunod: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,128 - ERROR - Error creating word entry for nood: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,129 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,130 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,130 - ERROR - Error processing root word nood: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,132 - ERROR - Error creating word entry for bigla: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,133 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,135 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,135 - ERROR - Error processing root word bigla: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,141 - ERROR - Error creating word entry for sagot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,142 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,143 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,144 - ERROR - Error processing root word sagot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,145 - ERROR - Error creating word entry for dalawa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,146 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,148 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,148 - ERROR - Error processing root word dalawa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,150 - ERROR - Error creating word entry for sino: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,151 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,152 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,152 - ERROR - Error processing root word sino: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,154 - ERROR - Error creating word entry for lapit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,155 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,156 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,156 - ERROR - Error processing root word lapit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,158 - ERROR - Error creating word entry for loob: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,158 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,159 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,160 - ERROR - Error processing root word loob: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,162 - ERROR - Error creating word entry for mali: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,163 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,164 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,164 - ERROR - Error processing root word mali: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,166 - ERROR - Error creating word entry for santo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,167 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,168 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,169 - ERROR - Error processing root word santo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,170 - ERROR - Error creating word entry for basta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,171 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,172 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,173 - ERROR - Error processing root word basta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,174 - ERROR - Error creating word entry for tira: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,175 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,176 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,176 - ERROR - Error processing root word tira: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,180 - ERROR - Error creating word entry for oo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,181 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,182 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,183 - ERROR - Error processing root word oo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,184 - ERROR - Error creating word entry for tawag: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,186 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,187 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,188 - ERROR - Error processing root word tawag: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,189 - ERROR - Error creating word entry for tulong: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,190 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,191 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,192 - ERROR - Error processing root word tulong: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,194 - ERROR - Error creating word entry for buti: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,195 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,196 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,197 - ERROR - Error processing root word buti: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,198 - ERROR - Error creating word entry for babae: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,199 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,200 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,201 - ERROR - Error processing root word babae: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,202 - ERROR - Error creating word entry for doon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,203 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,204 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,205 - ERROR - Error processing root word doon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,206 - ERROR - Error creating word entry for aral: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,208 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,209 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,209 - ERROR - Error processing root word aral: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,211 - ERROR - Error creating word entry for problema: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,212 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,213 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,213 - ERROR - Error processing root word problema: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,215 - ERROR - Error creating word entry for alala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,216 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,217 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,217 - ERROR - Error processing root word alala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,219 - ERROR - Error creating word entry for buo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,220 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,220 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,221 - ERROR - Error processing root word buo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,223 - ERROR - Error creating word entry for takot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,224 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,225 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,225 - ERROR - Error processing root word takot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,227 - ERROR - Error creating word entry for dali: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,228 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,229 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,229 - ERROR - Error processing root word dali: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,230 - ERROR - Error creating word entry for noo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,231 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,232 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,233 - ERROR - Error processing root word noo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,235 - ERROR - Error creating word entry for totoo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,236 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,237 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,238 - ERROR - Error processing root word totoo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,244 - ERROR - Error creating word entry for ilang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,246 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,247 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,247 - ERROR - Error processing root word ilang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,249 - ERROR - Error creating word entry for sabay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,250 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,251 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,251 - ERROR - Error processing root word sabay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,253 - ERROR - Error creating word entry for bansa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,254 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,254 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,255 - ERROR - Error processing root word bansa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,256 - ERROR - Error creating word entry for pansin: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,257 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,258 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,259 - ERROR - Error processing root word pansin: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,260 - ERROR - Error creating word entry for tawa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,261 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,262 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,263 - ERROR - Error processing root word tawa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,264 - ERROR - Error creating word entry for silang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,265 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,266 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,267 - ERROR - Error processing root word silang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,268 - ERROR - Error creating word entry for akala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,269 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,271 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,271 - ERROR - Error processing root word akala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,273 - ERROR - Error creating word entry for aga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,273 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,274 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,275 - ERROR - Error processing root word aga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,276 - ERROR - Error creating word entry for laman: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,277 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,278 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,278 - ERROR - Error processing root word laman: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,279 - ERROR - Error creating word entry for laban: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,280 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,281 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,281 - ERROR - Error processing root word laban: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,283 - ERROR - Error creating word entry for alis: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,287 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,288 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,289 - ERROR - Error processing root word alis: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,291 - ERROR - Error creating word entry for said: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,292 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,293 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,293 - ERROR - Error processing root word said: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,295 - ERROR - Error creating word entry for tipon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,295 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,296 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,297 - ERROR - Error processing root word tipon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,298 - ERROR - Error creating word entry for talo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,299 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,300 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,301 - ERROR - Error processing root word talo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,302 - ERROR - Error creating word entry for ina: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,303 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,303 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,304 - ERROR - Error processing root word ina: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,305 - ERROR - Error creating word entry for lakas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,306 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,307 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,308 - ERROR - Error processing root word lakas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,309 - ERROR - Error creating word entry for ayon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,310 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,311 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,312 - ERROR - Error processing root word ayon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,313 - ERROR - Error creating word entry for palit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,314 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,315 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,316 - ERROR - Error processing root word palit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,317 - ERROR - Error creating word entry for kapatid: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,318 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,319 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,319 - ERROR - Error processing root word kapatid: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,321 - ERROR - Error creating word entry for mura: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,322 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,323 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,323 - ERROR - Error processing root word mura: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,325 - ERROR - Error creating word entry for salamat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,326 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,327 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,327 - ERROR - Error processing root word salamat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,329 - ERROR - Error creating word entry for damdam: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,330 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,333 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,334 - ERROR - Error processing root word damdam: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,336 - ERROR - Error creating word entry for inis: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,337 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,338 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,339 - ERROR - Error processing root word inis: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,344 - ERROR - Error creating word entry for gabi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,345 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,346 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,347 - ERROR - Error processing root word gabi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,348 - ERROR - Error creating word entry for bayan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,349 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,350 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,351 - ERROR - Error processing root word bayan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,352 - ERROR - Error creating word entry for laro: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,353 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,354 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,355 - ERROR - Error processing root word laro: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,356 - ERROR - Error creating word entry for bus: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,357 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,358 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,358 - ERROR - Error processing root word bus: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,360 - ERROR - Error creating word entry for sira: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,360 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,361 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,362 - ERROR - Error processing root word sira: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,363 - ERROR - Error creating word entry for haba: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,364 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,365 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,365 - ERROR - Error processing root word haba: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,366 - ERROR - Error creating word entry for oras: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,367 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,368 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,369 - ERROR - Error processing root word oras: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,370 - ERROR - Error creating word entry for upo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,371 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,372 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,373 - ERROR - Error processing root word upo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,374 - ERROR - Error creating word entry for puno: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,375 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,376 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,376 - ERROR - Error processing root word puno: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,378 - ERROR - Error creating word entry for dalas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,379 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,380 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,380 - ERROR - Error processing root word dalas: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,382 - ERROR - Error creating word entry for taga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,382 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,383 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,384 - ERROR - Error processing root word taga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,385 - ERROR - Error creating word entry for tulad: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,386 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,387 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,387 - ERROR - Error processing root word tulad: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,388 - ERROR - Error creating word entry for away: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,389 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,390 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,390 - ERROR - Error processing root word away: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,391 - ERROR - Error creating word entry for inom: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,396 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,396 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,397 - ERROR - Error processing root word inom: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,398 - ERROR - Error creating word entry for sayang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,399 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,400 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,400 - ERROR - Error processing root word sayang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,401 - ERROR - Error creating word entry for grabe: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,402 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,403 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,404 - ERROR - Error processing root word grabe: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,405 - ERROR - Error creating word entry for simula: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,406 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,407 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,408 - ERROR - Error processing root word simula: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,409 - ERROR - Error creating word entry for ulo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,410 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,411 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,412 - ERROR - Error processing root word ulo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,413 - ERROR - Error creating word entry for atin: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,414 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,415 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,415 - ERROR - Error processing root word atin: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,417 - ERROR - Error creating word entry for hingi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,418 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,418 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,419 - ERROR - Error processing root word hingi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,420 - ERROR - Error creating word entry for aso: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,420 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,421 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,421 - ERROR - Error processing root word aso: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,422 - ERROR - Error creating word entry for bagay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,423 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,424 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,425 - ERROR - Error processing root word bagay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,426 - ERROR - Error creating word entry for mula: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,427 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,427 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,428 - ERROR - Error processing root word mula: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,429 - ERROR - Error creating word entry for luto: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,430 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,431 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,431 - ERROR - Error processing root word luto: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,432 - ERROR - Error creating word entry for pagod: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,433 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,434 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,434 - ERROR - Error processing root word pagod: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,436 - ERROR - Error creating word entry for hapon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,436 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,437 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,438 - ERROR - Error processing root word hapon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,439 - ERROR - Error creating word entry for layo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,440 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,441 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,442 - ERROR - Error processing root word layo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,446 - ERROR - Error creating word entry for bilis: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,447 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,448 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,449 - ERROR - Error processing root word bilis: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,450 - ERROR - Error creating word entry for puta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,451 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,452 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,452 - ERROR - Error processing root word puta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,454 - ERROR - Error creating word entry for pili: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,454 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,455 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,456 - ERROR - Error processing root word pili: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,457 - ERROR - Error creating word entry for kaibigan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,458 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,459 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,459 - ERROR - Error processing root word kaibigan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,460 - ERROR - Error creating word entry for tiwala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,461 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,462 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,462 - ERROR - Error processing root word tiwala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,464 - ERROR - Error creating word entry for gastos: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,464 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,465 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,466 - ERROR - Error processing root word gastos: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,467 - ERROR - Error creating word entry for tabi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,468 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,469 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,469 - ERROR - Error processing root word tabi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,470 - ERROR - Error creating word entry for kanta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,471 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,472 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,472 - ERROR - Error processing root word kanta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,474 - ERROR - Error creating word entry for gago: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,474 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,475 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,476 - ERROR - Error processing root word gago: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,477 - ERROR - Error creating word entry for tanggap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,479 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,480 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,481 - ERROR - Error processing root word tanggap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,482 - ERROR - Error creating word entry for dalaw: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,483 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,483 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,484 - ERROR - Error processing root word dalaw: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,486 - ERROR - Error creating word entry for asa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,487 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,487 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,488 - ERROR - Error processing root word asa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,489 - ERROR - Error creating word entry for tanda: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,490 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,491 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,492 - ERROR - Error processing root word tanda: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,493 - ERROR - Error creating word entry for awa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,494 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,495 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,495 - ERROR - Error processing root word awa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,497 - ERROR - Error creating word entry for pamilya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,498 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,498 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,501 - ERROR - Error processing root word pamilya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,503 - ERROR - Error creating word entry for trip: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,504 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,505 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,506 - ERROR - Error processing root word trip: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,507 - ERROR - Error creating word entry for gising: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,508 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,509 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,510 - ERROR - Error processing root word gising: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,511 - ERROR - Error creating word entry for dinig: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,513 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,514 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,514 - ERROR - Error processing root word dinig: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,515 - ERROR - Error creating word entry for iyo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,516 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,517 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,517 - ERROR - Error processing root word iyo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,519 - ERROR - Error creating word entry for limot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,520 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,521 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,522 - ERROR - Error processing root word limot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,523 - ERROR - Error creating word entry for depende: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,524 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,524 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,525 - ERROR - Error processing root word depende: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,526 - ERROR - Error creating word entry for hiya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,527 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,528 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,529 - ERROR - Error processing root word hiya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,531 - ERROR - Error creating word entry for asawa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,531 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,532 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,533 - ERROR - Error processing root word asawa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,534 - ERROR - Error creating word entry for kulang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,535 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,536 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,536 - ERROR - Error processing root word kulang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,538 - ERROR - Error creating word entry for lakad: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,539 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,540 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,540 - ERROR - Error processing root word lakad: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,541 - ERROR - Error creating word entry for harap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,542 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,543 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,544 - ERROR - Error processing root word harap: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,548 - ERROR - Error creating word entry for panahon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,549 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,550 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,551 - ERROR - Error processing root word panahon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,552 - ERROR - Error creating word entry for inyo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,553 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,554 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,554 - ERROR - Error processing root word inyo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,555 - ERROR - Error creating word entry for lalaki: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,556 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,557 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,558 - ERROR - Error processing root word lalaki: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,559 - ERROR - Error creating word entry for lugar: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,560 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,560 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,561 - ERROR - Error processing root word lugar: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,562 - ERROR - Error creating word entry for sanay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,563 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,564 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,564 - ERROR - Error processing root word sanay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,565 - ERROR - Error creating word entry for bawal: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,566 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,567 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,567 - ERROR - Error processing root word bawal: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,568 - ERROR - Error creating word entry for pasa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,568 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,570 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,570 - ERROR - Error processing root word pasa: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,571 - ERROR - Error creating word entry for ibig: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,572 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,573 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,573 - ERROR - Error processing root word ibig: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,574 - ERROR - Error creating word entry for intindi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,575 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,576 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,576 - ERROR - Error processing root word intindi: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,578 - ERROR - Error creating word entry for unan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,578 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,579 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,580 - ERROR - Error processing root word unan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,581 - ERROR - Error creating word entry for klase: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,582 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,582 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,583 - ERROR - Error processing root word klase: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,584 - ERROR - Error creating word entry for lungkot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,584 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,585 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,585 - ERROR - Error processing root word lungkot: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,587 - ERROR - Error creating word entry for gulang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,588 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,589 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,589 - ERROR - Error processing root word gulang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,590 - ERROR - Error creating word entry for tubig: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,591 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,592 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,592 - ERROR - Error processing root word tubig: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,593 - ERROR - Error creating word entry for hintay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,594 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,595 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,596 - ERROR - Error processing root word hintay: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,597 - ERROR - Error creating word entry for dagdag: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,598 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,599 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,600 - ERROR - Error processing root word dagdag: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,601 - ERROR - Error creating word entry for tungkol: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,602 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,603 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,603 - ERROR - Error processing root word tungkol: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,604 - ERROR - Error creating word entry for diyan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,605 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,606 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,606 - ERROR - Error processing root word diyan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,609 - ERROR - Error creating word entry for iwan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,610 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,611 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,612 - ERROR - Error processing root word iwan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,613 - ERROR - Error creating word entry for utang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,613 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,614 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,614 - ERROR - Error processing root word utang: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,615 - ERROR - Error creating word entry for liit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,615 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,616 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,617 - ERROR - Error processing root word liit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,618 - ERROR - Error creating word entry for ipon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,619 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,620 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,621 - ERROR - Error processing root word ipon: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,622 - ERROR - Error creating word entry for linggo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,622 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,623 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,624 - ERROR - Error processing root word linggo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,625 - ERROR - Error creating word entry for pila: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,625 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,626 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,627 - ERROR - Error processing root word pila: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,628 - ERROR - Error creating word entry for bobo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,629 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,629 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,630 - ERROR - Error processing root word bobo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,631 - ERROR - Error creating word entry for ubos: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,632 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,633 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,633 - ERROR - Error processing root word ubos: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,634 - ERROR - Error creating word entry for iyak: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,635 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,636 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,636 - ERROR - Error processing root word iyak: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,638 - ERROR - Error creating word entry for benta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,639 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,640 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,640 - ERROR - Error processing root word benta: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,641 - ERROR - Error creating word entry for sala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,642 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,643 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,644 - ERROR - Error processing root word sala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,645 - ERROR - Error creating word entry for lipat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,645 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,646 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,646 - ERROR - Error processing root word lipat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,651 - ERROR - Error creating word entry for tatlo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,652 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,653 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,653 - ERROR - Error processing root word tatlo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,654 - ERROR - Error creating word entry for lala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,655 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,656 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,656 - ERROR - Error processing root word lala: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,657 - ERROR - Error creating word entry for gaya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,657 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,658 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,659 - ERROR - Error processing root word gaya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,660 - ERROR - Error creating word entry for salita: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,661 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,662 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,662 - ERROR - Error processing root word salita: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,663 - ERROR - Error creating word entry for kati: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,664 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,665 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,665 - ERROR - Error processing root word kati: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,666 - ERROR - Error creating word entry for sikat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,667 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,668 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,668 - ERROR - Error processing root word sikat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,669 - ERROR - Error creating word entry for ilan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,670 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,671 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,672 - ERROR - Error processing root word ilan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,672 - ERROR - Error creating word entry for pareho: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,673 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,674 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,674 - ERROR - Error processing root word pareho: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,675 - ERROR - Error creating word entry for hilig: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,676 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,676 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,677 - ERROR - Error processing root word hilig: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,678 - ERROR - Error creating word entry for nakaw: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,679 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,680 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,680 - ERROR - Error processing root word nakaw: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,681 - ERROR - Error creating word entry for kalat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,682 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,683 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,683 - ERROR - Error processing root word kalat: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,685 - ERROR - Error creating word entry for reklamo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,685 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,686 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,687 - ERROR - Error processing root word reklamo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,688 - ERROR - Error creating word entry for linis: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,689 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,690 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,690 - ERROR - Error processing root word linis: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,692 - ERROR - Error creating word entry for gulo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,692 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,697 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,697 - ERROR - Error processing root word gulo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,698 - ERROR - Error creating word entry for pilit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,699 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,700 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,700 - ERROR - Error processing root word pilit: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,702 - ERROR - Error creating word entry for likod: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,703 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,704 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,704 - ERROR - Error processing root word likod: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,705 - ERROR - Error creating word entry for probinsya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,706 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,706 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,707 - ERROR - Error processing root word probinsya: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,708 - ERROR - Error creating word entry for tanga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,709 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,710 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,710 - ERROR - Error processing root word tanga: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,712 - ERROR - Error creating word entry for tuto: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,712 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,713 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,714 - ERROR - Error processing root word tuto: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,715 - ERROR - Error creating word entry for takbo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,715 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,716 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,720 - ERROR - Error processing root word takbo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,721 - ERROR - Error creating word entry for buwan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,722 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,723 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,723 - ERROR - Error processing root word buwan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,724 - ERROR - Error creating word entry for init: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,725 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,726 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,726 - ERROR - Error processing root word init: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,727 - ERROR - Error creating word entry for pilipino: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,728 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,729 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,729 - ERROR - Error processing root word pilipino: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,730 - ERROR - Error creating word entry for mundo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,731 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,731 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,732 - ERROR - Error processing root word mundo: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,733 - ERROR - Error creating word entry for ngalan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,734 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,734 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,735 - ERROR - Error processing root word ngalan: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,736 - ERROR - Error creating word entry for beses: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,737 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,737 - ERROR - Error in get_or_create_word_id: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,738 - ERROR - Error processing root word beses: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,739 - ERROR - Error creating word entry for dunong: Object of type DictionarySource is not JSON serializable
+2025-02-09 10:52:56,740 - ERROR - Error in get_or_create_word_id_base: Object of type DictionarySource is not JSON serializable

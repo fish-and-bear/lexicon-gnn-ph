@@ -1,0 +1,586 @@
+2025-01-18 17:31:15,950 - INFO - Starting fresh data migration
+2025-01-18 17:31:15,951 - INFO - Attempting database connection...
+2025-01-18 17:31:15,951 - INFO - Database configuration:
+2025-01-18 17:31:15,951 - INFO -   Database Name: fil_dict_db
+2025-01-18 17:31:15,952 - INFO -   User: postgres
+2025-01-18 17:31:15,952 - INFO -   Host: localhost
+2025-01-18 17:31:15,952 - INFO -   Password: ********
+2025-01-18 17:31:16,090 - INFO - Successfully established database connection
+2025-01-18 17:31:16,127 - INFO - Starting table creation/update process.
+2025-01-18 17:31:16,195 - INFO - Tables created or updated successfully.
+2025-01-18 17:31:16,196 - INFO - Processing Tagalog words
+2025-01-18 17:31:16,196 - INFO - Starting to process Tagalog words file: data/tagalog-words.json
+2025-01-18 17:31:16,196 - INFO - Using source identifier: tagalog-words.json
+2025-01-18 17:31:16,324 - INFO - Successfully loaded JSON data with 65328 entries
+2025-01-18 17:32:42,051 - INFO - Completed processing Tagalog words file: data/tagalog-words.json
+2025-01-18 17:32:42,063 - INFO - Processing Root words
+2025-01-18 17:32:42,063 - INFO - Starting to process Root Words file: data/root_words_with_associated_words_cleaned.json
+2025-01-18 17:32:42,064 - INFO - Using source identifier: root_words_with_associated_words_cleaned.json
+2025-01-18 17:32:42,076 - INFO - Successfully loaded JSON data with 2238 entries
+2025-01-18 17:33:01,777 - INFO - Completed processing Root Words file: data/root_words_with_associated_words_cleaned.json
+2025-01-18 17:33:01,780 - INFO - Processing KWF Dictionary
+2025-01-18 17:33:01,781 - INFO - Starting to process KWF Dictionary: data/kwf_dictionary.json
+2025-01-18 17:33:01,781 - INFO - Using source identifier: kwf_dictionary.json
+2025-01-18 17:33:02,080 - INFO - Successfully loaded KWF data with 30734 entries
+2025-01-18 17:34:04,546 - INFO - Completed processing KWF Dictionary
+2025-01-18 17:34:04,567 - INFO - Processing Kaikki (Tagalog)
+2025-01-18 17:34:04,568 - INFO - Starting to process Kaikki file: data/kaikki.jsonl
+2025-01-18 17:34:59,075 - INFO - Processing Kaikki (Cebuano)
+2025-01-18 17:34:59,075 - INFO - Starting to process Kaikki file: data/kaikki-ceb.jsonl
+2025-01-18 17:35:21,770 - WARNING - Found 185 Baybayin forms with multiple entries
+2025-01-18 17:35:21,771 - WARNING - Baybayin form ᜀᜂᜈᜓ appears 2 times
+2025-01-18 17:35:21,771 - WARNING - Baybayin form ᜀᜃᜓᜇ᜔ᜇᜒᜌᜓᜈᜒᜐ᜔ᜆ appears 2 times
+2025-01-18 17:35:21,772 - WARNING - Baybayin form ᜀᜃᜓᜇ᜔ᜇ᜔ᜌᜓᜈᜒᜐ᜔ᜆ appears 2 times
+2025-01-18 17:35:21,772 - WARNING - Baybayin form ᜀᜃᜓᜇ᜔ᜇ᜔ᜌᜓᜈ᜔ appears 2 times
+2025-01-18 17:35:21,772 - WARNING - Baybayin form ᜀᜃ᜔ᜐ᜔ᜌᜓᜈᜒᜐ᜔ᜆ appears 2 times
+2025-01-18 17:35:21,772 - WARNING - Baybayin form ᜀᜄᜓᜑᜓ appears 2 times
+2025-01-18 17:35:21,773 - WARNING - Baybayin form ᜀᜆ᜔ᜇᜒᜊᜒᜇ appears 2 times
+2025-01-18 17:35:21,773 - WARNING - Baybayin form ᜀᜇ᜔ᜌᜓᜎ appears 2 times
+2025-01-18 17:35:21,773 - WARNING - Baybayin form ᜀᜈᜐ᜔ᜆᜐ᜔ᜌ appears 2 times
+2025-01-18 17:35:21,773 - WARNING - Baybayin form ᜀᜈ᜔ᜆ᜔ᜐ appears 2 times
+2025-01-18 17:35:21,773 - WARNING - Baybayin form ᜀᜊᜒᜎᜏ᜔ appears 2 times
+2025-01-18 17:35:21,774 - WARNING - Baybayin form ᜀᜊᜓᜎᜒ appears 2 times
+2025-01-18 17:35:21,774 - WARNING - Baybayin form ᜀᜎ ᜁ appears 2 times
+2025-01-18 17:35:21,774 - WARNING - Baybayin form ᜀᜎᜑᜒᜊᜒ appears 2 times
+2025-01-18 17:35:21,774 - WARNING - Baybayin form ᜀᜎᜒᜊᜓᜆ᜔ᜇᜈ᜔ appears 2 times
+2025-01-18 17:35:21,774 - WARNING - Baybayin form ᜀᜏ᜔ᜐ᜔ᜆ᜔ᜇᜎ᜔ᜌ appears 2 times
+2025-01-18 17:35:21,775 - WARNING - Baybayin form ᜀᜏ᜔ᜐ᜔ᜆ᜔ᜇᜒᜌ appears 2 times
+2025-01-18 17:35:21,775 - WARNING - Baybayin form ᜀᜏ᜔ᜐ᜔ᜆ᜔ᜇᜒᜌᜂᜅ᜔ᜄ᜔ᜇᜒᜌ appears 2 times
+2025-01-18 17:35:21,775 - WARNING - Baybayin form ᜀᜐᜁᜐ᜔ appears 2 times
+2025-01-18 17:35:21,775 - WARNING - Baybayin form ᜀᜐᜌ᜔ᜈ᜔ᜋᜒᜈ᜔ᜆ᜔ appears 2 times
+2025-01-18 17:35:21,776 - WARNING - Baybayin form ᜀᜐᜒᜁᜐ᜔ appears 2 times
+2025-01-18 17:35:21,776 - WARNING - Baybayin form ᜁᜆᜓᜇᜎ᜔ᜇᜒ appears 2 times
+2025-01-18 17:35:21,776 - WARNING - Baybayin form ᜁᜈ᜔ᜌᜒᜄᜒᜐ᜔ appears 2 times
+2025-01-18 17:35:21,776 - WARNING - Baybayin form ᜁᜉᜓᜁᜉᜓ appears 2 times
+2025-01-18 17:35:21,777 - WARNING - Baybayin form ᜁᜊᜅ᜔ᜐᜒᜎ᜔ᜌᜓ appears 2 times
+2025-01-18 17:35:21,777 - WARNING - Baybayin form ᜁᜊᜈ᜔ᜌᜒᜐ᜔ appears 2 times
+2025-01-18 17:35:21,777 - WARNING - Baybayin form ᜁᜎᜒᜐᜒ appears 2 times
+2025-01-18 17:35:21,777 - WARNING - Baybayin form ᜁᜎᜒᜑᜈ᜔ appears 2 times
+2025-01-18 17:35:21,777 - WARNING - Baybayin form ᜁᜐ᜔ᜃᜓᜊᜒᜇᜓ appears 2 times
+2025-01-18 17:35:21,778 - WARNING - Baybayin form ᜁᜐ᜔ᜆᜎᜉᜆ appears 2 times
+2025-01-18 17:35:21,778 - WARNING - Baybayin form ᜁᜐ᜔ᜆᜒᜇᜒᜇ appears 3 times
+2025-01-18 17:35:21,778 - WARNING - Baybayin form ᜁᜐ᜔ᜉᜒᜈᜓᜐ appears 2 times
+2025-01-18 17:35:21,778 - WARNING - Baybayin form ᜁᜐ᜔ᜉᜒᜌ᜔ᜇ᜔ appears 2 times
+2025-01-18 17:35:21,778 - WARNING - Baybayin form ᜁᜐ᜔ᜎᜓᜊᜒᜈ᜔ᜌ appears 2 times
+2025-01-18 17:35:21,778 - WARNING - Baybayin form ᜂᜅ᜔ᜄ᜔ᜇᜒᜌ appears 2 times
+2025-01-18 17:35:21,779 - WARNING - Baybayin form ᜂᜆᜈᜒ appears 2 times
+2025-01-18 17:35:21,779 - WARNING - Baybayin form ᜂᜆ᜔ᜐᜓ appears 2 times
+2025-01-18 17:35:21,779 - WARNING - Baybayin form ᜃᜆᜓᜎᜓᜈᜈ᜔ appears 2 times
+2025-01-18 17:35:21,779 - WARNING - Baybayin form ᜃᜆ᜔ᜐᜃᜑᜈ᜔ appears 2 times
+2025-01-18 17:35:21,779 - WARNING - Baybayin form ᜃᜇᜒᜎ᜔ᜌᜓ appears 2 times
+2025-01-18 17:35:21,780 - WARNING - Baybayin form ᜃᜈ᜔ᜌᜒᜇᜓ appears 2 times
+2025-01-18 17:35:21,780 - WARNING - Baybayin form ᜃᜉᜄ᜔ ᜊᜒᜈᜆᜓ ᜃ ᜈᜅ᜔ ᜊᜆᜓ ᜵ ᜊᜆᜓᜑᜒᜈ᜔ ᜋᜓ ᜈᜅ᜔ ᜆᜒᜈᜉᜌ᜔ appears 2 times
+2025-01-18 17:35:21,780 - WARNING - Baybayin form ᜃᜊᜒᜎᜒᜅ᜔ appears 2 times
+2025-01-18 17:35:21,780 - WARNING - Baybayin form ᜃᜊᜓᜆᜒ appears 2 times
+2025-01-18 17:35:21,780 - WARNING - Baybayin form ᜃᜋᜒ appears 2 times
+2025-01-18 17:35:21,781 - WARNING - Baybayin form ᜃᜒᜆᜓᜅᜈ᜔ appears 2 times
+2025-01-18 17:35:21,781 - WARNING - Baybayin form ᜃᜒᜇᜒ appears 2 times
+2025-01-18 17:35:21,781 - WARNING - Baybayin form ᜃᜒᜌᜋᜓᜌ᜔ appears 2 times
+2025-01-18 17:35:21,781 - WARNING - Baybayin form ᜃᜒᜌᜓᜅ᜔ ᜑᜒ ᜑᜓᜏᜆ᜔ ᜆ᜔ᜐᜌ᜔ appears 2 times
+2025-01-18 17:35:21,781 - WARNING - Baybayin form ᜃᜒᜎᜒᜃᜒᜎᜒ appears 2 times
+2025-01-18 17:35:21,782 - WARNING - Baybayin form ᜃᜓ appears 3 times
+2025-01-18 17:35:21,782 - WARNING - Baybayin form ᜃᜓᜇ appears 2 times
+2025-01-18 17:35:21,782 - WARNING - Baybayin form ᜃᜓᜇ᜔ᜉᜓᜐ᜔ appears 2 times
+2025-01-18 17:35:21,782 - WARNING - Baybayin form ᜃᜓᜈᜒᜃ᜔ᜐ᜔ᜌᜓᜈ᜔ appears 2 times
+2025-01-18 17:35:21,782 - WARNING - Baybayin form ᜃᜓᜈ᜔ᜆ᜔ᜐᜊ appears 2 times
+2025-01-18 17:35:21,783 - WARNING - Baybayin form ᜃᜓᜈ᜔ᜆ᜔ᜐᜊᜑᜈ᜔ appears 2 times
+2025-01-18 17:35:21,783 - WARNING - Baybayin form ᜃᜓᜉᜓᜅ᜔ appears 2 times
+2025-01-18 17:35:21,783 - WARNING - Baybayin form ᜃᜓᜋᜒᜈ᜔ᜆᜓ appears 2 times
+2025-01-18 17:35:21,783 - WARNING - Baybayin form ᜃᜓᜋ᜔ᜉ᜔ᜇᜒᜈ᜔ᜐᜒᜊᜓ appears 2 times
+2025-01-18 17:35:21,783 - WARNING - Baybayin form ᜃᜓᜏ appears 3 times
+2025-01-18 17:35:21,784 - WARNING - Baybayin form ᜃᜓᜏᜓᜌ᜔ᜈ᜔ appears 2 times
+2025-01-18 17:35:21,784 - WARNING - Baybayin form ᜃ᜔ᜎᜒᜊᜒ appears 2 times
+2025-01-18 17:35:21,784 - WARNING - Baybayin form ᜄᜊ᜔ᜁ appears 2 times
+2025-01-18 17:35:21,784 - WARNING - Baybayin form ᜄᜒᜊᜇ appears 2 times
+2025-01-18 17:35:21,785 - WARNING - Baybayin form ᜆᜐ᜔ appears 2 times
+2025-01-18 17:35:21,785 - WARNING - Baybayin form ᜆᜒᜃ᜔ᜐᜓᜈ᜔ appears 2 times
+2025-01-18 17:35:21,785 - WARNING - Baybayin form ᜆᜒᜌᜓᜇᜒᜐᜒᜌ appears 2 times
+2025-01-18 17:35:21,785 - WARNING - Baybayin form ᜆᜒᜌᜓᜊᜒᜊᜓ appears 2 times
+2025-01-18 17:35:21,786 - WARNING - Baybayin form ᜆᜒᜑᜒᜇᜐ᜔ appears 2 times
+2025-01-18 17:35:21,786 - WARNING - Baybayin form ᜆᜓᜇᜎ᜔ᜊ appears 2 times
+2025-01-18 17:35:21,786 - WARNING - Baybayin form ᜆ᜔ᜇᜈ᜔ᜐ᜔ᜎᜐ᜔ᜌᜓᜈ᜔ appears 2 times
+2025-01-18 17:35:21,786 - WARNING - Baybayin form ᜆ᜔ᜐᜅ᜔ appears 2 times
+2025-01-18 17:35:21,786 - WARNING - Baybayin form ᜆ᜔ᜐᜋᜒ appears 2 times
+2025-01-18 17:35:21,786 - WARNING - Baybayin form ᜆ᜔ᜐᜒ appears 3 times
+2025-01-18 17:35:21,787 - WARNING - Baybayin form ᜆ᜔ᜐᜒᜃᜒᜈᜒᜈᜒ appears 2 times
+2025-01-18 17:35:21,787 - WARNING - Baybayin form ᜆ᜔ᜐᜒᜃᜓ appears 3 times
+2025-01-18 17:35:21,787 - WARNING - Baybayin form ᜆ᜔ᜐᜒᜃ᜔ᜊᜓᜌ᜔ appears 2 times
+2025-01-18 17:35:21,787 - WARNING - Baybayin form ᜆ᜔ᜐᜓ appears 2 times
+2025-01-18 17:35:21,787 - WARNING - Baybayin form ᜆ᜔ᜐᜓᜋᜃ appears 2 times
+2025-01-18 17:35:21,787 - WARNING - Baybayin form ᜆ᜔ᜐᜓᜎ appears 2 times
+2025-01-18 17:35:21,787 - WARNING - Baybayin form ᜇᜇᜀᜈ᜔ appears 2 times
+2025-01-18 17:35:21,788 - WARNING - Baybayin form ᜇᜒ appears 2 times
+2025-01-18 17:35:21,788 - WARNING - Baybayin form ᜇᜒᜃᜇ ᜐᜒᜐᜒᜈ᜔ᜆ appears 2 times
+2025-01-18 17:35:21,788 - WARNING - Baybayin form ᜇᜒᜃ᜔ᜐ᜔ᜌᜓᜈᜇ᜔ᜌᜓ appears 2 times
+2025-01-18 17:35:21,788 - WARNING - Baybayin form ᜇᜒᜈᜒ appears 2 times
+2025-01-18 17:35:21,788 - WARNING - Baybayin form ᜇᜒᜉ᜔ᜎᜌᜈ᜔ appears 2 times
+2025-01-18 17:35:21,788 - WARNING - Baybayin form ᜇᜒᜊ᜔ᜌᜓ appears 2 times
+2025-01-18 17:35:21,788 - WARNING - Baybayin form ᜇᜒᜊ᜔ᜌᜓᜑᜒᜈ᜔ appears 2 times
+2025-01-18 17:35:21,788 - WARNING - Baybayin form ᜇᜒᜋᜃᜓᜑ appears 2 times
+2025-01-18 17:35:21,789 - WARNING - Baybayin form ᜇᜒᜋᜉᜒᜎᜒᜐ᜔ appears 2 times
+2025-01-18 17:35:21,789 - WARNING - Baybayin form ᜇᜒᜐ᜔ᜃᜓᜋ᜔ᜉᜒᜌᜇᜓ appears 2 times
+2025-01-18 17:35:21,789 - WARNING - Baybayin form ᜇᜓᜃ᜔ᜆᜓᜇ appears 2 times
+2025-01-18 17:35:21,789 - WARNING - Baybayin form ᜇᜓᜇᜓᜃᜓᜆ᜔ appears 2 times
+2025-01-18 17:35:21,789 - WARNING - Baybayin form ᜇᜓᜇᜓᜅᜏ᜔ appears 2 times
+2025-01-18 17:35:21,789 - WARNING - Baybayin form ᜇᜓᜋᜈ appears 2 times
+2025-01-18 17:35:21,790 - WARNING - Baybayin form ᜇᜓᜋᜓᜇᜓᜃᜓᜆ᜔ appears 2 times
+2025-01-18 17:35:21,790 - WARNING - Baybayin form ᜇᜓᜋᜓᜇᜓᜅᜏ᜔ appears 2 times
+2025-01-18 17:35:21,790 - WARNING - Baybayin form ᜇᜓᜎᜒ appears 2 times
+2025-01-18 17:35:21,790 - WARNING - Baybayin form ᜇ᜔ᜌᜓᜋᜇ᜔ appears 2 times
+2025-01-18 17:35:21,790 - WARNING - Baybayin form ᜈᜃ᜔ᜉᜒᜎ᜔ appears 2 times
+2025-01-18 17:35:21,790 - WARNING - Baybayin form ᜈᜊᜓᜃᜓᜇᜓᜈᜓᜐᜓᜇ᜔ appears 2 times
+2025-01-18 17:35:21,791 - WARNING - Baybayin form ᜈᜌ᜔ᜆ᜔ ᜃ᜔ᜎᜊ᜔ appears 2 times
+2025-01-18 17:35:21,791 - WARNING - Baybayin form ᜈᜌ᜔ᜆ᜔ᜄᜏ᜔ᜈ᜔ appears 3 times
+2025-01-18 17:35:21,791 - WARNING - Baybayin form ᜈᜌ᜔ᜈ᜔ᜆᜒᜈ᜔ ᜃᜓᜉᜓᜅ᜔ᜃᜓᜉᜓᜅ᜔ appears 2 times
+2025-01-18 17:35:21,791 - WARNING - Baybayin form ᜈᜐᜇᜒᜆ᜔ appears 2 times
+2025-01-18 17:35:21,791 - WARNING - Baybayin form ᜈᜐᜈ᜔ appears 2 times
+2025-01-18 17:35:21,791 - WARNING - Baybayin form ᜈᜓᜂᜇ᜔ appears 2 times
+2025-01-18 17:35:21,792 - WARNING - Baybayin form ᜉᜇᜒᜈ᜔ᜌᜓ appears 2 times
+2025-01-18 17:35:21,792 - WARNING - Baybayin form ᜉᜇᜒᜎ᜔ᜌ appears 2 times
+2025-01-18 17:35:21,792 - WARNING - Baybayin form ᜉᜉᜎᜒᜆᜇᜑᜈ᜔ appears 2 times
+2025-01-18 17:35:21,792 - WARNING - Baybayin form ᜉᜎᜒᜆᜇᜑᜈ᜔ appears 2 times
+2025-01-18 17:35:21,793 - WARNING - Baybayin form ᜉᜏ᜔ᜈ᜔ᜆᜒᜌ᜔ᜈ᜔ appears 2 times
+2025-01-18 17:35:21,793 - WARNING - Baybayin form ᜉᜒᜈᜉᜎᜒᜆᜇᜑᜈ᜔ appears 2 times
+2025-01-18 17:35:21,793 - WARNING - Baybayin form ᜉᜒᜈᜎᜒᜆᜇᜑᜈ᜔ appears 2 times
+2025-01-18 17:35:21,793 - WARNING - Baybayin form ᜉᜒᜌᜌ appears 2 times
+2025-01-18 17:35:21,794 - WARNING - Baybayin form ᜉᜓᜆᜓᜊᜋ᜔ appears 2 times
+2025-01-18 17:35:21,794 - WARNING - Baybayin form ᜉ᜔ᜇᜓᜉᜌ᜔ᜎ᜔ appears 2 times
+2025-01-18 17:35:21,794 - WARNING - Baybayin form ᜉ᜔ᜐᜒ appears 2 times
+2025-01-18 17:35:21,794 - WARNING - Baybayin form ᜊᜆᜓᜊᜎᜈᜒ appears 2 times
+2025-01-18 17:35:21,794 - WARNING - Baybayin form ᜊᜈ᜔ᜇᜒᜇᜒᜆ appears 2 times
+2025-01-18 17:35:21,794 - WARNING - Baybayin form ᜊᜋᜓᜐ᜔ appears 2 times
+2025-01-18 17:35:21,794 - WARNING - Baybayin form ᜊᜎᜑᜇ᜔ᜌ appears 2 times
+2025-01-18 17:35:21,795 - WARNING - Baybayin form ᜊᜎᜒᜈ appears 2 times
+2025-01-18 17:35:21,795 - WARNING - Baybayin form ᜊᜎᜒᜐ᜔ᜆᜒᜇᜓᜐ᜔ appears 2 times
+2025-01-18 17:35:21,795 - WARNING - Baybayin form ᜊᜒ appears 2 times
+2025-01-18 17:35:21,795 - WARNING - Baybayin form ᜊᜒᜃᜒ appears 4 times
+2025-01-18 17:35:21,795 - WARNING - Baybayin form ᜊᜒᜆᜎᜒᜐ᜔ appears 2 times
+2025-01-18 17:35:21,795 - WARNING - Baybayin form ᜊᜒᜆᜓᜈ᜔ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜒᜇ᜔ᜆᜓᜐ᜔ᜌᜓ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜒᜇ᜔ᜌᜓᜃᜒ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜒᜇ᜔ᜐᜒᜈ᜔ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜒᜈᜓᜌ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜒᜋ᜔ᜊᜒ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜒᜐ᜔ᜃᜓᜈ᜔ᜇᜒ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜓᜆᜒᜑ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜓᜆᜓᜋᜒᜐ appears 2 times
+2025-01-18 17:35:21,796 - WARNING - Baybayin form ᜊᜓᜇᜒᜎ᜔ ᜉᜌ᜔ᜆ᜔ appears 2 times
+2025-01-18 17:35:21,797 - WARNING - Baybayin form ᜊᜓᜎ᜔ᜆ appears 2 times
+2025-01-18 17:35:21,797 - WARNING - Baybayin form ᜋᜃᜇᜁᜄ᜔ appears 2 times
+2025-01-18 17:35:21,797 - WARNING - Baybayin form ᜋᜃᜎᜒᜈ᜔ᜆᜎ᜔ appears 2 times
+2025-01-18 17:35:21,797 - WARNING - Baybayin form ᜋᜃᜓᜈ᜔ᜆᜒᜈ᜔ᜆᜓ appears 2 times
+2025-01-18 17:35:21,797 - WARNING - Baybayin form ᜋᜃ᜔ᜇᜓ appears 3 times
+2025-01-18 17:35:21,798 - WARNING - Baybayin form ᜋᜄ᜔ᜆᜓᜎᜓᜄ᜔ᜆᜓᜎᜓᜄᜈ᜔ appears 2 times
+2025-01-18 17:35:21,798 - WARNING - Baybayin form ᜋᜄ᜔ᜆ᜔ᜇᜌ᜔ᜐᜒᜃᜒᜎ᜔ appears 2 times
+2025-01-18 17:35:21,798 - WARNING - Baybayin form ᜋᜄ᜔ᜐᜓᜋ᜔ᜊᜓᜎ᜔ appears 2 times
+2025-01-18 17:35:21,798 - WARNING - Baybayin form ᜋᜌᜓᜎ᜔ᜇᜓᜋᜓ appears 2 times
+2025-01-18 17:35:21,798 - WARNING - Baybayin form ᜋᜎᜒᜃ᜔ᜇᜒᜋ᜔ appears 2 times
+2025-01-18 17:35:21,798 - WARNING - Baybayin form ᜋᜎᜒᜃ᜔ᜐᜒ appears 3 times
+2025-01-18 17:35:21,799 - WARNING - Baybayin form ᜋᜎᜒᜑᜈ᜔ appears 2 times
+2025-01-18 17:35:21,799 - WARNING - Baybayin form ᜋᜎ᜔ᜌᜇᜒ appears 2 times
+2025-01-18 17:35:21,799 - WARNING - Baybayin form ᜋᜐᜅ᜔ᜃᜌ᜔ appears 2 times
+2025-01-18 17:35:21,799 - WARNING - Baybayin form ᜋᜒᜆᜒᜅ᜔ ᜇᜒ ᜀᜊᜈ᜔ᜐᜒ appears 2 times
+2025-01-18 17:35:21,799 - WARNING - Baybayin form ᜋᜓᜆ᜔ᜐᜅ᜔ᜋᜓᜆ᜔ᜐᜅ᜔ appears 2 times
+2025-01-18 17:35:21,799 - WARNING - Baybayin form ᜋᜓᜋᜓ appears 2 times
+2025-01-18 17:35:21,799 - WARNING - Baybayin form ᜋᜓᜎᜒᜈᜒᜎ᜔ᜌᜓ appears 2 times
+2025-01-18 17:35:21,800 - WARNING - Baybayin form ᜌᜓᜈ᜔ appears 2 times
+2025-01-18 17:35:21,800 - WARNING - Baybayin form ᜌᜓᜐᜓᜈ᜔ appears 2 times
+2025-01-18 17:35:21,800 - WARNING - Baybayin form ᜎᜃ᜔ᜐᜋᜈ appears 2 times
+2025-01-18 17:35:21,800 - WARNING - Baybayin form ᜎᜏ᜔ᜇ᜔ᜁᜐ᜔ᜉᜒᜃᜒᜇ᜔ appears 2 times
+2025-01-18 17:35:21,800 - WARNING - Baybayin form ᜎᜐᜒᜅ᜔ᜄᜒᜇ appears 2 times
+2025-01-18 17:35:21,800 - WARNING - Baybayin form ᜎᜒᜌᜓᜅ᜔ appears 2 times
+2025-01-18 17:35:21,800 - WARNING - Baybayin form ᜎᜓᜊᜏ᜔ appears 2 times
+2025-01-18 17:35:21,800 - WARNING - Baybayin form ᜎᜓᜏᜎ᜔ᜑᜆᜒ appears 2 times
+2025-01-18 17:35:21,801 - WARNING - Baybayin form ᜏᜒᜎᜒ appears 2 times
+2025-01-18 17:35:21,801 - WARNING - Baybayin form ᜐᜅ᜔ appears 2 times
+2025-01-18 17:35:21,801 - WARNING - Baybayin form ᜐᜅ᜔ᜃᜒ appears 2 times
+2025-01-18 17:35:21,801 - WARNING - Baybayin form ᜐᜌ᜔ᜇ᜔ᜎᜌ᜔ᜈ᜔ appears 2 times
+2025-01-18 17:35:21,801 - WARNING - Baybayin form ᜐᜒ appears 3 times
+2025-01-18 17:35:21,801 - WARNING - Baybayin form ᜐᜒᜅ᜔ᜃᜓ appears 2 times
+2025-01-18 17:35:21,801 - WARNING - Baybayin form ᜐᜒᜈᜒᜉᜒᜆᜒ appears 2 times
+2025-01-18 17:35:21,801 - WARNING - Baybayin form ᜐᜒᜈ᜔ᜆᜒᜈᜓ appears 2 times
+2025-01-18 17:35:21,802 - WARNING - Baybayin form ᜐᜒᜊ᜔ᜏᜈ appears 2 times
+2025-01-18 17:35:21,802 - WARNING - Baybayin form ᜐᜒᜌ appears 2 times
+2025-01-18 17:35:21,802 - WARNING - Baybayin form ᜐᜒᜐᜓᜐ᜔ appears 2 times
+2025-01-18 17:35:21,802 - WARNING - Baybayin form ᜐᜓᜂᜊᜈ᜔ appears 2 times
+2025-01-18 17:35:21,802 - WARNING - Baybayin form ᜐᜓᜊᜒᜃ᜔ appears 2 times
+2025-01-18 17:35:21,802 - WARNING - Baybayin form ᜐ᜔ᜌᜏ᜔ appears 4 times
+2025-01-18 17:35:21,802 - WARNING - Baybayin form ᜐ᜔ᜌᜒᜊᜓᜎᜒ appears 2 times
+2025-01-18 17:35:21,803 - WARNING - Baybayin form ᜐ᜔ᜌᜓᜆ appears 2 times
+2025-01-18 17:35:21,803 - WARNING - Baybayin form ᜑᜎᜑᜎ appears 2 times
+2025-01-18 17:35:21,803 - WARNING - Baybayin form ᜑᜏ᜔ appears 2 times
+2025-01-18 17:35:21,803 - WARNING - Baybayin form ᜑᜒᜇᜓᜈ᜔ appears 2 times
+2025-01-18 17:35:21,803 - WARNING - Baybayin form ᜑᜒᜌᜓᜇ᜔ᜑᜒᜌ appears 2 times
+2025-01-18 17:35:21,804 - WARNING - Baybayin form ᜑᜓᜅ᜔ appears 2 times
+2025-01-18 17:35:21,804 - WARNING - Baybayin form ᜑᜓᜏᜈ appears 2 times
+2025-01-18 17:35:21,809 - INFO - Merging duplicate Baybayin entries: 109166 and 110983
+2025-01-18 17:35:21,903 - INFO - Successfully merged entries for Baybayin form ᜀᜂᜈᜓ
+2025-01-18 17:35:21,903 - INFO - Merging duplicate Baybayin entries: 111580 and 111581
+2025-01-18 17:35:22,044 - INFO - Successfully merged entries for Baybayin form ᜀᜃᜓᜇ᜔ᜇᜒᜌᜓᜈᜒᜐ᜔ᜆ
+2025-01-18 17:35:22,045 - INFO - Merging duplicate Baybayin entries: 111578 and 111579
+2025-01-18 17:35:22,145 - INFO - Successfully merged entries for Baybayin form ᜀᜃᜓᜇ᜔ᜇ᜔ᜌᜓᜈᜒᜐ᜔ᜆ
+2025-01-18 17:35:22,145 - INFO - Merging duplicate Baybayin entries: 111574 and 111576
+2025-01-18 17:35:22,255 - INFO - Successfully merged entries for Baybayin form ᜀᜃᜓᜇ᜔ᜇ᜔ᜌᜓᜈ᜔
+2025-01-18 17:35:22,256 - INFO - Merging duplicate Baybayin entries: 111377 and 111378
+2025-01-18 17:35:22,349 - INFO - Successfully merged entries for Baybayin form ᜀᜃ᜔ᜐ᜔ᜌᜓᜈᜒᜐ᜔ᜆ
+2025-01-18 17:35:22,350 - INFO - Merging duplicate Baybayin entries: 103185 and 104005
+2025-01-18 17:35:22,416 - INFO - Successfully merged entries for Baybayin form ᜀᜄᜓᜑᜓ
+2025-01-18 17:35:22,417 - INFO - Merging duplicate Baybayin entries: 101794 and 108386
+2025-01-18 17:35:22,480 - INFO - Successfully merged entries for Baybayin form ᜀᜆ᜔ᜇᜒᜊᜒᜇ
+2025-01-18 17:35:22,481 - INFO - Merging duplicate Baybayin entries: 102824 and 103038
+2025-01-18 17:35:22,544 - INFO - Successfully merged entries for Baybayin form ᜀᜇ᜔ᜌᜓᜎ
+2025-01-18 17:35:22,544 - INFO - Merging duplicate Baybayin entries: 95419 and 97318
+2025-01-18 17:35:22,609 - INFO - Successfully merged entries for Baybayin form ᜀᜈᜐ᜔ᜆᜐ᜔ᜌ
+2025-01-18 17:35:22,610 - INFO - Merging duplicate Baybayin entries: 98870 and 99985
+2025-01-18 17:35:22,675 - INFO - Successfully merged entries for Baybayin form ᜀᜈ᜔ᜆ᜔ᜐ
+2025-01-18 17:35:22,675 - INFO - Merging duplicate Baybayin entries: 100090 and 108406
+2025-01-18 17:35:22,736 - INFO - Successfully merged entries for Baybayin form ᜀᜊᜒᜎᜏ᜔
+2025-01-18 17:35:22,736 - INFO - Merging duplicate Baybayin entries: 98162 and 111229
+2025-01-18 17:35:22,820 - INFO - Successfully merged entries for Baybayin form ᜀᜊᜓᜎᜒ
+2025-01-18 17:35:22,821 - INFO - Merging duplicate Baybayin entries: 110873 and 110936
+2025-01-18 17:35:22,978 - INFO - Successfully merged entries for Baybayin form ᜀᜎ ᜁ
+2025-01-18 17:35:22,978 - INFO - Merging duplicate Baybayin entries: 111170 and 111397
+2025-01-18 17:35:23,119 - INFO - Successfully merged entries for Baybayin form ᜀᜎᜑᜒᜊᜒ
+2025-01-18 17:35:23,119 - INFO - Merging duplicate Baybayin entries: 110879 and 110882
+2025-01-18 17:35:23,241 - INFO - Successfully merged entries for Baybayin form ᜀᜎᜒᜊᜓᜆ᜔ᜇᜈ᜔
+2025-01-18 17:35:23,242 - INFO - Merging duplicate Baybayin entries: 99442 and 103202
+2025-01-18 17:35:23,376 - INFO - Successfully merged entries for Baybayin form ᜀᜏ᜔ᜐ᜔ᜆ᜔ᜇᜎ᜔ᜌ
+2025-01-18 17:35:23,376 - INFO - Merging duplicate Baybayin entries: 107090 and 107905
+2025-01-18 17:35:23,479 - INFO - Successfully merged entries for Baybayin form ᜀᜏ᜔ᜐ᜔ᜆ᜔ᜇᜒᜌ
+2025-01-18 17:35:23,480 - INFO - Merging duplicate Baybayin entries: 111634 and 111636
+2025-01-18 17:35:23,600 - INFO - Successfully merged entries for Baybayin form ᜀᜏ᜔ᜐ᜔ᜆ᜔ᜇᜒᜌᜂᜅ᜔ᜄ᜔ᜇᜒᜌ
+2025-01-18 17:35:23,601 - INFO - Merging duplicate Baybayin entries: 100107 and 111174
+2025-01-18 17:35:23,734 - INFO - Successfully merged entries for Baybayin form ᜀᜐᜁᜐ᜔
+2025-01-18 17:35:23,735 - INFO - Merging duplicate Baybayin entries: 105867 and 111429
+2025-01-18 17:35:23,859 - INFO - Successfully merged entries for Baybayin form ᜀᜐᜌ᜔ᜈ᜔ᜋᜒᜈ᜔ᜆ᜔
+2025-01-18 17:35:23,859 - INFO - Merging duplicate Baybayin entries: 106146 and 111176
+2025-01-18 17:35:23,995 - INFO - Successfully merged entries for Baybayin form ᜀᜐᜒᜁᜐ᜔
+2025-01-18 17:35:23,996 - INFO - Merging duplicate Baybayin entries: 103068 and 103198
+2025-01-18 17:35:24,094 - INFO - Successfully merged entries for Baybayin form ᜁᜆᜓᜇᜎ᜔ᜇᜒ
+2025-01-18 17:35:24,095 - INFO - Merging duplicate Baybayin entries: 103197 and 104950
+2025-01-18 17:35:24,220 - INFO - Successfully merged entries for Baybayin form ᜁᜈ᜔ᜌᜒᜄᜒᜐ᜔
+2025-01-18 17:35:24,221 - INFO - Merging duplicate Baybayin entries: 105210 and 105229
+2025-01-18 17:35:24,342 - INFO - Successfully merged entries for Baybayin form ᜁᜉᜓᜁᜉᜓ
+2025-01-18 17:35:24,342 - INFO - Merging duplicate Baybayin entries: 110090 and 110091
+2025-01-18 17:35:24,474 - INFO - Successfully merged entries for Baybayin form ᜁᜊᜅ᜔ᜐᜒᜎ᜔ᜌᜓ
+2025-01-18 17:35:24,474 - INFO - Merging duplicate Baybayin entries: 103675 and 104359
+2025-01-18 17:35:24,612 - INFO - Successfully merged entries for Baybayin form ᜁᜊᜈ᜔ᜌᜒᜐ᜔
+2025-01-18 17:35:24,612 - INFO - Merging duplicate Baybayin entries: 97695 and 110002
+2025-01-18 17:35:24,726 - INFO - Successfully merged entries for Baybayin form ᜁᜎᜒᜐᜒ
+2025-01-18 17:35:24,727 - INFO - Merging duplicate Baybayin entries: 110541 and 110639
+2025-01-18 17:35:24,829 - INFO - Successfully merged entries for Baybayin form ᜁᜎᜒᜑᜈ᜔
+2025-01-18 17:35:24,829 - INFO - Merging duplicate Baybayin entries: 106312 and 106313
+2025-01-18 17:35:24,963 - INFO - Successfully merged entries for Baybayin form ᜁᜐ᜔ᜃᜓᜊᜒᜇᜓ
+2025-01-18 17:35:24,963 - INFO - Merging duplicate Baybayin entries: 110410 and 111211
+2025-01-18 17:35:25,096 - INFO - Successfully merged entries for Baybayin form ᜁᜐ᜔ᜆᜎᜉᜆ
+2025-01-18 17:35:25,096 - INFO - Merging duplicate Baybayin entries: 111466 and 111471, 111472
+2025-01-18 17:35:25,313 - INFO - Successfully merged entries for Baybayin form ᜁᜐ᜔ᜆᜒᜇᜒᜇ
+2025-01-18 17:35:25,313 - INFO - Merging duplicate Baybayin entries: 99830 and 100790
+2025-01-18 17:35:25,434 - INFO - Successfully merged entries for Baybayin form ᜁᜐ᜔ᜉᜒᜈᜓᜐ
+2025-01-18 17:35:25,435 - INFO - Merging duplicate Baybayin entries: 111373 and 111379
+2025-01-18 17:35:25,575 - INFO - Successfully merged entries for Baybayin form ᜁᜐ᜔ᜉᜒᜌ᜔ᜇ᜔
+2025-01-18 17:35:25,575 - INFO - Merging duplicate Baybayin entries: 107096 and 107105
+2025-01-18 17:35:25,720 - INFO - Successfully merged entries for Baybayin form ᜁᜐ᜔ᜎᜓᜊᜒᜈ᜔ᜌ
+2025-01-18 17:35:25,720 - INFO - Merging duplicate Baybayin entries: 102482 and 108873
+2025-01-18 17:35:25,865 - INFO - Successfully merged entries for Baybayin form ᜂᜅ᜔ᜄ᜔ᜇᜒᜌ
+2025-01-18 17:35:25,865 - INFO - Merging duplicate Baybayin entries: 106493 and 106494
+2025-01-18 17:35:26,000 - INFO - Successfully merged entries for Baybayin form ᜂᜆᜈᜒ
+2025-01-18 17:35:26,001 - INFO - Merging duplicate Baybayin entries: 95050 and 108595
+2025-01-18 17:35:26,111 - INFO - Successfully merged entries for Baybayin form ᜂᜆ᜔ᜐᜓ
+2025-01-18 17:35:26,112 - INFO - Merging duplicate Baybayin entries: 109359 and 109926
+2025-01-18 17:35:26,259 - INFO - Successfully merged entries for Baybayin form ᜃᜆᜓᜎᜓᜈᜈ᜔
+2025-01-18 17:35:26,259 - INFO - Merging duplicate Baybayin entries: 106175 and 108937
+2025-01-18 17:35:26,404 - INFO - Successfully merged entries for Baybayin form ᜃᜆ᜔ᜐᜃᜑᜈ᜔
+2025-01-18 17:35:26,405 - INFO - Merging duplicate Baybayin entries: 100878 and 102849
+2025-01-18 17:35:26,541 - INFO - Successfully merged entries for Baybayin form ᜃᜇᜒᜎ᜔ᜌᜓ
+2025-01-18 17:35:26,542 - INFO - Merging duplicate Baybayin entries: 106344 and 106345
+2025-01-18 17:35:26,659 - INFO - Successfully merged entries for Baybayin form ᜃᜈ᜔ᜌᜒᜇᜓ
+2025-01-18 17:35:26,660 - INFO - Merging duplicate Baybayin entries: 110251 and 110713
+2025-01-18 17:35:26,772 - INFO - Successfully merged entries for Baybayin form ᜃᜉᜄ᜔ ᜊᜒᜈᜆᜓ ᜃ ᜈᜅ᜔ ᜊᜆᜓ ᜵ ᜊᜆᜓᜑᜒᜈ᜔ ᜋᜓ ᜈᜅ᜔ ᜆᜒᜈᜉᜌ᜔
+2025-01-18 17:35:26,773 - INFO - Merging duplicate Baybayin entries: 104601 and 104603
+2025-01-18 17:35:26,915 - INFO - Successfully merged entries for Baybayin form ᜃᜊᜒᜎᜒᜅ᜔
+2025-01-18 17:35:26,915 - INFO - Merging duplicate Baybayin entries: 99254 and 108197
+2025-01-18 17:35:27,059 - INFO - Successfully merged entries for Baybayin form ᜃᜊᜓᜆᜒ
+2025-01-18 17:35:27,059 - INFO - Merging duplicate Baybayin entries: 95865 and 106013
+2025-01-18 17:35:27,196 - INFO - Successfully merged entries for Baybayin form ᜃᜋᜒ
+2025-01-18 17:35:27,197 - INFO - Merging duplicate Baybayin entries: 106915 and 111102
+2025-01-18 17:35:27,305 - INFO - Successfully merged entries for Baybayin form ᜃᜒᜆᜓᜅᜈ᜔
+2025-01-18 17:35:27,306 - INFO - Merging duplicate Baybayin entries: 95153 and 96761
+2025-01-18 17:35:27,407 - INFO - Successfully merged entries for Baybayin form ᜃᜒᜇᜒ
+2025-01-18 17:35:27,408 - INFO - Merging duplicate Baybayin entries: 107653 and 111028
+2025-01-18 17:35:27,543 - INFO - Successfully merged entries for Baybayin form ᜃᜒᜌᜋᜓᜌ᜔
+2025-01-18 17:35:27,544 - INFO - Merging duplicate Baybayin entries: 109908 and 109954
+2025-01-18 17:35:27,675 - INFO - Successfully merged entries for Baybayin form ᜃᜒᜌᜓᜅ᜔ ᜑᜒ ᜑᜓᜏᜆ᜔ ᜆ᜔ᜐᜌ᜔
+2025-01-18 17:35:27,675 - INFO - Merging duplicate Baybayin entries: 108259 and 109333
+2025-01-18 17:35:27,825 - INFO - Successfully merged entries for Baybayin form ᜃᜒᜎᜒᜃᜒᜎᜒ
+2025-01-18 17:35:27,825 - INFO - Merging duplicate Baybayin entries: 99145 and 101432, 102200
+2025-01-18 17:35:27,980 - INFO - Successfully merged entries for Baybayin form ᜃᜓ
+2025-01-18 17:35:27,981 - INFO - Merging duplicate Baybayin entries: 94973 and 97496
+2025-01-18 17:35:28,117 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜇ
+2025-01-18 17:35:28,117 - INFO - Merging duplicate Baybayin entries: 102842 and 104775
+2025-01-18 17:35:28,256 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜇ᜔ᜉᜓᜐ᜔
+2025-01-18 17:35:28,256 - INFO - Merging duplicate Baybayin entries: 105320 and 108247
+2025-01-18 17:35:28,379 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜈᜒᜃ᜔ᜐ᜔ᜌᜓᜈ᜔
+2025-01-18 17:35:28,379 - INFO - Merging duplicate Baybayin entries: 109695 and 109696
+2025-01-18 17:35:28,520 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜈ᜔ᜆ᜔ᜐᜊ
+2025-01-18 17:35:28,520 - INFO - Merging duplicate Baybayin entries: 109697 and 109698
+2025-01-18 17:35:28,624 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜈ᜔ᜆ᜔ᜐᜊᜑᜈ᜔
+2025-01-18 17:35:28,624 - INFO - Merging duplicate Baybayin entries: 100927 and 109679
+2025-01-18 17:35:28,743 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜉᜓᜅ᜔
+2025-01-18 17:35:28,744 - INFO - Merging duplicate Baybayin entries: 98034 and 109998
+2025-01-18 17:35:28,867 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜋᜒᜈ᜔ᜆᜓ
+2025-01-18 17:35:28,868 - INFO - Merging duplicate Baybayin entries: 111829 and 111831
+2025-01-18 17:35:28,993 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜋ᜔ᜉ᜔ᜇᜒᜈ᜔ᜐᜒᜊᜓ
+2025-01-18 17:35:28,994 - INFO - Merging duplicate Baybayin entries: 99136 and 99166, 102211
+2025-01-18 17:35:29,200 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜏ
+2025-01-18 17:35:29,200 - INFO - Merging duplicate Baybayin entries: 111692 and 111696
+2025-01-18 17:35:29,293 - INFO - Successfully merged entries for Baybayin form ᜃᜓᜏᜓᜌ᜔ᜈ᜔
+2025-01-18 17:35:29,293 - INFO - Merging duplicate Baybayin entries: 99542 and 111765
+2025-01-18 17:35:29,417 - INFO - Successfully merged entries for Baybayin form ᜃ᜔ᜎᜒᜊᜒ
+2025-01-18 17:35:29,418 - INFO - Merging duplicate Baybayin entries: 98755 and 104180
+2025-01-18 17:35:29,555 - INFO - Successfully merged entries for Baybayin form ᜄᜊ᜔ᜁ
+2025-01-18 17:35:29,555 - INFO - Merging duplicate Baybayin entries: 102744 and 102913
+2025-01-18 17:35:29,674 - INFO - Successfully merged entries for Baybayin form ᜄᜒᜊᜇ
+2025-01-18 17:35:29,674 - INFO - Merging duplicate Baybayin entries: 95300 and 111619
+2025-01-18 17:35:29,809 - INFO - Successfully merged entries for Baybayin form ᜆᜐ᜔
+2025-01-18 17:35:29,810 - INFO - Merging duplicate Baybayin entries: 103107 and 104649
+2025-01-18 17:35:29,918 - INFO - Successfully merged entries for Baybayin form ᜆᜒᜃ᜔ᜐᜓᜈ᜔
+2025-01-18 17:35:29,918 - INFO - Merging duplicate Baybayin entries: 109502 and 109504
+2025-01-18 17:35:30,046 - INFO - Successfully merged entries for Baybayin form ᜆᜒᜌᜓᜇᜒᜐᜒᜌ
+2025-01-18 17:35:30,046 - INFO - Merging duplicate Baybayin entries: 101021 and 102261
+2025-01-18 17:35:30,189 - INFO - Successfully merged entries for Baybayin form ᜆᜒᜌᜓᜊᜒᜊᜓ
+2025-01-18 17:35:30,190 - INFO - Merging duplicate Baybayin entries: 109265 and 109266
+2025-01-18 17:35:30,328 - INFO - Successfully merged entries for Baybayin form ᜆᜒᜑᜒᜇᜐ᜔
+2025-01-18 17:35:30,328 - INFO - Merging duplicate Baybayin entries: 103015 and 105772
+2025-01-18 17:35:30,473 - INFO - Successfully merged entries for Baybayin form ᜆᜓᜇᜎ᜔ᜊ
+2025-01-18 17:35:30,473 - INFO - Merging duplicate Baybayin entries: 100991 and 105324
+2025-01-18 17:35:30,578 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜇᜈ᜔ᜐ᜔ᜎᜐ᜔ᜌᜓᜈ᜔
+2025-01-18 17:35:30,579 - INFO - Merging duplicate Baybayin entries: 100248 and 109899
+2025-01-18 17:35:30,707 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜅ᜔
+2025-01-18 17:35:30,707 - INFO - Merging duplicate Baybayin entries: 110729 and 110730
+2025-01-18 17:35:30,844 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜋᜒ
+2025-01-18 17:35:30,845 - INFO - Merging duplicate Baybayin entries: 94594 and 95053, 95675
+2025-01-18 17:35:31,042 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜒ
+2025-01-18 17:35:31,043 - INFO - Merging duplicate Baybayin entries: 106793 and 111294
+2025-01-18 17:35:31,184 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜒᜃᜒᜈᜒᜈᜒ
+2025-01-18 17:35:31,185 - INFO - Merging duplicate Baybayin entries: 96014 and 99817, 107103
+2025-01-18 17:35:31,348 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜒᜃᜓ
+2025-01-18 17:35:31,348 - INFO - Merging duplicate Baybayin entries: 106059 and 111485
+2025-01-18 17:35:31,484 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜒᜃ᜔ᜊᜓᜌ᜔
+2025-01-18 17:35:31,484 - INFO - Merging duplicate Baybayin entries: 98788 and 102790
+2025-01-18 17:35:31,608 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜓ
+2025-01-18 17:35:31,609 - INFO - Merging duplicate Baybayin entries: 106174 and 108939
+2025-01-18 17:35:31,735 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜓᜋᜃ
+2025-01-18 17:35:31,735 - INFO - Merging duplicate Baybayin entries: 95775 and 98950
+2025-01-18 17:35:31,864 - INFO - Successfully merged entries for Baybayin form ᜆ᜔ᜐᜓᜎ
+2025-01-18 17:35:31,864 - INFO - Merging duplicate Baybayin entries: 111409 and 111411
+2025-01-18 17:35:31,980 - INFO - Successfully merged entries for Baybayin form ᜇᜇᜀᜈ᜔
+2025-01-18 17:35:31,980 - INFO - Merging duplicate Baybayin entries: 94538 and 95350
+2025-01-18 17:35:32,103 - INFO - Successfully merged entries for Baybayin form ᜇᜒ
+2025-01-18 17:35:32,104 - INFO - Merging duplicate Baybayin entries: 110229 and 110230
+2025-01-18 17:35:32,210 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜃᜇ ᜐᜒᜐᜒᜈ᜔ᜆ
+2025-01-18 17:35:32,211 - INFO - Merging duplicate Baybayin entries: 105525 and 107298
+2025-01-18 17:35:32,330 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜃ᜔ᜐ᜔ᜌᜓᜈᜇ᜔ᜌᜓ
+2025-01-18 17:35:32,331 - INFO - Merging duplicate Baybayin entries: 97723 and 99922
+2025-01-18 17:35:32,454 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜈᜒ
+2025-01-18 17:35:32,455 - INFO - Merging duplicate Baybayin entries: 108605 and 110674
+2025-01-18 17:35:32,550 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜉ᜔ᜎᜌᜈ᜔
+2025-01-18 17:35:32,551 - INFO - Merging duplicate Baybayin entries: 106413 and 108868
+2025-01-18 17:35:32,672 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜊ᜔ᜌᜓ
+2025-01-18 17:35:32,673 - INFO - Merging duplicate Baybayin entries: 106415 and 108872
+2025-01-18 17:35:32,794 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜊ᜔ᜌᜓᜑᜒᜈ᜔
+2025-01-18 17:35:32,795 - INFO - Merging duplicate Baybayin entries: 104060 and 109473
+2025-01-18 17:35:32,910 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜋᜃᜓᜑ
+2025-01-18 17:35:32,911 - INFO - Merging duplicate Baybayin entries: 104490 and 111625
+2025-01-18 17:35:33,039 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜋᜉᜒᜎᜒᜐ᜔
+2025-01-18 17:35:33,040 - INFO - Merging duplicate Baybayin entries: 108094 and 110573
+2025-01-18 17:35:33,142 - INFO - Successfully merged entries for Baybayin form ᜇᜒᜐ᜔ᜃᜓᜋ᜔ᜉᜒᜌᜇᜓ
+2025-01-18 17:35:33,143 - INFO - Merging duplicate Baybayin entries: 99338 and 100992
+2025-01-18 17:35:33,251 - INFO - Successfully merged entries for Baybayin form ᜇᜓᜃ᜔ᜆᜓᜇ
+2025-01-18 17:35:33,251 - INFO - Merging duplicate Baybayin entries: 108163 and 110834
+2025-01-18 17:35:33,373 - INFO - Successfully merged entries for Baybayin form ᜇᜓᜇᜓᜃᜓᜆ᜔
+2025-01-18 17:35:33,374 - INFO - Merging duplicate Baybayin entries: 107574 and 110787
+2025-01-18 17:35:33,512 - INFO - Successfully merged entries for Baybayin form ᜇᜓᜇᜓᜅᜏ᜔
+2025-01-18 17:35:33,512 - INFO - Merging duplicate Baybayin entries: 98029 and 109555
+2025-01-18 17:35:33,630 - INFO - Successfully merged entries for Baybayin form ᜇᜓᜋᜈ
+2025-01-18 17:35:33,630 - INFO - Merging duplicate Baybayin entries: 108173 and 110835
+2025-01-18 17:35:33,763 - INFO - Successfully merged entries for Baybayin form ᜇᜓᜋᜓᜇᜓᜃᜓᜆ᜔
+2025-01-18 17:35:33,764 - INFO - Merging duplicate Baybayin entries: 107573 and 110788
+2025-01-18 17:35:33,847 - INFO - Successfully merged entries for Baybayin form ᜇᜓᜋᜓᜇᜓᜅᜏ᜔
+2025-01-18 17:35:33,847 - INFO - Merging duplicate Baybayin entries: 106030 and 106783
+2025-01-18 17:35:33,960 - INFO - Successfully merged entries for Baybayin form ᜇᜓᜎᜒ
+2025-01-18 17:35:33,960 - INFO - Merging duplicate Baybayin entries: 105522 and 109453
+2025-01-18 17:35:34,078 - INFO - Successfully merged entries for Baybayin form ᜇ᜔ᜌᜓᜋᜇ᜔
+2025-01-18 17:35:34,078 - INFO - Merging duplicate Baybayin entries: 104513 and 104514
+2025-01-18 17:35:34,200 - INFO - Successfully merged entries for Baybayin form ᜈᜃ᜔ᜉᜒᜎ᜔
+2025-01-18 17:35:34,201 - INFO - Merging duplicate Baybayin entries: 97481 and 111315
+2025-01-18 17:35:34,322 - INFO - Successfully merged entries for Baybayin form ᜈᜊᜓᜃᜓᜇᜓᜈᜓᜐᜓᜇ᜔
+2025-01-18 17:35:34,322 - INFO - Merging duplicate Baybayin entries: 102440 and 111420
+2025-01-18 17:35:34,431 - INFO - Successfully merged entries for Baybayin form ᜈᜌ᜔ᜆ᜔ ᜃ᜔ᜎᜊ᜔
+2025-01-18 17:35:34,431 - INFO - Merging duplicate Baybayin entries: 111422 and 111425, 111426
+2025-01-18 17:35:34,594 - INFO - Successfully merged entries for Baybayin form ᜈᜌ᜔ᜆ᜔ᜄᜏ᜔ᜈ᜔
+2025-01-18 17:35:34,594 - INFO - Merging duplicate Baybayin entries: 109675 and 110875
+2025-01-18 17:35:34,707 - INFO - Successfully merged entries for Baybayin form ᜈᜌ᜔ᜈ᜔ᜆᜒᜈ᜔ ᜃᜓᜉᜓᜅ᜔ᜃᜓᜉᜓᜅ᜔
+2025-01-18 17:35:34,708 - INFO - Merging duplicate Baybayin entries: 98035 and 105796
+2025-01-18 17:35:34,836 - INFO - Successfully merged entries for Baybayin form ᜈᜐᜇᜒᜆ᜔
+2025-01-18 17:35:34,837 - INFO - Merging duplicate Baybayin entries: 109081 and 111512
+2025-01-18 17:35:34,959 - INFO - Successfully merged entries for Baybayin form ᜈᜐᜈ᜔
+2025-01-18 17:35:34,960 - INFO - Merging duplicate Baybayin entries: 99540 and 108774
+2025-01-18 17:35:35,071 - INFO - Successfully merged entries for Baybayin form ᜈᜓᜂᜇ᜔
+2025-01-18 17:35:35,072 - INFO - Merging duplicate Baybayin entries: 104763 and 105039
+2025-01-18 17:35:35,167 - INFO - Successfully merged entries for Baybayin form ᜉᜇᜒᜈ᜔ᜌᜓ
+2025-01-18 17:35:35,168 - INFO - Merging duplicate Baybayin entries: 100890 and 104473
+2025-01-18 17:35:35,287 - INFO - Successfully merged entries for Baybayin form ᜉᜇᜒᜎ᜔ᜌ
+2025-01-18 17:35:35,288 - INFO - Merging duplicate Baybayin entries: 107476 and 110840
+2025-01-18 17:35:35,413 - INFO - Successfully merged entries for Baybayin form ᜉᜉᜎᜒᜆᜇᜑᜈ᜔
+2025-01-18 17:35:35,414 - INFO - Merging duplicate Baybayin entries: 106859 and 109862
+2025-01-18 17:35:35,542 - INFO - Successfully merged entries for Baybayin form ᜉᜎᜒᜆᜇᜑᜈ᜔
+2025-01-18 17:35:35,543 - INFO - Merging duplicate Baybayin entries: 111708 and 111710
+2025-01-18 17:35:35,673 - INFO - Successfully merged entries for Baybayin form ᜉᜏ᜔ᜈ᜔ᜆᜒᜌ᜔ᜈ᜔
+2025-01-18 17:35:35,674 - INFO - Merging duplicate Baybayin entries: 107484 and 110841
+2025-01-18 17:35:35,763 - INFO - Successfully merged entries for Baybayin form ᜉᜒᜈᜉᜎᜒᜆᜇᜑᜈ᜔
+2025-01-18 17:35:35,764 - INFO - Merging duplicate Baybayin entries: 107485 and 110839
+2025-01-18 17:35:35,880 - INFO - Successfully merged entries for Baybayin form ᜉᜒᜈᜎᜒᜆᜇᜑᜈ᜔
+2025-01-18 17:35:35,881 - INFO - Merging duplicate Baybayin entries: 101338 and 109910
+2025-01-18 17:35:36,013 - INFO - Successfully merged entries for Baybayin form ᜉᜒᜌᜌ
+2025-01-18 17:35:36,013 - INFO - Merging duplicate Baybayin entries: 110188 and 111311
+2025-01-18 17:35:36,127 - INFO - Successfully merged entries for Baybayin form ᜉᜓᜆᜓᜊᜋ᜔
+2025-01-18 17:35:36,128 - INFO - Merging duplicate Baybayin entries: 111648 and 111651
+2025-01-18 17:35:36,265 - INFO - Successfully merged entries for Baybayin form ᜉ᜔ᜇᜓᜉᜌ᜔ᜎ᜔
+2025-01-18 17:35:36,266 - INFO - Merging duplicate Baybayin entries: 106891 and 111832
+2025-01-18 17:35:36,366 - INFO - Successfully merged entries for Baybayin form ᜉ᜔ᜐᜒ
+2025-01-18 17:35:36,366 - INFO - Merging duplicate Baybayin entries: 98506 and 99315
+2025-01-18 17:35:36,458 - INFO - Successfully merged entries for Baybayin form ᜊᜆᜓᜊᜎᜈᜒ
+2025-01-18 17:35:36,458 - INFO - Merging duplicate Baybayin entries: 100996 and 109563
+2025-01-18 17:35:36,591 - INFO - Successfully merged entries for Baybayin form ᜊᜈ᜔ᜇᜒᜇᜒᜆ
+2025-01-18 17:35:36,591 - INFO - Merging duplicate Baybayin entries: 108308 and 108318
+2025-01-18 17:35:36,719 - INFO - Successfully merged entries for Baybayin form ᜊᜋᜓᜐ᜔
+2025-01-18 17:35:36,719 - INFO - Merging duplicate Baybayin entries: 109471 and 109472
+2025-01-18 17:35:36,848 - INFO - Successfully merged entries for Baybayin form ᜊᜎᜑᜇ᜔ᜌ
+2025-01-18 17:35:36,848 - INFO - Merging duplicate Baybayin entries: 95093 and 98829
+2025-01-18 17:35:36,963 - INFO - Successfully merged entries for Baybayin form ᜊᜎᜒᜈ
+2025-01-18 17:35:36,963 - INFO - Merging duplicate Baybayin entries: 104023 and 109474
+2025-01-18 17:35:37,047 - INFO - Successfully merged entries for Baybayin form ᜊᜎᜒᜐ᜔ᜆᜒᜇᜓᜐ᜔
+2025-01-18 17:35:37,048 - INFO - Merging duplicate Baybayin entries: 94536 and 96040
+2025-01-18 17:35:37,181 - INFO - Successfully merged entries for Baybayin form ᜊᜒ
+2025-01-18 17:35:37,181 - INFO - Merging duplicate Baybayin entries: 96949 and 97261, 97262, 97263
+2025-01-18 17:35:37,444 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜃᜒ
+2025-01-18 17:35:37,444 - INFO - Merging duplicate Baybayin entries: 97607 and 105657
+2025-01-18 17:35:37,575 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜆᜎᜒᜐ᜔
+2025-01-18 17:35:37,576 - INFO - Merging duplicate Baybayin entries: 94687 and 107396
+2025-01-18 17:35:37,671 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜆᜓᜈ᜔
+2025-01-18 17:35:37,672 - INFO - Merging duplicate Baybayin entries: 106349 and 106350
+2025-01-18 17:35:37,805 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜇ᜔ᜆᜓᜐ᜔ᜌᜓ
+2025-01-18 17:35:37,805 - INFO - Merging duplicate Baybayin entries: 104838 and 104839
+2025-01-18 17:35:37,939 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜇ᜔ᜌᜓᜃᜒ
+2025-01-18 17:35:37,940 - INFO - Merging duplicate Baybayin entries: 100545 and 110334
+2025-01-18 17:35:38,066 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜇ᜔ᜐᜒᜈ᜔
+2025-01-18 17:35:38,067 - INFO - Merging duplicate Baybayin entries: 104584 and 104753
+2025-01-18 17:35:38,194 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜈᜓᜌ
+2025-01-18 17:35:38,195 - INFO - Merging duplicate Baybayin entries: 100975 and 111041
+2025-01-18 17:35:38,275 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜋ᜔ᜊᜒ
+2025-01-18 17:35:38,276 - INFO - Merging duplicate Baybayin entries: 104407 and 107996
+2025-01-18 17:35:38,394 - INFO - Successfully merged entries for Baybayin form ᜊᜒᜐ᜔ᜃᜓᜈ᜔ᜇᜒ
+2025-01-18 17:35:38,394 - INFO - Merging duplicate Baybayin entries: 111476 and 111478
+2025-01-18 17:35:38,524 - INFO - Successfully merged entries for Baybayin form ᜊᜓᜆᜒᜑ
+2025-01-18 17:35:38,524 - INFO - Merging duplicate Baybayin entries: 108329 and 108333
+2025-01-18 17:35:38,640 - INFO - Successfully merged entries for Baybayin form ᜊᜓᜆᜓᜋᜒᜐ
+2025-01-18 17:35:38,640 - INFO - Merging duplicate Baybayin entries: 104528 and 111502
+2025-01-18 17:35:38,740 - INFO - Successfully merged entries for Baybayin form ᜊᜓᜇᜒᜎ᜔ ᜉᜌ᜔ᜆ᜔
+2025-01-18 17:35:38,740 - INFO - Merging duplicate Baybayin entries: 100235 and 100726
+2025-01-18 17:35:38,867 - INFO - Successfully merged entries for Baybayin form ᜊᜓᜎ᜔ᜆ
+2025-01-18 17:35:38,867 - INFO - Merging duplicate Baybayin entries: 103151 and 104273
+2025-01-18 17:35:38,974 - INFO - Successfully merged entries for Baybayin form ᜋᜃᜇᜁᜄ᜔
+2025-01-18 17:35:38,975 - INFO - Merging duplicate Baybayin entries: 104055 and 104393
+2025-01-18 17:35:39,120 - INFO - Successfully merged entries for Baybayin form ᜋᜃᜎᜒᜈ᜔ᜆᜎ᜔
+2025-01-18 17:35:39,121 - INFO - Merging duplicate Baybayin entries: 106879 and 107577
+2025-01-18 17:35:39,272 - INFO - Successfully merged entries for Baybayin form ᜋᜃᜓᜈ᜔ᜆᜒᜈ᜔ᜆᜓ
+2025-01-18 17:35:39,272 - INFO - Merging duplicate Baybayin entries: 102219 and 107200, 110471
+2025-01-18 17:35:39,476 - INFO - Successfully merged entries for Baybayin form ᜋᜃ᜔ᜇᜓ
+2025-01-18 17:35:39,476 - INFO - Merging duplicate Baybayin entries: 106169 and 106695
+2025-01-18 17:35:39,589 - INFO - Successfully merged entries for Baybayin form ᜋᜄ᜔ᜆᜓᜎᜓᜄ᜔ᜆᜓᜎᜓᜄᜈ᜔
+2025-01-18 17:35:39,589 - INFO - Merging duplicate Baybayin entries: 107059 and 111260
+2025-01-18 17:35:39,719 - INFO - Successfully merged entries for Baybayin form ᜋᜄ᜔ᜆ᜔ᜇᜌ᜔ᜐᜒᜃᜒᜎ᜔
+2025-01-18 17:35:39,720 - INFO - Merging duplicate Baybayin entries: 104071 and 104072
+2025-01-18 17:35:39,837 - INFO - Successfully merged entries for Baybayin form ᜋᜄ᜔ᜐᜓᜋ᜔ᜊᜓᜎ᜔
+2025-01-18 17:35:39,837 - INFO - Merging duplicate Baybayin entries: 110285 and 110286
+2025-01-18 17:35:39,962 - INFO - Successfully merged entries for Baybayin form ᜋᜌᜓᜎ᜔ᜇᜓᜋᜓ
+2025-01-18 17:35:39,962 - INFO - Merging duplicate Baybayin entries: 104335 and 105676
+2025-01-18 17:35:40,087 - INFO - Successfully merged entries for Baybayin form ᜋᜎᜒᜃ᜔ᜇᜒᜋ᜔
+2025-01-18 17:35:40,088 - INFO - Merging duplicate Baybayin entries: 104372 and 109470, 111310
+2025-01-18 17:35:40,224 - INFO - Successfully merged entries for Baybayin form ᜋᜎᜒᜃ᜔ᜐᜒ
+2025-01-18 17:35:40,224 - INFO - Merging duplicate Baybayin entries: 104781 and 109396
+2025-01-18 17:35:40,362 - INFO - Successfully merged entries for Baybayin form ᜋᜎᜒᜑᜈ᜔
+2025-01-18 17:35:40,363 - INFO - Merging duplicate Baybayin entries: 103098 and 105127
+2025-01-18 17:35:40,494 - INFO - Successfully merged entries for Baybayin form ᜋᜎ᜔ᜌᜇᜒ
+2025-01-18 17:35:40,495 - INFO - Merging duplicate Baybayin entries: 104345 and 104548
+2025-01-18 17:35:40,622 - INFO - Successfully merged entries for Baybayin form ᜋᜐᜅ᜔ᜃᜌ᜔
+2025-01-18 17:35:40,622 - INFO - Merging duplicate Baybayin entries: 108844 and 111185
+2025-01-18 17:35:40,746 - INFO - Successfully merged entries for Baybayin form ᜋᜒᜆᜒᜅ᜔ ᜇᜒ ᜀᜊᜈ᜔ᜐᜒ
+2025-01-18 17:35:40,747 - INFO - Merging duplicate Baybayin entries: 111530 and 111531
+2025-01-18 17:35:40,828 - INFO - Successfully merged entries for Baybayin form ᜋᜓᜆ᜔ᜐᜅ᜔ᜋᜓᜆ᜔ᜐᜅ᜔
+2025-01-18 17:35:40,828 - INFO - Merging duplicate Baybayin entries: 98070 and 98402
+2025-01-18 17:35:40,944 - INFO - Successfully merged entries for Baybayin form ᜋᜓᜋᜓ
+2025-01-18 17:35:40,945 - INFO - Merging duplicate Baybayin entries: 110154 and 110292
+2025-01-18 17:35:41,085 - INFO - Successfully merged entries for Baybayin form ᜋᜓᜎᜒᜈᜒᜎ᜔ᜌᜓ
+2025-01-18 17:35:41,086 - INFO - Merging duplicate Baybayin entries: 94726 and 97457
+2025-01-18 17:35:41,203 - INFO - Successfully merged entries for Baybayin form ᜌᜓᜈ᜔
+2025-01-18 17:35:41,203 - INFO - Merging duplicate Baybayin entries: 104050 and 105790
+2025-01-18 17:35:41,328 - INFO - Successfully merged entries for Baybayin form ᜌᜓᜐᜓᜈ᜔
+2025-01-18 17:35:41,329 - INFO - Merging duplicate Baybayin entries: 103146 and 104642
+2025-01-18 17:35:41,419 - INFO - Successfully merged entries for Baybayin form ᜎᜃ᜔ᜐᜋᜈ
+2025-01-18 17:35:41,419 - INFO - Merging duplicate Baybayin entries: 111298 and 111303
+2025-01-18 17:35:41,508 - INFO - Successfully merged entries for Baybayin form ᜎᜏ᜔ᜇ᜔ᜁᜐ᜔ᜉᜒᜃᜒᜇ᜔
+2025-01-18 17:35:41,508 - INFO - Merging duplicate Baybayin entries: 108540 and 108541
+2025-01-18 17:35:41,637 - INFO - Successfully merged entries for Baybayin form ᜎᜐᜒᜅ᜔ᜄᜒᜇ
+2025-01-18 17:35:41,637 - INFO - Merging duplicate Baybayin entries: 102809 and 107115
+2025-01-18 17:35:41,762 - INFO - Successfully merged entries for Baybayin form ᜎᜒᜌᜓᜅ᜔
+2025-01-18 17:35:41,763 - INFO - Merging duplicate Baybayin entries: 109455 and 110563
+2025-01-18 17:35:41,888 - INFO - Successfully merged entries for Baybayin form ᜎᜓᜊᜏ᜔
+2025-01-18 17:35:41,888 - INFO - Merging duplicate Baybayin entries: 102583 and 110143
+2025-01-18 17:35:42,014 - INFO - Successfully merged entries for Baybayin form ᜎᜓᜏᜎ᜔ᜑᜆᜒ
+2025-01-18 17:35:42,015 - INFO - Merging duplicate Baybayin entries: 95739 and 95740
+2025-01-18 17:35:42,124 - INFO - Successfully merged entries for Baybayin form ᜏᜒᜎᜒ
+2025-01-18 17:35:42,124 - INFO - Merging duplicate Baybayin entries: 94688 and 99946
+2025-01-18 17:35:42,236 - INFO - Successfully merged entries for Baybayin form ᜐᜅ᜔
+2025-01-18 17:35:42,236 - INFO - Merging duplicate Baybayin entries: 98072 and 100249
+2025-01-18 17:35:42,364 - INFO - Successfully merged entries for Baybayin form ᜐᜅ᜔ᜃᜒ
+2025-01-18 17:35:42,364 - INFO - Merging duplicate Baybayin entries: 109924 and 111042
+2025-01-18 17:35:42,475 - INFO - Successfully merged entries for Baybayin form ᜐᜌ᜔ᜇ᜔ᜎᜌ᜔ᜈ᜔
+2025-01-18 17:35:42,476 - INFO - Merging duplicate Baybayin entries: 95732 and 103013, 109621
+2025-01-18 17:35:42,663 - INFO - Successfully merged entries for Baybayin form ᜐᜒ
+2025-01-18 17:35:42,663 - INFO - Merging duplicate Baybayin entries: 103114 and 104443
+2025-01-18 17:35:42,748 - INFO - Successfully merged entries for Baybayin form ᜐᜒᜅ᜔ᜃᜓ
+2025-01-18 17:35:42,749 - INFO - Merging duplicate Baybayin entries: 111240 and 111633
+2025-01-18 17:35:42,865 - INFO - Successfully merged entries for Baybayin form ᜐᜒᜈᜒᜉᜒᜆᜒ
+2025-01-18 17:35:42,865 - INFO - Merging duplicate Baybayin entries: 102791 and 104376
+2025-01-18 17:35:42,993 - INFO - Successfully merged entries for Baybayin form ᜐᜒᜈ᜔ᜆᜒᜈᜓ
+2025-01-18 17:35:42,993 - INFO - Merging duplicate Baybayin entries: 109551 and 109573
+2025-01-18 17:35:43,112 - INFO - Successfully merged entries for Baybayin form ᜐᜒᜊ᜔ᜏᜈ
+2025-01-18 17:35:43,113 - INFO - Merging duplicate Baybayin entries: 95730 and 96376
+2025-01-18 17:35:43,246 - INFO - Successfully merged entries for Baybayin form ᜐᜒᜌ
+2025-01-18 17:35:43,247 - INFO - Merging duplicate Baybayin entries: 109524 and 109536
+2025-01-18 17:35:43,363 - INFO - Successfully merged entries for Baybayin form ᜐᜒᜐᜓᜐ᜔
+2025-01-18 17:35:43,363 - INFO - Merging duplicate Baybayin entries: 103716 and 110543
+2025-01-18 17:35:43,475 - INFO - Successfully merged entries for Baybayin form ᜐᜓᜂᜊᜈ᜔
+2025-01-18 17:35:43,475 - INFO - Merging duplicate Baybayin entries: 111296 and 111739
+2025-01-18 17:35:43,595 - INFO - Successfully merged entries for Baybayin form ᜐᜓᜊᜒᜃ᜔
+2025-01-18 17:35:43,595 - INFO - Merging duplicate Baybayin entries: 95731 and 102866, 107113, 107121
+2025-01-18 17:35:43,814 - INFO - Successfully merged entries for Baybayin form ᜐ᜔ᜌᜏ᜔
+2025-01-18 17:35:43,815 - INFO - Merging duplicate Baybayin entries: 105562 and 110783
+2025-01-18 17:35:43,949 - INFO - Successfully merged entries for Baybayin form ᜐ᜔ᜌᜒᜊᜓᜎᜒ
+2025-01-18 17:35:43,949 - INFO - Merging duplicate Baybayin entries: 101209 and 103153
+2025-01-18 17:35:44,076 - INFO - Successfully merged entries for Baybayin form ᜐ᜔ᜌᜓᜆ
+2025-01-18 17:35:44,077 - INFO - Merging duplicate Baybayin entries: 109362 and 109373
+2025-01-18 17:35:44,171 - INFO - Successfully merged entries for Baybayin form ᜑᜎᜑᜎ
+2025-01-18 17:35:44,171 - INFO - Merging duplicate Baybayin entries: 95253 and 102879
+2025-01-18 17:35:44,303 - INFO - Successfully merged entries for Baybayin form ᜑᜏ᜔
+2025-01-18 17:35:44,304 - INFO - Merging duplicate Baybayin entries: 100842 and 105150
+2025-01-18 17:35:44,440 - INFO - Successfully merged entries for Baybayin form ᜑᜒᜇᜓᜈ᜔
+2025-01-18 17:35:44,441 - INFO - Merging duplicate Baybayin entries: 109960 and 109965
+2025-01-18 17:35:44,546 - INFO - Successfully merged entries for Baybayin form ᜑᜒᜌᜓᜇ᜔ᜑᜒᜌ
+2025-01-18 17:35:44,547 - INFO - Merging duplicate Baybayin entries: 99864 and 102830
+2025-01-18 17:35:44,665 - INFO - Successfully merged entries for Baybayin form ᜑᜓᜅ᜔
+2025-01-18 17:35:44,666 - INFO - Merging duplicate Baybayin entries: 98205 and 109680
+2025-01-18 17:35:44,791 - INFO - Successfully merged entries for Baybayin form ᜑᜓᜏᜈ
+2025-01-18 17:35:44,792 - INFO - Migration completed successfully

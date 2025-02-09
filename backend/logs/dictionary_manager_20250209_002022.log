@@ -1,0 +1,218 @@
+2025-02-09 00:20:22,502 - INFO - Attempting database connection...
+2025-02-09 00:20:22,502 - INFO - Database configuration:
+2025-02-09 00:20:22,502 - INFO -   Database Name: fil_dict_db
+2025-02-09 00:20:22,502 - INFO -   User: postgres
+2025-02-09 00:20:22,502 - INFO -   Host: localhost
+2025-02-09 00:20:22,503 - INFO -   Password: ********
+2025-02-09 00:20:22,538 - INFO - Successfully established database connection
+2025-02-09 00:20:22,538 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 00:20:22,539 - INFO - Checking extension: pg_trgm
+2025-02-09 00:20:22,544 - INFO - Extension already installed: pg_trgm
+2025-02-09 00:20:22,545 - INFO - Checking extension: unaccent
+2025-02-09 00:20:22,545 - INFO - Extension already installed: unaccent
+2025-02-09 00:20:22,546 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 00:20:22,546 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 00:20:22,546 - INFO - Extensions setup completed
+2025-02-09 00:20:22,547 - INFO - Starting table creation/update process.
+2025-02-09 00:20:22,583 - INFO - Tables created or updated successfully.
+2025-02-09 00:20:22,587 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-09 00:20:22,743 - ERROR - Invalid word data for 'A!': Lemma contains invalid characters
+2025-02-09 00:20:22,743 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,744 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,744 - ERROR - Error processing lemma A!: Lemma contains invalid characters
+2025-02-09 00:20:22,755 - ERROR - Invalid word data for 'Abá!': Lemma contains invalid characters
+2025-02-09 00:20:22,755 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,755 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,756 - ERROR - Error processing lemma Abá!: Lemma contains invalid characters
+2025-02-09 00:20:22,764 - ERROR - Invalid word data for 'Abadáw!': Lemma contains invalid characters
+2025-02-09 00:20:22,764 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,765 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,765 - ERROR - Error processing lemma Abadáw!: Lemma contains invalid characters
+2025-02-09 00:20:22,787 - ERROR - Invalid word data for 'Abá mo nganí!': Lemma contains invalid characters
+2025-02-09 00:20:22,788 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,788 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,788 - ERROR - Error processing lemma Abá mo nganí!: Lemma contains invalid characters
+2025-02-09 00:20:22,811 - ERROR - Invalid word data for 'Abáw!': Lemma contains invalid characters
+2025-02-09 00:20:22,812 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,812 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,812 - ERROR - Error processing lemma Abáw!: Lemma contains invalid characters
+2025-02-09 00:20:22,817 - ERROR - Invalid word data for 'Abayarí!': Lemma contains invalid characters
+2025-02-09 00:20:22,817 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,818 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,818 - ERROR - Error processing lemma Abayarí!: Lemma contains invalid characters
+2025-02-09 00:20:22,842 - ERROR - Invalid word data for 'Abér!': Lemma contains invalid characters
+2025-02-09 00:20:22,843 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,843 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,843 - ERROR - Error processing lemma Abér!: Lemma contains invalid characters
+2025-02-09 00:20:22,854 - ERROR - Invalid word data for 'À bientôt!': Lemma contains invalid characters
+2025-02-09 00:20:22,854 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,854 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,854 - ERROR - Error processing lemma À bientôt!: Lemma contains invalid characters
+2025-02-09 00:20:22,938 - ERROR - Invalid word data for 'Ábsit ómen!': Lemma contains invalid characters
+2025-02-09 00:20:22,938 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:22,938 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:22,938 - ERROR - Error processing lemma Ábsit ómen!: Lemma contains invalid characters
+2025-02-09 00:20:23,017 - ERROR - Invalid word data for 'AC/DC': Lemma contains invalid characters
+2025-02-09 00:20:23,018 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,018 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,018 - ERROR - Error processing lemma AC/DC: Lemma contains invalid characters
+2025-02-09 00:20:23,058 - ERROR - Invalid word data for 'Adam’s Apple': Lemma contains invalid characters
+2025-02-09 00:20:23,059 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,059 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,059 - ERROR - Error processing lemma Adam’s Apple: Lemma contains invalid characters
+2025-02-09 00:20:23,097 - ERROR - Invalid word data for 'Adieu!': Lemma contains invalid characters
+2025-02-09 00:20:23,097 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,098 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,098 - ERROR - Error processing lemma Adieu!: Lemma contains invalid characters
+2025-02-09 00:20:23,111 - ERROR - Invalid word data for 'Adiyós!': Lemma contains invalid characters
+2025-02-09 00:20:23,112 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,112 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,112 - ERROR - Error processing lemma Adiyós!: Lemma contains invalid characters
+2025-02-09 00:20:23,155 - ERROR - Invalid word data for 'Adsum!': Lemma contains invalid characters
+2025-02-09 00:20:23,156 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,156 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,157 - ERROR - Error processing lemma Adsum!: Lemma contains invalid characters
+2025-02-09 00:20:23,394 - ERROR - Invalid word data for 'Ahá!': Lemma contains invalid characters
+2025-02-09 00:20:23,394 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,394 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,394 - ERROR - Error processing lemma Ahá!: Lemma contains invalid characters
+2025-02-09 00:20:23,431 - ERROR - Invalid word data for 'Aká!': Lemma contains invalid characters
+2025-02-09 00:20:23,431 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,432 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,432 - ERROR - Error processing lemma Aká!: Lemma contains invalid characters
+2025-02-09 00:20:23,575 - ERROR - Invalid word data for 'Alá e!': Lemma contains invalid characters
+2025-02-09 00:20:23,575 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,576 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,576 - ERROR - Error processing lemma Alá e!: Lemma contains invalid characters
+2025-02-09 00:20:23,599 - ERROR - Invalid word data for 'Alahóy!': Lemma contains invalid characters
+2025-02-09 00:20:23,599 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,600 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,600 - ERROR - Error processing lemma Alahóy!: Lemma contains invalid characters
+2025-02-09 00:20:23,619 - ERROR - Invalid word data for 'Alalaóng sána!': Lemma contains invalid characters
+2025-02-09 00:20:23,620 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,620 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,620 - ERROR - Error processing lemma Alalaóng sána!: Lemma contains invalid characters
+2025-02-09 00:20:23,709 - ERROR - Invalid word data for 'Alelúya!': Lemma contains invalid characters
+2025-02-09 00:20:23,709 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,710 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,710 - ERROR - Error processing lemma Alelúya!: Lemma contains invalid characters
+2025-02-09 00:20:23,870 - ERROR - Invalid word data for 'Alis!': Lemma contains invalid characters
+2025-02-09 00:20:23,870 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,870 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,871 - ERROR - Error processing lemma Alis!: Lemma contains invalid characters
+2025-02-09 00:20:23,947 - ERROR - Invalid word data for 'All Saints’ Day': Lemma contains invalid characters
+2025-02-09 00:20:23,947 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,947 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,948 - ERROR - Error processing lemma All Saints’ Day: Lemma contains invalid characters
+2025-02-09 00:20:23,948 - ERROR - Invalid word data for 'All Souls’ Day': Lemma contains invalid characters
+2025-02-09 00:20:23,948 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,948 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,948 - ERROR - Error processing lemma All Souls’ Day: Lemma contains invalid characters
+2025-02-09 00:20:23,983 - ERROR - Invalid word data for 'Alóha!': Lemma contains invalid characters
+2025-02-09 00:20:23,983 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:23,984 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:23,984 - ERROR - Error processing lemma Alóha!: Lemma contains invalid characters
+2025-02-09 00:20:24,042 - ERROR - Invalid word data for 'Álto!': Lemma contains invalid characters
+2025-02-09 00:20:24,042 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,042 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,042 - ERROR - Error processing lemma Álto!: Lemma contains invalid characters
+2025-02-09 00:20:24,101 - ERROR - Invalid word data for 'Alzheimer’s disease': Lemma contains invalid characters
+2025-02-09 00:20:24,102 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,102 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,102 - ERROR - Error processing lemma Alzheimer’s disease: Lemma contains invalid characters
+2025-02-09 00:20:24,300 - ERROR - Invalid word data for 'Anak ng púta!': Lemma contains invalid characters
+2025-02-09 00:20:24,301 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,301 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,301 - ERROR - Error processing lemma Anak ng púta!: Lemma contains invalid characters
+2025-02-09 00:20:24,301 - ERROR - Invalid word data for 'Anak ng túpa!': Lemma contains invalid characters
+2025-02-09 00:20:24,302 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,302 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,302 - ERROR - Error processing lemma Anak ng túpa!: Lemma contains invalid characters
+2025-02-09 00:20:24,403 - ERROR - Invalid word data for 'angel’s trumpet': Lemma contains invalid characters
+2025-02-09 00:20:24,403 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,404 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,404 - ERROR - Error processing lemma angel’s trumpet: Lemma contains invalid characters
+2025-02-09 00:20:24,642 - ERROR - Invalid word data for 'Anubá!': Lemma contains invalid characters
+2025-02-09 00:20:24,642 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,643 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,643 - ERROR - Error processing lemma Anubá!: Lemma contains invalid characters
+2025-02-09 00:20:24,732 - ERROR - Invalid word data for 'Apír!': Lemma contains invalid characters
+2025-02-09 00:20:24,733 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,733 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,733 - ERROR - Error processing lemma Apír!: Lemma contains invalid characters
+2025-02-09 00:20:24,894 - ERROR - Invalid word data for 'Aráw aráw!': Lemma contains invalid characters
+2025-02-09 00:20:24,895 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,895 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,895 - ERROR - Error processing lemma Aráw aráw!: Lemma contains invalid characters
+2025-02-09 00:20:24,902 - ERROR - Invalid word data for 'Aráy!': Lemma contains invalid characters
+2025-02-09 00:20:24,902 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,902 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,903 - ERROR - Error processing lemma Aráy!: Lemma contains invalid characters
+2025-02-09 00:20:24,950 - ERROR - Invalid word data for 'Aríba!': Lemma contains invalid characters
+2025-02-09 00:20:24,950 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:24,950 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:24,951 - ERROR - Error processing lemma Aríba!: Lemma contains invalid characters
+2025-02-09 00:20:25,028 - ERROR - Invalid word data for 'Aró!': Lemma contains invalid characters
+2025-02-09 00:20:25,028 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,028 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,028 - ERROR - Error processing lemma Aró!: Lemma contains invalid characters
+2025-02-09 00:20:25,045 - ERROR - Invalid word data for 'Aróy!': Lemma contains invalid characters
+2025-02-09 00:20:25,046 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,046 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,046 - ERROR - Error processing lemma Aróy!: Lemma contains invalid characters
+2025-02-09 00:20:25,100 - ERROR - Invalid word data for 'Arúy! Pdd': Lemma contains invalid characters
+2025-02-09 00:20:25,100 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,100 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,101 - ERROR - Error processing lemma Arúy! Pdd: Lemma contains invalid characters
+2025-02-09 00:20:25,103 - ERROR - Invalid word data for 'Aryá!': Lemma contains invalid characters
+2025-02-09 00:20:25,104 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,104 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,104 - ERROR - Error processing lemma Aryá!: Lemma contains invalid characters
+2025-02-09 00:20:25,307 - ERROR - Invalid word data for 'athlete’s foot': Lemma contains invalid characters
+2025-02-09 00:20:25,307 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,307 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,307 - ERROR - Error processing lemma athlete’s foot: Lemma contains invalid characters
+2025-02-09 00:20:25,443 - ERROR - Invalid word data for 'Ave!': Lemma contains invalid characters
+2025-02-09 00:20:25,443 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,444 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,444 - ERROR - Error processing lemma Ave!: Lemma contains invalid characters
+2025-02-09 00:20:25,509 - ERROR - Invalid word data for 'Ay!': Lemma contains invalid characters
+2025-02-09 00:20:25,509 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,510 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,510 - ERROR - Error processing lemma Ay!: Lemma contains invalid characters
+2025-02-09 00:20:25,526 - ERROR - Invalid word data for 'Ayán!': Lemma contains invalid characters
+2025-02-09 00:20:25,526 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,527 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,527 - ERROR - Error processing lemma Ayán!: Lemma contains invalid characters
+2025-02-09 00:20:25,531 - ERROR - Invalid word data for 'Ayáno!': Lemma contains invalid characters
+2025-02-09 00:20:25,531 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,531 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,531 - ERROR - Error processing lemma Ayáno!: Lemma contains invalid characters
+2025-02-09 00:20:25,552 - ERROR - Invalid word data for 'Ayí!': Lemma contains invalid characters
+2025-02-09 00:20:25,553 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,553 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,553 - ERROR - Error processing lemma Ayí!: Lemma contains invalid characters
+2025-02-09 00:20:25,596 - ERROR - Invalid word data for 'Ayún!': Lemma contains invalid characters
+2025-02-09 00:20:25,597 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,597 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,597 - ERROR - Error processing lemma Ayún!: Lemma contains invalid characters
+2025-02-09 00:20:25,620 - ERROR - Invalid word data for 'Ba!': Lemma contains invalid characters
+2025-02-09 00:20:25,620 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,621 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,621 - ERROR - Error processing lemma Ba!: Lemma contains invalid characters
+2025-02-09 00:20:25,624 - ERROR - Invalid word data for 'Bâ!': Lemma contains invalid characters
+2025-02-09 00:20:25,625 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,625 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,625 - ERROR - Error processing lemma Bâ!: Lemma contains invalid characters
+2025-02-09 00:20:25,697 - ERROR - Invalid word data for 'Bábay!': Lemma contains invalid characters
+2025-02-09 00:20:25,698 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,698 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,698 - ERROR - Error processing lemma Bábay!: Lemma contains invalid characters
+2025-02-09 00:20:25,836 - ERROR - Invalid word data for 'Bagâ!': Lemma contains invalid characters
+2025-02-09 00:20:25,837 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,837 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,837 - ERROR - Error processing lemma Bagâ!: Lemma contains invalid characters
+2025-02-09 00:20:25,861 - ERROR - Invalid word data for 'bagamá’t': Lemma contains invalid characters
+2025-02-09 00:20:25,862 - ERROR - Error in get_or_create_word_id_base: Lemma contains invalid characters
+2025-02-09 00:20:25,862 - ERROR - Error in get_or_create_word_id: Lemma contains invalid characters
+2025-02-09 00:20:25,862 - ERROR - Error processing lemma bagamá’t: Lemma contains invalid characters

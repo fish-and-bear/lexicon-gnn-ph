@@ -1,0 +1,61 @@
+2025-01-18 23:57:19,465 - INFO - Attempting database connection...
+2025-01-18 23:57:19,466 - INFO - Database configuration:
+2025-01-18 23:57:19,466 - INFO -   Database Name: fil_dict_db
+2025-01-18 23:57:19,466 - INFO -   User: postgres
+2025-01-18 23:57:19,467 - INFO -   Host: localhost
+2025-01-18 23:57:19,467 - INFO -   Password: ********
+2025-01-18 23:57:19,523 - INFO - Successfully established database connection
+2025-01-18 23:57:19,525 - INFO - Database extensions configured successfully
+2025-01-18 23:57:19,525 - INFO - Starting table creation/update process.
+2025-01-18 23:57:19,636 - INFO - Tables created or updated successfully.
+2025-01-18 23:57:19,637 - INFO - Processing KWF dictionary...
+2025-01-18 23:57:20,025 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,025 - ERROR - Error processing synonym PAÁLAM for Ad•yós!: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,027 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,027 - ERROR - Error processing synonym AGTÁ for Aeta: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,047 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,047 - ERROR - Error processing synonym ASYÁTIKÓ for As•yá•no: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,091 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,092 - ERROR - Error processing synonym BATÁNGAN for Batangas: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,093 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,093 - ERROR - Error processing synonym DIYÓS for Bat•ha•là: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,094 - ERROR - Error processing synonym MANLILIKHÂ for Bat•ha•là: current transaction is aborted, commands ignored until end of transaction block
+
+2025-01-18 23:57:20,094 - ERROR - Error processing synonym MAYKAPÁL for Bat•ha•là: current transaction is aborted, commands ignored until end of transaction block
+
+2025-01-18 23:57:20,105 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,106 - ERROR - Error processing synonym SANTÍSIMÁ TRINIDÁD for Ba•nál na San•tat•ló: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,162 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,162 - ERROR - Error processing synonym ENHORABUENA! for Congrats!: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,167 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,167 - ERROR - Error processing synonym BIG DIPPER for Da•óng-Da•ú•ngan: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,176 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,177 - ERROR - Error processing synonym GAT for Don: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,182 - ERROR - Error inserting definition relation: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,182 - ERROR - Error processing synonym SENYÓRA for Dón•ya: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-01-18 23:57:20,182 - ERROR - Error processing KWF entry 'Dón•ya': current transaction is aborted, commands ignored until end of transaction block
+
+2025-01-18 23:57:20,183 - ERROR - Error processing dictionary files: current transaction is aborted, commands ignored until end of transaction block
+
+2025-01-18 23:57:20,183 - ERROR - Error during migration: current transaction is aborted, commands ignored until end of transaction block
+

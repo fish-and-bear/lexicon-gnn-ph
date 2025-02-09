@@ -1,0 +1,28 @@
+2025-02-08 19:28:38,225 - INFO - Attempting database connection...
+2025-02-08 19:28:38,226 - INFO - Database configuration:
+2025-02-08 19:28:38,226 - INFO -   Database Name: fil_dict_db
+2025-02-08 19:28:38,227 - INFO -   User: postgres
+2025-02-08 19:28:38,227 - INFO -   Host: localhost
+2025-02-08 19:28:38,227 - INFO -   Password: ********
+2025-02-08 19:28:38,325 - INFO - Successfully established database connection
+2025-02-08 19:28:38,326 - INFO - Setting up PostgreSQL extensions...
+2025-02-08 19:28:38,327 - INFO - Checking extension: pg_trgm
+2025-02-08 19:28:38,368 - INFO - Extension already installed: pg_trgm
+2025-02-08 19:28:38,369 - INFO - Checking extension: unaccent
+2025-02-08 19:28:38,369 - INFO - Extension already installed: unaccent
+2025-02-08 19:28:38,370 - INFO - Checking extension: fuzzystrmatch
+2025-02-08 19:28:38,370 - INFO - Extension already installed: fuzzystrmatch
+2025-02-08 19:28:38,371 - INFO - Extensions setup completed
+2025-02-08 19:28:38,371 - INFO - Starting table creation/update process.
+2025-02-08 19:28:38,436 - INFO - Tables created or updated successfully.
+2025-02-08 19:28:38,442 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-08 19:33:40,740 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json
+2025-02-08 19:35:11,742 - INFO - Processing KWF dictionary from: data/kwf_dictionary.json
+2025-02-08 19:39:53,500 - INFO - Starting to process Kaikki file: data/kaikki.jsonl
+2025-02-08 19:44:10,377 - INFO - Starting to process Kaikki file: data/kaikki-ceb.jsonl
+2025-02-08 19:45:41,655 - INFO - Processing Baybayin entries...
+2025-02-08 19:45:41,807 - INFO - Updating standalone Baybayin entry (ID: 124212)
+2025-02-08 19:45:41,818 - WARNING - Skipping duplicate normalized form for Baybayin entry 124212: istadus unidus
+2025-02-08 19:45:41,826 - INFO - Merging Baybayin entry (ID: 124213) with romanized form: anak sa labas
+2025-02-08 19:45:41,897 - ERROR - Error during migration: ROLLBACK TO SAVEPOINT can only be used in transaction blocks
+

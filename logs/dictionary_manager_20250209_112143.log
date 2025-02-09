@@ -1,0 +1,25 @@
+2025-02-09 11:21:43,495 - INFO - Attempting database connection...
+2025-02-09 11:21:43,496 - INFO - Database configuration:
+2025-02-09 11:21:43,497 - INFO -   Database Name: fil_dict_db
+2025-02-09 11:21:43,497 - INFO -   User: postgres
+2025-02-09 11:21:43,498 - INFO -   Host: localhost
+2025-02-09 11:21:43,499 - INFO -   Password: ********
+2025-02-09 11:21:43,650 - INFO - Successfully established database connection
+2025-02-09 11:21:43,650 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 11:21:43,651 - INFO - Checking extension: pg_trgm
+2025-02-09 11:21:43,664 - INFO - Extension already installed: pg_trgm
+2025-02-09 11:21:43,665 - INFO - Checking extension: unaccent
+2025-02-09 11:21:43,666 - INFO - Extension already installed: unaccent
+2025-02-09 11:21:43,667 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 11:21:43,668 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 11:21:43,669 - INFO - Extensions setup completed
+2025-02-09 11:21:43,669 - INFO - Starting table creation/update process.
+2025-02-09 11:21:43,813 - INFO - Tables created or updated successfully.
+2025-02-09 11:21:43,818 - WARNING - Source file not found: data/tagalog-words.json
+2025-02-09 11:21:43,819 - WARNING - Source file not found: data/root_words_with_associated_words_cleaned.json
+2025-02-09 11:21:43,819 - WARNING - Source file not found: data/kwf_dictionary.json
+2025-02-09 11:21:43,820 - WARNING - Source file not found: data/kaikki.jsonl
+2025-02-09 11:21:43,821 - WARNING - Source file not found: data/kaikki-ceb.jsonl
+2025-02-09 11:21:43,825 - INFO - Processing Baybayin entries...
+2025-02-09 11:21:43,903 - INFO - Baybayin data cleanup completed successfully
+2025-02-09 11:21:43,904 - INFO - Migration completed successfully

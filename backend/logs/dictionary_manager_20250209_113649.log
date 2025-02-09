@@ -1,0 +1,22 @@
+2025-02-09 11:36:49,120 - INFO - Attempting database connection...
+2025-02-09 11:36:49,121 - INFO - Database configuration:
+2025-02-09 11:36:49,122 - INFO -   Database Name: fil_dict_db
+2025-02-09 11:36:49,123 - INFO -   User: postgres
+2025-02-09 11:36:49,124 - INFO -   Host: localhost
+2025-02-09 11:36:49,124 - INFO -   Password: ********
+2025-02-09 11:36:49,268 - INFO - Successfully established database connection
+2025-02-09 11:36:49,269 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 11:36:49,270 - INFO - Checking extension: pg_trgm
+2025-02-09 11:36:49,280 - INFO - Extension already installed: pg_trgm
+2025-02-09 11:36:49,281 - INFO - Checking extension: unaccent
+2025-02-09 11:36:49,283 - INFO - Extension already installed: unaccent
+2025-02-09 11:36:49,283 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 11:36:49,285 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 11:36:49,285 - INFO - Extensions setup completed
+2025-02-09 11:36:49,286 - INFO - Starting table creation/update process.
+2025-02-09 11:36:49,375 - INFO - Tables created or updated successfully.
+2025-02-09 11:36:49,390 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-09 11:36:50,109 - ERROR - Error processing Tagalog words file: Unsupported data format in tagalog-words.json
+2025-02-09 11:36:50,111 - ERROR - Error processing file data/tagalog-words.json: Unsupported data format in tagalog-words.json
+2025-02-09 11:36:50,112 - WARNING - Skipping file data/tagalog-words.json due to errors.
+2025-02-09 11:36:50,151 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json

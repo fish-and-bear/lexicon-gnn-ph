@@ -1,0 +1,43 @@
+2025-01-18 19:49:54,559 - INFO - Starting fresh data migration
+2025-01-18 19:49:54,559 - INFO - Attempting database connection...
+2025-01-18 19:49:54,559 - INFO - Database configuration:
+2025-01-18 19:49:54,560 - INFO -   Database Name: fil_dict_db
+2025-01-18 19:49:54,560 - INFO -   User: postgres
+2025-01-18 19:49:54,560 - INFO -   Host: localhost
+2025-01-18 19:49:54,560 - INFO -   Password: ********
+2025-01-18 19:49:54,605 - INFO - Successfully established database connection
+2025-01-18 19:49:54,729 - INFO - Starting table creation/update process.
+2025-01-18 19:49:54,843 - INFO - Tables created or updated successfully.
+2025-01-18 19:49:54,844 - INFO - Processing Tagalog words
+2025-01-18 19:49:54,844 - INFO - Starting to process Tagalog words file: data/tagalog-words.json
+2025-01-18 19:49:54,845 - INFO - Using source identifier: tagalog-words.json
+2025-01-18 19:49:55,053 - INFO - Successfully loaded JSON data with 65328 entries
+2025-01-18 19:51:13,270 - INFO - Completed processing Tagalog words file: data/tagalog-words.json
+2025-01-18 19:51:13,289 - INFO - Processing Root words
+2025-01-18 19:51:13,289 - INFO - Starting to process Root Words file: data/root_words_with_associated_words_cleaned.json
+2025-01-18 19:51:13,289 - INFO - Using source identifier: root_words_with_associated_words_cleaned.json
+2025-01-18 19:51:13,309 - INFO - Successfully loaded JSON data with 2238 entries
+2025-01-18 19:51:30,371 - INFO - Completed processing Root Words file: data/root_words_with_associated_words_cleaned.json
+2025-01-18 19:51:30,377 - INFO - Processing KWF Dictionary
+2025-01-18 19:51:30,378 - INFO - Starting to process KWF Dictionary: data/kwf_dictionary.json
+2025-01-18 19:51:30,379 - INFO - Using source identifier: kwf_dictionary.json
+2025-01-18 19:51:30,960 - INFO - Successfully loaded KWF data with 30734 entries
+2025-01-18 19:51:33,217 - ERROR - Error processing KWF entry 'a•hén•si•yá': Input text cannot be None or empty
+2025-01-18 19:51:34,494 - ERROR - Error processing KWF entry 'a•sén•so': Input text cannot be None or empty
+2025-01-18 19:51:34,826 - ERROR - Error processing KWF entry 'bak•bák': Input text cannot be None or empty
+2025-01-18 19:51:36,190 - ERROR - Error processing KWF entry 'ba•tì': Input text cannot be None or empty
+2025-01-18 19:51:36,581 - ERROR - Error processing KWF entry 'be•rán•da': Input text cannot be None or empty
+2025-01-18 19:51:42,605 - ERROR - Error processing KWF entry 'dá•los': Input text cannot be None or empty
+2025-01-18 19:51:47,697 - ERROR - Error processing KWF entry 'hi•ngá•han': Input text cannot be None or empty
+2025-01-18 19:51:51,712 - ERROR - Error processing KWF entry 'ka•im•po•sí•bli•hán': Input text cannot be None or empty
+2025-01-18 19:51:57,305 - ERROR - Error processing KWF entry 'lig•líg': Input text cannot be None or empty
+2025-01-18 19:51:59,718 - ERROR - Error processing KWF entry 'lí•gaw': Input text cannot be None or empty
+2025-01-18 19:51:59,767 - ERROR - Error processing KWF entry 'lí•kaw': Input text cannot be None or empty
+2025-01-18 19:52:13,390 - ERROR - Error processing KWF entry 'pa•drí•no': Input text cannot be None or empty
+2025-01-18 19:52:18,975 - ERROR - Error processing KWF entry 'pó•sas': Input text cannot be None or empty
+2025-01-18 19:52:23,726 - ERROR - Error processing KWF entry 'si•pót': Input text cannot be None or empty
+2025-01-18 19:52:32,008 - ERROR - Error processing KWF entry 'um•póg': Input text cannot be None or empty
+2025-01-18 19:52:32,444 - ERROR - Error processing KWF entry 'u•má•ga': Input text cannot be None or empty
+2025-01-18 19:52:35,500 - INFO - Completed processing KWF Dictionary
+2025-01-18 19:52:35,529 - INFO - Processing Kaikki (Tagalog)
+2025-01-18 19:52:35,529 - INFO - Starting to process Kaikki file: data/kaikki.jsonl

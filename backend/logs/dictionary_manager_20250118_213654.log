@@ -1,0 +1,13 @@
+2025-01-18 21:36:54,588 - INFO - Attempting database connection...
+2025-01-18 21:36:54,589 - INFO - Database configuration:
+2025-01-18 21:36:54,589 - INFO -   Database Name: fil_dict_db
+2025-01-18 21:36:54,590 - INFO -   User: postgres
+2025-01-18 21:36:54,590 - INFO -   Host: localhost
+2025-01-18 21:36:54,590 - INFO -   Password: ********
+2025-01-18 21:36:54,776 - INFO - Successfully established database connection
+2025-01-18 21:36:54,906 - INFO - Database extensions configured successfully
+2025-01-18 21:36:54,907 - INFO - Starting table creation/update process.
+2025-01-18 21:36:54,944 - ERROR - Schema creation error: column "word_id" does not exist
+
+2025-01-18 21:36:54,944 - ERROR - Error during migration: column "word_id" does not exist
+

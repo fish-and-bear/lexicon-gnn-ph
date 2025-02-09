@@ -1,0 +1,52 @@
+2025-02-08 22:07:55,314 - INFO - Attempting database connection...
+2025-02-08 22:07:55,315 - INFO - Database configuration:
+2025-02-08 22:07:55,315 - INFO -   Database Name: fil_dict_db
+2025-02-08 22:07:55,315 - INFO -   User: postgres
+2025-02-08 22:07:55,315 - INFO -   Host: localhost
+2025-02-08 22:07:55,316 - INFO -   Password: ********
+2025-02-08 22:07:55,370 - INFO - Successfully established database connection
+2025-02-08 22:07:55,371 - INFO - Setting up PostgreSQL extensions...
+2025-02-08 22:07:55,371 - INFO - Checking extension: pg_trgm
+2025-02-08 22:07:55,492 - INFO - Extension already installed: pg_trgm
+2025-02-08 22:07:55,493 - INFO - Checking extension: unaccent
+2025-02-08 22:07:55,494 - INFO - Extension already installed: unaccent
+2025-02-08 22:07:55,495 - INFO - Checking extension: fuzzystrmatch
+2025-02-08 22:07:55,496 - INFO - Extension already installed: fuzzystrmatch
+2025-02-08 22:07:55,497 - INFO - Extensions setup completed
+2025-02-08 22:07:55,498 - INFO - Starting table creation/update process.
+2025-02-08 22:07:55,602 - INFO - Tables created or updated successfully.
+2025-02-08 22:07:55,606 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-08 22:11:34,412 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json
+2025-02-08 22:13:00,848 - INFO - Processing KWF dictionary from: data/kwf_dictionary.json
+2025-02-08 22:16:29,849 - INFO - Starting to process Kaikki file: data/kaikki.jsonl
+2025-02-08 22:20:16,762 - INFO - Starting to process Kaikki file: data/kaikki-ceb.jsonl
+2025-02-08 22:21:21,945 - INFO - Processing Baybayin entries...
+2025-02-08 22:21:22,020 - INFO - Updating Baybayin entry (ID: 95386) with cleaned form
+2025-02-08 22:21:22,046 - INFO - Updating Baybayin entry (ID: 98927) with cleaned form
+2025-02-08 22:21:22,049 - INFO - Updating Baybayin entry (ID: 103713) with cleaned form
+2025-02-08 22:21:22,057 - INFO - Updating Baybayin entry (ID: 103785) with cleaned form
+2025-02-08 22:21:22,062 - INFO - Updating Baybayin entry (ID: 103786) with cleaned form
+2025-02-08 22:21:22,069 - INFO - Updating Baybayin entry (ID: 103788) with cleaned form
+2025-02-08 22:21:22,079 - INFO - Updating Baybayin entry (ID: 103789) with cleaned form
+2025-02-08 22:21:22,083 - INFO - Updating Baybayin entry (ID: 103790) with cleaned form
+2025-02-08 22:21:22,087 - INFO - Updating Baybayin entry (ID: 103791) with cleaned form
+2025-02-08 22:21:22,092 - INFO - Updating Baybayin entry (ID: 103792) with cleaned form
+2025-02-08 22:21:22,096 - INFO - Updating Baybayin entry (ID: 103793) with cleaned form
+2025-02-08 22:21:22,098 - INFO - Updating Baybayin entry (ID: 103794) with cleaned form
+2025-02-08 22:21:22,101 - INFO - Updating Baybayin entry (ID: 104894) with cleaned form
+2025-02-08 22:21:22,103 - INFO - Updating Baybayin entry (ID: 107186) with cleaned form
+2025-02-08 22:21:22,105 - INFO - Updating Baybayin entry (ID: 107311) with cleaned form
+2025-02-08 22:21:22,107 - INFO - Updating Baybayin entry (ID: 107473) with cleaned form
+2025-02-08 22:21:22,112 - INFO - Updating Baybayin entry (ID: 123825) with cleaned form
+2025-02-08 22:21:22,118 - INFO - Updating Baybayin entry (ID: 123841) with cleaned form
+2025-02-08 22:21:22,121 - INFO - Updating Baybayin entry (ID: 124212) with cleaned form
+2025-02-08 22:21:22,125 - INFO - Updating Baybayin entry (ID: 124214) with cleaned form
+2025-02-08 22:21:22,127 - INFO - Updating Baybayin entry (ID: 124215) with cleaned form
+2025-02-08 22:21:22,130 - INFO - Updating Baybayin entry (ID: 124216) with cleaned form
+2025-02-08 22:21:22,135 - INFO - Updating Baybayin entry (ID: 124217) with cleaned form
+2025-02-08 22:21:22,138 - INFO - Updating Baybayin entry (ID: 124219) with cleaned form
+2025-02-08 22:21:22,142 - INFO - Updating Baybayin entry (ID: 124220) with cleaned form
+2025-02-08 22:21:22,145 - INFO - Updating Baybayin entry (ID: 124224) with cleaned form
+2025-02-08 22:21:22,147 - INFO - Updating Baybayin entry (ID: 124225) with cleaned form
+2025-02-08 22:21:26,159 - INFO - Baybayin data cleanup completed successfully
+2025-02-08 22:21:26,161 - INFO - Migration completed successfully

@@ -1,0 +1,20 @@
+2025-01-29 12:46:43,944 - INFO - Attempting database connection...
+2025-01-29 12:46:43,946 - INFO - Database configuration:
+2025-01-29 12:46:43,946 - INFO -   Database Name: fil_dict_db
+2025-01-29 12:46:43,947 - INFO -   User: postgres
+2025-01-29 12:46:43,948 - INFO -   Host: localhost
+2025-01-29 12:46:43,949 - INFO -   Password: ********
+2025-01-29 12:46:44,066 - INFO - Successfully established database connection
+2025-01-29 12:46:46,419 - INFO - Setting up PostgreSQL extensions...
+2025-01-29 12:46:46,420 - INFO - Checking extension: pg_trgm
+2025-01-29 12:46:46,454 - INFO - Extension already installed: pg_trgm
+2025-01-29 12:46:46,455 - INFO - Checking extension: unaccent
+2025-01-29 12:46:46,456 - INFO - Extension already installed: unaccent
+2025-01-29 12:46:46,457 - INFO - Checking extension: fuzzystrmatch
+2025-01-29 12:46:46,458 - INFO - Extension already installed: fuzzystrmatch
+2025-01-29 12:46:46,458 - INFO - Extensions setup completed
+2025-01-29 12:46:46,459 - INFO - Starting table creation/update process.
+2025-01-29 12:46:46,491 - ERROR - Schema creation error: trigger "update_words_timestamp" for relation "words" already exists
+
+2025-01-29 12:46:46,491 - ERROR - Error during migration: trigger "update_words_timestamp" for relation "words" already exists
+
