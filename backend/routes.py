@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, current_app
 from sqlalchemy.orm import joinedload, selectinload, load_only
 from sqlalchemy import or_, func, desc
 from backend.models import Word, Definition, Etymology, Relation, DefinitionRelation, Affixation, PartOfSpeech, db
-from datetime import datetime
+from datetime import datetime, UTC
 from unidecode import unidecode
 from functools import lru_cache, wraps
 import re
@@ -118,7 +118,7 @@ def get_word_details(word_entry):
         "meta": {
             "version": "2.0",
             "word": word_entry.lemma,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(UTC).isoformat(),
         },
         "data": {
             "word": word_entry.lemma,
@@ -428,8 +428,8 @@ def search_words():
             Word.id,
             Word.lemma,
             Word.normalized_lemma,
-            func.ts_rank(Word.search_text, tsquery).label('rank'),
-            func.similarity(Word.normalized_lemma, normalized_query).label('similarity')
+            func.coalesce(func.ts_rank(Word.search_text, tsquery), 0.0).label('rank'),
+            func.coalesce(func.similarity(Word.normalized_lemma, normalized_query), 0.0).label('similarity')
         ).cte('search_results')
         
         final_results = db.session.query(results)\
@@ -451,7 +451,7 @@ def search_words():
                 {
                     "word": r.lemma,
                     "id": r.id,
-                    "score": max(r.rank, r.similarity)
+                    "score": max(r.rank or 0.0, r.similarity or 0.0)
                 } for r in final_results
             ]
         })
@@ -498,7 +498,7 @@ def error_response(message, status_code=500):
     return jsonify({
         "error": {
             "message": message,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.now(UTC).isoformat()
         }
     }), status_code
 

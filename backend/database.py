@@ -15,6 +15,8 @@ def init_db():
     # Create extensions
     db.session.execute(text('CREATE EXTENSION IF NOT EXISTS unaccent'))
     db.session.execute(text('CREATE EXTENSION IF NOT EXISTS pg_trgm'))
+    db.session.execute(text('CREATE EXTENSION IF NOT EXISTS btree_gin'))
+    db.session.execute(text('CREATE EXTENSION IF NOT EXISTS fuzzystrmatch'))
     db.session.commit()
 
     # Create tables

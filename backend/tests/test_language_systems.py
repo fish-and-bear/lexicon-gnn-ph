@@ -1,6 +1,6 @@
 import pytest
-from language_systems import LanguageSystem
-from language_types import InvalidLanguageCode, InvalidLanguageMapping
+from backend.language_systems import LanguageSystem
+from backend.language_types import InvalidLanguageCode, InvalidLanguageMapping
 
 @pytest.fixture
 def ls():
@@ -12,8 +12,9 @@ def test_standardize_code(ls):
     assert ls.standardize_code("INVALID") == "INVALID"
 
 def test_invalid_language_code(ls):
-    with pytest.raises(InvalidLanguageCode):
+    with pytest.raises(InvalidLanguageCode) as exc_info:
         ls.get_family_tree("invalid_language")
+    assert "Invalid language code: invalid_language" in str(exc_info.value)
 
 def test_family_tree(ls):
     tree = ls.get_family_tree("Tagálog")
