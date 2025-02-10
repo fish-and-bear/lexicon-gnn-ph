@@ -16,3 +16,1390 @@
 2025-02-09 14:24:14,126 - INFO - Starting table creation/update process.
 2025-02-09 14:24:14,144 - INFO - Tables created or updated successfully.
 2025-02-09 14:24:14,149 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-09 14:59:55,637 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json
+2025-02-09 15:02:59,255 - INFO - Processing KWF dictionary from: data/kwf_dictionary.json
+2025-02-09 15:03:08,349 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:08,350 - ERROR - Error processing KWF entry 'aw•to•bi•yo•gra•pí•ya': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:08,350 - ERROR - Error processing KWF entry 'aw•to•bi•yo•gra•pí•ya': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:08,374 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:08,374 - ERROR - Error processing KWF entry 'aw•to•krá•ti•kó': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:08,377 - ERROR - Error processing KWF entry 'aw•to•krá•ti•kó': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:17,525 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:17,525 - ERROR - Error processing KWF entry 'a•nun•si•yas•yón': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:17,526 - ERROR - Error processing KWF entry 'a•nun•si•yas•yón': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:26,346 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:26,347 - ERROR - Error processing KWF entry 'ba•lí•sa': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:26,347 - ERROR - Error processing KWF entry 'ba•lí•sa': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:39,190 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:39,191 - ERROR - Error processing KWF entry 'báng•ko': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:39,191 - ERROR - Error processing KWF entry 'báng•ko': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:39,991 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:39,992 - ERROR - Error processing KWF entry 'bá•ra': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:39,992 - ERROR - Error processing KWF entry 'bá•ra': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:40,301 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:40,302 - ERROR - Error processing KWF entry 'bén•da': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:40,302 - ERROR - Error processing KWF entry 'bén•da': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:50,426 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:50,427 - ERROR - Error processing KWF entry 'dá•ster': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:03:50,428 - ERROR - Error processing KWF entry 'dá•ster': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:25,353 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:25,354 - ERROR - Error processing KWF entry 'hu•rá•han': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:25,354 - ERROR - Error processing KWF entry 'hu•rá•han': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:25,699 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:25,700 - ERROR - Error processing KWF entry 'hás•pe': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:25,700 - ERROR - Error processing KWF entry 'hás•pe': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:38,393 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:38,398 - ERROR - Error processing KWF entry 'hún•ta': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:38,403 - ERROR - Error processing KWF entry 'hún•ta': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:47,308 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:47,309 - ERROR - Error processing KWF entry 'kal•bár•yo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:04:47,309 - ERROR - Error processing KWF entry 'kal•bár•yo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:05:18,741 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:05:18,742 - ERROR - Error processing KWF entry 'kúr•so': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:05:18,742 - ERROR - Error processing KWF entry 'kúr•so': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:06:26,896 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:06:26,897 - ERROR - Error processing KWF entry 'mul•ti•kó•lor': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:06:26,898 - ERROR - Error processing KWF entry 'mul•ti•kó•lor': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:06:27,643 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:06:27,644 - ERROR - Error processing KWF entry 'mán•wal': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:06:27,644 - ERROR - Error processing KWF entry 'mán•wal': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:21,612 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:21,613 - ERROR - Error processing KWF entry 'pa•sâ': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:21,614 - ERROR - Error processing KWF entry 'pa•sâ': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:43,000 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:43,000 - ERROR - Error processing KWF entry 'pá•ma•ha•la•án': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:43,001 - ERROR - Error processing KWF entry 'pá•ma•ha•la•án': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:45,031 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:45,031 - ERROR - Error processing KWF entry 'pí•kon': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:07:45,032 - ERROR - Error processing KWF entry 'pí•kon': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:08:00,348 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:08:00,348 - ERROR - Error processing KWF entry 'si•líd-a•ra•lán': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:08:00,349 - ERROR - Error processing KWF entry 'si•líd-a•ra•lán': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:08:40,791 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:08:40,792 - ERROR - Error processing KWF entry 'tsá•ta': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:08:40,792 - ERROR - Error processing KWF entry 'tsá•ta': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:16,414 - INFO - Starting to process Kaikki file: data/kaikki.jsonl
+2025-02-09 15:09:17,037 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,042 - ERROR - Error processing entry 'abay': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,519 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,519 - ERROR - Error processing entry 'tago': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,562 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,562 - ERROR - Error processing entry 'libre': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,575 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,575 - ERROR - Error processing entry 'may': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,718 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,719 - ERROR - Error processing entry 'tao': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,748 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,749 - ERROR - Error processing entry 'f': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,794 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,794 - ERROR - Error processing entry 'y': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,799 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,799 - ERROR - Error processing entry 'y': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,895 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,896 - ERROR - Error processing entry 'A': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,903 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:17,904 - ERROR - Error processing entry 'Portugal': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,171 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,172 - ERROR - Error processing entry 'o': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,194 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,194 - ERROR - Error processing entry 'o': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,201 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,202 - ERROR - Error processing entry 'i': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,206 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,206 - ERROR - Error processing entry 'i': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,221 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,222 - ERROR - Error processing entry 'X': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,283 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,283 - ERROR - Error processing entry 'bold': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,719 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,720 - ERROR - Error processing entry 'bayad': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,881 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,881 - ERROR - Error processing entry 'Bombay': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,884 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:18,884 - ERROR - Error processing entry 'Bombay': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,301 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,301 - ERROR - Error processing entry 'kita': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,317 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,318 - ERROR - Error processing entry 'kita': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,400 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,401 - ERROR - Error processing entry 'pula': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,412 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,412 - ERROR - Error processing entry 'Muslim': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,484 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,485 - ERROR - Error processing entry 'ideal': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,514 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,515 - ERROR - Error processing entry 'basket': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,634 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,634 - ERROR - Error processing entry 'q': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,651 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,651 - ERROR - Error processing entry 'tanto': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,729 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,730 - ERROR - Error processing entry 'ano': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,733 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,734 - ERROR - Error processing entry 'ano': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,845 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,846 - ERROR - Error processing entry 'j': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,851 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,852 - ERROR - Error processing entry 'l': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,855 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,856 - ERROR - Error processing entry 'l': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,861 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,862 - ERROR - Error processing entry 'r': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,864 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,865 - ERROR - Error processing entry 'r': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,878 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,879 - ERROR - Error processing entry 'p': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,969 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,969 - ERROR - Error processing entry 't': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,979 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,980 - ERROR - Error processing entry 'b': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,990 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:19,991 - ERROR - Error processing entry 'k': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,009 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,009 - ERROR - Error processing entry 'g': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,014 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,015 - ERROR - Error processing entry 'g': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,024 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,025 - ERROR - Error processing entry 'm': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,028 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,029 - ERROR - Error processing entry 'm': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,038 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,038 - ERROR - Error processing entry 'w': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,163 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,164 - ERROR - Error processing entry 'h': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,169 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,170 - ERROR - Error processing entry 'h': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,278 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,279 - ERROR - Error processing entry 'd': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,433 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,433 - ERROR - Error processing entry 'n': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,438 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,439 - ERROR - Error processing entry 'n': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,452 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,453 - ERROR - Error processing entry 's': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,457 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,458 - ERROR - Error processing entry 's': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,467 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,468 - ERROR - Error processing entry 'z': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,594 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,595 - ERROR - Error processing entry 'e': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,619 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,619 - ERROR - Error processing entry 'u': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,625 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,625 - ERROR - Error processing entry 'u': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,849 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,849 - ERROR - Error processing entry 'ni': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,913 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,914 - ERROR - Error processing entry 'talo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,977 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:20,977 - ERROR - Error processing entry 'natural': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,002 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,002 - ERROR - Error processing entry 'kilo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,152 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,153 - ERROR - Error processing entry 'kana': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,205 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,205 - ERROR - Error processing entry 'halal': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,231 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,232 - ERROR - Error processing entry 'Tagalog': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,709 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,710 - ERROR - Error processing entry 'negro': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,794 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,795 - ERROR - Error processing entry 'baba': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,829 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,829 - ERROR - Error processing entry 'baba': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,834 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,835 - ERROR - Error processing entry 'baba': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,936 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,936 - ERROR - Error processing entry 'real': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,954 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:21,955 - ERROR - Error processing entry 'na': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,293 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,294 - ERROR - Error processing entry 'wag': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,476 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,477 - ERROR - Error processing entry 'Santa': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,610 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,611 - ERROR - Error processing entry 'santo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,641 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,642 - ERROR - Error processing entry 'akin': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,765 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,765 - ERROR - Error processing entry 'ingat': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,811 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,811 - ERROR - Error processing entry 'lagi': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,819 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,820 - ERROR - Error processing entry 'barat': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,870 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,870 - ERROR - Error processing entry 'tali': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,978 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:22,979 - ERROR - Error processing entry 'mahal': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,010 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,010 - ERROR - Error processing entry 'awas': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,047 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,048 - ERROR - Error processing entry 'kaki': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,097 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,098 - ERROR - Error processing entry 'Malay': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,102 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,103 - ERROR - Error processing entry 'Malay': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,165 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,166 - ERROR - Error processing entry 'ng': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,282 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,283 - ERROR - Error processing entry 'anak': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,296 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,296 - ERROR - Error processing entry 'punto': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,352 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,353 - ERROR - Error processing entry 'amen': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,363 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,364 - ERROR - Error processing entry 'dos': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,433 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,434 - ERROR - Error processing entry 'duda': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,486 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,487 - ERROR - Error processing entry 'kuba': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,707 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,708 - ERROR - Error processing entry 'dale': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,740 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,741 - ERROR - Error processing entry 'segundo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,892 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,892 - ERROR - Error processing entry 'moral': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,949 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,950 - ERROR - Error processing entry 'seis': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,959 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,960 - ERROR - Error processing entry 'pirata': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,974 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:23,975 - ERROR - Error processing entry 'abad': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,123 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,124 - ERROR - Error processing entry 'lista': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,205 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,205 - ERROR - Error processing entry 'abo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,523 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,524 - ERROR - Error processing entry 'una': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,529 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,529 - ERROR - Error processing entry 'una': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,690 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,691 - ERROR - Error processing entry 'para': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,718 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,718 - ERROR - Error processing entry 'ala': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,865 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,865 - ERROR - Error processing entry 'buldog': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,907 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,907 - ERROR - Error processing entry 'aba': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,923 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:24,924 - ERROR - Error processing entry 'Pamplona': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:25,032 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:25,033 - ERROR - Error processing entry 'tubo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:25,038 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:25,038 - ERROR - Error processing entry 'tubo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:25,179 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:25,179 - ERROR - Error processing entry 'tonto': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:25,310 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:25,310 - ERROR - Error processing entry 'laya': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,362 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,368 - ERROR - Error processing entry '-an': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,464 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,467 - ERROR - Error processing entry '-an': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,649 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,649 - ERROR - Error processing entry 'mabuhay': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,660 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,660 - ERROR - Error processing entry 'magpatuloy': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,804 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,805 - ERROR - Error processing entry 'pala': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,931 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,931 - ERROR - Error processing entry 'agahan': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,977 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,978 - ERROR - Error processing entry 'hapunan': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,987 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:26,988 - ERROR - Error processing entry 'hapunan': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:27,225 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:27,225 - ERROR - Error processing entry '-in': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:27,233 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:27,234 - ERROR - Error processing entry '-in': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:27,899 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:27,904 - ERROR - Error processing entry 'laki': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:28,812 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:28,817 - ERROR - Error processing entry 'primera': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:28,911 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:28,916 - ERROR - Error processing entry 'primera': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:29,712 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:29,713 - ERROR - Error processing entry 'puro': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:29,720 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:29,720 - ERROR - Error processing entry 'puro': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,068 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,069 - ERROR - Error processing entry 'sima': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,120 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,120 - ERROR - Error processing entry 'gala': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,143 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,143 - ERROR - Error processing entry 'bale': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,153 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,154 - ERROR - Error processing entry 'bale': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,203 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,204 - ERROR - Error processing entry 'tapa': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,209 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,209 - ERROR - Error processing entry 'tapa': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,322 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:30,323 - ERROR - Error processing entry 'pipi': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:31,720 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:31,726 - ERROR - Error processing entry 'adelantado': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:32,290 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:32,295 - ERROR - Error processing entry 'todo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:33,580 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:33,581 - ERROR - Error processing entry 'trip': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:33,838 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:33,839 - ERROR - Error processing entry 'Hokkien': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:33,957 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:33,957 - ERROR - Error processing entry 'Ilokano': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,005 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,005 - ERROR - Error processing entry 'Kapampangan': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,041 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,042 - ERROR - Error processing entry 'Filipino': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,059 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,060 - ERROR - Error processing entry 'sila': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,113 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,114 - ERROR - Error processing entry 'bobo': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,258 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,259 - ERROR - Error processing entry 'sala': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,261 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,262 - ERROR - Error processing entry 'sala': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,299 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,300 - ERROR - Error processing entry 'sala': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,321 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,322 - ERROR - Error processing entry 'sala': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,346 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,347 - ERROR - Error processing entry 'basta': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,354 - ERROR - Error in insert_etymology: record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+
+2025-02-09 15:09:34,354 - ERROR - Error processing entry 'basta': record "new" has no field "updated_at"
+CONTEXT:  PL/pgSQL assignment "NEW.updated_at = CURRENT_TIMESTAMP"
+PL/pgSQL function update_timestamp() line 3 at assignment
+

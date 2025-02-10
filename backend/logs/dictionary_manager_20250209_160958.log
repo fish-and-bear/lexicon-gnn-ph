@@ -1,0 +1,107 @@
+2025-02-09 16:09:58,533 - INFO - Attempting database connection...
+2025-02-09 16:09:58,534 - INFO - Database configuration:
+2025-02-09 16:09:58,534 - INFO -   Database Name: fil_dict_db
+2025-02-09 16:09:58,534 - INFO -   User: postgres
+2025-02-09 16:09:58,534 - INFO -   Host: localhost
+2025-02-09 16:09:58,534 - INFO -   Password: ********
+2025-02-09 16:09:58,569 - INFO - Successfully established database connection
+2025-02-09 16:09:58,570 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 16:09:58,570 - INFO - Checking extension: pg_trgm
+2025-02-09 16:09:58,578 - INFO - Extension already installed: pg_trgm
+2025-02-09 16:09:58,578 - INFO - Checking extension: unaccent
+2025-02-09 16:09:58,579 - INFO - Extension already installed: unaccent
+2025-02-09 16:09:58,579 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 16:09:58,579 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 16:09:58,579 - INFO - Extensions setup completed
+2025-02-09 16:09:58,579 - INFO - Starting table creation/update process.
+2025-02-09 16:09:58,613 - INFO - Standardizing source names...
+2025-02-09 16:10:26,741 - INFO - Source names standardization completed
+2025-02-09 16:10:26,753 - INFO - Tables created or updated successfully.
+2025-02-09 16:10:26,756 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-09 16:11:33,651 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json
+2025-02-09 16:11:59,491 - INFO - Processing KWF dictionary from: data/kwf_dictionary.json
+2025-02-09 16:13:30,462 - INFO - Starting to process Kaikki file: data/kaikki.jsonl
+2025-02-09 16:13:30,479 - WARNING - Error extracting Baybayin info for word 'LDP': unbalanced parenthesis at position 31
+2025-02-09 16:13:30,545 - ERROR - Error processing entry 'may': list index out of range
+2025-02-09 16:13:30,546 - ERROR - Error processing entry 'may': list index out of range
+2025-02-09 16:13:31,018 - ERROR - Error processing entry 'el': list index out of range
+2025-02-09 16:13:31,051 - ERROR - Error processing entry 'balatik': list index out of range
+2025-02-09 16:13:31,104 - WARNING - Error extracting Baybayin info for word 'SK': unbalanced parenthesis at position 31
+2025-02-09 16:13:31,108 - ERROR - Error processing entry 'baon': list index out of range
+2025-02-09 16:13:31,312 - ERROR - Error processing entry 'saya': list index out of range
+2025-02-09 16:13:31,319 - ERROR - Error processing entry 'Sydney': list index out of range
+2025-02-09 16:13:31,385 - ERROR - Error processing entry 'kali': list index out of range
+2025-02-09 16:13:31,514 - ERROR - Error processing entry 'ba': list index out of range
+2025-02-09 16:13:31,621 - ERROR - Error processing entry 'suka': list index out of range
+2025-02-09 16:13:31,630 - ERROR - Error processing entry 'pain': list index out of range
+2025-02-09 16:13:31,632 - ERROR - Error processing entry 'pula': list index out of range
+2025-02-09 16:13:31,634 - ERROR - Error processing entry 'pula': list index out of range
+2025-02-09 16:13:31,645 - ERROR - Error processing entry 'look': list index out of range
+2025-02-09 16:13:31,717 - ERROR - Error processing entry '-rin': list index out of range
+2025-02-09 16:13:31,739 - ERROR - Error processing entry 'mana': list index out of range
+2025-02-09 16:13:31,867 - ERROR - Error processing entry 'p': list index out of range
+2025-02-09 16:13:31,929 - ERROR - Error processing entry 'k': list index out of range
+2025-02-09 16:13:31,930 - ERROR - Error processing entry 'k': list index out of range
+2025-02-09 16:13:32,168 - ERROR - Error processing entry 'n': list index out of range
+2025-02-09 16:13:32,301 - ERROR - Error processing entry 'aa': list index out of range
+2025-02-09 16:13:32,368 - ERROR - Error processing entry 'ni': list index out of range
+2025-02-09 16:13:32,419 - ERROR - Error processing entry 'un': list index out of range
+2025-02-09 16:13:32,442 - ERROR - Error processing entry 'ta': list index out of range
+2025-02-09 16:13:32,446 - ERROR - Error processing entry 'kilo': list index out of range
+2025-02-09 16:13:32,448 - ERROR - Error processing entry 'kilo': list index out of range
+2025-02-09 16:13:32,457 - ERROR - Error processing entry 'Cu': list index out of range
+2025-02-09 16:13:32,462 - ERROR - Error processing entry 'em': list index out of range
+2025-02-09 16:13:32,522 - WARNING - Error extracting Baybayin info for word '2': unbalanced parenthesis at position 31
+2025-02-09 16:13:32,552 - ERROR - Error processing entry 'Tagalog': list index out of range
+2025-02-09 16:13:32,555 - ERROR - Error processing entry 'Tagalog': list index out of range
+2025-02-09 16:13:32,792 - ERROR - Error processing entry 'Lao': list index out of range
+2025-02-09 16:13:32,887 - ERROR - Error processing entry 'si': list index out of range
+2025-02-09 16:13:32,921 - ERROR - Error processing entry 'na': list index out of range
+2025-02-09 16:13:32,923 - ERROR - Error processing entry 'na': list index out of range
+2025-02-09 16:13:32,926 - ERROR - Error processing entry 'na': list index out of range
+2025-02-09 16:13:32,974 - ERROR - Error processing entry 'gabe': list index out of range
+2025-02-09 16:13:33,065 - ERROR - Error processing entry 'puso': list index out of range
+2025-02-09 16:13:33,143 - ERROR - Error processing entry 'lago': list index out of range
+2025-02-09 16:13:33,263 - ERROR - Error processing entry 'akin': list index out of range
+2025-02-09 16:13:33,265 - ERROR - Error processing entry 'akin': list index out of range
+2025-02-09 16:13:33,267 - ERROR - Error processing entry 'Amoy': list index out of range
+2025-02-09 16:13:33,268 - ERROR - Error processing entry 'balian': list index out of range
+2025-02-09 16:13:33,529 - ERROR - Error processing entry 'ng': list index out of range
+2025-02-09 16:13:33,531 - ERROR - Error processing entry 'ng': list index out of range
+2025-02-09 16:13:33,674 - ERROR - Error processing entry 'di': list index out of range
+2025-02-09 16:13:33,695 - ERROR - Error processing entry 'di-': list index out of range
+2025-02-09 16:13:33,757 - ERROR - Error processing entry 'asin': list index out of range
+2025-02-09 16:13:33,825 - ERROR - Error processing entry 'sa': list index out of range
+2025-02-09 16:13:33,838 - ERROR - Error processing entry 'gata': list index out of range
+2025-02-09 16:13:33,858 - ERROR - Error processing entry 'abad': list index out of range
+2025-02-09 16:13:33,860 - ERROR - Error processing entry 'abad': list index out of range
+2025-02-09 16:13:34,021 - ERROR - Error processing entry 'din': list index out of range
+2025-02-09 16:13:34,093 - ERROR - Error processing entry 'kiki': list index out of range
+2025-02-09 16:13:34,249 - ERROR - Error processing entry 'ay': list index out of range
+2025-02-09 16:13:34,353 - ERROR - Error processing entry 'sauna': list index out of range
+2025-02-09 16:13:34,376 - ERROR - Error processing entry 'aba': list index out of range
+2025-02-09 16:13:34,462 - ERROR - Error processing entry 'ow': list index out of range
+2025-02-09 16:13:34,515 - WARNING - Error extracting Baybayin info for word 'TNT': unbalanced parenthesis at position 31
+2025-02-09 16:13:34,607 - WARNING - Invalid Baybayin data for word '-an', clearing baybayin fields.
+2025-02-09 16:13:34,614 - WARNING - Invalid Baybayin data for word '-an', clearing baybayin fields.
+2025-02-09 16:13:34,625 - WARNING - Invalid Baybayin data for word '-an', clearing baybayin fields.
+2025-02-09 16:13:34,632 - ERROR - Error processing entry 'manirahan': list index out of range
+2025-02-09 16:13:34,645 - ERROR - Error processing entry 'magkaroon': list index out of range
+2025-02-09 16:13:34,647 - ERROR - Error processing entry 'magbalik': list index out of range
+2025-02-09 16:13:34,651 - ERROR - Error processing entry 'umalis': list index out of range
+2025-02-09 16:13:34,654 - ERROR - Error processing entry 'kainin': list index out of range
+2025-02-09 16:13:34,656 - ERROR - Error processing entry 'magbigay': list index out of range
+2025-02-09 16:13:34,658 - ERROR - Error processing entry 'lumapit': list index out of range
+2025-02-09 16:13:34,659 - ERROR - Error processing entry 'uminom': list index out of range
+2025-02-09 16:13:34,661 - ERROR - Error processing entry 'mangailangan': list index out of range
+2025-02-09 16:13:34,663 - ERROR - Error processing entry 'magtagpo': list index out of range
+2025-02-09 16:13:34,665 - ERROR - Error processing entry 'umibig': list index out of range
+2025-02-09 16:13:34,668 - ERROR - Error processing entry 'mabuhay': list index out of range
+2025-02-09 16:13:34,670 - ERROR - Error processing entry 'mabuhay': list index out of range
+2025-02-09 16:13:34,672 - ERROR - Error processing entry 'magpatuloy': list index out of range
+2025-02-09 16:13:34,673 - ERROR - Error processing entry 'magpatuloy': list index out of range
+2025-02-09 16:13:34,674 - ERROR - Error processing entry 'dumating': list index out of range
+2025-02-09 16:13:34,677 - ERROR - Error processing entry 'gumawa': list index out of range
+2025-02-09 16:13:34,679 - ERROR - Error processing entry 'bumili': list index out of range
+2025-02-09 16:13:34,682 - ERROR - Error processing entry 'kumain': list index out of range
+2025-02-09 16:13:34,690 - ERROR - Error processing entry 'magsabi': list index out of range

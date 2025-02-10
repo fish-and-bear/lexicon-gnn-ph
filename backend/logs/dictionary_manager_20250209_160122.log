@@ -1,0 +1,168 @@
+2025-02-09 16:01:22,257 - INFO - Attempting database connection...
+2025-02-09 16:01:22,258 - INFO - Database configuration:
+2025-02-09 16:01:22,258 - INFO -   Database Name: fil_dict_db
+2025-02-09 16:01:22,258 - INFO -   User: postgres
+2025-02-09 16:01:22,258 - INFO -   Host: localhost
+2025-02-09 16:01:22,258 - INFO -   Password: ********
+2025-02-09 16:01:22,293 - INFO - Successfully established database connection
+2025-02-09 16:01:22,293 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 16:01:22,293 - INFO - Checking extension: pg_trgm
+2025-02-09 16:01:22,300 - INFO - Extension already installed: pg_trgm
+2025-02-09 16:01:22,300 - INFO - Checking extension: unaccent
+2025-02-09 16:01:22,300 - INFO - Extension already installed: unaccent
+2025-02-09 16:01:22,301 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 16:01:22,301 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 16:01:22,301 - INFO - Extensions setup completed
+2025-02-09 16:01:22,301 - INFO - Starting table creation/update process.
+2025-02-09 16:01:22,335 - INFO - Standardizing source names...
+2025-02-09 16:01:48,462 - INFO - Source names standardization completed
+2025-02-09 16:01:48,478 - INFO - Tables created or updated successfully.
+2025-02-09 16:01:48,483 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-09 16:03:05,400 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json
+2025-02-09 16:03:44,099 - INFO - Processing KWF dictionary from: data/kwf_dictionary.json
+2025-02-09 16:06:00,755 - INFO - Starting to process Kaikki file: data/kaikki.jsonl
+2025-02-09 16:06:00,889 - ERROR - Error processing entry 'may': list index out of range
+2025-02-09 16:06:00,892 - ERROR - Error processing entry 'may': list index out of range
+2025-02-09 16:06:01,612 - ERROR - Error processing entry 'el': list index out of range
+2025-02-09 16:06:01,663 - ERROR - Error processing entry 'balatik': list index out of range
+2025-02-09 16:06:01,754 - ERROR - Error processing entry 'baon': list index out of range
+2025-02-09 16:06:02,012 - ERROR - Error processing entry 'saya': list index out of range
+2025-02-09 16:06:02,030 - ERROR - Error processing entry 'Sydney': list index out of range
+2025-02-09 16:06:02,164 - ERROR - Error processing entry 'kali': list index out of range
+2025-02-09 16:06:02,405 - ERROR - Error processing entry 'ba': list index out of range
+2025-02-09 16:06:02,573 - ERROR - Error processing entry 'suka': list index out of range
+2025-02-09 16:06:02,592 - ERROR - Error processing entry 'pain': list index out of range
+2025-02-09 16:06:02,595 - ERROR - Error processing entry 'pula': list index out of range
+2025-02-09 16:06:02,603 - ERROR - Error processing entry 'pula': list index out of range
+2025-02-09 16:06:02,619 - ERROR - Error processing entry 'look': list index out of range
+2025-02-09 16:06:02,735 - ERROR - Error processing entry '-rin': list index out of range
+2025-02-09 16:06:02,780 - ERROR - Error processing entry 'mana': list index out of range
+2025-02-09 16:06:02,978 - ERROR - Error processing entry 'p': list index out of range
+2025-02-09 16:06:03,066 - ERROR - Error processing entry 'k': list index out of range
+2025-02-09 16:06:03,069 - ERROR - Error processing entry 'k': list index out of range
+2025-02-09 16:06:03,425 - ERROR - Error processing entry 'n': list index out of range
+2025-02-09 16:06:03,638 - ERROR - Error processing entry 'aa': list index out of range
+2025-02-09 16:06:03,744 - ERROR - Error processing entry 'ni': list index out of range
+2025-02-09 16:06:03,823 - ERROR - Error processing entry 'un': list index out of range
+2025-02-09 16:06:03,862 - ERROR - Error processing entry 'ta': list index out of range
+2025-02-09 16:06:03,871 - ERROR - Error processing entry 'kilo': list index out of range
+2025-02-09 16:06:03,874 - ERROR - Error processing entry 'kilo': list index out of range
+2025-02-09 16:06:03,890 - ERROR - Error processing entry 'Cu': list index out of range
+2025-02-09 16:06:03,898 - ERROR - Error processing entry 'em': list index out of range
+2025-02-09 16:06:04,007 - ERROR - Error processing entry 'Tagalog': list index out of range
+2025-02-09 16:06:04,015 - ERROR - Error processing entry 'Tagalog': list index out of range
+2025-02-09 16:06:04,398 - ERROR - Error processing entry 'Lao': list index out of range
+2025-02-09 16:06:04,550 - ERROR - Error processing entry 'si': list index out of range
+2025-02-09 16:06:04,611 - ERROR - Error processing entry 'na': list index out of range
+2025-02-09 16:06:04,613 - ERROR - Error processing entry 'na': list index out of range
+2025-02-09 16:06:04,618 - ERROR - Error processing entry 'na': list index out of range
+2025-02-09 16:06:04,692 - ERROR - Error processing entry 'gabe': list index out of range
+2025-02-09 16:06:04,840 - ERROR - Error processing entry 'puso': list index out of range
+2025-02-09 16:06:04,986 - ERROR - Error processing entry 'lago': list index out of range
+2025-02-09 16:06:05,139 - ERROR - Error processing entry 'akin': list index out of range
+2025-02-09 16:06:05,143 - ERROR - Error processing entry 'akin': list index out of range
+2025-02-09 16:06:05,147 - ERROR - Error processing entry 'Amoy': list index out of range
+2025-02-09 16:06:05,151 - ERROR - Error processing entry 'balian': list index out of range
+2025-02-09 16:06:05,549 - ERROR - Error processing entry 'ng': list index out of range
+2025-02-09 16:06:05,552 - ERROR - Error processing entry 'ng': list index out of range
+2025-02-09 16:06:05,730 - ERROR - Error processing entry 'di': list index out of range
+2025-02-09 16:06:05,762 - ERROR - Error processing entry 'di-': list index out of range
+2025-02-09 16:06:05,856 - ERROR - Error processing entry 'asin': list index out of range
+2025-02-09 16:06:05,946 - ERROR - Error processing entry 'sa': list index out of range
+2025-02-09 16:06:05,967 - ERROR - Error processing entry 'gata': list index out of range
+2025-02-09 16:06:05,999 - ERROR - Error processing entry 'abad': list index out of range
+2025-02-09 16:06:06,002 - ERROR - Error processing entry 'abad': list index out of range
+2025-02-09 16:06:06,219 - ERROR - Error processing entry 'din': list index out of range
+2025-02-09 16:06:06,306 - ERROR - Error processing entry 'kiki': list index out of range
+2025-02-09 16:06:06,515 - ERROR - Error processing entry 'ay': list index out of range
+2025-02-09 16:06:06,660 - ERROR - Error processing entry 'sauna': list index out of range
+2025-02-09 16:06:06,683 - ERROR - Error processing entry 'aba': list index out of range
+2025-02-09 16:06:06,838 - ERROR - Error processing entry 'ow': list index out of range
+2025-02-09 16:06:07,064 - WARNING - Invalid Baybayin data for word '-an', clearing baybayin fields.
+2025-02-09 16:06:07,076 - WARNING - Invalid Baybayin data for word '-an', clearing baybayin fields.
+2025-02-09 16:06:07,086 - WARNING - Invalid Baybayin data for word '-an', clearing baybayin fields.
+2025-02-09 16:06:07,093 - ERROR - Error processing entry 'manirahan': list index out of range
+2025-02-09 16:06:07,114 - ERROR - Error processing entry 'magkaroon': list index out of range
+2025-02-09 16:06:07,118 - ERROR - Error processing entry 'magbalik': list index out of range
+2025-02-09 16:06:07,124 - ERROR - Error processing entry 'umalis': list index out of range
+2025-02-09 16:06:07,130 - ERROR - Error processing entry 'kainin': list index out of range
+2025-02-09 16:06:07,134 - ERROR - Error processing entry 'magbigay': list index out of range
+2025-02-09 16:06:07,140 - ERROR - Error processing entry 'lumapit': list index out of range
+2025-02-09 16:06:07,146 - ERROR - Error processing entry 'uminom': list index out of range
+2025-02-09 16:06:07,152 - ERROR - Error processing entry 'mangailangan': list index out of range
+2025-02-09 16:06:07,157 - ERROR - Error processing entry 'magtagpo': list index out of range
+2025-02-09 16:06:07,162 - ERROR - Error processing entry 'umibig': list index out of range
+2025-02-09 16:06:07,166 - ERROR - Error processing entry 'mabuhay': list index out of range
+2025-02-09 16:06:07,170 - ERROR - Error processing entry 'mabuhay': list index out of range
+2025-02-09 16:06:07,174 - ERROR - Error processing entry 'magpatuloy': list index out of range
+2025-02-09 16:06:07,180 - ERROR - Error processing entry 'magpatuloy': list index out of range
+2025-02-09 16:06:07,185 - ERROR - Error processing entry 'dumating': list index out of range
+2025-02-09 16:06:07,195 - ERROR - Error processing entry 'gumawa': list index out of range
+2025-02-09 16:06:07,202 - ERROR - Error processing entry 'bumili': list index out of range
+2025-02-09 16:06:07,209 - ERROR - Error processing entry 'kumain': list index out of range
+2025-02-09 16:06:07,231 - ERROR - Error processing entry 'magsabi': list index out of range
+2025-02-09 16:06:07,240 - ERROR - Error processing entry 'malaman': list index out of range
+2025-02-09 16:06:07,352 - ERROR - Error processing entry 'matira': list index out of range
+2025-02-09 16:06:07,356 - ERROR - Error processing entry 'matira': list index out of range
+2025-02-09 16:06:07,366 - ERROR - Error processing entry 'tanghalian': list index out of range
+2025-02-09 16:06:07,372 - ERROR - Error processing entry 'tumira': list index out of range
+2025-02-09 16:06:07,377 - ERROR - Error processing entry 'tumira': list index out of range
+2025-02-09 16:06:07,381 - ERROR - Error processing entry 'agahan': list index out of range
+2025-02-09 16:06:07,384 - ERROR - Error processing entry 'agahan': list index out of range
+2025-02-09 16:06:07,420 - ERROR - Error processing entry 'hapunan': list index out of range
+2025-02-09 16:06:07,424 - ERROR - Error processing entry 'hapunan': list index out of range
+2025-02-09 16:06:07,428 - ERROR - Error processing entry 'hapunan': list index out of range
+2025-02-09 16:06:07,538 - ERROR - Error processing entry 'nana': list index out of range
+2025-02-09 16:06:07,556 - ERROR - Error processing entry 'sino': list index out of range
+2025-02-09 16:06:07,598 - ERROR - Error processing entry 'laki': list index out of range
+2025-02-09 16:06:07,601 - ERROR - Error processing entry 'laki': list index out of range
+2025-02-09 16:06:07,698 - ERROR - Error processing entry 'polo': list index out of range
+2025-02-09 16:06:07,701 - ERROR - Error processing entry 'polo': list index out of range
+2025-02-09 16:06:07,771 - ERROR - Error processing entry 'oo': list index out of range
+2025-02-09 16:06:07,784 - ERROR - Error processing entry 'chub': list index out of range
+2025-02-09 16:06:07,919 - ERROR - Error processing entry 'amo': list index out of range
+2025-02-09 16:06:07,964 - ERROR - Error processing entry 'ibis': list index out of range
+2025-02-09 16:06:08,125 - ERROR - Error processing entry 'sima': list index out of range
+2025-02-09 16:06:08,130 - ERROR - Error processing entry 'sima': list index out of range
+2025-02-09 16:06:08,211 - ERROR - Error processing entry 'bait': list index out of range
+2025-02-09 16:06:08,298 - ERROR - Error processing entry 'pipi': list index out of range
+2025-02-09 16:06:08,301 - ERROR - Error processing entry 'pipi': list index out of range
+2025-02-09 16:06:08,321 - ERROR - Error processing entry 'pipi': list index out of range
+2025-02-09 16:06:08,324 - ERROR - Error processing entry 'pipi': list index out of range
+2025-02-09 16:06:08,617 - ERROR - Error processing entry 'Dee': list index out of range
+2025-02-09 16:06:08,651 - ERROR - Error processing entry 'malaya': list index out of range
+2025-02-09 16:06:08,708 - ERROR - Error processing entry 'alamin': list index out of range
+2025-02-09 16:06:08,771 - ERROR - Error processing entry 'Ilokano': list index out of range
+2025-02-09 16:06:08,773 - ERROR - Error processing entry 'Ilokano': list index out of range
+2025-02-09 16:06:09,062 - ERROR - Error processing entry 'sala': list index out of range
+2025-02-09 16:06:09,065 - ERROR - Error processing entry 'sala': list index out of range
+2025-02-09 16:06:09,209 - ERROR - Error processing entry 'mens': list index out of range
+2025-02-09 16:06:09,397 - ERROR - Error processing entry 'bulo': list index out of range
+2025-02-09 16:06:09,424 - ERROR - Error processing entry 'umano': list index out of range
+2025-02-09 16:06:09,427 - ERROR - Error processing entry 'umano': list index out of range
+2025-02-09 16:06:09,442 - ERROR - Error processing entry 'buko': list index out of range
+2025-02-09 16:06:09,445 - ERROR - Error processing entry 'buko': list index out of range
+2025-02-09 16:06:09,452 - ERROR - Error processing entry 'aso': list index out of range
+2025-02-09 16:06:09,486 - ERROR - Error processing entry 'bubo': list index out of range
+2025-02-09 16:06:09,489 - ERROR - Error processing entry 'bubo': list index out of range
+2025-02-09 16:06:10,138 - ERROR - Error processing entry 'basa': list index out of range
+2025-02-09 16:06:10,144 - ERROR - Error processing entry 'Kong': list index out of range
+2025-02-09 16:06:10,453 - ERROR - Error processing entry 'dating': list index out of range
+2025-02-09 16:06:10,703 - ERROR - Error processing entry 'ama': list index out of range
+2025-02-09 16:06:10,710 - ERROR - Error processing entry 'ama': list index out of range
+2025-02-09 16:06:10,837 - ERROR - Error processing entry 'panis': list index out of range
+2025-02-09 16:06:10,840 - ERROR - Error processing entry 'panis': list index out of range
+2025-02-09 16:06:10,890 - ERROR - Error processing entry 'mahina': list index out of range
+2025-02-09 16:06:10,950 - ERROR - Error processing entry 'kau': list index out of range
+2025-02-09 16:06:10,970 - ERROR - Error processing entry 'Abu': list index out of range
+2025-02-09 16:06:11,001 - ERROR - Error processing entry 'dato': list index out of range
+2025-02-09 16:06:11,005 - ERROR - Error processing entry 'dato': list index out of range
+2025-02-09 16:06:11,048 - ERROR - Error processing entry 'Boy': list index out of range
+2025-02-09 16:06:11,064 - ERROR - Error processing entry 'Chow': list index out of range
+2025-02-09 16:06:11,074 - ERROR - Error processing entry 'Co': list index out of range
+2025-02-09 16:06:11,146 - ERROR - Error processing entry 'Dy': list index out of range
+2025-02-09 16:06:11,440 - ERROR - Error processing entry 'Ho': list index out of range
+2025-02-09 16:06:11,444 - ERROR - Error processing entry 'Ka': list index out of range
+2025-02-09 16:06:11,447 - ERROR - Error processing entry 'Ka': list index out of range
+2025-02-09 16:06:11,450 - ERROR - Error processing entry 'Ka': list index out of range
+2025-02-09 16:06:11,518 - ERROR - Error processing entry 'Lua': list index out of range

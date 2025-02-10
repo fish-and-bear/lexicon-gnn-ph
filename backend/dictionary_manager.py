@@ -48,10 +48,10 @@ from typing import Optional, List, Tuple, Dict, Any, Set, Callable
 from dataclasses import dataclass
 import functools
 from enum import Enum
-from language_systems import LanguageSystem
-from dictionary_processor import DictionaryProcessor
-from language_types import *
-from source_standardization import SourceStandardization
+from backend.language_systems import LanguageSystem
+from backend.dictionary_processor import DictionaryProcessor
+from backend.language_types import *
+from backend.source_standardization import SourceStandardization
 
 # -------------------------------------------------------------------
 # Initialize LanguageSystem
@@ -242,6 +242,8 @@ CREATE TABLE IF NOT EXISTS words (
     idioms            JSONB DEFAULT '[]',
     search_text       tsvector,
     pronunciation_data JSONB,
+    source_info       JSONB DEFAULT '{}',
+    data_hash         TEXT,
     created_at        TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT words_lang_lemma_uniq UNIQUE (language_code, normalized_lemma),
@@ -295,6 +297,9 @@ CREATE INDEX IF NOT EXISTS idx_relations_from ON relations(from_word_id);
 CREATE INDEX IF NOT EXISTS idx_relations_to ON relations(to_word_id);
 CREATE INDEX IF NOT EXISTS idx_relations_type ON relations(relation_type);
 
+-- Drop and recreate etymologies table
+DROP TABLE IF EXISTS etymologies CASCADE;
+
 -- Create etymologies table
 CREATE TABLE IF NOT EXISTS etymologies (
     id                   SERIAL PRIMARY KEY,
@@ -304,6 +309,7 @@ CREATE TABLE IF NOT EXISTS etymologies (
     language_codes       TEXT,
     sources             TEXT NOT NULL,
     created_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT etymologies_wordid_etymtext_uniq UNIQUE (word_id, etymology_text)
 );
 
@@ -345,13 +351,13 @@ CREATE INDEX IF NOT EXISTS idx_affixations_affixed ON affixations(affixed_word_i
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'update_timestamp') THEN
-        EXECUTE 'CREATE OR REPLACE FUNCTION update_timestamp()
+        CREATE OR REPLACE FUNCTION update_timestamp()
         RETURNS TRIGGER AS $trigger$
         BEGIN
             NEW.updated_at = CURRENT_TIMESTAMP;
             RETURN NEW;
         END;
-        $trigger$ language ''plpgsql''';
+        $trigger$ language 'plpgsql';
     END IF;
 END
 $$;
@@ -377,6 +383,17 @@ BEGIN
     ) THEN
         CREATE TRIGGER update_definitions_timestamp
             BEFORE UPDATE ON definitions
+            FOR EACH ROW
+            EXECUTE FUNCTION update_timestamp();
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_trigger 
+        WHERE tgname = 'update_etymologies_timestamp'
+        AND tgrelid = 'etymologies'::regclass
+    ) THEN
+        CREATE TRIGGER update_etymologies_timestamp
+            BEFORE UPDATE ON etymologies
             FOR EACH ROW
             EXECUTE FUNCTION update_timestamp();
     END IF;
@@ -427,6 +444,82 @@ def setup_extensions(conn):
     finally:
         cur.close()
 
+def standardize_source_names(cur):
+    """Standardize source names in all relevant tables."""
+    logger.info("Standardizing source names...")
+    
+    # Update definitions table
+    cur.execute("""
+        UPDATE definitions
+        SET sources = 
+            CASE 
+                WHEN sources = 'kaikki-ceb.jsonl' THEN 'kaikki.org (Cebuano)'
+                WHEN sources = 'kaikki.jsonl' THEN 'kaikki.org (Tagalog)'
+                WHEN sources = 'kwf_dictionary.json' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
+                WHEN sources = 'root_words_with_associated_words_cleaned.json' THEN 'tagalog.com'
+                WHEN sources = 'tagalog-words.json' THEN 'diksiyonaryo.ph'
+                ELSE sources
+            END
+    """)
+    
+    # Update etymologies table
+    cur.execute("""
+        UPDATE etymologies
+        SET sources = 
+            CASE 
+                WHEN sources = 'kaikki-ceb.jsonl' THEN 'kaikki.org (Cebuano)'
+                WHEN sources = 'kaikki.jsonl' THEN 'kaikki.org (Tagalog)'
+                WHEN sources = 'kwf_dictionary.json' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
+                WHEN sources = 'root_words_with_associated_words_cleaned.json' THEN 'tagalog.com'
+                WHEN sources = 'tagalog-words.json' THEN 'diksiyonaryo.ph'
+                ELSE sources
+            END
+    """)
+    
+    # Update relations table
+    cur.execute("""
+        UPDATE relations
+        SET sources = 
+            CASE 
+                WHEN sources = 'kaikki-ceb.jsonl' THEN 'kaikki.org (Cebuano)'
+                WHEN sources = 'kaikki.jsonl' THEN 'kaikki.org (Tagalog)'
+                WHEN sources = 'kwf_dictionary.json' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
+                WHEN sources = 'root_words_with_associated_words_cleaned.json' THEN 'tagalog.com'
+                WHEN sources = 'tagalog-words.json' THEN 'diksiyonaryo.ph'
+                ELSE sources
+            END
+    """)
+    
+    # Update affixations table
+    cur.execute("""
+        UPDATE affixations
+        SET sources = 
+            CASE 
+                WHEN sources = 'kaikki-ceb.jsonl' THEN 'kaikki.org (Cebuano)'
+                WHEN sources = 'kaikki.jsonl' THEN 'kaikki.org (Tagalog)'
+                WHEN sources = 'kwf_dictionary.json' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
+                WHEN sources = 'root_words_with_associated_words_cleaned.json' THEN 'tagalog.com'
+                WHEN sources = 'tagalog-words.json' THEN 'diksiyonaryo.ph'
+                ELSE sources
+            END
+    """)
+    
+    # Update words table tags
+    cur.execute("""
+        UPDATE words
+        SET tags = 
+            CASE 
+                WHEN tags = 'kaikki-ceb.jsonl' THEN 'kaikki.org (Cebuano)'
+                WHEN tags = 'kaikki.jsonl' THEN 'kaikki.org (Tagalog)'
+                WHEN tags = 'kwf_dictionary.json' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
+                WHEN tags = 'root_words_with_associated_words_cleaned.json' THEN 'tagalog.com'
+                WHEN tags = 'tagalog-words.json' THEN 'diksiyonaryo.ph'
+                ELSE tags
+            END
+    """)
+    
+    logger.info("Source names standardization completed")
+
 def create_or_update_tables(conn):
     """
     Create or update the database schema for the Filipino dictionary.
@@ -453,7 +546,14 @@ def create_or_update_tables(conn):
             ('intj', 'Interjection', 'Pandamdam', 'Word expressing emotion'),
             ('det', 'Determiner', 'Pantukoy', 'Word that modifies nouns'),
             ('affix', 'Affix', 'Panlapi', 'Word element attached to base or root'),
-            ('baybay', 'Baybayin Script', 'Baybayin', 'Traditional Philippine writing system'),
+            ('idm', 'Idiom', 'Idyoma', 'Fixed expression with non-literal meaning'),
+            ('col', 'Colloquial', 'Kolokyal', 'Informal or conversational usage'),
+            ('syn', 'Synonym', 'Singkahulugan', 'Word with similar meaning'),
+            ('ant', 'Antonym', 'Di-kasingkahulugan', 'Word with opposite meaning'),
+            ('eng', 'English', 'Ingles', 'English loanword or translation'),
+            ('spa', 'Spanish', 'Espanyol', 'Spanish loanword or origin'),
+            ('tx', 'Texting', 'Texting', 'Text messaging form'),
+            ('var', 'Variant', 'Varyant', 'Alternative form or spelling'),
             ('unc', 'Uncategorized', 'Hindi Tiyak', 'Part of speech not yet determined')
         ]
 
@@ -467,6 +567,9 @@ def create_or_update_tables(conn):
                     name_tl = EXCLUDED.name_tl,
                     description = EXCLUDED.description
             """, (code, name_en, name_tl, desc))
+
+        # Standardize source names
+        standardize_source_names(cur)
 
         conn.commit()
         logger.info("Tables created or updated successfully.")
@@ -790,6 +893,7 @@ class BaybayinRomanizer:
         # Get first character info
         first_char_info = self.get_char_info(chars[0])
         if not first_char_info:
+            # If not a Baybayin character, return as is
             return chars[0], 1
 
         # Handle vowels
@@ -798,27 +902,36 @@ class BaybayinRomanizer:
 
         # Handle consonants
         if first_char_info.char_type == BaybayinCharType.CONSONANT:
-            if len(chars) == 1:
-                return first_char_info.default_sound, 1
+            result = first_char_info.default_sound  # Default to consonant + a
+            chars_processed = 1
 
-            # Check next character
-            next_char_info = self.get_char_info(chars[1]) if len(chars) > 1 else None
+            # Look ahead for modifiers if there are more characters
+            if len(chars) > 1:
+                next_char_info = self.get_char_info(chars[1])
+                if next_char_info:
+                    if next_char_info.char_type == BaybayinCharType.VOWEL_MARK:
+                        # Consonant + vowel mark (i or u/o)
+                        base = result[:-1]  # Remove inherent 'a'
+                        result = base + next_char_info.default_sound
+                        chars_processed = 2
+                    elif next_char_info.char_type == BaybayinCharType.VIRAMA:
+                        # Consonant + virama (kills vowel)
+                        result = result[:-1]  # Remove inherent 'a'
+                        chars_processed = 2
+                        # Look ahead for next consonant
+                        if len(chars) > 2:
+                            next_cons_info = self.get_char_info(chars[2])
+                            if next_cons_info and next_cons_info.char_type == BaybayinCharType.CONSONANT:
+                                result += next_cons_info.default_sound
+                                chars_processed = 3
 
-            if next_char_info:
-                if next_char_info.char_type == BaybayinCharType.VOWEL_MARK:
-                    # Consonant + vowel mark
-                    base = first_char_info.default_sound[:-1]  # Remove inherent 'a'
-                    return base + next_char_info.default_sound, 2
-                elif next_char_info.char_type == BaybayinCharType.VIRAMA:
-                    # Consonant + virama (kills vowel)
-                    return first_char_info.default_sound[:-1], 2
-
-            return first_char_info.default_sound, 1
+            return result, chars_processed
 
         # Handle punctuation
         if first_char_info.char_type == BaybayinCharType.PUNCTUATION:
             return first_char_info.default_sound, 1
 
+        # For any other character type, return as is
         return chars[0], 1
 
     def romanize(self, text: str) -> str:
@@ -837,23 +950,31 @@ class BaybayinRomanizer:
         if not text:
             raise ValueError("Input text cannot be empty")
 
-        result = []
-        chars = list(text)
-        i = 0
-        
-        while i < len(chars):
-            # Skip spaces and preserve them
-            if chars[i].isspace():
-                result.append(chars[i])
-                i += 1
-                continue
+        try:
+            result = []
+            chars = list(text)
+            i = 0
+            
+            while i < len(chars):
+                # Skip spaces and preserve them
+                if chars[i].isspace():
+                    result.append(chars[i])
+                    i += 1
+                    continue
 
-            # Process next syllable
-            romanized, chars_processed = self.process_syllable(chars[i:])
-            result.append(romanized)
-            i += chars_processed
+                # Process next syllable
+                romanized, chars_processed = self.process_syllable(chars[i:])
+                if chars_processed == 0:  # Prevent infinite loop
+                    result.append(chars[i])
+                    i += 1
+                else:
+                    result.append(romanized)
+                    i += chars_processed
 
-        return ''.join(result)
+            return ''.join(result)
+        except Exception as e:
+            logger.warning(f"Error romanizing text '{text}': {str(e)}")
+            return text  # Return original text if romanization fails
 
     def validate_text(self, text: str) -> bool:
         """
@@ -1069,6 +1190,16 @@ def extract_baybayin_text(text: str) -> List[str]:
     return [part.strip() for part in parts if part.strip() and re.search(r'[\u1700-\u171F]', part)]
 
 def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = None) -> bool:
+    """
+    Validate a Baybayin entry with comprehensive checks.
+    
+    Args:
+        baybayin_form: The Baybayin text to validate
+        romanized_form: Optional romanized form to check against
+        
+    Returns:
+        bool: True if valid Baybayin entry
+    """
     try:
         romanizer = BaybayinRomanizer()
         
@@ -1079,8 +1210,11 @@ def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = 
         if not valid_parts:
             return False
             
-        # Try each valid part without extra strict validation
+        # Try each valid part with validation
         for part in sorted(valid_parts, key=len, reverse=True):
+            if not romanizer.validate_text(part):
+                continue
+                
             if romanized_form:
                 try:
                     generated_rom = romanizer.romanize(part)
@@ -1097,20 +1231,28 @@ def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = 
         return False
 
 def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form: Optional[str] = None) -> None:
+    """Process and store Baybayin data for a word."""
     if not baybayin_form:
         return
         
     try:
         romanizer = BaybayinRomanizer()
-        parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_form)
-        valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
-        if not valid_parts:
-            logger.warning(f"No valid Baybayin segments found for word_id {word_id}: {baybayin_form}")
+        
+        # Validate and clean Baybayin form
+        if not validate_baybayin_entry(baybayin_form, romanized_form):
+            logger.warning(f"Invalid Baybayin form for word_id {word_id}: {baybayin_form}")
             return
             
-        # Initialize variables before processing
+        # Get the longest valid Baybayin segment
+        parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_form)
+        valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
+        
+        if not valid_parts:
+            return
+            
         cleaned_baybayin = None
         romanized_value = None
+        
         for part in sorted(valid_parts, key=len, reverse=True):
             if romanizer.validate_text(part):
                 try:
@@ -1119,8 +1261,8 @@ def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form:
                     break
                 except ValueError:
                     continue
+                    
         if not cleaned_baybayin:
-            logger.warning(f"Could not process any Baybayin segments for word_id {word_id}")
             return
             
         cur.execute("""
@@ -1349,6 +1491,16 @@ def check_baybayin_consistency(cur):
     return issues
 
 def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = None) -> bool:
+    """
+    Validate a Baybayin entry with comprehensive checks.
+    
+    Args:
+        baybayin_form: The Baybayin text to validate
+        romanized_form: Optional romanized form to check against
+        
+    Returns:
+        bool: True if valid Baybayin entry
+    """
     try:
         romanizer = BaybayinRomanizer()
         
@@ -1359,8 +1511,11 @@ def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = 
         if not valid_parts:
             return False
             
-        # Try each valid part without extra strict validation
+        # Try each valid part with validation
         for part in sorted(valid_parts, key=len, reverse=True):
+            if not romanizer.validate_text(part):
+                continue
+                
             if romanized_form:
                 try:
                     generated_rom = romanizer.romanize(part)
@@ -1377,20 +1532,28 @@ def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = 
         return False
 
 def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form: Optional[str] = None) -> None:
+    """Process and store Baybayin data for a word."""
     if not baybayin_form:
         return
         
     try:
         romanizer = BaybayinRomanizer()
-        parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_form)
-        valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
-        if not valid_parts:
-            logger.warning(f"No valid Baybayin segments found for word_id {word_id}: {baybayin_form}")
+        
+        # Validate and clean Baybayin form
+        if not validate_baybayin_entry(baybayin_form, romanized_form):
+            logger.warning(f"Invalid Baybayin form for word_id {word_id}: {baybayin_form}")
             return
             
-        # Initialize variables before processing
+        # Get the longest valid Baybayin segment
+        parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_form)
+        valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
+        
+        if not valid_parts:
+            return
+            
         cleaned_baybayin = None
         romanized_value = None
+        
         for part in sorted(valid_parts, key=len, reverse=True):
             if romanizer.validate_text(part):
                 try:
@@ -1399,8 +1562,8 @@ def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form:
                     break
                 except ValueError:
                     continue
+                    
         if not cleaned_baybayin:
-            logger.warning(f"Could not process any Baybayin segments for word_id {word_id}")
             return
             
         cur.execute("""
@@ -1421,49 +1584,65 @@ def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form:
 # -------------------------------------------------------------------
 
 def get_standardized_pos_id(cur, pos_string: str) -> int:
-    """Maps input POS string to standardized POS ID using POS_MAPPING."""
+    """Maps input POS string to standardized POS ID using POS_MAPPINGS."""
     if not pos_string:
         return get_uncategorized_pos_id(cur)
 
-    pos_clean = pos_string.lower().strip()
+    pos_clean = pos_string.lower().strip(' .')
     
-    # Get standardized pos code based on mapping
-    std_code = None
-    for key, value in POS_MAPPING.items():
-        if (pos_clean == key.lower() or 
-            pos_clean == value['en'].lower() or 
-            pos_clean == value['tl'].lower()):
-            if key in ('noun', 'pangngalan', 'pnd', 'png'):
-                std_code = 'n'
-            elif key in ('verb', 'pandiwa', 'pnw'):
-                std_code = 'v'
-            elif key in ('adjective', 'pang-uri', 'pnu'):
-                std_code = 'adj'
-            elif key in ('adverb', 'pang-abay', 'pny'):
-                std_code = 'adv'
-            elif key in ('pronoun', 'panghalip', 'pnr'):
-                std_code = 'pron'
-            elif key in ('preposition', 'pang-ukol'):
-                std_code = 'prep'
-            elif key in ('conjunction', 'pangatnig'):
-                std_code = 'conj'
-            elif key in ('interjection', 'pandamdam'):
-                std_code = 'intj'
-            elif key in ('affix', 'panlapi', 'pnl'):
-                std_code = 'affix'
-            elif key == 'baybayin':
-                std_code = 'baybay'
-            elif key in ('det', 'determiner', 'pantukoy'):
-                std_code = 'det'
+    # Try to find a match in POS_MAPPINGS
+    for key, mapping in POS_MAPPINGS.items():
+        # Check English term
+        if pos_clean == mapping['english'].lower():
+            std_code = get_standard_code(key)
             break
-
-    if not std_code:
+            
+        # Check Filipino term
+        if pos_clean == mapping['filipino'].lower():
+            std_code = get_standard_code(key)
+            break
+            
+        # Check abbreviations
+        if pos_clean in [abbr.lower().strip('.') for abbr in mapping['abbreviations']]:
+            std_code = get_standard_code(key)
+            break
+            
+        # Check variants
+        if pos_clean in [var.lower() for var in mapping['variants']]:
+            std_code = get_standard_code(key)
+            break
+    else:
         return get_uncategorized_pos_id(cur)
 
     # Get ID from parts_of_speech table
     cur.execute("SELECT id FROM parts_of_speech WHERE code = %s", (std_code,))
     result = cur.fetchone()
     return result[0] if result else get_uncategorized_pos_id(cur)
+
+def get_standard_code(pos_key: str) -> str:
+    """Get standard database code for a POS key."""
+    # Map POS keys to standard database codes
+    code_mapping = {
+        'noun': 'n',
+        'verb': 'v',
+        'adjective': 'adj',
+        'adverb': 'adv',
+        'pronoun': 'pron',
+        'preposition': 'prep',
+        'conjunction': 'conj',
+        'interjection': 'intj',
+        'article': 'det',
+        'affix': 'affix',
+        'idiom': 'idm',
+        'colloquial': 'col',
+        'synonym': 'syn',
+        'antonym': 'ant',
+        'english': 'eng',
+        'spanish': 'spa',
+        'texting': 'tx',
+        'variant': 'var'
+    }
+    return code_mapping.get(pos_key, 'unc')
 
 def get_uncategorized_pos_id(cur) -> int:
     """Get the ID for uncategorized POS."""
@@ -1530,6 +1709,21 @@ def get_or_create_word_id_base(
     
     result = cur.fetchone()
     if result:
+        # Update Baybayin information if provided
+        if kwargs.get('has_baybayin'):
+            cur.execute("""
+                UPDATE words 
+                SET has_baybayin = %s,
+                    baybayin_form = %s,
+                    romanized_form = %s,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = %s
+            """, (
+                kwargs.get('has_baybayin'),
+                kwargs.get('baybayin_form'),
+                kwargs.get('romanized_form'),
+                result[0]
+            ))
         return result[0]
     
     # Create search text
@@ -1598,7 +1792,9 @@ def insert_definition(
     if cur.fetchone():
         return None
 
-    std_pos_id = get_standardized_pos_id(cur, part_of_speech)
+    # Standardize POS
+    standardized_pos = standardize_pos(part_of_speech) if part_of_speech else ""
+    std_pos_id = get_standardized_pos_id(cur, standardized_pos)
     
     # If category exists, add it to usage_notes
     if category:
@@ -1613,7 +1809,7 @@ def insert_definition(
     """, (
         word_id,
         definition_text,
-        part_of_speech,
+        standardized_pos,  # Store standardized POS as original_pos
         std_pos_id,
         examples,
         usage_notes,
@@ -1631,6 +1827,13 @@ def insert_relation(
     sources: str = ""
 ):
     """Insert a relation between words."""
+    # Don't insert self-referential relations
+    if from_word_id == to_word_id:
+        return
+        
+    # Deduplicate sources
+    sources = ", ".join(sorted(set(sources.split(", "))))
+    
     cur.execute("""
         INSERT INTO relations (from_word_id, to_word_id, relation_type, sources)
         VALUES (%s, %s, %s, %s)
@@ -1638,7 +1841,10 @@ def insert_relation(
         SET sources = CASE 
             WHEN relations.sources IS NULL THEN EXCLUDED.sources
             WHEN EXCLUDED.sources IS NULL THEN relations.sources
-            ELSE relations.sources || ', ' || EXCLUDED.sources
+            ELSE (
+                SELECT string_agg(DISTINCT unnest, ', ')
+                FROM unnest(string_to_array(relations.sources || ', ' || EXCLUDED.sources, ', '))
+            )
         END
     """, (from_word_id, to_word_id, relation_type, sources))
 
@@ -1679,6 +1885,9 @@ def insert_etymology(
     # Skip if it's just describing Baybayin spelling
     if 'Baybayin spelling of' in etymology_text:
         return
+    
+    # Deduplicate sources
+    sources = ", ".join(sorted(set(sources.split(", "))))
         
     cur.execute("""
         INSERT INTO etymologies 
@@ -1690,7 +1899,10 @@ def insert_etymology(
             sources = CASE 
                 WHEN etymologies.sources IS NULL THEN EXCLUDED.sources
                 WHEN EXCLUDED.sources IS NULL THEN etymologies.sources
-                ELSE etymologies.sources || ', ' || EXCLUDED.sources
+                ELSE (
+                    SELECT string_agg(DISTINCT unnest, ', ')
+                    FROM unnest(string_to_array(etymologies.sources || ', ' || EXCLUDED.sources, ', '))
+                )
             END
     """, (word_id, etymology_text, normalized_components, language_codes, sources))
 
@@ -1803,6 +2015,9 @@ def process_kwf_entry(cur, lemma: str, entry: Dict, src: str = "kwf"):
         src: Source identifier (default: "kwf")
     """
     try:
+        # Standardize source name
+        src = SourceStandardization.get_display_name('kwf_dictionary.json')
+        
         # Create base word entry
         word_id = get_or_create_word_id(
             cur,
@@ -1953,71 +2168,266 @@ def process_kwf_entry(cur, lemma: str, entry: Dict, src: str = "kwf"):
         logger.error(f"Error processing KWF entry '{lemma}': {str(e)}")
         raise
 
-def process_kaikki_jsonl_new(cur, filename: str, check_exists: bool = False):
+def extract_etymology_components(etymology: str) -> List[str]:
     """
-    Process Kaikki dictionary entries with improved Baybayin handling.
+    Extract components from etymology text with proper handling of nested structures.
     
     Args:
-        cur: Database cursor
-        filename: Path to the JSONL file
-        check_exists: Whether to check for existing entries
+        etymology: Etymology text to parse
+        
+    Returns:
+        List of extracted components
     """
+    components = []
+    
+    def extract_meaning(text: str) -> Tuple[str, Optional[str]]:
+        """Extract word and its meaning from text with nested parentheses."""
+        # Find the word part (before any parentheses)
+        word = text.split('(')[0].strip(' "\'')
+        
+        # Find the meaning part (content within parentheses)
+        meaning = None
+        paren_count = 0
+        meaning_start = -1
+        
+        for i, char in enumerate(text):
+            if char == '(':
+                if paren_count == 0:
+                    meaning_start = i + 1
+                paren_count += 1
+            elif char == ')':
+                paren_count -= 1
+                if paren_count == 0 and meaning_start != -1:
+                    meaning = text[meaning_start:i].strip()
+                    break
+        
+        return word, meaning
+    
+    try:
+        # First clean up the text
+        text = etymology.strip()
+        if not text:
+            return []
+            
+        # Handle "blend of" pattern
+        if "blend of" in text.lower():
+            blend_parts = text.split("blend of", 1)[1].split(".")[0].strip()
+            # Split on quotes but preserve quoted content
+            parts = re.findall(r'"([^"]+)"(?:\s*\([^)]+\))?', blend_parts)
+            for part in parts:
+                word, meaning = extract_meaning(part)
+                if word:
+                    comp = word
+                    if meaning:
+                        comp += f" ({meaning})"
+                    components.append(comp)
+                    
+        # Handle "from" pattern
+        elif "from" in text.lower():
+            from_parts = text.split("from", 1)[1].split(".")[0].strip()
+            # First try to find quoted components
+            parts = re.findall(r'"([^"]+)"(?:\s*\([^)]+\))?', from_parts)
+            if parts:
+                for part in parts:
+                    word, meaning = extract_meaning(part)
+                    if word:
+                        comp = word
+                        if meaning:
+                            comp += f" ({meaning})"
+                        components.append(comp)
+            # If no quotes found, try splitting on "+" for compound words
+            elif "+" in from_parts:
+                for part in from_parts.split("+"):
+                    word, meaning = extract_meaning(part)
+                    if word:
+                        comp = word
+                        if meaning:
+                            comp += f" ({meaning})"
+                        components.append(comp)
+                
+        # Handle compound words with "+"
+        elif "+" in text:
+            for part in text.split("+"):
+                word, meaning = extract_meaning(part)
+                if word:
+                    comp = word
+                    if meaning:
+                        comp += f" ({meaning})"
+                    components.append(comp)
+            
+    except Exception as e:
+        logger.debug(f"Error extracting etymology components: {str(e)}")
+        
+    return [c.strip() for c in components if c.strip()]
+
+def process_kaikki_jsonl_new(cur, filename: str):
+    """Process Kaikki dictionary entries with improved Baybayin handling."""
     def extract_baybayin_info(entry: Dict) -> Tuple[Optional[str], Optional[str]]:
         """Extract Baybayin information from entry using improved parsing."""
         import re
         baybayin = None
         romanized = None
+        
+        try:
+            word = entry.get('word', '')
+            if not word:  # Skip if no word is found
+                return None, None
 
-        word = entry.get('word', '')
-        # If the word itself is in Baybayin script, use it directly
-        if any(0x1700 <= ord(c) <= 0x171F for c in word):
-            baybayin = word
-            for form in entry.get('forms', []):
-                if 'tags' in form and 'romanization' in form['tags']:
-                    romanized = form['form']
-                    break
-            if not romanized:
-                try:
-                    romanized = get_romanized_text(baybayin)
-                except Exception:
+            # Skip known non-Tagalog/non-Baybayin words
+            if any(word.lower().endswith(suffix) for suffix in ['ismo', 'ista', 'dad', 'cion', 'syon']):
+                return None, None
+                
+            # Skip Spanish/English loanwords and proper nouns
+            if any(char in word.lower() for char in 'fjcñvxz'):
+                return None, None
+                
+            # Skip proper nouns (capitalized words)
+            if word[0].isupper() and not word.isupper():
+                return None, None
+
+            # First check forms array for Baybayin
+            forms = entry.get('forms', [])
+            if forms and isinstance(forms, list):
+                for form in forms:
+                    if not isinstance(form, dict):
+                        continue
+                    if not form.get('tags'):
+                        continue
+                    if isinstance(form.get('tags'), list) and 'Baybayin' in form['tags']:
+                        candidate = form.get('form', '').strip()
+                        if candidate and re.match(r'^[ᜀ-ᜟ᜔ᜒᜓ]+$', candidate):
+                            baybayin = candidate
+                            break
+
+            # If no Baybayin in forms, check head_templates
+            if not baybayin:
+                head_templates = entry.get('head_templates', [])
+                if head_templates and isinstance(head_templates, list):
+                    for template in head_templates:
+                        if not isinstance(template, dict):
+                            continue
+                            
+                        if not template.get('name', '').startswith(('tl-', 'ceb-')):
+                            continue
+                            
+                        expansion = template.get('expansion', '')
+                        if not expansion:
+                            continue
+                        
+                        try:
+                            # Look for Baybayin in parentheses after "Baybayin spelling"
+                            match = re.search(r'Baybayin spelling[^(]*\((.*?)\)', expansion)
+                            if match:
+                                candidates = re.findall(r'([ᜀ-ᜟ᜔ᜒᜓ]+)', match.group(1))
+                                if candidates:
+                                    candidate = candidates[0].strip()
+                                    if candidate and re.match(r'^[ᜀ-ᜟ᜔ᜒᜓ]+$', candidate):
+                                        baybayin = candidate
+                                        break
+                            # If no explicit "Baybayin spelling", look for any Baybayin characters
+                            else:
+                                candidates = re.findall(r'([ᜀ-ᜟ᜔ᜒᜓ]+)', expansion)
+                                if candidates:
+                                    candidate = candidates[0].strip()
+                                    if candidate and re.match(r'^[ᜀ-ᜟ᜔ᜒᜓ]+$', candidate):
+                                        baybayin = candidate
+                                        break
+                        except (IndexError, AttributeError) as e:
+                            logger.debug(f"Error extracting Baybayin from template for {word}: {str(e)}")
+                            continue
+
+            # Get romanized form if Baybayin exists
+            if baybayin:
+                # Look for romanized form in forms
+                if forms and isinstance(forms, list):
+                    for form in forms:
+                        if isinstance(form, dict) and form.get('tags'):
+                            if isinstance(form.get('tags'), list) and 'canonical' in form.get('tags', []):
+                                candidate = form.get('form', '').strip()
+                                if candidate:
+                                    romanized = candidate
+                                    break
+                
+                # If not found in forms, use the entry word
+                if not romanized:
                     romanized = word
+
+            # Final validation
+            if baybayin:
+                # Validate Baybayin form
+                if not re.match(r'^[ᜀ-ᜟ᜔ᜒᜓ]+$', baybayin):
+                    return None, None
+                    
+                # Check for minimum length and maximum length
+                if len(baybayin) < 1 or len(baybayin) > 30:  # Add reasonable max length
+                    return None, None
+                    
+                # Check for valid character combinations
+                if '᜔᜔' in baybayin:  # Double virama not allowed
+                    return None, None
+                    
+                # Check for valid ending
+                if baybayin[-1] not in 'ᜀᜁᜂ' and baybayin[-1] != '᜔':
+                    if baybayin[-1] in 'ᜒᜓ':  # Vowel marks must be preceded by consonants
+                        if len(baybayin) < 2 or baybayin[-2] not in BaybayinRomanizer.CONSONANTS:
+                            return None, None
+
+                # Validate character sequence
+                prev_char = None
+                for char in baybayin:
+                    if char in 'ᜒᜓ' and prev_char not in BaybayinRomanizer.CONSONANTS:
+                        return None, None
+                    prev_char = char
+
             return baybayin, romanized
 
-        forms = entry.get('forms', [])
-        canonical_form = None
-        for form in forms:
-            if 'tags' in form:
-                if 'canonical' in form['tags']:
-                    canonical_form = form['form']
-                elif 'Baybayin' in form['tags']:
-                    baybayin = form['form']
+        except Exception as e:
+            logger.debug(f"Error in Baybayin extraction for {word if 'word' in locals() else 'unknown word'}: {str(e)}")
+            return None, None
 
-        if baybayin and not romanized:
-            try:
-                romanized = get_romanized_text(baybayin)
-            except Exception:
-                romanized = canonical_form or word
-
-        # Use head_templates if no Baybayin form found in forms
-        if not baybayin:
-            for template in entry.get('head_templates', []):
-                if template.get('name', '').startswith(('tl-', 'ceb-')):
-                    expansion = template.get('expansion', '')
-                    # Find all sequences of Baybayin characters
-                    baybayin_candidates = re.findall(r"([ᜀ-ᜟ]+)", expansion)
-                    if baybayin_candidates:
-                        # Choose the longest candidate as the Baybayin form
-                        baybayin = max(baybayin_candidates, key=len)
-                        try:
-                            romanized = get_romanized_text(baybayin)
-                        except Exception:
-                            romanized = canonical_form or word
-                        break
-
-        if baybayin:
-            logger.debug(f"Extracted Baybayin: {baybayin}, Romanized: {romanized}")
-
-        return baybayin, romanized
+    def standardize_entry_pos(pos_str: str) -> str:
+        """Standardize POS to Filipino terms using POS_MAPPINGS from language_types."""
+        if not pos_str:
+            return ""
+            
+        # Convert to lowercase for case-insensitive matching
+        pos_lower = pos_str.lower().strip(' .')
+        
+        # Direct mapping for common English POS terms
+        direct_mapping = {
+            'noun': 'Pangngalan',
+            'adj': 'Pang-uri',
+            'adjective': 'Pang-uri',
+            'verb': 'Pandiwa',
+            'adverb': 'Pang-abay',
+            'pronoun': 'Panghalip',
+            'n': 'Pangngalan',
+            'v': 'Pandiwa'
+        }
+        
+        if pos_lower in direct_mapping:
+            return direct_mapping[pos_lower]
+            
+        # Check each mapping in POS_MAPPINGS
+        for mapping in POS_MAPPINGS.values():
+            # Check full English term
+            if pos_lower == mapping['english'].lower():
+                return mapping['filipino']
+                
+            # Check full Filipino term
+            if pos_lower == mapping['filipino'].lower():
+                return mapping['filipino']
+                
+            # Check abbreviations
+            if pos_lower in [abbr.lower().strip('.') for abbr in mapping['abbreviations']]:
+                return mapping['filipino']
+                
+            # Check variants
+            if pos_lower in [var.lower() for var in mapping['variants']]:
+                return mapping['filipino']
+                
+        # If no match found, return original
+        return pos_str
 
     def process_entry(cur, entry: Dict):
         """Process a single dictionary entry."""
@@ -2027,105 +2437,437 @@ def process_kaikki_jsonl_new(cur, filename: str, check_exists: bool = False):
                 return
 
             # Handle Baybayin entries
-            baybayin_form, romanized = extract_baybayin_info(entry)
-            has_baybayin = bool(baybayin_form)
+            try:
+                baybayin_form, romanized = extract_baybayin_info(entry)
+                has_baybayin = bool(baybayin_form)
+            except Exception as e:
+                logger.debug(f"Error extracting Baybayin info for {lemma}: {str(e)}")
+                baybayin_form, romanized = None, None
+                has_baybayin = False
             
             # Determine language code based on filename
             language_code = "tl" if "kaikki.jsonl" in filename else "ceb"
             
-            # Create or update word entry with Baybayin information
+            # Get standardized source name
+            source = SourceStandardization.get_display_name(os.path.basename(filename))
+            
+            # Process pronunciation data
+            pronunciation_data = {}
+            if 'sounds' in entry:
+                pronunciation_data['sounds'] = entry['sounds']
+            if 'hyphenation' in entry:
+                pronunciation_data['hyphenation'] = entry['hyphenation']
+            
+            # Get entry-level POS from head_templates or pos field
+            entry_pos = None
+            if 'head_templates' in entry:
+                for template in entry.get('head_templates', []):
+                    if isinstance(template, dict):
+                        template_name = template.get('name', '').lower()
+                        if template_name.startswith(('tl-', 'ceb-')):
+                            pos_part = template_name.split('-')[1]
+                            entry_pos = standardize_entry_pos(pos_part)
+                            # Store template expansion if available
+                            if 'expansion' in template:
+                                pronunciation_data['template_expansion'] = template['expansion']
+                            # Store template args if available
+                            if 'args' in template:
+                                pronunciation_data['template_args'] = template['args']
+                            break
+            
+            if not entry_pos and 'pos' in entry:
+                entry_pos = standardize_entry_pos(entry.get('pos', ''))
+
+            # Collect all tags
+            tags = set()
+            
+            # Add entry-level tags
+            if 'tags' in entry:
+                entry_tags = entry.get('tags', [])
+                if isinstance(entry_tags, list):
+                    tags.update(tag.strip() for tag in entry_tags if tag and isinstance(tag, str) and tag.strip())
+            
+            # Add tags from forms
+            if 'forms' in entry:
+                for form in entry.get('forms', []):
+                    if isinstance(form, dict):
+                        # Add form tags
+                        form_tags = form.get('tags', [])
+                        if isinstance(form_tags, list):
+                            tags.update(tag.strip() for tag in form_tags if tag and isinstance(tag, str) and tag.strip())
+                        # Add the form itself as a variant
+                        if 'form' in form and form['form'] != lemma:
+                            tags.add(f"Variant: {form['form']}")
+
+            # Add etymology information as tags
+            if 'etymology_text' in entry:
+                etymology = entry.get('etymology_text', '')
+                if etymology:
+                    tags.add(f"Etymology: {etymology}")
+                    # Extract source languages
+                    if 'Borrowed from' in etymology:
+                        match = re.search(r'Borrowed from (\w+)', etymology)
+                        if match:
+                            tags.add(f"Source Language: {match.group(1)}")
+                    elif 'from' in etymology.lower():
+                        match = re.search(r'from (\w+)', etymology.lower())
+                        if match:
+                            tags.add(f"Source Language: {match.group(1)}")
+
+            # Add etymology templates if available
+            if 'etymology_templates' in entry:
+                for template in entry.get('etymology_templates', []):
+                    if isinstance(template, dict):
+                        if 'expansion' in template:
+                            tags.add(f"Etymology Detail: {template['expansion']}")
+
+            # Add hyphenation if available
+            if 'hyphenation' in entry:
+                hyphenation = entry.get('hyphenation', [])
+                if isinstance(hyphenation, list) and hyphenation:
+                    tags.add(f"Hyphenation: {'-'.join(hyphenation)}")
+
+            # Process homophones and sounds
+            if 'sounds' in entry:
+                for sound in entry.get('sounds', []):
+                    if isinstance(sound, dict):
+                        if 'homophone' in sound:
+                            tags.add(f"Homophone: {sound['homophone']}")
+                        if 'rhymes' in sound:
+                            tags.add(f"Rhymes: {sound['rhymes']}")
+            
+            # Process senses for tags and categories
+            for sense in entry.get('senses', []):
+                if isinstance(sense, dict):
+                    # Add sense-level tags
+                    sense_tags = sense.get('tags', [])
+                    if isinstance(sense_tags, list):
+                        tags.update(tag.strip() for tag in sense_tags if tag and isinstance(tag, str) and tag.strip())
+                    
+                    # Add topics if present
+                    if 'topics' in sense:
+                        topics = sense.get('topics', [])
+                        if isinstance(topics, list):
+                            tags.update(f"Topic: {topic}" for topic in topics if topic and isinstance(topic, str))
+                    
+                    # Add links as related terms
+                    if 'links' in sense:
+                        links = sense.get('links', [])
+                        if isinstance(links, list):
+                            for link in links:
+                                if isinstance(link, list) and len(link) >= 2:
+                                    tags.add(f"Related: {link[0]}")
+                    
+                    # Add synonyms
+                    if 'synonyms' in sense:
+                        synonyms = sense.get('synonyms', [])
+                        if isinstance(synonyms, list):
+                            for syn in synonyms:
+                                if isinstance(syn, dict):
+                                    syn_word = syn.get('word', '')
+                                    syn_tags = syn.get('tags', [])
+                                    if syn_word:
+                                        tag_prefix = "Synonym"
+                                        if syn_tags and isinstance(syn_tags, list):
+                                            for tag in syn_tags:
+                                                if tag.lower() == 'obsolete':
+                                                    tag_prefix = "Obsolete Synonym"
+                                                    break
+                                        tags.add(f"{tag_prefix}: {syn_word}")
+                                elif isinstance(syn, str):
+                                    tags.add(f"Synonym: {syn}")
+                    
+                    # Add relevant categories (exclude maintenance categories)
+                    for cat in sense.get('categories', []):
+                        if isinstance(cat, dict):
+                            cat_name = cat.get("name", "")
+                            cat_kind = cat.get("kind", "")
+                            cat_parents = cat.get("parents", [])
+                            cat_source = cat.get("source", "")
+                            
+                            # Skip maintenance categories but include topical and other meaningful categories
+                            if cat_name and not any(x in cat_name.lower() for x in ["entries with", "terms with"]):
+                                if cat_kind:
+                                    tags.add(f"{cat_kind}: {cat_name}")
+                                else:
+                                    tags.add(cat_name)
+                                # Add parent categories
+                                for parent in cat_parents:
+                                    if parent and not any(x in parent.lower() for x in ["entries with", "terms with"]):
+                                        tags.add(f"Category: {parent}")
+                                # Add source if available
+                                if cat_source:
+                                    tags.add(f"Category Source: {cat_source}")
+            
+            # Add pronunciation information as tags
+            if 'sounds' in entry:
+                for sound in entry.get('sounds', []):
+                    if isinstance(sound, dict):
+                        # Add IPA pronunciations
+                        if 'ipa' in sound:
+                            ipa = sound['ipa']
+                            if 'tags' in sound and isinstance(sound['tags'], list):
+                                dialect = next((tag for tag in sound['tags'] if tag != 'IPA'), None)
+                                if dialect:
+                                    tags.add(f"IPA ({dialect}): {ipa}")
+                                else:
+                                    tags.add(f"IPA: {ipa}")
+                            else:
+                                tags.add(f"IPA: {ipa}")
+                        
+                        # Add pronunciation tags
+                        if 'tags' in sound and isinstance(sound['tags'], list):
+                            tags.update(f"Pronunciation: {tag}" for tag in sound['tags'] if tag and isinstance(tag, str))
+                        
+                        # Add pronunciation notes
+                        if 'note' in sound:
+                            tags.add(f"Pronunciation Note: {sound['note']}")
+            
+            # Convert tags to string and remove any empty tags
+            tags_str = '; '.join(sorted(tag for tag in tags if tag))
+            
+            # Create or update word entry
             word_id = get_or_create_word_id(
                 cur,
                 lemma,
                 language_code=language_code,
                 has_baybayin=has_baybayin,
                 baybayin_form=baybayin_form,
-                romanized_form=romanized if has_baybayin else None
+                romanized_form=romanized if has_baybayin else None,
+                tags=tags_str,
+                pronunciation_data=json.dumps(pronunciation_data) if pronunciation_data else None
             )
 
-            # Process definitions
-            entry_pos = entry.get("pos", "").strip()
-            for sense in entry.get("senses", []):
-                if all('Baybayin spelling of' in gloss for gloss in sense.get("glosses", [])):
-                    continue
+            # Process senses
+            senses = entry.get("senses", [])
+            if isinstance(senses, list):
+                for sense in senses:
+                    if not isinstance(sense, dict):
+                        continue
+                        
+                    glosses = sense.get("glosses", [])
+                    raw_glosses = sense.get("raw_glosses", [])
+                    if not isinstance(glosses, list):
+                        continue
+                    
+                    if all('Baybayin spelling of' in str(gloss) for gloss in glosses):
+                        continue
 
-                pos = sense.get("pos", entry_pos).strip()
-                pos = ", ".join(filter(None, [p.strip() for p in pos.split(",")]))
+                    # Get sense-specific POS, fallback to entry POS
+                    sense_pos = sense.get("pos", entry_pos)
+                    if sense_pos:
+                        sense_pos = standardize_entry_pos(sense_pos)
+                    elif entry_pos:
+                        sense_pos = entry_pos
 
-                examples = []
-                for ex in sense.get("examples", []):
-                    if isinstance(ex, dict):
-                        example_text = ex.get("text", "")
-                        if example_text:
-                            examples.append(example_text)
-                    elif isinstance(ex, str):
-                        examples.append(ex)
+                    # Collect examples with context
+                    examples = []
+                    for ex in sense.get("examples", []):
+                        if isinstance(ex, dict):
+                            example_text = ex.get("text", "")
+                            english = ex.get("english", "")
+                            ref = ex.get("ref", "")
+                            if example_text:
+                                if english:
+                                    example_text += f" ({english})"
+                                if ref:
+                                    example_text += f" [Source: {ref}]"
+                                examples.append(example_text)
+                        elif isinstance(ex, str):
+                            examples.append(ex)
 
-                for gloss in sense.get("glosses", []):
-                    if gloss and not "Baybayin spelling of" in gloss:
-                        insert_definition(
-                            cur, 
-                            word_id, 
-                            gloss.strip(),
-                            pos,
-                            examples="\n".join(examples) if examples else None,
-                            usage_notes=None,
-                            sources=os.path.basename(filename)
-                        )
+                    # Collect usage notes and categories
+                    usage_notes = []
+                    categories = []
+                    
+                    # Add sense tags as usage notes
+                    if sense.get("tags"):
+                        usage_notes.extend(sense["tags"])
+                    
+                    # Add raw glosses as usage notes if they provide additional context
+                    if raw_glosses:
+                        for raw_gloss in raw_glosses:
+                            if raw_gloss and raw_gloss not in glosses:
+                                usage_notes.append(f"Context: {raw_gloss}")
+                    
+                    # Add categories
+                    if sense.get("categories"):
+                        for cat in sense["categories"]:
+                            if isinstance(cat, dict) and "name" in cat:
+                                if not any(x in cat["name"].lower() for x in ["entries with", "terms with"]):
+                                    categories.append(cat["name"])
+
+                    # Process each gloss
+                    for gloss in glosses:
+                        if gloss and not "Baybayin spelling of" in str(gloss):
+                            insert_definition(
+                                cur, 
+                                word_id, 
+                                str(gloss).strip(),
+                                sense_pos or entry_pos,  # Use sense_pos if available, fallback to entry_pos
+                                examples="\n".join(examples) if examples else None,
+                                usage_notes="; ".join(usage_notes) if usage_notes else None,
+                                category="; ".join(categories) if categories else None,
+                                sources=source
+                            )
 
             # Process etymology
             etymology = entry.get("etymology_text", "")
             if etymology:
-                # Use language_systems.py for extraction
-                codes, cleaned_ety = lsys.extract_and_remove_language_codes(etymology)
-                insert_etymology(
-                    cur=cur,
-                    word_id=word_id,
-                    etymology_text=cleaned_ety,
-                    normalized_components=None,
-                    language_codes=", ".join(codes) if codes else "",
-                    sources=os.path.basename(filename)
-                )
-
-            # Process relations
-            for derived in entry.get("derived", []):
-                der_word = derived.get("word", "") if isinstance(derived, dict) else str(derived)
-                if der_word := der_word.strip():
-                    der_id = get_or_create_word_id(cur, der_word, language_code)
-                    insert_relation(
-                        cur,
-                        word_id,
-                        der_id,
-                        "derived_from",
-                        os.path.basename(filename)
+                try:
+                    # Extract components using improved function
+                    components = extract_etymology_components(etymology)
+                    
+                    # Use language_systems.py for extraction
+                    codes, cleaned_ety = lsys.extract_and_remove_language_codes(etymology)
+                    
+                    # Add additional language detection
+                    additional_langs = {
+                        'Malay': 'ms',
+                        'Sanskrit': 'sa',
+                        'Proto-Malayo-Polynesian': 'pmp',
+                        'Proto-Austronesian': 'pan',
+                        'Spanish': 'es',
+                        'Latin': 'la',
+                        'Arabic': 'ar',
+                        'Chinese': 'zh',
+                        'Hokkien': 'nan',
+                        'Javanese': 'jv',
+                        'Kapampangan': 'pam',
+                        'Ilocano': 'ilo',
+                        'Bikol': 'bcl',
+                        'Cebuano': 'ceb',
+                        'Hiligaynon': 'hil',
+                        'Waray': 'war'
+                    }
+                    
+                    for lang, code in additional_langs.items():
+                        if lang in etymology and code not in codes:
+                            codes.append(code)
+                    
+                    insert_etymology(
+                        cur=cur,
+                        word_id=word_id,
+                        etymology_text=cleaned_ety,
+                        normalized_components=", ".join(components) if components else None,
+                        language_codes=", ".join(codes) if codes else "",
+                        sources=source
+                    )
+                except Exception as e:
+                    logger.debug(f"Error processing etymology for {lemma}: {str(e)}")
+                    # Still insert the etymology even if component extraction fails
+                    insert_etymology(
+                        cur=cur,
+                        word_id=word_id,
+                        etymology_text=etymology,
+                        normalized_components=None,
+                        language_codes="",
+                        sources=source
                     )
 
-            for syn in entry.get("synonyms", []):
-                syn_word = syn.get("word", "") if isinstance(syn, dict) else str(syn)
-                if syn_word := syn_word.strip():
-                    syn_id = get_or_create_word_id(cur, syn_word, language_code)
-                    insert_relation(
-                        cur,
-                        word_id,
-                        syn_id,
-                        "synonym",
-                        os.path.basename(filename)
-                    )
+            # Process relations with deduplication and hierarchy
+            processed_relations = set()  # Track processed relations
+            
+            # Process synonyms first as they have highest priority
+            synonyms = entry.get("synonyms", [])
+            if isinstance(synonyms, list):
+                for syn in synonyms:
+                    try:
+                        if isinstance(syn, dict):
+                            syn_word = syn.get("word", "").strip()
+                            syn_tags = syn.get("tags", [])
+                        else:
+                            syn_word = str(syn).strip()
+                            syn_tags = []
+                            
+                        if not syn_word:
+                            continue
+                            
+                        syn_id = get_or_create_word_id(cur, syn_word, language_code)
+                        if syn_id != word_id:  # Prevent self-referential relations
+                            relation_key = (word_id, syn_id)
+                            if relation_key not in processed_relations:
+                                # Check if it's an obsolete synonym
+                                relation_type = "singkahulugan"  # default: synonym
+                                if syn_tags and "obsolete" in [t.lower() for t in syn_tags]:
+                                    relation_type = "lumang_singkahulugan"  # obsolete synonym
+                                
+                                insert_relation(
+                                    cur,
+                                    word_id,
+                                    syn_id,
+                                    relation_type,
+                                    source
+                                )
+                                processed_relations.add(relation_key)
+                    except Exception as e:
+                        logger.debug(f"Error processing synonym for {lemma}: {str(e)}")
+                        continue
 
-            for rel in entry.get("related", []):
-                rel_word = rel.get("word", "") if isinstance(rel, dict) else str(rel)
-                if rel_word := rel_word.strip():
-                    rel_id = get_or_create_word_id(cur, rel_word, language_code)
-                    insert_relation(
-                        cur,
-                        word_id,
-                        rel_id,
-                        "related",
-                        os.path.basename(filename)
-                    )
+            # Process derived words
+            derived = entry.get("derived", [])
+            if isinstance(derived, list):
+                for der in derived:
+                    try:
+                        if isinstance(der, dict):
+                            der_word = der.get("word", "").strip()
+                            der_tags = der.get("tags", [])
+                        else:
+                            der_word = str(der).strip()
+                            der_tags = []
+                            
+                        if not der_word:
+                            continue
+                            
+                        der_id = get_or_create_word_id(cur, der_word, language_code)
+                        if der_id != word_id:  # Prevent self-referential relations
+                            relation_key = (word_id, der_id)
+                            if relation_key not in processed_relations:
+                                insert_relation(
+                                    cur,
+                                    word_id,
+                                    der_id,
+                                    "hinango",  # Use Filipino term for derived
+                                    source
+                                )
+                                processed_relations.add(relation_key)
+                    except Exception as e:
+                        logger.debug(f"Error processing derived word for {lemma}: {str(e)}")
+                        continue
+
+            # Process related words last
+            related = entry.get("related", [])
+            if isinstance(related, list):
+                for rel in related:
+                    try:
+                        if isinstance(rel, dict):
+                            rel_word = rel.get("word", "").strip()
+                            rel_tags = rel.get("tags", [])
+                        else:
+                            rel_word = str(rel).strip()
+                            rel_tags = []
+                            
+                        if not rel_word:
+                            continue
+                            
+                        rel_id = get_or_create_word_id(cur, rel_word, language_code)
+                        if rel_id != word_id:  # Prevent self-referential relations
+                            relation_key = (word_id, rel_id)
+                            if relation_key not in processed_relations:
+                                insert_relation(
+                                    cur,
+                                    word_id,
+                                    rel_id,
+                                    "kaugnay",  # Use Filipino term for related
+                                    source
+                                )
+                                processed_relations.add(relation_key)
+                    except Exception as e:
+                        logger.debug(f"Error processing related word for {lemma}: {str(e)}")
+                        continue
 
         except Exception as e:
-            logger.error(f"Error processing entry '{lemma}': {str(e)}")
+            logger.error(f"Error processing entry '{lemma if 'lemma' in locals() else 'unknown'}': {str(e)}")
             return
 
     logger.info(f"Starting to process Kaikki file: {filename}")
@@ -2150,99 +2892,98 @@ def process_tagalog_words(cur, filename: str):
         logger.error(f"File not found: {filename}")
         return
     
-    src = os.path.basename(filename)
+    src = SourceStandardization.get_display_name(os.path.basename(filename))
+    
+    def standardize_entry_pos(pos_str: str) -> List[str]:
+        """Standardize POS to Filipino terms. Returns list of standardized terms."""
+        if not pos_str:
+            return ['Hindi Tiyak']
+            
+        # Split on spaces to handle multiple POS values
+        pos_parts = pos_str.lower().strip().split()
+        standardized = []
+        
+        # Direct mapping for abbreviations - check this first
+        direct_map = {
+            'png': 'Pangngalan',
+            'pnr': 'Pang-uri',
+            'pnw': 'Pandiwa',
+            'pny': 'Pang-abay',
+            'pnd': 'Pangngalan',
+            'adj': 'Pang-uri',
+            'n': 'Pangngalan',
+            'v': 'Pandiwa'
+        }
+        
+        for pos_part in pos_parts:
+            pos_clean = pos_part.strip(' .')
+            if not pos_clean:
+                continue
+                
+            # First check direct abbreviation mappings
+            if pos_clean in direct_map:
+                standardized.append(direct_map[pos_clean])
+                continue
+                
+            # Then check POS_MAPPINGS
+            for mapping in POS_MAPPINGS.values():
+                # Check abbreviations
+                if pos_clean in [abbr.lower().strip('.') for abbr in mapping['abbreviations']]:
+                    standardized.append(mapping['filipino'])
+                    break
+                # Check variants
+                elif pos_clean in [var.lower() for var in mapping['variants']]:
+                    standardized.append(mapping['filipino'])
+                    break
+                # Check full terms
+                elif pos_clean == mapping['english'].lower() or pos_clean == mapping['filipino'].lower():
+                    standardized.append(mapping['filipino'])
+                    break
+                
+        # Only use Hindi Tiyak if we found no valid mappings
+        if not standardized:
+            standardized = ['Hindi Tiyak']
+            
+        return list(dict.fromkeys(standardized))  # Remove duplicates while preserving order
     
     try:
         with open(filename, 'r', encoding='utf-8') as f:
             entries = json.load(f)
             
-        # Ensure entries is a list of dictionaries
-        if isinstance(entries, list) and all(isinstance(entry, dict) for entry in entries):
-            for entry in tqdm(entries, desc="Processing Tagalog words"):
+        # Handle dictionary format
+        if isinstance(entries, dict):
+            for lemma, entry_data in tqdm(entries.items(), desc="Processing Tagalog words"):
                 try:
                     word_id = get_or_create_word_id(
                         cur,
-                        entry['lemma'],
+                        lemma,
                         language_code="tl",
                         tags=src
                     )
                     
-                    # Process definitions
-                    if 'definitions' in entry:
-                        for definition in entry['definitions']:
-                            insert_definition(
-                                cur,
-                                word_id,
-                                definition['text'],
-                                definition.get('pos', ''),
-                                sources=src
-                            )
-                            
-                    # Process synonyms
-                    if 'synonyms' in entry:
-                        for synonym in entry['synonyms']:
-                            syn_id = get_or_create_word_id(cur, synonym, language_code="tl")
-                            insert_relation(cur, word_id, syn_id, "synonym", src)
+                    # Get all standardized POS values
+                    pos_values = standardize_entry_pos(entry_data.get('part_of_speech', ''))
                     
-                    # Process affixations
-                    if 'affixation' in entry:
-                        for affix_type, affixed_forms in entry['affixation'].items():
-                            for affixed_form in affixed_forms:
-                                affixed_id = get_or_create_word_id(
-                                    cur, 
-                                    affixed_form,
-                                    language_code="tl",
-                                    root_word_id=word_id
-                                )
-                                insert_affixation(
+                    # Process definitions
+                    if 'definitions' in entry_data:
+                        for definition in entry_data['definitions']:
+                            def_text = definition if isinstance(definition, str) else definition['text']
+                            
+                            # Insert definition once for each POS value
+                            for pos in pos_values:
+                                insert_definition(
                                     cur,
-                                    root_id=word_id,
-                                    affixed_id=affixed_id,
-                                    affix_type=affix_type,
+                                    word_id,
+                                    def_text,
+                                    pos,
                                     sources=src
                                 )
                     
                 except Exception as e:
-                    logger.error(f"Error processing entry: {str(e)}")
+                    logger.error(f"Error processing lemma {lemma}: {str(e)}")
                     continue
         else:
-            # Handle case where entries is a dictionary mapping lemmas to their data
-            if isinstance(entries, dict):
-                for lemma, entry_data in tqdm(entries.items(), desc="Processing Tagalog words"):
-                    try:
-                        word_id = get_or_create_word_id(
-                            cur,
-                            lemma,
-                            language_code="tl",
-                            tags=src
-                        )
-                        
-                        # Process definitions
-                        if isinstance(entry_data, dict) and 'definitions' in entry_data:
-                            for definition in entry_data['definitions']:
-                                insert_definition(
-                                    cur,
-                                    word_id,
-                                    definition['text'] if isinstance(definition, dict) else definition,
-                                    entry_data.get('pos', ''),
-                                    sources=src
-                                )
-                                
-                        # If entry_data is a string, treat it as a definition
-                        elif isinstance(entry_data, str):
-                            insert_definition(
-                                cur,
-                                word_id,
-                                entry_data,
-                                '',  # No POS information available
-                                sources=src
-                            )
-                            
-                    except Exception as e:
-                        logger.error(f"Error processing lemma {lemma}: {str(e)}")
-                        continue
-            else:
-                raise ValueError("Unsupported data format in tagalog-words.json")
+            raise ValueError("Unsupported data format in tagalog-words.json")
     
     except Exception as e:
         logger.error(f"Error processing Tagalog words file: {str(e)}")
@@ -2256,7 +2997,7 @@ def process_root_words(cur, filename: str):
         logger.error(f"File not found: {filename}")
         return
         
-    src = os.path.basename(filename)
+    src = SourceStandardization.get_display_name(os.path.basename(filename))
     
     try:
         with open(filename, 'r', encoding='utf-8') as f:
@@ -2268,7 +3009,8 @@ def process_root_words(cur, filename: str):
                 root_id = get_or_create_word_id(
                     cur,
                     root_lemma,
-                    language_code="tl"
+                    language_code="tl",
+                    tags=src
                 )
                 
                 # Process derivatives
@@ -2476,11 +3218,21 @@ def migrate_data(args):
 
         # Post-processing with transaction handling
         try:
+            logger.info("Starting post-processing steps...")
+            
+            # Process Baybayin entries
             process_baybayin_entries(cur)
             cleanup_baybayin_data(cur)
-            logger.info("Migration completed successfully")
+            
+            # Clean up and standardize data
+            logger.info("Running data cleanup and standardization...")
+            cleanup_dictionary_data(cur)
+            
+            conn.commit()
+            logger.info("Migration and cleanup completed successfully")
             
         except Exception as e:
+            conn.rollback()
             logger.error(f"Error during post-processing: {str(e)}")
             raise
             
@@ -2878,228 +3630,337 @@ def display_help(args):
     console.print()
 
 def lookup_word(args):
-    """Look up a word and display its information."""
-    console = Console()
-    conn = get_connection()
-    cur = conn.cursor()
-
-    try:
-        # Get word with processor's normalization
-        normalized = normalize_lemma(args.word)
+    """Look up a word in the dictionary and display its information."""
+    with get_connection() as conn:
+        cur = conn.cursor()
         
-        # Get basic word information
+        # Get word ID and basic info with enhanced data
         cur.execute("""
-            SELECT w.id, w.lemma, w.language_code, w.has_baybayin, w.baybayin_form,
-                   w.romanized_form, w.preferred_spelling, w.tags, w.root_word_id,
-                   string_agg(DISTINCT d.sources, ', ') as sources,
-                   w.pronunciation_data,
-                   w.idioms
+            SELECT w.id, w.lemma, w.language_code, w.tags, w.has_baybayin, w.baybayin_form, 
+                   w.romanized_form, w.pronunciation_data, w.root_word_id
             FROM words w
-            LEFT JOIN definitions d ON w.id = d.word_id
             WHERE w.normalized_lemma = %s
-            GROUP BY w.id, w.lemma, w.language_code, w.has_baybayin, w.baybayin_form,
-                     w.romanized_form, w.preferred_spelling, w.tags, w.root_word_id,
-                     w.pronunciation_data, w.idioms
-        """, (normalized,))
-
+        """, (normalize_lemma(args.word),))
+        
         result = cur.fetchone()
         if not result:
-            # Try processor's fuzzy matching
-            suggestions = processor.find_similar_words(cur, args.word)
-            if suggestions:
-                console.print(f"[bold red]Word '{args.word}' not found.[/]")
-                console.print("[yellow]Did you mean:[/]")
-                for sugg in suggestions:
-                    console.print(f"  • {sugg}")
-            else:
-                console.print(f"[bold red]Word '{args.word}' not found.[/]")
+            print(f"Word '{args.word}' not found in the dictionary.")
             return
-
-        # Extract word information
-        word_id, lemma, lang_code, has_baybayin, baybayin_form, \
-        romanized_form, preferred_spelling, tags, root_word_id, sources, \
-        pronunciation_data, idioms = result
-
-        # Format word-level sources (already a string from string_agg)
-        sources_text = sources if sources else "-"
-
-        # Display word information
-        info = [
-            f"[bold]Word:[/] {lemma}",
-            f"[bold]Language:[/] {'Tagalog' if lang_code == 'tl' else 'Cebuano'}"
-        ]
-        baybayin_display = baybayin_form.strip() if baybayin_form and baybayin_form.strip() else "(Not available)"
-        romanized_display = romanized_form.strip() if romanized_form and romanized_form.strip() else "(Not available)"
-        info.append(f"[bold]Baybayin:[/] {baybayin_display} (Romanized: {romanized_display})")
-        if preferred_spelling:
-            info.append(f"[bold]Preferred Spelling:[/] {preferred_spelling}")
-        if tags:
-            info.append(f"[bold]Tags:[/] {tags}")
-        if pronunciation_data:
-            pron = pronunciation_data.get('romanized', '-') if isinstance(pronunciation_data, dict) else pronunciation_data
-            info.append(f"[bold]Pronunciation:[/] {pron}")
-        if sources_text and sources_text != "-":
-            info.append(f"[bold]Word Sources:[/] {sources_text}")
-
-        console.print(Panel("\n".join(info), title="Word Information", border_style="cyan"))
-
-        # Display idioms if any exist
-        if idioms and isinstance(idioms, list) and len(idioms) > 0:
-            idiom_table = Table(title="Idioms", box=box.ROUNDED, show_header=True)
-            idiom_table.add_column("Idiom", style="cyan")
-            idiom_table.add_column("Meaning", style="white")
-            idiom_table.add_column("Examples", style="yellow")
             
-            for idiom in idioms:
-                examples_text = "\n".join(idiom.get('examples', [])) if idiom.get('examples') else "-"
-                idiom_table.add_row(
-                    idiom.get('idiom', ''),
-                    idiom.get('meaning', ''),
-                    examples_text
-                )
-            console.print(idiom_table)
-
-        # Fetch definitions for the word
-        cur.execute("""
-            SELECT definition_text, original_pos, examples, usage_notes, sources
-            FROM definitions
-            WHERE word_id = %s
-        """, (word_id,))
-        definitions = cur.fetchall()
-
-        # Display definitions if any
-        if definitions:
-            def_table = Table(title="Definitions", box=box.ROUNDED, show_header=True)
-            def_table.add_column("No.", justify="right", style="cyan")
-            def_table.add_column("Definition", style="white")
-            def_table.add_column("Part of Speech", style="yellow")
-            def_table.add_column("Usage", style="magenta")
-            def_table.add_column("Sources", style="green")
-            
-            for i, (def_text, pos, examples, usage_notes, src) in enumerate(definitions, 1):
-                usage_parts = []
-                if examples:
-                    usage_parts.append(f"[italic]{examples}[/]")
-                if usage_notes:
-                    usage_parts.append(usage_notes)
-                usage_text = "\n".join(usage_parts) if usage_parts else "-"
-                
-                # Handle definition sources robustly:
-                if src is None:
-                    def_sources = "-"
-                elif isinstance(src, (list, tuple)):
-                    # If all elements are single characters, join them without separator
-                    if all(isinstance(x, str) and len(x) == 1 for x in src):
-                        def_sources = "".join(src)
-                    else:
-                        def_sources = ", ".join(src)
-                elif isinstance(src, str):
-                    def_sources = src
-                else:
-                    def_sources = str(src)
-
-                def_table.add_row(
-                    str(i),
-                    def_text,
-                    pos if pos else "-",
-                    usage_text,
-                    def_sources
-                )
-            console.print(def_table)
-
-        # Display related words
-        cur.execute("""
-            SELECT r.relation_type, w.lemma
-            FROM relations r
-            JOIN words w ON r.to_word_id = w.id
-            WHERE r.from_word_id = %s
-        """, (word_id,))
-        related = cur.fetchall()
-        if related:
-            rel_dict = {}
-            for rel_type, rel_lemma in related:
-                rel_dict.setdefault(rel_type, []).append(rel_lemma)
-            
-            rel_table = Table(title="Related Words", box=box.ROUNDED, show_header=True)
-            rel_table.add_column("Relation Type", style="cyan")
-            rel_table.add_column("Words", style="white")
-            for rel_type, words in rel_dict.items():
-                rel_table.add_row(
-                    rel_type.capitalize(),
-                    ", ".join(words)
-                )
-            console.print(rel_table)
+        word_id, lemma, language_code, tags, has_baybayin, baybayin_form, romanized_form, pronunciation, root_word_id = result
         
-        # Display Etymologies if any
+        # Create rich console for output
+        console = Console()
+        
+        # Display word information in a structured panel
+        word_info = []
+        word_info.append(Text(f"Word: {lemma}", style="bold cyan"))
+        word_info.append(Text(f"Language: {'Tagalog' if language_code == 'tl' else 'Cebuano'}", style="blue"))
+        
+        # Display Baybayin information if available
+        if has_baybayin and baybayin_form:
+            romanized = f" (Romanized: {romanized_form})" if romanized_form else ""
+            word_info.append(Text(f"Baybayin: {baybayin_form}{romanized}", style="magenta"))
+        
+        # Display pronunciation information
+        if pronunciation and isinstance(pronunciation, dict):
+            pron_info = []
+            if 'sounds' in pronunciation and pronunciation['sounds']:
+                for sound in pronunciation['sounds']:
+                    if 'ipa' in sound:
+                        dialect = f" ({sound['dialect']})" if 'dialect' in sound else ""
+                        pron_info.append(f"{sound['ipa']}{dialect}")
+                if pron_info:
+                    word_info.append(Text(f"Pronunciation (IPA): {', '.join(pron_info)}", style="yellow"))
+            
+            if 'hyphenation' in pronunciation:
+                word_info.append(Text(f"Syllables: {pronunciation['hyphenation']}", style="yellow"))
+                
+            if 'notes' in pronunciation and pronunciation['notes']:
+                word_info.append(Text(f"Pronunciation Notes: {pronunciation['notes']}", style="yellow"))
+        
+        # Display tags with better organization
+        if tags:
+            tag_groups = {}
+            for tag in tags.split(';'):
+                tag = tag.strip()
+                if ':' in tag:
+                    category, value = tag.split(':', 1)
+                    if category not in tag_groups:
+                        tag_groups[category] = []
+                    tag_groups[category].append(value.strip())
+                else:
+                    if 'Other' not in tag_groups:
+                        tag_groups['Other'] = []
+                    tag_groups['Other'].append(tag)
+            
+            for category, values in sorted(tag_groups.items()):
+                word_info.append(Text(f"{category}: {', '.join(sorted(set(values)))}", style="green"))
+        
+        # Create word information panel
+        console.print(Panel(
+            "\n".join([str(line) for line in word_info]),
+            title="[bold]Word Information[/]",
+            expand=True,
+            border_style="cyan"
+        ))
+        
+        # Get definitions grouped by POS with enhanced information
         cur.execute("""
-            SELECT etymology_text, normalized_components, language_codes, sources, created_at
+            WITH pos_defs AS (
+                SELECT 
+                    p.name_tl as pos,
+                    d.definition_text,
+                    d.examples,
+                    d.usage_notes,
+                    d.sources,
+                    d.created_at,
+                    ROW_NUMBER() OVER (PARTITION BY p.name_tl ORDER BY d.created_at) as def_num
+                FROM definitions d
+                JOIN parts_of_speech p ON d.standardized_pos_id = p.id
+                WHERE d.word_id = %s
+            ),
+            grouped_defs AS (
+                SELECT 
+                    pos,
+                    definition_text,
+                    examples,
+                    usage_notes,
+                    string_agg(DISTINCT sources, ', ') as sources,
+                    min(def_num) as def_num
+                FROM pos_defs
+                GROUP BY pos, definition_text, examples, usage_notes
+            )
+            SELECT *
+            FROM grouped_defs
+            ORDER BY pos, def_num
+        """, (word_id,))
+        
+        definitions = cur.fetchall()
+        
+        if definitions:
+            console.print("\n[bold]Definitions[/]", justify="center")
+            
+            table = Table(
+                "POS",
+                "Definition",
+                "Examples",
+                "Usage Notes",
+                "Sources",
+                box=box.ROUNDED,
+                expand=True,
+                show_lines=True,
+                padding=(0, 1)
+            )
+            
+            current_pos = None
+            for pos, definition, examples, usage_notes, sources, def_num in definitions:
+                # Skip empty definitions
+                if not definition or not definition.strip():
+                    continue
+                
+                # Process examples
+                example_text = ""
+                if examples:
+                    example_list = []
+                    for ex in examples.split('\n'):
+                        ex = ex.strip()
+                        if ex and ex not in example_list:
+                            example_list.append(f"• {ex}")
+                    example_text = "\n".join(example_list)
+                
+                # Process usage notes
+                usage_text = ""
+                if usage_notes:
+                    usage_list = []
+                    for note in usage_notes.split('\n'):
+                        note = note.strip()
+                        if note and note not in usage_list:
+                            usage_list.append(f"• {note}")
+                    usage_text = "\n".join(usage_list)
+                
+                # Process sources - deduplicate and standardize
+                source_list = []
+                for source in sources.split(','):
+                    display_name = SourceStandardization.get_display_name(source.strip())
+                    if display_name and display_name not in source_list:
+                        source_list.append(display_name)
+                
+                table.add_row(
+                    Text(pos, style="blue") if pos != current_pos else "",
+                    Text(definition, style="bold") if def_num == 1 else definition,
+                    Text(example_text, style="green") if example_text else "",
+                    Text(usage_text, style="yellow") if usage_text else "",
+                    Text(", ".join(sorted(source_list)), style="magenta", overflow="fold")
+                )
+                current_pos = pos
+            
+            console.print(table)
+        
+        # Get etymology information with enhanced display
+        cur.execute("""
+            SELECT DISTINCT ON (etymology_text)
+                etymology_text,
+                string_agg(DISTINCT normalized_components, '; ') as components,
+                string_agg(DISTINCT language_codes, ', ') as langs,
+                string_agg(DISTINCT sources, ', ') as sources
             FROM etymologies
             WHERE word_id = %s
+            GROUP BY etymology_text
         """, (word_id,))
-        etymologies = cur.fetchall()
-        if etymologies:
-            ety_table = Table(title="Etymologies", box=box.ROUNDED, show_header=True)
-            ety_table.add_column("No.", justify="right", style="cyan")
-            ety_table.add_column("Etymology", style="white")
-            ety_table.add_column("Components", style="yellow")
-            ety_table.add_column("Language Codes", style="magenta")
-            ety_table.add_column("Sources", style="green")
-            ety_table.add_column("Created At", style="dim")
-            for j, (ety_text, norm_components, lang_codes, ety_sources, created_at) in enumerate(etymologies, 1):
-                ety_table.add_row(
-                    str(j),
-                    ety_text,
-                    norm_components if norm_components else "-",
-                    lang_codes if lang_codes else "-",
-                    ety_sources if ety_sources else "-",
-                    str(created_at)
-                )
-            console.print(ety_table)
         
-        # Display Affixations if any (this word as a root word)
+        etymologies = cur.fetchall()
+        
+        if etymologies:
+            console.print("\n[bold]Etymology[/]", justify="center")
+            
+            for etym_text, components, langs, sources in etymologies:
+                if not etym_text.strip():
+                    continue
+                    
+                etymology_panel = []
+                etymology_panel.append(Text(etym_text, style="cyan"))
+                
+                if components:
+                    comp_list = []
+                    for comp in components.split(';'):
+                        comp = comp.strip()
+                        if comp and comp not in comp_list:
+                            comp_list.append(comp)
+                    if comp_list:
+                        etymology_panel.append(Text("\nComponents:", style="bold"))
+                        for comp in sorted(comp_list):
+                            etymology_panel.append(Text(f"• {comp}", style="green"))
+                
+                if langs:
+                    lang_list = sorted(set(lang.strip() for lang in langs.split(',') if lang.strip()))
+                    if lang_list:
+                        etymology_panel.append(Text("\nLanguages:", style="bold"))
+                        etymology_panel.append(Text(", ".join(lang_list), style="blue"))
+                
+                if sources:
+                    source_list = []
+                    for source in sources.split(','):
+                        display_name = SourceStandardization.get_display_name(source.strip())
+                        if display_name and display_name not in source_list:
+                            source_list.append(display_name)
+                    if source_list:
+                        etymology_panel.append(Text("\nSources:", style="bold"))
+                        etymology_panel.append(Text(", ".join(sorted(source_list)), style="magenta"))
+                
+                console.print(Panel(
+                    "\n".join([str(line) for line in etymology_panel]),
+                    box=box.ROUNDED,
+                    expand=True,
+                    border_style="blue"
+                ))
+        
+        # Get related words with enhanced grouping
         cur.execute("""
-            SELECT a.affix_type, a.affixed_word_id, w.lemma, a.sources, a.created_at
-            FROM affixations a
-            JOIN words w ON a.affixed_word_id = w.id
-            WHERE a.root_word_id = %s
+            SELECT DISTINCT ON (r.relation_type, w2.lemma)
+                r.relation_type,
+                w2.lemma as related_word,
+                string_agg(DISTINCT p.name_tl, ', ') as pos_list,
+                string_agg(DISTINCT r.sources, ', ') as sources
+            FROM relations r
+            JOIN words w2 ON r.to_word_id = w2.id
+            LEFT JOIN definitions d ON w2.id = d.word_id
+            LEFT JOIN parts_of_speech p ON d.standardized_pos_id = p.id
+            WHERE r.from_word_id = %s
+            GROUP BY r.relation_type, w2.lemma
+            ORDER BY r.relation_type, w2.lemma
         """, (word_id,))
-        affixations = cur.fetchall()
-        if affixations:
-            affix_table = Table(title="Affixations", box=box.ROUNDED, show_header=True)
-            affix_table.add_column("No.", justify="right", style="cyan")
-            affix_table.add_column("Affix Type", style="yellow")
-            affix_table.add_column("Affixed Word", style="white")
-            affix_table.add_column("Sources", style="green")
-            affix_table.add_column("Created At", style="dim")
-            for k, (affix_type, affixed_word_id, affixed_lemma, affix_sources, affix_created) in enumerate(affixations, 1):
-                if affix_sources is None:
-                    affix_sources_formatted = "-"
-                elif isinstance(affix_sources, (list, tuple)):
-                    deduped = list(dict.fromkeys(affix_sources))
-                    if all(isinstance(x, str) and len(x) == 1 for x in deduped):
-                        affix_sources_formatted = "".join(deduped)
-                    else:
-                        affix_sources_formatted = ", ".join(deduped)
-                elif isinstance(affix_sources, str):
-                    sources_list = [s.strip() for s in affix_sources.split(",") if s.strip()]
-                    sources_list = list(dict.fromkeys(sources_list))
-                    affix_sources_formatted = ", ".join(sources_list) if sources_list else "-"
-                else:
-                    affix_sources_formatted = str(affix_sources)
-                affix_table.add_row(
-                    str(k),
-                    affix_type,
-                    affixed_lemma,
-                    affix_sources_formatted,
-                    str(affix_created)
+        
+        relations = cur.fetchall()
+        
+        if relations:
+            console.print("\n[bold]Related Words[/]", justify="center")
+            
+            # Group and deduplicate related words
+            relation_groups = {}
+            for rel_type, rel_word, pos_list, sources in relations:
+                # Skip duplicate relation types (e.g., 'hinango' if we have 'derived_from')
+                if rel_type in ['hinango', 'singkahulugan'] and any(k in relation_groups for k in ['derived_from', 'synonym']):
+                    continue
+                    
+                if rel_type not in relation_groups:
+                    relation_groups[rel_type] = []
+                pos_info = f" ({pos_list})" if pos_list else ""
+                word_info = f"{rel_word}{pos_info}"
+                if word_info not in relation_groups[rel_type]:
+                    relation_groups[rel_type].append(word_info)
+            
+            table = Table(
+                "Relation Type",
+                "Related Words",
+                box=box.ROUNDED,
+                expand=True,
+                show_lines=True,
+                padding=(0, 1)
+            )
+            
+            for rel_type, words in sorted(relation_groups.items()):
+                table.add_row(
+                    Text(rel_type, style="bold yellow"),
+                    Text(", ".join(sorted(words)), style="cyan", overflow="fold")
                 )
-            console.print(affix_table)
-
-    except Exception as e:
-        logger.error(f"Error during lookup: {str(e)}")
-    finally:
-        cur.close()
-        conn.close()
+            
+            console.print(table)
+        
+        # Get affixed forms with enhanced display
+        cur.execute("""
+            SELECT DISTINCT ON (a.affix_type, w2.lemma)
+                a.affix_type,
+                w2.lemma as affixed_word,
+                string_agg(DISTINCT p.name_tl, ', ') as pos_list,
+                string_agg(DISTINCT a.sources, ', ') as sources
+            FROM affixations a
+            JOIN words w2 ON a.affixed_word_id = w2.id
+            LEFT JOIN definitions d ON w2.id = d.word_id
+            LEFT JOIN parts_of_speech p ON d.standardized_pos_id = p.id
+            WHERE a.root_word_id = %s
+            GROUP BY a.affix_type, w2.lemma
+            ORDER BY a.affix_type, w2.lemma
+        """, (word_id,))
+        
+        affixed = cur.fetchall()
+        
+        if affixed:
+            console.print("\n[bold]Affixed Forms[/]", justify="center")
+            
+            table = Table(
+                "Affix Type",
+                "Word",
+                "Part of Speech",
+                "Sources",
+                box=box.ROUNDED,
+                expand=True,
+                show_lines=True,
+                padding=(0, 1)
+            )
+            
+            # Deduplicate and clean up affixed forms
+            seen_forms = set()
+            for affix_type, word, pos_list, sources in affixed:
+                if not word.strip() or word in seen_forms:
+                    continue
+                seen_forms.add(word)
+                
+                # Process sources - deduplicate and standardize
+                source_list = []
+                for source in sources.split(','):
+                    display_name = SourceStandardization.get_display_name(source.strip())
+                    if display_name and display_name not in source_list:
+                        source_list.append(display_name)
+                
+                table.add_row(
+                    Text(affix_type or "", style="yellow"),
+                    Text(word, style="cyan"),
+                    Text(pos_list or "", style="blue"),
+                    Text(", ".join(sorted(source_list)), style="magenta", overflow="fold")
+                )
+            
+            console.print(table)
 
 def display_dictionary_stats(args):
     """Display essential dictionary statistics."""
@@ -3375,35 +4236,6 @@ def cleanup_relations(cur):
             WHERE LOWER(relation_type) = %s
         """, (new, old))
 
-def batch_process_with_progress(items: List[Any], 
-                              process_func: Callable, 
-                              batch_size: int = 1000) -> None:
-    """Process items in batches with progress tracking and error recovery."""
-    total_batches = (len(items) + batch_size - 1) // batch_size
-    failed_items = []
-    
-    with tqdm(total=len(items), desc="Processing items") as pbar:
-        for batch_num, start_idx in enumerate(range(0, len(items), batch_size)):
-            batch = items[start_idx:start_idx + batch_size]
-            try:
-                with get_connection() as conn:
-                    with conn.cursor() as cur:
-                        for item in batch:
-                            try:
-                                process_func(cur, item)
-                                pbar.update(1)
-                            except Exception as e:
-                                failed_items.append((item, str(e)))
-                                logger.error(f"Error processing item: {str(e)}")
-                    conn.commit()
-            except Exception as e:
-                logger.error(f"Batch {batch_num + 1}/{total_batches} failed: {str(e)}")
-                failed_items.extend((item, "Batch failure") for item in batch)
-    
-    if failed_items:
-        logger.error(f"Failed to process {len(failed_items)} items")
-        return failed_items
-
 def deduplicate_definitions(cur):
     """Remove duplicate definitions for words while preserving unique information."""
     logger.info("Starting definition deduplication process...")
@@ -3455,67 +4287,147 @@ def deduplicate_definitions(cur):
     final_count = cur.fetchone()[0]
     logger.info(f"Definition deduplication complete. {final_count} unique definitions remain.")
 
-def merge_sources(sources):
-    """Merge source strings while removing duplicates and formatting properly."""
-    if isinstance(sources, str):
-        return sources
-    unique_sources = set()
-    for source in sources:
-        if source:
-            unique_sources.add(source.strip())
-    return ', '.join(sorted(unique_sources))
-
-@with_transaction(commit=True)
 def cleanup_dictionary_data(cur):
     """Clean up dictionary data by removing duplicates and standardizing formats."""
     logger.info("Starting dictionary cleanup process...")
     
-    # 1. Deduplicate definitions
-    deduplicate_definitions(cur)
-    
-    # 2. Merge sources for identical definitions
+    # 1. First standardize all POS values in definitions
+    cur.execute("""
+        WITH pos_standardization AS (
+            SELECT d.id,
+                   CASE 
+                       WHEN d.original_pos IN ('png', 'n', 'noun', 'pangngalan') THEN 
+                           (SELECT id FROM parts_of_speech WHERE code = 'n')
+                       WHEN d.original_pos IN ('pnr', 'adj', 'adjective', 'pang-uri') THEN 
+                           (SELECT id FROM parts_of_speech WHERE code = 'adj')
+                       WHEN d.original_pos IN ('pnw', 'v', 'verb', 'pandiwa') THEN 
+                           (SELECT id FROM parts_of_speech WHERE code = 'v')
+                       WHEN d.original_pos IN ('pny', 'adv', 'adverb', 'pang-abay') THEN 
+                           (SELECT id FROM parts_of_speech WHERE code = 'adv')
+                       ELSE standardized_pos_id
+                   END as new_pos_id
+            FROM definitions d
+        )
+        UPDATE definitions d
+        SET standardized_pos_id = ps.new_pos_id
+        FROM pos_standardization ps
+        WHERE d.id = ps.id;
+    """)
+
+    # 2. Merge and standardize sources
+    cur.execute("""
+        WITH source_standardization AS (
+            SELECT id,
+                   string_agg(DISTINCT 
+                       CASE 
+                           WHEN unnest = 'kaikki-ceb.jsonl' THEN 'kaikki.org (Cebuano)'
+                           WHEN unnest = 'kaikki.jsonl' THEN 'kaikki.org (Tagalog)'
+                           WHEN unnest = 'kwf_dictionary.json' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
+                           WHEN unnest = 'root_words_with_associated_words_cleaned.json' THEN 'tagalog.com'
+                           WHEN unnest = 'tagalog-words.json' THEN 'diksiyonaryo.ph'
+                           ELSE unnest
+                       END, ', ') as standardized_sources
+            FROM (
+                SELECT id, unnest(string_to_array(sources, ', ')) as unnest
+                FROM definitions
+            ) s
+            GROUP BY id
+        )
+        UPDATE definitions d
+        SET sources = ss.standardized_sources
+        FROM source_standardization ss
+        WHERE d.id = ss.id;
+    """)
+
+    # 3. Deduplicate definitions while preserving unique information
     cur.execute("""
         WITH grouped_defs AS (
             SELECT 
                 word_id,
                 definition_text,
                 standardized_pos_id,
-                examples,
-                usage_notes,
-                array_agg(sources) as source_array,
+                string_agg(DISTINCT sources, ' | ') as merged_sources,
+                string_agg(DISTINCT examples, ' | ') FILTER (WHERE examples IS NOT NULL AND examples != '') as all_examples,
+                string_agg(DISTINCT usage_notes, ' | ') FILTER (WHERE usage_notes IS NOT NULL AND usage_notes != '') as all_notes,
                 min(id) as keep_id
             FROM definitions
-            GROUP BY 
-                word_id,
-                definition_text,
-                standardized_pos_id,
-                examples,
-                usage_notes
+            GROUP BY word_id, definition_text, standardized_pos_id
             HAVING COUNT(*) > 1
         )
         UPDATE definitions d
-        SET sources = subquery.merged_sources
-        FROM (
-            SELECT 
-                keep_id,
-                array_to_string(source_array, ', ') as merged_sources
-            FROM grouped_defs
-        ) as subquery
-        WHERE d.id = subquery.keep_id;
+        SET 
+            sources = g.merged_sources,
+            examples = CASE 
+                WHEN g.all_examples IS NOT NULL THEN g.all_examples 
+                ELSE d.examples 
+            END,
+            usage_notes = CASE 
+                WHEN g.all_notes IS NOT NULL THEN g.all_notes 
+                ELSE d.usage_notes 
+            END
+        FROM grouped_defs g
+        WHERE d.id = g.keep_id;
     """)
-    
-    # 3. Delete remaining duplicates
+
+    # 4. Delete duplicate definitions after merging their information
     cur.execute("""
-        DELETE FROM definitions a
-        USING definitions b
-        WHERE a.id > b.id
-        AND a.word_id = b.word_id
-        AND a.definition_text = b.definition_text
-        AND COALESCE(a.standardized_pos_id, -1) = COALESCE(b.standardized_pos_id, -1)
-        AND COALESCE(a.examples, '') = COALESCE(b.examples, '')
-        AND COALESCE(a.usage_notes, '') = COALESCE(b.usage_notes, '');
+        WITH duplicates AS (
+            SELECT word_id, definition_text, standardized_pos_id, min(id) as keep_id
+            FROM definitions
+            GROUP BY word_id, definition_text, standardized_pos_id
+            HAVING COUNT(*) > 1
+        )
+        DELETE FROM definitions d
+        WHERE EXISTS (
+            SELECT 1 FROM duplicates dup
+            WHERE d.word_id = dup.word_id
+            AND d.definition_text = dup.definition_text
+            AND d.standardized_pos_id = dup.standardized_pos_id
+            AND d.id != dup.keep_id
+        );
     """)
-    
+
+    # 5. Update word tags with proper source information and actual tags
+    cur.execute("""
+        WITH word_sources AS (
+            SELECT 
+                d.word_id,
+                string_agg(DISTINCT 
+                    CASE 
+                        WHEN d.sources = 'kaikki-ceb.jsonl' THEN 'kaikki.org (Cebuano)'
+                        WHEN d.sources = 'kaikki.jsonl' THEN 'kaikki.org (Tagalog)'
+                        WHEN d.sources = 'kwf_dictionary.json' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
+                        WHEN d.sources = 'root_words_with_associated_words_cleaned.json' THEN 'tagalog.com'
+                        WHEN d.sources = 'tagalog-words.json' THEN 'diksiyonaryo.ph'
+                        ELSE d.sources
+                    END, ', ') as sources
+            FROM definitions d
+            GROUP BY d.word_id
+        )
+        UPDATE words w
+        SET tags = ws.sources
+        FROM word_sources ws
+        WHERE w.id = ws.word_id;
+    """)
+
+    # 6. Remove any remaining definitions with "Hindi Tiyak" when better POS exists
+    cur.execute("""
+        WITH better_pos AS (
+            SELECT word_id
+            FROM definitions d
+            JOIN parts_of_speech p ON d.standardized_pos_id = p.id
+            WHERE p.code != 'unc'
+        )
+        DELETE FROM definitions d
+        USING parts_of_speech p
+        WHERE d.standardized_pos_id = p.id
+        AND p.code = 'unc'
+        AND EXISTS (
+            SELECT 1 FROM better_pos b
+            WHERE b.word_id = d.word_id
+        );
+    """)
+
     logger.info("Dictionary cleanup complete.")
 
 # Add to your command-line interface:

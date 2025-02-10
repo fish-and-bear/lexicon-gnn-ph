@@ -1,6 +1,7 @@
-from typing import Dict, Any, Optional
-from source_standardization import DictionarySource, SourceStandardization
-from language_systems import LanguageSystem
+from typing import Dict, Any, List, Optional
+from backend.source_standardization import DictionarySource, SourceStandardization
+from backend.language_systems import LanguageSystem
+from backend.language_types import ConsolidatedEntry, WordForm, Definition, SourceInfo
 import logging
 import re
 

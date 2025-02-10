@@ -1,5 +1,9 @@
+"""
+Centralized source standardization for the dictionary system.
+"""
+
 from enum import Enum
-from typing import Optional
+from typing import Optional, Dict
 
 class DictionarySource(Enum):
     KAIKKI = "kaikki"
@@ -10,7 +14,7 @@ class DictionarySource(Enum):
 class SourceStandardization:
     """Standardized names for dictionary sources."""
     
-    FILE_TO_DISPLAY = {
+    FILE_TO_DISPLAY: Dict[str, str] = {
         'kaikki-ceb.jsonl': 'kaikki.org (Cebuano)',
         'kaikki.jsonl': 'kaikki.org (Tagalog)', 
         'kwf_dictionary.json': 'KWF Diksiyonaryo ng Wikang Filipino',
@@ -18,7 +22,7 @@ class SourceStandardization:
         'tagalog-words.json': 'diksiyonaryo.ph'
     }
 
-    SOURCE_TO_ENUM = {
+    SOURCE_TO_ENUM: Dict[str, DictionarySource] = {
         'kaikki.jsonl': DictionarySource.KAIKKI,
         'kwf_dictionary.json': DictionarySource.KWF,
         'root_words_with_associated_words_cleaned.json': DictionarySource.ROOT_WORDS,
@@ -38,13 +42,29 @@ class SourceStandardization:
     @staticmethod
     def get_standardized_source_sql() -> str:
         """Returns SQL CASE statement for standardized sources."""
-        return """
+        sql_parts = []
+        for file_name, display_name in SourceStandardization.FILE_TO_DISPLAY.items():
+            sql_parts.append(f"WHEN sources = '{file_name}' THEN '{display_name}'")
+        
+        return f"""
             CASE 
-                WHEN sources = 'kaikki-ceb.jsonl' THEN 'kaikki.org (Cebuano)'
-                WHEN sources = 'kaikki.jsonl' THEN 'kaikki.org (Tagalog)'
-                WHEN sources = 'kwf_dictionary.json' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
-                WHEN sources = 'root_words_with_associated_words_cleaned.json' THEN 'tagalog.com'
-                WHEN sources = 'tagalog-words.json' THEN 'diksiyonaryo.ph'
+                {' '.join(sql_parts)}
                 ELSE sources
             END
-        """ 
+        """
+
+    @staticmethod
+    def standardize_sources(sources: str) -> str:
+        """Standardize a comma-separated list of sources."""
+        if not sources:
+            return ""
+        
+        source_list = [s.strip() for s in sources.split(',')]
+        standardized = []
+        
+        for source in source_list:
+            display_name = SourceStandardization.get_display_name(source)
+            if display_name not in standardized:
+                standardized.append(display_name)
+                
+        return ', '.join(sorted(standardized)) 

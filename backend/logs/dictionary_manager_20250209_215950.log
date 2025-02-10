@@ -1,0 +1,12 @@
+2025-02-09 21:59:50,664 - INFO - Attempting database connection...
+2025-02-09 21:59:50,664 - INFO - Database configuration:
+2025-02-09 21:59:50,664 - INFO -   Database Name: fil_dict_db
+2025-02-09 21:59:50,664 - INFO -   User: postgres
+2025-02-09 21:59:50,664 - INFO -   Host: localhost
+2025-02-09 21:59:50,665 - INFO -   Password: ********
+2025-02-09 21:59:50,698 - INFO - Successfully established database connection
+2025-02-09 21:59:50,699 - INFO - Starting dictionary cleanup process...
+2025-02-09 21:59:50,705 - ERROR - Error in cleanup_dictionary_data: column "tags" does not exist
+LINE 5: ...                  unnest(string_to_array(COALESCE(tags, ''),...
+                                                             ^
+

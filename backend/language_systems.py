@@ -3,12 +3,12 @@
 import functools
 from typing import Dict, List, Optional, Set, Tuple
 import re
-from language_types import (
+from backend.language_types import (
     LanguageMetadata, WritingSystemInfo, 
     LanguageSystemError, InvalidLanguageCode, InvalidLanguageMapping
 )
-from language_config import LanguageSystemConfig
-from language_validator import LanguageSystemValidator
+from backend.language_config import LanguageSystemConfig
+from backend.language_validator import LanguageSystemValidator
 
 class LanguageSystem:
     """Manages language classification, standardization, and metadata."""
@@ -27,9 +27,6 @@ class LanguageSystem:
         
         # Validate all mappings
         self._validate_mappings()
-        
-        # Initialize cache
-        self._cache = {}
 
     def _validate_mappings(self) -> None:
         """Validate consistency of all language mappings."""
@@ -107,24 +104,6 @@ class LanguageSystem:
             regions=self.get_regions(language),
             writing_systems=self.get_writing_systems(language)
         )
-
-    def standardize_language_codes(self, codes_str: str) -> str:
-        """Standardize and deduplicate language codes."""
-        if not codes_str:
-            return "-"
-        
-        codes = [c.strip() for c in codes_str.split(',')]
-        cleaned_codes = []
-        
-        for code in codes:
-            try:
-                standardized = self.standardize_code(code)
-                if standardized in self.valid_codes:
-                    cleaned_codes.append(standardized)
-            except InvalidLanguageCode:
-                continue
-        
-        return ", ".join(sorted(set(cleaned_codes))) if cleaned_codes else "-" 
 
     def extract_and_remove_language_codes(self, text: str) -> Tuple[List[str], str]:
         """

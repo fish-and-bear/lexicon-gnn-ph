@@ -1,6 +1,7 @@
 from typing import TypedDict, Literal, Dict, List, Optional, Union, Any
 from dataclasses import dataclass
 from enum import Enum
+from backend.source_standardization import DictionarySource, SourceStandardization
 
 class DictionarySource(Enum):
     KAIKKI = "kaikki"
@@ -99,66 +100,147 @@ POS_MAPPINGS = {
     'noun': POSMapping(
         english='noun',
         filipino='pangngalan',
-        abbreviations=['n', 'png', 'noun'],
-        variants=['pangn', 'pangng', 'pn']
+        abbreviations=['n', 'n.', 'png', 'noun', 'png.'],
+        variants=['pangn', 'pangng', 'pn', 'pangngalan']
     ),
     'verb': POSMapping(
         english='verb',
         filipino='pandiwa',
-        abbreviations=['v', 'vrb', 'verb'],
-        variants=['pnd', 'pd']
+        abbreviations=['v', 'v.', 'vrb', 'verb', 'pd', 'pd.'],
+        variants=['pnd', 'pandiwa']
     ),
     'adjective': POSMapping(
         english='adjective',
         filipino='pang-uri',
-        abbreviations=['adj', 'pang'],
-        variants=['pu', 'p-uri']
+        abbreviations=['adj', 'adj.', 'pnr', 'pnr.', 'pang'],
+        variants=['pu', 'p-uri', 'pang-uri']
     ),
     'adverb': POSMapping(
         english='adverb',
         filipino='pang-abay',
-        abbreviations=['adv', 'advb'],
-        variants=['pa', 'p-abay']
+        abbreviations=['adv', 'adv.', 'advb', 'pa', 'pa.'],
+        variants=['pa', 'p-abay', 'pang-abay']
     ),
     'pronoun': POSMapping(
         english='pronoun',
         filipino='panghalip',
-        abbreviations=['pron', 'prn'],
-        variants=['ph', 'phl']
+        abbreviations=['pron', 'pron.', 'prn', 'ph', 'ph.'],
+        variants=['ph', 'phl', 'panghalip']
     ),
-    'determiner': POSMapping(
-        english='determiner',
-        filipino='pananda',
-        abbreviations=['det', 'dtr'],
-        variants=['pnd', 'pnda']
+    'interjection': POSMapping(
+        english='interjection',
+        filipino='padamdam',
+        abbreviations=['interj', 'interj.', 'pdm', 'pdm.'],
+        variants=['padamdam']
     ),
-    # Add other POS mappings...
-} 
+    'preposition': POSMapping(
+        english='preposition',
+        filipino='pang-ukol',
+        abbreviations=['prep', 'prep.', 'pk', 'pk.'],
+        variants=['pang-ukol']
+    ),
+    'affix': POSMapping(
+        english='affix',
+        filipino='panlapi',
+        abbreviations=['aff', 'aff.', 'pl', 'pl.'],
+        variants=['panlapi']
+    ),
+    'article': POSMapping(
+        english='article',
+        filipino='pantukoy',
+        abbreviations=['art', 'art.', 'pt', 'pt.'],
+        variants=['pantukoy']
+    ),
+    'conjunction': POSMapping(
+        english='conjunction',
+        filipino='pangatnig',
+        abbreviations=['conj', 'conj.', 'ptg', 'ptg.'],
+        variants=['pangatnig']
+    ),
+    'idiom': POSMapping(
+        english='idiom',
+        filipino='idyoma',
+        abbreviations=['id', 'id.', 'idy', 'idy.'],
+        variants=['idyoma']
+    ),
+    'colloquial': POSMapping(
+        english='colloquial',
+        filipino='kolokyal',
+        abbreviations=['col', 'col.', 'kolok', 'kolok.'],
+        variants=['kolokyal']
+    ),
+    'synonym': POSMapping(
+        english='synonym',
+        filipino='singkahulugan',
+        abbreviations=['syn', 'syn.', 'sk', 'sk.'],
+        variants=['singkahulugan']
+    ),
+    'antonym': POSMapping(
+        english='antonym',
+        filipino='di-kasingkahulugan',
+        abbreviations=['ant', 'ant.', 'dks', 'dks.'],
+        variants=['di-kasingkahulugan']
+    ),
+    'english': POSMapping(
+        english='english',
+        filipino='ingles',
+        abbreviations=['eng', 'eng.', 'ing', 'ing.'],
+        variants=['ingles']
+    ),
+    'spanish': POSMapping(
+        english='spanish',
+        filipino='espanyol',
+        abbreviations=['spa', 'spa.', 'esp', 'esp.'],
+        variants=['espanyol']
+    ),
+    'texting': POSMapping(
+        english='texting',
+        filipino='texting',
+        abbreviations=['tx', 'tx.'],
+        variants=['texting']
+    ),
+    'variant': POSMapping(
+        english='variant',
+        filipino='varyant',
+        abbreviations=['var', 'var.'],
+        variants=['varyant']
+    )
+}
 
-class SourceStandardization:
-    """Standardized names for dictionary sources."""
+def standardize_pos(pos_string: str) -> str:
+    """
+    Standardize a part of speech string to its full Filipino term.
+    Case-insensitive and handles various abbreviations and variants.
     
-    FILE_TO_DISPLAY = {
-        'kaikki-ceb.jsonl': 'kaikki.org (Cebuano)',
-        'kaikki.jsonl': 'kaikki.org (Tagalog)', 
-        'kwf_dictionary.json': 'KWF Diksiyonaryo ng Wikang Filipino',
-        'root_words_with_associated_words_cleaned.json': 'tagalog.com',
-        'tagalog-words.json': 'diksiyonaryo.ph'
-    }
-
-    SOURCE_TO_ENUM = {
-        'kaikki.jsonl': DictionarySource.KAIKKI,
-        'kwf_dictionary.json': DictionarySource.KWF,
-        'root_words_with_associated_words_cleaned.json': DictionarySource.ROOT_WORDS,
-        'tagalog-words.json': DictionarySource.TAGALOG_WORDS
-    }
-
-    @staticmethod
-    def get_display_name(filename: str) -> str:
-        """Get standardized display name for source."""
-        return SourceStandardization.FILE_TO_DISPLAY.get(filename, filename)
-
-    @staticmethod
-    def get_source_enum(filename: str) -> DictionarySource:
-        """Get DictionarySource enum for filename."""
-        return SourceStandardization.SOURCE_TO_ENUM.get(filename)
+    Args:
+        pos_string: The POS string to standardize
+        
+    Returns:
+        The standardized Filipino POS term
+    """
+    if not pos_string:
+        return ""
+        
+    # Convert to lowercase for case-insensitive matching
+    pos_lower = pos_string.lower().strip(' .')
+    
+    # Check each mapping
+    for mapping in POS_MAPPINGS.values():
+        # Check full English term
+        if pos_lower == mapping['english'].lower():
+            return mapping['filipino']
+            
+        # Check full Filipino term
+        if pos_lower == mapping['filipino'].lower():
+            return mapping['filipino']
+            
+        # Check abbreviations
+        if pos_lower in [abbr.lower().strip('.') for abbr in mapping['abbreviations']]:
+            return mapping['filipino']
+            
+        # Check variants
+        if pos_lower in [var.lower() for var in mapping['variants']]:
+            return mapping['filipino']
+            
+    # If no match found, return original
+    return pos_string

@@ -1,0 +1,218 @@
+2025-02-09 15:13:18,109 - INFO - Attempting database connection...
+2025-02-09 15:13:18,110 - INFO - Database configuration:
+2025-02-09 15:13:18,110 - INFO -   Database Name: fil_dict_db
+2025-02-09 15:13:18,111 - INFO -   User: postgres
+2025-02-09 15:13:18,111 - INFO -   Host: localhost
+2025-02-09 15:13:18,111 - INFO -   Password: ********
+2025-02-09 15:13:18,163 - INFO - Successfully established database connection
+2025-02-09 15:13:18,164 - INFO - Setting up PostgreSQL extensions...
+2025-02-09 15:13:18,164 - INFO - Checking extension: pg_trgm
+2025-02-09 15:13:18,169 - INFO - Extension already installed: pg_trgm
+2025-02-09 15:13:18,170 - INFO - Checking extension: unaccent
+2025-02-09 15:13:18,171 - INFO - Extension already installed: unaccent
+2025-02-09 15:13:18,171 - INFO - Checking extension: fuzzystrmatch
+2025-02-09 15:13:18,172 - INFO - Extension already installed: fuzzystrmatch
+2025-02-09 15:13:18,172 - INFO - Extensions setup completed
+2025-02-09 15:13:18,173 - INFO - Starting table creation/update process.
+2025-02-09 15:13:19,382 - INFO - Tables created or updated successfully.
+2025-02-09 15:13:19,386 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-09 15:16:02,842 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json
+2025-02-09 15:17:03,011 - INFO - Processing KWF dictionary from: data/kwf_dictionary.json
+2025-02-09 15:19:58,882 - INFO - Starting to process Kaikki file: data/kaikki.jsonl
+2025-02-09 15:20:12,037 - WARNING - Invalid Baybayin data for word '-ana', clearing baybayin fields.
+2025-02-09 15:20:16,868 - WARNING - Invalid Baybayin data for word 'paling', clearing baybayin fields.
+2025-02-09 15:20:16,870 - WARNING - Invalid Baybayin data for word 'paling', clearing baybayin fields.
+2025-02-09 15:20:17,115 - WARNING - Invalid Baybayin data for word 'piling', clearing baybayin fields.
+2025-02-09 15:20:17,127 - WARNING - Invalid Baybayin data for word 'piling', clearing baybayin fields.
+2025-02-09 15:20:19,469 - WARNING - Invalid Baybayin data for word '-ado', clearing baybayin fields.
+2025-02-09 15:20:22,454 - WARNING - Invalid Baybayin data for word '-ano', clearing baybayin fields.
+2025-02-09 15:20:37,031 - WARNING - Invalid Baybayin data for word '-ay', clearing baybayin fields.
+2025-02-09 15:20:54,973 - WARNING - Invalid Baybayin data for word 'ᜃᜇᜄᜆᜈ᜔', clearing baybayin fields.
+2025-02-09 15:20:54,974 - WARNING - Invalid Baybayin data for word 'ᜁᜐ᜔ᜆᜇᜓᜐ᜔ ᜂᜈᜒᜇᜓᜐ᜔', clearing baybayin fields.
+2025-02-09 15:20:55,499 - WARNING - Invalid Baybayin data for word 'supling', clearing baybayin fields.
+2025-02-09 15:21:31,220 - WARNING - Invalid Baybayin data for word 'Feling', clearing baybayin fields.
+2025-02-09 15:21:35,666 - WARNING - Invalid Baybayin data for word 'pa- -an', clearing baybayin fields.
+2025-02-09 15:21:35,688 - WARNING - Invalid Baybayin data for word 'pag- -an', clearing baybayin fields.
+2025-02-09 15:21:46,977 - WARNING - Invalid Baybayin data for word 'mag- -an', clearing baybayin fields.
+2025-02-09 15:21:53,151 - WARNING - Invalid Baybayin data for word 'sopling', clearing baybayin fields.
+2025-02-09 15:21:59,892 - WARNING - Invalid Baybayin data for word 'Intsik beho, tulo laway', clearing baybayin fields.
+2025-02-09 15:22:00,570 - WARNING - Invalid Baybayin data for word 'ᜀᜎᜒᜋᜓᜇᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:00,919 - WARNING - Invalid Baybayin data for word 'selang', clearing baybayin fields.
+2025-02-09 15:22:01,292 - WARNING - Invalid Baybayin data for word 'pang- -an', clearing baybayin fields.
+2025-02-09 15:22:02,097 - WARNING - Invalid Baybayin data for word 'ᜑᜒᜃ᜔ᜆᜇᜒᜌ', clearing baybayin fields.
+2025-02-09 15:22:02,101 - WARNING - Invalid Baybayin data for word 'ᜉᜄ᜔ᜁᜊᜒᜄ᜔', clearing baybayin fields.
+2025-02-09 15:22:02,106 - WARNING - Invalid Baybayin data for word 'ᜁᜇᜒᜄᜓᜎᜇᜒᜇᜇ᜔', clearing baybayin fields.
+2025-02-09 15:22:02,119 - WARNING - Invalid Baybayin data for word 'ᜀᜇᜆᜒᜎᜒᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:02,121 - WARNING - Invalid Baybayin data for word 'ᜃᜇᜌᜓᜋ᜔', clearing baybayin fields.
+2025-02-09 15:22:02,155 - WARNING - Invalid Baybayin data for word 'ᜀᜎᜓᜉᜄ᜔ᜀᜋᜓ', clearing baybayin fields.
+2025-02-09 15:22:03,266 - WARNING - Invalid Baybayin data for word 'ᜐᜈᜒᜇᜇ᜔', clearing baybayin fields.
+2025-02-09 15:22:09,052 - WARNING - Invalid Baybayin data for word 'san- -an', clearing baybayin fields.
+2025-02-09 15:22:10,064 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:10,507 - WARNING - Invalid Baybayin data for word 'sepelin', clearing baybayin fields.
+2025-02-09 15:22:12,448 - WARNING - Invalid Baybayin data for word 'pabling', clearing baybayin fields.
+2025-02-09 15:22:12,589 - WARNING - Invalid Baybayin data for word '-asyon', clearing baybayin fields.
+2025-02-09 15:22:16,143 - WARNING - Invalid Baybayin data for word 'ᜐᜊᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:16,621 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜄᜓᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:16,627 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜄᜓᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:19,623 - WARNING - Invalid Baybayin data for word 'ᜆᜋ᜔ᜁᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,625 - WARNING - Invalid Baybayin data for word 'ᜃ᜔ᜇᜌᜓᜎ', clearing baybayin fields.
+2025-02-09 15:22:19,629 - WARNING - Invalid Baybayin data for word 'ᜋᜆᜋ᜔ᜁᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,635 - WARNING - Invalid Baybayin data for word 'ᜃᜈ᜔ᜎᜓᜇᜅ᜔ ᜀᜐ᜔ᜌ', clearing baybayin fields.
+2025-02-09 15:22:19,649 - WARNING - Invalid Baybayin data for word 'ᜎᜋ᜔ᜉᜇ', clearing baybayin fields.
+2025-02-09 15:22:19,656 - WARNING - Invalid Baybayin data for word 'ᜃᜇᜉᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,679 - WARNING - Invalid Baybayin data for word 'ᜋᜄ᜔ᜀᜈᜓᜈ᜔ᜐᜒᜌᜓ', clearing baybayin fields.
+2025-02-09 15:22:19,683 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜈᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,684 - WARNING - Invalid Baybayin data for word 'ᜃᜇᜀᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,690 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜐᜒᜄᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,694 - WARNING - Invalid Baybayin data for word 'ᜀᜈᜃ᜔ᜀᜈᜃᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,708 - WARNING - Invalid Baybayin data for word 'ᜃᜇᜒᜅᜎ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,715 - WARNING - Invalid Baybayin data for word 'ᜆᜆ᜔ᜎᜓᜅ᜔ᜑᜇᜒ', clearing baybayin fields.
+2025-02-09 15:22:19,722 - WARNING - Invalid Baybayin data for word 'ᜋᜄ᜔ᜀᜃ᜔ᜐᜌ', clearing baybayin fields.
+2025-02-09 15:22:19,726 - WARNING - Invalid Baybayin data for word 'ᜉᜀᜇᜎᜅ᜔ ᜐᜒᜃᜓᜈ᜔ᜇᜇ᜔ᜌ', clearing baybayin fields.
+2025-02-09 15:22:19,731 - WARNING - Invalid Baybayin data for word 'ᜉᜄ᜔ᜁᜏᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,736 - WARNING - Invalid Baybayin data for word 'ᜇᜒᜋᜇᜈᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,773 - WARNING - Invalid Baybayin data for word 'ᜆᜎᜊᜒᜇ', clearing baybayin fields.
+2025-02-09 15:22:19,782 - WARNING - Invalid Baybayin data for word 'ᜋᜓᜇᜓᜅ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,798 - WARNING - Invalid Baybayin data for word 'ᜀᜇᜏ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,799 - WARNING - Invalid Baybayin data for word 'ᜀᜇᜏ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,816 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜎᜒᜆ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,821 - WARNING - Invalid Baybayin data for word 'ᜃᜇᜈ᜔ᜇᜅ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,826 - WARNING - Invalid Baybayin data for word 'ᜋᜃᜇᜌ᜔ᜄ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,840 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜒᜎᜏ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,841 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜒᜎᜏ᜔', clearing baybayin fields.
+2025-02-09 15:22:19,895 - WARNING - Invalid Baybayin data for word 'ᜋᜄ᜔ᜉᜇᜋᜒ', clearing baybayin fields.
+2025-02-09 15:22:20,122 - WARNING - Invalid Baybayin data for word 'ᜇᜒᜃᜓᜇᜐ᜔ᜌᜓᜈᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:20,227 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜇᜀᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:20,245 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜑᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:21,849 - WARNING - Invalid Baybayin data for word 'ᜐᜇᜒᜏ', clearing baybayin fields.
+2025-02-09 15:22:21,850 - WARNING - Invalid Baybayin data for word 'ᜐᜇᜒᜏ', clearing baybayin fields.
+2025-02-09 15:22:21,866 - WARNING - Invalid Baybayin data for word 'ᜉᜋ᜔ᜊᜈ᜔ᜐᜅ᜔ ᜐᜒᜄᜓᜇᜒᜇᜇ᜔', clearing baybayin fields.
+2025-02-09 15:22:21,870 - WARNING - Invalid Baybayin data for word 'ᜑᜒᜈᜒᜇᜎ᜔', clearing baybayin fields.
+2025-02-09 15:22:21,885 - WARNING - Invalid Baybayin data for word 'ᜆᜒᜈ᜔ᜌᜒᜈ᜔ᜆᜒ ᜃᜓᜇᜓᜈᜒᜎ᜔', clearing baybayin fields.
+2025-02-09 15:22:21,887 - WARNING - Invalid Baybayin data for word 'ᜆᜒᜈ᜔ᜌᜒᜈ᜔ᜆᜒ ᜑᜒᜈᜒᜇᜎ᜔', clearing baybayin fields.
+2025-02-09 15:22:21,889 - WARNING - Invalid Baybayin data for word 'ᜑᜒᜇᜒᜅ᜔ᜄᜒᜎ᜔ᜌ', clearing baybayin fields.
+2025-02-09 15:22:21,893 - WARNING - Invalid Baybayin data for word 'ᜃᜓᜇᜓᜈᜒᜎ᜔', clearing baybayin fields.
+2025-02-09 15:22:21,894 - WARNING - Invalid Baybayin data for word 'ᜃᜓᜇᜓᜈᜒᜎ᜔', clearing baybayin fields.
+2025-02-09 15:22:21,900 - WARNING - Invalid Baybayin data for word 'ᜀᜃᜓᜐᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:21,902 - WARNING - Invalid Baybayin data for word 'ᜀᜃᜓᜐᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:22,495 - WARNING - Invalid Baybayin data for word 'ᜑᜇᜒ', clearing baybayin fields.
+2025-02-09 15:22:22,504 - WARNING - Invalid Baybayin data for word 'ᜆᜆ᜔ᜎᜓᜅ᜔ ᜑᜇᜒ', clearing baybayin fields.
+2025-02-09 15:22:22,662 - WARNING - Invalid Baybayin data for word 'ᜃᜈ᜔ᜇᜒᜇᜆᜓ', clearing baybayin fields.
+2025-02-09 15:22:22,664 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜎᜒ', clearing baybayin fields.
+2025-02-09 15:22:22,944 - WARNING - Invalid Baybayin data for word 'ᜉᜇᜎᜓᜐ᜔ᜇᜎᜓᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:23,282 - WARNING - Invalid Baybayin data for word 'ᜃᜓᜇᜒᜆ', clearing baybayin fields.
+2025-02-09 15:22:23,466 - WARNING - Invalid Baybayin data for word 'ᜉᜀᜇᜎᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:23,494 - WARNING - Invalid Baybayin data for word 'ᜀᜇᜏ᜔ ᜈᜅ᜔ ᜋᜅ ᜉᜆᜌ᜔', clearing baybayin fields.
+2025-02-09 15:22:23,496 - WARNING - Invalid Baybayin data for word 'ᜃᜉᜅ᜔ᜌᜇᜒᜑᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:23,498 - WARNING - Invalid Baybayin data for word 'ᜃᜉᜅ᜔ᜌᜇᜒᜑᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:23,534 - WARNING - Invalid Baybayin data for word 'ᜃᜈ᜔ᜎᜓᜇᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:23,536 - WARNING - Invalid Baybayin data for word 'ᜃᜈ᜔ᜎᜓᜇᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:23,538 - WARNING - Invalid Baybayin data for word 'ᜃᜈ᜔ᜎᜓᜇᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:23,768 - WARNING - Invalid Baybayin data for word 'ᜃᜓᜇ', clearing baybayin fields.
+2025-02-09 15:22:23,770 - WARNING - Invalid Baybayin data for word 'ᜃᜓᜇ', clearing baybayin fields.
+2025-02-09 15:22:23,951 - WARNING - Invalid Baybayin data for word 'kapag may usok, may apoy', clearing baybayin fields.
+2025-02-09 15:22:23,971 - WARNING - Invalid Baybayin data for word 'habang may buhay, may pag-asa', clearing baybayin fields.
+2025-02-09 15:22:23,991 - WARNING - Invalid Baybayin data for word 'bato-bato sa langit, ang tamaan huwag magalit', clearing baybayin fields.
+2025-02-09 15:22:23,996 - WARNING - Invalid Baybayin data for word 'ang taong nagigipit, sa patalim kumakapit', clearing baybayin fields.
+2025-02-09 15:22:24,002 - WARNING - Invalid Baybayin data for word 'kapag wala ang pusa, naglalaro ang daga', clearing baybayin fields.
+2025-02-09 15:22:24,009 - WARNING - Invalid Baybayin data for word 'kapag binato ka ng bato, batuhin mo ng tinapay', clearing baybayin fields.
+2025-02-09 15:22:24,016 - WARNING - Invalid Baybayin data for word 'kapag wala ang pusa, naglalaro ang mga daga', clearing baybayin fields.
+2025-02-09 15:22:24,020 - WARNING - Invalid Baybayin data for word 'kapag may gusto, may paraan', clearing baybayin fields.
+2025-02-09 15:22:24,180 - WARNING - Invalid Baybayin data for word 'ᜎᜇᜏᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:25,004 - WARNING - Invalid Baybayin data for word 'sala sa init, sala sa lamig', clearing baybayin fields.
+2025-02-09 15:22:25,654 - WARNING - Invalid Baybayin data for word 'ang sakit ng kalingkingan, damdam ng buong katawan', clearing baybayin fields.
+2025-02-09 15:22:25,673 - WARNING - Invalid Baybayin data for word 'kung ano ang puno, siya ang bunga', clearing baybayin fields.
+2025-02-09 15:22:25,744 - WARNING - Invalid Baybayin data for word 'ᜃᜄᜏᜇᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:25,803 - WARNING - Invalid Baybayin data for word 'paano mo sinasabi ang … sa Ingles', clearing baybayin fields.
+2025-02-09 15:22:25,858 - WARNING - Invalid Baybayin data for word 'tulak ng bibig, kabig ng dibdib', clearing baybayin fields.
+2025-02-09 15:22:25,876 - WARNING - Invalid Baybayin data for word 'ᜇᜓᜇᜓᜇᜓᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:26,182 - WARNING - Invalid Baybayin data for word 'ᜍ', clearing baybayin fields.
+2025-02-09 15:22:26,571 - WARNING - Invalid Baybayin data for word 'ᜃᜀᜇᜏᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:26,918 - WARNING - Invalid Baybayin data for word 'ᜋᜅᜇᜎ᜔', clearing baybayin fields.
+2025-02-09 15:22:26,922 - WARNING - Invalid Baybayin data for word 'ᜀᜇᜏ᜔ ᜈᜅ᜔ ᜋᜅ ᜁᜈ', clearing baybayin fields.
+2025-02-09 15:22:26,924 - WARNING - Invalid Baybayin data for word 'ᜀᜇᜏ᜔ ᜈᜅ᜔ ᜋᜅ ᜀᜋ', clearing baybayin fields.
+2025-02-09 15:22:26,952 - WARNING - Invalid Baybayin data for word 'ᜀᜇᜓᜏ', clearing baybayin fields.
+2025-02-09 15:22:27,093 - WARNING - Invalid Baybayin data for word 'ᜃᜐ᜔ᜆᜈ᜔ᜌᜒᜇ', clearing baybayin fields.
+2025-02-09 15:22:27,103 - WARNING - Invalid Baybayin data for word 'ispeling', clearing baybayin fields.
+2025-02-09 15:22:27,181 - WARNING - Invalid Baybayin data for word 'ᜊᜃᜇ', clearing baybayin fields.
+2025-02-09 15:22:27,184 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜄᜓᜈ᜔ᜇᜓᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:27,195 - WARNING - Invalid Baybayin data for word 'ᜆ᜔ᜇᜇᜒᜐ᜔ᜌᜓᜈᜎ᜔', clearing baybayin fields.
+2025-02-09 15:22:27,240 - WARNING - Invalid Baybayin data for word 'ᜃᜓᜅ᜔ᜄ᜔ᜇᜒᜐᜓ', clearing baybayin fields.
+2025-02-09 15:22:27,241 - WARNING - Invalid Baybayin data for word 'ᜃᜓᜅ᜔ᜄ᜔ᜇᜒᜐᜓ', clearing baybayin fields.
+2025-02-09 15:22:27,253 - WARNING - Invalid Baybayin data for word 'ᜀᜏ᜔ᜇᜓᜇᜑᜒᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:27,281 - WARNING - Invalid Baybayin data for word 'ᜁᜊᜊ᜔ᜀᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:27,421 - WARNING - Invalid Baybayin data for word 'ᜐᜈ᜔ᜆ᜔ᜐᜒᜐ᜔ ᜋᜒᜇ', clearing baybayin fields.
+2025-02-09 15:22:27,938 - WARNING - Invalid Baybayin data for word 'ᜃᜂᜈ᜔ᜎᜇᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:27,941 - WARNING - Invalid Baybayin data for word 'ᜃᜂᜈ᜔ᜎᜇᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:27,996 - WARNING - Invalid Baybayin data for word 'ᜃᜋᜄ᜔ᜀᜈᜃ᜔', clearing baybayin fields.
+2025-02-09 15:22:28,137 - WARNING - Invalid Baybayin data for word 'ᜉᜒᜇ', clearing baybayin fields.
+2025-02-09 15:22:28,206 - WARNING - Invalid Baybayin data for word 'ᜁᜅ᜔ᜄ᜔ᜇᜈ᜔ᜇᜒ', clearing baybayin fields.
+2025-02-09 15:22:28,751 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜉ᜔ᜂᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:29,263 - WARNING - Invalid Baybayin data for word 'ᜉ᜔ᜇᜓᜆᜒᜃ᜔ᜆ', clearing baybayin fields.
+2025-02-09 15:22:29,264 - WARNING - Invalid Baybayin data for word 'ᜉᜇᜇᜑᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:29,301 - WARNING - Invalid Baybayin data for word 'ᜉᜇᜒᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:29,308 - WARNING - Invalid Baybayin data for word 'ᜋᜇᜒᜌᜅ᜔ ᜉᜎᜇ᜔', clearing baybayin fields.
+2025-02-09 15:22:29,330 - WARNING - Invalid Baybayin data for word 'ᜐᜇᜑᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:29,332 - WARNING - Invalid Baybayin data for word 'ᜐᜇᜑᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:29,394 - WARNING - Invalid Baybayin data for word 'ᜋᜎᜇᜓᜑᜆᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:31,443 - WARNING - Invalid Baybayin data for word 'kung hinagis ka ng bakal, gantihan mo ng tinapay', clearing baybayin fields.
+2025-02-09 15:22:31,758 - WARNING - Invalid Baybayin data for word 'ᜉᜁᜇᜎᜒᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:32,306 - WARNING - Invalid Baybayin data for word 'kapag may tiyaga, may nilaga', clearing baybayin fields.
+2025-02-09 15:22:32,311 - WARNING - Invalid Baybayin data for word 'parang awa na', clearing baybayin fields.
+2025-02-09 15:22:32,337 - WARNING - Invalid Baybayin data for word 'ᜀᜋᜒᜇᜒᜃ', clearing baybayin fields.
+2025-02-09 15:22:32,498 - WARNING - Invalid Baybayin data for word 'ang taong gipit, sa patalim kumakapit', clearing baybayin fields.
+2025-02-09 15:22:32,629 - WARNING - Invalid Baybayin data for word 'isang kahig, isang tuka', clearing baybayin fields.
+2025-02-09 15:22:32,827 - WARNING - Invalid Baybayin data for word 'may tainga ang lupa, may pakpak ang balita', clearing baybayin fields.
+2025-02-09 15:22:32,911 - WARNING - Invalid Baybayin data for word 'sa lupa ng mga bulag, ang naghahari ay pisak', clearing baybayin fields.
+2025-02-09 15:22:32,937 - WARNING - Invalid Baybayin data for word 'ang maglakad nang matulin, kung matinik ay malalim', clearing baybayin fields.
+2025-02-09 15:22:33,203 - WARNING - Invalid Baybayin data for word 'ᜅᜌ᜔ᜂᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:33,243 - WARNING - Invalid Baybayin data for word 'ᜉᜒᜊ᜔ᜇᜒᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:33,255 - WARNING - Invalid Baybayin data for word 'ᜁᜈᜒᜇᜓ', clearing baybayin fields.
+2025-02-09 15:22:33,258 - WARNING - Invalid Baybayin data for word 'ᜈᜓᜊ᜔ᜌᜒᜋ᜔ᜊ᜔ᜇᜒ', clearing baybayin fields.
+2025-02-09 15:22:33,263 - WARNING - Invalid Baybayin data for word 'ᜇᜒᜐ᜔ᜌᜒᜋ᜔ᜊ᜔ᜇᜒ', clearing baybayin fields.
+2025-02-09 15:22:33,265 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜆ᜔ᜌᜒᜋ᜔ᜊ᜔ᜇᜒ', clearing baybayin fields.
+2025-02-09 15:22:33,661 - WARNING - Invalid Baybayin data for word 'ᜃᜆᜓᜉᜇᜈ᜔', clearing baybayin fields.
+2025-02-09 15:22:33,913 - WARNING - Invalid Baybayin data for word 'ᜉᜒᜇᜓᜆ᜔', clearing baybayin fields.
+2025-02-09 15:22:33,923 - WARNING - Invalid Baybayin data for word 'ᜇᜒᜃ᜔ᜆᜇᜓᜇ', clearing baybayin fields.
+2025-02-09 15:22:35,052 - WARNING - Invalid Baybayin data for word 'sanling', clearing baybayin fields.
+2025-02-09 15:22:35,058 - WARNING - Invalid Baybayin data for word 'sanling', clearing baybayin fields.
+2025-02-09 15:22:35,329 - WARNING - Invalid Baybayin data for word 'kulang sa pito, labis sa walo', clearing baybayin fields.
+2025-02-09 15:22:36,888 - WARNING - Invalid Baybayin data for word 'reispeling', clearing baybayin fields.
+2025-02-09 15:22:38,184 - WARNING - Invalid Baybayin data for word 'madaling sabihin, mahirap gawin', clearing baybayin fields.
+2025-02-09 15:22:38,351 - WARNING - Invalid Baybayin data for word 'ᜄᜊ᜔ᜁ', clearing baybayin fields.
+2025-02-09 15:22:39,895 - WARNING - Invalid Baybayin data for word 'ᜂᜇᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:39,896 - WARNING - Invalid Baybayin data for word 'ᜂᜇᜐ᜔', clearing baybayin fields.
+2025-02-09 15:22:40,193 - WARNING - Invalid Baybayin data for word 'dalub- -an', clearing baybayin fields.
+2025-02-09 15:22:41,338 - INFO - Starting to process Kaikki file: data/kaikki-ceb.jsonl
+2025-02-09 15:25:03,057 - WARNING - Invalid Baybayin data for word 'ᜊᜄ᜔ᜂ', clearing baybayin fields.
+2025-02-09 15:25:05,023 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜉ᜔ᜂᜈ᜔', clearing baybayin fields.
+2025-02-09 15:25:05,036 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜉ᜔ᜂᜈ᜔', clearing baybayin fields.
+2025-02-09 15:25:05,128 - WARNING - Invalid Baybayin data for word 'ᜎᜓᜌ᜔ᜀ', clearing baybayin fields.
+2025-02-09 15:25:05,484 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜇ᜔ᜂᜃ᜔', clearing baybayin fields.
+2025-02-09 15:25:05,492 - WARNING - Invalid Baybayin data for word 'ᜐᜒᜇ᜔ᜂᜃ᜔', clearing baybayin fields.
+2025-02-09 15:25:06,322 - WARNING - Invalid Baybayin data for word 'ᜋᜄ᜔ᜊᜓᜇᜓᜑᜆ᜔', clearing baybayin fields.
+2025-02-09 15:25:06,334 - WARNING - Invalid Baybayin data for word 'ᜋᜄ᜔ᜊᜓᜇᜓᜑᜆ᜔', clearing baybayin fields.
+2025-02-09 15:25:06,547 - WARNING - Invalid Baybayin data for word 'ᜉᜒᜇᜓᜆ᜔', clearing baybayin fields.
+2025-02-09 15:25:09,275 - INFO - Processing Baybayin entries...
+2025-02-09 15:25:09,308 - INFO - Updating Baybayin entry (ID: 94414) with cleaned form
+2025-02-09 15:25:09,310 - INFO - Updating Baybayin entry (ID: 98003) with cleaned form
+2025-02-09 15:25:09,312 - INFO - Updating Baybayin entry (ID: 102796) with cleaned form
+2025-02-09 15:25:09,314 - INFO - Updating Baybayin entry (ID: 102868) with cleaned form
+2025-02-09 15:25:09,316 - INFO - Updating Baybayin entry (ID: 102869) with cleaned form
+2025-02-09 15:25:09,317 - INFO - Updating Baybayin entry (ID: 102871) with cleaned form
+2025-02-09 15:25:09,318 - INFO - Updating Baybayin entry (ID: 102872) with cleaned form
+2025-02-09 15:25:09,320 - INFO - Updating Baybayin entry (ID: 102873) with cleaned form
+2025-02-09 15:25:09,322 - INFO - Updating Baybayin entry (ID: 102874) with cleaned form
+2025-02-09 15:25:09,323 - INFO - Updating Baybayin entry (ID: 102875) with cleaned form
+2025-02-09 15:25:09,324 - INFO - Updating Baybayin entry (ID: 102876) with cleaned form
+2025-02-09 15:25:09,325 - INFO - Updating Baybayin entry (ID: 102877) with cleaned form
+2025-02-09 15:25:09,327 - INFO - Updating Baybayin entry (ID: 103977) with cleaned form
+2025-02-09 15:25:09,329 - INFO - Updating Baybayin entry (ID: 103978) with cleaned form
+2025-02-09 15:25:09,330 - INFO - Updating Baybayin entry (ID: 106279) with cleaned form
+2025-02-09 15:25:09,331 - INFO - Updating Baybayin entry (ID: 106407) with cleaned form
+2025-02-09 15:25:09,332 - INFO - Updating Baybayin entry (ID: 106569) with cleaned form
+2025-02-09 15:25:09,333 - INFO - Updating Baybayin entry (ID: 122349) with cleaned form
+2025-02-09 15:25:09,336 - INFO - Updating Baybayin entry (ID: 122922) with cleaned form
+2025-02-09 15:25:09,338 - INFO - Updating Baybayin entry (ID: 122938) with cleaned form
+2025-02-09 15:25:13,143 - INFO - Baybayin data cleanup completed successfully
+2025-02-09 15:25:13,144 - INFO - Migration completed successfully
