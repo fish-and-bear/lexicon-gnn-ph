@@ -71,7 +71,11 @@ export interface WordInfo {
   has_baybayin: boolean;
   baybayin_form: string | null;
   romanized_form: string | null;
-  pronunciation_data: any | null;
+  pronunciation: {
+    text: string;
+    ipa?: string;
+    audio_url?: string;
+  } | null;
   source_info: Record<string, any>;
   data_hash: string;
   complexity_score: number;

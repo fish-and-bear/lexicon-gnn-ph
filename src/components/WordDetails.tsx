@@ -7,93 +7,117 @@ interface WordDetailsProps {
 }
 
 const WordDetails: React.FC<WordDetailsProps> = React.memo(({ wordInfo, onWordClick }) => {
-  const renderDefinitions = (wordInfo: WordInfo) => {
-    if (!wordInfo.data.definitions) return null;
+  if (!wordInfo) return null;
 
-    return wordInfo.data.definitions.map((definition, index) => (
+  const renderDefinitions = (word: WordInfo) => {
+    if (!word.definitions) return null;
+
+    return word.definitions.map((definition, index) => (
       <div key={index} className="definition-card">
-        {definition.partOfSpeech && <h3>{definition.partOfSpeech}</h3>}
-        <ol>
-          {definition.meanings
-            ?.filter((meaning) => meaning.definition && meaning.definition.trim() !== "0")
-            .map((meaning, idx) => (
-              <li key={idx}>
-                {meaning.definition}
-                {meaning.source && (
-                  <span className="source">Source: {meaning.source}</span>
-                )}
-              </li>
-            ))}
-        </ol>
-        {definition.usageNotes && definition.usageNotes.length > 0 && (
-          <p className="usage-notes">
-            <strong>Usage notes:</strong> {definition.usageNotes.join(", ")}
-          </p>
+        {definition.part_of_speech && (
+          <h3>{definition.part_of_speech.name_en}</h3>
         )}
+        <p className="definition-text">{definition.text}</p>
         {definition.examples && definition.examples.length > 0 && (
-          <p className="examples">
-            <strong>Examples:</strong> {definition.examples.join("; ")}
-          </p>
+          <div className="examples">
+            <h4>Examples:</h4>
+            <ul>
+              {definition.examples.map((example, idx) => (
+                <li key={idx}>{example}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {definition.usage_notes && definition.usage_notes.length > 0 && (
+          <div className="usage-notes">
+            <h4>Usage Notes:</h4>
+            <ul>
+              {definition.usage_notes.map((note, idx) => (
+                <li key={idx}>{note}</li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     ));
   };
 
-  const renderArraySection = (title: string, items?: string[]) => {
-    if (!items || items.length === 0) return null;
+  const renderRelatedWords = (title: string, words: string[] | undefined) => {
+    if (!words || words.length === 0) return null;
     return (
       <div className={title.toLowerCase().replace(/\s+/g, "-")}>
         <h3>{title}:</h3>
         <ul className="word-list">
-          {items
-            .filter((item) => item.trim() !== "" && item.trim() !== "0")
-            .map((item, index) => (
-              <li
-                key={index}
-                onClick={() => onWordClick(item)}
-                className="clickable-word"
-              >
-                {item}
-              </li>
-            ))}
+          {words.map((word, index) => (
+            <li
+              key={index}
+              onClick={() => onWordClick(word)}
+              className="clickable-word"
+            >
+              {word}
+            </li>
+          ))}
         </ul>
       </div>
     );
   };
 
+  // Extract related words from relations
+  const synonyms = wordInfo.relations.from
+    .filter(rel => rel.type === 'synonym')
+    .map(rel => rel.to_word);
+  const antonyms = wordInfo.relations.from
+    .filter(rel => rel.type === 'antonym')
+    .map(rel => rel.to_word);
+  const derivatives = wordInfo.relations.to
+    .filter(rel => rel.type === 'derived_from')
+    .map(rel => rel.from_word);
+  const rootWord = wordInfo.relations.from
+    .find(rel => rel.type === 'derived_from')
+    ?.to_word;
+
   return (
     <div className="word-details">
-      <h2>{wordInfo.data.word}</h2>
-      {wordInfo.data.pronunciation?.text && (
+      <h2>{wordInfo.lemma}</h2>
+      {wordInfo.language_code && (
+        <p className="language">Language: {wordInfo.language_code}</p>
+      )}
+      {wordInfo.pronunciation && (
         <p className="pronunciation">
-          <strong>Pronunciation:</strong> {wordInfo.data.pronunciation.text}
+          <strong>Pronunciation:</strong> {wordInfo.pronunciation.text}
+          {wordInfo.pronunciation.ipa && (
+            <span className="ipa"> [{wordInfo.pronunciation.ipa}]</span>
+          )}
+          {wordInfo.pronunciation.audio_url && (
+            <button 
+              className="play-audio"
+              onClick={() => {
+                const audio = new Audio(wordInfo.pronunciation?.audio_url);
+                audio.play().catch(console.error);
+              }}
+            >
+              🔊 Play
+            </button>
+          )}
         </p>
       )}
-      {wordInfo.data.etymology?.text &&
-        wordInfo.data.etymology.text.length > 0 && (
-          <p>
-            <strong>Etymology:</strong> {wordInfo.data.etymology.text}
-          </p>
-        )}
-      {wordInfo.data.languages &&
-        wordInfo.data.languages.length > 0 && (
-          <p>
-            <strong>Language Codes:</strong> {wordInfo.data.languages.join(", ")}
-          </p>
-        )}
+      {wordInfo.etymologies?.[0]?.text && (
+        <p>
+          <strong>Etymology:</strong> {wordInfo.etymologies[0].text}
+        </p>
+      )}
       {renderDefinitions(wordInfo)}
-      {renderArraySection("Synonyms", wordInfo.data.relationships?.synonyms)}
-      {renderArraySection("Antonyms", wordInfo.data.relationships?.antonyms)}
-      {renderArraySection("Associated Words", wordInfo.data.relationships?.associatedWords)}
-      {renderArraySection("Derivatives", wordInfo.data.relationships?.derivatives)}
-      {wordInfo.data.relationships?.rootWord && (
+      {renderRelatedWords("Synonyms", synonyms)}
+      {renderRelatedWords("Antonyms", antonyms)}
+      {renderRelatedWords("Derivatives", derivatives)}
+      {rootWord && (
         <p>
           <strong>Root Word:</strong>{" "}
           <span
             className="clickable-word"
-            onClick={() => onWordClick(wordInfo.data.relationships.rootWord!)}
+            onClick={() => onWordClick(rootWord)}
           >
-            {wordInfo.data.relationships.rootWord}
+            {rootWord}
           </span>
         </p>
       )}

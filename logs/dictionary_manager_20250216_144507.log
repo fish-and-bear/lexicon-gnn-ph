@@ -1,8 +1,0 @@
-2025-02-16 14:45:07,918 - INFO - Attempting database connection...
-2025-02-16 14:45:07,919 - INFO - Database configuration:
-2025-02-16 14:45:07,919 - INFO -   Database Name: fil_dict_db
-2025-02-16 14:45:07,920 - INFO -   User: postgres
-2025-02-16 14:45:07,920 - INFO -   Host: localhost
-2025-02-16 14:45:07,920 - INFO -   Password: ********
-2025-02-16 14:45:07,981 - INFO - Successfully established database connection
-2025-02-16 14:45:08,064 - ERROR - Error during word lookup: tuple index out of range

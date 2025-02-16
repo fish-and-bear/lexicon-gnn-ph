@@ -1,8 +1,0 @@
-2025-02-16 15:15:59,413 - INFO - Attempting database connection...
-2025-02-16 15:15:59,414 - INFO - Database configuration:
-2025-02-16 15:15:59,414 - INFO -   Database Name: fil_dict_db
-2025-02-16 15:15:59,414 - INFO -   User: postgres
-2025-02-16 15:15:59,414 - INFO -   Host: localhost
-2025-02-16 15:15:59,414 - INFO -   Password: ********
-2025-02-16 15:15:59,465 - INFO - Successfully established database connection
-2025-02-16 15:15:59,551 - ERROR - Error during word lookup: name 'console' is not defined

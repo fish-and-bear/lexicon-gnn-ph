@@ -1,8 +1,0 @@
-2025-02-16 15:17:19,542 - INFO - Attempting database connection...
-2025-02-16 15:17:19,542 - INFO - Database configuration:
-2025-02-16 15:17:19,543 - INFO -   Database Name: fil_dict_db
-2025-02-16 15:17:19,543 - INFO -   User: postgres
-2025-02-16 15:17:19,543 - INFO -   Host: localhost
-2025-02-16 15:17:19,543 - INFO -   Password: ********
-2025-02-16 15:17:19,590 - INFO - Successfully established database connection
-2025-02-16 15:17:19,611 - ERROR - Error during word lookup: the JSON object must be str, bytes or bytearray, not list

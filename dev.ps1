@@ -37,16 +37,37 @@ function Write-Warning {
     Write-Log -Message "WARNING: $Message" -Color $Colors.Warning
 }
 
+# Check Docker daemon
+function Test-DockerDaemon {
+    Write-Success "Checking Docker daemon..."
+    try {
+        $null = docker info
+        return $true
+    }
+    catch {
+        Write-Error "Docker daemon is not running. Please start Docker Desktop first."
+        Write-Warning "If Docker Desktop is not installed, download it from: https://www.docker.com/products/docker-desktop"
+        return $false
+    }
+}
+
 # Check requirements
 function Test-Requirements {
     Write-Success "Checking requirements..."
     
+    # Check if Docker Desktop is installed
+    if (-not (Get-Command "docker" -ErrorAction SilentlyContinue)) {
+        Write-Error "Docker Desktop is not installed. Please install from: https://www.docker.com/products/docker-desktop"
+        return $false
+    }
+    
+    # Check if Docker daemon is running
+    if (-not (Test-DockerDaemon)) {
+        return $false
+    }
+    
+    # Check other requirements
     $requirements = @(
-        @{
-            Name = "Docker Desktop"
-            Command = "docker --version"
-            Link = "https://www.docker.com/products/docker-desktop"
-        },
         @{
             Name = "Docker Compose"
             Command = "docker-compose --version"
@@ -77,9 +98,7 @@ function Test-Requirements {
         }
     }
 
-    if (-not $allRequirementsMet) {
-        throw "Missing requirements"
-    }
+    return $allRequirementsMet
 }
 
 # Setup environment
@@ -91,10 +110,63 @@ function Initialize-Environment {
         Write-Success "Creating .env.local..."
         if (Test-Path ".env.example") {
             Copy-Item ".env.example" ".env.local"
+            Write-Success "Created .env.local from .env.example"
         }
         else {
-            Write-Warning "No .env.example found, skipping..."
+            # Create default .env.local
+            @"
+# Application
+VERSION=dev
+NODE_ENV=development
+FLASK_ENV=development
+FLASK_DEBUG=1
+
+# URLs
+REACT_APP_API_BASE_URL=http://localhost:10000/api/v2
+ALLOWED_ORIGINS=http://localhost:3000
+
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=dictionary_dev
+DB_USER=postgres
+DB_PASSWORD=postgres
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/dictionary_dev
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=redis
+REDIS_URL=redis://:redis@localhost:6379/0
+
+# Monitoring
+GRAFANA_PASSWORD=admin
+"@ | Out-File -FilePath ".env.local" -Encoding utf8
+            Write-Success "Created default .env.local"
         }
+    }
+    
+    # Verify required environment variables
+    $requiredVars = @(
+        "REDIS_PASSWORD",
+        "GRAFANA_PASSWORD",
+        "DB_USER",
+        "DB_PASSWORD",
+        "DB_NAME"
+    )
+    
+    $envContent = Get-Content ".env.local" | Where-Object { $_ -match '=' }
+    $envVars = @{}
+    $envContent | ForEach-Object {
+        $key, $value = $_ -split '=', 2
+        $envVars[$key.Trim()] = $value.Trim('"', "'")
+    }
+    
+    $missingVars = $requiredVars | Where-Object { -not $envVars.ContainsKey($_) -or [string]::IsNullOrWhiteSpace($envVars[$_]) }
+    if ($missingVars) {
+        Write-Error "Missing required environment variables in .env.local: $($missingVars -join ', ')"
+        Write-Warning "Please update .env.local with the required variables"
+        return $false
     }
     
     # Create necessary directories
@@ -104,6 +176,8 @@ function Initialize-Environment {
             Write-Success "Created directory: $_"
         }
     }
+    
+    return $true
 }
 
 # Setup database
@@ -118,35 +192,82 @@ function Initialize-Database {
         $envVars[$key] = $value.Trim('"', "'")
     }
     
-    # Wait for database to be ready
+    # Wait for database to be ready with timeout
     $maxAttempts = 30
     $attempt = 1
     $ready = $false
+    $timeout = [System.Diagnostics.Stopwatch]::StartNew()
+    $maxTimeout = [TimeSpan]::FromMinutes(5)
     
-    while (-not $ready -and $attempt -le $maxAttempts) {
-        Write-Warning "Waiting for database (attempt $attempt/$maxAttempts)..."
+    while (-not $ready -and $attempt -le $maxAttempts -and $timeout.Elapsed -lt $maxTimeout) {
+        Write-Warning "Waiting for database (attempt $attempt/$maxAttempts, elapsed: $($timeout.Elapsed.ToString('mm\:ss')))..."
         try {
             $null = docker-compose -f docker-compose.local.yml exec -T db pg_isready -U $envVars.DB_USER -d $envVars.DB_NAME
             $ready = $true
         }
         catch {
+            if ($timeout.Elapsed -ge $maxTimeout) {
+                throw "Database initialization timed out after $($maxTimeout.TotalMinutes) minutes"
+            }
             Start-Sleep -Seconds 2
             $attempt++
         }
     }
     
     if (-not $ready) {
-        throw "Database failed to become ready"
+        throw "Database failed to become ready after $maxAttempts attempts"
     }
     
-    # Run migrations
+    # Run migrations with timeout
     Write-Success "Running database migrations..."
-    docker-compose -f docker-compose.local.yml exec -T backend alembic upgrade head
+    $migrationTimeout = [System.Diagnostics.Stopwatch]::StartNew()
+    $maxMigrationTimeout = [TimeSpan]::FromMinutes(10)
     
-    # Load initial data if needed
+    try {
+        $job = Start-Job -ScriptBlock {
+            docker-compose -f docker-compose.local.yml exec -T backend alembic upgrade head
+        }
+        
+        while (-not $job.HasMoreData -and $migrationTimeout.Elapsed -lt $maxMigrationTimeout) {
+            Start-Sleep -Seconds 5
+        }
+        
+        if ($migrationTimeout.Elapsed -ge $maxMigrationTimeout) {
+            Stop-Job $job
+            throw "Database migrations timed out after $($maxMigrationTimeout.TotalMinutes) minutes"
+        }
+        
+        Receive-Job $job
+    }
+    finally {
+        Remove-Job $job -Force -ErrorAction SilentlyContinue
+    }
+    
+    # Load initial data if needed with timeout
     if (Test-Path "backend/setup_db.sql") {
         Write-Success "Loading initial data..."
-        docker-compose -f docker-compose.local.yml exec -T db psql -U $envVars.DB_USER -d $envVars.DB_NAME -f /docker-entrypoint-initdb.d/setup_db.sql
+        $initTimeout = [System.Diagnostics.Stopwatch]::StartNew()
+        $maxInitTimeout = [TimeSpan]::FromMinutes(5)
+        
+        try {
+            $job = Start-Job -ScriptBlock {
+                docker-compose -f docker-compose.local.yml exec -T db psql -U $envVars.DB_USER -d $envVars.DB_NAME -f /docker-entrypoint-initdb.d/setup_db.sql
+            }
+            
+            while (-not $job.HasMoreData -and $initTimeout.Elapsed -lt $maxInitTimeout) {
+                Start-Sleep -Seconds 5
+            }
+            
+            if ($initTimeout.Elapsed -ge $maxInitTimeout) {
+                Stop-Job $job
+                throw "Initial data load timed out after $($maxInitTimeout.TotalMinutes) minutes"
+            }
+            
+            Receive-Job $job
+        }
+        finally {
+            Remove-Job $job -Force -ErrorAction SilentlyContinue
+        }
     }
 }
 
@@ -154,26 +275,45 @@ function Initialize-Database {
 function Start-DevEnvironment {
     Write-Success "Starting development environment..."
     
-    # Build and start containers
-    docker-compose -f docker-compose.local.yml up -d --build
+    # Check Docker daemon
+    if (-not (Test-DockerDaemon)) {
+        return $false
+    }
     
-    # Setup database
-    Initialize-Database
-    
-    # Show service status
-    docker-compose -f docker-compose.local.yml ps
-    
-    # Show access URLs
-    Write-Success "Development environment is ready!"
-    @{
-        "Frontend" = "http://localhost:3000"
-        "Backend API" = "http://localhost:10000"
-        "Grafana" = "http://localhost:3001"
-        "Prometheus" = "http://localhost:9090"
-        "Jaeger UI" = "http://localhost:16686"
-    }.GetEnumerator() | ForEach-Object {
-        Write-Host "$($_.Key): " -NoNewline -ForegroundColor $Colors.Success
-        Write-Host $_.Value
+    try {
+        # Build and start containers
+        Write-Success "Building and starting containers..."
+        docker-compose -f docker-compose.local.yml up -d --build
+        
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "Failed to start containers"
+            return $false
+        }
+        
+        # Setup database
+        Initialize-Database
+        
+        # Show service status
+        docker-compose -f docker-compose.local.yml ps
+        
+        # Show access URLs
+        Write-Success "Development environment is ready!"
+        @{
+            "Frontend" = "http://localhost:3000"
+            "Backend API" = "http://localhost:10000"
+            "Grafana" = "http://localhost:3001"
+            "Prometheus" = "http://localhost:9090"
+            "Jaeger UI" = "http://localhost:16686"
+        }.GetEnumerator() | ForEach-Object {
+            Write-Host "$($_.Key): " -NoNewline -ForegroundColor $Colors.Success
+            Write-Host $_.Value
+        }
+        
+        return $true
+    }
+    catch {
+        Write-Error "Error starting development environment: $($_.Exception.Message)"
+        return $false
     }
 }
 
@@ -219,19 +359,52 @@ Commands:
 # Main execution
 try {
     $command = $args[0]
+    
+    if (-not $command) {
+        Write-Error "No command specified"
+        Show-Help
+        exit 1
+    }
+    
     switch ($command) {
         "start" {
-            Test-Requirements
-            Initialize-Environment
-            Start-DevEnvironment
+            if (-not (Test-Requirements)) {
+                exit 1
+            }
+            if (-not (Initialize-Environment)) {
+                exit 1
+            }
+            if (-not (Start-DevEnvironment)) {
+                exit 1
+            }
         }
         "stop" {
-            Stop-DevEnvironment
+            if (Test-DockerDaemon) {
+                Stop-DevEnvironment
+            }
+            else {
+                Write-Warning "Docker is not running, nothing to stop"
+            }
         }
         "clean" {
-            Clear-DevEnvironment
+            if (Test-DockerDaemon) {
+                Clear-DevEnvironment
+            }
+            else {
+                Write-Warning "Docker is not running, performing partial cleanup..."
+                @("logs/*", "data/*") | ForEach-Object {
+                    if (Test-Path $_) {
+                        Remove-Item -Path $_ -Recurse -Force
+                        Write-Success "Cleaned: $_"
+                    }
+                }
+            }
         }
         "logs" {
+            if (-not (Test-DockerDaemon)) {
+                Write-Error "Docker is not running, cannot show logs"
+                exit 1
+            }
             Watch-Logs
         }
         { $_ -in "help","--help","-h" } {

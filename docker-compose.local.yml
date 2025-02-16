@@ -18,6 +18,14 @@ services:
     command: npm start
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
 
   backend:
     build:
@@ -44,6 +52,14 @@ services:
       - redis
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
 
   db:
     image: postgres:15-alpine
@@ -58,6 +74,14 @@ services:
       - "5432:5432"
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
 
   redis:
     image: redis:7-alpine
@@ -68,6 +92,14 @@ services:
       - "6379:6379"
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 256M
 
   prometheus:
     image: prom/prometheus
