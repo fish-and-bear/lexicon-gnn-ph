@@ -1,0 +1,15 @@
+2025-02-16 15:19:45,391 - INFO - Attempting database connection...
+2025-02-16 15:19:45,391 - INFO - Database configuration:
+2025-02-16 15:19:45,391 - INFO -   Database Name: fil_dict_db
+2025-02-16 15:19:45,391 - INFO -   User: postgres
+2025-02-16 15:19:45,391 - INFO -   Host: localhost
+2025-02-16 15:19:45,391 - INFO -   Password: ********
+2025-02-16 15:19:45,432 - INFO - Successfully established database connection
+2025-02-16 15:19:45,447 - ERROR - Error during word lookup: the JSON object must be str, bytes or bytearray, not list
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 2449, in lookup_word
+    idioms = json.loads(word_data[8])
+  File "C:\Python313\Lib\json\__init__.py", line 339, in loads
+    raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+                    f'not {s.__class__.__name__}')
+TypeError: the JSON object must be str, bytes or bytearray, not list

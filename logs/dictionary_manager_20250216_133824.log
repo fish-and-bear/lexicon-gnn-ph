@@ -1,0 +1,20 @@
+2025-02-16 13:38:24,961 - INFO - Attempting database connection...
+2025-02-16 13:38:24,961 - INFO - Database configuration:
+2025-02-16 13:38:24,961 - INFO -   Database Name: fil_dict_db
+2025-02-16 13:38:24,962 - INFO -   User: postgres
+2025-02-16 13:38:24,962 - INFO -   Host: localhost
+2025-02-16 13:38:24,962 - INFO -   Password: ********
+2025-02-16 13:38:25,002 - INFO - Successfully established database connection
+2025-02-16 13:38:25,003 - INFO - Setting up PostgreSQL extensions...
+2025-02-16 13:38:25,006 - INFO - Extension pg_trgm already installed
+2025-02-16 13:38:25,008 - INFO - Extension unaccent already installed
+2025-02-16 13:38:25,009 - INFO - Extension fuzzystrmatch already installed
+2025-02-16 13:38:25,009 - INFO - Extension dict_xsyn already installed
+2025-02-16 13:38:25,009 - INFO - Starting table creation/update process.
+2025-02-16 13:38:25,329 - INFO - Tables created or updated successfully.
+2025-02-16 13:38:25,336 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-16 13:38:25,547 - ERROR - Error processing Tagalog words file: name 'conn' is not defined
+2025-02-16 13:38:25,548 - ERROR - Error processing file data/tagalog-words.json: name 'conn' is not defined
+2025-02-16 13:38:25,548 - WARNING - Skipping file data/tagalog-words.json due to errors.
+2025-02-16 13:38:25,560 - INFO - Processing root words from: data/root_words_with_associated_words_cleaned.json
+2025-02-16 13:39:34,131 - INFO - Processing KWF dictionary from: data/kwf_dictionary.json

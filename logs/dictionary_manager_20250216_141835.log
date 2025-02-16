@@ -1,0 +1,12 @@
+2025-02-16 14:18:35,326 - INFO - Attempting database connection...
+2025-02-16 14:18:35,326 - INFO - Database configuration:
+2025-02-16 14:18:35,327 - INFO -   Database Name: fil_dict_db
+2025-02-16 14:18:35,327 - INFO -   User: postgres
+2025-02-16 14:18:35,327 - INFO -   Host: localhost
+2025-02-16 14:18:35,328 - INFO -   Password: ********
+2025-02-16 14:18:35,401 - INFO - Successfully established database connection
+2025-02-16 14:18:35,404 - ERROR - Error during word lookup: function normalize_lemma(unknown) does not exist
+LINE 11:                 WHERE w.normalized_lemma = normalize_lemma('...
+                                                    ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+

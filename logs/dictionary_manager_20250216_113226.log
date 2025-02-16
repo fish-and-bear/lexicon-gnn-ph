@@ -1,0 +1,8 @@
+2025-02-16 11:32:26,751 - INFO - Attempting database connection...
+2025-02-16 11:32:26,751 - INFO - Database configuration:
+2025-02-16 11:32:26,751 - INFO -   Database Name: fil_dict_db
+2025-02-16 11:32:26,752 - INFO -   User: postgres
+2025-02-16 11:32:26,752 - INFO -   Host: localhost
+2025-02-16 11:32:26,752 - INFO -   Password: ********
+2025-02-16 11:32:26,807 - INFO - Successfully established database connection
+2025-02-16 11:32:26,807 - ERROR - Error during migration: name 'setup_extensions' is not defined

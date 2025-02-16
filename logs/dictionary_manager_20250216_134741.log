@@ -1,0 +1,27 @@
+2025-02-16 13:47:41,768 - INFO - Attempting database connection...
+2025-02-16 13:47:41,769 - INFO - Database configuration:
+2025-02-16 13:47:41,769 - INFO -   Database Name: fil_dict_db
+2025-02-16 13:47:41,769 - INFO -   User: postgres
+2025-02-16 13:47:41,769 - INFO -   Host: localhost
+2025-02-16 13:47:41,769 - INFO -   Password: ********
+2025-02-16 13:47:41,926 - INFO - Successfully established database connection
+2025-02-16 13:47:41,926 - INFO - Setting up PostgreSQL extensions...
+2025-02-16 13:47:41,980 - INFO - Extension pg_trgm already installed
+2025-02-16 13:47:41,981 - INFO - Extension unaccent already installed
+2025-02-16 13:47:41,982 - INFO - Extension fuzzystrmatch already installed
+2025-02-16 13:47:41,982 - INFO - Extension dict_xsyn already installed
+2025-02-16 13:47:41,982 - INFO - Starting table creation/update process.
+2025-02-16 13:47:42,414 - INFO - Tables created or updated successfully.
+2025-02-16 13:47:42,422 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-16 13:47:48,857 - ERROR - Error inserting definition for ámbes: duplicate key value violates unique constraint "definitions_unique"
+DETAIL:  Key (word_id, definition_text, standardized_pos_id)=(2441, kayâ., 19) already exists.
+
+2025-02-16 13:48:11,359 - ERROR - Error inserting definition for busà: duplicate key value violates unique constraint "definitions_unique"
+DETAIL:  Key (word_id, definition_text, standardized_pos_id)=(10643, kayâ., 19) already exists.
+
+2025-02-16 13:48:14,622 - ERROR - Error inserting definition for con: duplicate key value violates unique constraint "definitions_unique"
+DETAIL:  Key (word_id, definition_text, standardized_pos_id)=(11875, laban sa, 19) already exists.
+
+2025-02-16 13:48:14,625 - ERROR - Error inserting definition for con: duplicate key value violates unique constraint "definitions_unique"
+DETAIL:  Key (word_id, definition_text, standardized_pos_id)=(11875, may kasámang, gaya sa “con amor. ”, 19) already exists.
+

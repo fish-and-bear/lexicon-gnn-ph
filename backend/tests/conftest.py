@@ -25,7 +25,7 @@ def get_db_config():
     return {
         'db_name': os.getenv('TEST_DB_NAME', 'fil_dict_test'),
         'db_user': os.getenv('TEST_DB_USER', 'postgres'),
-        'db_password': os.getenv('TEST_DB_PASSWORD', 'postgres'),
+        'db_password': os.getenv('TEST_DB_PASSWORD', 'ta3m1n.!'),
         'db_host': os.getenv('TEST_DB_HOST', 'localhost'),
         'db_port': os.getenv('TEST_DB_PORT', '5432')
     }
@@ -68,13 +68,35 @@ def create_test_database():
         cursor.execute(f"CREATE DATABASE {config['db_name']}")
         logger.info(f"Created test database '{config['db_name']}'")
 
+        # Close the connection to postgres
+        cursor.close()
+        conn.close()
+
+        # Connect to the new test database to create extensions
+        conn = psycopg2.connect(
+            dbname=config['db_name'],
+            user=config['db_user'],
+            password=config['db_password'],
+            host=config['db_host'],
+            port=config['db_port']
+        )
+        conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        cursor = conn.cursor()
+
+        # Create extensions
+        cursor.execute('CREATE EXTENSION IF NOT EXISTS unaccent')
+        cursor.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')
+        cursor.execute('CREATE EXTENSION IF NOT EXISTS btree_gin')
+        cursor.execute('CREATE EXTENSION IF NOT EXISTS fuzzystrmatch')
+        logger.info("Created database extensions")
+
     except Exception as e:
         logger.error(f"Error setting up test database: {str(e)}")
         raise
     finally:
-        if 'cursor' in locals():
+        if cursor:
             cursor.close()
-        if 'conn' in locals():
+        if conn:
             conn.close()
 
 @pytest.fixture(scope="session")

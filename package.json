@@ -13,7 +13,6 @@
     "@types/d3": "^7.4.3",
     "@types/dompurify": "^3.0.5",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.105",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "axios": "^0.21.1",
@@ -55,7 +54,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/lodash": "^4.17.7",
+    "@types/node": "^22.13.1",
     "@types/unidecode": "^0.1.1",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",

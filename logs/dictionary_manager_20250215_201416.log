@@ -1,0 +1,20 @@
+2025-02-15 20:14:16,509 - INFO - Attempting database connection...
+2025-02-15 20:14:16,512 - INFO - Database configuration:
+2025-02-15 20:14:16,514 - INFO -   Database Name: fil_dict_db
+2025-02-15 20:14:16,515 - INFO -   User: postgres
+2025-02-15 20:14:16,610 - INFO -   Host: localhost
+2025-02-15 20:14:16,678 - INFO -   Password: ********
+2025-02-15 20:14:17,567 - INFO - Successfully established database connection
+2025-02-15 20:14:17,568 - INFO - Setting up PostgreSQL extensions...
+2025-02-15 20:14:17,569 - INFO - Checking extension: pg_trgm
+2025-02-15 20:14:17,627 - INFO - Extension already installed: pg_trgm
+2025-02-15 20:14:17,628 - INFO - Checking extension: unaccent
+2025-02-15 20:14:17,630 - INFO - Extension already installed: unaccent
+2025-02-15 20:14:17,631 - INFO - Checking extension: fuzzystrmatch
+2025-02-15 20:14:17,633 - INFO - Extension already installed: fuzzystrmatch
+2025-02-15 20:14:17,634 - INFO - Extensions setup completed
+2025-02-15 20:14:17,634 - INFO - Starting table creation/update process.
+2025-02-15 20:14:17,748 - ERROR - Schema creation error: column "search_text" does not exist
+
+2025-02-15 20:14:17,749 - ERROR - Error during migration: column "search_text" does not exist
+

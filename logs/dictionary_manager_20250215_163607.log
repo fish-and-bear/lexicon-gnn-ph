@@ -1,0 +1,13 @@
+2025-02-15 16:36:07,791 - INFO - Attempting database connection...
+2025-02-15 16:36:07,792 - INFO - Database configuration:
+2025-02-15 16:36:07,793 - INFO -   Database Name: fil_dict_db
+2025-02-15 16:36:07,794 - INFO -   User: postgres
+2025-02-15 16:36:07,794 - INFO -   Host: localhost
+2025-02-15 16:36:07,795 - INFO -   Password: ********
+2025-02-15 16:36:07,889 - ERROR - Database connection failed!
+2025-02-15 16:36:07,889 - ERROR - Please check:
+2025-02-15 16:36:07,890 - ERROR - 1. PostgreSQL service is running
+2025-02-15 16:36:07,891 - ERROR - 2. Database credentials in .env file are correct
+2025-02-15 16:36:07,893 - ERROR - 3. Database exists and is accessible
+2025-02-15 16:36:07,893 - ERROR - Error details: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+

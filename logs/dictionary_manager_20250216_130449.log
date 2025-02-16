@@ -1,0 +1,433 @@
+2025-02-16 13:04:49,252 - INFO - Attempting database connection...
+2025-02-16 13:04:49,253 - INFO - Database configuration:
+2025-02-16 13:04:49,253 - INFO -   Database Name: fil_dict_db
+2025-02-16 13:04:49,253 - INFO -   User: postgres
+2025-02-16 13:04:49,253 - INFO -   Host: localhost
+2025-02-16 13:04:49,253 - INFO -   Password: ********
+2025-02-16 13:04:49,299 - INFO - Successfully established database connection
+2025-02-16 13:04:49,300 - INFO - Setting up PostgreSQL extensions...
+2025-02-16 13:04:49,349 - INFO - Extension pg_trgm already installed
+2025-02-16 13:04:49,350 - INFO - Extension unaccent already installed
+2025-02-16 13:04:49,350 - INFO - Extension fuzzystrmatch already installed
+2025-02-16 13:04:49,351 - INFO - Extension dict_xsyn already installed
+2025-02-16 13:04:49,351 - INFO - Starting table creation/update process.
+2025-02-16 13:04:49,480 - INFO - Standardizing source names...
+2025-02-16 13:04:49,495 - INFO - Source names standardization completed
+2025-02-16 13:04:49,496 - INFO - Tables created or updated successfully.
+2025-02-16 13:04:49,505 - INFO - Processing Tagalog words from: data/tagalog-words.json
+2025-02-16 13:04:50,357 - ERROR - Error processing batch (attempt 1/3): ON CONFLICT DO UPDATE command cannot affect row a second time
+HINT:  Ensure that no rows proposed for insertion within the same command have duplicate constrained values.
+
+2025-02-16 13:04:50,419 - ERROR - Error processing batch (attempt 2/3): ON CONFLICT DO UPDATE command cannot affect row a second time
+HINT:  Ensure that no rows proposed for insertion within the same command have duplicate constrained values.
+
+2025-02-16 13:04:50,478 - ERROR - Error processing batch (attempt 3/3): ON CONFLICT DO UPDATE command cannot affect row a second time
+HINT:  Ensure that no rows proposed for insertion within the same command have duplicate constrained values.
+
+2025-02-16 13:04:50,478 - ERROR - Error processing lemma condition: ON CONFLICT DO UPDATE command cannot affect row a second time
+HINT:  Ensure that no rows proposed for insertion within the same command have duplicate constrained values.
+
+2025-02-16 13:04:50,594 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,609 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,625 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,625 - ERROR - Error processing lemma desgustádo: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,641 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,656 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,672 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,672 - ERROR - Error processing lemma desgústo: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,687 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,704 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,719 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,720 - ERROR - Error processing lemma dési-: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,736 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,752 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,766 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,767 - ERROR - Error processing lemma desidé: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,783 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,798 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,813 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,813 - ERROR - Error processing lemma desideráta: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,828 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,844 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,860 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,861 - ERROR - Error processing lemma desiderátum: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,875 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,891 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,906 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,907 - ERROR - Error processing lemma desidído: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,922 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,937 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,952 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,953 - ERROR - Error processing lemma design: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,968 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,983 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,998 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:50,998 - ERROR - Error processing lemma designasyón: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,014 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,029 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,044 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,044 - ERROR - Error processing lemma designation: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,059 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,074 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,089 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,090 - ERROR - Error processing lemma désigrámo: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,105 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,119 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,134 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,135 - ERROR - Error processing lemma désilítro: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,149 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,164 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,178 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,178 - ERROR - Error processing lemma des-ilusyón: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,192 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,207 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,223 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,224 - ERROR - Error processing lemma désimál: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,241 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,258 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,276 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,277 - ERROR - Error processing lemma desímetró: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,293 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,312 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,330 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,331 - ERROR - Error processing lemma des-impeksiyón: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,348 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,366 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,383 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,383 - ERROR - Error processing lemma des-impektá: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,399 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,416 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,433 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,434 - ERROR - Error processing lemma des-impektánte: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,452 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,472 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,491 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,492 - ERROR - Error processing lemma des-interesádo: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,511 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,530 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,548 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,549 - ERROR - Error processing lemma desíntunádo: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,567 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,585 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,602 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,602 - ERROR - Error processing lemma desire: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,620 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,638 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,657 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,657 - ERROR - Error processing lemma desisíbo: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,678 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,697 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,716 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,716 - ERROR - Error processing lemma desisyón: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,734 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,751 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,768 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,769 - ERROR - Error processing lemma desk: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,786 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,803 - ERROR - Error processing batch (attempt 2/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,821 - ERROR - Error processing batch (attempt 3/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,822 - ERROR - Error processing lemma deskalipikádo: syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
+2025-02-16 13:04:51,841 - ERROR - Error processing batch (attempt 1/3): syntax error in tsvector: "’day 'day"
+LINE 3: ...VALUES ('’day', '''day', 'tl', 'diksiyonaryo.ph', '’day ''da...
+                                                             ^
+
