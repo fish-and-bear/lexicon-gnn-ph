@@ -1,5 +1,6 @@
 """
 Main application file for the Filipino Dictionary application.
+This module initializes the Flask application and sets up the database connection.
 """
 
 from flask import Flask
@@ -7,13 +8,9 @@ from models import db
 from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
-import structlog
 
 # Load environment variables from .env file
 load_dotenv()
-
-# Set up logging
-logger = structlog.get_logger(__name__)
 
 def create_app(config=None):
     """Create and configure the Flask application."""
@@ -25,7 +22,7 @@ def create_app(config=None):
     # Default configuration using environment variables
     app.config.update(
         SQLALCHEMY_DATABASE_URI=os.getenv('DATABASE_URL', db_url),
-        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+            SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_ENGINE_OPTIONS={
             'pool_size': int(os.getenv('DB_MIN_CONNECTIONS', 5)),
             'max_overflow': int(os.getenv('DB_MAX_CONNECTIONS', 20)) - int(os.getenv('DB_MIN_CONNECTIONS', 5)),
@@ -57,28 +54,7 @@ def create_app(config=None):
     # Initialize rate limiter
     with app.app_context():
         from routes import init_rate_limiter
-        init_rate_limiter(app)
-
-    # Set up error handlers
-    @app.errorhandler(404)
-    def not_found_error(error):
-        return {
-            "error": {
-                "message": "Resource not found",
-                "code": "ERR_NOT_FOUND",
-                "status_code": 404
-            }
-        }, 404
-
-    @app.errorhandler(500)
-    def internal_error(error):
-        return {
-            "error": {
-                "message": "Internal server error",
-                "code": "ERR_INTERNAL",
-                "status_code": 500
-            }
-        }, 500
+    init_rate_limiter(app)
 
     return app
 

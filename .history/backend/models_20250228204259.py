@@ -1,7 +1,3 @@
-"""
-Main models file for the Filipino Dictionary application.
-"""
-
 import os
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, Table, JSON, ARRAY, Boolean, DateTime, func, Index, UniqueConstraint, DDL, event
 from sqlalchemy.orm import relationship, sessionmaker, validates, declarative_base, scoped_session
@@ -110,44 +106,47 @@ class BaseMixin:
         db.session.commit()
 
 # Enhance Word model
-class Word(db.Model):
+class Word(BaseMixin, db.Model):
     __tablename__ = 'words'
     
-    id = Column(Integer, primary_key=True)
     lemma = Column(String(255), nullable=False)
     normalized_lemma = Column(String(255), nullable=False)
-    has_baybayin = Column(Boolean, default=False)
-    baybayin_form = Column(String(255))
-    romanized_form = Column(String(255))
     language_code = Column(String(16), nullable=False)
     root_word_id = Column(Integer, ForeignKey('words.id'))
     preferred_spelling = Column(String(255))
     tags = Column(Text)
-    idioms = Column(JSONB, default=list)
+    has_baybayin = Column(Boolean, default=False)
+    baybayin_form = Column(String(255))
+    romanized_form = Column(String(255))
     pronunciation_data = Column(JSONB)
     source_info = Column(JSONB, default=dict)
     data_hash = Column(Text)
-    created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
-    updated_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
     search_text = Column(TSVECTOR)
+    idioms = Column(JSONB, default=list)
+    view_count = Column(Integer, default=0)
+    last_viewed_at = Column(DateTime(timezone=True))
+    is_verified = Column(Boolean, default=False)
+    verification_notes = Column(Text)
+    data_quality_score = Column(Integer, default=0)
+    search_vector = Column(TSVECTOR)
+    complexity_score = Column(Integer, default=0)
+    usage_frequency = Column(Integer, default=0)
+    last_lookup_at = Column(DateTime(timezone=True))
 
     # Relationships
-    definitions = relationship("Definition", backref="word", cascade="all, delete-orphan")
-    etymologies = relationship("Etymology", backref="word", cascade="all, delete-orphan")
-    relations_from = relationship("Relation", foreign_keys="[Relation.from_word_id]", backref="from_word", cascade="all, delete-orphan")
-    relations_to = relationship("Relation", foreign_keys="[Relation.to_word_id]", backref="to_word", cascade="all, delete-orphan")
-    affixations_as_root = relationship("Affixation", foreign_keys="[Affixation.root_word_id]", backref="root_word", cascade="all, delete-orphan")
-    affixations_as_affixed = relationship("Affixation", foreign_keys="[Affixation.affixed_word_id]", backref="affixed_word", cascade="all, delete-orphan")
+    definitions = relationship("Definition", back_populates="word", cascade="all, delete-orphan")
+    etymologies = relationship("Etymology", back_populates="word", cascade="all, delete-orphan")
+    relations_from = relationship("Relation", foreign_keys="[Relation.from_word_id]", back_populates="from_word", cascade="all, delete-orphan")
+    relations_to = relationship("Relation", foreign_keys="[Relation.to_word_id]", back_populates="to_word", cascade="all, delete-orphan")
+    affixations_as_root = relationship("Affixation", foreign_keys="[Affixation.root_word_id]", back_populates="root_word", cascade="all, delete-orphan")
+    affixations_as_affixed = relationship("Affixation", foreign_keys="[Affixation.affixed_word_id]", back_populates="affixed_word", cascade="all, delete-orphan")
+    definition_relations = relationship("DefinitionRelation", back_populates="word", cascade="all, delete-orphan")
 
     __table_args__ = (
+        Index('idx_words_normalized_lang', 'normalized_lemma', 'language_code'),
         Index('idx_words_baybayin', 'baybayin_form'),
-        Index('idx_words_language', 'language_code'),
-        Index('idx_words_lemma', 'lemma'),
-        Index('idx_words_normalized', 'normalized_lemma'),
-        Index('idx_words_romanized', 'romanized_form'),
-        Index('idx_words_root', 'root_word_id'),
-        Index('idx_words_search', 'search_text', postgresql_using='gin'),
-        UniqueConstraint('normalized_lemma', 'language_code', name='words_lang_lemma_uniq')
+        Index('idx_words_search_text', 'search_text', postgresql_using='gin'),
+        Index('idx_words_trgm', 'normalized_lemma', postgresql_using='gin', postgresql_ops={'normalized_lemma': 'gin_trgm_ops'})
     )
 
     @hybrid_property
@@ -194,7 +193,7 @@ class Word(db.Model):
             self.baybayin_form or '',
             self.romanized_form or ''
         ]
-        self.search_text = func.to_tsvector('simple', ' '.join(search_parts))
+        self.search_vector = func.to_tsvector('simple', ' '.join(search_parts))
 
     def to_dict(self, include_relations: bool = True) -> Dict[str, Any]:
         """Convert word to dictionary with configurable depth."""
@@ -209,8 +208,11 @@ class Word(db.Model):
             "baybayin_form": self.baybayin_form,
             "romanized_form": self.romanized_form,
             "pronunciation_data": self.pronunciation_data,
+            "complexity_score": self.complexity_score,
+            "usage_frequency": self.usage_frequency,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+            "last_lookup_at": self.last_lookup_at.isoformat() if self.last_lookup_at else None,
             "view_count": self.view_count,
             "last_viewed_at": self.last_viewed_at.isoformat() if self.last_viewed_at else None,
             "is_verified": self.is_verified,
@@ -321,28 +323,24 @@ class Word(db.Model):
         data_string += str(sorted([e.etymology_text for e in self.etymologies]))
         return hashlib.sha256(data_string.encode()).hexdigest()
 
-class Definition(db.Model):
+class Definition(BaseMixin, db.Model):
     __tablename__ = 'definitions'
     
-    id = Column(Integer, primary_key=True)
-    word_id = Column(Integer, ForeignKey('words.id', ondelete='CASCADE'), nullable=False)
     definition_text = Column(Text, nullable=False)
     original_pos = Column(Text)
     standardized_pos_id = Column(Integer, ForeignKey('parts_of_speech.id'))
     examples = Column(Text)
     usage_notes = Column(Text)
     sources = Column(Text, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
-    updated_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
+    confidence_score = Column(Integer, default=0)
+    is_verified = Column(Boolean, default=False)
+    verified_by = Column(String(255))
+    verified_at = Column(DateTime(timezone=True))
 
     # Relationships
-    standardized_pos = relationship("PartOfSpeech", backref="definitions")
-
-    __table_args__ = (
-        Index('idx_definitions_pos', 'standardized_pos_id'),
-        Index('idx_definitions_word', 'word_id'),
-        UniqueConstraint('word_id', 'definition_text', 'standardized_pos_id', name='definitions_unique')
-    )
+    word = relationship("Word", back_populates="definitions")
+    part_of_speech = relationship("PartOfSpeech")
+    definition_relations = relationship("DefinitionRelation", back_populates="definition", cascade="all, delete-orphan")
 
     @validates('sources')
     def validate_sources(self, key, sources):
@@ -365,7 +363,7 @@ class Definition(db.Model):
             "id": self.id,
             "text": self.definition_text,
             "original_pos": self.original_pos,
-            "part_of_speech": self.standardized_pos.to_dict() if self.standardized_pos else None,
+            "part_of_speech": self.part_of_speech.to_dict() if self.part_of_speech else None,
             "examples": self.examples.split("\n") if self.examples else [],
             "usage_notes": self.usage_notes.split("; ") if self.usage_notes else [],
             "sources": self.get_standardized_sources(),
@@ -394,28 +392,28 @@ class Definition(db.Model):
             score += 20
         if self.usage_notes:
             score += 10
-        if self.standardized_pos:
+        if self.part_of_speech:
             score += 10
             
         return min(score, 100)
 
-class Etymology(db.Model):
+class Etymology(BaseMixin, db.Model):
     __tablename__ = 'etymologies'
     
-    id = Column(Integer, primary_key=True)
-    word_id = Column(Integer, ForeignKey('words.id', ondelete='CASCADE'), nullable=False)
     etymology_text = Column(Text, nullable=False)
     normalized_components = Column(Text)
     language_codes = Column(Text)
     sources = Column(Text, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
-    updated_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
+    confidence_level = Column(String(20), default='medium')  # low, medium, high
+    verification_status = Column(String(20), default='unverified')
+    verification_notes = Column(Text)
 
-    __table_args__ = (
-        Index('idx_etymologies_word', 'word_id'),
-        UniqueConstraint('word_id', 'etymology_text', name='etymologies_wordid_etymtext_uniq')
-    )
+    # Relationships
+    word = relationship("Word", back_populates="etymologies")
 
+    CONFIDENCE_LEVELS = ['low', 'medium', 'high']
+    VERIFICATION_STATUSES = ['unverified', 'pending', 'verified', 'rejected']
+    
     @validates('etymology_text')
     def validate_etymology_text(self, key, value):
         if not value or not isinstance(value, str):
@@ -464,13 +462,13 @@ class Relation(db.Model):
     to_word_id = Column(Integer, ForeignKey('words.id', ondelete='CASCADE'), nullable=False)
     relation_type = Column(String(64), nullable=False)
     sources = Column(Text, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
+
+    # Relationships
+    from_word = relationship("Word", foreign_keys=[from_word_id], back_populates="relations_from")
+    to_word = relationship("Word", foreign_keys=[to_word_id], back_populates="relations_to")
 
     __table_args__ = (
-        Index('idx_relations_from', 'from_word_id'),
-        Index('idx_relations_to', 'to_word_id'),
-        Index('idx_relations_type', 'relation_type'),
-        UniqueConstraint('from_word_id', 'to_word_id', 'relation_type', name='relations_unique')
+        UniqueConstraint('from_word_id', 'to_word_id', 'relation_type', name='relations_unique'),
     )
 
     VALID_TYPES = [
@@ -503,15 +501,20 @@ class DefinitionRelation(db.Model):
     relation_type = Column(String(64), nullable=False)
     sources = Column(Text, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
+    updated_at = Column(DateTime(timezone=True), server_default=func.current_timestamp(), onupdate=func.current_timestamp())
 
     # Relationships
-    definition = relationship("Definition", backref="definition_relations")
-    word = relationship("Word", backref="definition_relations")
+    definition = relationship("Definition", back_populates="definition_relations")
+    word = relationship("Word", back_populates="definition_relations")
+
+    # Valid relation types
+    VALID_TYPES = [
+        'synonym', 'antonym', 'hypernym', 'hyponym', 
+        'meronym', 'holonym', 'related'
+    ]
 
     __table_args__ = (
-        Index('idx_def_relations_def', 'definition_id'),
-        Index('idx_def_relations_word', 'word_id'),
-        UniqueConstraint('definition_id', 'word_id', 'relation_type', name='definition_relations_unique')
+        UniqueConstraint('definition_id', 'word_id', 'relation_type', name='uix_definition_relation_combination'),
     )
 
     @validates('relation_type')
@@ -527,7 +530,8 @@ class DefinitionRelation(db.Model):
             "word": self.word.lemma if self.word else None,
             "relation_type": self.relation_type,
             "sources": self.sources.split(", ") if self.sources else [],
-            "created_at": self.created_at.isoformat() if self.created_at else None
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
         }
 
 class Affixation(db.Model):
@@ -539,12 +543,16 @@ class Affixation(db.Model):
     affix_type = Column(String(64), nullable=False)
     sources = Column(Text, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
+    updated_at = Column(DateTime(timezone=True), server_default=func.current_timestamp(), onupdate=func.current_timestamp())
 
+    # Ensure unique combinations of root word, affixed word, and affix type
     __table_args__ = (
-        Index('idx_affixations_affixed', 'affixed_word_id'),
-        Index('idx_affixations_root', 'root_word_id'),
-        UniqueConstraint('root_word_id', 'affixed_word_id', 'affix_type', name='affixations_unique')
+        UniqueConstraint('root_word_id', 'affixed_word_id', 'affix_type', name='uix_affixation_combination'),
     )
+
+    # Relationships
+    root_word = relationship("Word", foreign_keys=[root_word_id], back_populates="affixations_as_root")
+    affixed_word = relationship("Word", foreign_keys=[affixed_word_id], back_populates="affixations_as_affixed")
 
     VALID_TYPES = [
         'prefix', 'infix', 'suffix', 'circumfix', 
@@ -564,23 +572,18 @@ class Affixation(db.Model):
             "root_word": self.root_word.lemma if self.root_word else None,
             "affixed_word": self.affixed_word.lemma if self.affixed_word else None,
             "sources": self.sources.split(", ") if self.sources else [],
-            "created_at": self.created_at.isoformat() if self.created_at else None
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
         }
 
 class PartOfSpeech(db.Model):
     __tablename__ = 'parts_of_speech'
-    
+
     id = Column(Integer, primary_key=True)
     code = Column(String(32), nullable=False, unique=True)
     name_en = Column(String(64), nullable=False)
     name_tl = Column(String(64), nullable=False)
     description = Column(Text)
-
-    __table_args__ = (
-        Index('idx_parts_of_speech_code', 'code'),
-        Index('idx_parts_of_speech_name', 'name_en', 'name_tl'),
-        UniqueConstraint('code', name='parts_of_speech_code_uniq')
-    )
 
     def to_dict(self) -> Dict[str, Any]:
         return {

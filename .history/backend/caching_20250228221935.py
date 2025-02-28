@@ -140,15 +140,15 @@ def init_cache():
             redis_url = 'redis://localhost:6379/0'
             
         logger.info(f"Connecting to Redis cache at {redis_url}")
-
+        
         redis_client = redis.from_url(
-                redis_url,
-                socket_timeout=5,
-                socket_connect_timeout=5,
+            redis_url,
+            socket_timeout=5,
+            socket_connect_timeout=5,
             retry_on_timeout=True,
             health_check_interval=30,
             decode_responses=True
-            )
+        )
         
         # Test connection
         redis_client.ping()
@@ -382,14 +382,14 @@ def multi_level_cache(prefix: str, ttl: Optional[int] = None):
                 return cached_value
             
             # Execute function
-                    result = func(*args, **kwargs)
-
+            result = func(*args, **kwargs)
+            
             # Store in cache
             if result is not None:
                 cache.set(cache_key, result, timeout=ttl)
                 logger.debug("Cache set", key=cache_key)
             
-                    return result
+            return result
         return wrapper
     return decorator
 

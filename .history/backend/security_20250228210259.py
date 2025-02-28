@@ -4,7 +4,7 @@ Includes rate limiting, CORS, request validation, and security headers.
 """
 
 import os
-from typing import Dict, List, Optional, Tuple, Any, Callable, Type, Union
+from typing import Dict, List, Optional, Tuple, Any
 from functools import wraps
 from datetime import datetime, timedelta
 import jwt
@@ -17,12 +17,11 @@ import re
 import hashlib
 import secrets
 from dataclasses import dataclass
-from marshmallow import Schema, fields, validate, ValidationError
+from marshmallow import Schema, fields, validate
+from marshmallow.exceptions import ValidationError
 from flask import jsonify
-import structlog
 
-# Set up logging
-logger = structlog.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 # Security Metrics
 BLOCKED_REQUESTS = Counter('blocked_requests_total', 'Blocked requests', ['reason'])
@@ -247,79 +246,61 @@ def rate_limit(limit_type: str = 'default'):
         return decorated
     return decorator
 
-def validate_json_request(schema_cls: Type[Schema]):
-    """Decorator to validate JSON request body using marshmallow schema."""
-    def decorator(f: Callable):
+def validate_json_request(schema: Schema):
+    """Decorator to validate request data against schema."""
+    def decorator(f):
         @wraps(f)
-        def wrapper(*args, **kwargs):
-            try:
-                # Ensure request has JSON content type
-                if not request.is_json:
-                    return {
-                        "error": {
-                            "message": "Request must be JSON",
-                            "code": "ERR_INVALID_CONTENT_TYPE"
-                        }
-                    }, 415
+        def decorated(*args, **kwargs):
+            validator = current_app.request_validator
+            
+            # Validate content length
+            if not validator.validate_content_length(request):
+                abort(413, description="Request too large")
                 
-                # Create schema instance
-                schema = schema_cls()
-                
-                # Validate request data
-                data = schema.load(request.get_json())
-                
-                # Add validated data to kwargs
-                kwargs['data'] = data
-                
-                return f(*args, **kwargs)
-            except ValidationError as err:
-                logger.warning(
-                    "JSON request validation failed",
-                    error=err.messages,
-                    path=request.path,
-                    data=request.get_json()
-                )
-                return {
-                    "error": {
-                        "message": "Invalid request data",
-                        "details": err.messages,
-                        "code": "ERR_VALIDATION"
-                    }
-                }, 400
-        return wrapper
+            # Validate and sanitize JSON
+            if request.is_json:
+                data = request.get_json()
+                if not validator.validate_json_structure(data):
+                    abort(400, description="Invalid request structure")
+                    
+                try:
+                    # Validate against schema
+                    validated_data = schema.load(data)
+                    # Sanitize data
+                    sanitized_data = validator.sanitize_data(validated_data)
+                    # Store sanitized data for the route
+                    g.validated_data = sanitized_data
+                except Exception as e:
+                    abort(400, description=str(e))
+                    
+            return f(*args, **kwargs)
+        return decorated
     return decorator
 
-def validate_query_params(schema_cls: Type[Schema]):
-    """Decorator to validate query parameters using marshmallow schema."""
-    def decorator(f: Callable):
+def validate_query_params(schema: Schema):
+    """Decorator to validate query parameters."""
+    def decorator(f):
         @wraps(f)
-        def wrapper(*args, **kwargs):
+        def decorated(*args, **kwargs):
             try:
-                # Create schema instance
-                schema = schema_cls()
-                
-                # Validate query parameters
-                params = schema.load(request.args)
-                
+                # Fixed: Convert request.args to dict before passing to schema.load
+                query_dict = request.args.to_dict()
+                params = schema.load(query_dict)
                 # Add validated parameters to kwargs
                 kwargs.update(params)
-                
                 return f(*args, **kwargs)
             except ValidationError as err:
-                logger.warning(
-                    "Query parameter validation failed",
-                    error=err.messages,
-                    path=request.path,
-                    params=dict(request.args)
-                )
-                return {
+                return jsonify({
                     "error": {
-                        "message": "Invalid query parameters",
+                        "message": "Invalid parameters",
                         "details": err.messages,
-                        "code": "ERR_VALIDATION"
+                        "status_code": 400,
+                        "timestamp": datetime.now().isoformat()
                     }
-                }, 400
-        return wrapper
+                }), 400
+        # Preserve the original endpoint name
+        decorated.__name__ = f.__name__
+        return decorated
     return decorator
 
 def init_security(app, redis_client: redis.Redis) -> None:
@@ -406,103 +387,4 @@ def generate_jwt_token(user_id: int, roles: List[str] = None) -> str:
         payload,
         current_app.config['SECURITY'].JWT_SECRET_KEY,
         algorithm=current_app.config['SECURITY'].JWT_ALGORITHM
-    )
-
-class WordQuerySchema(Schema):
-    """Schema for word query parameters."""
-    language_code = fields.Str(validate=validate.OneOf(['tl', 'ceb']), default='tl')
-    include_definitions = fields.Bool(default=True)
-    include_relations = fields.Bool(default=True)
-    include_etymology = fields.Bool(default=True)
-
-class SearchQuerySchema(Schema):
-    """Schema for search query parameters."""
-    q = fields.Str(required=True, validate=validate.Length(min=1))
-    limit = fields.Int(validate=validate.Range(min=1, max=50), default=10)
-    pos = fields.Str(validate=validate.OneOf(['n', 'v', 'adj', 'adv', 'pron', 'prep', 'conj', 'intj', 'det', 'affix']))
-    language = fields.Str(validate=validate.OneOf(['tl', 'ceb']), default='tl')
-    include_baybayin = fields.Bool(default=True)
-    min_similarity = fields.Float(validate=validate.Range(min=0.0, max=1.0), default=0.3)
-    mode = fields.Str(validate=validate.OneOf(['all', 'exact', 'phonetic', 'baybayin']), default='all')
-    sort = fields.Str(validate=validate.OneOf(['relevance', 'alphabetical', 'created', 'updated']), default='relevance')
-    order = fields.Str(validate=validate.OneOf(['asc', 'desc']), default='desc')
-
-class PaginationSchema(Schema):
-    """Schema for pagination parameters."""
-    page = fields.Int(validate=validate.Range(min=1), default=1)
-    per_page = fields.Int(validate=validate.Range(min=1, max=100), default=20)
-
-class WordDetailSchema(Schema):
-    """Schema for word detail parameters."""
-    include_definitions = fields.Boolean(missing=True)
-    include_relations = fields.Boolean(missing=True)
-    include_etymology = fields.Boolean(missing=True)
-
-def sanitize_input(text: str) -> str:
-    """Sanitize user input to prevent injection attacks."""
-    if not text:
-        return ""
-    
-    # Remove any non-word characters except spaces and hyphens
-    text = re.sub(r'[^\w\s\-]', '', text)
-    
-    # Normalize whitespace
-    text = ' '.join(text.split())
-    
-    return text.strip()
-
-def validate_language_code(code: str) -> bool:
-    """Validate language code."""
-    return code in ['tl', 'ceb']
-
-def validate_pos_code(code: str) -> bool:
-    """Validate part of speech code."""
-    valid_codes = ['n', 'v', 'adj', 'adv', 'pron', 'prep', 'conj', 'intj', 'det', 'affix']
-    return code in valid_codes
-
-def validate_relation_type(rel_type: str) -> bool:
-    """Validate relation type."""
-    valid_types = ['synonym', 'antonym', 'variant', 'derived_from', 'component_of', 'related', 'cognate']
-    return rel_type in valid_types
-
-def validate_affix_type(affix_type: str) -> bool:
-    """Validate affix type."""
-    valid_types = ['prefix', 'infix', 'suffix', 'circumfix', 'reduplication', 'compound']
-    return affix_type in valid_types
-
-def validate_baybayin_text(text: str) -> bool:
-    """Validate Baybayin text."""
-    if not text:
-        return False
-    
-    # Check if text contains only valid Baybayin characters
-    baybayin_pattern = r'^[\u1700-\u171F\s]*$'
-    return bool(re.match(baybayin_pattern, text))
-
-def validate_sources(sources: str) -> bool:
-    """Validate source references."""
-    if not sources:
-        return False
-    
-    # Check if sources are in valid format
-    valid_sources = ['kwf', 'upd', 'diksiyonaryo', 'tagalog.com']
-    source_list = [s.strip().lower() for s in sources.split(',')]
-    return all(s in valid_sources for s in source_list)
-
-def check_request_origin():
-    """Check if request origin is allowed."""
-    origin = request.headers.get('Origin')
-    if not origin:
-        return True
-    
-    allowed_origins = current_app.config.get('ALLOWED_ORIGINS', [])
-    return origin in allowed_origins
-
-def check_api_key():
-    """Check if API key is valid."""
-    api_key = request.headers.get('X-API-Key')
-    if not api_key:
-        return False
-    
-    valid_keys = current_app.config.get('API_KEYS', [])
-    return api_key in valid_keys 
+    ) 

@@ -23,11 +23,10 @@ import threading
 import time
 import random
 from tenacity import retry, stop_after_attempt, wait_exponential
-import structlog
 
 load_dotenv()
 
-logger = structlog.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 # Initialize cache
 cache = Cache(config={
@@ -129,34 +128,54 @@ def apply_jitter(expiry: int) -> int:
     jitter = random.uniform(-CacheConfig.CACHE_JITTER, CacheConfig.CACHE_JITTER)
     return int(expiry * (1 + jitter))
 
-def init_cache():
-    """Initialize Redis cache client."""
+@retry(stop=stop_after_attempt(CacheConfig.MAX_RETRY_ATTEMPTS), 
+       wait=wait_exponential(multiplier=CacheConfig.RETRY_DELAY))
+def init_cache(redis_url: Optional[str] = None) -> Optional[redis.Redis]:
+    """Initialize Redis client with enhanced error handling and connection pooling."""
     global redis_client
-    try:
-        redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
-        
-        # Normalize the URL for Windows
-        if 'redis:6379' in redis_url:
-            redis_url = 'redis://localhost:6379/0'
-            
-        logger.info(f"Connecting to Redis cache at {redis_url}")
+    if redis_client is not None:
+        return redis_client
 
-        redis_client = redis.from_url(
+    try:
+        # Normalize Redis URL for Windows compatibility
+        if redis_url and 'redis:6379' in redis_url:
+            redis_url = 'redis://localhost:6379/0'
+            logger.info(f"Converted Redis URL to {redis_url} for Windows compatibility")
+
+        if redis_url:
+            connection_pool = redis.ConnectionPool.from_url(
                 redis_url,
+                max_connections=10,
                 socket_timeout=5,
                 socket_connect_timeout=5,
-            retry_on_timeout=True,
-            health_check_interval=30,
-            decode_responses=True
+                retry_on_timeout=True
+            )
+        else:
+            connection_pool = redis.ConnectionPool(
+                host=os.getenv('REDIS_HOST', 'localhost'),
+                port=int(os.getenv('REDIS_PORT', 6379)),
+                password=os.getenv('REDIS_PASSWORD', ''),
+                decode_responses=False,  # Keep as bytes for pickle compatibility
+                max_connections=10,
+                socket_timeout=5,
+                socket_connect_timeout=5,
+                retry_on_timeout=True
             )
         
-        # Test connection
-        redis_client.ping()
-        logger.info("Successfully connected to Redis cache")
-        return True
+        redis_client = redis.Redis(connection_pool=connection_pool)
+        redis_client.ping()  # Test connection
+        logger.info("Redis cache initialized successfully")
+        
+        return redis_client
+        
+    except (redis.ConnectionError, redis.TimeoutError) as e:
+        logger.warning(f"Redis connection failed: {str(e)}. Using in-memory cache only.")
+        redis_client = None
     except Exception as e:
-        logger.error(f"Failed to connect to Redis cache: {e}")
-        return False
+        logger.error(f"Unexpected Redis error: {str(e)}")
+        redis_client = None
+
+    return None
 
 def warm_up_cache():
     """Pre-warm cache with frequently accessed data."""
@@ -304,26 +323,23 @@ def add_to_cache(key: str, data: Any, expiry: int = CacheConfig.DEFAULT_EXPIRY) 
         CACHE_ERRORS.labels(cache_type='memory', error_type='add').inc()
         return False
 
-def generate_cache_key(prefix: str, args: tuple, kwargs: dict) -> str:
-    """Generate cache key from function arguments."""
-    # Convert args and kwargs to strings
-    args_str = [str(arg) for arg in args]
-    kwargs_str = [f"{k}:{v}" for k, v in sorted(kwargs.items())]
+def generate_cache_key(prefix: str, *args, **kwargs) -> str:
+    """Generate a consistent and safe cache key."""
+    # Create a string representation of args and kwargs
+    key_parts = [prefix]
+    if args:
+        key_parts.append(str(args))
+    if kwargs:
+        # Sort kwargs for consistency
+        sorted_kwargs = sorted(kwargs.items())
+        key_parts.append(str(sorted_kwargs))
     
-    # Create key components
-    components = [prefix] + args_str + kwargs_str
+    # Join parts and create hash for long keys
+    key = ":".join(key_parts)
+    if len(key) > CacheConfig.MAX_KEY_LENGTH:
+        key = hashlib.sha256(key.encode()).hexdigest()
     
-    # Add request-specific components if available
-    if request:
-        components.extend([
-            request.path,
-            str(request.args),
-            request.headers.get('Accept-Language', '')
-        ])
-    
-    # Join and hash components
-    key_string = ":".join(components)
-    return f"{prefix}:{hashlib.md5(key_string.encode()).hexdigest()}"
+    return f"{CacheConfig.CACHE_PREFIX}{key}"
 
 def should_use_redis() -> bool:
     """Check if Redis should be used based on configuration and availability."""
@@ -361,35 +377,79 @@ def deserialize_data(data: bytes) -> Any:
         CACHE_ERRORS.labels(cache_type='serialization', error_type='deserialize').inc()
         raise CacheSerializationError(f"Failed to deserialize data: {str(e)}")
 
-def multi_level_cache(prefix: str, ttl: Optional[int] = None):
-    """
-    Multi-level cache decorator that uses both memory and Redis caching.
-    """
-    def decorator(func: Callable):
+def multi_level_cache(ttl: int = CacheConfig.DEFAULT_EXPIRY, prefix: str = ""):
+    """Enhanced multi-level cache decorator with metrics and error handling."""
+    def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            # Skip caching in debug mode or if Redis is disabled
-            if current_app.debug or not redis_client:
-                return func(*args, **kwargs)
-            
-            # Generate cache key
-            cache_key = generate_cache_key(prefix, args, kwargs)
-            
-            # Try to get from cache
-            cached_value = cache.get(cache_key)
-            if cached_value is not None:
-                logger.debug("Cache hit", key=cache_key)
-                return cached_value
-            
-            # Execute function
+            cache_key = generate_cache_key(prefix or func.__name__, *args, **kwargs)
+
+            with CACHE_OPERATION_DURATION.time():
+                try:
+                    # Try memory cache first (fastest)
+                    cache_level = 'default'
+                    if ttl <= CacheConfig.SHORT_EXPIRY:
+                        cache_level = 'short'
+                    elif ttl >= CacheConfig.LONG_EXPIRY:
+                        cache_level = 'long'
+                    
+                    if cache_key in memory_cache[cache_level]:
+                        CACHE_HITS.labels(cache_type='memory').inc()
+                        return memory_cache[cache_level][cache_key]
+                    
+                    # Try Redis if available and circuit breaker is closed
+                    if should_use_redis():
+                        try:
+                            cached_data = redis_client.get(cache_key)
+                            if cached_data:
+                                # Increment access count for promotion to hot cache
+                                redis_client.hincrby(f"{cache_key}:meta", "access_count", 1)
+                                
+                                CACHE_HITS.labels(cache_type='redis').inc()
+                                circuit_breaker.record_success()
+                                
+                                result = deserialize_data(cached_data)
+                                # Also add to memory cache
+                                memory_cache[cache_level][cache_key] = result
+                                return result
+                                
+                        except Exception as e:
+                            logger.warning(f"Redis cache error: {str(e)}")
+                            CACHE_ERRORS.labels(cache_type='redis', error_type='read').inc()
+                            circuit_breaker.record_failure()
+
+                    # Cache miss - execute function
+                    CACHE_MISSES.labels(cache_type='all').inc()
                     result = func(*args, **kwargs)
 
-            # Store in cache
-            if result is not None:
-                cache.set(cache_key, result, timeout=ttl)
-                logger.debug("Cache set", key=cache_key)
+                    # Store in both caches
+                    memory_cache[cache_level][cache_key] = result
+                    
+                    if should_use_redis():
+                        try:
+                            serialized_data = serialize_data(result)
+                            redis_client.setex(
+                                cache_key,
+                                apply_jitter(ttl),  # Add jitter to prevent thundering herd
+                                serialized_data
+                            )
+                            # Initialize metadata
+                            redis_client.hset(f"{cache_key}:meta", mapping={"access_count": 1})
+                            circuit_breaker.record_success()
+                        except Exception as e:
+                            logger.warning(f"Redis cache write error: {str(e)}")
+                            CACHE_ERRORS.labels(cache_type='redis', error_type='write').inc()
+                            circuit_breaker.record_failure()
             
                     return result
+
+                except Exception as e:
+                    logger.error(f"Cache error in {func.__name__}: {str(e)}")
+                    CACHE_ERRORS.labels(cache_type='general', error_type='unknown').inc()
+                    return func(*args, **kwargs)
+
+        # Preserve the original endpoint name
+        wrapper.__name__ = func.__name__
         return wrapper
     return decorator
 
@@ -464,9 +524,43 @@ def cache_response(expiry: int = CacheConfig.DEFAULT_EXPIRY):
         return wrapper
     return decorator
 
-def invalidate_cache_prefix(prefix: str) -> bool:
-    """Invalidate all cache entries with given prefix."""
-    return cache.delete_pattern(f"{prefix}:*")
+def invalidate_cache_prefix(prefix: str):
+    """Invalidate all cache entries with the given prefix."""
+    if not should_use_redis():
+        return
+        
+    try:
+        pattern = f"{CacheConfig.CACHE_PREFIX}{prefix}*"
+        keys_to_delete = []
+        
+        # Find all keys with the prefix
+        for key in redis_client.scan_iter(match=pattern):
+            keys_to_delete.append(key)
+            # Also delete any metadata keys
+            meta_key = f"{key.decode('utf-8') if isinstance(key, bytes) else key}:meta"
+            keys_to_delete.append(meta_key)
+            
+        # Delete the keys in batches
+        if keys_to_delete:
+            for i in range(0, len(keys_to_delete), 100):
+                batch = keys_to_delete[i:i+100]
+                if batch:
+                    redis_client.delete(*batch)
+                    
+        logger.info(f"Invalidated {len(keys_to_delete)//2} cache entries with prefix {prefix}")
+        
+        # Also clear memory cache entries with the same prefix
+        for cache_type in memory_cache:
+            keys_to_delete = [k for k in memory_cache[cache_type] if k.startswith(f"{CacheConfig.CACHE_PREFIX}{prefix}")]
+            for k in keys_to_delete:
+                del memory_cache[cache_type][k]
+                
+    except Exception as e:
+        logger.error(f"Failed to invalidate cache with prefix {prefix}: {str(e)}")
+        CACHE_ERRORS.labels(cache_type='redis', error_type='invalidate').inc()
+
+# Initialize Redis on module import
+init_cache()
 
 def get_cache_stats() -> Dict[str, Any]:
     """Get comprehensive cache statistics and metrics."""
@@ -530,6 +624,3 @@ def get_cache_stats() -> Dict[str, Any]:
             logger.warning(f"Failed to get Redis info: {str(e)}")
     
     return stats
-
-# Initialize cache on module import
-init_cache()
