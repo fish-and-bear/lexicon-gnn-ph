@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "rules": {
+    "editor.defaultFormatter": "auto",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "editor.trimTrailingWhitespace": true,
+    "editor.rulers": [100],
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "editor.wordWrap": "off",
+    "eslint.enable": true,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.formatting.provider": "black"
+  },
+  "languageConfigs": {
+    "typescript": ".cursorrc.typescript.json",
+    "typescriptreact": ".cursorrc.typescript.json",
+    "javascript": ".cursorrc.typescript.json",
+    "javascriptreact": ".cursorrc.typescript.json",
+    "python": ".cursorrc.python.json"
+  }
+} 

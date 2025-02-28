@@ -333,7 +333,15 @@ class PaginationSchema(Schema):
     page = fields.Int(validate=validate.Range(min=1), default=1)
     per_page = fields.Int(validate=validate.Range(min=1, max=100), default=20)
     
+class WordDetailSchema(Schema):
+    include_definitions = fields.Boolean(missing=True)
+    include_relations = fields.Boolean(missing=True)
+    include_etymology = fields.Boolean(missing=True)
+    include_metadata = fields.Boolean(missing=True)
+
 @bp.route("/api/v2/words/<path:word>", methods=["GET"])
+@validate_query_params(WordDetailSchema)
+@multi_level_cache
 def get_word(word, **params):
     """Get detailed information about a specific word."""
     try:

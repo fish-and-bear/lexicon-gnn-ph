@@ -1,0 +1,178 @@
+2025-02-28 18:34:08,919 [INFO] backend.database - [2m2025-02-28T10:34:08.919003Z[0m [[32m[1minfo     [0m] [1mStarting database initialization[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,872 [INFO] backend.database - [2m2025-02-28T10:34:10.872620Z[0m [[32m[1minfo     [0m] [1mDatabase connection pool initialized[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,877 [DEBUG] backend.database - [2m2025-02-28T10:34:10.877452Z[0m [[32m[1mdebug    [0m] [1mSetting up database extensions[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,882 [INFO] backend.database - [2m2025-02-28T10:34:10.882603Z[0m [[32m[1minfo     [0m] [1mDatabase extensions setup completed[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,884 [DEBUG] backend.database - [2m2025-02-28T10:34:10.884540Z[0m [[32m[1mdebug    [0m] [1mCreating or updating tables   [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,886 [DEBUG] backend.database - [2m2025-02-28T10:34:10.886205Z[0m [[32m[1mdebug    [0m] [1mCreating or updating database tables[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,899 [INFO] backend.database - [2m2025-02-28T10:34:10.899255Z[0m [[32m[1minfo     [0m] [1mDatabase tables created/updated successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,901 [DEBUG] backend.database - [2m2025-02-28T10:34:10.901181Z[0m [[32m[1mdebug    [0m] [1mVerifying database setup      [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,902 [DEBUG] backend.database - [2m2025-02-28T10:34:10.902522Z[0m [[32m[1mdebug    [0m] [1mStarting database verification[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,935 [DEBUG] backend.database - [2m2025-02-28T10:34:10.935398Z[0m [[32m[1mdebug    [0m] [1mFound tables in database      [0m [[0m[1m[34mbackend.database[0m][0m [36mtables[0m=[35m['words', 'definitions', 'parts_of_speech', 'relations', 'etymologies', 'definition_relations', 'affixations', 'pg_stat_statements_info', 'pg_stat_statements'][0m
+2025-02-28 18:34:10,943 [DEBUG] backend.database - [2m2025-02-28T10:34:10.943314Z[0m [[32m[1mdebug    [0m] [1mFound extensions in database  [0m [[0m[1m[34mbackend.database[0m][0m [36mextensions[0m=[35m['plpgsql', 'unaccent', 'pg_trgm', 'btree_gin', 'fuzzystrmatch', 'dict_xsyn', 'pg_stat_statements'][0m
+2025-02-28 18:34:10,946 [DEBUG] backend.database - [2m2025-02-28T10:34:10.946091Z[0m [[32m[1mdebug    [0m] [1mBasic query test successful   [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,947 [INFO] backend.database - [2m2025-02-28T10:34:10.947572Z[0m [[32m[1minfo     [0m] [1mDatabase verification completed successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:10,949 [INFO] backend.database - [2m2025-02-28T10:34:10.948906Z[0m [[32m[1minfo     [0m] [1mDatabase initialization completed successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:14,002 [WARNING] backend.caching - Redis connection failed: Error 11001 connecting to redis:6379. getaddrinfo failed.
+2025-02-28 18:34:25,344 [DEBUG] backend.app - {
+  "log_level": "DEBUG",
+  "handlers": [
+    "console",
+    "file",
+    "json"
+  ],
+  "log_dir": "C:\\fil-relex\\logs",
+  "event": "Logging system initialized",
+  "logger": "backend.app",
+  "level": "debug",
+  "timestamp": "2025-02-28T10:34:25.344462Z"
+}
+2025-02-28 18:34:25,357 [INFO] backend.app - {
+  "event": "Starting Flask application initialization",
+  "logger": "backend.app",
+  "level": "info",
+  "timestamp": "2025-02-28T10:34:25.356816Z"
+}
+2025-02-28 18:34:25,373 [DEBUG] backend.app - {
+  "event": "Loading default configuration",
+  "logger": "backend.app",
+  "level": "debug",
+  "timestamp": "2025-02-28T10:34:25.372743Z"
+}
+2025-02-28 18:34:25,395 [DEBUG] backend.app - {
+  "database_url": "postgresql://postgres:postgres@localhost:5432/fil_dict_db",
+  "redis_url": "redis://:redis@redis:6379/0",
+  "event": "Configuration loaded",
+  "logger": "backend.app",
+  "level": "debug",
+  "timestamp": "2025-02-28T10:34:25.395447Z"
+}
+2025-02-28 18:34:25,493 [INFO] backend.app - {
+  "event": "Initializing database...",
+  "logger": "backend.app",
+  "level": "info",
+  "timestamp": "2025-02-28T10:34:25.492828Z"
+}
+2025-02-28 18:34:25,498 [INFO] backend.database - [2m2025-02-28T10:34:25.497942Z[0m [[32m[1minfo     [0m] [1mStarting database initialization[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,921 [DEBUG] backend.database - [2m2025-02-28T10:34:25.921750Z[0m [[32m[1mdebug    [0m] [1mSetting up database extensions[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,925 [INFO] backend.database - [2m2025-02-28T10:34:25.925370Z[0m [[32m[1minfo     [0m] [1mDatabase extensions setup completed[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,927 [DEBUG] backend.database - [2m2025-02-28T10:34:25.926948Z[0m [[32m[1mdebug    [0m] [1mCreating or updating tables   [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,928 [DEBUG] backend.database - [2m2025-02-28T10:34:25.928768Z[0m [[32m[1mdebug    [0m] [1mCreating or updating database tables[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,937 [INFO] backend.database - [2m2025-02-28T10:34:25.936990Z[0m [[32m[1minfo     [0m] [1mDatabase tables created/updated successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,938 [DEBUG] backend.database - [2m2025-02-28T10:34:25.938795Z[0m [[32m[1mdebug    [0m] [1mVerifying database setup      [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,940 [DEBUG] backend.database - [2m2025-02-28T10:34:25.940556Z[0m [[32m[1mdebug    [0m] [1mStarting database verification[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,947 [DEBUG] backend.database - [2m2025-02-28T10:34:25.947044Z[0m [[32m[1mdebug    [0m] [1mFound tables in database      [0m [[0m[1m[34mbackend.database[0m][0m [36mtables[0m=[35m['words', 'definitions', 'parts_of_speech', 'relations', 'etymologies', 'definition_relations', 'affixations', 'pg_stat_statements_info', 'pg_stat_statements'][0m
+2025-02-28 18:34:25,951 [DEBUG] backend.database - [2m2025-02-28T10:34:25.951305Z[0m [[32m[1mdebug    [0m] [1mFound extensions in database  [0m [[0m[1m[34mbackend.database[0m][0m [36mextensions[0m=[35m['plpgsql', 'unaccent', 'pg_trgm', 'btree_gin', 'fuzzystrmatch', 'dict_xsyn', 'pg_stat_statements'][0m
+2025-02-28 18:34:25,953 [DEBUG] backend.database - [2m2025-02-28T10:34:25.953572Z[0m [[32m[1mdebug    [0m] [1mBasic query test successful   [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,955 [INFO] backend.database - [2m2025-02-28T10:34:25.955707Z[0m [[32m[1minfo     [0m] [1mDatabase verification completed successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,958 [INFO] backend.database - [2m2025-02-28T10:34:25.957344Z[0m [[32m[1minfo     [0m] [1mDatabase initialization completed successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:34:25,966 [INFO] backend.app - {
+  "event": "Database initialized successfully",
+  "logger": "backend.app",
+  "level": "info",
+  "timestamp": "2025-02-28T10:34:25.966540Z"
+}
+2025-02-28 18:34:25,969 [INFO] backend.app - {
+  "event": "Redis cache disabled by configuration",
+  "logger": "backend.app",
+  "level": "info",
+  "timestamp": "2025-02-28T10:34:25.969289Z"
+}
+2025-02-28 18:34:28,689 [WARNING] backend.routes - {
+  "event": "Failed to connect to Redis: Error 11001 connecting to redis:6379. getaddrinfo failed.. Rate limiting will be disabled.",
+  "logger": "backend.routes",
+  "level": "warning",
+  "timestamp": "2025-02-28T10:34:28.689047Z"
+}
+2025-02-28 18:34:30,251 [INFO] werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://192.168.18.23:10000
+2025-02-28 18:34:30,254 [INFO] werkzeug - [33mPress CTRL+C to quit[0m
+2025-02-28 18:34:30,260 [INFO] werkzeug -  * Restarting with stat
+2025-02-28 18:34:59,965 [INFO] backend.database - [2m2025-02-28T10:34:59.965162Z[0m [[32m[1minfo     [0m] [1mStarting database initialization[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,337 [INFO] backend.database - [2m2025-02-28T10:35:01.337247Z[0m [[32m[1minfo     [0m] [1mDatabase connection pool initialized[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,341 [DEBUG] backend.database - [2m2025-02-28T10:35:01.340801Z[0m [[32m[1mdebug    [0m] [1mSetting up database extensions[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,345 [INFO] backend.database - [2m2025-02-28T10:35:01.344950Z[0m [[32m[1minfo     [0m] [1mDatabase extensions setup completed[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,346 [DEBUG] backend.database - [2m2025-02-28T10:35:01.346080Z[0m [[32m[1mdebug    [0m] [1mCreating or updating tables   [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,347 [DEBUG] backend.database - [2m2025-02-28T10:35:01.347173Z[0m [[32m[1mdebug    [0m] [1mCreating or updating database tables[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,358 [INFO] backend.database - [2m2025-02-28T10:35:01.357985Z[0m [[32m[1minfo     [0m] [1mDatabase tables created/updated successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,359 [DEBUG] backend.database - [2m2025-02-28T10:35:01.359246Z[0m [[32m[1mdebug    [0m] [1mVerifying database setup      [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,360 [DEBUG] backend.database - [2m2025-02-28T10:35:01.360256Z[0m [[32m[1mdebug    [0m] [1mStarting database verification[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,387 [DEBUG] backend.database - [2m2025-02-28T10:35:01.387423Z[0m [[32m[1mdebug    [0m] [1mFound tables in database      [0m [[0m[1m[34mbackend.database[0m][0m [36mtables[0m=[35m['words', 'definitions', 'parts_of_speech', 'relations', 'etymologies', 'definition_relations', 'affixations', 'pg_stat_statements_info', 'pg_stat_statements'][0m
+2025-02-28 18:35:01,395 [DEBUG] backend.database - [2m2025-02-28T10:35:01.394864Z[0m [[32m[1mdebug    [0m] [1mFound extensions in database  [0m [[0m[1m[34mbackend.database[0m][0m [36mextensions[0m=[35m['plpgsql', 'unaccent', 'pg_trgm', 'btree_gin', 'fuzzystrmatch', 'dict_xsyn', 'pg_stat_statements'][0m
+2025-02-28 18:35:01,396 [DEBUG] backend.database - [2m2025-02-28T10:35:01.396679Z[0m [[32m[1mdebug    [0m] [1mBasic query test successful   [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,397 [INFO] backend.database - [2m2025-02-28T10:35:01.397793Z[0m [[32m[1minfo     [0m] [1mDatabase verification completed successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:01,399 [INFO] backend.database - [2m2025-02-28T10:35:01.399014Z[0m [[32m[1minfo     [0m] [1mDatabase initialization completed successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:04,496 [WARNING] backend.caching - Redis connection failed: Error 11001 connecting to redis:6379. getaddrinfo failed.
+2025-02-28 18:35:08,763 [DEBUG] backend.app - {
+  "log_level": "DEBUG",
+  "handlers": [
+    "console",
+    "file",
+    "json"
+  ],
+  "log_dir": "C:\\fil-relex\\logs",
+  "event": "Logging system initialized",
+  "logger": "backend.app",
+  "level": "debug",
+  "timestamp": "2025-02-28T10:35:08.763468Z"
+}
+2025-02-28 18:35:08,771 [INFO] backend.app - {
+  "event": "Starting Flask application initialization",
+  "logger": "backend.app",
+  "level": "info",
+  "timestamp": "2025-02-28T10:35:08.771272Z"
+}
+2025-02-28 18:35:08,779 [DEBUG] backend.app - {
+  "event": "Loading default configuration",
+  "logger": "backend.app",
+  "level": "debug",
+  "timestamp": "2025-02-28T10:35:08.778978Z"
+}
+2025-02-28 18:35:08,787 [DEBUG] backend.app - {
+  "database_url": "postgresql://postgres:postgres@localhost:5432/fil_dict_db",
+  "redis_url": "redis://:redis@redis:6379/0",
+  "event": "Configuration loaded",
+  "logger": "backend.app",
+  "level": "debug",
+  "timestamp": "2025-02-28T10:35:08.787191Z"
+}
+2025-02-28 18:35:08,841 [INFO] backend.app - {
+  "event": "Initializing database...",
+  "logger": "backend.app",
+  "level": "info",
+  "timestamp": "2025-02-28T10:35:08.841396Z"
+}
+2025-02-28 18:35:08,843 [INFO] backend.database - [2m2025-02-28T10:35:08.843521Z[0m [[32m[1minfo     [0m] [1mStarting database initialization[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,030 [DEBUG] backend.database - [2m2025-02-28T10:35:09.030331Z[0m [[32m[1mdebug    [0m] [1mSetting up database extensions[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,034 [INFO] backend.database - [2m2025-02-28T10:35:09.034252Z[0m [[32m[1minfo     [0m] [1mDatabase extensions setup completed[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,036 [DEBUG] backend.database - [2m2025-02-28T10:35:09.036146Z[0m [[32m[1mdebug    [0m] [1mCreating or updating tables   [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,038 [DEBUG] backend.database - [2m2025-02-28T10:35:09.037867Z[0m [[32m[1mdebug    [0m] [1mCreating or updating database tables[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,045 [INFO] backend.database - [2m2025-02-28T10:35:09.045666Z[0m [[32m[1minfo     [0m] [1mDatabase tables created/updated successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,047 [DEBUG] backend.database - [2m2025-02-28T10:35:09.047747Z[0m [[32m[1mdebug    [0m] [1mVerifying database setup      [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,051 [DEBUG] backend.database - [2m2025-02-28T10:35:09.051323Z[0m [[32m[1mdebug    [0m] [1mStarting database verification[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,057 [DEBUG] backend.database - [2m2025-02-28T10:35:09.057485Z[0m [[32m[1mdebug    [0m] [1mFound tables in database      [0m [[0m[1m[34mbackend.database[0m][0m [36mtables[0m=[35m['words', 'definitions', 'parts_of_speech', 'relations', 'etymologies', 'definition_relations', 'affixations', 'pg_stat_statements_info', 'pg_stat_statements'][0m
+2025-02-28 18:35:09,060 [DEBUG] backend.database - [2m2025-02-28T10:35:09.060652Z[0m [[32m[1mdebug    [0m] [1mFound extensions in database  [0m [[0m[1m[34mbackend.database[0m][0m [36mextensions[0m=[35m['plpgsql', 'unaccent', 'pg_trgm', 'btree_gin', 'fuzzystrmatch', 'dict_xsyn', 'pg_stat_statements'][0m
+2025-02-28 18:35:09,063 [DEBUG] backend.database - [2m2025-02-28T10:35:09.063650Z[0m [[32m[1mdebug    [0m] [1mBasic query test successful   [0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,066 [INFO] backend.database - [2m2025-02-28T10:35:09.066063Z[0m [[32m[1minfo     [0m] [1mDatabase verification completed successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,068 [INFO] backend.database - [2m2025-02-28T10:35:09.067913Z[0m [[32m[1minfo     [0m] [1mDatabase initialization completed successfully[0m [[0m[1m[34mbackend.database[0m][0m
+2025-02-28 18:35:09,071 [INFO] backend.app - {
+  "event": "Database initialized successfully",
+  "logger": "backend.app",
+  "level": "info",
+  "timestamp": "2025-02-28T10:35:09.070871Z"
+}
+2025-02-28 18:35:09,072 [INFO] backend.app - {
+  "event": "Redis cache disabled by configuration",
+  "logger": "backend.app",
+  "level": "info",
+  "timestamp": "2025-02-28T10:35:09.072660Z"
+}
+2025-02-28 18:35:11,783 [WARNING] backend.routes - {
+  "event": "Failed to connect to Redis: Error 11001 connecting to redis:6379. getaddrinfo failed.. Rate limiting will be disabled.",
+  "logger": "backend.routes",
+  "level": "warning",
+  "timestamp": "2025-02-28T10:35:11.783091Z"
+}
+2025-02-28 18:35:12,350 [WARNING] werkzeug -  * Debugger is active!
+2025-02-28 18:35:12,410 [INFO] werkzeug -  * Debugger PIN: 995-784-250
