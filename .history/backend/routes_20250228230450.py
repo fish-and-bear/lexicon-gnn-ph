@@ -1082,15 +1082,12 @@ def get_etymology_tree(word, **params):
         is_allowed, remaining = check_rate_limit(f"rate_limit:{request.remote_addr}:etymology_tree")
         if not is_allowed:
             return rate_limit_exceeded_response()
-            
         params = EtymologyTreeSchema().load(request.args)
         word_entry = Word.query.options(
             joinedload(Word.etymologies)
         ).filter(Word.normalized_lemma == normalize_word(word)).first()
-        
         if not word_entry:
             return error_response("Word not found", 404)
-            
         def build_etymology_tree(word_obj, visited=None, current_depth=0):
             if visited is None:
                 visited = set()

@@ -382,14 +382,14 @@ def multi_level_cache(prefix: str, ttl: Optional[int] = None):
                 return cached_value
             
             # Execute function
-            result = func(*args, **kwargs)
+                    result = func(*args, **kwargs)
 
             # Store in cache
             if result is not None:
                 cache.set(cache_key, result, timeout=ttl)
                 logger.debug("Cache set", key=cache_key)
             
-            return result
+                    return result
         return wrapper
     return decorator
 
