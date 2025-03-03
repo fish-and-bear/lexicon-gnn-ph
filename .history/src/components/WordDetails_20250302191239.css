@@ -1,0 +1,333 @@
+/* Word Details Component Styling */
+.word-details-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  resize: horizontal;
+  overflow: auto;
+  min-width: 300px;
+  max-width: 800px;
+  transition: width 0.1s ease;
+  background-color: white;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.word-details {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+/* Word Header */
+.word-header {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, 
+    rgba(252, 163, 17, 0.1) 0%, 
+    rgba(252, 163, 17, 0.02) 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.word-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1d3557;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.word-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.language {
+  background-color: rgba(29, 53, 87, 0.1);
+  color: #1d3557;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.baybayin-badge {
+  background-color: rgba(230, 119, 0, 0.06);
+  color: #2a9d8f;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(230, 119, 0, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+}
+
+.baybayin-badge:hover {
+  background-color: rgba(230, 119, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.preferred-spelling {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #2e7d32;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(76, 175, 80, 0.15);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.tag {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #6c757d;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+/* Pronunciation Section */
+.pronunciation-section {
+  padding: 1rem 1.5rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pronunciation-section h3 {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #1d3557;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pronunciation-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.pronunciation-text {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #1d3557;
+}
+
+.ipa {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: #6c757d;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.play-audio {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #fca311;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.play-audio:hover {
+  transform: scale(1.1);
+  background-color: #1d3557;
+}
+
+/* Tabs */
+.word-content-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+}
+
+.tab-item {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #6c757d;
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab-item:hover {
+  color: #1d3557;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.tab-item.active {
+  color: #fca311;
+  font-weight: 600;
+}
+
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #fca311;
+}
+
+.tab-icon {
+  font-size: 1.1rem;
+}
+
+/* Content */
+.word-content {
+  padding: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Definitions */
+.definitions-section {
+  margin-bottom: 2rem;
+}
+
+.definitions-section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.definitions-section-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1d3557;
+  font-weight: 600;
+}
+
+.definition-count {
+  background-color: #fca311;
+  color: white;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.pos-group {
+  margin-bottom: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pos-group-header {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #1d3557;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pos-count {
+  background-color: white;
+  color: #1d3557;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.definition-cards-container {
+  padding: 1rem;
+}
+
+.definition-card {
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.definition-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.definition-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background-color: #fca311;
+  opacity: 0.5;
+  border-radius: 3px 0 0 3px;
+}
+
+.definition-number {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: #fca311;
+  color: white;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+}
+
+.definition-content {
+  padding-right: 2rem;
+}
+
+.definition-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #1d3557;
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.empty-state p {
+  color: #6c757d;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+} 

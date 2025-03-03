@@ -567,54 +567,6 @@
       ],
       "sample_data": [
         {
-          "id": 2957,
-          "word_id": 2260,
-          "definition_text": "iniinda",
-          "original_pos": "Pang-uri",
-          "standardized_pos_id": 3,
-          "examples": null,
-          "usage_notes": null,
-          "sources": "diksiyonaryo.ph",
-          "created_at": "2025-02-16 13:58:41.324401+08:00",
-          "updated_at": "2025-02-16 14:08:54.408025+08:00"
-        },
-        {
-          "id": 6313,
-          "word_id": 4813,
-          "definition_text": "makab\u00e1go2",
-          "original_pos": "Pang-uri",
-          "standardized_pos_id": 3,
-          "examples": null,
-          "usage_notes": null,
-          "sources": "diksiyonaryo.ph",
-          "created_at": "2025-02-16 13:58:46.446612+08:00",
-          "updated_at": "2025-02-16 14:08:54.408025+08:00"
-        },
-        {
-          "id": 6314,
-          "word_id": 4814,
-          "definition_text": "yam\u00f21",
-          "original_pos": "Pangngalan",
-          "standardized_pos_id": 1,
-          "examples": null,
-          "usage_notes": null,
-          "sources": "diksiyonaryo.ph",
-          "created_at": "2025-02-16 13:58:46.449337+08:00",
-          "updated_at": "2025-02-16 14:08:54.408025+08:00"
-        },
-        {
-          "id": 6315,
-          "word_id": 4815,
-          "definition_text": "sagw\u00e1n.",
-          "original_pos": "Pangngalan",
-          "standardized_pos_id": 1,
-          "examples": null,
-          "usage_notes": null,
-          "sources": "diksiyonaryo.ph",
-          "created_at": "2025-02-16 13:58:46.450863+08:00",
-          "updated_at": "2025-02-16 14:08:54.408025+08:00"
-        },
-        {
           "id": 6504,
           "word_id": 4938,
           "definition_text": "al\u00e1m.",
@@ -684,6 +636,54 @@
           "usage_notes": null,
           "sources": "diksiyonaryo.ph",
           "created_at": "2025-02-16 13:59:27.387817+08:00",
+          "updated_at": "2025-02-16 14:08:54.408025+08:00"
+        },
+        {
+          "id": 33401,
+          "word_id": 24532,
+          "definition_text": "gal\u00edng1",
+          "original_pos": "Pangngalan",
+          "standardized_pos_id": 1,
+          "examples": null,
+          "usage_notes": null,
+          "sources": "diksiyonaryo.ph",
+          "created_at": "2025-02-16 13:59:27.390117+08:00",
+          "updated_at": "2025-02-16 14:08:54.408025+08:00"
+        },
+        {
+          "id": 33532,
+          "word_id": 24637,
+          "definition_text": "nagbab\u00e1ga",
+          "original_pos": "Pang-uri",
+          "standardized_pos_id": 3,
+          "examples": null,
+          "usage_notes": null,
+          "sources": "diksiyonaryo.ph",
+          "created_at": "2025-02-16 13:59:27.614262+08:00",
+          "updated_at": "2025-02-16 14:08:54.408025+08:00"
+        },
+        {
+          "id": 71330,
+          "word_id": 52043,
+          "definition_text": "naguluhan.",
+          "original_pos": "Pang-uri",
+          "standardized_pos_id": 3,
+          "examples": null,
+          "usage_notes": null,
+          "sources": "diksiyonaryo.ph",
+          "created_at": "2025-02-16 14:00:25.347937+08:00",
+          "updated_at": "2025-02-16 14:08:54.408025+08:00"
+        },
+        {
+          "id": 72319,
+          "word_id": 52774,
+          "definition_text": "alul\u00f3d.",
+          "original_pos": "Pangngalan",
+          "standardized_pos_id": 1,
+          "examples": null,
+          "usage_notes": null,
+          "sources": "diksiyonaryo.ph",
+          "created_at": "2025-02-16 14:00:26.851876+08:00",
           "updated_at": "2025-02-16 14:08:54.408025+08:00"
         }
       ]

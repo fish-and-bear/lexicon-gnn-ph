@@ -1,0 +1,368 @@
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.error-message p {
+  margin-bottom: 10px;
+}
+
+.backend-instructions {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
+}
+
+.backend-instructions p {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.backend-instructions ol {
+  margin-left: 20px;
+  color: #333;
+}
+
+.backend-instructions code {
+  background-color: #e9ecef;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: monospace;
+  color: #d63384;
+}
+
+.reset-button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.reset-button:hover {
+  background-color: #1976d2;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.debug-button {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.debug-button:hover {
+  background-color: #f57c00;
+}
+
+.api-status {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.api-status.connected {
+  background-color: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #2e7d32;
+}
+
+.api-status.disconnected {
+  background-color: #ffebee;
+  border-color: #ef9a9a;
+  color: #c62828;
+}
+
+.api-status.checking {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+  color: #1565c0;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.error-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.retry-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.retry-button:hover {
+  background-color: #388e3c;
+}
+
+/* Word Card Styling */
+.word-details {
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.word-details h2 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 8px;
+  display: inline-block;
+}
+
+.word-details .language {
+  display: inline-block;
+  background-color: var(--accent-color-light);
+  color: var(--accent-color-dark);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  margin-left: 10px;
+}
+
+.word-details .pronunciation {
+  font-style: italic;
+  margin-bottom: 20px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.word-details .pronunciation .ipa {
+  color: var(--text-tertiary);
+  font-family: monospace;
+}
+
+.word-details .play-audio {
+  background-color: var(--accent-color-light);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.word-details .play-audio:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.word-details .etymology-section {
+  background-color: var(--bg-secondary);
+  border-left: 4px solid var(--accent-color);
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  border-radius: 0 8px 8px 0;
+}
+
+.word-details .etymology-section h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.word-details .etymology-section p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.definition-card {
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-left: 4px solid var(--accent-color);
+  transition: all 0.2s ease;
+}
+
+.definition-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.definition-card h3 {
+  font-size: 1.1rem;
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: var(--accent-color-dark);
+  font-weight: 600;
+  display: inline-block;
+  padding: 2px 10px;
+  background-color: var(--accent-color-light);
+  border-radius: 4px;
+}
+
+.definition-card .definition-text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.definition-card .examples,
+.definition-card .usage-notes {
+  margin-top: 12px;
+}
+
+.definition-card .examples h4,
+.definition-card .usage-notes h4 {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.definition-card .examples ul,
+.definition-card .usage-notes ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.definition-card .examples li,
+.definition-card .usage-notes li {
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.word-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 16px 0;
+}
+
+.clickable-word {
+  background-color: var(--accent-color-light);
+  color: var(--accent-color-dark);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.clickable-word:hover {
+  background-color: var(--accent-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Dark mode adjustments */
+.dark .word-details {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark .definition-card {
+  background-color: var(--bg-secondary-dark);
+}
+
+.dark .word-details .etymology-section {
+  background-color: var(--bg-secondary-dark);
+}
+
+/* CSS Variables for theming */
+:root {
+  --accent-color: #4a6fa5;
+  --accent-color-light: #e3f2fd;
+  --accent-color-dark: #1565c0;
+  --bg-card: #ffffff;
+  --bg-card-dark: #2d3748;
+  --bg-secondary: #f8f9fa;
+  --bg-secondary-dark: #3a4556;
+  --text-primary: #333333;
+  --text-secondary: #555555;
+  --text-tertiary: #777777;
+  --border-color: #e0e0e0;
+  --border-color-dark: #4a5568;
+}
+
+.dark {
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #909090;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .word-details {
+    padding: 16px;
+  }
+  
+  .word-details h2 {
+    font-size: 1.8rem;
+  }
+  
+  .definition-card {
+    padding: 12px;
+  }
+} 

@@ -1,0 +1,143 @@
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.error-message p {
+  margin-bottom: 10px;
+}
+
+.backend-instructions {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
+}
+
+.backend-instructions p {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.backend-instructions ol {
+  margin-left: 20px;
+  color: #333;
+}
+
+.backend-instructions code {
+  background-color: #e9ecef;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: monospace;
+  color: #d63384;
+}
+
+.reset-button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.reset-button:hover {
+  background-color: #1976d2;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.debug-button {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.debug-button:hover {
+  background-color: #f57c00;
+}
+
+.api-status {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.api-status.connected {
+  background-color: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #2e7d32;
+}
+
+.api-status.disconnected {
+  background-color: #ffebee;
+  border-color: #ef9a9a;
+  color: #c62828;
+}
+
+.api-status.checking {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+  color: #1565c0;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.error-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.retry-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.retry-button:hover {
+  background-color: #388e3c;
+} 
