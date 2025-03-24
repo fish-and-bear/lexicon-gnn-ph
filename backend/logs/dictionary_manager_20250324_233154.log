@@ -1,0 +1,5 @@
+2025-03-24 23:31:54,606 - INFO - Looking up word: kalimutan
+2025-03-24 23:31:54,639 - INFO - Normalized word: kalimutan
+2025-03-24 23:31:54,644 - INFO - Database connection test successful
+2025-03-24 23:31:54,656 - INFO - Word data fetched: True
+2025-03-24 23:31:54,656 - ERROR - Error during lookup: 'NoneType' object has no attribute 'split'

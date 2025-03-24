@@ -1,0 +1,26 @@
+2025-03-24 23:41:06,329 - INFO - Looking up word: Namespace(command='lookup', word='gusto', debug=False, format='rich')
+2025-03-24 23:41:06,329 - INFO - Word argument value: 'gusto'
+2025-03-24 23:41:06,360 - INFO - Normalized word: gusto
+2025-03-24 23:41:06,361 - INFO - Database connection test successful
+2025-03-24 23:41:06,371 - INFO - Word data fetched: True
+2025-03-24 23:41:06,371 - INFO - Beginning to unpack word data
+2025-03-24 23:41:06,372 - INFO - Successfully unpacked word data
+2025-03-24 23:41:06,372 - INFO - word_id: 19285, lemma: gustó, language_code: tl
+2025-03-24 23:41:06,372 - INFO - has_baybayin: True, baybayin_form: ᜄᜓᜐ᜔ᜆᜓ, romanized_form: gustu
+2025-03-24 23:41:06,372 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-24 23:41:06,372 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-24 23:41:06,372 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-24 23:41:06,372 - INFO - Building basic information tree
+2025-03-24 23:41:06,372 - INFO - Adding preferred spelling if available
+2025-03-24 23:41:06,373 - INFO - Adding Baybayin form if available
+2025-03-24 23:41:06,373 - INFO - Adding root word if available
+2025-03-24 23:41:06,373 - INFO - Gathering sources - starting
+2025-03-24 23:41:06,373 - INFO - Processing tags
+2025-03-24 23:41:06,373 - INFO - Processing source_info
+2025-03-24 23:41:06,373 - INFO - Processing def_sources
+2025-03-24 23:41:06,373 - INFO - def_sources content: ['diksiyonaryo.ph', 'kaikki.org (Tagalog)']
+2025-03-24 23:41:06,373 - INFO - Processing def_source: diksiyonaryo.ph, type: <class 'str'>
+2025-03-24 23:41:06,373 - INFO - Processing def_source: kaikki.org (Tagalog), type: <class 'str'>
+2025-03-24 23:41:06,373 - INFO - Processing ety_sources
+2025-03-24 23:41:06,373 - INFO - ety_sources content: ['diksiyonaryo.ph']
+2025-03-24 23:41:06,373 - INFO - Processing ety_source: diksiyonaryo.ph, type: <class 'str'>

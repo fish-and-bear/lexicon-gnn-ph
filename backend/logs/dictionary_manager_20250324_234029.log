@@ -1,0 +1,26 @@
+2025-03-24 23:40:29,506 - INFO - Looking up word: Namespace(command='lookup', word='tindi', debug=False, format='rich')
+2025-03-24 23:40:29,507 - INFO - Word argument value: 'tindi'
+2025-03-24 23:40:29,655 - INFO - Normalized word: tindi
+2025-03-24 23:40:29,656 - INFO - Database connection test successful
+2025-03-24 23:40:29,664 - INFO - Word data fetched: True
+2025-03-24 23:40:29,664 - INFO - Beginning to unpack word data
+2025-03-24 23:40:29,665 - INFO - Successfully unpacked word data
+2025-03-24 23:40:29,665 - INFO - word_id: 56887, lemma: tindí, language_code: tl
+2025-03-24 23:40:29,665 - INFO - has_baybayin: True, baybayin_form: ᜆᜒᜈ᜔ᜇᜒ, romanized_form: tindi
+2025-03-24 23:40:29,665 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-24 23:40:29,665 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-24 23:40:29,665 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-24 23:40:29,665 - INFO - Building basic information tree
+2025-03-24 23:40:29,666 - INFO - Adding preferred spelling if available
+2025-03-24 23:40:29,666 - INFO - Adding Baybayin form if available
+2025-03-24 23:40:29,666 - INFO - Adding root word if available
+2025-03-24 23:40:29,666 - INFO - Gathering sources - starting
+2025-03-24 23:40:29,666 - INFO - Processing tags
+2025-03-24 23:40:29,666 - INFO - Processing source_info
+2025-03-24 23:40:29,666 - INFO - Processing def_sources
+2025-03-24 23:40:29,666 - INFO - def_sources content: ['diksiyonaryo.ph', 'kaikki.org (Tagalog)']
+2025-03-24 23:40:29,666 - INFO - Processing def_source: diksiyonaryo.ph, type: <class 'str'>
+2025-03-24 23:40:29,667 - INFO - Processing def_source: kaikki.org (Tagalog), type: <class 'str'>
+2025-03-24 23:40:29,667 - INFO - Processing ety_sources
+2025-03-24 23:40:29,667 - INFO - ety_sources content: ['diksiyonaryo.ph']
+2025-03-24 23:40:29,667 - INFO - Processing ety_source: diksiyonaryo.ph, type: <class 'str'>

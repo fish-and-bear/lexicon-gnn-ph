@@ -1,0 +1,26 @@
+2025-03-24 23:39:22,442 - INFO - Looking up word: Namespace(command='lookup', word='limot', debug=False, format='rich')
+2025-03-24 23:39:22,443 - INFO - Word argument value: 'limot'
+2025-03-24 23:39:22,476 - INFO - Normalized word: limot
+2025-03-24 23:39:22,477 - INFO - Database connection test successful
+2025-03-24 23:39:22,487 - INFO - Word data fetched: True
+2025-03-24 23:39:22,488 - INFO - Beginning to unpack word data
+2025-03-24 23:39:22,488 - INFO - Successfully unpacked word data
+2025-03-24 23:39:22,488 - INFO - word_id: 31837, lemma: limót, language_code: tl
+2025-03-24 23:39:22,488 - INFO - has_baybayin: True, baybayin_form: ᜎᜒᜋᜓᜆ᜔, romanized_form: limut
+2025-03-24 23:39:22,488 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-24 23:39:22,489 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-24 23:39:22,489 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-24 23:39:22,489 - INFO - Building basic information tree
+2025-03-24 23:39:22,489 - INFO - Adding preferred spelling if available
+2025-03-24 23:39:22,489 - INFO - Adding Baybayin form if available
+2025-03-24 23:39:22,489 - INFO - Adding root word if available
+2025-03-24 23:39:22,489 - INFO - Gathering sources - starting
+2025-03-24 23:39:22,489 - INFO - Processing tags
+2025-03-24 23:39:22,489 - INFO - Processing source_info
+2025-03-24 23:39:22,490 - INFO - Processing def_sources
+2025-03-24 23:39:22,490 - INFO - def_sources content: ['diksiyonaryo.ph', 'kaikki.org (Tagalog)']
+2025-03-24 23:39:22,490 - INFO - Processing def_source: diksiyonaryo.ph, type: <class 'str'>
+2025-03-24 23:39:22,490 - INFO - Processing def_source: kaikki.org (Tagalog), type: <class 'str'>
+2025-03-24 23:39:22,490 - INFO - Processing ety_sources
+2025-03-24 23:39:22,490 - INFO - ety_sources content: ['diksiyonaryo.ph']
+2025-03-24 23:39:22,490 - INFO - Processing ety_source: diksiyonaryo.ph, type: <class 'str'>

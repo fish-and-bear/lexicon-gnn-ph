@@ -1,0 +1,128 @@
+2025-03-24 21:11:29,793 - INFO - Starting table creation/update process.
+2025-03-24 21:11:30,129 - INFO - Tables created or updated successfully.
+2025-03-24 21:11:30,133 - INFO - Processing Tagalog words from: ../data\tagalog-words.json
+2025-03-24 21:11:30,270 - INFO - Found 65328 dictionary-style entries
+2025-03-24 21:11:30,301 - INFO - Creating word entries...
+2025-03-24 21:12:25,781 - INFO - Created/found 65328 words
+2025-03-24 21:12:25,951 - ERROR - Error in get_or_create_word_id for '1': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:25,952 - ERROR - Error processing definition relations for 'abághan': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:26,032 - ERROR - Error in get_or_create_word_id for 'sampung': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:26,033 - ERROR - Error processing definition relations for 'abampere': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:26,266 - ERROR - Error in get_or_create_word_id for 'sampung': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:26,266 - ERROR - Error processing definition relations for 'abcoulomb': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:26,364 - ERROR - Error in get_or_create_word_id for 'impiyerno': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:26,365 - ERROR - Error processing definition relations for 'Abérno': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:28,668 - ERROR - Error in get_or_create_word_id for 'pagmamahal': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:28,669 - ERROR - Error processing definition relations for 'ágapé': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:28,677 - ERROR - Error in get_or_create_word_id for 'helatina': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:28,678 - ERROR - Error processing definition relations for 'ágar': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:28,987 - ERROR - Error in get_or_create_word_id for 'lagitik': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:28,988 - ERROR - Error processing definition relations for 'agit-ít': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:30,439 - ERROR - Error in get_or_create_word_id for 'kakayahan': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:30,439 - ERROR - Error processing definition relations for 'ákto': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:31,538 - ERROR - Error in get_or_create_word_id for 'pangalawang': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:31,539 - ERROR - Error processing definition relations for 'alférez': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:31,978 - ERROR - Error in get_or_create_word_id for 'kandila': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:31,979 - ERROR - Error processing definition relations for 'alimosór': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:32,155 - ERROR - Error in get_or_create_word_id for 'boses': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:32,157 - ERROR - Error processing definition relations for 'alingangâ': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:32,477 - ERROR - Error in get_or_create_word_id for 'bahaging': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:32,478 - ERROR - Error processing definition relations for 'alitít': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:32,928 - ERROR - Error in get_or_create_word_id for 'humigit': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:32,929 - ERROR - Error processing definition relations for 'almúd': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:33,073 - ERROR - Error in get_or_create_word_id for 'pag': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:33,074 - ERROR - Error processing definition relations for 'álos': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:34,181 - ERROR - Error in get_or_create_word_id for 'amiba': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:34,182 - ERROR - Error processing definition relations for 'amíbiká': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:35,510 - ERROR - Error in get_or_create_word_id for 'anghel': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:35,511 - ERROR - Error processing definition relations for 'anghél': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:35,520 - ERROR - Error in get_or_create_word_id for 'anghel': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:35,520 - ERROR - Error processing definition relations for 'anghéliká': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:35,882 - ERROR - Error in get_or_create_word_id for 'ikasandaang': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:35,882 - ERROR - Error processing definition relations for 'angstrom': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:36,005 - ERROR - Error in get_or_create_word_id for 'dalawang': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:36,006 - ERROR - Error processing definition relations for 'ánim': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:36,073 - ERROR - Error in get_or_create_word_id for 'anim': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:36,073 - ERROR - Error processing definition relations for 'ánimnapû': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:36,198 - ERROR - Error in get_or_create_word_id for 'dulong': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:36,198 - ERROR - Error processing definition relations for 'aniyók': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:37,311 - ERROR - Error in get_or_create_word_id for 'dalawa': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:37,311 - ERROR - Error processing definition relations for 'ápat': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:37,324 - ERROR - Error in get_or_create_word_id for 'apat': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:37,324 - ERROR - Error processing definition relations for 'ápatnapú': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:38,588 - ERROR - Error in get_or_create_word_id for 'gabí': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:38,588 - ERROR - Error processing definition relations for 'áraw': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:40,358 - ERROR - Error in get_or_create_word_id for 'sinturon': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:40,359 - ERROR - Error processing definition relations for 'asintós': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:40,729 - ERROR - Error in get_or_create_word_id for 'arkabus': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:40,730 - ERROR - Error processing definition relations for 'astinggál': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:40,854 - ERROR - Error in get_or_create_word_id for 'dalawang': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:40,855 - ERROR - Error processing definition relations for 'asúmbre': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:41,367 - ERROR - Error in get_or_create_word_id for '101': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:41,368 - ERROR - Error processing definition relations for 'atmósperá': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:41,380 - ERROR - Error in get_or_create_word_id for 'presyur': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:41,380 - ERROR - Error processing definition relations for 'atmospheric pressure': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:43,149 - ERROR - Error in get_or_create_word_id for 'baboy': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:43,150 - ERROR - Error processing definition relations for 'báboy-babúyan': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:43,623 - ERROR - Error in get_or_create_word_id for 'mula': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:43,624 - ERROR - Error processing definition relations for 'bagákay': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:44,580 - ERROR - Error in get_or_create_word_id for '100': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:44,581 - ERROR - Error processing definition relations for 'baht': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:45,188 - ERROR - Error in get_or_create_word_id for 'bagsayá': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:45,188 - ERROR - Error processing definition relations for 'baksáy': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:45,343 - ERROR - Error in get_or_create_word_id for 'alinman': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:45,344 - ERROR - Error processing definition relations for 'bála': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:45,963 - ERROR - Error in get_or_create_word_id for 'ginawâ': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:45,963 - ERROR - Error processing definition relations for 'balantúgi': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:46,166 - ERROR - Error in get_or_create_word_id for 'paa': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:46,167 - ERROR - Error processing definition relations for 'balátay': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:46,509 - ERROR - Error in get_or_create_word_id for '100': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:46,509 - ERROR - Error processing definition relations for 'balboa': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:47,125 - ERROR - Error in get_or_create_word_id for 'putat': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:47,125 - ERROR - Error processing definition relations for 'balingásan': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:47,154 - ERROR - Error in get_or_create_word_id for 'isang': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:47,154 - ERROR - Error processing definition relations for 'bálingbáling': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:49,773 - ERROR - Error in get_or_create_word_id for 'tanigi': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:49,773 - ERROR - Error processing definition relations for 'banlóg': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:49,907 - ERROR - Error in get_or_create_word_id for 'pinyon': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:49,907 - ERROR - Error processing definition relations for 'bansiyár': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:50,290 - ERROR - Error in get_or_create_word_id for 'kanela': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:50,291 - ERROR - Error processing definition relations for 'báog': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:50,357 - ERROR - Error in get_or_create_word_id for '100': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:50,358 - ERROR - Error processing definition relations for 'bar': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:50,540 - ERROR - Error in get_or_create_word_id for 'baryo': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:50,541 - ERROR - Error processing definition relations for 'barangáy': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:51,078 - ERROR - Error in get_or_create_word_id for '10': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:51,078 - ERROR - Error processing definition relations for 'barn': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:51,439 - ERROR - Error in get_or_create_word_id for 'isang': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:51,440 - ERROR - Error processing definition relations for 'basángal': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:52,304 - ERROR - Error in get_or_create_word_id for '50': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:52,305 - ERROR - Error processing definition relations for 'batngín': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:55,120 - ERROR - Error in get_or_create_word_id for 'isang': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:55,121 - ERROR - Error processing definition relations for 'bilyón': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:55,663 - ERROR - Error in get_or_create_word_id for '25': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:55,664 - ERROR - Error processing definition relations for 'bintíng': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:56,353 - ERROR - Error in get_or_create_word_id for 'tinik': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:56,354 - ERROR - Error processing definition relations for 'bisóol': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:56,531 - ERROR - Error in get_or_create_word_id for 'bitamina': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:56,531 - ERROR - Error processing definition relations for 'bitamína A2': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:59,022 - ERROR - Error in get_or_create_word_id for 'isang': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:12:59,023 - ERROR - Error processing definition relations for 'brása': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:00,372 - ERROR - Error in get_or_create_word_id for 'butlig': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:00,372 - ERROR - Error processing definition relations for 'buklíng': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:00,633 - ERROR - Error in get_or_create_word_id for 'kamote': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:00,633 - ERROR - Error processing definition relations for 'bulákan': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:02,493 - ERROR - Error in get_or_create_word_id for 'proletaryo': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:02,493 - ERROR - Error processing definition relations for 'burgésya': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:03,047 - ERROR - Error in get_or_create_word_id for 'balimbing': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:03,048 - ERROR - Error processing definition relations for 'bútat': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:04,196 - ERROR - Error in get_or_create_word_id for 'paligid': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:04,196 - ERROR - Error processing definition relations for 'camouflage': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:05,369 - ERROR - Error in get_or_create_word_id for 'mambo': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:05,370 - ERROR - Error processing definition relations for 'cha-cha': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:07,041 - ERROR - Error in get_or_create_word_id for 'com': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:07,041 - ERROR - Error processing definition relations for 'con-': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:07,813 - ERROR - Error in get_or_create_word_id for 'konde': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:07,813 - ERROR - Error processing definition relations for 'count': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:08,260 - ERROR - Error in get_or_create_word_id for 'tataklayan': name 'get_or_create_word_id_base' is not defined
+2025-03-24 21:13:08,260 - ERROR - Error processing definition relations for 'cubit': name 'get_or_create_word_id_base' is not defined

@@ -1,0 +1,33 @@
+2025-03-24 23:12:31,828 - INFO - Starting table creation/update process.
+2025-03-24 23:12:54,230 - INFO - Tables created or updated successfully.
+2025-03-24 23:12:54,233 - INFO - Processing Tagalog words from: ../data\tagalog-words.json
+2025-03-24 23:12:54,373 - INFO - Found 65328 dictionary-style entries
+2025-03-24 23:12:54,405 - INFO - Creating word entries...
+2025-03-24 23:14:10,168 - INFO - Created/found 65328 words
+2025-03-24 23:18:25,603 - INFO - Completed processing tagalog-words.json
+2025-03-24 23:18:25,627 - INFO - Processing root words from: ../data\root_words_with_associated_words_cleaned.json
+2025-03-24 23:18:25,675 - INFO - Found 2238 root word entries
+2025-03-24 23:18:25,682 - INFO - Creating 18029 unique word entries...
+2025-03-24 23:18:25,692 - WARNING - Could not create savepoint sp_get_or_create_word_id: SAVEPOINT can only be used in transaction blocks
+. Rolling back entire transaction.
+2025-03-24 23:19:55,153 - INFO - Completed processing ../data\root_words_with_associated_words_cleaned.json
+2025-03-24 23:22:35,975 - WARNING - Invalid Baybayin form for word_id 101639: ᜒᜅ᜔
+2025-03-24 23:22:36,682 - WARNING - Invalid Baybayin form for word_id 22909: ᜒᜈ᜔
+2025-03-24 23:22:36,686 - WARNING - Invalid Baybayin form for word_id 22909: ᜒᜈ᜔
+2025-03-24 23:22:36,688 - WARNING - Invalid Baybayin form for word_id 22909: ᜒᜈ᜔
+2025-03-24 23:22:37,457 - WARNING - Invalid Baybayin form for word_id 101701: ᜓᜋ᜔
+2025-03-24 23:22:37,631 - WARNING - Invalid Baybayin form for word_id 101706: ᜒ
+2025-03-24 23:22:37,633 - WARNING - Invalid Baybayin form for word_id 22908: ᜒᜈ᜔
+2025-03-24 23:22:40,354 - WARNING - Invalid Baybayin form for word_id 24152: ᜒᜐ᜔ᜆ
+2025-03-24 23:22:43,980 - WARNING - Invalid Baybayin form for word_id 24260: ᜒᜆᜓ
+2025-03-24 23:22:43,989 - WARNING - Invalid Baybayin form for word_id 102014: ᜒᜆ
+2025-03-24 23:22:45,412 - WARNING - Invalid Baybayin form for word_id 102099: ᜒᜐ᜔ᜋᜓ
+2025-03-24 23:22:46,028 - WARNING - Invalid Baybayin form for word_id 15694: ᜒᜇᜓ
+2025-03-24 23:22:49,396 - WARNING - Invalid Baybayin form for word_id 102236: ᜒᜇ
+2025-03-24 23:22:55,185 - WARNING - Invalid Baybayin form for word_id 102486: ᜒᜌ᜔
+2025-03-24 23:23:28,419 - WARNING - Invalid Baybayin form for word_id 38866: ᜓᜌ᜔
+2025-03-24 23:23:30,807 - WARNING - Invalid Baybayin form for word_id 105997: ᜉ ᜒᜈ᜔
+2025-03-24 23:23:34,034 - WARNING - Invalid Baybayin form for word_id 106317: ᜒᜎ᜔ᜌᜓ
+2025-03-24 23:23:54,043 - WARNING - Invalid Baybayin form for word_id 108234: ᜋ ᜒᜈ᜔
+2025-03-24 23:23:54,046 - WARNING - Invalid Baybayin form for word_id 15726: ᜒᜇ᜔ᜌ
+2025-03-24 23:23:54,049 - WARNING - Invalid Baybayin form for word_id 15687: ᜒᜇᜒᜌ

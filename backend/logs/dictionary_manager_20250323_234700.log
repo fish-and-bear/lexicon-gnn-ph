@@ -1,0 +1,9 @@
+2025-03-23 23:47:00,710 - INFO - Attempting database connection...
+2025-03-23 23:47:00,711 - INFO - Database configuration:
+2025-03-23 23:47:00,712 - INFO -   Database Name: fil_dict_db
+2025-03-23 23:47:00,712 - INFO -   User: postgres
+2025-03-23 23:47:00,712 - INFO -   Host: localhost
+2025-03-23 23:47:00,713 - INFO -   Port: 5432
+2025-03-23 23:47:00,713 - INFO -   Password: ********
+2025-03-23 23:47:00,902 - INFO - Successfully established database connection
+2025-03-23 23:47:02,655 - INFO - Database verification completed

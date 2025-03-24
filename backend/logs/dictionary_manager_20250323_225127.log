@@ -1,0 +1,15 @@
+2025-03-23 22:51:27,336 - INFO - Attempting database connection...
+2025-03-23 22:51:27,336 - INFO - Database configuration:
+2025-03-23 22:51:27,336 - INFO -   Database Name: fil_dict_db
+2025-03-23 22:51:27,337 - INFO -   User: postgres
+2025-03-23 22:51:27,337 - INFO -   Host: localhost
+2025-03-23 22:51:27,337 - INFO -   Port: 5432
+2025-03-23 22:51:27,337 - INFO -   Password: ********
+2025-03-23 22:51:27,593 - INFO - Successfully established database connection
+2025-03-23 22:51:27,599 - INFO - Starting table creation/update process.
+2025-03-23 22:51:27,919 - INFO - Tables created or updated successfully.
+2025-03-23 22:51:27,922 - WARNING - Optional file not found: data\tagalog-words.json
+2025-03-23 22:51:27,922 - WARNING - Optional file not found: data\root_words_with_associated_words_cleaned.json
+2025-03-23 22:51:27,923 - WARNING - Optional file not found: data\kwf_dictionary.json
+2025-03-23 22:51:27,923 - WARNING - Optional file not found: data\kaikki.jsonl
+2025-03-23 22:51:27,923 - WARNING - Optional file not found: data\kaikki-ceb.jsonl

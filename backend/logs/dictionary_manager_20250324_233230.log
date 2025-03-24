@@ -1,0 +1,6 @@
+2025-03-24 23:32:30,189 - INFO - Looking up word: Namespace(command='lookup', word='kalimutan', debug=False, format='rich')
+2025-03-24 23:32:30,190 - INFO - Word argument value: 'kalimutan'
+2025-03-24 23:32:30,225 - INFO - Normalized word: kalimutan
+2025-03-24 23:32:30,225 - INFO - Database connection test successful
+2025-03-24 23:32:30,236 - INFO - Word data fetched: True
+2025-03-24 23:32:30,236 - ERROR - Error during lookup: 'NoneType' object has no attribute 'split'

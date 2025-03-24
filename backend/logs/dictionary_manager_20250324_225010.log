@@ -1,0 +1,11 @@
+2025-03-24 22:50:10,836 - INFO - Starting table creation/update process.
+2025-03-24 22:50:11,298 - INFO - Tables created or updated successfully.
+2025-03-24 22:50:11,302 - INFO - Processing Tagalog words from: ../data\tagalog-words.json
+2025-03-24 22:50:11,508 - INFO - Found 65328 dictionary-style entries
+2025-03-24 22:50:11,543 - INFO - Creating word entries...
+2025-03-24 22:51:22,500 - INFO - Created/found 65328 words
+2025-03-24 22:56:05,504 - INFO - Completed processing tagalog-words.json
+2025-03-24 22:56:05,962 - WARNING - Could not create savepoint sp_get_or_create_word_id: SAVEPOINT can only be used in transaction blocks
+. Rolling back entire transaction.
+2025-03-24 22:57:22,432 - ERROR - Error processing KWF Dictionary: string indices must be integers, not 'str'
+2025-03-24 22:57:22,441 - ERROR - Error during migration: string indices must be integers, not 'str'

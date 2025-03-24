@@ -1,0 +1,27 @@
+2025-03-24 23:40:59,318 - INFO - Looking up word: Namespace(command='lookup', word='ibig', debug=False, format='rich')
+2025-03-24 23:40:59,318 - INFO - Word argument value: 'ibig'
+2025-03-24 23:40:59,350 - INFO - Normalized word: ibig
+2025-03-24 23:40:59,351 - INFO - Database connection test successful
+2025-03-24 23:40:59,363 - INFO - Word data fetched: True
+2025-03-24 23:40:59,363 - INFO - Beginning to unpack word data
+2025-03-24 23:40:59,364 - INFO - Successfully unpacked word data
+2025-03-24 23:40:59,364 - INFO - word_id: 22066, lemma: íbig, language_code: tl
+2025-03-24 23:40:59,364 - INFO - has_baybayin: True, baybayin_form: ᜁᜊᜒᜄ᜔, romanized_form: ibig
+2025-03-24 23:40:59,365 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-24 23:40:59,365 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-24 23:40:59,365 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-24 23:40:59,365 - INFO - Building basic information tree
+2025-03-24 23:40:59,365 - INFO - Adding preferred spelling if available
+2025-03-24 23:40:59,365 - INFO - Adding Baybayin form if available
+2025-03-24 23:40:59,366 - INFO - Adding root word if available
+2025-03-24 23:40:59,366 - INFO - Gathering sources - starting
+2025-03-24 23:40:59,366 - INFO - Processing tags
+2025-03-24 23:40:59,367 - INFO - Processing source_info
+2025-03-24 23:40:59,367 - INFO - Processing def_sources
+2025-03-24 23:40:59,367 - INFO - def_sources content: ['diksiyonaryo.ph', 'kaikki.org (Tagalog)', 'tagalog.com']
+2025-03-24 23:40:59,367 - INFO - Processing def_source: diksiyonaryo.ph, type: <class 'str'>
+2025-03-24 23:40:59,367 - INFO - Processing def_source: kaikki.org (Tagalog), type: <class 'str'>
+2025-03-24 23:40:59,368 - INFO - Processing def_source: tagalog.com, type: <class 'str'>
+2025-03-24 23:40:59,368 - INFO - Processing ety_sources
+2025-03-24 23:40:59,368 - INFO - ety_sources content: [None]
+2025-03-24 23:40:59,368 - WARNING - Found None value in ety_sources

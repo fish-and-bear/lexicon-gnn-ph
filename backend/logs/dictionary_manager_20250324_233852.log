@@ -1,0 +1,26 @@
+2025-03-24 23:38:52,401 - INFO - Looking up word: Namespace(command='lookup', word='kalimutan', debug=False, format='rich')
+2025-03-24 23:38:52,401 - INFO - Word argument value: 'kalimutan'
+2025-03-24 23:38:52,433 - INFO - Normalized word: kalimutan
+2025-03-24 23:38:52,434 - INFO - Database connection test successful
+2025-03-24 23:38:52,442 - INFO - Word data fetched: True
+2025-03-24 23:38:52,442 - INFO - Beginning to unpack word data
+2025-03-24 23:38:52,443 - INFO - Successfully unpacked word data
+2025-03-24 23:38:52,443 - INFO - word_id: 74022, lemma: kalimutan, language_code: tl
+2025-03-24 23:38:52,445 - INFO - has_baybayin: True, baybayin_form: ᜃᜎᜒᜋᜓᜆᜈ᜔, romanized_form: kalimutan
+2025-03-24 23:38:52,445 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-24 23:38:52,445 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-24 23:38:52,445 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-24 23:38:52,445 - INFO - Building basic information tree
+2025-03-24 23:38:52,446 - INFO - Adding preferred spelling if available
+2025-03-24 23:38:52,446 - INFO - Adding Baybayin form if available
+2025-03-24 23:38:52,446 - INFO - Adding root word if available
+2025-03-24 23:38:52,446 - INFO - Gathering sources - starting
+2025-03-24 23:38:52,446 - INFO - Processing tags
+2025-03-24 23:38:52,446 - INFO - Processing source_info
+2025-03-24 23:38:52,446 - INFO - Processing def_sources
+2025-03-24 23:38:52,447 - INFO - def_sources content: ['kaikki.org (Tagalog)', 'tagalog.com']
+2025-03-24 23:38:52,447 - INFO - Processing def_source: kaikki.org (Tagalog), type: <class 'str'>
+2025-03-24 23:38:52,447 - INFO - Processing def_source: tagalog.com, type: <class 'str'>
+2025-03-24 23:38:52,447 - INFO - Processing ety_sources
+2025-03-24 23:38:52,447 - INFO - ety_sources content: [None]
+2025-03-24 23:38:52,447 - WARNING - Found None value in ety_sources
