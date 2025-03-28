@@ -1,0 +1,26 @@
+2025-03-24 23:48:54,634 - INFO - Looking up word: Namespace(command='lookup', word='tiwalag', debug=False, format='rich')
+2025-03-24 23:48:54,634 - INFO - Word argument value: 'tiwalag'
+2025-03-24 23:48:54,674 - INFO - Normalized word: tiwalag
+2025-03-24 23:48:54,675 - INFO - Database connection test successful
+2025-03-24 23:48:54,685 - INFO - Word data fetched: True
+2025-03-24 23:48:54,686 - INFO - Beginning to unpack word data
+2025-03-24 23:48:54,686 - INFO - Successfully unpacked word data
+2025-03-24 23:48:54,686 - INFO - word_id: 57151, lemma: tiwalág, language_code: tl
+2025-03-24 23:48:54,687 - INFO - has_baybayin: True, baybayin_form: ᜆᜒᜏᜎᜄ᜔, romanized_form: tiwalag
+2025-03-24 23:48:54,687 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-24 23:48:54,687 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-24 23:48:54,687 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-24 23:48:54,687 - INFO - Building basic information tree
+2025-03-24 23:48:54,687 - INFO - Adding preferred spelling if available
+2025-03-24 23:48:54,687 - INFO - Adding Baybayin form if available
+2025-03-24 23:48:54,687 - INFO - Adding root word if available
+2025-03-24 23:48:54,687 - INFO - Gathering sources - starting
+2025-03-24 23:48:54,688 - INFO - Processing tags
+2025-03-24 23:48:54,688 - INFO - Processing source_info
+2025-03-24 23:48:54,688 - INFO - Processing def_sources
+2025-03-24 23:48:54,688 - INFO - def_sources content: ['diksiyonaryo.ph', 'kaikki.org (Tagalog)']
+2025-03-24 23:48:54,688 - INFO - Processing def_source: diksiyonaryo.ph, type: <class 'str'>
+2025-03-24 23:48:54,688 - INFO - Processing def_source: kaikki.org (Tagalog), type: <class 'str'>
+2025-03-24 23:48:54,688 - INFO - Processing ety_sources
+2025-03-24 23:48:54,689 - INFO - ety_sources content: ['diksiyonaryo.ph']
+2025-03-24 23:48:54,689 - INFO - Processing ety_source: diksiyonaryo.ph, type: <class 'str'>

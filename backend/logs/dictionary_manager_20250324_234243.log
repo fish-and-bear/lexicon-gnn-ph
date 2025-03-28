@@ -1,0 +1,27 @@
+2025-03-24 23:42:43,045 - INFO - Looking up word: Namespace(command='lookup', word='tawa', debug=False, format='rich')
+2025-03-24 23:42:43,046 - INFO - Word argument value: 'tawa'
+2025-03-24 23:42:43,077 - INFO - Normalized word: tawa
+2025-03-24 23:42:43,078 - INFO - Database connection test successful
+2025-03-24 23:42:43,089 - INFO - Word data fetched: True
+2025-03-24 23:42:43,089 - INFO - Beginning to unpack word data
+2025-03-24 23:42:43,089 - INFO - Successfully unpacked word data
+2025-03-24 23:42:43,090 - INFO - word_id: 55829, lemma: tawá, language_code: tl
+2025-03-24 23:42:43,090 - INFO - has_baybayin: True, baybayin_form: ᜆᜏ, romanized_form: tawa
+2025-03-24 23:42:43,090 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-24 23:42:43,090 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-24 23:42:43,090 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-24 23:42:43,091 - INFO - Building basic information tree
+2025-03-24 23:42:43,091 - INFO - Adding preferred spelling if available
+2025-03-24 23:42:43,091 - INFO - Adding Baybayin form if available
+2025-03-24 23:42:43,091 - INFO - Adding root word if available
+2025-03-24 23:42:43,091 - INFO - Gathering sources - starting
+2025-03-24 23:42:43,091 - INFO - Processing tags
+2025-03-24 23:42:43,091 - INFO - Processing source_info
+2025-03-24 23:42:43,091 - INFO - Processing def_sources
+2025-03-24 23:42:43,091 - INFO - def_sources content: ['diksiyonaryo.ph', 'kaikki.org (Tagalog)', 'tagalog.com']
+2025-03-24 23:42:43,092 - INFO - Processing def_source: diksiyonaryo.ph, type: <class 'str'>
+2025-03-24 23:42:43,092 - INFO - Processing def_source: kaikki.org (Tagalog), type: <class 'str'>
+2025-03-24 23:42:43,092 - INFO - Processing def_source: tagalog.com, type: <class 'str'>
+2025-03-24 23:42:43,092 - INFO - Processing ety_sources
+2025-03-24 23:42:43,092 - INFO - ety_sources content: ['diksiyonaryo.ph']
+2025-03-24 23:42:43,092 - INFO - Processing ety_source: diksiyonaryo.ph, type: <class 'str'>

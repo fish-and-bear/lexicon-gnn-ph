@@ -1,0 +1,570 @@
+2025-03-29 03:03:00,262 - INFO - Database connection pool initialized
+2025-03-29 03:03:00,320 - INFO - Starting table creation/update process.
+2025-03-29 03:03:01,070 - INFO - Tables created or updated successfully.
+2025-03-29 03:03:01,076 - INFO - Processing Tagalog words from: ..\data\tagalog-words.json
+2025-03-29 03:03:02,463 - INFO - Found 65336 entries to process
+2025-03-29 03:03:02,726 - ERROR - Error processing entry 'aák': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:02,727 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:02,818 - ERROR - Error processing entry 'abâ': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:02,820 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:02,836 - ERROR - Error processing entry 'áb-ab': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:02,840 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:03,017 - ERROR - Error processing entry 'abagá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:03,018 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:03,557 - ERROR - Error processing entry 'ában': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:03,558 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:03,584 - ERROR - Error processing entry 'abandoná': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:03,585 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:03,803 - ERROR - Error processing entry 'abár': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:03,804 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:03,807 - ERROR - Error processing entry 'ábar': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:03,808 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:04,190 - ERROR - Error processing entry 'áblaw': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:04,191 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:04,977 - ERROR - Error processing entry 'ábot': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:04,978 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:05,188 - ERROR - Error processing entry 'abás': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:05,189 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:05,263 - ERROR - Error processing entry 'ábat': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:05,264 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:05,335 - ERROR - Error processing entry 'abáy': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:05,336 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:05,441 - ERROR - Error processing entry 'abáy-abáy': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:05,442 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:05,992 - ERROR - Error processing entry 'ábil': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:05,993 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:06,166 - ERROR - Error processing entry 'ábut': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:06,167 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:07,108 - ERROR - Error processing entry 'abré': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:07,109 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:07,159 - ERROR - Error processing entry 'abrí': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:07,160 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:07,244 - ERROR - Error processing entry 'absám': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:07,245 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:07,384 - ERROR - Error processing entry 'absík': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:07,386 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:07,525 - ERROR - Error processing entry 'absórb': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:07,526 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:07,710 - ERROR - Error processing entry 'abúabó': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:07,711 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,145 - ERROR - Error processing entry 'adíwas': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,146 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,150 - ERROR - Error processing entry 'adiyá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,151 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,318 - ERROR - Error processing entry 'ádlip': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,320 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,347 - ERROR - Error processing entry 'admínistér': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,348 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,352 - ERROR - Error processing entry 'administrá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,354 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,520 - ERROR - Error processing entry 'admít': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,521 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,528 - ERROR - Error processing entry 'admití': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,529 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,564 - ERROR - Error processing entry 'adó': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,565 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,684 - WARNING - Skipping self-relationship for word ID 744
+2025-03-29 03:03:08,685 - WARNING - Skipping self-relationship for word ID 744
+2025-03-29 03:03:08,768 - ERROR - Error processing entry 'adoptá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,769 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,927 - ERROR - Error processing entry 'adtó': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,928 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:08,941 - ERROR - Error processing entry 'adúdos': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:08,942 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:09,057 - ERROR - Error processing entry 'Acta de Tejeros': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:09,057 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:09,103 - ERROR - Error processing entry 'acto de atricion': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:09,105 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:09,169 - ERROR - Error processing entry 'ád-ad': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:09,171 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:09,244 - WARNING - Skipping self-relationship for word ID 818
+2025-03-29 03:03:09,245 - WARNING - Skipping self-relationship for word ID 818
+2025-03-29 03:03:09,252 - WARNING - Skipping self-relationship for word ID 818
+2025-03-29 03:03:09,253 - WARNING - Skipping self-relationship for word ID 818
+2025-03-29 03:03:09,799 - ERROR - Error processing entry 'adhudiká': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:09,800 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:10,100 - ERROR - Error processing entry 'agád': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:10,101 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:10,111 - ERROR - Error processing entry 'ag-ág': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:10,112 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:10,115 - ERROR - Error processing entry 'ág-ag': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:10,116 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:10,523 - ERROR - Error processing entry 'agapáy': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:10,524 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:10,561 - ERROR - Error processing entry 'Agapíto Bágongbáyan': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:10,562 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:11,568 - ERROR - Error processing entry 'adyâ': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:11,569 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:11,675 - ERROR - Error processing entry 'adyóp': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:11,676 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:12,101 - ERROR - Error processing entry 'aforadór': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:12,103 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:12,107 - ERROR - Error processing entry 'aforísta': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:12,109 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:12,556 - ERROR - Error processing entry 'agpáng': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:12,557 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:12,561 - ERROR - Error processing entry 'ágpang': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:12,562 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:12,832 - ERROR - Error processing entry 'ágsa': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:12,835 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:12,847 - ERROR - Error processing entry 'agsám': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:12,847 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:12,903 - ERROR - Error processing entry 'agsík': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:12,903 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:12,972 - ERROR - Error processing entry 'agtás': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:12,973 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:13,001 - ERROR - Error processing entry 'águd': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:13,002 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:13,137 - ERROR - Error processing entry 'Aguinaldo': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:13,138 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:13,435 - ERROR - Error processing entry 'agdá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:13,439 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:13,617 - ERROR - Error processing entry 'aghám': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:13,619 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:13,664 - ERROR - Error processing entry 'ághat': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:13,665 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:13,733 - ERROR - Error processing entry 'ági': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:13,734 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:13,919 - ERROR - Error processing entry 'agínod': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:13,920 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:14,270 - INFO - Processed 1000/65336 entries
+2025-03-29 03:03:14,325 - ERROR - Error processing entry 'ágni': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:14,329 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:14,492 - ERROR - Error processing entry 'áka': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:14,493 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:14,782 - ERROR - Error processing entry 'ákar': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:14,783 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:14,793 - ERROR - Error processing entry 'ákas': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:14,794 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:15,047 - ERROR - Error processing entry 'akbáy': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:15,048 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:15,414 - ERROR - Error processing entry 'aklamá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:15,416 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:15,683 - ERROR - Error processing entry 'ágwad': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:15,684 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:15,887 - ERROR - Error processing entry 'agyót': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:15,888 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:15,937 - ERROR - Error processing entry 'ahâ': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:15,938 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:15,951 - ERROR - Error processing entry 'aháng': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:15,952 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:16,082 - ERROR - Error processing entry 'ahédres': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:16,083 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:16,086 - ERROR - Error processing entry 'ahedresísta': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:16,087 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:16,243 - ERROR - Error processing entry 'áhor': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:16,244 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:16,314 - ERROR - Error processing entry 'aikido': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:16,318 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:16,368 - ERROR - Error processing entry 'akusá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:16,369 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:16,542 - ERROR - Error processing entry 'akyát': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:16,544 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:16,556 - ERROR - Error processing entry 'alá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:16,560 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:16,632 - ERROR - Error processing entry 'alaalá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:16,633 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:17,675 - ERROR - Error processing entry 'alákbat': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:17,676 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:17,685 - ERROR - Error processing entry 'alakbó': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:17,686 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:17,798 - ERROR - Error processing entry 'aklíli': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:17,799 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:18,353 - ERROR - Error processing entry 'akrál': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:18,354 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:18,359 - ERROR - Error processing entry 'akrás': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:18,360 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:18,365 - ERROR - Error processing entry 'akreditá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:18,367 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:18,449 - ERROR - Error processing entry 'akromatisá': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:18,450 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:18,504 - ERROR - Error processing entry 'aksám': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:18,505 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:18,829 - ERROR - Error processing entry 'aksíw': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:18,830 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:19,179 - ERROR - Error processing entry 'ákup': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:19,181 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:19,191 - ERROR - Error processing entry 'aláska': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:19,192 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:19,394 - ERROR - Error processing entry 'aláw': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:19,395 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:19,402 - ERROR - Error processing entry 'alawás': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:19,403 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:19,607 - ERROR - Error processing entry 'albé': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:19,609 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:19,671 - ERROR - Error processing entry 'álbul': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:19,672 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.
+2025-03-29 03:03:19,759 - ERROR - Error processing entry 'aldabís': column "metadata" does not exist
+LINE 4:                             COALESCE(metadata, '{}'::jsonb),
+                                             ^
+
+2025-03-29 03:03:19,760 - WARNING - Could not create savepoint sp_get_or_create_word_id: current transaction is aborted, commands ignored until end of transaction block
+. Rolling back entire transaction.

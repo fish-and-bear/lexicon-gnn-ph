@@ -1,0 +1,26 @@
+2025-03-24 23:42:37,204 - INFO - Looking up word: Namespace(command='lookup', word='sigaw', debug=False, format='rich')
+2025-03-24 23:42:37,204 - INFO - Word argument value: 'sigaw'
+2025-03-24 23:42:37,243 - INFO - Normalized word: sigaw
+2025-03-24 23:42:37,244 - INFO - Database connection test successful
+2025-03-24 23:42:37,253 - INFO - Word data fetched: True
+2025-03-24 23:42:37,253 - INFO - Beginning to unpack word data
+2025-03-24 23:42:37,253 - INFO - Successfully unpacked word data
+2025-03-24 23:42:37,253 - INFO - word_id: 51139, lemma: sigáw, language_code: tl
+2025-03-24 23:42:37,254 - INFO - has_baybayin: True, baybayin_form: ᜐᜒᜄᜏ᜔, romanized_form: sigaw
+2025-03-24 23:42:37,254 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-24 23:42:37,254 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-24 23:42:37,254 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-24 23:42:37,254 - INFO - Building basic information tree
+2025-03-24 23:42:37,255 - INFO - Adding preferred spelling if available
+2025-03-24 23:42:37,255 - INFO - Adding Baybayin form if available
+2025-03-24 23:42:37,255 - INFO - Adding root word if available
+2025-03-24 23:42:37,255 - INFO - Gathering sources - starting
+2025-03-24 23:42:37,255 - INFO - Processing tags
+2025-03-24 23:42:37,255 - INFO - Processing source_info
+2025-03-24 23:42:37,255 - INFO - Processing def_sources
+2025-03-24 23:42:37,255 - INFO - def_sources content: ['diksiyonaryo.ph', 'kaikki.org (Tagalog)']
+2025-03-24 23:42:37,256 - INFO - Processing def_source: diksiyonaryo.ph, type: <class 'str'>
+2025-03-24 23:42:37,256 - INFO - Processing def_source: kaikki.org (Tagalog), type: <class 'str'>
+2025-03-24 23:42:37,256 - INFO - Processing ety_sources
+2025-03-24 23:42:37,256 - INFO - ety_sources content: [None]
+2025-03-24 23:42:37,256 - WARNING - Found None value in ety_sources
