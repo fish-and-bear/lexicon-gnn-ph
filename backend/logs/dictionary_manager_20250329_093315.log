@@ -1,0 +1,584 @@
+2025-03-29 09:33:15,662 - INFO - Starting table creation/update process.
+2025-03-29 09:33:16,796 - INFO - Tables created or updated successfully.
+2025-03-29 09:33:16,801 - INFO - Processing Tagalog words from: ..\data\tagalog-words.json
+2025-03-29 09:33:18,042 - INFO - Found 65336 entries to process
+2025-03-29 09:33:18,114 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,160 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,171 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,174 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,185 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,187 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,190 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,194 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,198 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,201 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,215 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,220 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,225 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,262 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,265 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,268 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,283 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,292 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,294 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,305 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,306 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,364 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,366 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,370 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,371 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,375 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,376 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,394 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,395 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,412 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,414 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,418 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,422 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,425 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,429 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,442 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,443 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,447 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,449 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,452 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,454 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,504 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,506 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,509 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,511 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,514 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,516 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,520 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,522 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,526 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,528 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,532 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,534 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,538 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,540 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,544 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,546 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,550 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,564 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,570 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,577 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,580 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,588 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,600 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,603 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,614 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,628 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,630 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,650 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,653 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,658 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,660 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,666 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,668 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,673 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,675 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,682 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,684 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,688 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,690 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,694 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,697 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,703 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,705 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,710 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,712 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,720 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,723 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,727 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,730 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,735 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,737 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,743 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,745 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,751 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,754 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,759 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,761 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,766 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,772 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,777 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,782 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,789 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,796 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,798 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,803 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,807 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,811 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,835 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,850 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,852 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,871 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,873 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,880 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,882 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,888 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,891 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,897 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,899 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,925 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,928 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,948 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,966 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,969 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,976 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,987 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:18,993 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,002 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,009 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,014 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,025 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,029 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,060 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,062 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,068 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,073 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,080 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,082 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,107 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,113 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,125 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,127 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,136 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,143 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:33:19,147 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+

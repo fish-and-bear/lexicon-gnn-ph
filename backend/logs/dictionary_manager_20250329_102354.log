@@ -1,0 +1,436 @@
+2025-03-29 10:23:54,769 - INFO - Starting table creation/update process.
+2025-03-29 10:23:55,034 - INFO - Tables created or updated successfully.
+2025-03-29 10:23:55,037 - INFO - Processing Tagalog words from: ..\data\tagalog-words.json
+2025-03-29 10:23:55,701 - INFO - Found 65336 entries to process
+2025-03-29 10:23:55,998 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,020 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,027 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,030 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,034 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,035 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,037 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,040 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,043 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,046 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,048 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,050 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,052 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,074 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,077 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,079 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,089 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,095 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,096 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,103 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,104 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,134 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,135 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,137 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,138 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,140 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,141 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,151 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,153 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,163 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,165 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,167 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,170 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,173 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,175 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,185 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,186 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,188 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,189 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,191 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,192 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,219 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,220 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,222 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,223 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,225 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,226 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,228 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,228 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,231 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,232 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,234 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,235 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,236 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,237 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,239 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,241 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,243 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,251 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,254 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,257 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,258 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,261 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,265 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,266 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,270 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,277 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,278 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,286 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,287 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,290 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,290 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,293 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,293 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,295 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,296 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,298 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,299 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,301 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,302 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,305 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,306 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,309 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,310 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,311 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,312 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,316 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,317 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,319 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,320 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,322 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,323 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,326 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,326 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,328 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,329 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,331 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,332 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,335 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,338 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,341 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,344 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,347 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,352 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,353 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,357 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,358 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+
+2025-03-29 10:23:56,360 - ERROR - Database error in insert_relation: column "bidirectional" of relation "relations" does not exist
+LINE 6:                     bidirectional,
+                            ^
+

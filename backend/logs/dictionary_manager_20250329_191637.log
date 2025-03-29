@@ -1,0 +1,2012 @@
+2025-03-29 19:16:37,349 - INFO - Starting table creation/update process.
+2025-03-29 19:16:38,122 - INFO - Tables created or updated successfully.
+2025-03-29 19:16:38,129 - INFO - Processing Tagalog words from: ..\data\tagalog-words.json
+2025-03-29 19:16:39,710 - INFO - Found 65336 entries to process
+2025-03-29 19:16:43,090 - WARNING - Duplicate definition detected for word ID 646: áraw-...
+2025-03-29 19:16:43,302 - WARNING - Skipping self-relationship for word ID 689
+2025-03-29 19:16:43,709 - WARNING - Skipping self-relationship for word ID 766
+2025-03-29 19:16:43,714 - WARNING - Skipping self-relationship for word ID 766
+2025-03-29 19:16:45,860 - INFO - Processed 1000/65336 entries
+2025-03-29 19:16:46,677 - WARNING - Duplicate definition detected for word ID 1437: batà...
+2025-03-29 19:16:50,094 - WARNING - Skipping self-relationship for word ID 2281
+2025-03-29 19:16:51,945 - INFO - Processed 2000/65336 entries
+2025-03-29 19:16:58,490 - INFO - Processed 3000/65336 entries
+2025-03-29 19:16:58,991 - WARNING - Duplicate definition detected for word ID 4141: baybay sa Tagalog ng Anglo-Americano....
+2025-03-29 19:17:00,750 - WARNING - Duplicate definition detected for word ID 4561: pisngí....
+2025-03-29 19:17:00,997 - WARNING - Skipping self-relationship for word ID 4618
+2025-03-29 19:17:03,987 - WARNING - Skipping self-relationship for word ID 5334
+2025-03-29 19:17:04,023 - INFO - Processed 4000/65336 entries
+2025-03-29 19:17:04,278 - WARNING - Duplicate definition detected for word ID 5396: baybay sa Tagalog ng Artico....
+2025-03-29 19:17:06,182 - WARNING - Duplicate definition detected for word ID 5855: áso....
+2025-03-29 19:17:09,411 - INFO - Processed 5000/65336 entries
+2025-03-29 19:17:09,675 - WARNING - Skipping self-relationship for word ID 6650
+2025-03-29 19:17:11,830 - WARNING - Skipping self-relationship for word ID 7175
+2025-03-29 19:17:11,843 - WARNING - Skipping self-relationship for word ID 7175
+2025-03-29 19:17:11,852 - WARNING - Skipping self-relationship for word ID 7175
+2025-03-29 19:17:11,862 - WARNING - Skipping self-relationship for word ID 7175
+2025-03-29 19:17:11,913 - WARNING - Skipping self-relationship for word ID 7187
+2025-03-29 19:17:11,934 - WARNING - Skipping self-relationship for word ID 7187
+2025-03-29 19:17:12,811 - WARNING - Skipping self-relationship for word ID 7405
+2025-03-29 19:17:13,818 - WARNING - Skipping self-relationship for word ID 7632
+2025-03-29 19:17:15,835 - WARNING - Skipping self-relationship for word ID 8129
+2025-03-29 19:17:15,840 - WARNING - Skipping self-relationship for word ID 8129
+2025-03-29 19:17:15,844 - WARNING - Skipping self-relationship for word ID 8129
+2025-03-29 19:17:15,848 - WARNING - Skipping self-relationship for word ID 8129
+2025-03-29 19:17:16,438 - INFO - Processed 6000/65336 entries
+2025-03-29 19:17:16,875 - WARNING - Skipping self-relationship for word ID 8353
+2025-03-29 19:17:18,835 - WARNING - Skipping self-relationship for word ID 8808
+2025-03-29 19:17:19,362 - WARNING - Skipping self-relationship for word ID 8915
+2025-03-29 19:17:19,837 - WARNING - Skipping self-relationship for word ID 9032
+2025-03-29 19:17:21,010 - WARNING - Skipping self-relationship for word ID 9299
+2025-03-29 19:17:22,407 - WARNING - Skipping self-relationship for word ID 9648
+2025-03-29 19:17:23,003 - INFO - Processed 7000/65336 entries
+2025-03-29 19:17:23,174 - WARNING - Skipping self-relationship for word ID 9826
+2025-03-29 19:17:24,131 - WARNING - Skipping self-relationship for word ID 8696
+2025-03-29 19:17:24,170 - WARNING - Skipping self-relationship for word ID 10048
+2025-03-29 19:17:26,027 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:26,028 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:26,030 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:26,033 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:26,034 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:26,036 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:26,038 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:26,040 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:26,042 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-29 19:17:27,477 - WARNING - Skipping self-relationship for word ID 10759
+2025-03-29 19:17:29,136 - INFO - Processed 8000/65336 entries
+2025-03-29 19:17:31,197 - WARNING - Skipping self-relationship for word ID 6827
+2025-03-29 19:17:33,313 - WARNING - Skipping self-relationship for word ID 12039
+2025-03-29 19:17:34,698 - WARNING - Skipping self-relationship for word ID 12339
+2025-03-29 19:17:35,479 - WARNING - Skipping self-relationship for word ID 12513
+2025-03-29 19:17:35,611 - INFO - Processed 9000/65336 entries
+2025-03-29 19:17:36,391 - WARNING - Skipping self-relationship for word ID 12696
+2025-03-29 19:17:36,580 - WARNING - Skipping self-relationship for word ID 12746
+2025-03-29 19:17:38,250 - WARNING - Skipping self-relationship for word ID 10782
+2025-03-29 19:17:40,365 - WARNING - Skipping self-relationship for word ID 13376
+2025-03-29 19:17:41,873 - WARNING - Skipping self-relationship for word ID 13545
+2025-03-29 19:17:45,229 - INFO - Processed 10000/65336 entries
+2025-03-29 19:17:47,066 - WARNING - Duplicate definition detected for word ID 13963: dikyà....
+2025-03-29 19:17:50,057 - WARNING - Skipping self-relationship for word ID 14637
+2025-03-29 19:17:50,070 - WARNING - Skipping self-relationship for word ID 14637
+2025-03-29 19:17:50,340 - WARNING - Skipping self-relationship for word ID 14706
+2025-03-29 19:17:53,280 - INFO - Processed 11000/65336 entries
+2025-03-29 19:17:58,625 - INFO - Processed 12000/65336 entries
+2025-03-29 19:18:01,339 - WARNING - Duplicate definition detected for word ID 16951: bayaníhan....
+2025-03-29 19:18:02,524 - WARNING - Skipping self-relationship for word ID 17239
+2025-03-29 19:18:02,525 - WARNING - Skipping self-relationship for word ID 17239
+2025-03-29 19:18:02,553 - WARNING - Duplicate definition detected for word ID 17239: dagsâ....
+2025-03-29 19:18:03,185 - WARNING - Duplicate definition detected for word ID 17382: balakúbak....
+2025-03-29 19:18:04,662 - WARNING - Skipping self-relationship for word ID 17790
+2025-03-29 19:18:05,323 - INFO - Processed 13000/65336 entries
+2025-03-29 19:18:07,195 - WARNING - Skipping self-relationship for word ID 18369
+2025-03-29 19:18:08,110 - WARNING - Skipping self-relationship for word ID 18562
+2025-03-29 19:18:08,116 - WARNING - Skipping self-relationship for word ID 18562
+2025-03-29 19:18:11,992 - INFO - Processed 14000/65336 entries
+2025-03-29 19:18:12,058 - WARNING - Duplicate definition detected for word ID 19316: dipá....
+2025-03-29 19:18:14,885 - WARNING - Skipping self-relationship for word ID 19928
+2025-03-29 19:18:14,958 - WARNING - Skipping self-relationship for word ID 19941
+2025-03-29 19:18:18,528 - INFO - Processed 15000/65336 entries
+2025-03-29 19:18:18,693 - WARNING - Duplicate definition detected for word ID 20647: [1] pababâ...
+2025-03-29 19:18:18,700 - ERROR - Error inserting definition for word 'down': Word ID 20647 does not exist
+2025-03-29 19:18:18,703 - ERROR - Error inserting definition for word 'down': Word ID 20647 does not exist
+2025-03-29 19:18:20,902 - WARNING - Skipping self-relationship for word ID 21122
+2025-03-29 19:18:22,347 - WARNING - Skipping self-relationship for word ID 21423
+2025-03-29 19:18:22,847 - WARNING - Skipping self-relationship for word ID 21536
+2025-03-29 19:18:24,095 - WARNING - Skipping self-relationship for word ID 21806
+2025-03-29 19:18:24,818 - INFO - Processed 16000/65336 entries
+2025-03-29 19:18:26,218 - WARNING - Skipping self-relationship for word ID 22205
+2025-03-29 19:18:31,780 - INFO - Processed 17000/65336 entries
+2025-03-29 19:18:38,550 - INFO - Processed 18000/65336 entries
+2025-03-29 19:18:42,816 - WARNING - Skipping self-relationship for word ID 25016
+2025-03-29 19:18:46,507 - INFO - Processed 19000/65336 entries
+2025-03-29 19:18:47,658 - WARNING - Skipping self-relationship for word ID 25741
+2025-03-29 19:18:47,660 - WARNING - Skipping self-relationship for word ID 25741
+2025-03-29 19:18:47,684 - WARNING - Duplicate definition detected for word ID 25741: gansâ....
+2025-03-29 19:18:48,468 - WARNING - Skipping self-relationship for word ID 25927
+2025-03-29 19:18:48,553 - WARNING - Duplicate definition detected for word ID 25956: alupíhan...
+2025-03-29 19:18:48,717 - WARNING - Skipping self-relationship for word ID 25991
+2025-03-29 19:18:48,720 - WARNING - Skipping self-relationship for word ID 25991
+2025-03-29 19:18:49,003 - WARNING - Skipping self-relationship for word ID 26061
+2025-03-29 19:18:49,109 - WARNING - Duplicate definition detected for word ID 26083: katí...
+2025-03-29 19:18:49,175 - WARNING - Skipping self-relationship for word ID 26099
+2025-03-29 19:18:49,186 - WARNING - Skipping self-relationship for word ID 26099
+2025-03-29 19:18:49,194 - WARNING - Skipping self-relationship for word ID 26099
+2025-03-29 19:18:52,156 - WARNING - Skipping self-relationship for word ID 26773
+2025-03-29 19:18:52,933 - INFO - Processed 20000/65336 entries
+2025-03-29 19:18:57,670 - WARNING - Skipping self-relationship for word ID 27914
+2025-03-29 19:18:59,820 - INFO - Processed 21000/65336 entries
+2025-03-29 19:19:04,865 - WARNING - Skipping self-relationship for word ID 29220
+2025-03-29 19:19:04,905 - WARNING - Skipping self-relationship for word ID 29220
+2025-03-29 19:19:04,916 - WARNING - Skipping self-relationship for word ID 29220
+2025-03-29 19:19:08,368 - WARNING - Duplicate definition detected for word ID 29786: tagák...
+2025-03-29 19:19:08,743 - INFO - Processed 22000/65336 entries
+2025-03-29 19:19:11,319 - WARNING - Duplicate definition detected for word ID 30507: tungháy...
+2025-03-29 19:19:14,502 - WARNING - Duplicate definition detected for word ID 31237: úmis....
+2025-03-29 19:19:15,098 - WARNING - Skipping self-relationship for word ID 31379
+2025-03-29 19:19:15,792 - INFO - Processed 23000/65336 entries
+2025-03-29 19:19:18,045 - WARNING - Skipping self-relationship for word ID 32093
+2025-03-29 19:19:21,219 - WARNING - Skipping self-relationship for word ID 32814
+2025-03-29 19:19:21,227 - WARNING - Skipping self-relationship for word ID 32814
+2025-03-29 19:19:21,235 - WARNING - Skipping self-relationship for word ID 32814
+2025-03-29 19:19:22,795 - INFO - Processed 24000/65336 entries
+2025-03-29 19:19:23,285 - WARNING - Skipping self-relationship for word ID 33207
+2025-03-29 19:19:25,689 - WARNING - Skipping self-relationship for word ID 33643
+2025-03-29 19:19:27,612 - WARNING - Duplicate definition detected for word ID 33951: dalá....
+2025-03-29 19:19:28,970 - WARNING - Skipping self-relationship for word ID 34273
+2025-03-29 19:19:28,972 - WARNING - Skipping self-relationship for word ID 34273
+2025-03-29 19:19:29,211 - WARNING - Skipping self-relationship for word ID 34332
+2025-03-29 19:19:29,213 - WARNING - Skipping self-relationship for word ID 34332
+2025-03-29 19:19:29,249 - WARNING - Duplicate definition detected for word ID 34341: lápulápu....
+2025-03-29 19:19:29,284 - WARNING - Skipping self-relationship for word ID 34351
+2025-03-29 19:19:29,285 - WARNING - Skipping self-relationship for word ID 34351
+2025-03-29 19:19:29,369 - INFO - Processed 25000/65336 entries
+2025-03-29 19:19:32,067 - WARNING - Duplicate definition detected for word ID 34968: [1] iláya...
+2025-03-29 19:19:32,069 - ERROR - Error inserting definition for word 'iráya': Word ID 34968 does not exist
+2025-03-29 19:19:35,243 - INFO - Processed 26000/65336 entries
+2025-03-29 19:19:36,469 - WARNING - Skipping self-relationship for word ID 35974
+2025-03-29 19:19:36,962 - WARNING - Duplicate definition detected for word ID 36079: liwayway....
+2025-03-29 19:19:42,284 - WARNING - Duplicate definition detected for word ID 37179: dalandán....
+2025-03-29 19:19:42,448 - INFO - Processed 27000/65336 entries
+2025-03-29 19:19:43,464 - WARNING - Skipping self-relationship for word ID 37422
+2025-03-29 19:19:44,747 - WARNING - Skipping self-relationship for word ID 37641
+2025-03-29 19:19:56,849 - INFO - Processed 28000/65336 entries
+2025-03-29 19:19:57,305 - WARNING - Duplicate definition detected for word ID 38885: kambíng...
+2025-03-29 19:19:58,189 - WARNING - Duplicate definition detected for word ID 39276: paragos....
+2025-03-29 19:19:58,644 - WARNING - Skipping self-relationship for word ID 39385
+2025-03-29 19:19:59,242 - WARNING - Duplicate definition detected for word ID 39500: papáya....
+2025-03-29 19:20:00,483 - WARNING - Skipping self-relationship for word ID 39749
+2025-03-29 19:20:07,231 - INFO - Processed 29000/65336 entries
+2025-03-29 19:20:10,691 - WARNING - Skipping self-relationship for word ID 41500
+2025-03-29 19:20:10,839 - WARNING - Duplicate definition detected for word ID 40131: kariwasaan....
+2025-03-29 19:20:11,791 - WARNING - Skipping self-relationship for word ID 41728
+2025-03-29 19:20:11,929 - WARNING - Skipping self-relationship for word ID 41763
+2025-03-29 19:20:15,179 - WARNING - Duplicate definition detected for word ID 42328: kidlát....
+2025-03-29 19:20:16,067 - INFO - Processed 30000/65336 entries
+2025-03-29 19:20:23,643 - INFO - Processed 31000/65336 entries
+2025-03-29 19:20:27,345 - WARNING - Skipping self-relationship for word ID 44904
+2025-03-29 19:20:30,439 - WARNING - Skipping self-relationship for word ID 45421
+2025-03-29 19:20:31,211 - WARNING - Skipping self-relationship for word ID 45550
+2025-03-29 19:20:31,848 - WARNING - Skipping self-relationship for word ID 45650
+2025-03-29 19:20:32,020 - WARNING - Skipping self-relationship for word ID 45676
+2025-03-29 19:20:32,137 - INFO - Processed 32000/65336 entries
+2025-03-29 19:20:32,274 - WARNING - Skipping self-relationship for word ID 45720
+2025-03-29 19:20:32,330 - WARNING - Skipping self-relationship for word ID 45731
+2025-03-29 19:20:33,036 - WARNING - Skipping self-relationship for word ID 45837
+2025-03-29 19:20:34,039 - WARNING - Skipping self-relationship for word ID 46001
+2025-03-29 19:20:34,221 - WARNING - Skipping self-relationship for word ID 46027
+2025-03-29 19:20:34,871 - WARNING - Skipping self-relationship for word ID 46137
+2025-03-29 19:20:35,841 - WARNING - Skipping self-relationship for word ID 46286
+2025-03-29 19:20:35,860 - WARNING - Skipping self-relationship for word ID 46286
+2025-03-29 19:20:35,955 - WARNING - Skipping self-relationship for word ID 46299
+2025-03-29 19:20:40,536 - WARNING - Duplicate definition detected for word ID 46976: lansá...
+2025-03-29 19:20:41,106 - INFO - Processed 33000/65336 entries
+2025-03-29 19:20:42,833 - WARNING - Duplicate definition detected for word ID 47508: síli...
+2025-03-29 19:20:47,567 - INFO - Processed 34000/65336 entries
+2025-03-29 19:20:54,420 - WARNING - Skipping self-relationship for word ID 49514
+2025-03-29 19:20:59,937 - INFO - Processed 35000/65336 entries
+2025-03-29 19:21:03,832 - WARNING - Skipping self-relationship for word ID 50472
+2025-03-29 19:21:04,604 - WARNING - Skipping self-relationship for word ID 50577
+2025-03-29 19:21:04,667 - WARNING - Skipping self-relationship for word ID 50577
+2025-03-29 19:21:05,451 - WARNING - Skipping self-relationship for word ID 50696
+2025-03-29 19:21:09,684 - WARNING - Skipping self-relationship for word ID 51317
+2025-03-29 19:21:11,331 - INFO - Processed 36000/65336 entries
+2025-03-29 19:21:16,634 - WARNING - Duplicate definition detected for word ID 51708: médyor....
+2025-03-29 19:21:18,472 - WARNING - Skipping self-relationship for word ID 52067
+2025-03-29 19:21:19,816 - WARNING - Skipping self-relationship for word ID 52274
+2025-03-29 19:21:23,123 - INFO - Processed 37000/65336 entries
+2025-03-29 19:21:27,971 - WARNING - Skipping self-relationship for word ID 53976
+2025-03-29 19:21:31,698 - INFO - Processed 38000/65336 entries
+2025-03-29 19:21:33,656 - WARNING - Skipping self-relationship for word ID 54893
+2025-03-29 19:21:37,314 - WARNING - Skipping self-relationship for word ID 55399
+2025-03-29 19:21:39,418 - INFO - Processed 39000/65336 entries
+2025-03-29 19:21:40,061 - WARNING - Skipping self-relationship for word ID 55814
+2025-03-29 19:21:47,856 - INFO - Processed 40000/65336 entries
+2025-03-29 19:21:53,352 - WARNING - Duplicate definition detected for word ID 57750: sanlíng....
+2025-03-29 19:21:54,636 - INFO - Processed 41000/65336 entries
+2025-03-29 19:21:55,291 - WARNING - Duplicate definition detected for word ID 58186: [1] ipá...
+2025-03-29 19:21:55,294 - ERROR - Error inserting definition for word 'ópa': Word ID 58186 does not exist
+2025-03-29 19:21:55,295 - ERROR - Error inserting definition for word 'ópa': Word ID 58186 does not exist
+2025-03-29 19:21:56,193 - WARNING - Skipping self-relationship for word ID 58332
+2025-03-29 19:22:00,821 - WARNING - Duplicate definition detected for word ID 59338: barakilan....
+2025-03-29 19:22:00,834 - INFO - Processed 42000/65336 entries
+2025-03-29 19:22:07,137 - WARNING - Skipping self-relationship for word ID 60886
+2025-03-29 19:22:07,252 - INFO - Processed 43000/65336 entries
+2025-03-29 19:22:08,680 - WARNING - Skipping self-relationship for word ID 61232
+2025-03-29 19:22:11,769 - WARNING - Skipping self-relationship for word ID 61814
+2025-03-29 19:22:14,578 - INFO - Processed 44000/65336 entries
+2025-03-29 19:22:23,511 - INFO - Processed 45000/65336 entries
+2025-03-29 19:22:33,218 - INFO - Processed 46000/65336 entries
+2025-03-29 19:22:40,256 - WARNING - Skipping self-relationship for word ID 66153
+2025-03-29 19:22:42,967 - INFO - Processed 47000/65336 entries
+2025-03-29 19:22:55,001 - INFO - Processed 48000/65336 entries
+2025-03-29 19:22:57,318 - WARNING - Skipping self-relationship for word ID 68197
+2025-03-29 19:23:01,223 - WARNING - Skipping self-relationship for word ID 68663
+2025-03-29 19:23:01,240 - WARNING - Skipping self-relationship for word ID 68663
+2025-03-29 19:23:04,407 - INFO - Processed 49000/65336 entries
+2025-03-29 19:23:13,035 - WARNING - Skipping self-relationship for word ID 69946
+2025-03-29 19:23:17,522 - INFO - Processed 50000/65336 entries
+2025-03-29 19:23:23,105 - WARNING - Duplicate definition detected for word ID 70789: túnay....
+2025-03-29 19:23:23,648 - WARNING - Duplicate definition detected for word ID 70885: pinsalà....
+2025-03-29 19:23:27,361 - INFO - Processed 51000/65336 entries
+2025-03-29 19:23:30,074 - WARNING - Duplicate definition detected for word ID 71927: ruwína....
+2025-03-29 19:23:30,185 - WARNING - Skipping self-relationship for word ID 72021
+2025-03-29 19:23:30,348 - WARNING - Skipping self-relationship for word ID 72067
+2025-03-29 19:23:30,676 - WARNING - Skipping self-relationship for word ID 72167
+2025-03-29 19:23:30,788 - WARNING - Skipping self-relationship for word ID 72194
+2025-03-29 19:23:33,062 - WARNING - Skipping self-relationship for word ID 72800
+2025-03-29 19:23:33,070 - WARNING - Skipping self-relationship for word ID 72800
+2025-03-29 19:23:33,075 - WARNING - Skipping self-relationship for word ID 72800
+2025-03-29 19:23:33,110 - INFO - Processed 52000/65336 entries
+2025-03-29 19:23:33,205 - WARNING - Skipping self-relationship for word ID 72824
+2025-03-29 19:23:33,208 - WARNING - Skipping self-relationship for word ID 72824
+2025-03-29 19:23:39,732 - WARNING - Duplicate definition detected for word ID 73159: salálay...
+2025-03-29 19:23:40,070 - INFO - Processed 53000/65336 entries
+2025-03-29 19:23:42,292 - WARNING - Skipping self-relationship for word ID 74940
+2025-03-29 19:23:45,755 - INFO - Processed 54000/65336 entries
+2025-03-29 19:23:48,793 - WARNING - Skipping self-relationship for word ID 76349
+2025-03-29 19:23:49,132 - WARNING - Skipping self-relationship for word ID 76429
+2025-03-29 19:23:52,319 - INFO - Processed 55000/65336 entries
+2025-03-29 19:23:52,400 - WARNING - Duplicate definition detected for word ID 77100: payak...
+2025-03-29 19:23:56,839 - WARNING - Duplicate definition detected for word ID 78228: bíngot...
+2025-03-29 19:23:57,520 - WARNING - Skipping self-relationship for word ID 78408
+2025-03-29 19:23:57,628 - INFO - Processed 56000/65336 entries
+2025-03-29 19:24:00,047 - WARNING - Skipping self-relationship for word ID 79059
+2025-03-29 19:24:00,263 - WARNING - Skipping self-relationship for word ID 79106
+2025-03-29 19:24:00,844 - WARNING - Duplicate definition detected for word ID 79234: [1] tukod na ikinakatang o isinasandig para tumata...
+2025-03-29 19:24:00,848 - WARNING - Cannot create relation: From word does not exist
+2025-03-29 19:24:00,851 - WARNING - Cannot create relation: From word does not exist
+2025-03-29 19:24:00,853 - WARNING - Cannot create relation: From word does not exist
+2025-03-29 19:24:00,854 - WARNING - Cannot create relation: From word does not exist
+2025-03-29 19:24:00,856 - WARNING - Cannot create relation: From word does not exist
+2025-03-29 19:24:00,857 - ERROR - Error inserting definition for word 'súhay': Word ID 79234 does not exist
+2025-03-29 19:24:01,002 - WARNING - Skipping self-relationship for word ID 79280
+2025-03-29 19:24:02,360 - WARNING - Skipping self-relationship for word ID 79644
+2025-03-29 19:24:02,574 - INFO - Processed 57000/65336 entries
+2025-03-29 19:24:03,081 - WARNING - Duplicate definition detected for word ID 79821: iták....
+2025-03-29 19:24:04,157 - WARNING - Skipping self-relationship for word ID 80096
+2025-03-29 19:24:05,266 - WARNING - Duplicate definition detected for word ID 80392: suhà....
+2025-03-29 19:24:06,177 - WARNING - Skipping self-relationship for word ID 80622
+2025-03-29 19:24:07,570 - WARNING - Skipping self-relationship for word ID 81018
+2025-03-29 19:24:08,220 - INFO - Processed 58000/65336 entries
+2025-03-29 19:24:09,057 - WARNING - Duplicate definition detected for word ID 80676: tadyáng....
+2025-03-29 19:24:11,314 - WARNING - Duplicate definition detected for word ID 81671: taláhib....
+2025-03-29 19:24:13,958 - INFO - Processed 59000/65336 entries
+2025-03-29 19:24:14,452 - WARNING - Duplicate definition detected for word ID 82865: tangherína....
+2025-03-29 19:24:14,830 - WARNING - Duplicate definition detected for word ID 82955: tanigì....
+2025-03-29 19:24:16,332 - WARNING - Duplicate definition detected for word ID 83362: galapóng....
+2025-03-29 19:24:16,642 - WARNING - Skipping self-relationship for word ID 83446
+2025-03-29 19:24:17,200 - WARNING - Skipping self-relationship for word ID 83569
+2025-03-29 19:24:19,638 - INFO - Processed 60000/65336 entries
+2025-03-29 19:24:20,382 - WARNING - Skipping self-relationship for word ID 84398
+2025-03-29 19:24:23,784 - WARNING - Skipping self-relationship for word ID 85204
+2025-03-29 19:24:25,564 - INFO - Processed 61000/65336 entries
+2025-03-29 19:24:29,170 - WARNING - Skipping self-relationship for word ID 86320
+2025-03-29 19:24:30,053 - WARNING - Skipping self-relationship for word ID 86483
+2025-03-29 19:24:32,119 - INFO - Processed 62000/65336 entries
+2025-03-29 19:24:32,710 - WARNING - Skipping self-relationship for word ID 86970
+2025-03-29 19:24:35,393 - WARNING - Skipping self-relationship for word ID 87420
+2025-03-29 19:24:35,400 - WARNING - Skipping self-relationship for word ID 87420
+2025-03-29 19:24:36,017 - WARNING - Duplicate definition detected for word ID 87514: kánan–...
+2025-03-29 19:24:36,617 - WARNING - Skipping self-relationship for word ID 87662
+2025-03-29 19:24:36,828 - WARNING - Skipping self-relationship for word ID 87729
+2025-03-29 19:24:37,069 - WARNING - Skipping self-relationship for word ID 87793
+2025-03-29 19:24:37,898 - WARNING - Skipping self-relationship for word ID 87974
+2025-03-29 19:24:37,915 - WARNING - Skipping self-relationship for word ID 87974
+2025-03-29 19:24:38,509 - WARNING - Skipping self-relationship for word ID 88095
+2025-03-29 19:24:39,995 - INFO - Processed 63000/65336 entries
+2025-03-29 19:24:40,385 - WARNING - Skipping self-relationship for word ID 88572
+2025-03-29 19:24:41,855 - WARNING - Duplicate definition detected for word ID 88840: útak...
+2025-03-29 19:24:45,171 - WARNING - Skipping self-relationship for word ID 89737
+2025-03-29 19:24:45,412 - INFO - Processed 64000/65336 entries
+2025-03-29 19:24:51,201 - INFO - Processed 65000/65336 entries
+2025-03-29 19:24:51,653 - WARNING - Skipping self-relationship for word ID 91166
+2025-03-29 19:24:51,658 - WARNING - Skipping self-relationship for word ID 91167
+2025-03-29 19:24:52,733 - WARNING - Duplicate definition detected for word ID 91392: ngípin....
+2025-03-29 19:24:52,815 - WARNING - Skipping self-relationship for word ID 91410
+2025-03-29 19:24:53,215 - WARNING - Duplicate definition detected for word ID 91528: úngol...
+2025-03-29 19:24:53,375 - INFO - Tagalog words processing complete:
+2025-03-29 19:24:53,375 - INFO -   Total entries: 65336
+2025-03-29 19:24:53,376 - INFO -   Processed: 65336
+2025-03-29 19:24:53,376 - INFO -   Skipped: 0
+2025-03-29 19:24:53,376 - INFO -   Errors: 0
+2025-03-29 19:24:53,377 - INFO -   Definitions added: 92679
+2025-03-29 19:24:53,377 - INFO -   Synonyms added: 41175
+2025-03-29 19:24:53,377 - INFO -   References added: 5288
+2025-03-29 19:24:53,378 - INFO -   Variants added: 2017
+2025-03-29 19:24:53,378 - INFO -   Relations added: 48909
+2025-03-29 19:24:53,378 - INFO -   Etymologies processed: 57361
+2025-03-29 19:24:53,942 - WARNING - Skipping self-relationship for word ID 91577
+2025-03-29 19:24:53,956 - WARNING - Skipping self-relationship for word ID 91582
+2025-03-29 19:24:53,974 - WARNING - Skipping self-relationship for word ID 91591
+2025-03-29 19:24:54,050 - WARNING - Skipping self-relationship for word ID 91613
+2025-03-29 19:24:54,099 - WARNING - Skipping self-relationship for word ID 91626
+2025-03-29 19:24:54,122 - WARNING - Skipping self-relationship for word ID 91631
+2025-03-29 19:24:54,193 - WARNING - Skipping self-relationship for word ID 91648
+2025-03-29 19:24:54,262 - WARNING - Skipping self-relationship for word ID 91666
+2025-03-29 19:24:54,299 - WARNING - Skipping self-relationship for word ID 91676
+2025-03-29 19:24:54,403 - WARNING - Skipping self-relationship for word ID 91705
+2025-03-29 19:24:54,488 - WARNING - Skipping self-relationship for word ID 91728
+2025-03-29 19:24:54,608 - WARNING - Skipping self-relationship for word ID 91764
+2025-03-29 19:24:54,610 - WARNING - Skipping self-relationship for word ID 91764
+2025-03-29 19:24:54,633 - WARNING - Skipping self-relationship for word ID 91771
+2025-03-29 19:24:54,666 - WARNING - Skipping self-relationship for word ID 91778
+2025-03-29 19:24:54,760 - WARNING - Skipping self-relationship for word ID 91809
+2025-03-29 19:24:54,882 - WARNING - Skipping self-relationship for word ID 91844
+2025-03-29 19:24:54,894 - WARNING - Skipping self-relationship for word ID 91848
+2025-03-29 19:24:54,980 - WARNING - Skipping self-relationship for word ID 91874
+2025-03-29 19:24:55,018 - WARNING - Skipping self-relationship for word ID 91886
+2025-03-29 19:24:55,138 - WARNING - Skipping self-relationship for word ID 91921
+2025-03-29 19:24:55,239 - WARNING - Skipping self-relationship for word ID 91951
+2025-03-29 19:24:55,276 - WARNING - Skipping self-relationship for word ID 91961
+2025-03-29 19:24:55,374 - WARNING - Skipping self-relationship for word ID 91990
+2025-03-29 19:24:55,460 - WARNING - Skipping self-relationship for word ID 92016
+2025-03-29 19:24:55,604 - WARNING - Skipping self-relationship for word ID 92056
+2025-03-29 19:24:55,884 - WARNING - Skipping self-relationship for word ID 92135
+2025-03-29 19:24:55,909 - WARNING - Skipping self-relationship for word ID 92142
+2025-03-29 19:24:55,928 - WARNING - Skipping self-relationship for word ID 92147
+2025-03-29 19:24:56,006 - WARNING - Skipping self-relationship for word ID 92166
+2025-03-29 19:24:56,107 - WARNING - Skipping self-relationship for word ID 92197
+2025-03-29 19:24:56,153 - WARNING - Skipping self-relationship for word ID 92209
+2025-03-29 19:24:56,519 - WARNING - Skipping self-relationship for word ID 92308
+2025-03-29 19:24:56,611 - WARNING - Skipping self-relationship for word ID 92335
+2025-03-29 19:24:56,778 - WARNING - Skipping self-relationship for word ID 92379
+2025-03-29 19:24:56,866 - WARNING - Skipping self-relationship for word ID 92403
+2025-03-29 19:24:56,902 - WARNING - Skipping self-relationship for word ID 92409
+2025-03-29 19:24:57,269 - WARNING - Skipping self-relationship for word ID 92512
+2025-03-29 19:24:57,371 - WARNING - Skipping self-relationship for word ID 92537
+2025-03-29 19:24:57,515 - WARNING - Skipping self-relationship for word ID 92576
+2025-03-29 19:24:57,531 - WARNING - Skipping self-relationship for word ID 92580
+2025-03-29 19:24:57,746 - WARNING - Skipping self-relationship for word ID 92633
+2025-03-29 19:24:57,783 - WARNING - Skipping self-relationship for word ID 92641
+2025-03-29 19:24:57,931 - WARNING - Skipping self-relationship for word ID 92678
+2025-03-29 19:24:58,069 - WARNING - Skipping self-relationship for word ID 92712
+2025-03-29 19:24:58,144 - WARNING - Skipping self-relationship for word ID 92734
+2025-03-29 19:24:58,270 - WARNING - Skipping self-relationship for word ID 92769
+2025-03-29 19:24:58,272 - WARNING - Skipping self-relationship for word ID 92769
+2025-03-29 19:24:58,510 - WARNING - Skipping self-relationship for word ID 92831
+2025-03-29 19:24:58,631 - WARNING - Skipping self-relationship for word ID 92867
+2025-03-29 19:24:58,706 - WARNING - Skipping self-relationship for word ID 92889
+2025-03-29 19:24:58,835 - WARNING - Skipping self-relationship for word ID 92925
+2025-03-29 19:24:58,961 - WARNING - Skipping self-relationship for word ID 92958
+2025-03-29 19:24:59,056 - WARNING - Skipping self-relationship for word ID 92982
+2025-03-29 19:24:59,143 - WARNING - Skipping self-relationship for word ID 93004
+2025-03-29 19:24:59,173 - WARNING - Skipping self-relationship for word ID 93011
+2025-03-29 19:24:59,278 - WARNING - Skipping self-relationship for word ID 93038
+2025-03-29 19:24:59,356 - WARNING - Skipping self-relationship for word ID 93058
+2025-03-29 19:24:59,550 - WARNING - Skipping self-relationship for word ID 93110
+2025-03-29 19:24:59,553 - WARNING - Skipping self-relationship for word ID 93110
+2025-03-29 19:24:59,629 - WARNING - Skipping self-relationship for word ID 93130
+2025-03-29 19:24:59,741 - WARNING - Skipping self-relationship for word ID 93158
+2025-03-29 19:24:59,836 - WARNING - Skipping self-relationship for word ID 93184
+2025-03-29 19:24:59,967 - WARNING - Skipping self-relationship for word ID 93212
+2025-03-29 19:25:00,047 - WARNING - Skipping self-relationship for word ID 93235
+2025-03-29 19:25:00,108 - WARNING - Skipping self-relationship for word ID 93251
+2025-03-29 19:25:00,151 - INFO - Processed 100/2238 root word entries
+2025-03-29 19:25:00,164 - WARNING - Skipping self-relationship for word ID 93263
+2025-03-29 19:25:00,271 - WARNING - Skipping self-relationship for word ID 93292
+2025-03-29 19:25:00,366 - WARNING - Skipping self-relationship for word ID 93317
+2025-03-29 19:25:00,486 - WARNING - Skipping self-relationship for word ID 93347
+2025-03-29 19:25:00,597 - WARNING - Skipping self-relationship for word ID 93375
+2025-03-29 19:25:00,694 - WARNING - Skipping self-relationship for word ID 93400
+2025-03-29 19:25:00,824 - WARNING - Skipping self-relationship for word ID 93437
+2025-03-29 19:25:00,890 - WARNING - Skipping self-relationship for word ID 93453
+2025-03-29 19:25:01,067 - WARNING - Skipping self-relationship for word ID 93498
+2025-03-29 19:25:01,148 - WARNING - Skipping self-relationship for word ID 93519
+2025-03-29 19:25:01,224 - WARNING - Skipping self-relationship for word ID 93538
+2025-03-29 19:25:01,263 - WARNING - Skipping self-relationship for word ID 93544
+2025-03-29 19:25:01,350 - WARNING - Skipping self-relationship for word ID 93568
+2025-03-29 19:25:01,416 - WARNING - Skipping self-relationship for word ID 93585
+2025-03-29 19:25:01,466 - WARNING - Skipping self-relationship for word ID 93597
+2025-03-29 19:25:01,561 - WARNING - Skipping self-relationship for word ID 93618
+2025-03-29 19:25:01,588 - WARNING - Skipping self-relationship for word ID 93630
+2025-03-29 19:25:01,634 - WARNING - Skipping self-relationship for word ID 93642
+2025-03-29 19:25:01,743 - WARNING - Skipping self-relationship for word ID 93668
+2025-03-29 19:25:02,082 - WARNING - Skipping self-relationship for word ID 93754
+2025-03-29 19:25:02,155 - WARNING - Skipping self-relationship for word ID 93774
+2025-03-29 19:25:02,207 - WARNING - Skipping self-relationship for word ID 93781
+2025-03-29 19:25:02,590 - WARNING - Skipping self-relationship for word ID 93886
+2025-03-29 19:25:02,639 - WARNING - Skipping self-relationship for word ID 93897
+2025-03-29 19:25:02,786 - WARNING - Skipping self-relationship for word ID 93934
+2025-03-29 19:25:02,840 - WARNING - Skipping self-relationship for word ID 93949
+2025-03-29 19:25:02,914 - WARNING - Skipping self-relationship for word ID 93968
+2025-03-29 19:25:02,981 - WARNING - Skipping self-relationship for word ID 93985
+2025-03-29 19:25:03,024 - WARNING - Skipping self-relationship for word ID 93985
+2025-03-29 19:25:03,049 - WARNING - Skipping self-relationship for word ID 94001
+2025-03-29 19:25:03,060 - WARNING - Skipping self-relationship for word ID 94004
+2025-03-29 19:25:03,102 - WARNING - Skipping self-relationship for word ID 94015
+2025-03-29 19:25:03,121 - WARNING - Skipping self-relationship for word ID 94019
+2025-03-29 19:25:03,234 - WARNING - Skipping self-relationship for word ID 94044
+2025-03-29 19:25:03,296 - WARNING - Skipping self-relationship for word ID 94056
+2025-03-29 19:25:03,494 - WARNING - Skipping self-relationship for word ID 94103
+2025-03-29 19:25:03,560 - WARNING - Skipping self-relationship for word ID 94118
+2025-03-29 19:25:03,739 - WARNING - Skipping self-relationship for word ID 94161
+2025-03-29 19:25:03,810 - WARNING - Skipping self-relationship for word ID 94180
+2025-03-29 19:25:03,836 - WARNING - Skipping self-relationship for word ID 94187
+2025-03-29 19:25:03,966 - WARNING - Skipping self-relationship for word ID 94221
+2025-03-29 19:25:04,006 - WARNING - Skipping self-relationship for word ID 94230
+2025-03-29 19:25:04,176 - WARNING - Skipping self-relationship for word ID 94267
+2025-03-29 19:25:04,243 - WARNING - Skipping self-relationship for word ID 94287
+2025-03-29 19:25:04,436 - WARNING - Skipping self-relationship for word ID 94324
+2025-03-29 19:25:04,489 - WARNING - Skipping self-relationship for word ID 94346
+2025-03-29 19:25:04,519 - WARNING - Skipping self-relationship for word ID 94356
+2025-03-29 19:25:04,686 - WARNING - Skipping self-relationship for word ID 94397
+2025-03-29 19:25:04,753 - WARNING - Skipping self-relationship for word ID 94416
+2025-03-29 19:25:04,755 - WARNING - Skipping self-relationship for word ID 94416
+2025-03-29 19:25:04,821 - WARNING - Skipping self-relationship for word ID 94434
+2025-03-29 19:25:04,822 - WARNING - Skipping self-relationship for word ID 94434
+2025-03-29 19:25:04,969 - WARNING - Skipping self-relationship for word ID 94466
+2025-03-29 19:25:05,017 - WARNING - Skipping self-relationship for word ID 94480
+2025-03-29 19:25:05,021 - WARNING - Skipping self-relationship for word ID 94480
+2025-03-29 19:25:05,098 - WARNING - Skipping self-relationship for word ID 94496
+2025-03-29 19:25:05,135 - WARNING - Skipping self-relationship for word ID 94503
+2025-03-29 19:25:05,267 - WARNING - Skipping self-relationship for word ID 94542
+2025-03-29 19:25:05,398 - WARNING - Skipping self-relationship for word ID 94570
+2025-03-29 19:25:05,518 - WARNING - Skipping self-relationship for word ID 94597
+2025-03-29 19:25:05,559 - WARNING - Skipping self-relationship for word ID 94609
+2025-03-29 19:25:05,666 - WARNING - Skipping self-relationship for word ID 94635
+2025-03-29 19:25:05,710 - WARNING - Skipping self-relationship for word ID 94645
+2025-03-29 19:25:05,712 - WARNING - Skipping self-relationship for word ID 94645
+2025-03-29 19:25:05,781 - WARNING - Skipping self-relationship for word ID 94660
+2025-03-29 19:25:05,845 - WARNING - Skipping self-relationship for word ID 94669
+2025-03-29 19:25:05,878 - WARNING - Skipping self-relationship for word ID 94682
+2025-03-29 19:25:06,004 - WARNING - Skipping self-relationship for word ID 94711
+2025-03-29 19:25:06,099 - WARNING - Skipping self-relationship for word ID 94731
+2025-03-29 19:25:06,101 - WARNING - Skipping self-relationship for word ID 94731
+2025-03-29 19:25:06,191 - WARNING - Skipping self-relationship for word ID 94753
+2025-03-29 19:25:06,310 - WARNING - Skipping self-relationship for word ID 94782
+2025-03-29 19:25:06,391 - WARNING - Skipping self-relationship for word ID 94801
+2025-03-29 19:25:06,435 - INFO - Processed 200/2238 root word entries
+2025-03-29 19:25:06,486 - WARNING - Skipping self-relationship for word ID 94820
+2025-03-29 19:25:06,621 - WARNING - Skipping self-relationship for word ID 94856
+2025-03-29 19:25:06,711 - WARNING - Skipping self-relationship for word ID 94880
+2025-03-29 19:25:06,715 - WARNING - Skipping self-relationship for word ID 94880
+2025-03-29 19:25:06,825 - WARNING - Skipping self-relationship for word ID 94908
+2025-03-29 19:25:06,881 - WARNING - Skipping self-relationship for word ID 94920
+2025-03-29 19:25:06,918 - WARNING - Skipping self-relationship for word ID 94934
+2025-03-29 19:25:06,952 - WARNING - Skipping self-relationship for word ID 94938
+2025-03-29 19:25:07,020 - WARNING - Skipping self-relationship for word ID 94957
+2025-03-29 19:25:07,290 - WARNING - Skipping self-relationship for word ID 95023
+2025-03-29 19:25:07,365 - WARNING - Skipping self-relationship for word ID 95040
+2025-03-29 19:25:07,439 - WARNING - Skipping self-relationship for word ID 95059
+2025-03-29 19:25:07,493 - WARNING - Skipping self-relationship for word ID 95072
+2025-03-29 19:25:07,508 - WARNING - Skipping self-relationship for word ID 95076
+2025-03-29 19:25:07,607 - WARNING - Skipping self-relationship for word ID 95098
+2025-03-29 19:25:07,721 - WARNING - Skipping self-relationship for word ID 95124
+2025-03-29 19:25:07,821 - WARNING - Skipping self-relationship for word ID 95151
+2025-03-29 19:25:07,973 - WARNING - Skipping self-relationship for word ID 95186
+2025-03-29 19:25:08,032 - WARNING - Skipping self-relationship for word ID 95201
+2025-03-29 19:25:08,095 - WARNING - Skipping self-relationship for word ID 95214
+2025-03-29 19:25:08,122 - WARNING - Skipping self-relationship for word ID 95221
+2025-03-29 19:25:08,237 - WARNING - Skipping self-relationship for word ID 95248
+2025-03-29 19:25:08,292 - WARNING - Skipping self-relationship for word ID 95264
+2025-03-29 19:25:08,329 - WARNING - Skipping self-relationship for word ID 95272
+2025-03-29 19:25:08,332 - WARNING - Skipping self-relationship for word ID 95272
+2025-03-29 19:25:08,417 - WARNING - Skipping self-relationship for word ID 95289
+2025-03-29 19:25:08,479 - WARNING - Skipping self-relationship for word ID 95301
+2025-03-29 19:25:08,587 - WARNING - Skipping self-relationship for word ID 95326
+2025-03-29 19:25:08,730 - WARNING - Skipping self-relationship for word ID 95359
+2025-03-29 19:25:08,784 - WARNING - Skipping self-relationship for word ID 95370
+2025-03-29 19:25:08,871 - WARNING - Skipping self-relationship for word ID 95392
+2025-03-29 19:25:08,951 - WARNING - Skipping self-relationship for word ID 95411
+2025-03-29 19:25:08,973 - WARNING - Skipping self-relationship for word ID 95417
+2025-03-29 19:25:09,009 - WARNING - Skipping self-relationship for word ID 95426
+2025-03-29 19:25:09,187 - WARNING - Skipping self-relationship for word ID 95467
+2025-03-29 19:25:09,378 - WARNING - Skipping self-relationship for word ID 95506
+2025-03-29 19:25:09,530 - WARNING - Skipping self-relationship for word ID 95539
+2025-03-29 19:25:09,610 - WARNING - Skipping self-relationship for word ID 95555
+2025-03-29 19:25:09,683 - WARNING - Skipping self-relationship for word ID 95570
+2025-03-29 19:25:09,742 - WARNING - Skipping self-relationship for word ID 95585
+2025-03-29 19:25:09,872 - WARNING - Skipping self-relationship for word ID 95616
+2025-03-29 19:25:09,882 - WARNING - Skipping self-relationship for word ID 95618
+2025-03-29 19:25:10,004 - WARNING - Skipping self-relationship for word ID 95646
+2025-03-29 19:25:10,084 - WARNING - Skipping self-relationship for word ID 95666
+2025-03-29 19:25:10,244 - WARNING - Skipping self-relationship for word ID 95704
+2025-03-29 19:25:10,248 - WARNING - Skipping self-relationship for word ID 95704
+2025-03-29 19:25:10,338 - WARNING - Skipping self-relationship for word ID 95723
+2025-03-29 19:25:10,424 - WARNING - Skipping self-relationship for word ID 95743
+2025-03-29 19:25:10,471 - WARNING - Skipping self-relationship for word ID 95753
+2025-03-29 19:25:10,688 - WARNING - Skipping self-relationship for word ID 95805
+2025-03-29 19:25:10,747 - WARNING - Skipping self-relationship for word ID 95818
+2025-03-29 19:25:10,783 - WARNING - Skipping self-relationship for word ID 95826
+2025-03-29 19:25:10,829 - WARNING - Skipping self-relationship for word ID 95836
+2025-03-29 19:25:10,834 - WARNING - Skipping self-relationship for word ID 95836
+2025-03-29 19:25:11,087 - WARNING - Skipping self-relationship for word ID 95893
+2025-03-29 19:25:11,267 - WARNING - Skipping self-relationship for word ID 95925
+2025-03-29 19:25:11,337 - INFO - Processed 300/2238 root word entries
+2025-03-29 19:25:11,363 - WARNING - Skipping self-relationship for word ID 95944
+2025-03-29 19:25:11,395 - WARNING - Skipping self-relationship for word ID 95950
+2025-03-29 19:25:11,522 - WARNING - Skipping self-relationship for word ID 95976
+2025-03-29 19:25:11,608 - WARNING - Skipping self-relationship for word ID 95992
+2025-03-29 19:25:11,675 - WARNING - Skipping self-relationship for word ID 96006
+2025-03-29 19:25:11,749 - WARNING - Skipping self-relationship for word ID 96023
+2025-03-29 19:25:11,975 - WARNING - Skipping self-relationship for word ID 96076
+2025-03-29 19:25:12,078 - WARNING - Skipping self-relationship for word ID 96098
+2025-03-29 19:25:12,252 - WARNING - Skipping self-relationship for word ID 96131
+2025-03-29 19:25:12,367 - WARNING - Skipping self-relationship for word ID 96153
+2025-03-29 19:25:12,433 - WARNING - Skipping self-relationship for word ID 96169
+2025-03-29 19:25:12,558 - WARNING - Skipping self-relationship for word ID 96200
+2025-03-29 19:25:12,633 - WARNING - Skipping self-relationship for word ID 96215
+2025-03-29 19:25:12,695 - WARNING - Skipping self-relationship for word ID 96230
+2025-03-29 19:25:12,747 - WARNING - Skipping self-relationship for word ID 96240
+2025-03-29 19:25:13,030 - WARNING - Skipping self-relationship for word ID 96297
+2025-03-29 19:25:13,105 - WARNING - Skipping self-relationship for word ID 96310
+2025-03-29 19:25:13,155 - WARNING - Skipping self-relationship for word ID 96321
+2025-03-29 19:25:13,203 - WARNING - Skipping self-relationship for word ID 96328
+2025-03-29 19:25:13,489 - WARNING - Skipping self-relationship for word ID 96390
+2025-03-29 19:25:13,512 - WARNING - Skipping self-relationship for word ID 96398
+2025-03-29 19:25:13,516 - WARNING - Skipping self-relationship for word ID 96398
+2025-03-29 19:25:13,519 - WARNING - Skipping self-relationship for word ID 96398
+2025-03-29 19:25:13,575 - WARNING - Skipping self-relationship for word ID 96410
+2025-03-29 19:25:13,633 - WARNING - Skipping self-relationship for word ID 96420
+2025-03-29 19:25:13,694 - WARNING - Skipping self-relationship for word ID 96433
+2025-03-29 19:25:13,744 - WARNING - Skipping self-relationship for word ID 96443
+2025-03-29 19:25:13,747 - WARNING - Skipping self-relationship for word ID 96443
+2025-03-29 19:25:13,821 - WARNING - Skipping self-relationship for word ID 96460
+2025-03-29 19:25:13,889 - WARNING - Skipping self-relationship for word ID 96473
+2025-03-29 19:25:13,957 - WARNING - Skipping self-relationship for word ID 96486
+2025-03-29 19:25:13,983 - WARNING - Skipping self-relationship for word ID 96492
+2025-03-29 19:25:14,069 - WARNING - Skipping self-relationship for word ID 91589
+2025-03-29 19:25:14,083 - WARNING - Skipping self-relationship for word ID 96511
+2025-03-29 19:25:14,237 - WARNING - Skipping self-relationship for word ID 96543
+2025-03-29 19:25:14,350 - WARNING - Skipping self-relationship for word ID 96558
+2025-03-29 19:25:14,411 - WARNING - Skipping self-relationship for word ID 96576
+2025-03-29 19:25:14,465 - WARNING - Skipping self-relationship for word ID 96589
+2025-03-29 19:25:14,545 - WARNING - Skipping self-relationship for word ID 96606
+2025-03-29 19:25:14,735 - WARNING - Skipping self-relationship for word ID 96646
+2025-03-29 19:25:14,777 - WARNING - Skipping self-relationship for word ID 96655
+2025-03-29 19:25:14,780 - WARNING - Skipping self-relationship for word ID 96655
+2025-03-29 19:25:14,813 - WARNING - Skipping self-relationship for word ID 96659
+2025-03-29 19:25:14,822 - WARNING - Skipping self-relationship for word ID 96663
+2025-03-29 19:25:14,890 - WARNING - Skipping self-relationship for word ID 96678
+2025-03-29 19:25:14,983 - WARNING - Skipping self-relationship for word ID 96697
+2025-03-29 19:25:15,062 - WARNING - Skipping self-relationship for word ID 96713
+2025-03-29 19:25:15,110 - WARNING - Skipping self-relationship for word ID 96725
+2025-03-29 19:25:15,232 - WARNING - Skipping self-relationship for word ID 96748
+2025-03-29 19:25:15,304 - WARNING - Skipping self-relationship for word ID 96760
+2025-03-29 19:25:15,345 - WARNING - Skipping self-relationship for word ID 96776
+2025-03-29 19:25:15,351 - WARNING - Skipping self-relationship for word ID 96776
+2025-03-29 19:25:15,406 - WARNING - Skipping self-relationship for word ID 96784
+2025-03-29 19:25:15,505 - WARNING - Skipping self-relationship for word ID 96812
+2025-03-29 19:25:15,550 - WARNING - Skipping self-relationship for word ID 96819
+2025-03-29 19:25:15,553 - WARNING - Skipping self-relationship for word ID 96819
+2025-03-29 19:25:15,611 - WARNING - Skipping self-relationship for word ID 96833
+2025-03-29 19:25:15,677 - WARNING - Skipping self-relationship for word ID 96846
+2025-03-29 19:25:15,702 - WARNING - Skipping self-relationship for word ID 96851
+2025-03-29 19:25:15,716 - WARNING - Skipping self-relationship for word ID 96854
+2025-03-29 19:25:15,719 - WARNING - Skipping self-relationship for word ID 96854
+2025-03-29 19:25:15,772 - WARNING - Skipping self-relationship for word ID 96864
+2025-03-29 19:25:15,842 - WARNING - Skipping self-relationship for word ID 96876
+2025-03-29 19:25:15,926 - WARNING - Skipping self-relationship for word ID 96897
+2025-03-29 19:25:15,928 - WARNING - Skipping self-relationship for word ID 96897
+2025-03-29 19:25:16,026 - WARNING - Skipping self-relationship for word ID 96917
+2025-03-29 19:25:16,071 - WARNING - Skipping self-relationship for word ID 96927
+2025-03-29 19:25:16,134 - WARNING - Skipping self-relationship for word ID 96938
+2025-03-29 19:25:16,239 - WARNING - Skipping self-relationship for word ID 96962
+2025-03-29 19:25:16,267 - WARNING - Skipping self-relationship for word ID 96969
+2025-03-29 19:25:16,301 - WARNING - Skipping self-relationship for word ID 96977
+2025-03-29 19:25:16,371 - WARNING - Skipping self-relationship for word ID 96991
+2025-03-29 19:25:16,414 - WARNING - Skipping self-relationship for word ID 97000
+2025-03-29 19:25:16,540 - WARNING - Skipping self-relationship for word ID 97027
+2025-03-29 19:25:16,554 - INFO - Processed 400/2238 root word entries
+2025-03-29 19:25:16,596 - WARNING - Skipping self-relationship for word ID 97038
+2025-03-29 19:25:16,681 - WARNING - Skipping self-relationship for word ID 97052
+2025-03-29 19:25:16,765 - WARNING - Skipping self-relationship for word ID 97072
+2025-03-29 19:25:16,828 - WARNING - Skipping self-relationship for word ID 97083
+2025-03-29 19:25:16,831 - WARNING - Skipping self-relationship for word ID 97083
+2025-03-29 19:25:16,871 - WARNING - Skipping self-relationship for word ID 97090
+2025-03-29 19:25:17,015 - WARNING - Skipping self-relationship for word ID 97115
+2025-03-29 19:25:17,048 - WARNING - Skipping self-relationship for word ID 97120
+2025-03-29 19:25:17,078 - WARNING - Skipping self-relationship for word ID 97128
+2025-03-29 19:25:17,287 - WARNING - Skipping self-relationship for word ID 97163
+2025-03-29 19:25:17,392 - WARNING - Skipping self-relationship for word ID 97185
+2025-03-29 19:25:17,494 - WARNING - Skipping self-relationship for word ID 97207
+2025-03-29 19:25:17,565 - WARNING - Skipping self-relationship for word ID 97220
+2025-03-29 19:25:17,684 - WARNING - Skipping self-relationship for word ID 97242
+2025-03-29 19:25:17,754 - WARNING - Skipping self-relationship for word ID 97257
+2025-03-29 19:25:17,829 - WARNING - Skipping self-relationship for word ID 97271
+2025-03-29 19:25:17,959 - WARNING - Skipping self-relationship for word ID 97296
+2025-03-29 19:25:17,976 - WARNING - Skipping self-relationship for word ID 97300
+2025-03-29 19:25:18,056 - WARNING - Skipping self-relationship for word ID 97315
+2025-03-29 19:25:18,106 - WARNING - Skipping self-relationship for word ID 97324
+2025-03-29 19:25:18,183 - WARNING - Skipping self-relationship for word ID 97340
+2025-03-29 19:25:18,204 - WARNING - Skipping self-relationship for word ID 97345
+2025-03-29 19:25:18,266 - WARNING - Skipping self-relationship for word ID 97358
+2025-03-29 19:25:18,269 - WARNING - Skipping self-relationship for word ID 97358
+2025-03-29 19:25:18,298 - WARNING - Skipping self-relationship for word ID 97363
+2025-03-29 19:25:18,373 - WARNING - Skipping self-relationship for word ID 97377
+2025-03-29 19:25:18,417 - WARNING - Skipping self-relationship for word ID 97386
+2025-03-29 19:25:18,453 - WARNING - Skipping self-relationship for word ID 91605
+2025-03-29 19:25:18,495 - WARNING - Skipping self-relationship for word ID 97396
+2025-03-29 19:25:18,498 - WARNING - Skipping self-relationship for word ID 97396
+2025-03-29 19:25:18,681 - WARNING - Skipping self-relationship for word ID 97437
+2025-03-29 19:25:18,684 - WARNING - Skipping self-relationship for word ID 97437
+2025-03-29 19:25:18,697 - WARNING - Skipping self-relationship for word ID 97437
+2025-03-29 19:25:18,783 - WARNING - Skipping self-relationship for word ID 97457
+2025-03-29 19:25:18,885 - WARNING - Skipping self-relationship for word ID 97479
+2025-03-29 19:25:18,927 - WARNING - Skipping self-relationship for word ID 97487
+2025-03-29 19:25:18,971 - WARNING - Skipping self-relationship for word ID 97497
+2025-03-29 19:25:19,190 - WARNING - Skipping self-relationship for word ID 97538
+2025-03-29 19:25:19,227 - WARNING - Skipping self-relationship for word ID 97544
+2025-03-29 19:25:19,278 - WARNING - Skipping self-relationship for word ID 97557
+2025-03-29 19:25:19,332 - WARNING - Skipping self-relationship for word ID 97566
+2025-03-29 19:25:19,382 - WARNING - Skipping self-relationship for word ID 97576
+2025-03-29 19:25:19,441 - WARNING - Skipping self-relationship for word ID 97587
+2025-03-29 19:25:19,505 - WARNING - Skipping self-relationship for word ID 97599
+2025-03-29 19:25:19,540 - WARNING - Skipping self-relationship for word ID 97604
+2025-03-29 19:25:19,602 - WARNING - Skipping self-relationship for word ID 97616
+2025-03-29 19:25:19,751 - WARNING - Skipping self-relationship for word ID 97646
+2025-03-29 19:25:19,855 - WARNING - Skipping self-relationship for word ID 97664
+2025-03-29 19:25:19,918 - WARNING - Skipping self-relationship for word ID 97677
+2025-03-29 19:25:20,113 - WARNING - Skipping self-relationship for word ID 97717
+2025-03-29 19:25:20,144 - WARNING - Skipping self-relationship for word ID 97724
+2025-03-29 19:25:20,176 - WARNING - Skipping self-relationship for word ID 97729
+2025-03-29 19:25:20,308 - WARNING - Skipping self-relationship for word ID 97754
+2025-03-29 19:25:20,529 - WARNING - Skipping self-relationship for word ID 97797
+2025-03-29 19:25:20,598 - WARNING - Skipping self-relationship for word ID 97809
+2025-03-29 19:25:20,618 - WARNING - Skipping self-relationship for word ID 97814
+2025-03-29 19:25:20,653 - WARNING - Skipping self-relationship for word ID 97820
+2025-03-29 19:25:20,684 - WARNING - Skipping self-relationship for word ID 97825
+2025-03-29 19:25:20,709 - WARNING - Skipping self-relationship for word ID 97830
+2025-03-29 19:25:20,796 - WARNING - Skipping self-relationship for word ID 97846
+2025-03-29 19:25:20,835 - WARNING - Skipping self-relationship for word ID 97850
+2025-03-29 19:25:20,925 - WARNING - Skipping self-relationship for word ID 97869
+2025-03-29 19:25:20,936 - WARNING - Skipping self-relationship for word ID 97871
+2025-03-29 19:25:21,023 - WARNING - Skipping self-relationship for word ID 97887
+2025-03-29 19:25:21,200 - INFO - Processed 500/2238 root word entries
+2025-03-29 19:25:21,207 - WARNING - Skipping self-relationship for word ID 97919
+2025-03-29 19:25:21,279 - WARNING - Skipping self-relationship for word ID 97934
+2025-03-29 19:25:21,304 - WARNING - Skipping self-relationship for word ID 97938
+2025-03-29 19:25:21,468 - WARNING - Skipping self-relationship for word ID 97970
+2025-03-29 19:25:21,548 - WARNING - Skipping self-relationship for word ID 97984
+2025-03-29 19:25:21,650 - WARNING - Skipping self-relationship for word ID 98002
+2025-03-29 19:25:21,720 - WARNING - Skipping self-relationship for word ID 98017
+2025-03-29 19:25:21,889 - WARNING - Skipping self-relationship for word ID 98048
+2025-03-29 19:25:21,993 - WARNING - Skipping self-relationship for word ID 98065
+2025-03-29 19:25:22,053 - WARNING - Skipping self-relationship for word ID 98079
+2025-03-29 19:25:22,100 - WARNING - Skipping self-relationship for word ID 98085
+2025-03-29 19:25:22,124 - WARNING - Skipping self-relationship for word ID 98089
+2025-03-29 19:25:22,144 - WARNING - Skipping self-relationship for word ID 98095
+2025-03-29 19:25:22,229 - WARNING - Skipping self-relationship for word ID 98109
+2025-03-29 19:25:22,345 - WARNING - Skipping self-relationship for word ID 98134
+2025-03-29 19:25:22,367 - WARNING - Skipping self-relationship for word ID 98138
+2025-03-29 19:25:22,399 - WARNING - Skipping self-relationship for word ID 98142
+2025-03-29 19:25:22,452 - WARNING - Skipping self-relationship for word ID 98155
+2025-03-29 19:25:22,471 - WARNING - Skipping self-relationship for word ID 98159
+2025-03-29 19:25:22,554 - WARNING - Skipping self-relationship for word ID 98163
+2025-03-29 19:25:22,581 - WARNING - Skipping self-relationship for word ID 98181
+2025-03-29 19:25:22,616 - WARNING - Skipping self-relationship for word ID 98188
+2025-03-29 19:25:22,828 - WARNING - Skipping self-relationship for word ID 98223
+2025-03-29 19:25:22,857 - WARNING - Skipping self-relationship for word ID 98232
+2025-03-29 19:25:22,912 - WARNING - Skipping self-relationship for word ID 98244
+2025-03-29 19:25:22,957 - WARNING - Skipping self-relationship for word ID 98244
+2025-03-29 19:25:23,063 - WARNING - Skipping self-relationship for word ID 98275
+2025-03-29 19:25:23,142 - WARNING - Skipping self-relationship for word ID 98285
+2025-03-29 19:25:23,177 - WARNING - Skipping self-relationship for word ID 98295
+2025-03-29 19:25:23,347 - WARNING - Skipping self-relationship for word ID 98329
+2025-03-29 19:25:23,440 - WARNING - Skipping self-relationship for word ID 98337
+2025-03-29 19:25:23,465 - WARNING - Skipping self-relationship for word ID 98351
+2025-03-29 19:25:23,558 - WARNING - Skipping self-relationship for word ID 98368
+2025-03-29 19:25:23,606 - WARNING - Skipping self-relationship for word ID 98379
+2025-03-29 19:25:23,704 - WARNING - Skipping self-relationship for word ID 98400
+2025-03-29 19:25:23,793 - WARNING - Skipping self-relationship for word ID 98413
+2025-03-29 19:25:23,864 - WARNING - Skipping self-relationship for word ID 98427
+2025-03-29 19:25:23,931 - WARNING - Skipping self-relationship for word ID 98440
+2025-03-29 19:25:23,974 - WARNING - Skipping self-relationship for word ID 98449
+2025-03-29 19:25:23,999 - WARNING - Skipping self-relationship for word ID 98453
+2025-03-29 19:25:24,066 - WARNING - Skipping self-relationship for word ID 98468
+2025-03-29 19:25:24,084 - WARNING - Skipping self-relationship for word ID 98471
+2025-03-29 19:25:24,114 - WARNING - Skipping self-relationship for word ID 98478
+2025-03-29 19:25:24,184 - WARNING - Skipping self-relationship for word ID 98490
+2025-03-29 19:25:24,235 - WARNING - Skipping self-relationship for word ID 98501
+2025-03-29 19:25:24,364 - WARNING - Skipping self-relationship for word ID 98523
+2025-03-29 19:25:24,439 - WARNING - Skipping self-relationship for word ID 98534
+2025-03-29 19:25:24,508 - WARNING - Skipping self-relationship for word ID 98548
+2025-03-29 19:25:24,556 - WARNING - Skipping self-relationship for word ID 98558
+2025-03-29 19:25:24,792 - WARNING - Skipping self-relationship for word ID 98603
+2025-03-29 19:25:24,795 - WARNING - Skipping self-relationship for word ID 98603
+2025-03-29 19:25:24,849 - WARNING - Skipping self-relationship for word ID 98613
+2025-03-29 19:25:24,917 - WARNING - Skipping self-relationship for word ID 98627
+2025-03-29 19:25:24,987 - WARNING - Skipping self-relationship for word ID 98640
+2025-03-29 19:25:25,165 - WARNING - Skipping self-relationship for word ID 98671
+2025-03-29 19:25:25,245 - WARNING - Skipping self-relationship for word ID 98686
+2025-03-29 19:25:25,250 - WARNING - Skipping self-relationship for word ID 98686
+2025-03-29 19:25:25,368 - WARNING - Skipping self-relationship for word ID 98709
+2025-03-29 19:25:25,415 - WARNING - Skipping self-relationship for word ID 98716
+2025-03-29 19:25:25,462 - WARNING - Skipping self-relationship for word ID 98725
+2025-03-29 19:25:25,575 - WARNING - Skipping self-relationship for word ID 98751
+2025-03-29 19:25:25,652 - WARNING - Skipping self-relationship for word ID 98765
+2025-03-29 19:25:25,702 - WARNING - Skipping self-relationship for word ID 98774
+2025-03-29 19:25:25,729 - WARNING - Skipping self-relationship for word ID 98779
+2025-03-29 19:25:25,778 - WARNING - Skipping self-relationship for word ID 98788
+2025-03-29 19:25:25,813 - WARNING - Skipping self-relationship for word ID 98793
+2025-03-29 19:25:25,869 - INFO - Processed 600/2238 root word entries
+2025-03-29 19:25:25,876 - WARNING - Skipping self-relationship for word ID 98804
+2025-03-29 19:25:25,911 - WARNING - Skipping self-relationship for word ID 98809
+2025-03-29 19:25:26,013 - WARNING - Skipping self-relationship for word ID 98824
+2025-03-29 19:25:26,087 - WARNING - Skipping self-relationship for word ID 98841
+2025-03-29 19:25:26,260 - WARNING - Skipping self-relationship for word ID 98870
+2025-03-29 19:25:26,323 - WARNING - Skipping self-relationship for word ID 98881
+2025-03-29 19:25:26,421 - WARNING - Skipping self-relationship for word ID 98900
+2025-03-29 19:25:26,538 - WARNING - Skipping self-relationship for word ID 98923
+2025-03-29 19:25:26,595 - WARNING - Skipping self-relationship for word ID 98933
+2025-03-29 19:25:26,648 - WARNING - Skipping self-relationship for word ID 98942
+2025-03-29 19:25:26,729 - WARNING - Skipping self-relationship for word ID 98956
+2025-03-29 19:25:26,767 - WARNING - Skipping self-relationship for word ID 98963
+2025-03-29 19:25:26,851 - WARNING - Skipping self-relationship for word ID 98975
+2025-03-29 19:25:26,925 - WARNING - Skipping self-relationship for word ID 98992
+2025-03-29 19:25:26,975 - WARNING - Skipping self-relationship for word ID 99001
+2025-03-29 19:25:27,069 - WARNING - Skipping self-relationship for word ID 99016
+2025-03-29 19:25:27,121 - WARNING - Skipping self-relationship for word ID 99027
+2025-03-29 19:25:27,154 - WARNING - Skipping self-relationship for word ID 99032
+2025-03-29 19:25:27,379 - WARNING - Skipping self-relationship for word ID 99072
+2025-03-29 19:25:27,398 - WARNING - Skipping self-relationship for word ID 99076
+2025-03-29 19:25:27,573 - WARNING - Skipping self-relationship for word ID 99106
+2025-03-29 19:25:27,599 - WARNING - Skipping self-relationship for word ID 99113
+2025-03-29 19:25:27,704 - WARNING - Skipping self-relationship for word ID 99132
+2025-03-29 19:25:27,784 - WARNING - Skipping self-relationship for word ID 99147
+2025-03-29 19:25:27,934 - WARNING - Skipping self-relationship for word ID 99162
+2025-03-29 19:25:27,949 - WARNING - Skipping self-relationship for word ID 99175
+2025-03-29 19:25:28,107 - WARNING - Skipping self-relationship for word ID 99200
+2025-03-29 19:25:28,166 - WARNING - Skipping self-relationship for word ID 99209
+2025-03-29 19:25:28,243 - WARNING - Skipping self-relationship for word ID 99226
+2025-03-29 19:25:28,299 - WARNING - Skipping self-relationship for word ID 99235
+2025-03-29 19:25:28,367 - WARNING - Skipping self-relationship for word ID 99245
+2025-03-29 19:25:28,436 - WARNING - Skipping self-relationship for word ID 99254
+2025-03-29 19:25:28,496 - WARNING - Skipping self-relationship for word ID 99270
+2025-03-29 19:25:28,563 - WARNING - Skipping self-relationship for word ID 99284
+2025-03-29 19:25:28,628 - WARNING - Skipping self-relationship for word ID 99295
+2025-03-29 19:25:28,807 - WARNING - Skipping self-relationship for word ID 99325
+2025-03-29 19:25:28,828 - WARNING - Skipping self-relationship for word ID 99329
+2025-03-29 19:25:28,887 - WARNING - Skipping self-relationship for word ID 99342
+2025-03-29 19:25:28,967 - WARNING - Skipping self-relationship for word ID 99355
+2025-03-29 19:25:28,987 - WARNING - Skipping self-relationship for word ID 99359
+2025-03-29 19:25:29,014 - WARNING - Skipping self-relationship for word ID 99364
+2025-03-29 19:25:29,044 - WARNING - Skipping self-relationship for word ID 99369
+2025-03-29 19:25:29,084 - WARNING - Skipping self-relationship for word ID 99375
+2025-03-29 19:25:29,141 - WARNING - Skipping self-relationship for word ID 99387
+2025-03-29 19:25:29,229 - WARNING - Skipping self-relationship for word ID 99401
+2025-03-29 19:25:29,270 - WARNING - Skipping self-relationship for word ID 99410
+2025-03-29 19:25:29,472 - WARNING - Skipping self-relationship for word ID 99444
+2025-03-29 19:25:29,659 - WARNING - Skipping self-relationship for word ID 99473
+2025-03-29 19:25:29,675 - WARNING - Skipping self-relationship for word ID 99480
+2025-03-29 19:25:29,765 - WARNING - Skipping self-relationship for word ID 99494
+2025-03-29 19:25:29,912 - WARNING - Skipping self-relationship for word ID 99518
+2025-03-29 19:25:29,948 - WARNING - Skipping self-relationship for word ID 99525
+2025-03-29 19:25:29,992 - WARNING - Skipping self-relationship for word ID 99533
+2025-03-29 19:25:30,042 - WARNING - Skipping self-relationship for word ID 99540
+2025-03-29 19:25:30,071 - WARNING - Skipping self-relationship for word ID 99547
+2025-03-29 19:25:30,148 - WARNING - Skipping self-relationship for word ID 99561
+2025-03-29 19:25:30,238 - WARNING - Skipping self-relationship for word ID 99576
+2025-03-29 19:25:30,256 - WARNING - Skipping self-relationship for word ID 99580
+2025-03-29 19:25:30,369 - WARNING - Skipping self-relationship for word ID 99601
+2025-03-29 19:25:30,400 - WARNING - Skipping self-relationship for word ID 99607
+2025-03-29 19:25:30,450 - WARNING - Skipping self-relationship for word ID 99616
+2025-03-29 19:25:30,495 - INFO - Processed 700/2238 root word entries
+2025-03-29 19:25:30,500 - WARNING - Skipping self-relationship for word ID 99625
+2025-03-29 19:25:30,555 - WARNING - Skipping self-relationship for word ID 99632
+2025-03-29 19:25:30,686 - WARNING - Skipping self-relationship for word ID 99659
+2025-03-29 19:25:30,724 - WARNING - Skipping self-relationship for word ID 99668
+2025-03-29 19:25:30,864 - WARNING - Skipping self-relationship for word ID 99693
+2025-03-29 19:25:30,919 - WARNING - Skipping self-relationship for word ID 99702
+2025-03-29 19:25:30,963 - WARNING - Skipping self-relationship for word ID 99711
+2025-03-29 19:25:30,980 - WARNING - Skipping self-relationship for word ID 99714
+2025-03-29 19:25:31,064 - WARNING - Skipping self-relationship for word ID 99730
+2025-03-29 19:25:31,110 - WARNING - Skipping self-relationship for word ID 99739
+2025-03-29 19:25:31,178 - WARNING - Skipping self-relationship for word ID 99748
+2025-03-29 19:25:31,211 - WARNING - Skipping self-relationship for word ID 99756
+2025-03-29 19:25:31,328 - WARNING - Skipping self-relationship for word ID 99778
+2025-03-29 19:25:31,385 - WARNING - Skipping self-relationship for word ID 99786
+2025-03-29 19:25:31,434 - WARNING - Skipping self-relationship for word ID 99795
+2025-03-29 19:25:31,454 - WARNING - Skipping self-relationship for word ID 99801
+2025-03-29 19:25:31,482 - WARNING - Skipping self-relationship for word ID 99804
+2025-03-29 19:25:31,525 - WARNING - Skipping self-relationship for word ID 99813
+2025-03-29 19:25:31,577 - WARNING - Skipping self-relationship for word ID 99818
+2025-03-29 19:25:31,653 - WARNING - Skipping self-relationship for word ID 99830
+2025-03-29 19:25:31,712 - WARNING - Skipping self-relationship for word ID 99841
+2025-03-29 19:25:31,771 - WARNING - Skipping self-relationship for word ID 99851
+2025-03-29 19:25:31,871 - WARNING - Skipping self-relationship for word ID 99869
+2025-03-29 19:25:31,947 - WARNING - Skipping self-relationship for word ID 99885
+2025-03-29 19:25:31,983 - WARNING - Skipping self-relationship for word ID 99894
+2025-03-29 19:25:32,016 - WARNING - Skipping self-relationship for word ID 99901
+2025-03-29 19:25:32,077 - WARNING - Skipping self-relationship for word ID 99913
+2025-03-29 19:25:32,234 - WARNING - Skipping self-relationship for word ID 99946
+2025-03-29 19:25:32,311 - WARNING - Skipping self-relationship for word ID 99961
+2025-03-29 19:25:32,507 - WARNING - Skipping self-relationship for word ID 99990
+2025-03-29 19:25:32,593 - WARNING - Skipping self-relationship for word ID 100002
+2025-03-29 19:25:32,695 - WARNING - Skipping self-relationship for word ID 100020
+2025-03-29 19:25:32,722 - WARNING - Skipping self-relationship for word ID 100025
+2025-03-29 19:25:32,769 - WARNING - Skipping self-relationship for word ID 100035
+2025-03-29 19:25:32,849 - WARNING - Skipping self-relationship for word ID 100049
+2025-03-29 19:25:32,890 - WARNING - Skipping self-relationship for word ID 100060
+2025-03-29 19:25:32,941 - WARNING - Skipping self-relationship for word ID 100069
+2025-03-29 19:25:33,003 - WARNING - Skipping self-relationship for word ID 100079
+2025-03-29 19:25:33,140 - WARNING - Skipping self-relationship for word ID 100102
+2025-03-29 19:25:33,201 - WARNING - Skipping self-relationship for word ID 100111
+2025-03-29 19:25:33,268 - WARNING - Skipping self-relationship for word ID 100123
+2025-03-29 19:25:33,308 - WARNING - Skipping self-relationship for word ID 100131
+2025-03-29 19:25:33,360 - WARNING - Skipping self-relationship for word ID 100138
+2025-03-29 19:25:33,413 - WARNING - Skipping self-relationship for word ID 100150
+2025-03-29 19:25:33,443 - WARNING - Skipping self-relationship for word ID 100153
+2025-03-29 19:25:33,463 - WARNING - Skipping self-relationship for word ID 100158
+2025-03-29 19:25:33,541 - WARNING - Skipping self-relationship for word ID 100168
+2025-03-29 19:25:33,587 - WARNING - Skipping self-relationship for word ID 100179
+2025-03-29 19:25:33,614 - WARNING - Skipping self-relationship for word ID 100183
+2025-03-29 19:25:33,699 - WARNING - Skipping self-relationship for word ID 100200
+2025-03-29 19:25:33,779 - WARNING - Skipping self-relationship for word ID 100213
+2025-03-29 19:25:33,878 - WARNING - Skipping self-relationship for word ID 100234
+2025-03-29 19:25:33,926 - WARNING - Skipping self-relationship for word ID 100240
+2025-03-29 19:25:33,979 - WARNING - Skipping self-relationship for word ID 100253
+2025-03-29 19:25:34,070 - WARNING - Skipping self-relationship for word ID 100271
+2025-03-29 19:25:34,094 - WARNING - Skipping self-relationship for word ID 100278
+2025-03-29 19:25:34,134 - WARNING - Skipping self-relationship for word ID 100286
+2025-03-29 19:25:34,183 - WARNING - Skipping self-relationship for word ID 100296
+2025-03-29 19:25:34,244 - WARNING - Skipping self-relationship for word ID 100308
+2025-03-29 19:25:34,269 - WARNING - Skipping self-relationship for word ID 100314
+2025-03-29 19:25:34,366 - WARNING - Skipping self-relationship for word ID 100328
+2025-03-29 19:25:34,502 - WARNING - Skipping self-relationship for word ID 100361
+2025-03-29 19:25:34,579 - WARNING - Skipping self-relationship for word ID 100377
+2025-03-29 19:25:34,602 - WARNING - Skipping self-relationship for word ID 100381
+2025-03-29 19:25:34,624 - INFO - Processed 800/2238 root word entries
+2025-03-29 19:25:34,727 - WARNING - Skipping self-relationship for word ID 100404
+2025-03-29 19:25:34,781 - WARNING - Skipping self-relationship for word ID 100414
+2025-03-29 19:25:34,838 - WARNING - Skipping self-relationship for word ID 100426
+2025-03-29 19:25:34,870 - WARNING - Skipping self-relationship for word ID 100433
+2025-03-29 19:25:34,895 - WARNING - Skipping self-relationship for word ID 100437
+2025-03-29 19:25:34,928 - WARNING - Skipping self-relationship for word ID 100441
+2025-03-29 19:25:34,969 - WARNING - Skipping self-relationship for word ID 100453
+2025-03-29 19:25:35,022 - WARNING - Skipping self-relationship for word ID 100464
+2025-03-29 19:25:35,080 - WARNING - Skipping self-relationship for word ID 100476
+2025-03-29 19:25:35,140 - WARNING - Skipping self-relationship for word ID 100485
+2025-03-29 19:25:35,163 - WARNING - Skipping self-relationship for word ID 100493
+2025-03-29 19:25:35,205 - WARNING - Skipping self-relationship for word ID 100498
+2025-03-29 19:25:35,423 - WARNING - Skipping self-relationship for word ID 100542
+2025-03-29 19:25:35,537 - WARNING - Skipping self-relationship for word ID 100566
+2025-03-29 19:25:35,583 - WARNING - Skipping self-relationship for word ID 100577
+2025-03-29 19:25:35,600 - WARNING - Skipping self-relationship for word ID 100581
+2025-03-29 19:25:35,710 - WARNING - Skipping self-relationship for word ID 100601
+2025-03-29 19:25:35,875 - WARNING - Skipping self-relationship for word ID 100635
+2025-03-29 19:25:35,929 - WARNING - Skipping self-relationship for word ID 100645
+2025-03-29 19:25:35,953 - WARNING - Skipping self-relationship for word ID 100652
+2025-03-29 19:25:35,972 - WARNING - Skipping self-relationship for word ID 100656
+2025-03-29 19:25:36,009 - WARNING - Skipping self-relationship for word ID 100660
+2025-03-29 19:25:36,080 - WARNING - Skipping self-relationship for word ID 100672
+2025-03-29 19:25:36,111 - WARNING - Skipping self-relationship for word ID 100681
+2025-03-29 19:25:36,159 - WARNING - Skipping self-relationship for word ID 100693
+2025-03-29 19:25:36,213 - WARNING - Skipping self-relationship for word ID 100703
+2025-03-29 19:25:36,237 - WARNING - Skipping self-relationship for word ID 100708
+2025-03-29 19:25:36,296 - WARNING - Skipping self-relationship for word ID 100720
+2025-03-29 19:25:36,365 - WARNING - Skipping self-relationship for word ID 100733
+2025-03-29 19:25:36,405 - WARNING - Skipping self-relationship for word ID 100742
+2025-03-29 19:25:36,465 - WARNING - Skipping self-relationship for word ID 100752
+2025-03-29 19:25:36,527 - WARNING - Skipping self-relationship for word ID 100765
+2025-03-29 19:25:36,590 - WARNING - Skipping self-relationship for word ID 100778
+2025-03-29 19:25:36,617 - WARNING - Skipping self-relationship for word ID 100783
+2025-03-29 19:25:36,656 - WARNING - Skipping self-relationship for word ID 100790
+2025-03-29 19:25:36,674 - WARNING - Skipping self-relationship for word ID 100792
+2025-03-29 19:25:36,708 - WARNING - Skipping self-relationship for word ID 100799
+2025-03-29 19:25:36,712 - WARNING - Skipping self-relationship for word ID 100799
+2025-03-29 19:25:36,724 - WARNING - Skipping self-relationship for word ID 100799
+2025-03-29 19:25:36,750 - WARNING - Skipping self-relationship for word ID 100805
+2025-03-29 19:25:36,875 - WARNING - Skipping self-relationship for word ID 100829
+2025-03-29 19:25:36,891 - WARNING - Skipping self-relationship for word ID 100832
+2025-03-29 19:25:36,959 - WARNING - Skipping self-relationship for word ID 100842
+2025-03-29 19:25:36,989 - WARNING - Skipping self-relationship for word ID 100849
+2025-03-29 19:25:37,041 - WARNING - Skipping self-relationship for word ID 100856
+2025-03-29 19:25:37,080 - WARNING - Skipping self-relationship for word ID 100865
+2025-03-29 19:25:37,084 - WARNING - Skipping self-relationship for word ID 100865
+2025-03-29 19:25:37,222 - WARNING - Skipping self-relationship for word ID 100884
+2025-03-29 19:25:37,259 - WARNING - Skipping self-relationship for word ID 100893
+2025-03-29 19:25:37,324 - WARNING - Skipping self-relationship for word ID 100905
+2025-03-29 19:25:37,349 - WARNING - Skipping self-relationship for word ID 100911
+2025-03-29 19:25:37,468 - WARNING - Skipping self-relationship for word ID 100931
+2025-03-29 19:25:37,507 - WARNING - Skipping self-relationship for word ID 100939
+2025-03-29 19:25:37,539 - WARNING - Skipping self-relationship for word ID 100944
+2025-03-29 19:25:37,624 - WARNING - Skipping self-relationship for word ID 100958
+2025-03-29 19:25:37,696 - WARNING - Skipping self-relationship for word ID 100972
+2025-03-29 19:25:37,741 - WARNING - Skipping self-relationship for word ID 100979
+2025-03-29 19:25:37,750 - WARNING - Skipping self-relationship for word ID 100979
+2025-03-29 19:25:37,783 - WARNING - Skipping self-relationship for word ID 100986
+2025-03-29 19:25:37,865 - WARNING - Skipping self-relationship for word ID 100999
+2025-03-29 19:25:38,009 - WARNING - Skipping self-relationship for word ID 101024
+2025-03-29 19:25:38,062 - WARNING - Skipping self-relationship for word ID 101032
+2025-03-29 19:25:38,224 - WARNING - Skipping self-relationship for word ID 101060
+2025-03-29 19:25:38,261 - WARNING - Skipping self-relationship for word ID 101068
+2025-03-29 19:25:38,282 - INFO - Processed 900/2238 root word entries
+2025-03-29 19:25:38,329 - WARNING - Skipping self-relationship for word ID 101080
+2025-03-29 19:25:38,408 - WARNING - Skipping self-relationship for word ID 101091
+2025-03-29 19:25:38,558 - WARNING - Skipping self-relationship for word ID 101116
+2025-03-29 19:25:38,577 - WARNING - Skipping self-relationship for word ID 101118
+2025-03-29 19:25:38,603 - WARNING - Skipping self-relationship for word ID 101122
+2025-03-29 19:25:38,642 - WARNING - Skipping self-relationship for word ID 101129
+2025-03-29 19:25:38,704 - WARNING - Skipping self-relationship for word ID 101137
+2025-03-29 19:25:38,733 - WARNING - Skipping self-relationship for word ID 101140
+2025-03-29 19:25:38,861 - WARNING - Skipping self-relationship for word ID 101158
+2025-03-29 19:25:39,089 - WARNING - Skipping self-relationship for word ID 101201
+2025-03-29 19:25:39,102 - WARNING - Skipping self-relationship for word ID 101203
+2025-03-29 19:25:39,147 - WARNING - Skipping self-relationship for word ID 101211
+2025-03-29 19:25:39,173 - WARNING - Skipping self-relationship for word ID 101216
+2025-03-29 19:25:39,183 - WARNING - Skipping self-relationship for word ID 101218
+2025-03-29 19:25:39,330 - WARNING - Skipping self-relationship for word ID 101239
+2025-03-29 19:25:39,349 - WARNING - Skipping self-relationship for word ID 101246
+2025-03-29 19:25:39,380 - WARNING - Skipping self-relationship for word ID 101251
+2025-03-29 19:25:39,412 - WARNING - Skipping self-relationship for word ID 101255
+2025-03-29 19:25:39,435 - WARNING - Skipping self-relationship for word ID 101258
+2025-03-29 19:25:39,540 - WARNING - Skipping self-relationship for word ID 101279
+2025-03-29 19:25:39,611 - WARNING - Skipping self-relationship for word ID 101287
+2025-03-29 19:25:39,669 - WARNING - Skipping self-relationship for word ID 101299
+2025-03-29 19:25:39,744 - WARNING - Skipping self-relationship for word ID 101314
+2025-03-29 19:25:39,830 - WARNING - Skipping self-relationship for word ID 101326
+2025-03-29 19:25:40,031 - WARNING - Skipping self-relationship for word ID 101359
+2025-03-29 19:25:40,175 - WARNING - Skipping self-relationship for word ID 101382
+2025-03-29 19:25:40,311 - WARNING - Skipping self-relationship for word ID 101403
+2025-03-29 19:25:40,349 - WARNING - Skipping self-relationship for word ID 101409
+2025-03-29 19:25:40,492 - WARNING - Skipping self-relationship for word ID 101432
+2025-03-29 19:25:40,555 - WARNING - Skipping self-relationship for word ID 101443
+2025-03-29 19:25:40,596 - WARNING - Skipping self-relationship for word ID 101450
+2025-03-29 19:25:40,648 - WARNING - Skipping self-relationship for word ID 101459
+2025-03-29 19:25:40,797 - WARNING - Skipping self-relationship for word ID 101482
+2025-03-29 19:25:40,862 - WARNING - Skipping self-relationship for word ID 101494
+2025-03-29 19:25:41,018 - WARNING - Skipping self-relationship for word ID 101520
+2025-03-29 19:25:41,123 - WARNING - Skipping self-relationship for word ID 101535
+2025-03-29 19:25:41,157 - WARNING - Skipping self-relationship for word ID 101540
+2025-03-29 19:25:41,292 - WARNING - Skipping self-relationship for word ID 101554
+2025-03-29 19:25:41,432 - WARNING - Skipping self-relationship for word ID 101571
+2025-03-29 19:25:41,465 - WARNING - Skipping self-relationship for word ID 101576
+2025-03-29 19:25:41,517 - WARNING - Skipping self-relationship for word ID 101583
+2025-03-29 19:25:41,554 - WARNING - Skipping self-relationship for word ID 101588
+2025-03-29 19:25:41,633 - WARNING - Skipping self-relationship for word ID 101599
+2025-03-29 19:25:41,730 - WARNING - Skipping self-relationship for word ID 101614
+2025-03-29 19:25:41,863 - WARNING - Skipping self-relationship for word ID 101640
+2025-03-29 19:25:41,913 - WARNING - Skipping self-relationship for word ID 101645
+2025-03-29 19:25:41,950 - WARNING - Skipping self-relationship for word ID 101651
+2025-03-29 19:25:42,039 - WARNING - Skipping self-relationship for word ID 101672
+2025-03-29 19:25:42,126 - WARNING - Skipping self-relationship for word ID 101687
+2025-03-29 19:25:42,213 - WARNING - Skipping self-relationship for word ID 101700
+2025-03-29 19:25:42,323 - WARNING - Skipping self-relationship for word ID 101714
+2025-03-29 19:25:42,386 - WARNING - Skipping self-relationship for word ID 101722
+2025-03-29 19:25:42,400 - WARNING - Skipping self-relationship for word ID 101724
+2025-03-29 19:25:42,445 - INFO - Processed 1000/2238 root word entries
+2025-03-29 19:25:42,450 - WARNING - Skipping self-relationship for word ID 101732
+2025-03-29 19:25:42,505 - WARNING - Skipping self-relationship for word ID 101742
+2025-03-29 19:25:42,582 - WARNING - Skipping self-relationship for word ID 101753
+2025-03-29 19:25:42,603 - WARNING - Skipping self-relationship for word ID 101759
+2025-03-29 19:25:42,667 - WARNING - Skipping self-relationship for word ID 101770
+2025-03-29 19:25:42,706 - WARNING - Skipping self-relationship for word ID 101777
+2025-03-29 19:25:42,758 - WARNING - Skipping self-relationship for word ID 101785
+2025-03-29 19:25:42,790 - WARNING - Skipping self-relationship for word ID 101790
+2025-03-29 19:25:42,797 - WARNING - Skipping self-relationship for word ID 101792
+2025-03-29 19:25:42,845 - WARNING - Skipping self-relationship for word ID 101799
+2025-03-29 19:25:42,903 - WARNING - Skipping self-relationship for word ID 101811
+2025-03-29 19:25:42,907 - WARNING - Skipping self-relationship for word ID 101812
+2025-03-29 19:25:42,922 - WARNING - Skipping self-relationship for word ID 101815
+2025-03-29 19:25:42,982 - WARNING - Skipping self-relationship for word ID 101826
+2025-03-29 19:25:43,045 - WARNING - Skipping self-relationship for word ID 101839
+2025-03-29 19:25:43,134 - WARNING - Skipping self-relationship for word ID 101854
+2025-03-29 19:25:43,188 - WARNING - Skipping self-relationship for word ID 101866
+2025-03-29 19:25:43,230 - WARNING - Skipping self-relationship for word ID 101874
+2025-03-29 19:25:43,375 - WARNING - Skipping self-relationship for word ID 101898
+2025-03-29 19:25:43,411 - WARNING - Skipping self-relationship for word ID 101904
+2025-03-29 19:25:43,682 - WARNING - Skipping self-relationship for word ID 101946
+2025-03-29 19:25:43,724 - WARNING - Skipping self-relationship for word ID 101952
+2025-03-29 19:25:43,782 - WARNING - Skipping self-relationship for word ID 101960
+2025-03-29 19:25:43,896 - WARNING - Skipping self-relationship for word ID 101979
+2025-03-29 19:25:44,031 - WARNING - Skipping self-relationship for word ID 101998
+2025-03-29 19:25:44,072 - WARNING - Skipping self-relationship for word ID 102010
+2025-03-29 19:25:44,142 - WARNING - Skipping self-relationship for word ID 102021
+2025-03-29 19:25:44,157 - WARNING - Skipping self-relationship for word ID 102025
+2025-03-29 19:25:44,230 - WARNING - Skipping self-relationship for word ID 102039
+2025-03-29 19:25:44,299 - WARNING - Skipping self-relationship for word ID 102051
+2025-03-29 19:25:44,351 - WARNING - Skipping self-relationship for word ID 102061
+2025-03-29 19:25:44,387 - WARNING - Skipping self-relationship for word ID 102065
+2025-03-29 19:25:44,416 - WARNING - Skipping self-relationship for word ID 102071
+2025-03-29 19:25:44,454 - WARNING - Skipping self-relationship for word ID 102077
+2025-03-29 19:25:44,491 - WARNING - Skipping self-relationship for word ID 102084
+2025-03-29 19:25:44,517 - WARNING - Skipping self-relationship for word ID 102089
+2025-03-29 19:25:44,585 - WARNING - Skipping self-relationship for word ID 102101
+2025-03-29 19:25:44,631 - WARNING - Skipping self-relationship for word ID 102110
+2025-03-29 19:25:44,676 - WARNING - Skipping self-relationship for word ID 102118
+2025-03-29 19:25:44,776 - WARNING - Skipping self-relationship for word ID 102136
+2025-03-29 19:25:44,860 - WARNING - Skipping self-relationship for word ID 102150
+2025-03-29 19:25:44,886 - WARNING - Skipping self-relationship for word ID 102154
+2025-03-29 19:25:44,911 - WARNING - Skipping self-relationship for word ID 102157
+2025-03-29 19:25:44,942 - WARNING - Skipping self-relationship for word ID 102164
+2025-03-29 19:25:45,024 - WARNING - Skipping self-relationship for word ID 102174
+2025-03-29 19:25:45,073 - WARNING - Skipping self-relationship for word ID 102186
+2025-03-29 19:25:45,139 - WARNING - Skipping self-relationship for word ID 102193
+2025-03-29 19:25:45,169 - WARNING - Skipping self-relationship for word ID 102198
+2025-03-29 19:25:45,208 - WARNING - Skipping self-relationship for word ID 102202
+2025-03-29 19:25:45,277 - WARNING - Skipping self-relationship for word ID 102215
+2025-03-29 19:25:45,314 - WARNING - Skipping self-relationship for word ID 102222
+2025-03-29 19:25:45,377 - WARNING - Skipping self-relationship for word ID 102232
+2025-03-29 19:25:45,407 - WARNING - Skipping self-relationship for word ID 102236
+2025-03-29 19:25:45,447 - WARNING - Skipping self-relationship for word ID 102243
+2025-03-29 19:25:45,473 - WARNING - Skipping self-relationship for word ID 102247
+2025-03-29 19:25:45,583 - WARNING - Skipping self-relationship for word ID 102262
+2025-03-29 19:25:45,675 - WARNING - Skipping self-relationship for word ID 102278
+2025-03-29 19:25:45,712 - WARNING - Skipping self-relationship for word ID 102284
+2025-03-29 19:25:45,778 - WARNING - Skipping self-relationship for word ID 102295
+2025-03-29 19:25:45,819 - WARNING - Skipping self-relationship for word ID 102301
+2025-03-29 19:25:45,856 - WARNING - Skipping self-relationship for word ID 102307
+2025-03-29 19:25:45,882 - WARNING - Skipping self-relationship for word ID 102311
+2025-03-29 19:25:46,015 - WARNING - Skipping self-relationship for word ID 102334
+2025-03-29 19:25:46,061 - INFO - Processed 1100/2238 root word entries
+2025-03-29 19:25:46,069 - WARNING - Skipping self-relationship for word ID 102343
+2025-03-29 19:25:46,092 - WARNING - Skipping self-relationship for word ID 102348
+2025-03-29 19:25:46,144 - WARNING - Skipping self-relationship for word ID 102357
+2025-03-29 19:25:46,202 - WARNING - Skipping self-relationship for word ID 102362
+2025-03-29 19:25:46,262 - WARNING - Skipping self-relationship for word ID 102380
+2025-03-29 19:25:46,290 - WARNING - Skipping self-relationship for word ID 102384
+2025-03-29 19:25:46,339 - WARNING - Skipping self-relationship for word ID 102394
+2025-03-29 19:25:46,540 - WARNING - Skipping self-relationship for word ID 96648
+2025-03-29 19:25:46,550 - WARNING - Skipping self-relationship for word ID 102431
+2025-03-29 19:25:46,563 - WARNING - Skipping self-relationship for word ID 102433
+2025-03-29 19:25:46,605 - WARNING - Skipping self-relationship for word ID 102440
+2025-03-29 19:25:46,708 - WARNING - Skipping self-relationship for word ID 102458
+2025-03-29 19:25:46,748 - WARNING - Skipping self-relationship for word ID 102467
+2025-03-29 19:25:46,761 - WARNING - Skipping self-relationship for word ID 102469
+2025-03-29 19:25:46,818 - WARNING - Skipping self-relationship for word ID 102475
+2025-03-29 19:25:46,880 - WARNING - Skipping self-relationship for word ID 102488
+2025-03-29 19:25:46,898 - WARNING - Skipping self-relationship for word ID 102494
+2025-03-29 19:25:46,942 - WARNING - Skipping self-relationship for word ID 102501
+2025-03-29 19:25:47,145 - WARNING - Skipping self-relationship for word ID 102540
+2025-03-29 19:25:47,194 - WARNING - Skipping self-relationship for word ID 102548
+2025-03-29 19:25:47,261 - WARNING - Skipping self-relationship for word ID 102556
+2025-03-29 19:25:47,305 - WARNING - Skipping self-relationship for word ID 102562
+2025-03-29 19:25:47,347 - WARNING - Skipping self-relationship for word ID 102568
+2025-03-29 19:25:47,467 - WARNING - Skipping self-relationship for word ID 102584
+2025-03-29 19:25:47,505 - WARNING - Skipping self-relationship for word ID 102588
+2025-03-29 19:25:47,524 - WARNING - Skipping self-relationship for word ID 102594
+2025-03-29 19:25:47,631 - WARNING - Skipping self-relationship for word ID 102613
+2025-03-29 19:25:47,685 - WARNING - Skipping self-relationship for word ID 102621
+2025-03-29 19:25:47,736 - WARNING - Skipping self-relationship for word ID 102628
+2025-03-29 19:25:47,741 - WARNING - Skipping self-relationship for word ID 102631
+2025-03-29 19:25:47,787 - WARNING - Skipping self-relationship for word ID 102639
+2025-03-29 19:25:47,863 - WARNING - Skipping self-relationship for word ID 102650
+2025-03-29 19:25:47,923 - WARNING - Skipping self-relationship for word ID 102660
+2025-03-29 19:25:47,966 - WARNING - Skipping self-relationship for word ID 102666
+2025-03-29 19:25:47,982 - WARNING - Skipping self-relationship for word ID 102669
+2025-03-29 19:25:48,112 - WARNING - Skipping self-relationship for word ID 102687
+2025-03-29 19:25:48,172 - WARNING - Skipping self-relationship for word ID 102695
+2025-03-29 19:25:48,238 - WARNING - Skipping self-relationship for word ID 102705
+2025-03-29 19:25:48,368 - WARNING - Skipping self-relationship for word ID 102728
+2025-03-29 19:25:48,400 - WARNING - Skipping self-relationship for word ID 102733
+2025-03-29 19:25:48,482 - WARNING - Skipping self-relationship for word ID 102744
+2025-03-29 19:25:48,549 - WARNING - Skipping self-relationship for word ID 102753
+2025-03-29 19:25:48,577 - WARNING - Skipping self-relationship for word ID 102759
+2025-03-29 19:25:48,612 - WARNING - Skipping self-relationship for word ID 102763
+2025-03-29 19:25:48,713 - WARNING - Skipping self-relationship for word ID 102782
+2025-03-29 19:25:48,815 - WARNING - Skipping self-relationship for word ID 102797
+2025-03-29 19:25:48,897 - WARNING - Skipping self-relationship for word ID 102806
+2025-03-29 19:25:48,909 - WARNING - Skipping self-relationship for word ID 102810
+2025-03-29 19:25:48,942 - WARNING - Skipping self-relationship for word ID 102816
+2025-03-29 19:25:49,032 - WARNING - Skipping self-relationship for word ID 102827
+2025-03-29 19:25:49,059 - WARNING - Skipping self-relationship for word ID 102833
+2025-03-29 19:25:49,175 - WARNING - Skipping self-relationship for word ID 102848
+2025-03-29 19:25:49,214 - WARNING - Skipping self-relationship for word ID 102854
+2025-03-29 19:25:49,300 - WARNING - Skipping self-relationship for word ID 102860
+2025-03-29 19:25:49,308 - WARNING - Skipping self-relationship for word ID 102865
+2025-03-29 19:25:49,353 - WARNING - Skipping self-relationship for word ID 102869
+2025-03-29 19:25:49,475 - WARNING - Skipping self-relationship for word ID 102880
+2025-03-29 19:25:49,595 - WARNING - Skipping self-relationship for word ID 102892
+2025-03-29 19:25:49,692 - WARNING - Skipping self-relationship for word ID 102904
+2025-03-29 19:25:49,800 - INFO - Processed 1200/2238 root word entries
+2025-03-29 19:25:49,864 - WARNING - Skipping self-relationship for word ID 102933
+2025-03-29 19:25:49,892 - WARNING - Skipping self-relationship for word ID 102937
+2025-03-29 19:25:49,944 - WARNING - Skipping self-relationship for word ID 102943
+2025-03-29 19:25:49,949 - WARNING - Skipping self-relationship for word ID 102947
+2025-03-29 19:25:49,981 - WARNING - Skipping self-relationship for word ID 102952
+2025-03-29 19:25:49,984 - WARNING - Skipping self-relationship for word ID 102952
+2025-03-29 19:25:50,022 - WARNING - Skipping self-relationship for word ID 102959
+2025-03-29 19:25:50,091 - WARNING - Skipping self-relationship for word ID 102969
+2025-03-29 19:25:50,134 - WARNING - Skipping self-relationship for word ID 102978
+2025-03-29 19:25:50,155 - WARNING - Skipping self-relationship for word ID 102983
+2025-03-29 19:25:50,285 - WARNING - Skipping self-relationship for word ID 103004
+2025-03-29 19:25:50,373 - WARNING - Skipping self-relationship for word ID 103016
+2025-03-29 19:25:50,393 - WARNING - Skipping self-relationship for word ID 103021
+2025-03-29 19:25:50,404 - WARNING - Skipping self-relationship for word ID 103024
+2025-03-29 19:25:50,513 - WARNING - Skipping self-relationship for word ID 103041
+2025-03-29 19:25:50,636 - WARNING - Skipping self-relationship for word ID 103063
+2025-03-29 19:25:50,670 - WARNING - Skipping self-relationship for word ID 103069
+2025-03-29 19:25:50,722 - WARNING - Skipping self-relationship for word ID 103078
+2025-03-29 19:25:50,859 - WARNING - Skipping self-relationship for word ID 103103
+2025-03-29 19:25:50,882 - WARNING - Skipping self-relationship for word ID 103107
+2025-03-29 19:25:50,885 - WARNING - Skipping self-relationship for word ID 103107
+2025-03-29 19:25:51,071 - WARNING - Skipping self-relationship for word ID 103142
+2025-03-29 19:25:51,078 - WARNING - Skipping self-relationship for word ID 103142
+2025-03-29 19:25:51,093 - WARNING - Skipping self-relationship for word ID 103146
+2025-03-29 19:25:51,164 - WARNING - Skipping self-relationship for word ID 103155
+2025-03-29 19:25:51,184 - WARNING - Skipping self-relationship for word ID 103161
+2025-03-29 19:25:51,276 - WARNING - Skipping self-relationship for word ID 103178
+2025-03-29 19:25:51,323 - WARNING - Skipping self-relationship for word ID 103187
+2025-03-29 19:25:51,445 - WARNING - Skipping self-relationship for word ID 103206
+2025-03-29 19:25:51,572 - WARNING - Skipping self-relationship for word ID 103221
+2025-03-29 19:25:51,628 - WARNING - Skipping self-relationship for word ID 103230
+2025-03-29 19:25:51,675 - WARNING - Skipping self-relationship for word ID 103237
+2025-03-29 19:25:51,719 - WARNING - Skipping self-relationship for word ID 103241
+2025-03-29 19:25:51,767 - WARNING - Skipping self-relationship for word ID 103250
+2025-03-29 19:25:51,834 - WARNING - Skipping self-relationship for word ID 103258
+2025-03-29 19:25:51,877 - WARNING - Skipping self-relationship for word ID 103268
+2025-03-29 19:25:52,055 - WARNING - Skipping self-relationship for word ID 103300
+2025-03-29 19:25:52,085 - WARNING - Skipping self-relationship for word ID 103304
+2025-03-29 19:25:52,175 - WARNING - Skipping self-relationship for word ID 103324
+2025-03-29 19:25:52,554 - WARNING - Skipping self-relationship for word ID 103388
+2025-03-29 19:25:52,559 - WARNING - Skipping self-relationship for word ID 103390
+2025-03-29 19:25:52,569 - WARNING - Skipping self-relationship for word ID 103392
+2025-03-29 19:25:52,591 - WARNING - Skipping self-relationship for word ID 103396
+2025-03-29 19:25:52,667 - WARNING - Skipping self-relationship for word ID 103409
+2025-03-29 19:25:52,715 - WARNING - Skipping self-relationship for word ID 103417
+2025-03-29 19:25:52,760 - WARNING - Skipping self-relationship for word ID 103426
+2025-03-29 19:25:52,809 - WARNING - Skipping self-relationship for word ID 103433
+2025-03-29 19:25:52,829 - WARNING - Skipping self-relationship for word ID 103439
+2025-03-29 19:25:52,936 - WARNING - Skipping self-relationship for word ID 103456
+2025-03-29 19:25:52,998 - WARNING - Skipping self-relationship for word ID 103468
+2025-03-29 19:25:53,068 - WARNING - Skipping self-relationship for word ID 103480
+2025-03-29 19:25:53,097 - WARNING - Skipping self-relationship for word ID 103487
+2025-03-29 19:25:53,151 - WARNING - Skipping self-relationship for word ID 103499
+2025-03-29 19:25:53,169 - WARNING - Skipping self-relationship for word ID 103502
+2025-03-29 19:25:53,180 - INFO - Processed 1300/2238 root word entries
+2025-03-29 19:25:53,199 - WARNING - Skipping self-relationship for word ID 103505
+2025-03-29 19:25:53,315 - WARNING - Skipping self-relationship for word ID 103530
+2025-03-29 19:25:53,405 - WARNING - Skipping self-relationship for word ID 103541
+2025-03-29 19:25:53,496 - WARNING - Skipping self-relationship for word ID 103558
+2025-03-29 19:25:53,540 - WARNING - Skipping self-relationship for word ID 103564
+2025-03-29 19:25:53,551 - WARNING - Skipping self-relationship for word ID 103570
+2025-03-29 19:25:53,609 - WARNING - Skipping self-relationship for word ID 103575
+2025-03-29 19:25:53,642 - WARNING - Skipping self-relationship for word ID 103585
+2025-03-29 19:25:53,689 - WARNING - Skipping self-relationship for word ID 103594
+2025-03-29 19:25:53,713 - WARNING - Skipping self-relationship for word ID 103598
+2025-03-29 19:25:53,733 - WARNING - Skipping self-relationship for word ID 103601
+2025-03-29 19:25:53,797 - WARNING - Skipping self-relationship for word ID 103610
+2025-03-29 19:25:53,860 - WARNING - Skipping self-relationship for word ID 103617
+2025-03-29 19:25:53,906 - WARNING - Skipping self-relationship for word ID 103630
+2025-03-29 19:25:53,941 - WARNING - Skipping self-relationship for word ID 103636
+2025-03-29 19:25:54,033 - WARNING - Skipping self-relationship for word ID 103653
+2025-03-29 19:25:54,054 - WARNING - Skipping self-relationship for word ID 103656
+2025-03-29 19:25:54,093 - WARNING - Skipping self-relationship for word ID 103663
+2025-03-29 19:25:54,126 - WARNING - Skipping self-relationship for word ID 103669
+2025-03-29 19:25:54,162 - WARNING - Skipping self-relationship for word ID 103674
+2025-03-29 19:25:54,200 - WARNING - Skipping self-relationship for word ID 103680
+2025-03-29 19:25:54,302 - WARNING - Skipping self-relationship for word ID 103695
+2025-03-29 19:25:54,395 - WARNING - Skipping self-relationship for word ID 103706
+2025-03-29 19:25:54,436 - WARNING - Skipping self-relationship for word ID 91553
+2025-03-29 19:25:54,490 - WARNING - Skipping self-relationship for word ID 103713
+2025-03-29 19:25:54,703 - WARNING - Skipping self-relationship for word ID 103740
+2025-03-29 19:25:54,761 - WARNING - Skipping self-relationship for word ID 103745
+2025-03-29 19:25:54,813 - WARNING - Skipping self-relationship for word ID 103750
+2025-03-29 19:25:54,862 - WARNING - Skipping self-relationship for word ID 103755
+2025-03-29 19:25:55,000 - WARNING - Skipping self-relationship for word ID 103774
+2025-03-29 19:25:55,023 - WARNING - Skipping self-relationship for word ID 103778
+2025-03-29 19:25:55,124 - WARNING - Skipping self-relationship for word ID 103790
+2025-03-29 19:25:55,182 - WARNING - Skipping self-relationship for word ID 103797
+2025-03-29 19:25:55,215 - WARNING - Skipping self-relationship for word ID 103803
+2025-03-29 19:25:55,249 - WARNING - Skipping self-relationship for word ID 103807
+2025-03-29 19:25:55,295 - WARNING - Skipping self-relationship for word ID 103813
+2025-03-29 19:25:55,324 - WARNING - Skipping self-relationship for word ID 103817
+2025-03-29 19:25:55,388 - WARNING - Skipping self-relationship for word ID 103824
+2025-03-29 19:25:55,443 - WARNING - Skipping self-relationship for word ID 103829
+2025-03-29 19:25:55,620 - WARNING - Skipping self-relationship for word ID 103851
+2025-03-29 19:25:55,650 - WARNING - Skipping self-relationship for word ID 103860
+2025-03-29 19:25:55,700 - WARNING - Skipping self-relationship for word ID 103865
+2025-03-29 19:25:55,905 - WARNING - Skipping self-relationship for word ID 103896
+2025-03-29 19:25:55,939 - WARNING - Skipping self-relationship for word ID 103901
+2025-03-29 19:25:55,972 - WARNING - Skipping self-relationship for word ID 103905
+2025-03-29 19:25:56,034 - WARNING - Skipping self-relationship for word ID 103910
+2025-03-29 19:25:56,067 - WARNING - Skipping self-relationship for word ID 103917
+2025-03-29 19:25:56,187 - WARNING - Skipping self-relationship for word ID 103930
+2025-03-29 19:25:56,349 - WARNING - Skipping self-relationship for word ID 103955
+2025-03-29 19:25:56,360 - WARNING - Skipping self-relationship for word ID 103955
+2025-03-29 19:25:56,543 - WARNING - Skipping self-relationship for word ID 103981
+2025-03-29 19:25:56,611 - WARNING - Skipping self-relationship for word ID 103991
+2025-03-29 19:25:56,665 - WARNING - Skipping self-relationship for word ID 103996
+2025-03-29 19:25:56,676 - WARNING - Skipping self-relationship for word ID 104000
+2025-03-29 19:25:56,774 - WARNING - Skipping self-relationship for word ID 104015
+2025-03-29 19:25:56,800 - WARNING - Skipping self-relationship for word ID 104019
+2025-03-29 19:25:56,828 - WARNING - Skipping self-relationship for word ID 104025
+2025-03-29 19:25:56,843 - WARNING - Skipping self-relationship for word ID 104027
+2025-03-29 19:25:56,886 - WARNING - Skipping self-relationship for word ID 104034
+2025-03-29 19:25:56,925 - ERROR - Database error in insert_definition for word ID 104041: out of shared memory
+HINT:  You might need to increase max_locks_per_transaction.
+
+2025-03-29 19:25:56,927 - WARNING - Cannot create relation: From word does not exist
+2025-03-29 19:25:56,932 - ERROR - Database error in get_or_create_word_id for pumanatag: insert or update on table "words" violates foreign key constraint "words_root_word_id_fkey"
+DETAIL:  Key (root_word_id)=(104039) is not present in table "words".
+
+2025-03-29 19:25:56,933 - ERROR - Error processing root word panatag: insert or update on table "words" violates foreign key constraint "words_root_word_id_fkey"
+DETAIL:  Key (root_word_id)=(104039) is not present in table "words".
+
+2025-03-29 19:25:56,955 - WARNING - Skipping self-relationship for word ID 104048
+2025-03-29 19:25:56,962 - INFO - Processed 1400/2238 root word entries
+2025-03-29 19:25:56,968 - WARNING - Skipping self-relationship for word ID 104052
+2025-03-29 19:25:56,985 - WARNING - Skipping self-relationship for word ID 104055
+2025-03-29 19:25:56,994 - WARNING - Skipping self-relationship for word ID 104060
+2025-03-29 19:25:57,022 - WARNING - Skipping self-relationship for word ID 104068
+2025-03-29 19:25:57,024 - WARNING - Skipping self-relationship for word ID 104068
+2025-03-29 19:25:57,035 - WARNING - Skipping self-relationship for word ID 104071
+2025-03-29 19:25:57,050 - WARNING - Skipping self-relationship for word ID 104075
+2025-03-29 19:25:57,073 - WARNING - Skipping self-relationship for word ID 104079
+2025-03-29 19:25:57,099 - WARNING - Skipping self-relationship for word ID 104085
+2025-03-29 19:25:57,169 - WARNING - Skipping self-relationship for word ID 104109
+2025-03-29 19:25:57,207 - WARNING - Skipping self-relationship for word ID 104116
+2025-03-29 19:25:57,214 - WARNING - Skipping self-relationship for word ID 104122
+2025-03-29 19:25:57,235 - WARNING - Skipping self-relationship for word ID 104129
+2025-03-29 19:25:57,267 - WARNING - Skipping self-relationship for word ID 104137
+2025-03-29 19:25:57,283 - WARNING - Skipping self-relationship for word ID 104144
+2025-03-29 19:25:57,303 - WARNING - Skipping self-relationship for word ID 104148
+2025-03-29 19:25:57,348 - WARNING - Skipping self-relationship for word ID 104164
+2025-03-29 19:25:57,363 - WARNING - Skipping self-relationship for word ID 104168
+2025-03-29 19:25:57,405 - WARNING - Skipping self-relationship for word ID 104180
+2025-03-29 19:25:57,463 - WARNING - Skipping self-relationship for word ID 104196
+2025-03-29 19:25:57,501 - WARNING - Skipping self-relationship for word ID 104204
+2025-03-29 19:25:57,542 - WARNING - Skipping self-relationship for word ID 104217
+2025-03-29 19:25:57,561 - WARNING - Skipping self-relationship for word ID 104223
+2025-03-29 19:25:57,589 - WARNING - Skipping self-relationship for word ID 104230
+2025-03-29 19:25:57,636 - WARNING - Skipping self-relationship for word ID 104241
+2025-03-29 19:25:57,651 - WARNING - Skipping self-relationship for word ID 104246
+2025-03-29 19:25:57,664 - WARNING - Skipping self-relationship for word ID 104252
+2025-03-29 19:25:57,688 - WARNING - Skipping self-relationship for word ID 104262
+2025-03-29 19:25:57,703 - WARNING - Skipping self-relationship for word ID 104267
+2025-03-29 19:25:57,765 - WARNING - Skipping self-relationship for word ID 104287
+2025-03-29 19:25:57,790 - WARNING - Skipping self-relationship for word ID 104296
+2025-03-29 19:25:57,798 - WARNING - Skipping self-relationship for word ID 104299
+2025-03-29 19:25:57,828 - WARNING - Skipping self-relationship for word ID 104309
+2025-03-29 19:25:57,869 - WARNING - Skipping self-relationship for word ID 104319
+2025-03-29 19:25:57,895 - WARNING - Skipping self-relationship for word ID 104330
+2025-03-29 19:25:57,930 - WARNING - Skipping self-relationship for word ID 104337
+2025-03-29 19:25:57,933 - WARNING - Skipping self-relationship for word ID 104342
+2025-03-29 19:25:57,967 - WARNING - Skipping self-relationship for word ID 104349
+2025-03-29 19:25:57,993 - WARNING - Skipping self-relationship for word ID 104360
+2025-03-29 19:25:58,093 - WARNING - Skipping self-relationship for word ID 104390
+2025-03-29 19:25:58,096 - WARNING - Skipping self-relationship for word ID 104394
+2025-03-29 19:25:58,114 - WARNING - Skipping self-relationship for word ID 104396
+2025-03-29 19:25:58,137 - WARNING - Skipping self-relationship for word ID 104408
+2025-03-29 19:25:58,167 - WARNING - Skipping self-relationship for word ID 104415
+2025-03-29 19:25:58,189 - WARNING - Skipping self-relationship for word ID 104422
+2025-03-29 19:25:58,198 - WARNING - Skipping self-relationship for word ID 104427
+2025-03-29 19:25:58,218 - WARNING - Skipping self-relationship for word ID 104434
+2025-03-29 19:25:58,234 - WARNING - Skipping self-relationship for word ID 104440
+2025-03-29 19:25:58,268 - WARNING - Skipping self-relationship for word ID 104450
+2025-03-29 19:25:58,275 - WARNING - Skipping self-relationship for word ID 104454
+2025-03-29 19:25:58,288 - WARNING - Skipping self-relationship for word ID 104457
+2025-03-29 19:25:58,322 - WARNING - Skipping self-relationship for word ID 104465
+2025-03-29 19:25:58,340 - WARNING - Skipping self-relationship for word ID 104469
+2025-03-29 19:25:58,348 - WARNING - Skipping self-relationship for word ID 104477
+2025-03-29 19:25:58,367 - WARNING - Skipping self-relationship for word ID 104483
+2025-03-29 19:25:58,389 - WARNING - Skipping self-relationship for word ID 104489
+2025-03-29 19:25:58,414 - WARNING - Skipping self-relationship for word ID 104497
+2025-03-29 19:25:58,424 - WARNING - Skipping self-relationship for word ID 104502
+2025-03-29 19:25:58,442 - WARNING - Skipping self-relationship for word ID 104506
+2025-03-29 19:25:58,454 - WARNING - Skipping self-relationship for word ID 104513
+2025-03-29 19:25:58,476 - WARNING - Skipping self-relationship for word ID 104521
+2025-03-29 19:25:58,540 - WARNING - Skipping self-relationship for word ID 104543
+2025-03-29 19:25:58,559 - WARNING - Skipping self-relationship for word ID 104548
+2025-03-29 19:25:58,580 - WARNING - Skipping self-relationship for word ID 104554
+2025-03-29 19:25:58,597 - WARNING - Skipping self-relationship for word ID 104559
+2025-03-29 19:25:58,606 - WARNING - Skipping self-relationship for word ID 104563
+2025-03-29 19:25:58,725 - WARNING - Skipping self-relationship for word ID 104597
+2025-03-29 19:25:58,739 - WARNING - Skipping self-relationship for word ID 104602
+2025-03-29 19:25:58,757 - WARNING - Skipping self-relationship for word ID 104607
+2025-03-29 19:25:58,786 - WARNING - Skipping self-relationship for word ID 104615
+2025-03-29 19:25:58,803 - WARNING - Skipping self-relationship for word ID 104619
+2025-03-29 19:25:58,835 - INFO - Processed 1500/2238 root word entries
+2025-03-29 19:25:58,864 - WARNING - Skipping self-relationship for word ID 104634
+2025-03-29 19:25:58,925 - WARNING - Skipping self-relationship for word ID 104656
+2025-03-29 19:25:58,947 - WARNING - Skipping self-relationship for word ID 104659
+2025-03-29 19:25:59,005 - WARNING - Skipping self-relationship for word ID 104681
+2025-03-29 19:25:59,025 - WARNING - Skipping self-relationship for word ID 104685
+2025-03-29 19:25:59,043 - WARNING - Skipping self-relationship for word ID 104692
+2025-03-29 19:25:59,152 - WARNING - Skipping self-relationship for word ID 104720
+2025-03-29 19:25:59,193 - WARNING - Skipping self-relationship for word ID 104727
+2025-03-29 19:25:59,201 - WARNING - Skipping self-relationship for word ID 104731
+2025-03-29 19:25:59,274 - WARNING - Skipping self-relationship for word ID 104750
+2025-03-29 19:25:59,296 - WARNING - Skipping self-relationship for word ID 104754
+2025-03-29 19:25:59,341 - WARNING - Skipping self-relationship for word ID 104767
+2025-03-29 19:25:59,373 - WARNING - Skipping self-relationship for word ID 104772
+2025-03-29 19:25:59,392 - WARNING - Skipping self-relationship for word ID 104776
+2025-03-29 19:25:59,400 - WARNING - Skipping self-relationship for word ID 104782
+2025-03-29 19:25:59,439 - WARNING - Skipping self-relationship for word ID 104791
+2025-03-29 19:25:59,486 - WARNING - Skipping self-relationship for word ID 104803
+2025-03-29 19:25:59,552 - WARNING - Skipping self-relationship for word ID 104819
+2025-03-29 19:25:59,567 - WARNING - Skipping self-relationship for word ID 104823
+2025-03-29 19:25:59,607 - WARNING - Skipping self-relationship for word ID 104831
+2025-03-29 19:25:59,625 - WARNING - Skipping self-relationship for word ID 104838
+2025-03-29 19:25:59,677 - WARNING - Skipping self-relationship for word ID 104850
+2025-03-29 19:25:59,716 - WARNING - Skipping self-relationship for word ID 104861
+2025-03-29 19:25:59,727 - WARNING - Skipping self-relationship for word ID 104864
+2025-03-29 19:25:59,760 - WARNING - Skipping self-relationship for word ID 104871
+2025-03-29 19:25:59,815 - WARNING - Skipping self-relationship for word ID 104888
+2025-03-29 19:25:59,892 - WARNING - Skipping self-relationship for word ID 104906
+2025-03-29 19:25:59,932 - WARNING - Skipping self-relationship for word ID 104917
+2025-03-29 19:25:59,939 - WARNING - Skipping self-relationship for word ID 104922
+2025-03-29 19:25:59,954 - WARNING - Skipping self-relationship for word ID 104927
+2025-03-29 19:25:59,968 - WARNING - Skipping self-relationship for word ID 104930
+2025-03-29 19:25:59,988 - WARNING - Skipping self-relationship for word ID 104935
+2025-03-29 19:26:00,014 - WARNING - Skipping self-relationship for word ID 104942
+2025-03-29 19:26:00,045 - WARNING - Skipping self-relationship for word ID 104951
+2025-03-29 19:26:00,075 - WARNING - Skipping self-relationship for word ID 104955
+2025-03-29 19:26:00,096 - WARNING - Skipping self-relationship for word ID 104966
+2025-03-29 19:26:00,121 - WARNING - Skipping self-relationship for word ID 104972
+2025-03-29 19:26:00,132 - WARNING - Skipping self-relationship for word ID 104976
+2025-03-29 19:26:00,155 - WARNING - Skipping self-relationship for word ID 104982
+2025-03-29 19:26:00,177 - WARNING - Skipping self-relationship for word ID 104987
+2025-03-29 19:26:00,218 - WARNING - Skipping self-relationship for word ID 104998
+2025-03-29 19:26:00,232 - WARNING - Skipping self-relationship for word ID 105003
+2025-03-29 19:26:00,245 - WARNING - Skipping self-relationship for word ID 105008
+2025-03-29 19:26:00,258 - WARNING - Skipping self-relationship for word ID 105012
+2025-03-29 19:26:00,301 - WARNING - Skipping self-relationship for word ID 105026
+2025-03-29 19:26:00,343 - WARNING - Skipping self-relationship for word ID 105036
+2025-03-29 19:26:00,352 - WARNING - Skipping self-relationship for word ID 105040
+2025-03-29 19:26:00,375 - WARNING - Skipping self-relationship for word ID 105045
+2025-03-29 19:26:00,382 - WARNING - Skipping self-relationship for word ID 105048
+2025-03-29 19:26:00,414 - WARNING - Skipping self-relationship for word ID 105059
+2025-03-29 19:26:00,436 - WARNING - Skipping self-relationship for word ID 105065
+2025-03-29 19:26:00,465 - WARNING - Skipping self-relationship for word ID 105069
+2025-03-29 19:26:00,487 - WARNING - Skipping self-relationship for word ID 105080
+2025-03-29 19:26:00,543 - WARNING - Skipping self-relationship for word ID 105097
+2025-03-29 19:26:00,581 - WARNING - Skipping self-relationship for word ID 105108
+2025-03-29 19:26:00,625 - WARNING - Skipping self-relationship for word ID 105123
+2025-03-29 19:26:00,651 - INFO - Processed 1600/2238 root word entries
+2025-03-29 19:26:00,654 - WARNING - Skipping self-relationship for word ID 105132
+2025-03-29 19:26:00,701 - WARNING - Skipping self-relationship for word ID 105142
+2025-03-29 19:26:00,753 - WARNING - Skipping self-relationship for word ID 105156
+2025-03-29 19:26:00,776 - WARNING - Skipping self-relationship for word ID 105160
+2025-03-29 19:26:00,782 - WARNING - Skipping self-relationship for word ID 105164
+2025-03-29 19:26:00,792 - WARNING - Skipping self-relationship for word ID 105166
+2025-03-29 19:26:00,808 - WARNING - Skipping self-relationship for word ID 105171
+2025-03-29 19:26:00,847 - WARNING - Skipping self-relationship for word ID 105182
+2025-03-29 19:26:00,862 - WARNING - Skipping self-relationship for word ID 105188
+2025-03-29 19:26:00,909 - WARNING - Skipping self-relationship for word ID 105198
+2025-03-29 19:26:00,989 - WARNING - Skipping self-relationship for word ID 105219
+2025-03-29 19:26:00,996 - WARNING - Skipping self-relationship for word ID 105223
+2025-03-29 19:26:01,037 - WARNING - Skipping self-relationship for word ID 105233
+2025-03-29 19:26:01,057 - WARNING - Skipping self-relationship for word ID 105238
+2025-03-29 19:26:01,071 - WARNING - Skipping self-relationship for word ID 105242
+2025-03-29 19:26:01,117 - WARNING - Skipping self-relationship for word ID 105253
+2025-03-29 19:26:01,272 - WARNING - Skipping self-relationship for word ID 105294
+2025-03-29 19:26:01,287 - WARNING - Skipping self-relationship for word ID 105297
+2025-03-29 19:26:01,331 - WARNING - Skipping self-relationship for word ID 105305
+2025-03-29 19:26:01,409 - WARNING - Skipping self-relationship for word ID 105322
+2025-03-29 19:26:01,431 - WARNING - Skipping self-relationship for word ID 105326
+2025-03-29 19:26:01,479 - WARNING - Skipping self-relationship for word ID 105334
+2025-03-29 19:26:01,513 - WARNING - Skipping self-relationship for word ID 105344
+2025-03-29 19:26:01,601 - WARNING - Skipping self-relationship for word ID 105370
+2025-03-29 19:26:01,646 - WARNING - Skipping self-relationship for word ID 105381
+2025-03-29 19:26:01,697 - WARNING - Skipping self-relationship for word ID 105395
+2025-03-29 19:26:01,720 - WARNING - Skipping self-relationship for word ID 105401
+2025-03-29 19:26:01,748 - WARNING - Skipping self-relationship for word ID 105409
+2025-03-29 19:26:01,759 - WARNING - Skipping self-relationship for word ID 105412
+2025-03-29 19:26:01,821 - WARNING - Skipping self-relationship for word ID 105423
+2025-03-29 19:26:01,836 - WARNING - Skipping self-relationship for word ID 105431
+2025-03-29 19:26:01,906 - WARNING - Skipping self-relationship for word ID 105451
+2025-03-29 19:26:02,052 - WARNING - Skipping self-relationship for word ID 105484
+2025-03-29 19:26:02,123 - WARNING - Skipping self-relationship for word ID 105509
+2025-03-29 19:26:02,135 - WARNING - Skipping self-relationship for word ID 105512
+2025-03-29 19:26:02,149 - WARNING - Skipping self-relationship for word ID 105516
+2025-03-29 19:26:02,171 - WARNING - Skipping self-relationship for word ID 105518
+2025-03-29 19:26:02,186 - WARNING - Skipping self-relationship for word ID 105523
+2025-03-29 19:26:02,201 - WARNING - Skipping self-relationship for word ID 105528
+2025-03-29 19:26:02,256 - WARNING - Skipping self-relationship for word ID 105542
+2025-03-29 19:26:02,285 - WARNING - Skipping self-relationship for word ID 105548
+2025-03-29 19:26:02,298 - WARNING - Skipping self-relationship for word ID 105554
+2025-03-29 19:26:02,343 - WARNING - Skipping self-relationship for word ID 105566
+2025-03-29 19:26:02,361 - WARNING - Skipping self-relationship for word ID 105572
+2025-03-29 19:26:02,396 - WARNING - Skipping self-relationship for word ID 105580
+2025-03-29 19:26:02,414 - WARNING - Skipping self-relationship for word ID 105584
+2025-03-29 19:26:02,417 - WARNING - Skipping self-relationship for word ID 105588
+2025-03-29 19:26:02,457 - WARNING - Skipping self-relationship for word ID 105596
+2025-03-29 19:26:02,497 - WARNING - Skipping self-relationship for word ID 105610
+2025-03-29 19:26:02,508 - WARNING - Skipping self-relationship for word ID 105614
+2025-03-29 19:26:02,525 - WARNING - Skipping self-relationship for word ID 105619
+2025-03-29 19:26:02,547 - WARNING - Skipping self-relationship for word ID 105624
+2025-03-29 19:26:02,588 - WARNING - Skipping self-relationship for word ID 105635
+2025-03-29 19:26:02,599 - WARNING - Skipping self-relationship for word ID 105638
+2025-03-29 19:26:02,609 - WARNING - Skipping self-relationship for word ID 105642
+2025-03-29 19:26:02,613 - INFO - Processed 1700/2238 root word entries
+2025-03-29 19:26:02,625 - WARNING - Skipping self-relationship for word ID 105648
+2025-03-29 19:26:02,639 - WARNING - Skipping self-relationship for word ID 105651
+2025-03-29 19:26:02,651 - WARNING - Skipping self-relationship for word ID 105654
+2025-03-29 19:26:02,666 - WARNING - Skipping self-relationship for word ID 105659
+2025-03-29 19:26:02,698 - WARNING - Skipping self-relationship for word ID 105668
+2025-03-29 19:26:02,817 - WARNING - Skipping self-relationship for word ID 105701
+2025-03-29 19:26:02,858 - WARNING - Skipping self-relationship for word ID 105714
+2025-03-29 19:26:02,891 - WARNING - Skipping self-relationship for word ID 105723
+2025-03-29 19:26:02,909 - WARNING - Skipping self-relationship for word ID 105728
+2025-03-29 19:26:02,915 - WARNING - Skipping self-relationship for word ID 105729
+2025-03-29 19:26:02,949 - WARNING - Skipping self-relationship for word ID 105738
+2025-03-29 19:26:02,960 - WARNING - Skipping self-relationship for word ID 105743
+2025-03-29 19:26:02,963 - WARNING - Skipping self-relationship for word ID 105743
+2025-03-29 19:26:02,974 - WARNING - Skipping self-relationship for word ID 105745
+2025-03-29 19:26:02,983 - WARNING - Skipping self-relationship for word ID 105749
+2025-03-29 19:26:03,007 - WARNING - Skipping self-relationship for word ID 105754
+2025-03-29 19:26:03,037 - WARNING - Skipping self-relationship for word ID 105762
+2025-03-29 19:26:03,060 - WARNING - Skipping self-relationship for word ID 105770
+2025-03-29 19:26:03,077 - WARNING - Skipping self-relationship for word ID 105775
+2025-03-29 19:26:03,164 - WARNING - Skipping self-relationship for word ID 105799
+2025-03-29 19:26:03,200 - WARNING - Skipping self-relationship for word ID 105806
+2025-03-29 19:26:03,287 - WARNING - Skipping self-relationship for word ID 105830
+2025-03-29 19:26:03,358 - WARNING - Skipping self-relationship for word ID 105848
+2025-03-29 19:26:03,371 - WARNING - Skipping self-relationship for word ID 105853
+2025-03-29 19:26:03,380 - WARNING - Skipping self-relationship for word ID 105857
+2025-03-29 19:26:03,432 - WARNING - Skipping self-relationship for word ID 105871
+2025-03-29 19:26:03,442 - WARNING - Skipping self-relationship for word ID 105874
+2025-03-29 19:26:03,448 - WARNING - Skipping self-relationship for word ID 105876
+2025-03-29 19:26:03,509 - WARNING - Skipping self-relationship for word ID 105891
+2025-03-29 19:26:03,523 - WARNING - Skipping self-relationship for word ID 105895
+2025-03-29 19:26:03,580 - WARNING - Skipping self-relationship for word ID 105913
+2025-03-29 19:26:03,609 - WARNING - Skipping self-relationship for word ID 105919
+2025-03-29 19:26:03,649 - WARNING - Skipping self-relationship for word ID 105930
+2025-03-29 19:26:03,661 - WARNING - Skipping self-relationship for word ID 105935
+2025-03-29 19:26:03,682 - WARNING - Skipping self-relationship for word ID 105938
+2025-03-29 19:26:03,723 - WARNING - Skipping self-relationship for word ID 105951
+2025-03-29 19:26:03,747 - WARNING - Skipping self-relationship for word ID 105958
+2025-03-29 19:26:03,767 - WARNING - Skipping self-relationship for word ID 105962
+2025-03-29 19:26:03,778 - WARNING - Skipping self-relationship for word ID 105967
+2025-03-29 19:26:03,793 - WARNING - Skipping self-relationship for word ID 105971
+2025-03-29 19:26:03,836 - WARNING - Skipping self-relationship for word ID 105981
+2025-03-29 19:26:03,846 - WARNING - Skipping self-relationship for word ID 105985
+2025-03-29 19:26:03,856 - WARNING - Skipping self-relationship for word ID 105988
+2025-03-29 19:26:03,912 - WARNING - Skipping self-relationship for word ID 106005
+2025-03-29 19:26:03,959 - WARNING - Skipping self-relationship for word ID 106017
+2025-03-29 19:26:03,980 - WARNING - Skipping self-relationship for word ID 106023
+2025-03-29 19:26:04,047 - WARNING - Skipping self-relationship for word ID 106041
+2025-03-29 19:26:04,072 - WARNING - Skipping self-relationship for word ID 106047
+2025-03-29 19:26:04,080 - WARNING - Skipping self-relationship for word ID 106052
+2025-03-29 19:26:04,135 - WARNING - Skipping self-relationship for word ID 106068
+2025-03-29 19:26:04,188 - WARNING - Skipping self-relationship for word ID 106081
+2025-03-29 19:26:04,217 - INFO - Processed 1800/2238 root word entries
+2025-03-29 19:26:04,224 - WARNING - Skipping self-relationship for word ID 106092
+2025-03-29 19:26:04,278 - WARNING - Skipping self-relationship for word ID 106109
+2025-03-29 19:26:04,293 - WARNING - Skipping self-relationship for word ID 106113
+2025-03-29 19:26:04,311 - WARNING - Skipping self-relationship for word ID 106116
+2025-03-29 19:26:04,330 - WARNING - Skipping self-relationship for word ID 106120
+2025-03-29 19:26:04,373 - WARNING - Skipping self-relationship for word ID 106130
+2025-03-29 19:26:04,392 - WARNING - Skipping self-relationship for word ID 106137
+2025-03-29 19:26:04,447 - WARNING - Skipping self-relationship for word ID 106154
+2025-03-29 19:26:04,478 - WARNING - Skipping self-relationship for word ID 106162
+2025-03-29 19:26:04,491 - WARNING - Skipping self-relationship for word ID 106167
+2025-03-29 19:26:04,494 - WARNING - Skipping self-relationship for word ID 106168
+2025-03-29 19:26:04,528 - WARNING - Skipping self-relationship for word ID 106174
+2025-03-29 19:26:04,553 - WARNING - Skipping self-relationship for word ID 106182
+2025-03-29 19:26:04,577 - WARNING - Skipping self-relationship for word ID 106189
+2025-03-29 19:26:04,587 - WARNING - Skipping self-relationship for word ID 106192
+2025-03-29 19:26:04,611 - WARNING - Skipping self-relationship for word ID 106198
+2025-03-29 19:26:04,620 - WARNING - Skipping self-relationship for word ID 106200
+2025-03-29 19:26:04,638 - WARNING - Skipping self-relationship for word ID 106204
+2025-03-29 19:26:04,651 - WARNING - Skipping self-relationship for word ID 106207
+2025-03-29 19:26:04,671 - WARNING - Skipping self-relationship for word ID 106211
+2025-03-29 19:26:04,698 - WARNING - Skipping self-relationship for word ID 106217
+2025-03-29 19:26:04,729 - WARNING - Skipping self-relationship for word ID 106226
+2025-03-29 19:26:04,736 - WARNING - Skipping self-relationship for word ID 106231
+2025-03-29 19:26:04,779 - WARNING - Skipping self-relationship for word ID 106239
+2025-03-29 19:26:04,825 - WARNING - Skipping self-relationship for word ID 106255
+2025-03-29 19:26:04,852 - WARNING - Skipping self-relationship for word ID 106261
+2025-03-29 19:26:04,871 - WARNING - Skipping self-relationship for word ID 106266
+2025-03-29 19:26:04,891 - WARNING - Skipping self-relationship for word ID 106271
+2025-03-29 19:26:04,948 - WARNING - Skipping self-relationship for word ID 106285
+2025-03-29 19:26:04,991 - WARNING - Skipping self-relationship for word ID 106296
+2025-03-29 19:31:12,480 - WARNING - Skipping self-relationship for word ID 106303
+2025-03-29 19:31:12,486 - WARNING - Skipping self-relationship for word ID 106308
+2025-03-29 19:31:12,528 - WARNING - Skipping self-relationship for word ID 106319
+2025-03-29 19:31:12,563 - WARNING - Skipping self-relationship for word ID 106330
+2025-03-29 19:31:12,583 - WARNING - Skipping self-relationship for word ID 106335
+2025-03-29 19:31:12,621 - WARNING - Skipping self-relationship for word ID 106346
+2025-03-29 19:31:12,664 - WARNING - Skipping self-relationship for word ID 106353
+2025-03-29 19:31:12,668 - WARNING - Skipping self-relationship for word ID 106358
+2025-03-29 19:31:12,681 - WARNING - Skipping self-relationship for word ID 106362
+2025-03-29 19:31:12,697 - WARNING - Skipping self-relationship for word ID 106366
+2025-03-29 19:31:12,711 - WARNING - Skipping self-relationship for word ID 106369
+2025-03-29 19:31:12,740 - WARNING - Skipping self-relationship for word ID 106376
+2025-03-29 19:31:12,852 - WARNING - Skipping self-relationship for word ID 106404
+2025-03-29 19:31:12,871 - WARNING - Skipping self-relationship for word ID 106408
+2025-03-29 19:31:12,882 - WARNING - Skipping self-relationship for word ID 106412
+2025-03-29 19:31:12,920 - WARNING - Skipping self-relationship for word ID 106423
+2025-03-29 19:31:12,938 - WARNING - Skipping self-relationship for word ID 106427
+2025-03-29 19:31:12,964 - WARNING - Skipping self-relationship for word ID 106432
+2025-03-29 19:31:12,979 - WARNING - Skipping self-relationship for word ID 106438
+2025-03-29 19:31:13,001 - WARNING - Skipping self-relationship for word ID 106444
+2025-03-29 19:31:13,013 - WARNING - Skipping self-relationship for word ID 106447
+2025-03-29 19:31:13,015 - WARNING - Skipping self-relationship for word ID 106447
+2025-03-29 19:31:13,025 - WARNING - Skipping self-relationship for word ID 106449
+2025-03-29 19:31:13,118 - WARNING - Skipping self-relationship for word ID 106465
+2025-03-29 19:31:13,145 - WARNING - Skipping self-relationship for word ID 106472
+2025-03-29 19:31:13,217 - WARNING - Skipping self-relationship for word ID 106497
+2025-03-29 19:31:13,232 - WARNING - Skipping self-relationship for word ID 106500
+2025-03-29 19:31:13,259 - WARNING - Skipping self-relationship for word ID 106504
+2025-03-29 19:31:13,363 - WARNING - Skipping self-relationship for word ID 106534
+2025-03-29 19:31:13,409 - WARNING - Skipping self-relationship for word ID 106547
+2025-03-29 19:31:13,426 - INFO - Processed 1900/2238 root word entries
+2025-03-29 19:31:13,431 - WARNING - Skipping self-relationship for word ID 106551
+2025-03-29 19:31:13,463 - WARNING - Skipping self-relationship for word ID 106559
+2025-03-29 19:31:13,474 - WARNING - Skipping self-relationship for word ID 106562
+2025-03-29 19:31:13,502 - WARNING - Skipping self-relationship for word ID 106569
+2025-03-29 19:31:13,511 - WARNING - Skipping self-relationship for word ID 106573
+2025-03-29 19:31:13,562 - WARNING - Skipping self-relationship for word ID 106585
+2025-03-29 19:31:13,569 - WARNING - Skipping self-relationship for word ID 106590
+2025-03-29 19:31:13,599 - WARNING - Skipping self-relationship for word ID 106597
+2025-03-29 19:31:13,613 - WARNING - Skipping self-relationship for word ID 106603
+2025-03-29 19:31:13,643 - WARNING - Skipping self-relationship for word ID 106611
+2025-03-29 19:31:13,716 - WARNING - Skipping self-relationship for word ID 106628
+2025-03-29 19:31:13,750 - WARNING - Skipping self-relationship for word ID 106638
+2025-03-29 19:31:13,763 - WARNING - Skipping self-relationship for word ID 106641
+2025-03-29 19:31:13,776 - WARNING - Skipping self-relationship for word ID 106642
+2025-03-29 19:31:13,831 - WARNING - Skipping self-relationship for word ID 106657
+2025-03-29 19:31:13,866 - WARNING - Skipping self-relationship for word ID 106665
+2025-03-29 19:31:13,880 - WARNING - Skipping self-relationship for word ID 106669
+2025-03-29 19:31:13,896 - WARNING - Skipping self-relationship for word ID 106673
+2025-03-29 19:31:13,929 - WARNING - Skipping self-relationship for word ID 106680
+2025-03-29 19:31:13,983 - WARNING - Skipping self-relationship for word ID 106687
+2025-03-29 19:31:14,011 - WARNING - Skipping self-relationship for word ID 106700
+2025-03-29 19:31:14,045 - WARNING - Skipping self-relationship for word ID 106706
+2025-03-29 19:31:14,108 - WARNING - Skipping self-relationship for word ID 106718
+2025-03-29 19:31:14,121 - WARNING - Skipping self-relationship for word ID 106722
+2025-03-29 19:31:14,149 - WARNING - Skipping self-relationship for word ID 106729
+2025-03-29 19:31:14,161 - WARNING - Skipping self-relationship for word ID 106730
+2025-03-29 19:31:14,207 - WARNING - Skipping self-relationship for word ID 106742
+2025-03-29 19:31:14,220 - WARNING - Skipping self-relationship for word ID 106746
+2025-03-29 19:31:14,271 - WARNING - Skipping self-relationship for word ID 106760
+2025-03-29 19:31:14,330 - WARNING - Skipping self-relationship for word ID 106774
+2025-03-29 19:31:14,352 - WARNING - Skipping self-relationship for word ID 106778
+2025-03-29 19:31:14,355 - WARNING - Skipping self-relationship for word ID 106782
+2025-03-29 19:31:14,372 - WARNING - Skipping self-relationship for word ID 106786
+2025-03-29 19:31:14,395 - WARNING - Skipping self-relationship for word ID 106792
+2025-03-29 19:31:14,448 - WARNING - Skipping self-relationship for word ID 106803
+2025-03-29 19:31:14,504 - WARNING - Skipping self-relationship for word ID 106818
+2025-03-29 19:31:14,523 - WARNING - Skipping self-relationship for word ID 106822
+2025-03-29 19:31:14,552 - WARNING - Skipping self-relationship for word ID 106831
+2025-03-29 19:31:14,571 - WARNING - Skipping self-relationship for word ID 106836
+2025-03-29 19:31:14,586 - WARNING - Skipping self-relationship for word ID 106840
+2025-03-29 19:31:14,625 - WARNING - Skipping self-relationship for word ID 106847
+2025-03-29 19:31:14,696 - WARNING - Skipping self-relationship for word ID 106867
+2025-03-29 19:31:14,754 - WARNING - Skipping self-relationship for word ID 106883
+2025-03-29 19:31:14,776 - WARNING - Skipping self-relationship for word ID 106888
+2025-03-29 19:31:14,816 - WARNING - Skipping self-relationship for word ID 106897
+2025-03-29 19:31:14,855 - WARNING - Skipping self-relationship for word ID 106906
+2025-03-29 19:31:14,866 - WARNING - Skipping self-relationship for word ID 106910
+2025-03-29 19:31:14,917 - WARNING - Skipping self-relationship for word ID 106923
+2025-03-29 19:31:14,970 - WARNING - Skipping self-relationship for word ID 106933
+2025-03-29 19:31:14,984 - WARNING - Skipping self-relationship for word ID 106940
+2025-03-29 19:31:15,046 - WARNING - Skipping self-relationship for word ID 106955
+2025-03-29 19:31:15,090 - WARNING - Skipping self-relationship for word ID 106966
+2025-03-29 19:31:15,105 - WARNING - Skipping self-relationship for word ID 106970
+2025-03-29 19:31:15,146 - WARNING - Skipping self-relationship for word ID 106978
+2025-03-29 19:31:15,165 - WARNING - Skipping self-relationship for word ID 106982
+2025-03-29 19:31:15,212 - WARNING - Skipping self-relationship for word ID 106992
+2025-03-29 19:31:15,275 - WARNING - Skipping self-relationship for word ID 107009
+2025-03-29 19:31:15,278 - WARNING - Skipping self-relationship for word ID 107012
+2025-03-29 19:31:15,329 - INFO - Processed 2000/2238 root word entries
+2025-03-29 19:31:15,334 - WARNING - Skipping self-relationship for word ID 107025
+2025-03-29 19:31:15,356 - WARNING - Skipping self-relationship for word ID 107030
+2025-03-29 19:31:15,397 - WARNING - Skipping self-relationship for word ID 107040
+2025-03-29 19:31:15,420 - WARNING - Skipping self-relationship for word ID 107044
+2025-03-29 19:31:15,439 - WARNING - Skipping self-relationship for word ID 107050
+2025-03-29 19:31:15,474 - WARNING - Skipping self-relationship for word ID 107059
+2025-03-29 19:31:15,511 - WARNING - Skipping self-relationship for word ID 107068
+2025-03-29 19:31:15,524 - WARNING - Skipping self-relationship for word ID 107072
+2025-03-29 19:31:15,608 - WARNING - Skipping self-relationship for word ID 107089
+2025-03-29 19:31:15,634 - WARNING - Skipping self-relationship for word ID 107095
+2025-03-29 19:31:15,649 - WARNING - Skipping self-relationship for word ID 107099
+2025-03-29 19:31:15,685 - WARNING - Skipping self-relationship for word ID 107107
+2025-03-29 19:31:15,712 - WARNING - Skipping self-relationship for word ID 107114
+2025-03-29 19:31:15,724 - WARNING - Skipping self-relationship for word ID 107119
+2025-03-29 19:31:15,770 - WARNING - Skipping self-relationship for word ID 107129
+2025-03-29 19:31:15,814 - WARNING - Skipping self-relationship for word ID 107140
+2025-03-29 19:31:15,837 - WARNING - Skipping self-relationship for word ID 107145
+2025-03-29 19:31:15,873 - WARNING - Skipping self-relationship for word ID 107151
+2025-03-29 19:31:15,904 - WARNING - Skipping self-relationship for word ID 107162
+2025-03-29 19:31:15,933 - WARNING - Skipping self-relationship for word ID 107170
+2025-03-29 19:31:15,952 - WARNING - Skipping self-relationship for word ID 107175
+2025-03-29 19:31:16,108 - WARNING - Skipping self-relationship for word ID 107210
+2025-03-29 19:31:16,150 - WARNING - Skipping self-relationship for word ID 107222
+2025-03-29 19:31:16,190 - WARNING - Skipping self-relationship for word ID 107231
+2025-03-29 19:31:16,235 - WARNING - Skipping self-relationship for word ID 107240
+2025-03-29 19:31:16,256 - WARNING - Skipping self-relationship for word ID 107244
+2025-03-29 19:31:16,292 - WARNING - Skipping self-relationship for word ID 107253
+2025-03-29 19:31:16,339 - WARNING - Skipping self-relationship for word ID 107268
+2025-03-29 19:31:16,373 - WARNING - Skipping self-relationship for word ID 107276
+2025-03-29 19:31:16,430 - WARNING - Skipping self-relationship for word ID 107290
+2025-03-29 19:31:16,456 - WARNING - Skipping self-relationship for word ID 107295
+2025-03-29 19:31:16,490 - WARNING - Skipping self-relationship for word ID 107304
+2025-03-29 19:31:16,511 - WARNING - Skipping self-relationship for word ID 107308
+2025-03-29 19:31:16,541 - WARNING - Skipping self-relationship for word ID 107316
+2025-03-29 19:31:16,617 - WARNING - Skipping self-relationship for word ID 107332
+2025-03-29 19:31:16,642 - WARNING - Skipping self-relationship for word ID 107337
+2025-03-29 19:31:16,645 - WARNING - Skipping self-relationship for word ID 107340
+2025-03-29 19:31:16,672 - WARNING - Skipping self-relationship for word ID 107345
+2025-03-29 19:31:16,687 - WARNING - Skipping self-relationship for word ID 107349
+2025-03-29 19:31:16,726 - WARNING - Skipping self-relationship for word ID 107356
+2025-03-29 19:31:16,777 - WARNING - Skipping self-relationship for word ID 107368
+2025-03-29 19:31:16,794 - WARNING - Skipping self-relationship for word ID 107372
+2025-03-29 19:31:16,805 - WARNING - Skipping self-relationship for word ID 107376
+2025-03-29 19:31:16,823 - WARNING - Skipping self-relationship for word ID 107380
+2025-03-29 19:31:16,843 - WARNING - Skipping self-relationship for word ID 107384
+2025-03-29 19:31:16,873 - WARNING - Skipping self-relationship for word ID 107391
+2025-03-29 19:31:16,897 - WARNING - Skipping self-relationship for word ID 107398
+2025-03-29 19:31:16,942 - WARNING - Skipping self-relationship for word ID 107411
+2025-03-29 19:31:16,960 - WARNING - Skipping self-relationship for word ID 107416
+2025-03-29 19:31:16,992 - WARNING - Skipping self-relationship for word ID 107423
+2025-03-29 19:31:17,033 - WARNING - Skipping self-relationship for word ID 107431
+2025-03-29 19:31:17,117 - WARNING - Skipping self-relationship for word ID 107452
+2025-03-29 19:31:17,155 - WARNING - Skipping self-relationship for word ID 107462
+2025-03-29 19:31:17,252 - INFO - Processed 2100/2238 root word entries
+2025-03-29 19:31:17,257 - WARNING - Skipping self-relationship for word ID 107488
+2025-03-29 19:31:17,279 - WARNING - Skipping self-relationship for word ID 107492
+2025-03-29 19:31:17,291 - WARNING - Skipping self-relationship for word ID 107496
+2025-03-29 19:31:17,311 - WARNING - Skipping self-relationship for word ID 107501
+2025-03-29 19:31:17,343 - WARNING - Skipping self-relationship for word ID 107509
+2025-03-29 19:31:17,352 - WARNING - Skipping self-relationship for word ID 107510
+2025-03-29 19:31:17,401 - WARNING - Skipping self-relationship for word ID 107522
+2025-03-29 19:31:17,492 - WARNING - Skipping self-relationship for word ID 107545
+2025-03-29 19:31:17,551 - WARNING - Skipping self-relationship for word ID 107556
+2025-03-29 19:31:17,588 - WARNING - Skipping self-relationship for word ID 107567
+2025-03-29 19:31:17,604 - WARNING - Skipping self-relationship for word ID 107570
+2025-03-29 19:31:17,617 - WARNING - Skipping self-relationship for word ID 107572
+2025-03-29 19:31:17,629 - WARNING - Skipping self-relationship for word ID 107574
+2025-03-29 19:31:17,645 - WARNING - Skipping self-relationship for word ID 107577
+2025-03-29 19:31:17,717 - WARNING - Skipping self-relationship for word ID 107596
+2025-03-29 19:31:17,766 - WARNING - Skipping self-relationship for word ID 107606
+2025-03-29 19:31:17,789 - WARNING - Skipping self-relationship for word ID 107611
+2025-03-29 19:31:17,812 - WARNING - Skipping self-relationship for word ID 107615
+2025-03-29 19:31:17,824 - WARNING - Skipping self-relationship for word ID 107619
+2025-03-29 19:31:17,837 - WARNING - Skipping self-relationship for word ID 107622
+2025-03-29 19:31:17,890 - WARNING - Skipping self-relationship for word ID 107635
+2025-03-29 19:31:17,969 - WARNING - Skipping self-relationship for word ID 107652
+2025-03-29 19:31:17,985 - WARNING - Skipping self-relationship for word ID 107656
+2025-03-29 19:31:17,996 - WARNING - Skipping self-relationship for word ID 107660
+2025-03-29 19:31:18,028 - WARNING - Skipping self-relationship for word ID 107664
+2025-03-29 19:31:18,078 - WARNING - Skipping self-relationship for word ID 107676
+2025-03-29 19:31:18,114 - WARNING - Skipping self-relationship for word ID 107685
+2025-03-29 19:31:18,134 - WARNING - Skipping self-relationship for word ID 107692
+2025-03-29 19:31:18,179 - WARNING - Skipping self-relationship for word ID 107706
+2025-03-29 19:31:18,189 - WARNING - Skipping self-relationship for word ID 107708
+2025-03-29 19:31:18,215 - WARNING - Skipping self-relationship for word ID 107711
+2025-03-29 19:31:18,245 - WARNING - Skipping self-relationship for word ID 107721
+2025-03-29 19:31:18,257 - WARNING - Skipping self-relationship for word ID 107723
+2025-03-29 19:31:18,267 - WARNING - Skipping self-relationship for word ID 107727
+2025-03-29 19:31:18,281 - WARNING - Skipping self-relationship for word ID 107731
+2025-03-29 19:31:18,323 - WARNING - Skipping self-relationship for word ID 107740
+2025-03-29 19:31:18,388 - WARNING - Skipping self-relationship for word ID 107754
+2025-03-29 19:31:18,449 - WARNING - Skipping self-relationship for word ID 107773
+2025-03-29 19:31:18,488 - WARNING - Skipping self-relationship for word ID 107781
+2025-03-29 19:31:18,521 - WARNING - Skipping self-relationship for word ID 107788
+2025-03-29 19:31:18,577 - WARNING - Skipping self-relationship for word ID 107804
+2025-03-29 19:31:18,630 - WARNING - Skipping self-relationship for word ID 107817
+2025-03-29 19:31:18,638 - WARNING - Skipping self-relationship for word ID 107821
+2025-03-29 19:31:18,669 - WARNING - Skipping self-relationship for word ID 107829
+2025-03-29 19:31:18,706 - WARNING - Skipping self-relationship for word ID 107839
+2025-03-29 19:31:18,728 - WARNING - Skipping self-relationship for word ID 107846
+2025-03-29 19:31:18,751 - WARNING - Skipping self-relationship for word ID 107850
+2025-03-29 19:31:18,782 - WARNING - Skipping self-relationship for word ID 107858
+2025-03-29 19:31:18,791 - WARNING - Skipping self-relationship for word ID 107863
+2025-03-29 19:31:18,816 - WARNING - Skipping self-relationship for word ID 107867
+2025-03-29 19:31:18,833 - WARNING - Skipping self-relationship for word ID 107872
+2025-03-29 19:31:18,854 - WARNING - Skipping self-relationship for word ID 107877
+2025-03-29 19:31:18,869 - WARNING - Skipping self-relationship for word ID 107882
+2025-03-29 19:31:18,955 - WARNING - Skipping self-relationship for word ID 107906
+2025-03-29 19:31:18,984 - INFO - Processed 2200/2238 root word entries
+2025-03-29 19:31:19,002 - WARNING - Skipping self-relationship for word ID 107917
+2025-03-29 19:31:19,052 - WARNING - Skipping self-relationship for word ID 107930
+2025-03-29 19:31:19,064 - WARNING - Skipping self-relationship for word ID 107935
+2025-03-29 19:31:19,082 - WARNING - Skipping self-relationship for word ID 107939
+2025-03-29 19:31:19,097 - WARNING - Skipping self-relationship for word ID 107943
+2025-03-29 19:31:19,111 - WARNING - Skipping self-relationship for word ID 107946
+2025-03-29 19:31:19,140 - WARNING - Skipping self-relationship for word ID 107952
+2025-03-29 19:31:19,158 - WARNING - Skipping self-relationship for word ID 107956
+2025-03-29 19:31:19,185 - WARNING - Skipping self-relationship for word ID 107964
+2025-03-29 19:31:19,203 - WARNING - Skipping self-relationship for word ID 107968
+2025-03-29 19:31:19,245 - WARNING - Skipping self-relationship for word ID 107980
+2025-03-29 19:31:19,277 - WARNING - Skipping self-relationship for word ID 107987
+2025-03-29 19:31:19,296 - WARNING - Skipping self-relationship for word ID 107991
+2025-03-29 19:31:19,351 - WARNING - Skipping self-relationship for word ID 108005
+2025-03-29 19:31:19,422 - WARNING - Skipping self-relationship for word ID 108021
+2025-03-29 19:31:19,521 - WARNING - Skipping self-relationship for word ID 108045
+2025-03-29 19:31:19,568 - WARNING - Skipping self-relationship for word ID 108055
+2025-03-29 19:31:19,581 - WARNING - Skipping self-relationship for word ID 108058
+2025-03-29 19:31:19,590 - WARNING - Skipping self-relationship for word ID 108059
+2025-03-29 19:31:19,607 - INFO - Root words processing complete: 2237 processed, 0 skipped, 1 errors
+2025-03-29 19:31:19,615 - INFO - Processing KWF Dictionary: ..\data\kwf_dictionary.json
+2025-03-29 19:31:20,980 - ERROR - Unexpected format in ..\data\kwf_dictionary.json, expected list or dict with 'entries' key
+2025-03-29 19:31:21,138 - INFO - Successfully committed schema changes
+2025-03-29 19:31:21,149 - INFO - Processing dictionary file: ..\data\kaikki.jsonl
+2025-03-29 19:31:21,192 - ERROR - Error processing entry 0 (abay): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,195 - WARNING - Skipping self-relationship for word ID 104187
+2025-03-29 19:31:21,197 - ERROR - Error processing entry 1 (abay): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,215 - WARNING - Skipping self-relationship for word ID 108065
+2025-03-29 19:31:21,217 - ERROR - Error processing entry 2 (aam): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,245 - ERROR - Error processing entry 4 (kun): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,251 - ERROR - Error processing entry 5 (kun): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,256 - ERROR - Error processing entry 6 (lente): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,260 - WARNING - Skipping self-relationship for word ID 108074
+2025-03-29 19:31:21,263 - ERROR - Error processing entry 7 (kutya): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,268 - WARNING - Skipping self-relationship for word ID 108076
+2025-03-29 19:31:21,269 - WARNING - Skipping self-relationship for word ID 108076
+2025-03-29 19:31:21,273 - ERROR - Error processing entry 8 (abnormal): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,277 - WARNING - Skipping self-relationship for word ID 108078
+2025-03-29 19:31:21,279 - ERROR - Error processing entry 9 (abdominal): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,286 - ERROR - Error processing entry 10 (June): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,290 - WARNING - Skipping self-relationship for word ID 108082
+2025-03-29 19:31:21,294 - ERROR - Error processing entry 11 (tago): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,298 - WARNING - Skipping self-relationship for word ID 108084
+2025-03-29 19:31:21,301 - ERROR - Error processing entry 12 (tago): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,305 - WARNING - Skipping self-relationship for word ID 108086
+2025-03-29 19:31:21,307 - WARNING - Skipping self-relationship for word ID 108086
+2025-03-29 19:31:21,309 - ERROR - Error processing entry 13 (abdomen): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,314 - ERROR - Error processing entry 14 (absent): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,319 - ERROR - Error processing entry 15 (Esperanto): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,324 - ERROR - Error processing entry 16 (April): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,329 - WARNING - Skipping self-relationship for word ID 108094
+2025-03-29 19:31:21,330 - WARNING - Skipping self-relationship for word ID 108094
+2025-03-29 19:31:21,333 - ERROR - Error processing entry 17 (libre): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,338 - WARNING - Skipping self-relationship for word ID 108096
+2025-03-29 19:31:21,339 - WARNING - Skipping self-relationship for word ID 108096
+2025-03-29 19:31:21,343 - ERROR - Error processing entry 18 (libre): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,351 - ERROR - Error processing entry 19 (may): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,359 - ERROR - Error processing entry 20 (may): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,364 - ERROR - Error processing entry 21 (menos): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,369 - ERROR - Error processing entry 22 (January): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,375 - ERROR - Error processing entry 23 (abate): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,381 - ERROR - Error processing entry 24 (peso): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,389 - ERROR - Error processing entry 25 (tao): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,394 - WARNING - Skipping self-relationship for word ID 108111
+2025-03-29 19:31:21,396 - ERROR - Error processing entry 26 (tao): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,399 - WARNING - Skipping self-relationship for word ID 108113
+2025-03-29 19:31:21,401 - ERROR - Error processing entry 27 (are): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,407 - ERROR - Error processing entry 28 (robot): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,413 - ERROR - Error processing entry 29 (Libya): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,419 - ERROR - Error processing entry 30 (Burundi): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,425 - ERROR - Error processing entry 31 (Guyana): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,430 - WARNING - Skipping self-relationship for word ID 108123
+2025-03-29 19:31:21,432 - ERROR - Error processing entry 32 (Gabon): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,438 - ERROR - Error processing entry 33 (Kenya): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,446 - WARNING - Skipping self-relationship for word ID 108127
+2025-03-29 19:31:21,449 - ERROR - Error processing entry 34 (f): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,457 - WARNING - Skipping self-relationship for word ID 108129
+2025-03-29 19:31:21,459 - ERROR - Error processing entry 35 (f): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,464 - ERROR - Error processing entry 36 (a-): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,468 - WARNING - Skipping self-relationship for word ID 108133
+2025-03-29 19:31:21,470 - ERROR - Error processing entry 37 (Brasil): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,475 - ERROR - Error processing entry 38 (Botswana): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,480 - ERROR - Error processing entry 39 (Malawi): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,485 - ERROR - Error processing entry 40 (also): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,490 - ERROR - Error processing entry 41 (van): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,496 - ERROR - Error processing entry 42 (mars): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,500 - WARNING - Skipping self-relationship for word ID 108145
+2025-03-29 19:31:21,503 - ERROR - Error processing entry 43 (Oman): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,506 - WARNING - Skipping self-relationship for word ID 108147
+2025-03-29 19:31:21,509 - ERROR - Error processing entry 44 (Lebanon): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,515 - WARNING - Skipping self-relationship for word ID 108149
+2025-03-29 19:31:21,518 - ERROR - Error processing entry 45 (y): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,524 - WARNING - Skipping self-relationship for word ID 108151
+2025-03-29 19:31:21,527 - ERROR - Error processing entry 46 (y): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,538 - WARNING - Skipping self-relationship for word ID 108153
+2025-03-29 19:31:21,541 - ERROR - Error processing entry 47 (y): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,546 - ERROR - Error processing entry 48 (y): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,552 - ERROR - Error processing entry 49 (Mali): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,555 - WARNING - Skipping self-relationship for word ID 108159
+2025-03-29 19:31:21,557 - ERROR - Error processing entry 50 (Israel): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,561 - WARNING - Skipping self-relationship for word ID 108161
+2025-03-29 19:31:21,563 - ERROR - Error processing entry 51 (Nepal): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,568 - ERROR - Error processing entry 52 (Laos): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,574 - ERROR - Error processing entry 53 (Yemen): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,579 - WARNING - Skipping self-relationship for word ID 108167
+2025-03-29 19:31:21,582 - ERROR - Error processing entry 54 (Pakistan): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,587 - ERROR - Error processing entry 55 (Togo): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,592 - ERROR - Error processing entry 56 (Uganda): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,596 - WARNING - Skipping self-relationship for word ID 108173
+2025-03-29 19:31:21,597 - ERROR - Error processing entry 57 (Sudan): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,601 - WARNING - Skipping self-relationship for word ID 108175
+2025-03-29 19:31:21,605 - ERROR - Error processing entry 58 (Senegal): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,609 - WARNING - Skipping self-relationship for word ID 108177
+2025-03-29 19:31:21,611 - ERROR - Error processing entry 59 (Peru): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,617 - WARNING - Skipping self-relationship for word ID 108179
+2025-03-29 19:31:21,620 - ERROR - Error processing entry 60 (Iran): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,623 - WARNING - Skipping self-relationship for word ID 108181
+2025-03-29 19:31:21,625 - WARNING - Skipping self-relationship for word ID 108181
+2025-03-29 19:31:21,630 - ERROR - Error processing entry 61 (Turkmenistan): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,637 - ERROR - Error processing entry 62 (Saudi Arabia): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,644 - ERROR - Error processing entry 63 (te): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,651 - ERROR - Error processing entry 64 (te): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,655 - WARNING - Skipping self-relationship for word ID 108189
+2025-03-29 19:31:21,657 - WARNING - Skipping self-relationship for word ID 108189
+2025-03-29 19:31:21,659 - ERROR - Error processing entry 65 (Panama): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,664 - ERROR - Error processing entry 66 (Burma): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,669 - ERROR - Error processing entry 67 (presidente): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,675 - ERROR - Error processing entry 68 (San Marino): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,681 - WARNING - Skipping self-relationship for word ID 108197
+2025-03-29 19:31:21,685 - ERROR - Error processing entry 69 (A): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,691 - WARNING - Skipping self-relationship for word ID 108199
+2025-03-29 19:31:21,693 - ERROR - Error processing entry 70 (A): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,697 - WARNING - Skipping self-relationship for word ID 108201
+2025-03-29 19:31:21,699 - ERROR - Error processing entry 71 (Portugal): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,703 - WARNING - Skipping self-relationship for word ID 108203
+2025-03-29 19:31:21,705 - ERROR - Error processing entry 72 (Portugal): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,714 - ERROR - Error processing entry 73 (vi): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,720 - WARNING - Skipping self-relationship for word ID 108207
+2025-03-29 19:31:21,722 - ERROR - Error processing entry 74 (Benin): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,727 - ERROR - Error processing entry 75 (on): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,733 - ERROR - Error processing entry 76 (tigre): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,739 - ERROR - Error processing entry 77 (de): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,744 - ERROR - Error processing entry 78 (de): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,749 - WARNING - Skipping self-relationship for word ID 108217
+2025-03-29 19:31:21,752 - ERROR - Error processing entry 79 (Belarus): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,758 - ERROR - Error processing entry 80 (day): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,763 - ERROR - Error processing entry 81 (DNA): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,768 - ERROR - Error processing entry 82 (Malta): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,773 - ERROR - Error processing entry 83 (gas): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,779 - ERROR - Error processing entry 84 (gas): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,784 - WARNING - Skipping self-relationship for word ID 108227
+2025-03-29 19:31:21,787 - ERROR - Error processing entry 85 (radar): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,791 - WARNING - Skipping self-relationship for word ID 108229
+2025-03-29 19:31:21,793 - ERROR - Error processing entry 86 (tuba): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,798 - ERROR - Error processing entry 87 (tuba): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,804 - ERROR - Error processing entry 88 (ao): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,810 - ERROR - Error processing entry 89 (mental): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,815 - ERROR - Error processing entry 90 (mental): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,822 - ERROR - Error processing entry 91 (be): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,828 - WARNING - Skipping self-relationship for word ID 108241
+2025-03-29 19:31:21,830 - ERROR - Error processing entry 92 (noon): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,835 - WARNING - Skipping self-relationship for word ID 108243
+2025-03-29 19:31:21,839 - ERROR - Error processing entry 93 (noon): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,844 - ERROR - Error processing entry 94 (abandono): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,849 - ERROR - Error processing entry 95 (en): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,855 - ERROR - Error processing entry 96 (ate): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,859 - WARNING - Skipping self-relationship for word ID 108251
+2025-03-29 19:31:21,863 - ERROR - Error processing entry 97 (ate): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,868 - ERROR - Error processing entry 98 (yak): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,874 - ERROR - Error processing entry 99 (yak): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,876 - INFO - Committed batch. Processed 1 entries so far.
+2025-03-29 19:31:21,886 - WARNING - Skipping self-relationship for word ID 108257
+2025-03-29 19:31:21,889 - ERROR - Error processing entry 100 (o): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,896 - ERROR - Error processing entry 101 (o): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,902 - ERROR - Error processing entry 102 (o): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,907 - ERROR - Error processing entry 103 (o): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,914 - ERROR - Error processing entry 104 (o): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,920 - WARNING - Skipping self-relationship for word ID 108267
+2025-03-29 19:31:21,922 - ERROR - Error processing entry 105 (i): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,930 - WARNING - Skipping self-relationship for word ID 108269
+2025-03-29 19:31:21,932 - ERROR - Error processing entry 106 (i): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,940 - ERROR - Error processing entry 107 (i): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,945 - ERROR - Error processing entry 108 (i): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,952 - ERROR - Error processing entry 109 (upas): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,957 - WARNING - Skipping self-relationship for word ID 108277
+2025-03-29 19:31:21,960 - ERROR - Error processing entry 110 (upas): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,964 - WARNING - Skipping self-relationship for word ID 108279
+2025-03-29 19:31:21,968 - ERROR - Error processing entry 111 (upas): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,974 - WARNING - Skipping self-relationship for word ID 108281
+2025-03-29 19:31:21,977 - ERROR - Error processing entry 112 (X): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,983 - WARNING - Skipping self-relationship for word ID 108283
+2025-03-29 19:31:21,985 - ERROR - Error processing entry 113 (X): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,991 - ERROR - Error processing entry 114 (pi): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:21,996 - ERROR - Error processing entry 115 (xerox): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,000 - WARNING - Skipping self-relationship for word ID 108289
+2025-03-29 19:31:22,002 - ERROR - Error processing entry 116 (mundo): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,007 - WARNING - Skipping self-relationship for word ID 108291
+2025-03-29 19:31:22,010 - ERROR - Error processing entry 117 (mundo): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,015 - ERROR - Error processing entry 118 (was): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,022 - ERROR - Error processing entry 119 (el): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,029 - ERROR - Error processing entry 120 (sombrero): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,036 - ERROR - Error processing entry 121 (bold): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,041 - ERROR - Error processing entry 122 (bold): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,046 - ERROR - Error processing entry 123 (Korea): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,050 - WARNING - Skipping self-relationship for word ID 108305
+2025-03-29 19:31:22,052 - ERROR - Error processing entry 124 (regular): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,056 - WARNING - Skipping self-relationship for word ID 108307
+2025-03-29 19:31:22,060 - ERROR - Error processing entry 125 (animal): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,065 - ERROR - Error processing entry 126 (beso): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,070 - ERROR - Error processing entry 127 (balatik): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,074 - WARNING - Skipping self-relationship for word ID 108313
+2025-03-29 19:31:22,076 - ERROR - Error processing entry 128 (balatik): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,082 - ERROR - Error processing entry 129 (PI): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,087 - WARNING - Skipping self-relationship for word ID 108317
+2025-03-29 19:31:22,090 - ERROR - Error processing entry 130 (balido): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,094 - WARNING - Skipping self-relationship for word ID 108319
+2025-03-29 19:31:22,096 - ERROR - Error processing entry 131 (balat): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,101 - ERROR - Error processing entry 132 (balat): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,107 - ERROR - Error processing entry 133 (balam): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,111 - WARNING - Skipping self-relationship for word ID 108325
+2025-03-29 19:31:22,114 - ERROR - Error processing entry 134 (balam): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,118 - ERROR - Error processing entry 135 (AP): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,123 - ERROR - Error processing entry 136 (grupo): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,138 - ERROR - Error processing entry 138 (OA): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,144 - ERROR - Error processing entry 139 (baon): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,148 - WARNING - Skipping self-relationship for word ID 108336
+2025-03-29 19:31:22,150 - ERROR - Error processing entry 140 (baon): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,154 - WARNING - Skipping self-relationship for word ID 108338
+2025-03-29 19:31:22,156 - ERROR - Error processing entry 141 (baon): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,160 - WARNING - Skipping self-relationship for word ID 108340
+2025-03-29 19:31:22,162 - ERROR - Error processing entry 142 (alo): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,167 - ERROR - Error processing entry 143 (barato): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,174 - WARNING - Skipping self-relationship for word ID 108344
+2025-03-29 19:31:22,176 - ERROR - Error processing entry 144 (CH): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,180 - WARNING - Skipping self-relationship for word ID 108346
+2025-03-29 19:31:22,182 - ERROR - Error processing entry 145 (balik): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,188 - ERROR - Error processing entry 146 (salsa): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,194 - ERROR - Error processing entry 147 (bayad): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,198 - WARNING - Skipping self-relationship for word ID 108352
+2025-03-29 19:31:22,202 - ERROR - Error processing entry 148 (bayad): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,209 - ERROR - Error processing entry 149 (hamster): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,216 - ERROR - Error processing entry 150 (boss): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,222 - WARNING - Skipping self-relationship for word ID 108358
+2025-03-29 19:31:22,225 - ERROR - Error processing entry 151 (salmon): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,232 - ERROR - Error processing entry 152 (granada): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,238 - ERROR - Error processing entry 153 (matadero): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,244 - ERROR - Error processing entry 154 (kawa): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,252 - ERROR - Error processing entry 155 (plata): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,258 - ERROR - Error processing entry 156 (at): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,264 - ERROR - Error processing entry 157 (haj): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,269 - ERROR - Error processing entry 158 (pato): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,274 - ERROR - Error processing entry 159 (slang): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,280 - ERROR - Error processing entry 160 (slang): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,285 - ERROR - Error processing entry 161 (boy): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,291 - ERROR - Error processing entry 162 (matador): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,294 - WARNING - Skipping self-relationship for word ID 108382
+2025-03-29 19:31:22,297 - ERROR - Error processing entry 163 (saya): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,302 - ERROR - Error processing entry 164 (saya): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,305 - WARNING - Skipping self-relationship for word ID 108386
+2025-03-29 19:31:22,307 - ERROR - Error processing entry 165 (lampa): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,311 - WARNING - Skipping self-relationship for word ID 108388
+2025-03-29 19:31:22,313 - ERROR - Error processing entry 166 (lampa): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,318 - WARNING - Skipping self-relationship for word ID 108390
+2025-03-29 19:31:22,321 - ERROR - Error processing entry 167 (Salvador): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,326 - ERROR - Error processing entry 168 (Darwin): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,360 - ERROR - Error processing entry 170 (torta): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,365 - WARNING - Skipping self-relationship for word ID 108397
+2025-03-29 19:31:22,366 - WARNING - Skipping self-relationship for word ID 108397
+2025-03-29 19:31:22,369 - ERROR - Error processing entry 171 (simba): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,374 - WARNING - Skipping self-relationship for word ID 108399
+2025-03-29 19:31:22,376 - ERROR - Error processing entry 172 (kami): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,383 - ERROR - Error processing entry 173 (mapa): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,387 - WARNING - Skipping self-relationship for word ID 108403
+2025-03-29 19:31:22,391 - ERROR - Error processing entry 174 (Bombay): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,395 - WARNING - Skipping self-relationship for word ID 108405
+2025-03-29 19:31:22,397 - ERROR - Error processing entry 175 (Bombay): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,402 - WARNING - Skipping self-relationship for word ID 108407
+2025-03-29 19:31:22,405 - ERROR - Error processing entry 176 (Bombay): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,410 - ERROR - Error processing entry 177 (leche): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,416 - ERROR - Error processing entry 178 (leche): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,421 - ERROR - Error processing entry 179 (leche): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,428 - ERROR - Error processing entry 180 (Moslem): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,433 - ERROR - Error processing entry 181 (Moslem): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,439 - ERROR - Error processing entry 182 (man): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,444 - ERROR - Error processing entry 183 (sana): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,448 - WARNING - Skipping self-relationship for word ID 108423
+2025-03-29 19:31:22,452 - ERROR - Error processing entry 184 (sana): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,456 - WARNING - Skipping self-relationship for word ID 108425
+2025-03-29 19:31:22,459 - ERROR - Error processing entry 185 (sana): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,466 - ERROR - Error processing entry 186 (ban): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,472 - ERROR - Error processing entry 187 (pata): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,478 - WARNING - Skipping self-relationship for word ID 108431
+2025-03-29 19:31:22,481 - ERROR - Error processing entry 188 (pata): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,485 - WARNING - Skipping self-relationship for word ID 108433
+2025-03-29 19:31:22,490 - ERROR - Error processing entry 189 (pata): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,494 - WARNING - Skipping self-relationship for word ID 108435
+2025-03-29 19:31:22,497 - ERROR - Error processing entry 190 (pata): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,501 - WARNING - Skipping self-relationship for word ID 108437
+2025-03-29 19:31:22,503 - WARNING - Skipping self-relationship for word ID 108437
+2025-03-29 19:31:22,506 - ERROR - Error processing entry 191 (kali): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,510 - WARNING - Skipping self-relationship for word ID 108439
+2025-03-29 19:31:22,513 - ERROR - Error processing entry 192 (kali): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,518 - WARNING - Skipping self-relationship for word ID 108441
+2025-03-29 19:31:22,521 - ERROR - Error processing entry 193 (kali): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,526 - ERROR - Error processing entry 194 (kali): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,533 - ERROR - Error processing entry 195 (kali): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,537 - WARNING - Skipping self-relationship for word ID 108447
+2025-03-29 19:31:22,539 - ERROR - Error processing entry 196 (dua): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,545 - ERROR - Error processing entry 197 (ke): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,548 - WARNING - Skipping self-relationship for word ID 108451
+2025-03-29 19:31:22,551 - ERROR - Error processing entry 198 (ke): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,556 - ERROR - Error processing entry 199 (bulan): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,559 - INFO - Committed batch. Processed 3 entries so far.
+2025-03-29 19:31:22,567 - WARNING - Skipping self-relationship for word ID 108455
+2025-03-29 19:31:22,569 - ERROR - Error processing entry 200 (dada): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,575 - ERROR - Error processing entry 201 (Hong Kong): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,581 - ERROR - Error processing entry 202 (sama): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,585 - WARNING - Skipping self-relationship for word ID 108461
+2025-03-29 19:31:22,588 - ERROR - Error processing entry 203 (sama): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,593 - WARNING - Skipping self-relationship for word ID 108463
+2025-03-29 19:31:22,597 - ERROR - Error processing entry 204 (sama): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,600 - WARNING - Skipping self-relationship for word ID 108465
+2025-03-29 19:31:22,603 - ERROR - Error processing entry 205 (sama): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,608 - WARNING - Skipping self-relationship for word ID 108467
+2025-03-29 19:31:22,611 - ERROR - Error processing entry 206 (alas): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,615 - WARNING - Skipping self-relationship for word ID 108469
+2025-03-29 19:31:22,618 - ERROR - Error processing entry 207 (alas): 'tuple' object has no attribute 'rel_value'
+2025-03-29 19:31:22,623 - WARNING - Skipping self-relationship for word ID 108471

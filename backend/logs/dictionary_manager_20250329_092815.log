@@ -1,0 +1,2824 @@
+2025-03-29 09:28:15,172 - INFO - Starting table creation/update process.
+2025-03-29 09:28:15,716 - INFO - Tables created or updated successfully.
+2025-03-29 09:28:15,722 - INFO - Processing Tagalog words from: ..\data\tagalog-words.json
+2025-03-29 09:28:16,665 - INFO - Found 65336 entries to process
+2025-03-29 09:28:16,711 - ERROR - Database error in insert_definition for word ID 1: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,715 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,716 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,717 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,718 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,719 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,720 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,721 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,723 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,725 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,726 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,728 - ERROR - Database error in insert_definition for word ID 3: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,736 - ERROR - Database error in insert_definition for word ID 2: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,739 - ERROR - Database error in insert_definition for word ID 4: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,743 - ERROR - Database error in insert_definition for word ID 5: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,749 - ERROR - Database error in insert_definition for word ID 6: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,753 - ERROR - Database error in insert_definition for word ID 7: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,758 - ERROR - Database error in insert_definition for word ID 8: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,766 - ERROR - Database error in insert_definition for word ID 9: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,767 - ERROR - Database error in insert_definition for word ID 9: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,771 - ERROR - Database error in insert_definition for word ID 10: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,776 - ERROR - Database error in insert_definition for word ID 11: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,779 - ERROR - Database error in insert_definition for word ID 12: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,784 - ERROR - Database error in insert_definition for word ID 13: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,789 - ERROR - Database error in insert_definition for word ID 14: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,794 - ERROR - Database error in insert_definition for word ID 15: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,798 - ERROR - Database error in insert_definition for word ID 16: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,803 - ERROR - Database error in insert_definition for word ID 17: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,804 - ERROR - Database error in insert_definition for word ID 17: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,806 - ERROR - Database error in insert_definition for word ID 17: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,810 - ERROR - Database error in insert_definition for word ID 18: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,814 - ERROR - Database error in insert_definition for word ID 19: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,818 - ERROR - Database error in insert_definition for word ID 18: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,819 - ERROR - Database error in insert_definition for word ID 18: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,823 - ERROR - Database error in insert_definition for word ID 20: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,828 - ERROR - Database error in insert_definition for word ID 21: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,832 - ERROR - Database error in insert_definition for word ID 22: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,834 - ERROR - Database error in insert_definition for word ID 22: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,838 - ERROR - Database error in insert_definition for word ID 23: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,842 - ERROR - Database error in insert_definition for word ID 24: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,846 - ERROR - Database error in insert_definition for word ID 25: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,850 - ERROR - Database error in insert_definition for word ID 26: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,854 - ERROR - Database error in insert_definition for word ID 27: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,858 - ERROR - Database error in insert_definition for word ID 28: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,862 - ERROR - Database error in insert_definition for word ID 29: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,866 - ERROR - Database error in insert_definition for word ID 30: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,869 - ERROR - Database error in insert_definition for word ID 30: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,874 - ERROR - Database error in insert_definition for word ID 31: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,878 - ERROR - Database error in insert_definition for word ID 32: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,882 - ERROR - Database error in insert_definition for word ID 33: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,886 - ERROR - Database error in insert_definition for word ID 34: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,890 - ERROR - Database error in insert_definition for word ID 35: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,892 - ERROR - Database error in insert_definition for word ID 35: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,895 - ERROR - Database error in insert_definition for word ID 36: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,901 - ERROR - Database error in insert_definition for word ID 37: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,904 - ERROR - Database error in insert_definition for word ID 38: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,909 - ERROR - Database error in insert_definition for word ID 39: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,912 - ERROR - Database error in insert_definition for word ID 39: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,916 - ERROR - Database error in insert_definition for word ID 40: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,918 - ERROR - Database error in insert_definition for word ID 40: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,919 - ERROR - Database error in insert_definition for word ID 40: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,922 - ERROR - Database error in insert_definition for word ID 41: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,926 - ERROR - Database error in insert_definition for word ID 42: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,929 - ERROR - Database error in insert_definition for word ID 43: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,934 - ERROR - Database error in insert_definition for word ID 44: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,938 - ERROR - Database error in insert_definition for word ID 45: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,940 - ERROR - Database error in insert_definition for word ID 45: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,943 - ERROR - Database error in insert_definition for word ID 45: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,945 - ERROR - Database error in insert_definition for word ID 45: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,950 - ERROR - Database error in insert_definition for word ID 46: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,953 - ERROR - Database error in insert_definition for word ID 47: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,954 - ERROR - Database error in insert_definition for word ID 47: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,959 - ERROR - Database error in insert_definition for word ID 48: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,960 - ERROR - Database error in insert_definition for word ID 48: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,964 - ERROR - Database error in insert_definition for word ID 49: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,968 - ERROR - Database error in insert_definition for word ID 50: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,972 - ERROR - Database error in insert_definition for word ID 51: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,974 - ERROR - Database error in insert_definition for word ID 51: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,979 - ERROR - Database error in insert_definition for word ID 52: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,980 - ERROR - Database error in insert_definition for word ID 52: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,984 - ERROR - Database error in insert_definition for word ID 53: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,985 - ERROR - Database error in insert_definition for word ID 53: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,988 - ERROR - Database error in insert_definition for word ID 53: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,991 - ERROR - Database error in insert_definition for word ID 54: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,995 - ERROR - Database error in insert_definition for word ID 55: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:16,998 - ERROR - Database error in insert_definition for word ID 56: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,003 - ERROR - Database error in insert_definition for word ID 57: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,006 - ERROR - Database error in insert_definition for word ID 58: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,011 - ERROR - Database error in insert_definition for word ID 59: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,015 - ERROR - Database error in insert_definition for word ID 60: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,019 - ERROR - Database error in insert_definition for word ID 61: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,020 - ERROR - Database error in insert_definition for word ID 61: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,024 - ERROR - Database error in insert_definition for word ID 62: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,028 - ERROR - Database error in insert_definition for word ID 63: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,033 - ERROR - Database error in insert_definition for word ID 64: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,036 - ERROR - Database error in insert_definition for word ID 65: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,039 - ERROR - Database error in insert_definition for word ID 65: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,044 - ERROR - Database error in insert_definition for word ID 66: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,049 - ERROR - Database error in insert_definition for word ID 67: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,054 - ERROR - Database error in insert_definition for word ID 68: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,059 - ERROR - Database error in insert_definition for word ID 69: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,061 - ERROR - Database error in insert_definition for word ID 69: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,062 - ERROR - Database error in insert_definition for word ID 69: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,065 - ERROR - Database error in insert_definition for word ID 69: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,068 - ERROR - Database error in insert_definition for word ID 70: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,070 - ERROR - Database error in insert_definition for word ID 70: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,074 - ERROR - Database error in insert_definition for word ID 71: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,077 - ERROR - Database error in insert_definition for word ID 72: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,081 - ERROR - Database error in insert_definition for word ID 73: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,085 - ERROR - Database error in insert_definition for word ID 74: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,086 - ERROR - Database error in insert_definition for word ID 74: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,088 - ERROR - Database error in insert_definition for word ID 74: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,092 - ERROR - Database error in insert_definition for word ID 75: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,096 - ERROR - Database error in insert_definition for word ID 76: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,097 - ERROR - Database error in insert_definition for word ID 76: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,101 - ERROR - Database error in insert_definition for word ID 77: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,102 - ERROR - Database error in insert_definition for word ID 77: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,108 - ERROR - Database error in insert_definition for word ID 78: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,109 - ERROR - Database error in insert_definition for word ID 78: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,110 - ERROR - Database error in insert_definition for word ID 78: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,111 - ERROR - Database error in insert_definition for word ID 78: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,115 - ERROR - Database error in insert_definition for word ID 79: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,119 - ERROR - Database error in insert_definition for word ID 80: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,123 - ERROR - Database error in insert_definition for word ID 81: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,127 - ERROR - Database error in insert_definition for word ID 81: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,129 - ERROR - Database error in insert_definition for word ID 82: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,133 - ERROR - Database error in insert_definition for word ID 83: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,137 - ERROR - Database error in insert_definition for word ID 84: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,140 - ERROR - Database error in insert_definition for word ID 85: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,144 - ERROR - Database error in insert_definition for word ID 86: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,148 - ERROR - Database error in insert_definition for word ID 87: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,150 - ERROR - Database error in insert_definition for word ID 87: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,154 - ERROR - Database error in insert_definition for word ID 88: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,158 - ERROR - Database error in insert_definition for word ID 89: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,162 - ERROR - Database error in insert_definition for word ID 90: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,166 - ERROR - Database error in insert_definition for word ID 91: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,170 - ERROR - Database error in insert_definition for word ID 92: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,171 - ERROR - Database error in insert_definition for word ID 92: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,175 - ERROR - Database error in insert_definition for word ID 93: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,179 - ERROR - Database error in insert_definition for word ID 94: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,183 - ERROR - Database error in insert_definition for word ID 95: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,187 - ERROR - Database error in insert_definition for word ID 96: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,190 - ERROR - Database error in insert_definition for word ID 97: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,194 - ERROR - Database error in insert_definition for word ID 98: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,200 - ERROR - Database error in insert_definition for word ID 99: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,203 - ERROR - Database error in insert_definition for word ID 99: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,211 - ERROR - Database error in insert_definition for word ID 100: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,214 - ERROR - Database error in insert_definition for word ID 100: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,219 - ERROR - Database error in insert_definition for word ID 101: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,224 - ERROR - Database error in insert_definition for word ID 101: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,227 - ERROR - Database error in insert_definition for word ID 101: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,233 - ERROR - Database error in insert_definition for word ID 102: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,240 - ERROR - Database error in insert_definition for word ID 103: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,246 - ERROR - Database error in insert_definition for word ID 104: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,252 - ERROR - Database error in insert_definition for word ID 105: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,258 - ERROR - Database error in insert_definition for word ID 106: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,263 - ERROR - Database error in insert_definition for word ID 107: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,268 - ERROR - Database error in insert_definition for word ID 108: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,273 - ERROR - Database error in insert_definition for word ID 109: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,280 - ERROR - Database error in insert_definition for word ID 110: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,286 - ERROR - Database error in insert_definition for word ID 111: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,292 - ERROR - Database error in insert_definition for word ID 112: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,303 - ERROR - Database error in insert_definition for word ID 113: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,311 - ERROR - Database error in insert_definition for word ID 114: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,315 - ERROR - Database error in insert_definition for word ID 115: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,320 - ERROR - Database error in insert_definition for word ID 115: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,327 - ERROR - Database error in insert_definition for word ID 116: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,333 - ERROR - Database error in insert_definition for word ID 117: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,339 - ERROR - Database error in insert_definition for word ID 118: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,344 - ERROR - Database error in insert_definition for word ID 119: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,351 - ERROR - Database error in insert_definition for word ID 119: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,356 - ERROR - Database error in insert_definition for word ID 120: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,362 - ERROR - Database error in insert_definition for word ID 121: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,367 - ERROR - Database error in insert_definition for word ID 122: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,373 - ERROR - Database error in insert_definition for word ID 123: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,376 - ERROR - Database error in insert_definition for word ID 123: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,381 - ERROR - Database error in insert_definition for word ID 124: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,387 - ERROR - Database error in insert_definition for word ID 125: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,392 - ERROR - Database error in insert_definition for word ID 126: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,398 - ERROR - Database error in insert_definition for word ID 127: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,405 - ERROR - Database error in insert_definition for word ID 128: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,414 - ERROR - Database error in insert_definition for word ID 129: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,417 - ERROR - Database error in insert_definition for word ID 129: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,419 - ERROR - Database error in insert_definition for word ID 129: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,422 - ERROR - Database error in insert_definition for word ID 129: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,424 - ERROR - Database error in insert_definition for word ID 129: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,426 - ERROR - Database error in insert_definition for word ID 129: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,431 - ERROR - Database error in insert_definition for word ID 130: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,438 - ERROR - Database error in insert_definition for word ID 131: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,441 - ERROR - Database error in insert_definition for word ID 131: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,445 - ERROR - Database error in insert_definition for word ID 132: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,447 - ERROR - Database error in insert_definition for word ID 132: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,449 - ERROR - Database error in insert_definition for word ID 132: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,453 - ERROR - Database error in insert_definition for word ID 132: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,458 - ERROR - Database error in insert_definition for word ID 133: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,463 - ERROR - Database error in insert_definition for word ID 134: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,468 - ERROR - Database error in insert_definition for word ID 135: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,473 - ERROR - Database error in insert_definition for word ID 136: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,477 - ERROR - Database error in insert_definition for word ID 137: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,480 - ERROR - Database error in insert_definition for word ID 137: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,488 - ERROR - Database error in insert_definition for word ID 138: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,494 - ERROR - Database error in insert_definition for word ID 139: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,500 - ERROR - Database error in insert_definition for word ID 140: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,502 - ERROR - Database error in insert_definition for word ID 140: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,504 - ERROR - Database error in insert_definition for word ID 140: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,508 - ERROR - Database error in insert_definition for word ID 141: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,510 - ERROR - Database error in insert_definition for word ID 141: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,517 - ERROR - Database error in insert_definition for word ID 142: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,522 - ERROR - Database error in insert_definition for word ID 143: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,528 - ERROR - Database error in insert_definition for word ID 144: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,534 - ERROR - Database error in insert_definition for word ID 145: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,541 - ERROR - Database error in insert_definition for word ID 146: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,547 - ERROR - Database error in insert_definition for word ID 147: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,552 - ERROR - Database error in insert_definition for word ID 148: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,554 - ERROR - Database error in insert_definition for word ID 148: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,556 - ERROR - Database error in insert_definition for word ID 148: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,559 - ERROR - Database error in insert_definition for word ID 148: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,561 - ERROR - Database error in insert_definition for word ID 148: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,564 - ERROR - Database error in insert_definition for word ID 148: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,567 - ERROR - Database error in insert_definition for word ID 148: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,574 - ERROR - Database error in insert_definition for word ID 149: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,580 - ERROR - Database error in insert_definition for word ID 150: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,586 - ERROR - Database error in insert_definition for word ID 151: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,588 - ERROR - Database error in insert_definition for word ID 151: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,594 - ERROR - Database error in insert_definition for word ID 152: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,600 - ERROR - Database error in insert_definition for word ID 153: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,606 - ERROR - Database error in insert_definition for word ID 154: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,608 - ERROR - Database error in insert_definition for word ID 154: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,615 - ERROR - Database error in insert_definition for word ID 155: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,624 - ERROR - Database error in insert_definition for word ID 156: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,631 - ERROR - Database error in insert_definition for word ID 157: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,636 - ERROR - Database error in insert_definition for word ID 158: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,639 - ERROR - Database error in insert_definition for word ID 158: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,641 - ERROR - Database error in insert_definition for word ID 158: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,646 - ERROR - Database error in insert_definition for word ID 158: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,648 - ERROR - Database error in insert_definition for word ID 158: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,650 - ERROR - Database error in insert_definition for word ID 158: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,655 - ERROR - Database error in insert_definition for word ID 159: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,660 - ERROR - Database error in insert_definition for word ID 160: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,665 - ERROR - Database error in insert_definition for word ID 161: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,672 - ERROR - Database error in insert_definition for word ID 162: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,675 - ERROR - Database error in insert_definition for word ID 163: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,678 - ERROR - Database error in insert_definition for word ID 164: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,683 - ERROR - Database error in insert_definition for word ID 165: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,687 - ERROR - Database error in insert_definition for word ID 166: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,691 - ERROR - Database error in insert_definition for word ID 167: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,695 - ERROR - Database error in insert_definition for word ID 168: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,699 - ERROR - Database error in insert_definition for word ID 169: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,704 - ERROR - Database error in insert_definition for word ID 170: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,706 - ERROR - Database error in insert_definition for word ID 170: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,711 - ERROR - Database error in insert_definition for word ID 171: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,716 - ERROR - Database error in insert_definition for word ID 172: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,727 - ERROR - Database error in insert_definition for word ID 173: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,734 - ERROR - Database error in insert_definition for word ID 174: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,739 - ERROR - Database error in insert_definition for word ID 175: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,742 - ERROR - Database error in insert_definition for word ID 175: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,747 - ERROR - Database error in insert_definition for word ID 176: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,751 - ERROR - Database error in insert_definition for word ID 177: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,756 - ERROR - Database error in insert_definition for word ID 178: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,764 - ERROR - Database error in insert_definition for word ID 179: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,766 - ERROR - Database error in insert_definition for word ID 179: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,768 - ERROR - Database error in insert_definition for word ID 179: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,774 - ERROR - Database error in insert_definition for word ID 180: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,778 - ERROR - Database error in insert_definition for word ID 181: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,783 - ERROR - Database error in insert_definition for word ID 182: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,789 - ERROR - Database error in insert_definition for word ID 183: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,795 - ERROR - Database error in insert_definition for word ID 184: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,797 - ERROR - Database error in insert_definition for word ID 184: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,800 - ERROR - Database error in insert_definition for word ID 184: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,807 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:28:17,811 - ERROR - Database error in insert_definition for word ID 184: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,813 - ERROR - Database error in insert_definition for word ID 184: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,816 - ERROR - Database error in insert_definition for word ID 184: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,818 - ERROR - Database error in insert_definition for word ID 184: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,825 - ERROR - Database error in insert_definition for word ID 186: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,831 - ERROR - Database error in insert_definition for word ID 187: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,840 - ERROR - Database error in insert_definition for word ID 188: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,844 - ERROR - Database error in insert_definition for word ID 189: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,852 - ERROR - Database error in insert_definition for word ID 190: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,858 - ERROR - Database error in insert_definition for word ID 191: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,866 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:28:17,869 - ERROR - Database error in insert_definition for word ID 192: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,871 - ERROR - Database error in insert_definition for word ID 192: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,873 - ERROR - Database error in insert_definition for word ID 192: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,878 - ERROR - Database error in insert_definition for word ID 192: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,880 - ERROR - Database error in insert_definition for word ID 192: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,882 - ERROR - Database error in insert_definition for word ID 192: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,884 - ERROR - Database error in insert_definition for word ID 192: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,886 - ERROR - Database error in insert_definition for word ID 192: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,891 - ERROR - Database error in insert_definition for word ID 194: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,896 - ERROR - Database error in insert_definition for word ID 195: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,901 - ERROR - Database error in insert_definition for word ID 195: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,906 - ERROR - Database error in insert_definition for word ID 196: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,912 - ERROR - Database error in insert_definition for word ID 197: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,919 - ERROR - Database error in insert_definition for word ID 198: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,924 - ERROR - Database error in insert_definition for word ID 198: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,929 - ERROR - Database error in insert_definition for word ID 199: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,934 - ERROR - Database error in insert_definition for word ID 200: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,938 - ERROR - Database error in insert_definition for word ID 201: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,943 - ERROR - Database error in insert_definition for word ID 202: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,951 - ERROR - Database error in insert_definition for word ID 203: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,960 - ERROR - Database error in insert_definition for word ID 204: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,966 - ERROR - Database error in insert_definition for word ID 205: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,970 - ERROR - Database error in insert_definition for word ID 206: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,974 - ERROR - Database error in insert_definition for word ID 207: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,979 - ERROR - Database error in insert_definition for word ID 208: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,985 - ERROR - Database error in insert_definition for word ID 209: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,987 - ERROR - Database error in insert_definition for word ID 209: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,993 - ERROR - Database error in insert_definition for word ID 210: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:17,998 - ERROR - Database error in insert_definition for word ID 211: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,000 - ERROR - Database error in insert_definition for word ID 211: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,005 - ERROR - Database error in insert_definition for word ID 212: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,011 - ERROR - Database error in insert_definition for word ID 213: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,013 - ERROR - Database error in insert_definition for word ID 213: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,019 - ERROR - Database error in insert_definition for word ID 214: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,027 - ERROR - Database error in insert_definition for word ID 215: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,029 - ERROR - Database error in insert_definition for word ID 215: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,037 - ERROR - Database error in insert_definition for word ID 216: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,044 - ERROR - Database error in insert_definition for word ID 217: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,051 - ERROR - Database error in insert_definition for word ID 218: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,058 - ERROR - Database error in insert_definition for word ID 219: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,067 - ERROR - Database error in insert_definition for word ID 220: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,074 - ERROR - Database error in insert_definition for word ID 221: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,082 - ERROR - Database error in insert_definition for word ID 222: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,087 - ERROR - Database error in insert_definition for word ID 223: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,092 - ERROR - Database error in insert_definition for word ID 224: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,097 - ERROR - Database error in insert_definition for word ID 225: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,102 - ERROR - Database error in insert_definition for word ID 225: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,107 - ERROR - Database error in insert_definition for word ID 226: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,115 - ERROR - Database error in insert_definition for word ID 227: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,117 - ERROR - Database error in insert_definition for word ID 227: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,123 - ERROR - Database error in insert_definition for word ID 228: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,130 - ERROR - Database error in insert_definition for word ID 229: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,135 - ERROR - Database error in insert_definition for word ID 230: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,139 - ERROR - Database error in insert_definition for word ID 231: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,145 - ERROR - Database error in insert_definition for word ID 232: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,150 - ERROR - Database error in insert_definition for word ID 233: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,152 - ERROR - Database error in insert_definition for word ID 233: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,158 - ERROR - Database error in insert_definition for word ID 234: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,166 - ERROR - Database error in insert_definition for word ID 235: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,172 - ERROR - Database error in insert_definition for word ID 236: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,178 - ERROR - Database error in insert_definition for word ID 237: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,180 - ERROR - Database error in insert_definition for word ID 237: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,183 - ERROR - Database error in insert_definition for word ID 237: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,185 - ERROR - Database error in insert_definition for word ID 237: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,187 - ERROR - Database error in insert_definition for word ID 237: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,189 - ERROR - Database error in insert_definition for word ID 237: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,196 - ERROR - Database error in insert_definition for word ID 238: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,201 - ERROR - Database error in insert_definition for word ID 239: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,206 - ERROR - Database error in insert_definition for word ID 240: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,207 - ERROR - Database error in insert_definition for word ID 240: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,212 - ERROR - Database error in insert_definition for word ID 241: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,213 - ERROR - Database error in insert_definition for word ID 241: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,218 - ERROR - Database error in insert_definition for word ID 242: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,221 - ERROR - Database error in insert_definition for word ID 243: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,225 - ERROR - Database error in insert_definition for word ID 243: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,228 - ERROR - Database error in insert_definition for word ID 244: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,231 - ERROR - Database error in insert_definition for word ID 245: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,235 - ERROR - Database error in insert_definition for word ID 246: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,239 - ERROR - Database error in insert_definition for word ID 247: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,243 - ERROR - Database error in insert_definition for word ID 248: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,246 - ERROR - Database error in insert_definition for word ID 249: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,250 - ERROR - Database error in insert_definition for word ID 249: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,253 - ERROR - Database error in insert_definition for word ID 250: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,257 - ERROR - Database error in insert_definition for word ID 251: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,262 - ERROR - Database error in insert_definition for word ID 252: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,268 - ERROR - Database error in insert_definition for word ID 253: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,275 - ERROR - Database error in insert_definition for word ID 254: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,279 - ERROR - Database error in insert_definition for word ID 255: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,281 - ERROR - Database error in insert_definition for word ID 255: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,286 - ERROR - Database error in insert_definition for word ID 256: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,290 - ERROR - Database error in insert_definition for word ID 257: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,295 - ERROR - Database error in insert_definition for word ID 258: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,300 - ERROR - Database error in insert_definition for word ID 259: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,305 - ERROR - Database error in insert_definition for word ID 260: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,313 - ERROR - Database error in insert_definition for word ID 261: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,316 - ERROR - Database error in insert_definition for word ID 261: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,319 - ERROR - Database error in insert_definition for word ID 261: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,325 - ERROR - Database error in insert_definition for word ID 261: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,331 - ERROR - Database error in insert_definition for word ID 262: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,339 - ERROR - Database error in insert_definition for word ID 263: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,341 - ERROR - Database error in insert_definition for word ID 263: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,349 - ERROR - Database error in insert_definition for word ID 264: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,355 - ERROR - Database error in insert_definition for word ID 265: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,362 - ERROR - Database error in insert_definition for word ID 266: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,365 - ERROR - Database error in insert_definition for word ID 266: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,370 - ERROR - Database error in insert_definition for word ID 266: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,376 - ERROR - Database error in insert_definition for word ID 267: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,388 - ERROR - Database error in insert_definition for word ID 268: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,395 - ERROR - Database error in insert_definition for word ID 269: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,402 - ERROR - Database error in insert_definition for word ID 270: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,404 - ERROR - Database error in insert_definition for word ID 270: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,410 - ERROR - Database error in insert_definition for word ID 271: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,417 - ERROR - Database error in insert_definition for word ID 272: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,419 - ERROR - Database error in insert_definition for word ID 272: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,425 - ERROR - Database error in insert_definition for word ID 273: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,431 - ERROR - Database error in insert_definition for word ID 274: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,437 - ERROR - Database error in insert_definition for word ID 275: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,440 - ERROR - Database error in insert_definition for word ID 275: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,446 - ERROR - Database error in insert_definition for word ID 276: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,451 - ERROR - Database error in insert_definition for word ID 277: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,454 - ERROR - Database error in insert_definition for word ID 277: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,456 - ERROR - Database error in insert_definition for word ID 277: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,458 - ERROR - Database error in insert_definition for word ID 277: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,460 - ERROR - Database error in insert_definition for word ID 277: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,466 - ERROR - Database error in insert_definition for word ID 278: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,472 - ERROR - Database error in insert_definition for word ID 279: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,474 - ERROR - Database error in insert_definition for word ID 279: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,479 - ERROR - Database error in insert_definition for word ID 280: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,484 - ERROR - Database error in insert_definition for word ID 281: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,491 - ERROR - Database error in insert_definition for word ID 282: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,497 - ERROR - Database error in insert_definition for word ID 283: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,503 - ERROR - Database error in insert_definition for word ID 284: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,505 - ERROR - Database error in insert_definition for word ID 284: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,514 - ERROR - Database error in insert_definition for word ID 285: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,519 - ERROR - Database error in insert_definition for word ID 286: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,525 - ERROR - Database error in insert_definition for word ID 287: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,531 - ERROR - Database error in insert_definition for word ID 288: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,537 - ERROR - Database error in insert_definition for word ID 289: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,543 - ERROR - Database error in insert_definition for word ID 290: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,549 - ERROR - Database error in insert_definition for word ID 291: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,554 - ERROR - Database error in insert_definition for word ID 292: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,561 - ERROR - Database error in insert_definition for word ID 293: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,566 - ERROR - Database error in insert_definition for word ID 294: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,568 - ERROR - Database error in insert_definition for word ID 294: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,575 - ERROR - Database error in insert_definition for word ID 295: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,577 - ERROR - Database error in insert_definition for word ID 295: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,579 - ERROR - Database error in insert_definition for word ID 295: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,581 - ERROR - Database error in insert_definition for word ID 295: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,587 - ERROR - Database error in insert_definition for word ID 296: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,592 - ERROR - Database error in insert_definition for word ID 297: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,599 - ERROR - Database error in insert_definition for word ID 298: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,604 - ERROR - Database error in insert_definition for word ID 298: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,606 - ERROR - Database error in insert_definition for word ID 298: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,613 - ERROR - Database error in insert_definition for word ID 299: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,616 - ERROR - Database error in insert_definition for word ID 299: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,618 - ERROR - Database error in insert_definition for word ID 299: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,626 - ERROR - Database error in insert_definition for word ID 300: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,629 - ERROR - Database error in insert_definition for word ID 300: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,635 - ERROR - Database error in insert_definition for word ID 301: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,642 - ERROR - Database error in insert_definition for word ID 302: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,648 - ERROR - Database error in insert_definition for word ID 303: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,655 - ERROR - Database error in insert_definition for word ID 304: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,658 - ERROR - Database error in insert_definition for word ID 304: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,664 - ERROR - Database error in insert_definition for word ID 305: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,669 - ERROR - Database error in insert_definition for word ID 306: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,671 - ERROR - Database error in insert_definition for word ID 306: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,673 - ERROR - Database error in insert_definition for word ID 306: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,678 - ERROR - Database error in insert_definition for word ID 307: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,683 - ERROR - Database error in insert_definition for word ID 308: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,688 - ERROR - Database error in insert_definition for word ID 309: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,694 - ERROR - Database error in insert_definition for word ID 310: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,702 - ERROR - Database error in insert_definition for word ID 311: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,708 - ERROR - Database error in insert_definition for word ID 312: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,712 - ERROR - Database error in insert_definition for word ID 313: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,719 - ERROR - Database error in insert_definition for word ID 314: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,727 - ERROR - Database error in insert_definition for word ID 315: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,733 - ERROR - Database error in insert_definition for word ID 316: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,738 - ERROR - Database error in insert_definition for word ID 317: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,744 - ERROR - Database error in insert_definition for word ID 318: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,746 - ERROR - Database error in insert_definition for word ID 318: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,747 - ERROR - Database error in insert_definition for word ID 318: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,754 - ERROR - Database error in insert_definition for word ID 319: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,755 - ERROR - Database error in insert_definition for word ID 319: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,757 - ERROR - Database error in insert_definition for word ID 319: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,759 - ERROR - Database error in insert_definition for word ID 319: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,761 - ERROR - Database error in insert_definition for word ID 319: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,766 - ERROR - Database error in insert_definition for word ID 320: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,770 - ERROR - Database error in insert_definition for word ID 321: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,772 - ERROR - Database error in insert_definition for word ID 321: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,778 - ERROR - Database error in insert_definition for word ID 322: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,783 - ERROR - Database error in insert_definition for word ID 323: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,787 - ERROR - Database error in insert_definition for word ID 324: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,788 - ERROR - Database error in insert_definition for word ID 324: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,790 - ERROR - Database error in insert_definition for word ID 324: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,792 - ERROR - Database error in insert_definition for word ID 324: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,794 - ERROR - Database error in insert_definition for word ID 324: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,800 - ERROR - Database error in insert_definition for word ID 325: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,806 - ERROR - Database error in insert_definition for word ID 326: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,813 - ERROR - Database error in insert_definition for word ID 327: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,820 - ERROR - Database error in insert_definition for word ID 328: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,826 - ERROR - Database error in insert_definition for word ID 329: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,833 - ERROR - Database error in insert_definition for word ID 330: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,838 - ERROR - Database error in insert_definition for word ID 331: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,843 - ERROR - Database error in insert_definition for word ID 332: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,845 - ERROR - Database error in insert_definition for word ID 332: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,847 - ERROR - Database error in insert_definition for word ID 332: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,852 - ERROR - Database error in insert_definition for word ID 333: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,857 - ERROR - Database error in insert_definition for word ID 334: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,859 - ERROR - Database error in insert_definition for word ID 334: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,864 - ERROR - Database error in insert_definition for word ID 335: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,865 - ERROR - Database error in insert_definition for word ID 335: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,867 - ERROR - Database error in insert_definition for word ID 335: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,871 - ERROR - Database error in insert_definition for word ID 336: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,877 - ERROR - Database error in insert_definition for word ID 337: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,879 - ERROR - Database error in insert_definition for word ID 337: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,884 - ERROR - Database error in insert_definition for word ID 338: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,885 - ERROR - Database error in insert_definition for word ID 338: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,887 - ERROR - Database error in insert_definition for word ID 338: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,891 - ERROR - Database error in insert_definition for word ID 339: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,893 - ERROR - Database error in insert_definition for word ID 339: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,897 - ERROR - Database error in insert_definition for word ID 340: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,900 - ERROR - Database error in insert_definition for word ID 340: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,904 - ERROR - Database error in insert_definition for word ID 341: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,909 - ERROR - Database error in insert_definition for word ID 342: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,915 - ERROR - Database error in insert_definition for word ID 343: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,921 - ERROR - Database error in insert_definition for word ID 344: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,927 - ERROR - Database error in insert_definition for word ID 345: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,934 - ERROR - Database error in insert_definition for word ID 346: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,939 - ERROR - Database error in insert_definition for word ID 347: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,944 - ERROR - Database error in insert_definition for word ID 348: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,950 - ERROR - Database error in insert_definition for word ID 349: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,957 - ERROR - Database error in insert_definition for word ID 350: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,963 - ERROR - Database error in insert_definition for word ID 351: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,965 - ERROR - Database error in insert_definition for word ID 351: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,970 - ERROR - Database error in insert_definition for word ID 352: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,975 - ERROR - Database error in insert_definition for word ID 353: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,980 - ERROR - Database error in insert_definition for word ID 354: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,984 - ERROR - Database error in insert_definition for word ID 355: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,989 - ERROR - Database error in insert_definition for word ID 356: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:18,995 - ERROR - Database error in insert_definition for word ID 357: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,000 - ERROR - Database error in insert_definition for word ID 358: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,001 - ERROR - Database error in insert_definition for word ID 358: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,003 - ERROR - Database error in insert_definition for word ID 358: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,009 - ERROR - Database error in insert_definition for word ID 359: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,015 - ERROR - Database error in insert_definition for word ID 360: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,022 - ERROR - Database error in insert_definition for word ID 361: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,024 - ERROR - Database error in insert_definition for word ID 361: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,026 - ERROR - Database error in insert_definition for word ID 361: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,032 - ERROR - Database error in insert_definition for word ID 362: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,039 - ERROR - Database error in insert_definition for word ID 363: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,044 - ERROR - Database error in insert_definition for word ID 364: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,047 - ERROR - Database error in insert_definition for word ID 364: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,052 - ERROR - Database error in insert_definition for word ID 365: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,057 - ERROR - Database error in insert_definition for word ID 366: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,058 - ERROR - Database error in insert_definition for word ID 366: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,060 - ERROR - Database error in insert_definition for word ID 366: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,063 - ERROR - Database error in insert_definition for word ID 367: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,068 - ERROR - Database error in insert_definition for word ID 368: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,073 - ERROR - Database error in insert_definition for word ID 369: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,077 - ERROR - Database error in insert_definition for word ID 370: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,082 - ERROR - Database error in insert_definition for word ID 371: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,087 - ERROR - Database error in insert_definition for word ID 372: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,093 - ERROR - Database error in insert_definition for word ID 373: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,098 - ERROR - Database error in insert_definition for word ID 374: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,103 - ERROR - Database error in insert_definition for word ID 375: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,108 - ERROR - Database error in insert_definition for word ID 376: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,112 - ERROR - Database error in insert_definition for word ID 377: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,118 - ERROR - Database error in insert_definition for word ID 378: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,123 - ERROR - Database error in insert_definition for word ID 379: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,130 - ERROR - Database error in insert_definition for word ID 380: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,135 - ERROR - Database error in insert_definition for word ID 381: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,137 - ERROR - Database error in insert_definition for word ID 381: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,144 - ERROR - Database error in insert_definition for word ID 382: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,146 - ERROR - Database error in insert_definition for word ID 382: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,149 - ERROR - Database error in insert_definition for word ID 382: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,154 - ERROR - Database error in insert_definition for word ID 383: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,159 - ERROR - Database error in insert_definition for word ID 384: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,164 - ERROR - Database error in insert_definition for word ID 385: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,169 - ERROR - Database error in insert_definition for word ID 386: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,175 - ERROR - Database error in insert_definition for word ID 387: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,181 - ERROR - Database error in insert_definition for word ID 388: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,187 - ERROR - Database error in insert_definition for word ID 389: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,193 - ERROR - Database error in insert_definition for word ID 390: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,200 - ERROR - Database error in insert_definition for word ID 391: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,206 - ERROR - Database error in insert_definition for word ID 392: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,208 - ERROR - Database error in insert_definition for word ID 392: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,210 - ERROR - Database error in insert_definition for word ID 392: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,214 - ERROR - Database error in insert_definition for word ID 393: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,220 - ERROR - Database error in insert_definition for word ID 394: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,225 - ERROR - Database error in insert_definition for word ID 395: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,231 - ERROR - Database error in insert_definition for word ID 396: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,235 - ERROR - Database error in insert_definition for word ID 397: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,242 - ERROR - Database error in insert_definition for word ID 398: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,244 - ERROR - Database error in insert_definition for word ID 398: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,245 - ERROR - Database error in insert_definition for word ID 398: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,247 - ERROR - Database error in insert_definition for word ID 398: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,254 - ERROR - Database error in insert_definition for word ID 399: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,259 - ERROR - Database error in insert_definition for word ID 400: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,264 - ERROR - Database error in insert_definition for word ID 401: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,270 - ERROR - Database error in insert_definition for word ID 402: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,272 - ERROR - Database error in insert_definition for word ID 402: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,277 - ERROR - Database error in insert_definition for word ID 403: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,282 - ERROR - Database error in insert_definition for word ID 404: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,284 - ERROR - Database error in insert_definition for word ID 404: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,289 - ERROR - Database error in insert_definition for word ID 405: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,294 - ERROR - Database error in insert_definition for word ID 406: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,300 - ERROR - Database error in insert_definition for word ID 407: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,302 - ERROR - Database error in insert_definition for word ID 407: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,303 - ERROR - Database error in insert_definition for word ID 407: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,308 - ERROR - Database error in insert_definition for word ID 408: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,312 - ERROR - Database error in insert_definition for word ID 409: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,317 - ERROR - Database error in insert_definition for word ID 410: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,319 - ERROR - Database error in insert_definition for word ID 410: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,321 - ERROR - Database error in insert_definition for word ID 410: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,323 - ERROR - Database error in insert_definition for word ID 410: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,325 - ERROR - Database error in insert_definition for word ID 410: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,327 - ERROR - Database error in insert_definition for word ID 410: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,332 - ERROR - Database error in insert_definition for word ID 411: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,336 - ERROR - Database error in insert_definition for word ID 412: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,341 - ERROR - Database error in insert_definition for word ID 413: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,343 - ERROR - Database error in insert_definition for word ID 413: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,346 - ERROR - Database error in insert_definition for word ID 413: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,349 - ERROR - Database error in insert_definition for word ID 413: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,355 - ERROR - Database error in insert_definition for word ID 414: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,357 - ERROR - Database error in insert_definition for word ID 414: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,359 - ERROR - Database error in insert_definition for word ID 414: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,365 - ERROR - Database error in insert_definition for word ID 415: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,367 - ERROR - Database error in insert_definition for word ID 415: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,374 - ERROR - Database error in insert_definition for word ID 416: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,378 - ERROR - Database error in insert_definition for word ID 417: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,383 - ERROR - Database error in insert_definition for word ID 418: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,388 - ERROR - Database error in insert_definition for word ID 419: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,390 - ERROR - Database error in insert_definition for word ID 419: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,392 - ERROR - Database error in insert_definition for word ID 419: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,399 - ERROR - Database error in insert_definition for word ID 420: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,405 - ERROR - Database error in insert_definition for word ID 421: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,407 - ERROR - Database error in insert_definition for word ID 421: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,412 - ERROR - Database error in insert_definition for word ID 422: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,418 - ERROR - Database error in insert_definition for word ID 423: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,423 - ERROR - Database error in insert_definition for word ID 424: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,428 - ERROR - Database error in insert_definition for word ID 425: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,433 - ERROR - Database error in insert_definition for word ID 426: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,435 - ERROR - Database error in insert_definition for word ID 426: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,437 - ERROR - Database error in insert_definition for word ID 426: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,438 - ERROR - Database error in insert_definition for word ID 426: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,440 - ERROR - Database error in insert_definition for word ID 426: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,445 - ERROR - Database error in insert_definition for word ID 426: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,451 - ERROR - Database error in insert_definition for word ID 427: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,452 - ERROR - Database error in insert_definition for word ID 427: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,459 - ERROR - Database error in insert_definition for word ID 428: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,464 - ERROR - Database error in insert_definition for word ID 429: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,470 - ERROR - Database error in insert_definition for word ID 430: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,472 - ERROR - Database error in insert_definition for word ID 430: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,479 - ERROR - Database error in insert_definition for word ID 431: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,481 - ERROR - Database error in insert_definition for word ID 431: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,484 - ERROR - Database error in insert_definition for word ID 431: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,486 - ERROR - Database error in insert_definition for word ID 431: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,491 - ERROR - Database error in insert_definition for word ID 432: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,498 - ERROR - Database error in insert_definition for word ID 433: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,503 - ERROR - Database error in insert_definition for word ID 434: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,509 - ERROR - Database error in insert_definition for word ID 435: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,515 - ERROR - Database error in insert_definition for word ID 436: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,519 - ERROR - Database error in insert_definition for word ID 436: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,523 - ERROR - Database error in insert_definition for word ID 437: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,528 - ERROR - Database error in insert_definition for word ID 438: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,534 - ERROR - Database error in insert_definition for word ID 439: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,538 - ERROR - Database error in insert_definition for word ID 440: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,543 - ERROR - Database error in insert_definition for word ID 440: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,545 - ERROR - Database error in insert_definition for word ID 440: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,547 - ERROR - Database error in insert_definition for word ID 440: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,553 - ERROR - Database error in insert_definition for word ID 440: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,558 - ERROR - Database error in insert_definition for word ID 441: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,566 - ERROR - Database error in insert_definition for word ID 442: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,570 - ERROR - Database error in insert_definition for word ID 443: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,575 - ERROR - Database error in insert_definition for word ID 444: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,577 - ERROR - Database error in insert_definition for word ID 444: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,583 - ERROR - Database error in insert_definition for word ID 445: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,588 - ERROR - Database error in insert_definition for word ID 446: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,591 - ERROR - Database error in insert_definition for word ID 446: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,596 - ERROR - Database error in insert_definition for word ID 447: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,602 - ERROR - Database error in insert_definition for word ID 448: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,608 - ERROR - Database error in insert_definition for word ID 449: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,613 - ERROR - Database error in insert_definition for word ID 450: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,618 - ERROR - Database error in insert_definition for word ID 451: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,623 - ERROR - Database error in insert_definition for word ID 452: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,628 - ERROR - Database error in insert_definition for word ID 453: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,633 - ERROR - Database error in insert_definition for word ID 454: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,637 - ERROR - Database error in insert_definition for word ID 455: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,642 - ERROR - Database error in insert_definition for word ID 455: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,647 - ERROR - Database error in insert_definition for word ID 456: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,651 - ERROR - Database error in insert_definition for word ID 457: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,657 - ERROR - Database error in insert_definition for word ID 458: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,661 - ERROR - Database error in insert_definition for word ID 459: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,668 - ERROR - Database error in insert_definition for word ID 460: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,670 - ERROR - Database error in insert_definition for word ID 460: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,673 - ERROR - Database error in insert_definition for word ID 460: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,678 - ERROR - Database error in insert_definition for word ID 461: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,685 - ERROR - Database error in insert_definition for word ID 462: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,687 - ERROR - Database error in insert_definition for word ID 462: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,693 - ERROR - Database error in insert_definition for word ID 463: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,695 - ERROR - Database error in insert_definition for word ID 463: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,701 - ERROR - Database error in insert_relation: relation "word_relations" does not exist
+LINE 2:             INSERT INTO word_relations 
+                                ^
+
+2025-03-29 09:28:19,705 - ERROR - Database error in insert_definition for word ID 464: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,710 - ERROR - Database error in insert_definition for word ID 466: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,715 - ERROR - Database error in insert_definition for word ID 466: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,722 - ERROR - Database error in insert_definition for word ID 467: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,729 - ERROR - Database error in insert_definition for word ID 468: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,736 - ERROR - Database error in insert_definition for word ID 469: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,743 - ERROR - Database error in insert_definition for word ID 470: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,749 - ERROR - Database error in insert_definition for word ID 471: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,755 - ERROR - Database error in insert_definition for word ID 472: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,760 - ERROR - Database error in insert_definition for word ID 473: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,762 - ERROR - Database error in insert_definition for word ID 473: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,769 - ERROR - Database error in insert_definition for word ID 474: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,774 - ERROR - Database error in insert_definition for word ID 475: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,776 - ERROR - Database error in insert_definition for word ID 475: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,784 - ERROR - Database error in insert_definition for word ID 476: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,791 - ERROR - Database error in insert_definition for word ID 476: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,799 - ERROR - Database error in insert_definition for word ID 477: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,809 - ERROR - Database error in insert_definition for word ID 478: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,814 - ERROR - Database error in insert_definition for word ID 478: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,821 - ERROR - Database error in insert_definition for word ID 479: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,828 - ERROR - Database error in insert_definition for word ID 480: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+
+2025-03-29 09:28:19,830 - ERROR - Database error in insert_definition for word ID 480: column "pos_id" of relation "definitions" does not exist
+LINE 5:                 pos_id, 
+                        ^
+

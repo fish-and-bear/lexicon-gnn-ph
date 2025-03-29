@@ -1,0 +1,25 @@
+2025-03-29 22:12:47,887 - INFO - Looking up word: Namespace(command='lookup', word='sino', debug=False, format='rich')
+2025-03-29 22:12:47,888 - INFO - Word argument value: 'sino'
+2025-03-29 22:12:47,925 - INFO - Normalized word: sino
+2025-03-29 22:12:47,926 - INFO - Database connection test successful
+2025-03-29 22:12:47,952 - INFO - Word data fetched: True
+2025-03-29 22:12:47,953 - INFO - Beginning to unpack word data
+2025-03-29 22:12:47,953 - INFO - Successfully unpacked word data
+2025-03-29 22:12:47,953 - INFO - word_id: 113162, lemma: sino, language_code: tl
+2025-03-29 22:12:47,955 - INFO - has_baybayin: True, baybayin_form: ᜐᜒᜈᜓ, romanized_form: None
+2025-03-29 22:12:47,955 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-29 22:12:47,955 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-29 22:12:47,956 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-29 22:12:47,956 - INFO - Building basic information tree
+2025-03-29 22:12:47,956 - INFO - Adding preferred spelling if available
+2025-03-29 22:12:47,957 - INFO - Adding Baybayin form if available
+2025-03-29 22:12:47,957 - INFO - Adding root word if available
+2025-03-29 22:12:47,958 - INFO - Gathering sources - starting
+2025-03-29 22:12:47,958 - INFO - Processing tags
+2025-03-29 22:12:47,958 - INFO - Processing source_info
+2025-03-29 22:12:47,959 - INFO - Processing def_sources
+2025-03-29 22:12:47,959 - INFO - def_sources content: ['kaikki']
+2025-03-29 22:12:47,959 - INFO - Processing def_source: kaikki, type: <class 'str'>
+2025-03-29 22:12:47,960 - INFO - Processing ety_sources
+2025-03-29 22:12:47,960 - INFO - ety_sources content: ['kaikki']
+2025-03-29 22:12:47,960 - INFO - Processing ety_source: kaikki, type: <class 'str'>
