@@ -7081,6 +7081,186 @@ def lookup_word(args):
                     logger.error(f"Traceback: {traceback.format_exc()}")
                     console.print(f"\n[red]Error searching for word: {str(e)}[/]")
                     return
+        
+        # Continue processing results as in your original function...
+        
+    except Exception as e:
+        logger.error(f"Error looking up word: {str(e)}")
+        logger.error(f"Word: {args.word}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
+        
+        # Additional database diagnostics
+        try:
+            diagnostics_conn = get_connection()
+            diagnostics_cur = diagnostics_conn.cursor()
+            
+            # Check if database extensions are installed
+            logger.info("Diagnostic: checking database extensions")
+            diagnostics_cur.execute("""
+                SELECT extname FROM pg_extension
+            """)
+            extensions = [row[0] for row in diagnostics_cur.fetchall()]
+            logger.info(f"Installed extensions: {extensions}")
+            
+            # Check if the word exists with direct lemma search
+            logger.info(f"Diagnostic: checking if word '{args.word}' exists with direct lemma match")
+            diagnostics_cur.execute("""
+                SELECT COUNT(*) FROM words WHERE lemma = %s
+            """, (args.word,))
+            exact_count = diagnostics_cur.fetchone()[0]
+            logger.info(f"Diagnostic result: Word '{args.word}' exact matches: {exact_count}")
+            
+            # Check if the word exists at all
+            logger.info(f"Diagnostic: checking if word '{args.word}' exists in any form")
+            diagnostics_cur.execute("""
+                SELECT COUNT(*) FROM words WHERE lemma ILIKE %s
+            """, (f"%{args.word}%",))
+            exists_count = diagnostics_cur.fetchone()[0]
+            logger.info(f"Diagnostic result: Word '{args.word}' partial matches: {exists_count}")
+            
+            # Examine database size
+            logger.info("Diagnostic: checking database size")
+            diagnostics_cur.execute("SELECT COUNT(*) FROM words")
+            word_count = diagnostics_cur.fetchone()[0]
+            diagnostics_cur.execute("SELECT COUNT(*) FROM definitions")
+            def_count = diagnostics_cur.fetchone()[0]
+            logger.info(f"Database size: {word_count} words, {def_count} definitions")
+            
+            # Check database schema
+            logger.info("Diagnostic: verifying database schema")
+            diagnostics_cur.execute("""
+                SELECT column_name, data_type 
+                FROM information_schema.columns 
+                WHERE table_name = 'words'
+                ORDER BY ordinal_position
+            """)
+            columns = diagnostics_cur.fetchall()
+            logger.info(f"Diagnostic: words table has {len(columns)} columns")
+            for col in columns:
+                logger.info(f"  Column: {col[0]}, Type: {col[1]}")
+                
+            diagnostics_conn.close()
+        except Exception as diag_e:
+            logger.error(f"Error during diagnostics: {str(diag_e)}")
+        
+        console.print(f"[red]Error looking up word '{args.word}': {str(e)}[/]")
+        console.print("[yellow]Check logs for detailed error information[/]")
+        console.print("[yellow]Possible solutions: [/]")
+        console.print("1. Make sure you've imported your dictionary with: `python dictionary_manager.py migrate --file chavacano-english_processed.json`")
+        console.print("2. Ensure PostgreSQL extensions are installed with: `python dictionary_manager.py verify --repair`")
+    finally:
+        if 'conn' in locals() and conn:
+            conn.close()
+            logger.info("Database connection closed")
+
+def lookup_word(args):
+    """Look up a word and display all its information."""
+    console = Console()
+    
+    try:
+        logger.info(f"Starting lookup for word: '{args.word}'")
+        conn = get_connection()
+        cur = conn.cursor()
+        
+        # Search across all relevant fields
+        logger.info(f"Executing exact match query for '{args.word}'")
+        query = """
+            SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
+                   w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
+                   w.romanized_form, w.tags, w.source_info
+            FROM words w
+            LEFT JOIN pronunciations p ON w.id = p.word_id
+            WHERE LOWER(w.lemma) = LOWER(%s)
+               OR LOWER(w.normalized_lemma) = LOWER(%s)
+               OR LOWER(w.romanized_form) = LOWER(%s)
+               OR LOWER(w.baybayin_form) = LOWER(%s)
+               OR LOWER(p.value) = LOWER(%s)
+        """
+        try:
+            cur.execute(query, (args.word, args.word, args.word, args.word, args.word))
+            results = cur.fetchall()
+            logger.info(f"Found {len(results)} exact matches")
+        except Exception as e:
+            logger.error(f"Error in exact match query: {str(e)}")
+            logger.error(f"Query: {query}")
+            logger.error(f"Parameters: {(args.word, args.word, args.word, args.word, args.word)}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+        
+        if not results:
+            # Try fuzzy search if exact match not found
+            logger.info(f"No exact matches, trying fuzzy search for '{args.word}'")
+            fuzzy_query = """
+                SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
+                       w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
+                       w.romanized_form, w.tags, w.source_info,
+                       similarity(w.lemma, %s) as sim_score
+                FROM words w
+                WHERE w.lemma % %s
+                ORDER BY sim_score DESC
+                LIMIT 5
+            """
+            try:
+                cur.execute(fuzzy_query, (args.word, args.word))
+                fuzzy_results = cur.fetchall()
+                logger.info(f"Found {len(fuzzy_results)} fuzzy matches")
+                
+                if fuzzy_results:
+                    logger.info(f"Fuzzy matches: {[r[1] for r in fuzzy_results]}")
+                    
+                    # Check structure of fuzzy results
+                    if fuzzy_results and len(fuzzy_results) > 0:
+                        logger.info(f"Fuzzy result structure - columns: {len(fuzzy_results[0])}")
+                        for i, val in enumerate(fuzzy_results[0]):
+                            logger.info(f"  Column {i}: {type(val).__name__} - {val}")
+            except Exception as e:
+                logger.error(f"Error in fuzzy search query: {str(e)}")
+                logger.error(f"Query: {fuzzy_query}")
+                logger.error(f"Parameters: {(args.word, args.word)}")
+                import traceback
+                logger.error(f"Traceback: {traceback.format_exc()}")
+                raise
+            
+            if not fuzzy_results:
+                console.print(f"\n[yellow]No entries found for '[bold]{args.word}[/]'[/]")
+                
+                # Try a direct lookup with ILIKE for more comprehensive search
+                logger.info("Trying ILIKE search as last resort")
+                ilike_query = """
+                    SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
+                          w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
+                          w.romanized_form, w.tags, w.source_info
+                    FROM words w
+                    WHERE w.lemma ILIKE %s
+                    OR w.normalized_lemma ILIKE %s
+                    LIMIT 5
+                """
+                try:
+                    cur.execute(ilike_query, (f"%{args.word}%", f"%{args.word}%"))
+                    ilike_results = cur.fetchall()
+                    logger.info(f"ILIKE search found {len(ilike_results)} matches")
+                    
+                    if ilike_results:
+                        logger.info(f"ILIKE matches: {[r[1] for r in ilike_results]}")
+                        console.print(f"\n[yellow]Found words containing '[bold]{args.word}[/]':[/]")
+                        results = ilike_results
+                    else:
+                        # Check if word exists in database at all
+                        logger.info("Checking if database has any words")
+                        cur.execute("SELECT COUNT(*) FROM words")
+                        count = cur.fetchone()[0]
+                        logger.info(f"Total words in database: {count}")
+                        
+                        if count == 0:
+                            console.print("[red]Database appears to be empty. Try importing data first with 'migrate' command.[/]")
+                        return
+                except Exception as e:
+                    logger.error(f"Error in ILIKE search: {str(e)}")
+                    import traceback
+                    logger.error(f"Traceback: {traceback.format_exc()}")
+                    return
             else:
                 # Trim the sim_score from the fuzzy results to match expected column count
                 try:

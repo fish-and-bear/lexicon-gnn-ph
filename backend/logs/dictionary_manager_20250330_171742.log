@@ -1,0 +1,164 @@
+2025-03-30 17:17:42,664 - INFO - Starting table creation/update process.
+2025-03-30 17:17:43,605 - INFO - Tables created or updated successfully.
+2025-03-30 17:17:43,615 - INFO - Processing Tagalog words from: ..\data\tagalog-words.json
+2025-03-30 17:17:45,065 - INFO - Found 65336 entries to process
+2025-03-30 17:17:49,457 - WARNING - Duplicate definition detected for word ID 646: áraw-...
+2025-03-30 17:17:49,769 - WARNING - Skipping self-relationship for word ID 689
+2025-03-30 17:17:50,175 - WARNING - Skipping self-relationship for word ID 766
+2025-03-30 17:17:50,179 - WARNING - Skipping self-relationship for word ID 766
+2025-03-30 17:17:53,476 - INFO - Processed 1000/65336 entries
+2025-03-30 17:17:55,667 - WARNING - Duplicate definition detected for word ID 1437: batà...
+2025-03-30 17:18:04,476 - WARNING - Skipping self-relationship for word ID 2281
+2025-03-30 17:18:09,909 - INFO - Processed 2000/65336 entries
+2025-03-30 17:18:24,686 - INFO - Processed 3000/65336 entries
+2025-03-30 17:18:26,199 - WARNING - Duplicate definition detected for word ID 4141: baybay sa Tagalog ng Anglo-Americano....
+2025-03-30 17:18:29,911 - WARNING - Duplicate definition detected for word ID 4561: pisngí....
+2025-03-30 17:18:30,393 - WARNING - Skipping self-relationship for word ID 4618
+2025-03-30 17:18:37,750 - WARNING - Skipping self-relationship for word ID 5334
+2025-03-30 17:18:37,813 - INFO - Processed 4000/65336 entries
+2025-03-30 17:18:38,277 - WARNING - Duplicate definition detected for word ID 5396: baybay sa Tagalog ng Artico....
+2025-03-30 17:18:42,610 - WARNING - Duplicate definition detected for word ID 5855: áso....
+2025-03-30 17:18:50,471 - INFO - Processed 5000/65336 entries
+2025-03-30 17:18:51,317 - WARNING - Skipping self-relationship for word ID 6650
+2025-03-30 17:18:57,010 - WARNING - Skipping self-relationship for word ID 7175
+2025-03-30 17:18:57,052 - WARNING - Skipping self-relationship for word ID 7175
+2025-03-30 17:18:57,080 - WARNING - Skipping self-relationship for word ID 7175
+2025-03-30 17:18:57,111 - WARNING - Skipping self-relationship for word ID 7175
+2025-03-30 17:18:57,240 - WARNING - Skipping self-relationship for word ID 7187
+2025-03-30 17:18:57,304 - WARNING - Skipping self-relationship for word ID 7187
+2025-03-30 17:18:59,862 - WARNING - Skipping self-relationship for word ID 7405
+2025-03-30 17:19:02,321 - WARNING - Skipping self-relationship for word ID 7632
+2025-03-30 17:19:07,239 - WARNING - Skipping self-relationship for word ID 8129
+2025-03-30 17:19:07,253 - WARNING - Skipping self-relationship for word ID 8129
+2025-03-30 17:19:07,263 - WARNING - Skipping self-relationship for word ID 8129
+2025-03-30 17:19:07,274 - WARNING - Skipping self-relationship for word ID 8129
+2025-03-30 17:19:08,582 - INFO - Processed 6000/65336 entries
+2025-03-30 17:19:09,640 - WARNING - Skipping self-relationship for word ID 8353
+2025-03-30 17:19:15,179 - WARNING - Skipping self-relationship for word ID 8808
+2025-03-30 17:19:16,899 - WARNING - Skipping self-relationship for word ID 8915
+2025-03-30 17:19:18,339 - WARNING - Skipping self-relationship for word ID 9032
+2025-03-30 17:19:21,583 - WARNING - Skipping self-relationship for word ID 9299
+2025-03-30 17:19:25,668 - WARNING - Skipping self-relationship for word ID 9648
+2025-03-30 17:19:27,683 - INFO - Processed 7000/65336 entries
+2025-03-30 17:19:28,963 - WARNING - Skipping self-relationship for word ID 9826
+2025-03-30 17:19:31,965 - WARNING - Skipping self-relationship for word ID 8696
+2025-03-30 17:19:32,097 - WARNING - Skipping self-relationship for word ID 10048
+2025-03-30 17:19:38,514 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:38,519 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:38,522 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:38,526 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:38,532 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:38,536 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:38,540 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:38,544 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:38,548 - WARNING - Skipping self-relationship for word ID 10386
+2025-03-30 17:19:42,946 - WARNING - Skipping self-relationship for word ID 10759
+2025-03-30 17:19:48,195 - INFO - Processed 8000/65336 entries
+2025-03-30 17:19:55,316 - WARNING - Skipping self-relationship for word ID 6827
+2025-03-30 17:20:02,770 - WARNING - Skipping self-relationship for word ID 12039
+2025-03-30 17:20:06,982 - WARNING - Skipping self-relationship for word ID 12339
+2025-03-30 17:20:10,086 - WARNING - Skipping self-relationship for word ID 12513
+2025-03-30 17:20:10,559 - INFO - Processed 9000/65336 entries
+2025-03-30 17:20:13,133 - WARNING - Skipping self-relationship for word ID 12696
+2025-03-30 17:20:13,769 - WARNING - Skipping self-relationship for word ID 12746
+2025-03-30 17:20:19,115 - WARNING - Skipping self-relationship for word ID 10782
+2025-03-30 17:20:23,904 - WARNING - Skipping self-relationship for word ID 13376
+2025-03-30 17:20:26,844 - WARNING - Skipping self-relationship for word ID 13545
+2025-03-30 17:20:33,782 - INFO - Processed 10000/65336 entries
+2025-03-30 17:20:37,033 - WARNING - Duplicate definition detected for word ID 13963: dikyà....
+2025-03-30 17:20:43,597 - WARNING - Skipping self-relationship for word ID 14637
+2025-03-30 17:20:43,616 - WARNING - Skipping self-relationship for word ID 14637
+2025-03-30 17:20:44,376 - WARNING - Skipping self-relationship for word ID 14706
+2025-03-30 17:20:51,114 - INFO - Processed 11000/65336 entries
+2025-03-30 17:21:03,669 - INFO - Processed 12000/65336 entries
+2025-03-30 17:21:10,196 - WARNING - Duplicate definition detected for word ID 16951: bayaníhan....
+2025-03-30 17:21:13,280 - WARNING - Skipping self-relationship for word ID 17239
+2025-03-30 17:21:13,286 - WARNING - Skipping self-relationship for word ID 17239
+2025-03-30 17:21:13,347 - WARNING - Duplicate definition detected for word ID 17239: dagsâ....
+2025-03-30 17:21:14,992 - WARNING - Duplicate definition detected for word ID 17382: balakúbak....
+2025-03-30 17:21:19,330 - WARNING - Skipping self-relationship for word ID 17790
+2025-03-30 17:21:20,876 - INFO - Processed 13000/65336 entries
+2025-03-30 17:21:25,055 - WARNING - Skipping self-relationship for word ID 18369
+2025-03-30 17:21:27,260 - WARNING - Skipping self-relationship for word ID 18562
+2025-03-30 17:21:27,274 - WARNING - Skipping self-relationship for word ID 18562
+2025-03-30 17:21:35,983 - INFO - Processed 14000/65336 entries
+2025-03-30 17:21:36,159 - WARNING - Duplicate definition detected for word ID 19316: dipá....
+2025-03-30 17:21:43,781 - WARNING - Skipping self-relationship for word ID 19928
+2025-03-30 17:21:43,957 - WARNING - Skipping self-relationship for word ID 19941
+2025-03-30 17:21:52,087 - INFO - Processed 15000/65336 entries
+2025-03-30 17:21:52,444 - WARNING - Duplicate definition detected for word ID 20647: [1] pababâ...
+2025-03-30 17:21:52,459 - ERROR - Error inserting definition for word 'down': Word ID 20647 does not exist
+2025-03-30 17:21:52,474 - ERROR - Error inserting definition for word 'down': Word ID 20647 does not exist
+2025-03-30 17:21:57,516 - WARNING - Skipping self-relationship for word ID 21122
+2025-03-30 17:22:00,292 - WARNING - Skipping self-relationship for word ID 21423
+2025-03-30 17:22:01,516 - WARNING - Skipping self-relationship for word ID 21536
+2025-03-30 17:22:04,277 - WARNING - Skipping self-relationship for word ID 21806
+2025-03-30 17:22:06,331 - INFO - Processed 16000/65336 entries
+2025-03-30 17:22:09,725 - WARNING - Skipping self-relationship for word ID 22205
+2025-03-30 17:22:23,169 - INFO - Processed 17000/65336 entries
+2025-03-30 17:22:40,261 - INFO - Processed 18000/65336 entries
+2025-03-30 17:22:50,046 - WARNING - Skipping self-relationship for word ID 25016
+2025-03-30 17:22:57,178 - INFO - Processed 19000/65336 entries
+2025-03-30 17:22:59,600 - WARNING - Skipping self-relationship for word ID 25741
+2025-03-30 17:22:59,607 - WARNING - Skipping self-relationship for word ID 25741
+2025-03-30 17:22:59,648 - WARNING - Duplicate definition detected for word ID 25741: gansâ....
+2025-03-30 17:23:01,424 - WARNING - Skipping self-relationship for word ID 25927
+2025-03-30 17:23:01,568 - WARNING - Duplicate definition detected for word ID 25956: alupíhan...
+2025-03-30 17:23:01,948 - WARNING - Skipping self-relationship for word ID 25991
+2025-03-30 17:23:01,957 - WARNING - Skipping self-relationship for word ID 25991
+2025-03-30 17:23:02,587 - WARNING - Skipping self-relationship for word ID 26061
+2025-03-30 17:23:02,800 - WARNING - Duplicate definition detected for word ID 26083: katí...
+2025-03-30 17:23:02,972 - WARNING - Skipping self-relationship for word ID 26099
+2025-03-30 17:23:03,001 - WARNING - Skipping self-relationship for word ID 26099
+2025-03-30 17:23:03,018 - WARNING - Skipping self-relationship for word ID 26099
+2025-03-30 17:23:09,443 - WARNING - Skipping self-relationship for word ID 26773
+2025-03-30 17:23:11,150 - INFO - Processed 20000/65336 entries
+2025-03-30 17:23:21,629 - WARNING - Skipping self-relationship for word ID 27914
+2025-03-30 17:23:26,089 - INFO - Processed 21000/65336 entries
+2025-03-30 17:23:36,918 - WARNING - Skipping self-relationship for word ID 29220
+2025-03-30 17:23:37,004 - WARNING - Skipping self-relationship for word ID 29220
+2025-03-30 17:23:37,021 - WARNING - Skipping self-relationship for word ID 29220
+2025-03-30 17:23:42,989 - WARNING - Duplicate definition detected for word ID 29786: tagák...
+2025-03-30 17:23:43,712 - INFO - Processed 22000/65336 entries
+2025-03-30 17:23:49,223 - WARNING - Duplicate definition detected for word ID 30507: tungháy...
+2025-03-30 17:23:55,173 - WARNING - Duplicate definition detected for word ID 31237: úmis....
+2025-03-30 17:23:56,632 - WARNING - Skipping self-relationship for word ID 31379
+2025-03-30 17:23:58,221 - INFO - Processed 23000/65336 entries
+2025-03-30 17:24:02,835 - WARNING - Skipping self-relationship for word ID 32093
+2025-03-30 17:24:10,087 - WARNING - Skipping self-relationship for word ID 32814
+2025-03-30 17:24:10,099 - WARNING - Skipping self-relationship for word ID 32814
+2025-03-30 17:24:10,108 - WARNING - Skipping self-relationship for word ID 32814
+2025-03-30 17:24:13,094 - INFO - Processed 24000/65336 entries
+2025-03-30 17:24:14,132 - WARNING - Skipping self-relationship for word ID 33207
+2025-03-30 17:24:19,402 - WARNING - Skipping self-relationship for word ID 33643
+2025-03-30 17:24:24,497 - WARNING - Duplicate definition detected for word ID 33951: dalá....
+2025-03-30 17:24:28,268 - WARNING - Skipping self-relationship for word ID 34273
+2025-03-30 17:24:28,277 - WARNING - Skipping self-relationship for word ID 34273
+2025-03-30 17:24:28,892 - WARNING - Skipping self-relationship for word ID 34332
+2025-03-30 17:24:28,897 - WARNING - Skipping self-relationship for word ID 34332
+2025-03-30 17:24:28,998 - WARNING - Duplicate definition detected for word ID 34341: lápulápu....
+2025-03-30 17:24:29,104 - WARNING - Skipping self-relationship for word ID 34351
+2025-03-30 17:24:29,108 - WARNING - Skipping self-relationship for word ID 34351
+2025-03-30 17:24:29,352 - INFO - Processed 25000/65336 entries
+2025-03-30 17:24:36,737 - WARNING - Duplicate definition detected for word ID 34968: [1] iláya...
+2025-03-30 17:24:36,745 - ERROR - Error inserting definition for word 'iráya': Word ID 34968 does not exist
+2025-03-30 17:24:46,861 - INFO - Processed 26000/65336 entries
+2025-03-30 17:24:49,483 - WARNING - Skipping self-relationship for word ID 35974
+2025-03-30 17:24:50,400 - WARNING - Duplicate definition detected for word ID 36079: liwayway....
+2025-03-30 17:25:00,318 - WARNING - Duplicate definition detected for word ID 37179: dalandán....
+2025-03-30 17:25:00,605 - INFO - Processed 27000/65336 entries
+2025-03-30 17:25:02,457 - WARNING - Skipping self-relationship for word ID 37422
+2025-03-30 17:25:04,355 - WARNING - Skipping self-relationship for word ID 37641
+2025-03-30 17:25:21,739 - INFO - Processed 28000/65336 entries
+2025-03-30 17:25:22,188 - WARNING - Duplicate definition detected for word ID 38885: kambíng...
+2025-03-30 17:25:24,354 - WARNING - Duplicate definition detected for word ID 39276: paragos....
+2025-03-30 17:25:25,221 - WARNING - Skipping self-relationship for word ID 39385
+2025-03-30 17:25:26,366 - WARNING - Duplicate definition detected for word ID 39500: papáya....
+2025-03-30 17:25:28,709 - WARNING - Skipping self-relationship for word ID 39749
+2025-03-30 17:25:41,343 - INFO - Processed 29000/65336 entries
+2025-03-30 17:25:48,616 - WARNING - Skipping self-relationship for word ID 41500
+2025-03-30 17:25:48,775 - WARNING - Duplicate definition detected for word ID 40131: kariwasaan....
+2025-03-30 17:25:50,850 - WARNING - Skipping self-relationship for word ID 41728
+2025-03-30 17:25:51,194 - WARNING - Skipping self-relationship for word ID 41763
+2025-03-30 17:25:57,570 - WARNING - Duplicate definition detected for word ID 42328: kidlát....
+2025-03-30 17:25:59,280 - INFO - Processed 30000/65336 entries

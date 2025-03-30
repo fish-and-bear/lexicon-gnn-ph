@@ -2365,17 +2365,16 @@ def regenerate_all_romanizations(cur):
 @with_transaction(commit=True)
 def fix_baybayin_constraint_violations(cur):
     """Fix Baybayin entries that violate the database constraint."""
-    fixed_count = 0
-    
     try:
         # Identify entries that would violate the constraint
         cur.execute(r"""
             SELECT id, lemma, baybayin_form
             FROM words
-            WHERE baybayin_form IS NOT NULL AND baybayin_form !~ '^[\u1700-\u171F\s]*$'
+            WHERE baybayin_form IS NOT NULL AND baybayin_form !~ '^[\u1700-\u171F\s]*
         """)
         
         violations = cur.fetchall()
+        fixed_count = 0
         
         logger.info(f"Found {len(violations)} entries violating Baybayin regex constraint")
         
@@ -2383,7 +2382,7 @@ def fix_baybayin_constraint_violations(cur):
             # Clean the form
             cleaned_form = clean_baybayin_text(baybayin_form)
             
-            if cleaned_form and re.match(r'^[\u1700-\u171F\s]*$', cleaned_form):
+            if cleaned_form and re.match(r'^[\u1700-\u171F\s]*, cleaned_form):
                 # We can fix this entry
                 cur.execute("""
                     UPDATE words
@@ -2403,15 +2402,11 @@ def fix_baybayin_constraint_violations(cur):
                 logger.warning(f"Removed invalid Baybayin form for word ID {word_id}: {lemma}")
         
         logger.info(f"Fixed {fixed_count} Baybayin constraint violations")
+        return fixed_count
         
     except Exception as e:
         logger.error(f"Error fixing Baybayin constraint violations: {e}")
         return 0
-        
-    finally:
-        logger.info(f"Completed Baybayin constraint violation check")
-        
-    return fixed_count
 
 # Main function to run comprehensive Baybayin data repair
 def repair_baybayin_data():
@@ -6126,16 +6121,7 @@ def process_marayum_json(cur, filename: str):
 
         # Extract dictionary metadata
         dict_info = data.get("dictionary_info", {})
-        
-        # Improved language code handling
-        raw_language_code = dict_info.get("base_language", "tl")
-        # Normalize complex language codes (handle Bikol-Boie'nen format)
-        if len(raw_language_code) > 3 or "-" in raw_language_code or "'" in raw_language_code:
-            # Create a simplified language code
-            language_code = raw_language_code.split('-')[0].lower()[:3]
-            logger.info(f"Normalized complex language code '{raw_language_code}' to '{language_code}'")
-        else:
-            language_code = raw_language_code
+        language_code = dict_info.get("base_language", "tl")
         
         # Normalize source name
         source = SourceStandardization.standardize_sources(os.path.basename(filename))
@@ -6178,11 +6164,7 @@ def process_marayum_json(cur, filename: str):
                 try:
                     # Extract metadata exactly as in your JSON structure
                     pos = entry.get("pos", "")
-                    
-                    # Clean pronunciation (remove brackets)
-                    raw_pronunciation = entry.get("pronunciation", "")
-                    pronunciation = raw_pronunciation.strip('[]') if raw_pronunciation else ""
-                    
+                    pronunciation = entry.get("pronunciation", "")
                     etymology = entry.get("etymology", "")
                     credits = entry.get("credits", "")
                     comment = entry.get("comment", "")
@@ -6197,8 +6179,6 @@ def process_marayum_json(cur, filename: str):
                         tags.append(f"dialect:{dialect}")
                     if is_core:
                         tags.append("core_word")
-                    if dict_info.get("name"):
-                        tags.append(f"dictionary:{dict_info.get('name')}")
                     
                     # Get or create word entry
                     word_id = get_or_create_word_id(
@@ -6220,8 +6200,8 @@ def process_marayum_json(cur, filename: str):
                         try:
                             pron_id = insert_pronunciation(cur, word_id, {
                                 'type': 'ipa',
-                                'value': pronunciation,  # Already cleaned above
-                                'metadata': {'original': raw_pronunciation},
+                                'value': pronunciation.strip('[]'),  # Remove square brackets from IPA notation
+                                'metadata': {'original': pronunciation},
                                 'sources': source
                             })
                             if pron_id:
@@ -6295,29 +6275,19 @@ def process_marayum_json(cur, filename: str):
                         except Exception as e:
                             logger.warning(f"Error adding definition for '{word}': {str(e)}")
 
-                    # Process see_also references - Modified to match your exact JSON structure
+                    # Process see_also references - Following your exact JSON structure
                     see_also = entry.get("see_also", [])
                     if see_also and isinstance(see_also, list):
                         for rel in see_also:
-                            if isinstance(rel, dict):
-                                # Handle the format in your JSON structure
+                            if isinstance(rel, dict) and 'text' in rel:
                                 rel_word = rel.get("text", "").strip()
-                                rel_pk = rel.get("pk", None)  # Get the pk if present
-                                
+                                # Also check for 'word' field if text is not present
+                                if not rel_word and 'word' in rel:
+                                    rel_word = rel.get("word", "").strip()
+                                    
                                 if rel_word:
                                     try:
-                                        rel_id = None
-                                        # If we have a pk, try to find the word by ID first
-                                        if rel_pk:
-                                            cur.execute("SELECT id FROM words WHERE id = %s", (rel_pk,))
-                                            result = cur.fetchone()
-                                            if result:
-                                                rel_id = result[0]
-                                        
-                                        # If we couldn't find by ID, or no ID was provided, look up or create by name
-                                        if not rel_id:
-                                            rel_id = get_or_create_word_id(cur, rel_word, language_code=language_code)
-                                        
+                                        rel_id = get_or_create_word_id(cur, rel_word, language_code=language_code)
                                         if rel_id and rel_id != word_id:  # Avoid self-references
                                             insert_relation(
                                                 cur,
@@ -6339,7 +6309,6 @@ def process_marayum_json(cur, filename: str):
                 
                 except Exception as e:
                     logger.error(f"Error processing entry '{word}' at index {entry_idx}: {str(e)}")
-                    logger.error(f"Entry data sample: {json.dumps(entry)[:200]}...")
                     cur.execute(f"ROLLBACK TO SAVEPOINT {word_savepoint}")
                     stats["error_entries"] += 1
             
@@ -6963,22 +6932,11 @@ def lookup_word(args):
     console = Console()
     
     try:
-        logger.info(f"Starting lookup for word: '{args.word}'")
         conn = get_connection()
         cur = conn.cursor()
         
-        # First verify that pg_trgm extension is installed
-        try:
-            cur.execute("SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm'")
-            has_pg_trgm = cur.fetchone() is not None
-            logger.info(f"pg_trgm extension installed: {has_pg_trgm}")
-        except Exception as e:
-            logger.warning(f"Could not check for pg_trgm extension: {str(e)}")
-            has_pg_trgm = False
-        
         # Search across all relevant fields
-        logger.info(f"Executing exact match query for '{args.word}'")
-        query = """
+        cur.execute("""
             SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
                    w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
                    w.romanized_form, w.tags, w.source_info
@@ -6989,515 +6947,287 @@ def lookup_word(args):
                OR LOWER(w.romanized_form) = LOWER(%s)
                OR LOWER(w.baybayin_form) = LOWER(%s)
                OR LOWER(p.value) = LOWER(%s)
-        """
-        try:
-            cur.execute(query, (args.word, args.word, args.word, args.word, args.word))
-            results = cur.fetchall()
-            logger.info(f"Found {len(results)} exact matches")
-        except Exception as e:
-            logger.error(f"Error in exact match query: {str(e)}")
-            logger.error(f"Query: {query}")
-            logger.error(f"Parameters: {(args.word, args.word, args.word, args.word, args.word)}")
-            import traceback
-            logger.error(f"Traceback: {traceback.format_exc()}")
-            raise
+        """, (args.word, args.word, args.word, args.word, args.word))
+        
+        results = cur.fetchall()
         
         if not results:
-            # Try either fuzzy search or ILIKE depending on extension availability
-            if has_pg_trgm:
-                logger.info(f"No exact matches, trying fuzzy search for '{args.word}'")
-                try:
-                    fuzzy_query = """
-                        SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
-                               w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
-                               w.romanized_form, w.tags, w.source_info,
-                               similarity(w.lemma, %s) as sim_score
-                        FROM words w
-                        WHERE w.lemma % %s
-                        ORDER BY sim_score DESC
-                        LIMIT 5
-                    """
-                    cur.execute(fuzzy_query, (args.word, args.word))
-                    fuzzy_results = cur.fetchall()
-                    logger.info(f"Found {len(fuzzy_results)} fuzzy matches")
-                    
-                    if fuzzy_results:
-                        logger.info(f"Fuzzy matches: {[r[1] for r in fuzzy_results]}")
-                        results = [result[:-1] for result in fuzzy_results]
-                        console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
-                    else:
-                        # Fall back to ILIKE if no fuzzy matches
-                        logger.info("No fuzzy matches, falling back to ILIKE search")
-                except Exception as e:
-                    logger.error(f"Error in fuzzy search query: {str(e)}")
-                    logger.error(f"Falling back to ILIKE search due to error")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-            else:
-                logger.info("pg_trgm not available, using ILIKE search instead")
+            # Try fuzzy search if exact match not found
+            cur.execute("""
+                SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
+                       w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
+                       w.romanized_form, w.tags, w.source_info,
+                       similarity(w.lemma, %s) as sim_score
+                FROM words w
+                WHERE w.lemma % %s
+                ORDER BY sim_score DESC
+                LIMIT 5
+            """, (args.word, args.word))
+            results = cur.fetchall()
             
-            # If we have no results yet, try ILIKE search
             if not results:
-                logger.info(f"Trying ILIKE search for '{args.word}'")
-                ilike_query = """
-                    SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
-                          w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
-                          w.romanized_form, w.tags, w.source_info
-                    FROM words w
-                    WHERE w.lemma ILIKE %s
-                    OR w.normalized_lemma ILIKE %s
-                    LIMIT 5
-                """
-                try:
-                    cur.execute(ilike_query, (f"%{args.word}%", f"%{args.word}%"))
-                    ilike_results = cur.fetchall()
-                    logger.info(f"ILIKE search found {len(ilike_results)} matches")
-                    
-                    if ilike_results:
-                        logger.info(f"ILIKE matches: {[r[1] for r in ilike_results]}")
-                        console.print(f"\n[yellow]Found words containing '[bold]{args.word}[/]':[/]")
-                        results = ilike_results
-                    else:
-                        # Check if word exists in database at all
-                        logger.info("Checking database contents")
-                        cur.execute("SELECT COUNT(*) FROM words")
-                        word_count = cur.fetchone()[0]
-                        logger.info(f"Total words in database: {word_count}")
-                        
-                        if word_count == 0:
-                            console.print("[red]Database appears to be empty. Try importing data first with 'migrate' command.[/]")
-                        else:
-                            # Sample some words to see what's in the database
-                            cur.execute("SELECT lemma, language_code FROM words LIMIT 5")
-                            sample_words = cur.fetchall()
-                            logger.info(f"Sample words in database: {sample_words}")
-                            
-                            console.print(f"\n[yellow]No entries found for '[bold]{args.word}[/]'[/]")
-                            console.print("[yellow]Database contains words but none match your query.[/]")
-                        return
-                except Exception as e:
-                    logger.error(f"Error in ILIKE search: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"\n[red]Error searching for word: {str(e)}[/]")
-                    return
-            else:
-                # Trim the sim_score from the fuzzy results to match expected column count
-                try:
-                    logger.info("Trimming similarity score from fuzzy results")
-                    results = [result[:-1] for result in fuzzy_results]
-                    console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
-                except Exception as e:
-                    logger.error(f"Error trimming fuzzy results: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    raise
+                console.print(f"\n[yellow]No entries found for '[bold]{args.word}[/]'[/]")
+                return
+
+            console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
         
-        for idx, result in enumerate(results):
-            try:
-                logger.info(f"Processing result {idx+1}/{len(results)}")
+        for result in results:
+            # Check if we have enough columns in the result
+            if len(result) < 10:
+                logger.warning(f"Incomplete result data for word: {result[1] if len(result) > 1 else 'unknown'}")
+                continue
                 
-                # Check if we have enough columns in the result
-                if len(result) < 10:
-                    logger.warning(f"Incomplete result data: expected 10 columns, got {len(result)}")
-                    logger.warning(f"Result data: {result}")
-                    logger.warning(f"Word: {result[1] if len(result) > 1 else 'unknown'}")
-                    continue
-                
-                # Unpack result with detailed logging
-                try:
-                    word_id = result[0]
-                    logger.info(f"Word ID: {word_id}")
-                    
-                    lemma = result[1]
-                    logger.info(f"Lemma: {lemma}")
-                    
-                    lang_code = result[2]
-                    logger.info(f"Language code: {lang_code}")
-                    
-                    norm_lemma = result[3]
-                    pref_spell = result[4]
-                    has_bayb = result[5]
-                    bayb_form = result[6]
-                    rom_form = result[7]
-                    tags = result[8]
-                    sources = result[9]
-                except Exception as e:
-                    logger.error(f"Error unpacking result columns: {str(e)}")
-                    logger.error(f"Result structure: {result}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    raise
-                
-                # Print word header with metadata
-                console.print(f"\n[bold blue]═══ {lemma} ═══[/]")
-                
-                # Print basic information
-                info_table = Table(show_header=False, box=None)
-                info_table.add_row("[dim]Language:[/]", lang_code)
-                if norm_lemma and norm_lemma != lemma:
-                    info_table.add_row("[dim]Normalized:[/]", norm_lemma)
-                if pref_spell:
-                    info_table.add_row("[dim]Preferred:[/]", pref_spell)
-                if sources:
+            word_id = result[0]
+            lemma = result[1]
+            lang_code = result[2]
+            norm_lemma = result[3]
+            pref_spell = result[4]
+            has_bayb = result[5]
+            bayb_form = result[6]
+            rom_form = result[7]
+            tags = result[8]
+            sources = result[9]
+            
+            # Print word header with metadata
+            console.print(f"\n[bold blue]═══ {lemma} ═══[/]")
+            
+            # Print basic information
+            info_table = Table(show_header=False, box=None)
+            info_table.add_row("[dim]Language:[/]", lang_code)
+            if norm_lemma and norm_lemma != lemma:
+                info_table.add_row("[dim]Normalized:[/]", norm_lemma)
+            if pref_spell:
+                info_table.add_row("[dim]Preferred:[/]", pref_spell)
+            if sources:
+                if isinstance(sources, dict) or (isinstance(sources, str) and sources.startswith('{')):
+                    # Try to format JSON sources
                     try:
-                        if isinstance(sources, dict) or (isinstance(sources, str) and sources.startswith('{')):
-                            # Try to format JSON sources
+                        src_dict = sources if isinstance(sources, dict) else json.loads(sources)
+                        sources_str = ', '.join(f"{k}: {v}" for k, v in src_dict.items())
+                        info_table.add_row("[dim]Sources:[/]", sources_str)
+                    except:
+                        info_table.add_row("[dim]Sources:[/]", str(sources))
+                else:
+                    info_table.add_row("[dim]Sources:[/]", str(sources))
+            if tags:
+                info_table.add_row("[dim]Tags:[/]", tags)
+            
+            console.print(info_table)
+            
+            # Print Baybayin information if available
+            if has_bayb:
+                baybayin_table = Table(title="[bold cyan]Baybayin Forms[/]", 
+                                     show_header=False, box=box.ROUNDED)
+                if bayb_form:
+                    baybayin_table.add_row("Baybayin:", bayb_form)
+                if rom_form:
+                    baybayin_table.add_row("Romanized:", rom_form)
+                console.print(baybayin_table)
+            
+            # Get and print pronunciations
+            cur.execute("""
+                SELECT type, value, tags, metadata, sources
+                FROM pronunciations
+                WHERE word_id = %s
+                ORDER BY type
+            """, (word_id,))
+            
+            prons = cur.fetchall()
+            
+            if prons:
+                pron_table = Table(title="[bold cyan]Pronunciations[/]",
+                                 show_header=True, box=box.ROUNDED)
+                pron_table.add_column("Type")
+                pron_table.add_column("Value")
+                pron_table.add_column("Details")
+                
+                for pron in prons:
+                    type_ = pron[0]
+                    value = pron[1]
+                    p_tags = pron[2]
+                    metadata = pron[3]
+                    p_sources = pron[4]
+                    
+                    details = []
+                    if metadata:
+                        try:
+                            meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
+                            if meta_dict and 'styles' in meta_dict:
+                                details.append(f"Style: {', '.join(meta_dict['styles'])}")
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+                    if p_tags:
+                        details.append(f"Tags: {p_tags}")
+                    if p_sources:
+                        details.append(f"Source: {p_sources}")
+                    
+                    pron_table.add_row(
+                        type_ or "Standard",
+                        value,
+                        "\n".join(details) if details else ""
+                    )
+                
+                console.print(pron_table)
+            
+            # Get and print etymologies
+            cur.execute("""
+                SELECT etymology_text, normalized_components, language_codes, sources
+                FROM etymologies
+                WHERE word_id = %s
+            """, (word_id,))
+            
+            etyms = cur.fetchall()
+            
+            if etyms:
+                console.print("\n[bold cyan]Etymology:[/]")
+                for etym in etyms:
+                    etym_text = etym[0]
+                    comps = etym[1]
+                    langs = etym[2]
+                    e_sources = etym[3]
+                    
+                    etym_panel = Panel(
+                        Text(etym_text),
+                        title="Etymology" + (f" [{e_sources}]" if e_sources else ""),
+                        subtitle=langs if langs else None
+                    )
+                    console.print(etym_panel)
+                    if comps:
+                        try:
+                            comp_dict = json.loads(comps) if isinstance(comps, str) else comps
+                            if comp_dict:
+                                console.print("[dim]Components:[/]")
+                                for comp in comp_dict:
+                                    console.print(f"• {comp}")
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+            
+            # Get and print definitions grouped by part of speech
+            try:
+                cur.execute("""
+                    SELECT d.definition_text, d.examples, d.usage_notes, d.tags, d.sources,
+                           p.name_tl AS pos_name
+                    FROM definitions d
+                    LEFT JOIN parts_of_speech p ON d.standardized_pos_id = p.id
+                    WHERE d.word_id = %s
+                    ORDER BY p.name_tl, d.id
+                """, (word_id,))
+                
+                definitions = cur.fetchall()
+                
+                if definitions:
+                    console.print("\n[bold cyan]Definitions:[/]")
+                    current_pos = None
+                    
+                    for definition in definitions:
+                        def_text = definition[0]
+                        examples = definition[1]
+                        notes = definition[2]
+                        def_tags = definition[3]
+                        def_sources = definition[4]
+                        pos = definition[5]
+                        
+                        if pos != current_pos:
+                            console.print(f"\n[bold cyan]{pos or 'Uncategorized'}:[/]")
+                            current_pos = pos
+                        
+                        def_panel = Panel(Text(def_text))
+                        console.print(def_panel)
+                        
+                        if examples:
                             try:
-                                src_dict = sources if isinstance(sources, dict) else json.loads(sources)
-                                sources_str = ', '.join(f"{k}: {v}" for k, v in src_dict.items())
-                                info_table.add_row("[dim]Sources:[/]", sources_str)
-                            except Exception as json_e:
-                                logger.warning(f"Error parsing sources JSON: {str(json_e)}")
-                                info_table.add_row("[dim]Sources:[/]", str(sources))
-                        else:
-                            info_table.add_row("[dim]Sources:[/]", str(sources))
-                    except Exception as e:
-                        logger.error(f"Error handling sources: {str(e)}")
-                        logger.error(f"Sources value: {sources} (type: {type(sources).__name__})")
-                if tags:
-                    info_table.add_row("[dim]Tags:[/]", tags)
-                
-                console.print(info_table)
-                
-                # Print Baybayin information if available
-                if has_bayb:
-                    logger.info("Processing Baybayin data")
-                    baybayin_table = Table(title="[bold cyan]Baybayin Forms[/]", 
-                                        show_header=False, box=box.ROUNDED)
-                    if bayb_form:
-                        baybayin_table.add_row("Baybayin:", bayb_form)
-                    if rom_form:
-                        baybayin_table.add_row("Romanized:", rom_form)
-                    console.print(baybayin_table)
-                
-                # Get and print pronunciations
-                try:
-                    logger.info(f"Querying pronunciations for word_id {word_id}")
-                    cur.execute("""
-                        SELECT type, value, tags, metadata, sources
-                        FROM pronunciations
-                        WHERE word_id = %s
-                        ORDER BY type
-                    """, (word_id,))
-                    
-                    prons = cur.fetchall()
-                    logger.info(f"Found {len(prons)} pronunciations")
-                    
-                    if prons:
-                        pron_table = Table(title="[bold cyan]Pronunciations[/]",
-                                        show_header=True, box=box.ROUNDED)
-                        pron_table.add_column("Type")
-                        pron_table.add_column("Value")
-                        pron_table.add_column("Details")
+                                ex_list = json.loads(examples) if isinstance(examples, str) else examples
+                                if ex_list:
+                                    console.print("[dim]Examples:[/]")
+                                    if isinstance(ex_list, list):
+                                        for ex in ex_list:
+                                            if isinstance(ex, dict):
+                                                console.print(f"• {ex['text']}")
+                                                if 'translation' in ex:
+                                                    console.print(f"  [dim]{ex['translation']}[/]")
+                                            else:
+                                                console.print(f"• {ex}")
+                                    else:
+                                        console.print(f"• {ex_list}")
+                            except (json.JSONDecodeError, TypeError, AttributeError):
+                                console.print(f"• {examples}")
                         
-                        for pron in prons:
-                            type_ = pron[0]
-                            value = pron[1]
-                            p_tags = pron[2]
-                            metadata = pron[3]
-                            p_sources = pron[4]
-                            
-                            details = []
-                            if metadata:
-                                try:
-                                    meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
-                                    if meta_dict and 'styles' in meta_dict:
-                                        details.append(f"Style: {', '.join(meta_dict['styles'])}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing pronunciation metadata: {str(e)}")
-                            if p_tags:
-                                details.append(f"Tags: {p_tags}")
-                            if p_sources:
-                                details.append(f"Source: {p_sources}")
-                            
-                            pron_table.add_row(
-                                type_ or "Standard",
-                                value,
-                                "\n".join(details) if details else ""
-                            )
+                        if notes:
+                            console.print(f"[dim]Notes:[/] {notes}")
                         
-                        console.print(pron_table)
-                except Exception as e:
-                    logger.error(f"Error retrieving pronunciations: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve pronunciations: {str(e)}[/]")
-                
-                # Get and print etymologies
-                try:
-                    logger.info(f"Querying etymologies for word_id {word_id}")
-                    cur.execute("""
-                        SELECT etymology_text, normalized_components, language_codes, sources
-                        FROM etymologies
-                        WHERE word_id = %s
-                    """, (word_id,))
-                    
-                    etyms = cur.fetchall()
-                    logger.info(f"Found {len(etyms)} etymologies")
-                    
-                    if etyms:
-                        console.print("\n[bold cyan]Etymology:[/]")
-                        for etym in etyms:
-                            etym_text = etym[0]
-                            comps = etym[1]
-                            langs = etym[2]
-                            e_sources = etym[3]
-                            
-                            etym_panel = Panel(
-                                Text(etym_text),
-                                title="Etymology" + (f" [{e_sources}]" if e_sources else ""),
-                                subtitle=langs if langs else None
-                            )
-                            console.print(etym_panel)
-                            if comps:
-                                try:
-                                    comp_dict = json.loads(comps) if isinstance(comps, str) else comps
-                                    if comp_dict:
-                                        console.print("[dim]Components:[/]")
-                                        for comp in comp_dict:
-                                            console.print(f"• {comp}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing etymology components: {str(e)}")
-                except Exception as e:
-                    logger.error(f"Error retrieving etymologies: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve etymologies: {str(e)}[/]")
-                
-                # Get and print definitions grouped by part of speech
-                try:
-                    logger.info(f"Querying definitions for word_id {word_id}")
-                    def_query = """
-                        SELECT d.definition_text, d.examples, d.usage_notes, d.tags, d.sources,
-                               p.name_tl AS pos_name
-                        FROM definitions d
-                        LEFT JOIN parts_of_speech p ON d.standardized_pos_id = p.id
-                        WHERE d.word_id = %s
-                        ORDER BY p.name_tl, d.id
-                    """
-                    
-                    cur.execute(def_query, (word_id,))
-                    definitions = cur.fetchall()
-                    logger.info(f"Found {len(definitions)} definitions")
-                    
-                    if definitions:
-                        console.print("\n[bold cyan]Definitions:[/]")
-                        current_pos = None
-                        
-                        for def_idx, definition in enumerate(definitions):
-                            logger.info(f"Processing definition {def_idx+1}/{len(definitions)}")
-                            
-                            try:
-                                def_text = definition[0]
-                                examples = definition[1]
-                                notes = definition[2]
-                                def_tags = definition[3]
-                                def_sources = definition[4]
-                                pos = definition[5]
-                            except Exception as e:
-                                logger.error(f"Error unpacking definition columns: {str(e)}")
-                                logger.error(f"Definition structure: {definition}")
-                                continue
-                            
-                            if pos != current_pos:
-                                console.print(f"\n[bold cyan]{pos or 'Uncategorized'}:[/]")
-                                current_pos = pos
-                            
-                            def_panel = Panel(Text(def_text))
-                            console.print(def_panel)
-                            
-                            if examples:
-                                logger.info("Processing definition examples")
-                                try:
-                                    ex_list = json.loads(examples) if isinstance(examples, str) else examples
-                                    logger.info(f"Example type: {type(ex_list).__name__}")
-                                    
-                                    if ex_list:
-                                        console.print("[dim]Examples:[/]")
-                                        if isinstance(ex_list, list):
-                                            for ex_idx, ex in enumerate(ex_list):
-                                                logger.info(f"Processing example {ex_idx+1}/{len(ex_list)}")
-                                                if isinstance(ex, dict):
-                                                    console.print(f"• {ex.get('text', '')}")
-                                                    if 'translation' in ex:
-                                                        console.print(f"  [dim]{ex['translation']}[/]")
-                                                else:
-                                                    console.print(f"• {ex}")
-                                        else:
-                                            console.print(f"• {ex_list}")
-                                except (json.JSONDecodeError, TypeError, AttributeError) as e:
-                                    logger.warning(f"Error processing examples: {str(e)}")
-                                    logger.warning(f"Examples data: {examples}")
-                                    console.print(f"• {examples}")
-                            
-                            if notes:
-                                console.print(f"[dim]Notes:[/] {notes}")
-                            
-                            if def_tags:
-                                console.print(f"[dim]Tags:[/] {def_tags}")
-                    else:
-                        logger.warning(f"No definitions found for word ID {word_id}")
-                except Exception as e:
-                    logger.error(f"Error retrieving definitions for {lemma}: {str(e)}")
-                    logger.error(f"Query: {def_query}")
-                    logger.error(f"Parameters: {(word_id,)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve definitions: {str(e)}[/]")
-                
-                # Get and print relationships
-                try:
-                    logger.info(f"Querying relations for word_id {word_id}")
-                    rel_query = """
-                        SELECT r.relation_type,
-                               w.lemma,
-                               r.metadata,
-                               r.sources
-                        FROM relations r
-                        JOIN words w ON r.to_word_id = w.id
-                        WHERE r.from_word_id = %s
-                        ORDER BY r.relation_type
-                    """
-                    
-                    cur.execute(rel_query, (word_id,))
-                    rels = cur.fetchall()
-                    logger.info(f"Found {len(rels)} relations")
-                    
-                    if rels:
-                        console.print("\n[bold cyan]Related Words:[/]")
-                        current_type = None
-                        rel_table = None
-                        
-                        for rel_idx, rel in enumerate(rels):
-                            logger.info(f"Processing relation {rel_idx+1}/{len(rels)}")
-                            
-                            try:
-                                rel_type = rel[0]
-                                rel_word = rel[1]
-                                metadata = rel[2]
-                                rel_sources = rel[3]
-                            except Exception as e:
-                                logger.error(f"Error unpacking relation columns: {str(e)}")
-                                logger.error(f"Relation structure: {rel}")
-                                continue
-                            
-                            if rel_type != current_type:
-                                if rel_table:
-                                    console.print(rel_table)
-                                rel_table = Table(show_header=False, box=box.SIMPLE)
-                                console.print(f"\n[bold]{rel_type.title()}:[/]")
-                                current_type = rel_type
-                            
-                            details = []
-                            if metadata:
-                                try:
-                                    meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
-                                    if meta_dict:
-                                        if 'confidence' in meta_dict:
-                                            details.append(f"{meta_dict['confidence']}% confidence")
-                                        if 'tags' in meta_dict:
-                                            details.append(f"Tags: {meta_dict['tags']}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing relation metadata: {str(e)}")
-                            if rel_sources:
-                                details.append(f"Source: {rel_sources}")
-                            
-                            rel_table.add_row(
-                                "•",
-                                rel_word,
-                                f"[dim]({', '.join(details)})[/]" if details else ""
-                            )
-                        
-                        if rel_table:
-                            console.print(rel_table)
-                    else:
-                        logger.info(f"No relations found for word ID {word_id}")
-                except Exception as e:
-                    logger.error(f"Error retrieving relations for {lemma}: {str(e)}")
-                    logger.error(f"Query: {rel_query}")
-                    logger.error(f"Parameters: {(word_id,)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve relations: {str(e)}[/]")
-                
-                console.print("\n" + "─" * 80 + "\n")
+                        if def_tags:
+                            console.print(f"[dim]Tags:[/] {def_tags}")
             except Exception as e:
-                logger.error(f"Error processing result {idx+1}: {str(e)}")
-                import traceback
-                logger.error(f"Traceback: {traceback.format_exc()}")
-                logger.error(f"Result data: {result}")
-                console.print(f"[red]Error processing result: {str(e)}[/]")
+                logger.error(f"Error processing definitions for {lemma}: {str(e)}")
+                console.print(f"[yellow]Could not retrieve definitions: {str(e)}[/]")
+            
+            # Get and print relationships
+            try:
+                cur.execute("""
+                    SELECT r.relation_type,
+                           w.lemma,
+                           r.metadata,
+                           r.sources
+                    FROM relations r
+                    JOIN words w ON r.to_word_id = w.id
+                    WHERE r.from_word_id = %s
+                    ORDER BY r.relation_type
+                """, (word_id,))
+                
+                rels = cur.fetchall()
+                
+                if rels:
+                    console.print("\n[bold cyan]Related Words:[/]")
+                    current_type = None
+                    rel_table = None
+                    
+                    for rel in rels:
+                        rel_type = rel[0]
+                        rel_word = rel[1]
+                        metadata = rel[2]
+                        rel_sources = rel[3]
+                        
+                        if rel_type != current_type:
+                            if rel_table:
+                                console.print(rel_table)
+                            rel_table = Table(show_header=False, box=box.SIMPLE)
+                            console.print(f"\n[bold]{rel_type.title()}:[/]")
+                            current_type = rel_type
+                        
+                        details = []
+                        if metadata:
+                            try:
+                                meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
+                                if meta_dict:
+                                    if 'confidence' in meta_dict:
+                                        details.append(f"{meta_dict['confidence']}% confidence")
+                                    if 'tags' in meta_dict:
+                                        details.append(f"Tags: {meta_dict['tags']}")
+                            except (json.JSONDecodeError, TypeError):
+                                pass
+                        if rel_sources:
+                            details.append(f"Source: {rel_sources}")
+                        
+                        rel_table.add_row(
+                            "•",
+                            rel_word,
+                            f"[dim]({', '.join(details)})[/]" if details else ""
+                        )
+                    
+                    if rel_table:
+                        console.print(rel_table)
+            except Exception as e:
+                logger.error(f"Error processing relations for {lemma}: {str(e)}")
+                console.print(f"[yellow]Could not retrieve relations: {str(e)}[/]")
+            
+            console.print("\n" + "─" * 80 + "\n")
 
     except Exception as e:
         logger.error(f"Error looking up word: {str(e)}")
-        logger.error(f"Word: {args.word}")
-        import traceback
-        logger.error(f"Traceback: {traceback.format_exc()}")
-        
-        # Additional database diagnostics
-        try:
-            diagnostics_conn = get_connection()
-            diagnostics_cur = diagnostics_conn.cursor()
-            
-            # Check if database extensions are installed
-            logger.info("Diagnostic: checking database extensions")
-            diagnostics_cur.execute("""
-                SELECT extname FROM pg_extension
-            """)
-            extensions = [row[0] for row in diagnostics_cur.fetchall()]
-            logger.info(f"Installed extensions: {extensions}")
-            
-            # Check if the word exists with direct lemma search
-            logger.info(f"Diagnostic: checking if word '{args.word}' exists with direct lemma match")
-            diagnostics_cur.execute("""
-                SELECT COUNT(*) FROM words WHERE lemma = %s
-            """, (args.word,))
-            exact_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Diagnostic result: Word '{args.word}' exact matches: {exact_count}")
-            
-            # Check if the word exists at all
-            logger.info(f"Diagnostic: checking if word '{args.word}' exists in any form")
-            diagnostics_cur.execute("""
-                SELECT COUNT(*) FROM words WHERE lemma ILIKE %s
-            """, (f"%{args.word}%",))
-            exists_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Diagnostic result: Word '{args.word}' partial matches: {exists_count}")
-            
-            # Examine database size
-            logger.info("Diagnostic: checking database size")
-            diagnostics_cur.execute("SELECT COUNT(*) FROM words")
-            word_count = diagnostics_cur.fetchone()[0]
-            diagnostics_cur.execute("SELECT COUNT(*) FROM definitions")
-            def_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Database size: {word_count} words, {def_count} definitions")
-            
-            # Check database schema
-            logger.info("Diagnostic: verifying database schema")
-            diagnostics_cur.execute("""
-                SELECT column_name, data_type 
-                FROM information_schema.columns 
-                WHERE table_name = 'words'
-                ORDER BY ordinal_position
-            """)
-            columns = diagnostics_cur.fetchall()
-            logger.info(f"Diagnostic: words table has {len(columns)} columns")
-            for col in columns:
-                logger.info(f"  Column: {col[0]}, Type: {col[1]}")
-                
-            diagnostics_conn.close()
-        except Exception as diag_e:
-            logger.error(f"Error during diagnostics: {str(diag_e)}")
-        
-        console.print(f"[red]Error looking up word '{args.word}': {str(e)}[/]")
-        console.print("[yellow]Check logs for detailed error information[/]")
-        console.print("[yellow]Possible solutions: [/]")
-        console.print("1. Make sure you've imported your dictionary with: `python dictionary_manager.py migrate --file chavacano-english_processed.json`")
-        console.print("2. Ensure PostgreSQL extensions are installed with: `python dictionary_manager.py verify --repair`")
+        console.print(f"[red]Error looking up word: {str(e)}[/]")
     finally:
         if 'conn' in locals() and conn:
             conn.close()
-            logger.info("Database connection closed")
 
 def display_dictionary_stats_cli(args):
     """Display dictionary statistics from the command line."""

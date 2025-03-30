@@ -1081,10 +1081,8 @@ class BaybayinCharType(Enum):
         elif 0x1735 <= code_point <= 0x1736:
             return cls.PUNCTUATION
         return cls.UNKNOWN
-
 @dataclass
 class BaybayinChar:
-    """Define a Baybayin character with its properties."""
     char: str
     char_type: BaybayinCharType
     default_sound: str
@@ -1105,7 +1103,6 @@ class BaybayinChar:
             raise ValueError(f"Character type mismatch for {self.char}: expected {expected_type}, got {self.char_type}")
 
     def get_sound(self, next_char: Optional['BaybayinChar'] = None) -> str:
-        """Get the sound of this character, considering the next character."""
         if self.char_type == BaybayinCharType.CONSONANT and next_char:
             if next_char.char_type == BaybayinCharType.VOWEL_MARK:
                 return self.default_sound[:-1] + next_char.default_sound
@@ -1451,8 +1448,7 @@ class BaybayinRomanizer:
         'ᜎ': BaybayinChar('ᜎ', BaybayinCharType.CONSONANT, 'la', ['la']),
         'ᜏ': BaybayinChar('ᜏ', BaybayinCharType.CONSONANT, 'wa', ['wa']),
         'ᜐ': BaybayinChar('ᜐ', BaybayinCharType.CONSONANT, 'sa', ['sa']),
-        'ᜑ': BaybayinChar('ᜑ', BaybayinCharType.CONSONANT, 'ha', ['ha']),
-        'ᜍ': BaybayinChar('ᜍ', BaybayinCharType.CONSONANT, 'ra', ['ra'])  # Added ra
+        'ᜑ': BaybayinChar('ᜑ', BaybayinCharType.CONSONANT, 'ha', ['ha'])
     }
     VOWEL_MARKS = {
         'ᜒ': BaybayinChar('ᜒ', BaybayinCharType.VOWEL_MARK, 'i', ['i', 'e']),
@@ -1465,72 +1461,49 @@ class BaybayinRomanizer:
     }
     
     def __init__(self):
-        """Initialize the romanizer with a combined character mapping."""
-        self.all_chars = {}
-        # Combine all character mappings for easy lookup
-        for char_map in [self.VOWELS, self.CONSONANTS, self.VOWEL_MARKS, 
-                         {self.VIRAMA.char: self.VIRAMA}, self.PUNCTUATION]:
-            self.all_chars.update(char_map)
+        all_chars = set()
+        for char_set in [self.VOWELS, self.CONSONANTS, self.VOWEL_MARKS, {self.VIRAMA.char: self.VIRAMA}, self.PUNCTUATION]:
+            for char in char_set:
+                if char in all_chars:
+                    raise ValueError(f"Duplicate character in mappings: {char}")
+                all_chars.add(char)
     
     def is_baybayin(self, text: str) -> bool:
-        """Check if a string contains any Baybayin characters."""
-        if not text:
-            return False
-        # Check for characters in the Baybayin Unicode block (U+1700 to U+171F)
         return any(0x1700 <= ord(c) <= 0x171F for c in text)
     
     def get_char_info(self, char: str) -> Optional[BaybayinChar]:
-        """Get character information for a Baybayin character."""
-        return self.all_chars.get(char)
+        if char in self.VOWELS:
+            return self.VOWELS[char]
+        if char in self.CONSONANTS:
+            return self.CONSONANTS[char]
+        if char in self.VOWEL_MARKS:
+            return self.VOWEL_MARKS[char]
+        if char == self.VIRAMA.char:
+            return self.VIRAMA
+        if char in self.PUNCTUATION:
+            return self.PUNCTUATION[char]
+        return None
     
     def process_syllable(self, chars: List[str]) -> Tuple[str, int]:
-        """
-        Process a Baybayin syllable and return its romanized form.
-        
-        Args:
-            chars: List of characters in the potential syllable
-            
-        Returns:
-            (romanized_syllable, number_of_characters_consumed)
-        """
         if not chars:
             return '', 0
-        
-        # Get information about the first character
         first_char = self.get_char_info(chars[0])
         if not first_char:
-            # Not a recognized Baybayin character
-            return chars[0], 1
-        
+            return '', 1
         if first_char.char_type == BaybayinCharType.VOWEL:
-            # Simple vowel
             return first_char.default_sound, 1
-            
-        elif first_char.char_type == BaybayinCharType.CONSONANT:
-            # Start with default consonant sound (with 'a' vowel)
+        if first_char.char_type == BaybayinCharType.CONSONANT:
             result = first_char.default_sound
             pos = 1
-            
-            # Check for vowel marks or virama (vowel killer)
             if pos < len(chars):
                 next_char = self.get_char_info(chars[pos])
-                if next_char:
-                    if next_char.char_type == BaybayinCharType.VOWEL_MARK:
-                        # Replace default 'a' vowel with the marked vowel
-                        result = result[:-1] + next_char.default_sound
-                        pos += 1
-                    elif next_char.char_type == BaybayinCharType.VIRAMA:
-                        # Remove the default 'a' vowel (final consonant)
-                        result = result[:-1]
-                        pos += 1
-            
+                if next_char and next_char.char_type == BaybayinCharType.VOWEL_MARK:
+                    result = result[:-1] + next_char.default_sound
+                    pos += 1
+                elif next_char and next_char.char_type == BaybayinCharType.VIRAMA:
+                    result = result[:-1]
+                    pos += 1
             return result, pos
-            
-        elif first_char.char_type == BaybayinCharType.PUNCTUATION:
-            # Baybayin punctuation
-            return first_char.default_sound, 1
-            
-        # For unhandled cases (shouldn't normally happen)
         return '', 1
     
     def romanize(self, text: str) -> str:
@@ -1538,95 +1511,72 @@ class BaybayinRomanizer:
         Convert Baybayin text to its romanized form.
         
         Args:
-            text: The Baybayin text to romanize
+            text (str): The Baybayin text to romanize
             
         Returns:
-            The romanized text, or original text if romanization failed
+            str: The romanized text, or original text if romanization failed
         """
         if not text:
             return ""
-        
-        # Normalize Unicode for consistent character handling
+            
+        # Normalize Unicode to ensure consistent handling
         text = unicodedata.normalize('NFC', text)
         
         result = []
         i = 0
         
-        while i < len(text):
-            # Skip spaces and non-Baybayin characters
-            if text[i].isspace() or not self.is_baybayin(text[i]):
-                result.append(text[i])
-                i += 1
-                continue
-                
-            # Process a syllable
-            try:
-                processed_syllable, chars_consumed = self.process_syllable(list(text[i:]))
+        try:
+            while i < len(text):
+                # Skip non-Baybayin characters
+                if not self.is_baybayin(text[i]):
+                    result.append(text[i])
+                    i += 1
+                    continue
+                    
+                # Process syllables
+                processed_syllable, chars_consumed = self.process_syllable(list(text[i:i+3]))
                 
                 if processed_syllable:
                     result.append(processed_syllable)
                     i += chars_consumed
                 else:
-                    # Handle unrecognized characters
-                    result.append(text[i])
+                    # Fallback for unrecognized characters
+                    logger.warning(f"Unrecognized Baybayin character sequence starting at position {i}: {text[i:i+3]}")
+                    result.append('?')
                     i += 1
-            except Exception as e:
-                logger.error(f"Error during Baybayin romanization at position {i}: {e}")
-                # Skip problematic character
-                i += 1
-                
-        return ''.join(result)
+                    
+            return ''.join(result)
+            
+        except Exception as e:
+            logger.error(f"Error during Baybayin romanization: {e}")
+            # Return original text with warning marker if romanization fails
+            return f"{text} [ROMANIZATION_ERROR]"
 
     def validate_text(self, text: str) -> bool:
-        """
-        Validate that a string contains valid Baybayin text.
-        
-        Args:
-            text: The text to validate
-            
-        Returns:
-            True if the text is valid Baybayin, False otherwise
-        """
         if not text:
             return False
-            
-        # Normalize Unicode
-        text = unicodedata.normalize('NFC', text)
         chars = list(text)
         i = 0
-        
         while i < len(chars):
-            # Skip spaces
             if chars[i].isspace():
                 i += 1
                 continue
-                
-            # Get character info
             char_info = self.get_char_info(chars[i])
-            
-            # Not a valid Baybayin character
             if not char_info:
-                if 0x1700 <= ord(chars[i]) <= 0x171F:
-                    # It's in the Baybayin Unicode range but not recognized
-                    logger.warning(f"Unrecognized Baybayin character at position {i}: {chars[i]} (U+{ord(chars[i]):04X})")
                 return False
-                
-            # Vowel mark must follow a consonant
-            if char_info.char_type == BaybayinCharType.VOWEL_MARK:
-                if i == 0 or not self.get_char_info(chars[i-1]) or self.get_char_info(chars[i-1]).char_type != BaybayinCharType.CONSONANT:
-                    logger.warning(f"Vowel mark not following a consonant at position {i}")
-                    return False
-                    
-            # Virama (vowel killer) must follow a consonant
-            if char_info.char_type == BaybayinCharType.VIRAMA:
-                if i == 0 or not self.get_char_info(chars[i-1]) or self.get_char_info(chars[i-1]).char_type != BaybayinCharType.CONSONANT:
-                    logger.warning(f"Virama not following a consonant at position {i}")
-                    return False
-                    
+            if char_info.char_type == BaybayinCharType.VOWEL_MARK and (
+                i == 0 or not self.get_char_info(chars[i-1]) or 
+                self.get_char_info(chars[i-1]).char_type != BaybayinCharType.CONSONANT
+            ):
+                return False
+            if char_info.char_type == BaybayinCharType.VIRAMA and (
+                i == 0 or not self.get_char_info(chars[i-1]) or 
+                self.get_char_info(chars[i-1]).char_type != BaybayinCharType.CONSONANT
+            ):
+                return False
             i += 1
-            
         return True
-    
+
 def process_baybayin_text(text: str) -> Tuple[str, Optional[str], bool]:
     if not text:
         return text, None, False
@@ -1656,37 +1606,26 @@ def transliterate_to_baybayin(text: str) -> str:
     Transliterate Latin text to Baybayin script.
     Handles all Filipino vowels (a, e, i, o, u) and consonants,
     including final consonants with virama.
-    
-    Args:
-        text: Latin text to convert to Baybayin
-        
-    Returns:
-        Baybayin text
     """
     if not text:
         return ""
-    
-    # Handle prefix starting with '-' (like '-an')
-    if text.startswith('-'):
-        # Skip the hyphen and process the rest
-        text = text[1:]
-    
+        
     # Normalize text: lowercase and remove diacritical marks
     text = text.lower().strip()
     text = ''.join(c for c in unicodedata.normalize('NFD', text) 
-                   if not unicodedata.combining(c))
+                  if not unicodedata.combining(c))
     
     # Define Baybayin character mappings
     consonants = {
         'k': 'ᜃ', 'g': 'ᜄ', 'ng': 'ᜅ', 't': 'ᜆ', 'd': 'ᜇ', 'n': 'ᜈ',
         'p': 'ᜉ', 'b': 'ᜊ', 'm': 'ᜋ', 'y': 'ᜌ', 'l': 'ᜎ', 'w': 'ᜏ',
-        's': 'ᜐ', 'h': 'ᜑ', 'r': 'ᜍ'  # Added 'r' mapping
+        's': 'ᜐ', 'h': 'ᜑ'
     }
     vowels = {'a': 'ᜀ', 'i': 'ᜁ', 'e': 'ᜁ', 'u': 'ᜂ', 'o': 'ᜂ'}
     vowel_marks = {'i': 'ᜒ', 'e': 'ᜒ', 'u': 'ᜓ', 'o': 'ᜓ'}
-    virama = '᜔'  # Pamudpod (vowel killer)
     
-    result = []
+    # Process text by analyzing patterns
+    result = ""
     i = 0
     
     while i < len(text):
@@ -1695,52 +1634,36 @@ def transliterate_to_baybayin(text: str) -> str:
             if i + 2 < len(text) and text[i+2] in 'aeiou':
                 # ng + vowel
                 if text[i+2] == 'a':
-                    result.append(consonants['ng'])
+                    result += consonants['ng']
                 else:
-                    result.append(consonants['ng'] + vowel_marks[text[i+2]])
+                    result += consonants['ng'] + vowel_marks[text[i+2]]
                 i += 3
             else:
                 # Final 'ng'
-                result.append(consonants['ng'] + virama)
+                result += consonants['ng'] + '᜔'  # Add virama
                 i += 2
-                
         # Handle single consonants
-        elif text[i] in consonants:
+        elif text[i] in 'kgtdnpbmylswh':
             if i + 1 < len(text) and text[i+1] in 'aeiou':
                 # Consonant + vowel
                 if text[i+1] == 'a':
-                    result.append(consonants[text[i]])
+                    result += consonants[text[i]]
                 else:
-                    result.append(consonants[text[i]] + vowel_marks[text[i+1]])
+                    result += consonants[text[i]] + vowel_marks[text[i+1]]
                 i += 2
             else:
                 # Final consonant
-                result.append(consonants[text[i]] + virama)
+                result += consonants[text[i]] + '᜔'  # Add virama
                 i += 1
-                
         # Handle vowels
         elif text[i] in 'aeiou':
-            result.append(vowels[text[i]])
+            result += vowels[text[i]]
             i += 1
-            
-        # Skip spaces and other characters
-        elif text[i].isspace():
-            result.append(' ')
-            i += 1
+        # Skip other characters
         else:
-            # Skip non-convertible characters
             i += 1
     
-    # Final validation - ensure only valid characters are included
-    valid_output = ''.join(c for c in result if (0x1700 <= ord(c) <= 0x171F) or c.isspace())
-    
-    # Verify the output meets database constraints
-    if not re.match(r'^[\u1700-\u171F\s]*$', valid_output):
-        logger.warning(f"Transliterated Baybayin doesn't match required regex pattern: {valid_output}")
-        # Additional cleanup to ensure it matches the pattern
-        valid_output = re.sub(r'[^\u1700-\u171F\s]', '', valid_output)
-    
-    return valid_output
+    return result
 
 @with_transaction(commit=False)
 def verify_baybayin_data(cur):
@@ -1809,53 +1732,9 @@ def merge_baybayin_entries(cur, baybayin_id: int, romanized_id: int):
         logger.error(f"Error merging Baybayin entries: {str(e)}")
         raise
 
-def clean_baybayin_text(text: str) -> str:
-    """
-    Clean Baybayin text by removing non-Baybayin characters.
-    
-    Args:
-        text: Text that may contain Baybayin and other characters
-        
-    Returns:
-        Cleaned text with only valid Baybayin characters and spaces
-    """
-    if not text:
-        return ""
-    
-    # Keep only characters in the Baybayin Unicode range (U+1700 to U+171F) and spaces
-    cleaned = ''.join(c for c in text if (0x1700 <= ord(c) <= 0x171F) or c.isspace())
-    
-    # Normalize whitespace and trim
-    return re.sub(r'\s+', ' ', cleaned).strip()
-
 def extract_baybayin_text(text: str) -> List[str]:
-    """
-    Extract Baybayin text segments from a string.
-    
-    Args:
-        text: Text that may contain Baybayin
-        
-    Returns:
-        List of Baybayin segments
-    """
-    if not text:
-        return []
-    
-    # Split by non-Baybayin characters
-    parts = re.split(r'[^\u1700-\u171F\s]+', text)
-    results = []
-    
-    for part in parts:
-        # Clean and normalize
-        cleaned_part = clean_baybayin_text(part)
-        
-        # Make sure part contains at least one Baybayin character
-        if cleaned_part and any(0x1700 <= ord(c) <= 0x171F for c in cleaned_part):
-            # Verify it meets database constraints
-            if re.match(r'^[\u1700-\u171F\s]*$', cleaned_part):
-                results.append(cleaned_part)
-                
-    return results
+    parts = re.split(r'[^ᜀ-᜔\s]+', text)
+    return [part.strip() for part in parts if part.strip() and re.search(r'[\u1700-\u171F]', part)]
 
 def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = None) -> bool:
     """
@@ -1872,40 +1751,37 @@ def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = 
         return False
         
     try:
-        # Clean and validate the form
-        cleaned_form = clean_baybayin_text(baybayin_form)
-        if not cleaned_form:
-            logger.warning(f"No valid Baybayin characters found in: {baybayin_form}")
-            return False
-        
-        # Check against the database regex constraint
-        if not re.match(r'^[\u1700-\u171F\s]*$', cleaned_form):
-            logger.warning(f"Baybayin form doesn't match required regex pattern: {cleaned_form}")
-            return False
-            
-        # Create a romanizer to validate structure
         romanizer = BaybayinRomanizer()
-        if not romanizer.validate_text(cleaned_form):
-            logger.warning(f"Invalid Baybayin structure in: {cleaned_form}")
+        
+        # Split into parts that might contain Baybayin
+        parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_form)
+        valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
+        
+        if not valid_parts:
             return False
             
-        # If romanized form is provided, check if it matches our romanization
-        if romanized_form:
-            try:
-                generated_rom = romanizer.romanize(cleaned_form)
-                # Compare normalized versions to avoid case and diacritic issues
-                if normalize_lemma(generated_rom) == normalize_lemma(romanized_form):
-                    return True
-                else:
-                    logger.warning(f"Romanization mismatch: expected '{romanized_form}', got '{generated_rom}'")
-                    # Still return True if structure is valid but romanization doesn't match
-                    # This allows for different romanization standards
-                    return True
-            except Exception as e:
-                logger.error(f"Error during romanization validation: {e}")
+        # Check that ALL parts are valid Baybayin
+        for part in valid_parts:
+            if not romanizer.validate_text(part):
                 return False
         
-        # If no romanized form to check against, return True if the form is valid
+        # If romanized form is provided, check at least one part matches when romanized
+        if romanized_form:
+            normalized_romanized = normalize_lemma(romanized_form)
+            
+            # Try to match any part's romanization with the provided romanized form
+            for part in valid_parts:
+                try:
+                    generated_rom = romanizer.romanize(part)
+                    if normalize_lemma(generated_rom) == normalized_romanized:
+                        return True
+                except ValueError:
+                    continue
+                    
+            # No match was found between romanizations
+            return False
+        
+        # If no romanized form to check against, and all parts are valid, return True
         return True
         
     except Exception as e:
@@ -1913,58 +1789,31 @@ def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = 
         return False
 
 @with_transaction(commit=True)
-def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form: Optional[str] = None) -> bool:
-    """
-    Process and store Baybayin data for a word.
-    
-    Args:
-        cur: Database cursor
-        word_id: Word ID to update
-        baybayin_form: The Baybayin text
-        romanized_form: Optional romanized form
-        
-    Returns:
-        bool: True if successful, False otherwise
-    """
+def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form: Optional[str] = None) -> None:
+    """Process and store Baybayin data for a word."""
     if not baybayin_form:
-        logger.warning(f"Empty Baybayin form for word_id {word_id}")
-        return False
-        
+        return
     try:
-        # Clean the baybayin form
-        cleaned_baybayin = clean_baybayin_text(baybayin_form)
-        
-        if not cleaned_baybayin:
-            logger.warning(f"No valid Baybayin characters found in: {baybayin_form} for word_id {word_id}")
-            return False
-        
-        # Verify it meets database constraints
-        if not re.match(r'^[\u1700-\u171F\s]*$', cleaned_baybayin):
-            logger.warning(f"Baybayin form doesn't match required regex pattern: {cleaned_baybayin}")
-            return False
-            
-        # Create a romanizer to validate structure
         romanizer = BaybayinRomanizer()
-        if not romanizer.validate_text(cleaned_baybayin):
-            logger.warning(f"Invalid Baybayin structure in: {cleaned_baybayin} for word_id {word_id}")
-            return False
-            
-        # Generate romanization if not provided
-        if not romanized_form:
-            try:
-                romanized_form = romanizer.romanize(cleaned_baybayin)
-            except Exception as e:
-                logger.error(f"Error generating romanization for word_id {word_id}: {e}")
-                # Try to continue with the process even if romanization fails
-                romanized_form = None
-        
-        # Verify the word exists before updating
-        cur.execute("SELECT 1 FROM words WHERE id = %s", (word_id,))
-        if not cur.fetchone():
-            logger.warning(f"Word ID {word_id} does not exist in the database")
-            return False
-        
-        # Update the word record
+        if not validate_baybayin_entry(baybayin_form, romanized_form):
+            logger.warning(f"Invalid Baybayin form for word_id {word_id}: {baybayin_form}")
+            return
+        parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_form)
+        valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
+        if not valid_parts:
+            return
+        cleaned_baybayin = None
+        romanized_value = None
+        for part in sorted(valid_parts, key=len, reverse=True):
+            if romanizer.validate_text(part):
+                try:
+                    romanized_value = romanizer.romanize(part)
+                    cleaned_baybayin = part
+                    break
+                except ValueError:
+                    continue
+        if not cleaned_baybayin:
+            return
         cur.execute("""
             UPDATE words 
             SET has_baybayin = TRUE,
@@ -1972,166 +1821,79 @@ def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form:
                 romanized_form = %s,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (cleaned_baybayin, romanized_form, word_id))
-        
-        return True
-        
+        """, (cleaned_baybayin, romanized_value, word_id))
     except Exception as e:
-        logger.error(f"Error processing Baybayin data for word_id {word_id}: {e}")
+        logger.error(f"Error processing Baybayin data for word_id {word_id}: {str(e)}")
         raise
 
 @with_transaction(commit=True)
 def process_baybayin_entries(cur):
     """Process all Baybayin entries in the database."""
     logger.info("Processing Baybayin entries...")
-    
-    try:
-        # Create a new BaybayinRomanizer instance
-        romanizer = BaybayinRomanizer()
-        
-        # Get all entries that contain Baybayin characters
-        cur.execute("""
-            SELECT id, lemma, language_code
-            FROM words 
-            WHERE lemma ~ '[\u1700-\u171F]'
-            OR baybayin_form IS NOT NULL
-            ORDER BY id ASC
-        """)
-        
-        baybayin_entries = cur.fetchall()
-        processed_count = 0
-        error_count = 0
-        skipped_count = 0
-        
-        logger.info(f"Found {len(baybayin_entries)} potential Baybayin entries to process")
-        
-        for entry in baybayin_entries:
-            baybayin_id, baybayin_lemma, language_code = entry
-            
-            try:
-                # Step 1: Extract Baybayin segments from the lemma
-                baybayin_segments = extract_baybayin_text(baybayin_lemma)
-                
-                # Step 2: Check if entry already has a valid Baybayin form
-                cur.execute("SELECT baybayin_form, romanized_form FROM words WHERE id = %s", (baybayin_id,))
-                existing_forms = cur.fetchone()
-                existing_baybayin = existing_forms[0] if existing_forms else None
-                existing_romanized = existing_forms[1] if existing_forms else None
-                
-                # Step 3: Process based on available data
-                if not baybayin_segments and existing_baybayin:
-                    # No new segments but has existing form - validate it
-                    cleaned_existing = clean_baybayin_text(existing_baybayin)
-                    
-                    if cleaned_existing and re.match(r'^[\u1700-\u171F\s]*$', cleaned_existing):
-                        # Generate romanization if missing
-                        if not existing_romanized:
-                            try:
-                                romanized = romanizer.romanize(cleaned_existing)
-                                cur.execute("""
-                                    UPDATE words
-                                    SET baybayin_form = %s,
-                                        romanized_form = %s
-                                    WHERE id = %s
-                                """, (cleaned_existing, romanized, baybayin_id))
-                                processed_count += 1
-                            except Exception as e:
-                                logger.error(f"Error updating romanization for word ID {baybayin_id}: {e}")
-                                error_count += 1
-                    else:
-                        # Invalid existing form - clear it
-                        cur.execute("""
-                            UPDATE words
-                            SET has_baybayin = FALSE,
-                                baybayin_form = NULL,
-                                romanized_form = NULL
-                            WHERE id = %s
-                        """, (baybayin_id,))
-                        skipped_count += 1
-                        logger.warning(f"Removed invalid Baybayin form for word ID {baybayin_id}")
-                
-                elif baybayin_segments:
-                    # Found new segments - use the longest valid one
-                    valid_segments = []
-                    for segment in baybayin_segments:
-                        try:
-                            romanized = romanizer.romanize(segment)
-                            valid_segments.append((segment, romanized))
-                        except Exception as e:
-                            logger.warning(f"Error romanizing segment '{segment}' for word ID {baybayin_id}: {e}")
-                    
-                    if valid_segments:
-                        # Sort by length to get the longest valid segment
-                        valid_segments.sort(key=lambda x: len(x[0]), reverse=True)
-                        cleaned_baybayin, romanized_value = valid_segments[0]
-                        
-                        # Update the record
-                        cur.execute("""
-                            UPDATE words 
-                            SET has_baybayin = TRUE,
-                                baybayin_form = %s,
-                                romanized_form = %s,
-                                updated_at = CURRENT_TIMESTAMP
-                            WHERE id = %s
-                        """, (cleaned_baybayin, romanized_value, baybayin_id))
-                        
-                        processed_count += 1
-                    else:
-                        # No valid segments found
-                        logger.warning(f"No valid Baybayin segments in entry {baybayin_id}: {baybayin_lemma}")
-                        cur.execute("""
-                            UPDATE words
-                            SET has_baybayin = FALSE,
-                                baybayin_form = NULL,
-                                romanized_form = NULL
-                            WHERE id = %s
-                        """, (baybayin_id,))
-                        skipped_count += 1
-                else:
-                    # No Baybayin data found - mark as not having Baybayin
-                    cur.execute("""
-                        UPDATE words
-                        SET has_baybayin = FALSE,
-                            baybayin_form = NULL,
-                            romanized_form = NULL
-                        WHERE id = %s
-                    """, (baybayin_id,))
-                    skipped_count += 1
-                
-                # Commit every 100 entries to avoid long-running transactions
-                if (processed_count + skipped_count + error_count) % 100 == 0:
-                    logger.info(f"Progress: {processed_count} processed, {skipped_count} skipped, {error_count} errors")
-                
-            except Exception as e:
-                logger.error(f"Error processing Baybayin entry {baybayin_id}: {str(e)}")
-                error_count += 1
-        
-        logger.info(f"Processed {processed_count} Baybayin entries, skipped {skipped_count}, with {error_count} errors")
-        return processed_count, error_count
-    
-    except Exception as e:
-        logger.error(f"Error in process_baybayin_entries: {str(e)}")
-        return 0, 0
+    cur.execute("""
+        SELECT id, lemma, language_code, normalized_lemma 
+        FROM words 
+        WHERE lemma ~ '[\u1700-\u171F]'
+        ORDER BY id ASC
+    """)
+    baybayin_entries = cur.fetchall()
+    conn = cur.connection
+    for baybayin_id, baybayin_lemma, language_code, _ in baybayin_entries:
+        try:
+            cur.execute("BEGIN")
+            parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_lemma)
+            valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
+            if not valid_parts:
+                logger.warning(f"No valid Baybayin segments found for entry {baybayin_id}: {baybayin_lemma}")
+                conn.commit()
+                continue
+            romanizer = BaybayinRomanizer()
+            cleaned_baybayin = None
+            romanized = None
+            for part in sorted(valid_parts, key=len, reverse=True):
+                if romanizer.validate_text(part):
+                    try:
+                        romanized = romanizer.romanize(part)
+                        cleaned_baybayin = part
+                        break
+                    except ValueError:
+                        continue
+            if not cleaned_baybayin or not romanized:
+                logger.warning(f"Could not process any Baybayin segments for entry {baybayin_id}")
+                conn.commit()
+                continue
+            logger.info(f"Updating Baybayin entry (ID: {baybayin_id}) with cleaned form")
+            cur.execute("""
+                UPDATE words 
+                SET romanized_form = %s,
+                    baybayin_form = %s,
+                    has_baybayin = TRUE,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = %s
+            """, (romanized, cleaned_baybayin, baybayin_id))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            logger.error(f"Error processing Baybayin entry {baybayin_id}: {str(e)}")
+            continue
 
 @with_transaction(commit=True)
 def cleanup_baybayin_data(cur):
     """Clean up Baybayin data in the database."""
     try:
-        logger.info("Starting Baybayin data cleanup...")
-        
-        # Step 1: Fix the baybayin_form field to comply with constraints
+        # Clean Baybayin form field by removing non-Baybayin characters
         cur.execute(r"""
             UPDATE words 
             SET baybayin_form = regexp_replace(
                 baybayin_form,
-                '[^\u1700-\u171F\s]',
+                '[^ᜀ-᜔\s]',
                 '',
                 'g'
             )
             WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL
         """)
         
-        # Step 2: Normalize whitespace in Baybayin form
+        # Normalize whitespace in Baybayin form
         cur.execute(r"""
             UPDATE words 
             SET baybayin_form = regexp_replace(
@@ -2143,56 +1905,21 @@ def cleanup_baybayin_data(cur):
             WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL
         """)
         
-        # Step 3: Remove has_baybayin flag if baybayin_form is empty or invalid
+        # Fix inconsistent flag states - remove has_baybayin if empty baybayin_form
         cur.execute("""
             UPDATE words
             SET has_baybayin = FALSE, baybayin_form = NULL
-            WHERE has_baybayin = TRUE AND (
-                baybayin_form IS NULL OR 
-                baybayin_form = '' OR 
-                baybayin_form !~ '[\u1700-\u171F]'
-            )
+            WHERE has_baybayin = TRUE AND (baybayin_form IS NULL OR baybayin_form = '' OR baybayin_form !~ '[\u1700-\u171F]')
         """)
         
-        # Step 4: Remove baybayin_form if has_baybayin is false
+        # Fix inconsistent flag states - remove baybayin_form if has_baybayin is false
         cur.execute("""
             UPDATE words
-            SET baybayin_form = NULL, romanized_form = NULL
+            SET baybayin_form = NULL
             WHERE has_baybayin = FALSE AND baybayin_form IS NOT NULL
         """)
         
-        # Step 5: Generate missing romanized forms
-        cur.execute("""
-            SELECT id, baybayin_form 
-            FROM words 
-            WHERE has_baybayin = TRUE 
-              AND baybayin_form IS NOT NULL 
-              AND baybayin_form ~ '[\u1700-\u171F]'
-              AND (romanized_form IS NULL OR romanized_form = '')
-        """)
-        
-        romanizer = BaybayinRomanizer()
-        missing_romanization_count = 0
-        
-        for word_id, baybayin_form in cur.fetchall():
-            try:
-                # Clean the form first
-                cleaned_form = clean_baybayin_text(baybayin_form)
-                
-                if cleaned_form and romanizer.validate_text(cleaned_form):
-                    romanized = romanizer.romanize(cleaned_form)
-                    if romanized:
-                        cur.execute("""
-                            UPDATE words 
-                            SET romanized_form = %s,
-                                baybayin_form = %s
-                            WHERE id = %s
-                        """, (romanized, cleaned_form, word_id))
-                        missing_romanization_count += 1
-            except Exception as e:
-                logger.warning(f"Error generating romanization for word ID {word_id}: {e}")
-        
-        # Step 6: Update search text to include Baybayin data for improved search
+        # Update search text to include Baybayin data for improved search
         cur.execute("""
             UPDATE words
             SET search_text = to_tsvector('simple',
@@ -2204,250 +1931,70 @@ def cleanup_baybayin_data(cur):
             WHERE has_baybayin = TRUE OR baybayin_form IS NOT NULL OR romanized_form IS NOT NULL
         """)
         
-        # Log results
-        cur.execute("SELECT COUNT(*) FROM words WHERE has_baybayin = TRUE")
-        baybayin_count = cur.fetchone()[0]
+        # Handle duplicate Baybayin forms - keep only one entry per language
+        cur.execute("""
+            WITH DuplicateBaybayin AS (
+                SELECT MIN(id) as keep_id,
+                       language_code,
+                       baybayin_form
+                FROM words
+                WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL
+                GROUP BY language_code, baybayin_form
+                HAVING COUNT(*) > 1
+            )
+            UPDATE words w
+            SET has_baybayin = FALSE,
+                baybayin_form = NULL
+            FROM DuplicateBaybayin d
+            WHERE w.language_code = d.language_code 
+              AND w.baybayin_form = d.baybayin_form 
+              AND w.id != d.keep_id
+        """)
         
-        logger.info(f"Baybayin data cleanup completed: {baybayin_count} valid Baybayin entries remain")
-        logger.info(f"Generated {missing_romanization_count} missing romanizations")
-        
+        logger.info("Baybayin data cleanup completed successfully")
         return True
         
     except Exception as e:
         logger.error(f"Error during Baybayin cleanup: {str(e)}")
         raise
-
+    
 @with_transaction(commit=False)
 def check_baybayin_consistency(cur):
     """Check for consistency issues in Baybayin data."""
     issues = []
-    
-    # Check for entries marked as Baybayin but missing romanization
     cur.execute("""
-        SELECT COUNT(*)
+        SELECT id, lemma
         FROM words
-        WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL AND romanized_form IS NULL
+        WHERE has_baybayin = TRUE AND romanized_form IS NULL
     """)
-    missing_rom_count = cur.fetchone()[0]
-    
-    if missing_rom_count > 0:
-        issues.append(f"Found {missing_rom_count} entries missing romanization")
-        
-        # Sample some problematic entries for the log
-        cur.execute("""
-            SELECT id, lemma, baybayin_form
-            FROM words
-            WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL AND romanized_form IS NULL
-            LIMIT 5
-        """)
-        
-        for word_id, lemma, baybayin in cur.fetchall():
-            logger.warning(f"Missing romanization for word ID {word_id}: {lemma} / {baybayin}")
-    
-    # Check for inconsistent flag states
+    missing_rom = cur.fetchall()
+    if missing_rom:
+        issues.append(f"Found {len(missing_rom)} entries missing romanization")
+        for word_id, lemma in missing_rom:
+            logger.warning(f"Missing romanization for word ID {word_id}: {lemma}")
     cur.execute("""
-        SELECT COUNT(*)
+        SELECT id, lemma
         FROM words
         WHERE (has_baybayin = TRUE AND baybayin_form IS NULL)
            OR (has_baybayin = FALSE AND baybayin_form IS NOT NULL)
     """)
-    inconsistent_count = cur.fetchone()[0]
-    
-    if inconsistent_count > 0:
-        issues.append(f"Found {inconsistent_count} entries with inconsistent Baybayin flags")
-        
-        # Sample some inconsistent entries
-        cur.execute("""
-            SELECT id, lemma, has_baybayin, baybayin_form
-            FROM words
-            WHERE (has_baybayin = TRUE AND baybayin_form IS NULL)
-               OR (has_baybayin = FALSE AND baybayin_form IS NOT NULL)
-            LIMIT 5
-        """)
-        
-        for word_id, lemma, has_flag, baybayin in cur.fetchall():
-            state = "marked as Baybayin but missing form" if has_flag else "has Baybayin form but not flagged"
-            logger.warning(f"Inconsistent Baybayin flags for word ID {word_id}: {lemma} ({state})")
-    
-    # Check for invalid characters in Baybayin form
+    inconsistent = cur.fetchall()
+    if inconsistent:
+        issues.append(f"Found {len(inconsistent)} entries with inconsistent Baybayin flags")
+        for word_id, lemma in inconsistent:
+            logger.warning(f"Inconsistent Baybayin flags for word ID {word_id}: {lemma}")
     cur.execute(r"""
-        SELECT COUNT(*)
+        SELECT id, lemma, baybayin_form
         FROM words
-        WHERE baybayin_form IS NOT NULL AND baybayin_form ~ '[^\u1700-\u171F\s]'
+        WHERE baybayin_form ~ '[^ᜀ-᜔\s]'
     """)
-    invalid_chars_count = cur.fetchone()[0]
-    
-    if invalid_chars_count > 0:
-        issues.append(f"Found {invalid_chars_count} entries with invalid Baybayin characters")
-        
-        # Sample some entries with invalid characters
-        cur.execute(r"""
-            SELECT id, lemma, baybayin_form
-            FROM words
-            WHERE baybayin_form IS NOT NULL AND baybayin_form ~ '[^\u1700-\u171F\s]'
-            LIMIT 5
-        """)
-        
-        for word_id, lemma, baybayin in cur.fetchall():
-            logger.warning(f"Invalid Baybayin characters in word ID {word_id}: {lemma} / {baybayin}")
-    
-    # Check for entries with Baybayin in the lemma field but not in baybayin_form
-    cur.execute(r"""
-        SELECT COUNT(*)
-        FROM words
-        WHERE lemma ~ '[\u1700-\u171F]' AND (baybayin_form IS NULL OR NOT has_baybayin)
-    """)
-    missing_baybayin_count = cur.fetchone()[0]
-    
-    if missing_baybayin_count > 0:
-        issues.append(f"Found {missing_baybayin_count} entries with Baybayin characters in lemma but not processed")
-    
-    return issues if issues else []
+    invalid_chars = cur.fetchall()
+    if invalid_chars:
+        issues.append(f"Found {len(invalid_chars)} entries with invalid Baybayin characters")
+        for word_id, lemma, baybayin in invalid_chars:
+            logger.warning(f"Invalid Baybayin characters in word ID {word_id}: {lemma}")
+    return issues
 
-@with_transaction(commit=True)
-def regenerate_all_romanizations(cur):
-    """Regenerate romanized forms for all Baybayin entries."""
-    regenerated_count = 0
-    error_count = 0
-    
-    try:
-        romanizer = BaybayinRomanizer()
-        
-        # Get all entries with Baybayin forms
-        cur.execute("""
-            SELECT id, baybayin_form
-            FROM words
-            WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL AND baybayin_form ~ '[\u1700-\u171F]'
-        """)
-        
-        entries = cur.fetchall()
-        
-        logger.info(f"Regenerating romanizations for {len(entries)} Baybayin entries")
-        
-        for word_id, baybayin_form in entries:
-            try:
-                # Clean the form
-                cleaned_form = clean_baybayin_text(baybayin_form)
-                
-                if cleaned_form and re.match(r'^[\u1700-\u171F\s]*$', cleaned_form):
-                    # Generate romanization
-                    romanized = romanizer.romanize(cleaned_form)
-                    
-                    # Update the entry
-                    cur.execute("""
-                        UPDATE words
-                        SET romanized_form = %s,
-                            baybayin_form = %s
-                        WHERE id = %s
-                    """, (romanized, cleaned_form, word_id))
-                    
-                    regenerated_count += 1
-                    
-                    # Log progress every 100 entries
-                    if regenerated_count % 100 == 0:
-                        logger.info(f"Regenerated {regenerated_count}/{len(entries)} romanizations")
-            except Exception as e:
-                logger.error(f"Error regenerating romanization for word ID {word_id}: {e}")
-                error_count += 1
-        
-        logger.info(f"Romanization regeneration complete: {regenerated_count} updated, {error_count} errors")
-        
-    except Exception as e:
-        logger.error(f"Error in regenerate_all_romanizations: {e}")
-        return 0, 0
-        
-    finally:
-        # This will always execute, even if there's an exception
-        logger.info(f"Romanization regeneration finished - processed {regenerated_count + error_count} entries")
-        
-    return regenerated_count, error_count
-
-@with_transaction(commit=True)
-def fix_baybayin_constraint_violations(cur):
-    """Fix Baybayin entries that violate the database constraint."""
-    fixed_count = 0
-    
-    try:
-        # Identify entries that would violate the constraint
-        cur.execute(r"""
-            SELECT id, lemma, baybayin_form
-            FROM words
-            WHERE baybayin_form IS NOT NULL AND baybayin_form !~ '^[\u1700-\u171F\s]*$'
-        """)
-        
-        violations = cur.fetchall()
-        
-        logger.info(f"Found {len(violations)} entries violating Baybayin regex constraint")
-        
-        for word_id, lemma, baybayin_form in violations:
-            # Clean the form
-            cleaned_form = clean_baybayin_text(baybayin_form)
-            
-            if cleaned_form and re.match(r'^[\u1700-\u171F\s]*$', cleaned_form):
-                # We can fix this entry
-                cur.execute("""
-                    UPDATE words
-                    SET baybayin_form = %s
-                    WHERE id = %s
-                """, (cleaned_form, word_id))
-                fixed_count += 1
-            else:
-                # Cannot fix, remove Baybayin data
-                cur.execute("""
-                    UPDATE words
-                    SET has_baybayin = FALSE,
-                        baybayin_form = NULL,
-                        romanized_form = NULL
-                    WHERE id = %s
-                """, (word_id,))
-                logger.warning(f"Removed invalid Baybayin form for word ID {word_id}: {lemma}")
-        
-        logger.info(f"Fixed {fixed_count} Baybayin constraint violations")
-        
-    except Exception as e:
-        logger.error(f"Error fixing Baybayin constraint violations: {e}")
-        return 0
-        
-    finally:
-        logger.info(f"Completed Baybayin constraint violation check")
-        
-    return fixed_count
-
-# Main function to run comprehensive Baybayin data repair
-def repair_baybayin_data():
-    """Run a comprehensive Baybayin data repair process."""
-    try:
-        with get_connection() as conn:
-            with conn.cursor() as cur:
-                logger.info("Starting comprehensive Baybayin data repair...")
-                
-                # Step 1: Fix constraint violations
-                fixed_count = fix_baybayin_constraint_violations(cur)
-                logger.info(f"Fixed {fixed_count} constraint violations")
-                
-                # Step 2: Clean up data
-                cleanup_baybayin_data(cur)
-                
-                # Step 3: Regenerate romanizations
-                regen_count, regen_errors = regenerate_all_romanizations(cur)
-                logger.info(f"Regenerated {regen_count} romanizations with {regen_errors} errors")
-                
-                # Step 4: Process entries with Baybayin in lemma
-                processed_count, error_count = process_baybayin_entries(cur)
-                logger.info(f"Processed {processed_count} entries with {error_count} errors")
-                
-                # Step 5: Verify consistency
-                issues = check_baybayin_consistency(cur)
-                if issues:
-                    logger.warning(f"Remaining issues: {', '.join(issues)}")
-                else:
-                    logger.info("No issues found after repair")
-                
-                logger.info("Baybayin data repair completed successfully")
-                return True
-    except Exception as e:
-        logger.error(f"Error in Baybayin data repair: {e}")
-        return False
 # -------------------------------------------------------------------
 # Word Insertion and Update Functions
 # -------------------------------------------------------------------
@@ -6126,16 +5673,7 @@ def process_marayum_json(cur, filename: str):
 
         # Extract dictionary metadata
         dict_info = data.get("dictionary_info", {})
-        
-        # Improved language code handling
-        raw_language_code = dict_info.get("base_language", "tl")
-        # Normalize complex language codes (handle Bikol-Boie'nen format)
-        if len(raw_language_code) > 3 or "-" in raw_language_code or "'" in raw_language_code:
-            # Create a simplified language code
-            language_code = raw_language_code.split('-')[0].lower()[:3]
-            logger.info(f"Normalized complex language code '{raw_language_code}' to '{language_code}'")
-        else:
-            language_code = raw_language_code
+        language_code = dict_info.get("base_language", "tl")
         
         # Normalize source name
         source = SourceStandardization.standardize_sources(os.path.basename(filename))
@@ -6178,11 +5716,7 @@ def process_marayum_json(cur, filename: str):
                 try:
                     # Extract metadata exactly as in your JSON structure
                     pos = entry.get("pos", "")
-                    
-                    # Clean pronunciation (remove brackets)
-                    raw_pronunciation = entry.get("pronunciation", "")
-                    pronunciation = raw_pronunciation.strip('[]') if raw_pronunciation else ""
-                    
+                    pronunciation = entry.get("pronunciation", "")
                     etymology = entry.get("etymology", "")
                     credits = entry.get("credits", "")
                     comment = entry.get("comment", "")
@@ -6197,8 +5731,6 @@ def process_marayum_json(cur, filename: str):
                         tags.append(f"dialect:{dialect}")
                     if is_core:
                         tags.append("core_word")
-                    if dict_info.get("name"):
-                        tags.append(f"dictionary:{dict_info.get('name')}")
                     
                     # Get or create word entry
                     word_id = get_or_create_word_id(
@@ -6220,8 +5752,8 @@ def process_marayum_json(cur, filename: str):
                         try:
                             pron_id = insert_pronunciation(cur, word_id, {
                                 'type': 'ipa',
-                                'value': pronunciation,  # Already cleaned above
-                                'metadata': {'original': raw_pronunciation},
+                                'value': pronunciation.strip('[]'),  # Remove square brackets from IPA notation
+                                'metadata': {'original': pronunciation},
                                 'sources': source
                             })
                             if pron_id:
@@ -6295,29 +5827,19 @@ def process_marayum_json(cur, filename: str):
                         except Exception as e:
                             logger.warning(f"Error adding definition for '{word}': {str(e)}")
 
-                    # Process see_also references - Modified to match your exact JSON structure
+                    # Process see_also references - Following your exact JSON structure
                     see_also = entry.get("see_also", [])
                     if see_also and isinstance(see_also, list):
                         for rel in see_also:
-                            if isinstance(rel, dict):
-                                # Handle the format in your JSON structure
+                            if isinstance(rel, dict) and 'text' in rel:
                                 rel_word = rel.get("text", "").strip()
-                                rel_pk = rel.get("pk", None)  # Get the pk if present
-                                
+                                # Also check for 'word' field if text is not present
+                                if not rel_word and 'word' in rel:
+                                    rel_word = rel.get("word", "").strip()
+                                    
                                 if rel_word:
                                     try:
-                                        rel_id = None
-                                        # If we have a pk, try to find the word by ID first
-                                        if rel_pk:
-                                            cur.execute("SELECT id FROM words WHERE id = %s", (rel_pk,))
-                                            result = cur.fetchone()
-                                            if result:
-                                                rel_id = result[0]
-                                        
-                                        # If we couldn't find by ID, or no ID was provided, look up or create by name
-                                        if not rel_id:
-                                            rel_id = get_or_create_word_id(cur, rel_word, language_code=language_code)
-                                        
+                                        rel_id = get_or_create_word_id(cur, rel_word, language_code=language_code)
                                         if rel_id and rel_id != word_id:  # Avoid self-references
                                             insert_relation(
                                                 cur,
@@ -6339,7 +5861,6 @@ def process_marayum_json(cur, filename: str):
                 
                 except Exception as e:
                     logger.error(f"Error processing entry '{word}' at index {entry_idx}: {str(e)}")
-                    logger.error(f"Entry data sample: {json.dumps(entry)[:200]}...")
                     cur.execute(f"ROLLBACK TO SAVEPOINT {word_savepoint}")
                     stats["error_entries"] += 1
             
@@ -6963,22 +6484,11 @@ def lookup_word(args):
     console = Console()
     
     try:
-        logger.info(f"Starting lookup for word: '{args.word}'")
         conn = get_connection()
         cur = conn.cursor()
         
-        # First verify that pg_trgm extension is installed
-        try:
-            cur.execute("SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm'")
-            has_pg_trgm = cur.fetchone() is not None
-            logger.info(f"pg_trgm extension installed: {has_pg_trgm}")
-        except Exception as e:
-            logger.warning(f"Could not check for pg_trgm extension: {str(e)}")
-            has_pg_trgm = False
-        
         # Search across all relevant fields
-        logger.info(f"Executing exact match query for '{args.word}'")
-        query = """
+        cur.execute("""
             SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
                    w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
                    w.romanized_form, w.tags, w.source_info
@@ -6989,515 +6499,287 @@ def lookup_word(args):
                OR LOWER(w.romanized_form) = LOWER(%s)
                OR LOWER(w.baybayin_form) = LOWER(%s)
                OR LOWER(p.value) = LOWER(%s)
-        """
-        try:
-            cur.execute(query, (args.word, args.word, args.word, args.word, args.word))
-            results = cur.fetchall()
-            logger.info(f"Found {len(results)} exact matches")
-        except Exception as e:
-            logger.error(f"Error in exact match query: {str(e)}")
-            logger.error(f"Query: {query}")
-            logger.error(f"Parameters: {(args.word, args.word, args.word, args.word, args.word)}")
-            import traceback
-            logger.error(f"Traceback: {traceback.format_exc()}")
-            raise
+        """, (args.word, args.word, args.word, args.word, args.word))
+        
+        results = cur.fetchall()
         
         if not results:
-            # Try either fuzzy search or ILIKE depending on extension availability
-            if has_pg_trgm:
-                logger.info(f"No exact matches, trying fuzzy search for '{args.word}'")
-                try:
-                    fuzzy_query = """
-                        SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
-                               w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
-                               w.romanized_form, w.tags, w.source_info,
-                               similarity(w.lemma, %s) as sim_score
-                        FROM words w
-                        WHERE w.lemma % %s
-                        ORDER BY sim_score DESC
-                        LIMIT 5
-                    """
-                    cur.execute(fuzzy_query, (args.word, args.word))
-                    fuzzy_results = cur.fetchall()
-                    logger.info(f"Found {len(fuzzy_results)} fuzzy matches")
-                    
-                    if fuzzy_results:
-                        logger.info(f"Fuzzy matches: {[r[1] for r in fuzzy_results]}")
-                        results = [result[:-1] for result in fuzzy_results]
-                        console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
-                    else:
-                        # Fall back to ILIKE if no fuzzy matches
-                        logger.info("No fuzzy matches, falling back to ILIKE search")
-                except Exception as e:
-                    logger.error(f"Error in fuzzy search query: {str(e)}")
-                    logger.error(f"Falling back to ILIKE search due to error")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-            else:
-                logger.info("pg_trgm not available, using ILIKE search instead")
+            # Try fuzzy search if exact match not found
+            cur.execute("""
+                SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
+                       w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
+                       w.romanized_form, w.tags, w.source_info,
+                       similarity(w.lemma, %s) as sim_score
+                FROM words w
+                WHERE w.lemma % %s
+                ORDER BY sim_score DESC
+                LIMIT 5
+            """, (args.word, args.word))
+            results = cur.fetchall()
             
-            # If we have no results yet, try ILIKE search
             if not results:
-                logger.info(f"Trying ILIKE search for '{args.word}'")
-                ilike_query = """
-                    SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
-                          w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
-                          w.romanized_form, w.tags, w.source_info
-                    FROM words w
-                    WHERE w.lemma ILIKE %s
-                    OR w.normalized_lemma ILIKE %s
-                    LIMIT 5
-                """
-                try:
-                    cur.execute(ilike_query, (f"%{args.word}%", f"%{args.word}%"))
-                    ilike_results = cur.fetchall()
-                    logger.info(f"ILIKE search found {len(ilike_results)} matches")
-                    
-                    if ilike_results:
-                        logger.info(f"ILIKE matches: {[r[1] for r in ilike_results]}")
-                        console.print(f"\n[yellow]Found words containing '[bold]{args.word}[/]':[/]")
-                        results = ilike_results
-                    else:
-                        # Check if word exists in database at all
-                        logger.info("Checking database contents")
-                        cur.execute("SELECT COUNT(*) FROM words")
-                        word_count = cur.fetchone()[0]
-                        logger.info(f"Total words in database: {word_count}")
-                        
-                        if word_count == 0:
-                            console.print("[red]Database appears to be empty. Try importing data first with 'migrate' command.[/]")
-                        else:
-                            # Sample some words to see what's in the database
-                            cur.execute("SELECT lemma, language_code FROM words LIMIT 5")
-                            sample_words = cur.fetchall()
-                            logger.info(f"Sample words in database: {sample_words}")
-                            
-                            console.print(f"\n[yellow]No entries found for '[bold]{args.word}[/]'[/]")
-                            console.print("[yellow]Database contains words but none match your query.[/]")
-                        return
-                except Exception as e:
-                    logger.error(f"Error in ILIKE search: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"\n[red]Error searching for word: {str(e)}[/]")
-                    return
-            else:
-                # Trim the sim_score from the fuzzy results to match expected column count
-                try:
-                    logger.info("Trimming similarity score from fuzzy results")
-                    results = [result[:-1] for result in fuzzy_results]
-                    console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
-                except Exception as e:
-                    logger.error(f"Error trimming fuzzy results: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    raise
+                console.print(f"\n[yellow]No entries found for '[bold]{args.word}[/]'[/]")
+                return
+
+            console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
         
-        for idx, result in enumerate(results):
-            try:
-                logger.info(f"Processing result {idx+1}/{len(results)}")
+        for result in results:
+            # Check if we have enough columns in the result
+            if len(result) < 10:
+                logger.warning(f"Incomplete result data for word: {result[1] if len(result) > 1 else 'unknown'}")
+                continue
                 
-                # Check if we have enough columns in the result
-                if len(result) < 10:
-                    logger.warning(f"Incomplete result data: expected 10 columns, got {len(result)}")
-                    logger.warning(f"Result data: {result}")
-                    logger.warning(f"Word: {result[1] if len(result) > 1 else 'unknown'}")
-                    continue
-                
-                # Unpack result with detailed logging
-                try:
-                    word_id = result[0]
-                    logger.info(f"Word ID: {word_id}")
-                    
-                    lemma = result[1]
-                    logger.info(f"Lemma: {lemma}")
-                    
-                    lang_code = result[2]
-                    logger.info(f"Language code: {lang_code}")
-                    
-                    norm_lemma = result[3]
-                    pref_spell = result[4]
-                    has_bayb = result[5]
-                    bayb_form = result[6]
-                    rom_form = result[7]
-                    tags = result[8]
-                    sources = result[9]
-                except Exception as e:
-                    logger.error(f"Error unpacking result columns: {str(e)}")
-                    logger.error(f"Result structure: {result}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    raise
-                
-                # Print word header with metadata
-                console.print(f"\n[bold blue]═══ {lemma} ═══[/]")
-                
-                # Print basic information
-                info_table = Table(show_header=False, box=None)
-                info_table.add_row("[dim]Language:[/]", lang_code)
-                if norm_lemma and norm_lemma != lemma:
-                    info_table.add_row("[dim]Normalized:[/]", norm_lemma)
-                if pref_spell:
-                    info_table.add_row("[dim]Preferred:[/]", pref_spell)
-                if sources:
+            word_id = result[0]
+            lemma = result[1]
+            lang_code = result[2]
+            norm_lemma = result[3]
+            pref_spell = result[4]
+            has_bayb = result[5]
+            bayb_form = result[6]
+            rom_form = result[7]
+            tags = result[8]
+            sources = result[9]
+            
+            # Print word header with metadata
+            console.print(f"\n[bold blue]═══ {lemma} ═══[/]")
+            
+            # Print basic information
+            info_table = Table(show_header=False, box=None)
+            info_table.add_row("[dim]Language:[/]", lang_code)
+            if norm_lemma and norm_lemma != lemma:
+                info_table.add_row("[dim]Normalized:[/]", norm_lemma)
+            if pref_spell:
+                info_table.add_row("[dim]Preferred:[/]", pref_spell)
+            if sources:
+                if isinstance(sources, dict) or (isinstance(sources, str) and sources.startswith('{')):
+                    # Try to format JSON sources
                     try:
-                        if isinstance(sources, dict) or (isinstance(sources, str) and sources.startswith('{')):
-                            # Try to format JSON sources
+                        src_dict = sources if isinstance(sources, dict) else json.loads(sources)
+                        sources_str = ', '.join(f"{k}: {v}" for k, v in src_dict.items())
+                        info_table.add_row("[dim]Sources:[/]", sources_str)
+                    except:
+                        info_table.add_row("[dim]Sources:[/]", str(sources))
+                else:
+                    info_table.add_row("[dim]Sources:[/]", str(sources))
+            if tags:
+                info_table.add_row("[dim]Tags:[/]", tags)
+            
+            console.print(info_table)
+            
+            # Print Baybayin information if available
+            if has_bayb:
+                baybayin_table = Table(title="[bold cyan]Baybayin Forms[/]", 
+                                     show_header=False, box=box.ROUNDED)
+                if bayb_form:
+                    baybayin_table.add_row("Baybayin:", bayb_form)
+                if rom_form:
+                    baybayin_table.add_row("Romanized:", rom_form)
+                console.print(baybayin_table)
+            
+            # Get and print pronunciations
+            cur.execute("""
+                SELECT type, value, tags, metadata, sources
+                FROM pronunciations
+                WHERE word_id = %s
+                ORDER BY type
+            """, (word_id,))
+            
+            prons = cur.fetchall()
+            
+            if prons:
+                pron_table = Table(title="[bold cyan]Pronunciations[/]",
+                                 show_header=True, box=box.ROUNDED)
+                pron_table.add_column("Type")
+                pron_table.add_column("Value")
+                pron_table.add_column("Details")
+                
+                for pron in prons:
+                    type_ = pron[0]
+                    value = pron[1]
+                    p_tags = pron[2]
+                    metadata = pron[3]
+                    p_sources = pron[4]
+                    
+                    details = []
+                    if metadata:
+                        try:
+                            meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
+                            if meta_dict and 'styles' in meta_dict:
+                                details.append(f"Style: {', '.join(meta_dict['styles'])}")
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+                    if p_tags:
+                        details.append(f"Tags: {p_tags}")
+                    if p_sources:
+                        details.append(f"Source: {p_sources}")
+                    
+                    pron_table.add_row(
+                        type_ or "Standard",
+                        value,
+                        "\n".join(details) if details else ""
+                    )
+                
+                console.print(pron_table)
+            
+            # Get and print etymologies
+            cur.execute("""
+                SELECT etymology_text, normalized_components, language_codes, sources
+                FROM etymologies
+                WHERE word_id = %s
+            """, (word_id,))
+            
+            etyms = cur.fetchall()
+            
+            if etyms:
+                console.print("\n[bold cyan]Etymology:[/]")
+                for etym in etyms:
+                    etym_text = etym[0]
+                    comps = etym[1]
+                    langs = etym[2]
+                    e_sources = etym[3]
+                    
+                    etym_panel = Panel(
+                        Text(etym_text),
+                        title="Etymology" + (f" [{e_sources}]" if e_sources else ""),
+                        subtitle=langs if langs else None
+                    )
+                    console.print(etym_panel)
+                    if comps:
+                        try:
+                            comp_dict = json.loads(comps) if isinstance(comps, str) else comps
+                            if comp_dict:
+                                console.print("[dim]Components:[/]")
+                                for comp in comp_dict:
+                                    console.print(f"• {comp}")
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+            
+            # Get and print definitions grouped by part of speech
+            try:
+                cur.execute("""
+                    SELECT d.definition_text, d.examples, d.usage_notes, d.tags, d.sources,
+                           p.name_tl AS pos_name
+                    FROM definitions d
+                    LEFT JOIN parts_of_speech p ON d.standardized_pos_id = p.id
+                    WHERE d.word_id = %s
+                    ORDER BY p.name_tl, d.id
+                """, (word_id,))
+                
+                definitions = cur.fetchall()
+                
+                if definitions:
+                    console.print("\n[bold cyan]Definitions:[/]")
+                    current_pos = None
+                    
+                    for definition in definitions:
+                        def_text = definition[0]
+                        examples = definition[1]
+                        notes = definition[2]
+                        def_tags = definition[3]
+                        def_sources = definition[4]
+                        pos = definition[5]
+                        
+                        if pos != current_pos:
+                            console.print(f"\n[bold cyan]{pos or 'Uncategorized'}:[/]")
+                            current_pos = pos
+                        
+                        def_panel = Panel(Text(def_text))
+                        console.print(def_panel)
+                        
+                        if examples:
                             try:
-                                src_dict = sources if isinstance(sources, dict) else json.loads(sources)
-                                sources_str = ', '.join(f"{k}: {v}" for k, v in src_dict.items())
-                                info_table.add_row("[dim]Sources:[/]", sources_str)
-                            except Exception as json_e:
-                                logger.warning(f"Error parsing sources JSON: {str(json_e)}")
-                                info_table.add_row("[dim]Sources:[/]", str(sources))
-                        else:
-                            info_table.add_row("[dim]Sources:[/]", str(sources))
-                    except Exception as e:
-                        logger.error(f"Error handling sources: {str(e)}")
-                        logger.error(f"Sources value: {sources} (type: {type(sources).__name__})")
-                if tags:
-                    info_table.add_row("[dim]Tags:[/]", tags)
-                
-                console.print(info_table)
-                
-                # Print Baybayin information if available
-                if has_bayb:
-                    logger.info("Processing Baybayin data")
-                    baybayin_table = Table(title="[bold cyan]Baybayin Forms[/]", 
-                                        show_header=False, box=box.ROUNDED)
-                    if bayb_form:
-                        baybayin_table.add_row("Baybayin:", bayb_form)
-                    if rom_form:
-                        baybayin_table.add_row("Romanized:", rom_form)
-                    console.print(baybayin_table)
-                
-                # Get and print pronunciations
-                try:
-                    logger.info(f"Querying pronunciations for word_id {word_id}")
-                    cur.execute("""
-                        SELECT type, value, tags, metadata, sources
-                        FROM pronunciations
-                        WHERE word_id = %s
-                        ORDER BY type
-                    """, (word_id,))
-                    
-                    prons = cur.fetchall()
-                    logger.info(f"Found {len(prons)} pronunciations")
-                    
-                    if prons:
-                        pron_table = Table(title="[bold cyan]Pronunciations[/]",
-                                        show_header=True, box=box.ROUNDED)
-                        pron_table.add_column("Type")
-                        pron_table.add_column("Value")
-                        pron_table.add_column("Details")
+                                ex_list = json.loads(examples) if isinstance(examples, str) else examples
+                                if ex_list:
+                                    console.print("[dim]Examples:[/]")
+                                    if isinstance(ex_list, list):
+                                        for ex in ex_list:
+                                            if isinstance(ex, dict):
+                                                console.print(f"• {ex['text']}")
+                                                if 'translation' in ex:
+                                                    console.print(f"  [dim]{ex['translation']}[/]")
+                                            else:
+                                                console.print(f"• {ex}")
+                                    else:
+                                        console.print(f"• {ex_list}")
+                            except (json.JSONDecodeError, TypeError, AttributeError):
+                                console.print(f"• {examples}")
                         
-                        for pron in prons:
-                            type_ = pron[0]
-                            value = pron[1]
-                            p_tags = pron[2]
-                            metadata = pron[3]
-                            p_sources = pron[4]
-                            
-                            details = []
-                            if metadata:
-                                try:
-                                    meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
-                                    if meta_dict and 'styles' in meta_dict:
-                                        details.append(f"Style: {', '.join(meta_dict['styles'])}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing pronunciation metadata: {str(e)}")
-                            if p_tags:
-                                details.append(f"Tags: {p_tags}")
-                            if p_sources:
-                                details.append(f"Source: {p_sources}")
-                            
-                            pron_table.add_row(
-                                type_ or "Standard",
-                                value,
-                                "\n".join(details) if details else ""
-                            )
+                        if notes:
+                            console.print(f"[dim]Notes:[/] {notes}")
                         
-                        console.print(pron_table)
-                except Exception as e:
-                    logger.error(f"Error retrieving pronunciations: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve pronunciations: {str(e)}[/]")
-                
-                # Get and print etymologies
-                try:
-                    logger.info(f"Querying etymologies for word_id {word_id}")
-                    cur.execute("""
-                        SELECT etymology_text, normalized_components, language_codes, sources
-                        FROM etymologies
-                        WHERE word_id = %s
-                    """, (word_id,))
-                    
-                    etyms = cur.fetchall()
-                    logger.info(f"Found {len(etyms)} etymologies")
-                    
-                    if etyms:
-                        console.print("\n[bold cyan]Etymology:[/]")
-                        for etym in etyms:
-                            etym_text = etym[0]
-                            comps = etym[1]
-                            langs = etym[2]
-                            e_sources = etym[3]
-                            
-                            etym_panel = Panel(
-                                Text(etym_text),
-                                title="Etymology" + (f" [{e_sources}]" if e_sources else ""),
-                                subtitle=langs if langs else None
-                            )
-                            console.print(etym_panel)
-                            if comps:
-                                try:
-                                    comp_dict = json.loads(comps) if isinstance(comps, str) else comps
-                                    if comp_dict:
-                                        console.print("[dim]Components:[/]")
-                                        for comp in comp_dict:
-                                            console.print(f"• {comp}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing etymology components: {str(e)}")
-                except Exception as e:
-                    logger.error(f"Error retrieving etymologies: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve etymologies: {str(e)}[/]")
-                
-                # Get and print definitions grouped by part of speech
-                try:
-                    logger.info(f"Querying definitions for word_id {word_id}")
-                    def_query = """
-                        SELECT d.definition_text, d.examples, d.usage_notes, d.tags, d.sources,
-                               p.name_tl AS pos_name
-                        FROM definitions d
-                        LEFT JOIN parts_of_speech p ON d.standardized_pos_id = p.id
-                        WHERE d.word_id = %s
-                        ORDER BY p.name_tl, d.id
-                    """
-                    
-                    cur.execute(def_query, (word_id,))
-                    definitions = cur.fetchall()
-                    logger.info(f"Found {len(definitions)} definitions")
-                    
-                    if definitions:
-                        console.print("\n[bold cyan]Definitions:[/]")
-                        current_pos = None
-                        
-                        for def_idx, definition in enumerate(definitions):
-                            logger.info(f"Processing definition {def_idx+1}/{len(definitions)}")
-                            
-                            try:
-                                def_text = definition[0]
-                                examples = definition[1]
-                                notes = definition[2]
-                                def_tags = definition[3]
-                                def_sources = definition[4]
-                                pos = definition[5]
-                            except Exception as e:
-                                logger.error(f"Error unpacking definition columns: {str(e)}")
-                                logger.error(f"Definition structure: {definition}")
-                                continue
-                            
-                            if pos != current_pos:
-                                console.print(f"\n[bold cyan]{pos or 'Uncategorized'}:[/]")
-                                current_pos = pos
-                            
-                            def_panel = Panel(Text(def_text))
-                            console.print(def_panel)
-                            
-                            if examples:
-                                logger.info("Processing definition examples")
-                                try:
-                                    ex_list = json.loads(examples) if isinstance(examples, str) else examples
-                                    logger.info(f"Example type: {type(ex_list).__name__}")
-                                    
-                                    if ex_list:
-                                        console.print("[dim]Examples:[/]")
-                                        if isinstance(ex_list, list):
-                                            for ex_idx, ex in enumerate(ex_list):
-                                                logger.info(f"Processing example {ex_idx+1}/{len(ex_list)}")
-                                                if isinstance(ex, dict):
-                                                    console.print(f"• {ex.get('text', '')}")
-                                                    if 'translation' in ex:
-                                                        console.print(f"  [dim]{ex['translation']}[/]")
-                                                else:
-                                                    console.print(f"• {ex}")
-                                        else:
-                                            console.print(f"• {ex_list}")
-                                except (json.JSONDecodeError, TypeError, AttributeError) as e:
-                                    logger.warning(f"Error processing examples: {str(e)}")
-                                    logger.warning(f"Examples data: {examples}")
-                                    console.print(f"• {examples}")
-                            
-                            if notes:
-                                console.print(f"[dim]Notes:[/] {notes}")
-                            
-                            if def_tags:
-                                console.print(f"[dim]Tags:[/] {def_tags}")
-                    else:
-                        logger.warning(f"No definitions found for word ID {word_id}")
-                except Exception as e:
-                    logger.error(f"Error retrieving definitions for {lemma}: {str(e)}")
-                    logger.error(f"Query: {def_query}")
-                    logger.error(f"Parameters: {(word_id,)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve definitions: {str(e)}[/]")
-                
-                # Get and print relationships
-                try:
-                    logger.info(f"Querying relations for word_id {word_id}")
-                    rel_query = """
-                        SELECT r.relation_type,
-                               w.lemma,
-                               r.metadata,
-                               r.sources
-                        FROM relations r
-                        JOIN words w ON r.to_word_id = w.id
-                        WHERE r.from_word_id = %s
-                        ORDER BY r.relation_type
-                    """
-                    
-                    cur.execute(rel_query, (word_id,))
-                    rels = cur.fetchall()
-                    logger.info(f"Found {len(rels)} relations")
-                    
-                    if rels:
-                        console.print("\n[bold cyan]Related Words:[/]")
-                        current_type = None
-                        rel_table = None
-                        
-                        for rel_idx, rel in enumerate(rels):
-                            logger.info(f"Processing relation {rel_idx+1}/{len(rels)}")
-                            
-                            try:
-                                rel_type = rel[0]
-                                rel_word = rel[1]
-                                metadata = rel[2]
-                                rel_sources = rel[3]
-                            except Exception as e:
-                                logger.error(f"Error unpacking relation columns: {str(e)}")
-                                logger.error(f"Relation structure: {rel}")
-                                continue
-                            
-                            if rel_type != current_type:
-                                if rel_table:
-                                    console.print(rel_table)
-                                rel_table = Table(show_header=False, box=box.SIMPLE)
-                                console.print(f"\n[bold]{rel_type.title()}:[/]")
-                                current_type = rel_type
-                            
-                            details = []
-                            if metadata:
-                                try:
-                                    meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
-                                    if meta_dict:
-                                        if 'confidence' in meta_dict:
-                                            details.append(f"{meta_dict['confidence']}% confidence")
-                                        if 'tags' in meta_dict:
-                                            details.append(f"Tags: {meta_dict['tags']}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing relation metadata: {str(e)}")
-                            if rel_sources:
-                                details.append(f"Source: {rel_sources}")
-                            
-                            rel_table.add_row(
-                                "•",
-                                rel_word,
-                                f"[dim]({', '.join(details)})[/]" if details else ""
-                            )
-                        
-                        if rel_table:
-                            console.print(rel_table)
-                    else:
-                        logger.info(f"No relations found for word ID {word_id}")
-                except Exception as e:
-                    logger.error(f"Error retrieving relations for {lemma}: {str(e)}")
-                    logger.error(f"Query: {rel_query}")
-                    logger.error(f"Parameters: {(word_id,)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve relations: {str(e)}[/]")
-                
-                console.print("\n" + "─" * 80 + "\n")
+                        if def_tags:
+                            console.print(f"[dim]Tags:[/] {def_tags}")
             except Exception as e:
-                logger.error(f"Error processing result {idx+1}: {str(e)}")
-                import traceback
-                logger.error(f"Traceback: {traceback.format_exc()}")
-                logger.error(f"Result data: {result}")
-                console.print(f"[red]Error processing result: {str(e)}[/]")
+                logger.error(f"Error processing definitions for {lemma}: {str(e)}")
+                console.print(f"[yellow]Could not retrieve definitions: {str(e)}[/]")
+            
+            # Get and print relationships
+            try:
+                cur.execute("""
+                    SELECT r.relation_type,
+                           w.lemma,
+                           r.metadata,
+                           r.sources
+                    FROM relations r
+                    JOIN words w ON r.to_word_id = w.id
+                    WHERE r.from_word_id = %s
+                    ORDER BY r.relation_type
+                """, (word_id,))
+                
+                rels = cur.fetchall()
+                
+                if rels:
+                    console.print("\n[bold cyan]Related Words:[/]")
+                    current_type = None
+                    rel_table = None
+                    
+                    for rel in rels:
+                        rel_type = rel[0]
+                        rel_word = rel[1]
+                        metadata = rel[2]
+                        rel_sources = rel[3]
+                        
+                        if rel_type != current_type:
+                            if rel_table:
+                                console.print(rel_table)
+                            rel_table = Table(show_header=False, box=box.SIMPLE)
+                            console.print(f"\n[bold]{rel_type.title()}:[/]")
+                            current_type = rel_type
+                        
+                        details = []
+                        if metadata:
+                            try:
+                                meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
+                                if meta_dict:
+                                    if 'confidence' in meta_dict:
+                                        details.append(f"{meta_dict['confidence']}% confidence")
+                                    if 'tags' in meta_dict:
+                                        details.append(f"Tags: {meta_dict['tags']}")
+                            except (json.JSONDecodeError, TypeError):
+                                pass
+                        if rel_sources:
+                            details.append(f"Source: {rel_sources}")
+                        
+                        rel_table.add_row(
+                            "•",
+                            rel_word,
+                            f"[dim]({', '.join(details)})[/]" if details else ""
+                        )
+                    
+                    if rel_table:
+                        console.print(rel_table)
+            except Exception as e:
+                logger.error(f"Error processing relations for {lemma}: {str(e)}")
+                console.print(f"[yellow]Could not retrieve relations: {str(e)}[/]")
+            
+            console.print("\n" + "─" * 80 + "\n")
 
     except Exception as e:
         logger.error(f"Error looking up word: {str(e)}")
-        logger.error(f"Word: {args.word}")
-        import traceback
-        logger.error(f"Traceback: {traceback.format_exc()}")
-        
-        # Additional database diagnostics
-        try:
-            diagnostics_conn = get_connection()
-            diagnostics_cur = diagnostics_conn.cursor()
-            
-            # Check if database extensions are installed
-            logger.info("Diagnostic: checking database extensions")
-            diagnostics_cur.execute("""
-                SELECT extname FROM pg_extension
-            """)
-            extensions = [row[0] for row in diagnostics_cur.fetchall()]
-            logger.info(f"Installed extensions: {extensions}")
-            
-            # Check if the word exists with direct lemma search
-            logger.info(f"Diagnostic: checking if word '{args.word}' exists with direct lemma match")
-            diagnostics_cur.execute("""
-                SELECT COUNT(*) FROM words WHERE lemma = %s
-            """, (args.word,))
-            exact_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Diagnostic result: Word '{args.word}' exact matches: {exact_count}")
-            
-            # Check if the word exists at all
-            logger.info(f"Diagnostic: checking if word '{args.word}' exists in any form")
-            diagnostics_cur.execute("""
-                SELECT COUNT(*) FROM words WHERE lemma ILIKE %s
-            """, (f"%{args.word}%",))
-            exists_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Diagnostic result: Word '{args.word}' partial matches: {exists_count}")
-            
-            # Examine database size
-            logger.info("Diagnostic: checking database size")
-            diagnostics_cur.execute("SELECT COUNT(*) FROM words")
-            word_count = diagnostics_cur.fetchone()[0]
-            diagnostics_cur.execute("SELECT COUNT(*) FROM definitions")
-            def_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Database size: {word_count} words, {def_count} definitions")
-            
-            # Check database schema
-            logger.info("Diagnostic: verifying database schema")
-            diagnostics_cur.execute("""
-                SELECT column_name, data_type 
-                FROM information_schema.columns 
-                WHERE table_name = 'words'
-                ORDER BY ordinal_position
-            """)
-            columns = diagnostics_cur.fetchall()
-            logger.info(f"Diagnostic: words table has {len(columns)} columns")
-            for col in columns:
-                logger.info(f"  Column: {col[0]}, Type: {col[1]}")
-                
-            diagnostics_conn.close()
-        except Exception as diag_e:
-            logger.error(f"Error during diagnostics: {str(diag_e)}")
-        
-        console.print(f"[red]Error looking up word '{args.word}': {str(e)}[/]")
-        console.print("[yellow]Check logs for detailed error information[/]")
-        console.print("[yellow]Possible solutions: [/]")
-        console.print("1. Make sure you've imported your dictionary with: `python dictionary_manager.py migrate --file chavacano-english_processed.json`")
-        console.print("2. Ensure PostgreSQL extensions are installed with: `python dictionary_manager.py verify --repair`")
+        console.print(f"[red]Error looking up word: {str(e)}[/]")
     finally:
         if 'conn' in locals() and conn:
             conn.close()
-            logger.info("Database connection closed")
 
 def display_dictionary_stats_cli(args):
     """Display dictionary statistics from the command line."""

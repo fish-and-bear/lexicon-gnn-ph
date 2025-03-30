@@ -1,0 +1,4 @@
+2025-03-30 15:44:04,032 - ERROR - Error displaying dictionary stats: column "is_root" does not exist
+LINE 1: SELECT COUNT(*) FROM words WHERE is_root = TRUE
+                                         ^
+

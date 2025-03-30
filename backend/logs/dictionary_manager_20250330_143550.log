@@ -1,0 +1,5 @@
+2025-03-30 14:35:50,392 - ERROR - Error looking up word: column w.sources does not exist
+LINE 4: ...                        w.romanized_form, w.tags, w.sources,
+                                                             ^
+HINT:  Perhaps you meant to reference the column "p.sources".
+

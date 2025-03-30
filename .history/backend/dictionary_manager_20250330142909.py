@@ -704,36 +704,6 @@ DO $$ BEGIN
             EXECUTE FUNCTION update_timestamp();
     END IF;
 END $$;
-
-DO $$ 
-BEGIN
-    IF NOT EXISTS (
-        SELECT FROM information_schema.columns 
-        WHERE table_name = 'words' AND column_name = 'source_info'
-    ) THEN
-        ALTER TABLE words ADD COLUMN source_info TEXT;
-    END IF;
-END $$;
-
--- Ensure source_info column exists in the words table and is the correct type
-DO $$ 
-BEGIN
-    -- Check if source_info column exists
-    IF NOT EXISTS (
-        SELECT FROM information_schema.columns 
-        WHERE table_name = 'words' AND column_name = 'source_info'
-    ) THEN
-        -- Add the column if it doesn't exist
-        ALTER TABLE words ADD COLUMN source_info TEXT;
-    ELSE
-        -- Check if the column has the correct type
-        IF (SELECT data_type FROM information_schema.columns 
-            WHERE table_name = 'words' AND column_name = 'source_info') != 'text' THEN
-            -- If not text, alter column type to text
-            ALTER TABLE words ALTER COLUMN source_info TYPE TEXT;
-        END IF;
-    END IF;
-END $$;
 """
 
 def create_or_update_tables(conn):
@@ -1056,7 +1026,6 @@ def standardize_entry_pos(pos_str: str) -> str:
 # Data Structures and Enums
 # -------------------------------------------------------------------
 class BaybayinCharType(Enum):
-    """Define types of Baybayin characters."""
     CONSONANT = "consonant"
     VOWEL = "vowel"
     VOWEL_MARK = "vowel_mark"
@@ -1066,7 +1035,6 @@ class BaybayinCharType(Enum):
     
     @classmethod
     def get_type(cls, char: str) -> 'BaybayinCharType':
-        """Determine the type of a Baybayin character."""
         if not char:
             return cls.UNKNOWN
         code_point = ord(char)
@@ -1084,7 +1052,6 @@ class BaybayinCharType(Enum):
 
 @dataclass
 class BaybayinChar:
-    """Define a Baybayin character with its properties."""
     char: str
     char_type: BaybayinCharType
     default_sound: str
@@ -1105,7 +1072,6 @@ class BaybayinChar:
             raise ValueError(f"Character type mismatch for {self.char}: expected {expected_type}, got {self.char_type}")
 
     def get_sound(self, next_char: Optional['BaybayinChar'] = None) -> str:
-        """Get the sound of this character, considering the next character."""
         if self.char_type == BaybayinCharType.CONSONANT and next_char:
             if next_char.char_type == BaybayinCharType.VOWEL_MARK:
                 return self.default_sound[:-1] + next_char.default_sound
@@ -1375,10 +1341,6 @@ def has_diacritics(text: str) -> bool:
 class SourceStandardization:
     @staticmethod
     def standardize_sources(source: str) -> str:
-        """Convert source filenames to standardized display names."""
-        if not source:
-            return "unknown"
-            
         source_mapping = {
             'kaikki-ceb.jsonl': 'kaikki.org (Cebuano)',
             'kaikki.jsonl': 'kaikki.org (Tagalog)',
@@ -1386,26 +1348,10 @@ class SourceStandardization:
             'root_words_with_associated_words_cleaned.json': 'tagalog.com',
             'tagalog-words.json': 'diksiyonaryo.ph'
         }
-        
-        # Try direct mapping first
-        if source in source_mapping:
-            return source_mapping[source]
-            
-        # Handle cases where only part of the filename is matched
-        for key, value in source_mapping.items():
-            if key in source:
-                return value
-                
-        # Special case for Marayum dictionaries
-        if 'marayum' in source.lower():
-            return 'Project Marayum'
-            
-        # Return the original if no mapping is found
-        return source
+        return source_mapping.get(source, source)
     
     @staticmethod
     def get_display_name(source: str) -> str:
-        """Get a display-friendly name for a source."""
         return SourceStandardization.standardize_sources(source)
 
 def format_word_display(word: str, show_baybayin: bool = True) -> str:
@@ -1451,8 +1397,7 @@ class BaybayinRomanizer:
         'ᜎ': BaybayinChar('ᜎ', BaybayinCharType.CONSONANT, 'la', ['la']),
         'ᜏ': BaybayinChar('ᜏ', BaybayinCharType.CONSONANT, 'wa', ['wa']),
         'ᜐ': BaybayinChar('ᜐ', BaybayinCharType.CONSONANT, 'sa', ['sa']),
-        'ᜑ': BaybayinChar('ᜑ', BaybayinCharType.CONSONANT, 'ha', ['ha']),
-        'ᜍ': BaybayinChar('ᜍ', BaybayinCharType.CONSONANT, 'ra', ['ra'])  # Added ra
+        'ᜑ': BaybayinChar('ᜑ', BaybayinCharType.CONSONANT, 'ha', ['ha'])
     }
     VOWEL_MARKS = {
         'ᜒ': BaybayinChar('ᜒ', BaybayinCharType.VOWEL_MARK, 'i', ['i', 'e']),
@@ -1465,72 +1410,49 @@ class BaybayinRomanizer:
     }
     
     def __init__(self):
-        """Initialize the romanizer with a combined character mapping."""
-        self.all_chars = {}
-        # Combine all character mappings for easy lookup
-        for char_map in [self.VOWELS, self.CONSONANTS, self.VOWEL_MARKS, 
-                         {self.VIRAMA.char: self.VIRAMA}, self.PUNCTUATION]:
-            self.all_chars.update(char_map)
+        all_chars = set()
+        for char_set in [self.VOWELS, self.CONSONANTS, self.VOWEL_MARKS, {self.VIRAMA.char: self.VIRAMA}, self.PUNCTUATION]:
+            for char in char_set:
+                if char in all_chars:
+                    raise ValueError(f"Duplicate character in mappings: {char}")
+                all_chars.add(char)
     
     def is_baybayin(self, text: str) -> bool:
-        """Check if a string contains any Baybayin characters."""
-        if not text:
-            return False
-        # Check for characters in the Baybayin Unicode block (U+1700 to U+171F)
         return any(0x1700 <= ord(c) <= 0x171F for c in text)
     
     def get_char_info(self, char: str) -> Optional[BaybayinChar]:
-        """Get character information for a Baybayin character."""
-        return self.all_chars.get(char)
+        if char in self.VOWELS:
+            return self.VOWELS[char]
+        if char in self.CONSONANTS:
+            return self.CONSONANTS[char]
+        if char in self.VOWEL_MARKS:
+            return self.VOWEL_MARKS[char]
+        if char == self.VIRAMA.char:
+            return self.VIRAMA
+        if char in self.PUNCTUATION:
+            return self.PUNCTUATION[char]
+        return None
     
     def process_syllable(self, chars: List[str]) -> Tuple[str, int]:
-        """
-        Process a Baybayin syllable and return its romanized form.
-        
-        Args:
-            chars: List of characters in the potential syllable
-            
-        Returns:
-            (romanized_syllable, number_of_characters_consumed)
-        """
         if not chars:
             return '', 0
-        
-        # Get information about the first character
         first_char = self.get_char_info(chars[0])
         if not first_char:
-            # Not a recognized Baybayin character
-            return chars[0], 1
-        
+            return '', 1
         if first_char.char_type == BaybayinCharType.VOWEL:
-            # Simple vowel
             return first_char.default_sound, 1
-            
-        elif first_char.char_type == BaybayinCharType.CONSONANT:
-            # Start with default consonant sound (with 'a' vowel)
+        if first_char.char_type == BaybayinCharType.CONSONANT:
             result = first_char.default_sound
             pos = 1
-            
-            # Check for vowel marks or virama (vowel killer)
             if pos < len(chars):
                 next_char = self.get_char_info(chars[pos])
-                if next_char:
-                    if next_char.char_type == BaybayinCharType.VOWEL_MARK:
-                        # Replace default 'a' vowel with the marked vowel
-                        result = result[:-1] + next_char.default_sound
-                        pos += 1
-                    elif next_char.char_type == BaybayinCharType.VIRAMA:
-                        # Remove the default 'a' vowel (final consonant)
-                        result = result[:-1]
-                        pos += 1
-            
+                if next_char and next_char.char_type == BaybayinCharType.VOWEL_MARK:
+                    result = result[:-1] + next_char.default_sound
+                    pos += 1
+                elif next_char and next_char.char_type == BaybayinCharType.VIRAMA:
+                    result = result[:-1]
+                    pos += 1
             return result, pos
-            
-        elif first_char.char_type == BaybayinCharType.PUNCTUATION:
-            # Baybayin punctuation
-            return first_char.default_sound, 1
-            
-        # For unhandled cases (shouldn't normally happen)
         return '', 1
     
     def romanize(self, text: str) -> str:
@@ -1538,95 +1460,72 @@ class BaybayinRomanizer:
         Convert Baybayin text to its romanized form.
         
         Args:
-            text: The Baybayin text to romanize
+            text (str): The Baybayin text to romanize
             
         Returns:
-            The romanized text, or original text if romanization failed
+            str: The romanized text, or original text if romanization failed
         """
         if not text:
             return ""
-        
-        # Normalize Unicode for consistent character handling
+            
+        # Normalize Unicode to ensure consistent handling
         text = unicodedata.normalize('NFC', text)
         
         result = []
         i = 0
         
-        while i < len(text):
-            # Skip spaces and non-Baybayin characters
-            if text[i].isspace() or not self.is_baybayin(text[i]):
-                result.append(text[i])
-                i += 1
-                continue
-                
-            # Process a syllable
-            try:
-                processed_syllable, chars_consumed = self.process_syllable(list(text[i:]))
+        try:
+            while i < len(text):
+                # Skip non-Baybayin characters
+                if not self.is_baybayin(text[i]):
+                    result.append(text[i])
+                    i += 1
+                    continue
+                    
+                # Process syllables
+                processed_syllable, chars_consumed = self.process_syllable(list(text[i:i+3]))
                 
                 if processed_syllable:
                     result.append(processed_syllable)
                     i += chars_consumed
                 else:
-                    # Handle unrecognized characters
-                    result.append(text[i])
+                    # Fallback for unrecognized characters
+                    logger.warning(f"Unrecognized Baybayin character sequence starting at position {i}: {text[i:i+3]}")
+                    result.append('?')
                     i += 1
-            except Exception as e:
-                logger.error(f"Error during Baybayin romanization at position {i}: {e}")
-                # Skip problematic character
-                i += 1
-                
-        return ''.join(result)
+                    
+            return ''.join(result)
+            
+        except Exception as e:
+            logger.error(f"Error during Baybayin romanization: {e}")
+            # Return original text with warning marker if romanization fails
+            return f"{text} [ROMANIZATION_ERROR]"
 
     def validate_text(self, text: str) -> bool:
-        """
-        Validate that a string contains valid Baybayin text.
-        
-        Args:
-            text: The text to validate
-            
-        Returns:
-            True if the text is valid Baybayin, False otherwise
-        """
         if not text:
             return False
-            
-        # Normalize Unicode
-        text = unicodedata.normalize('NFC', text)
         chars = list(text)
         i = 0
-        
         while i < len(chars):
-            # Skip spaces
             if chars[i].isspace():
                 i += 1
                 continue
-                
-            # Get character info
             char_info = self.get_char_info(chars[i])
-            
-            # Not a valid Baybayin character
             if not char_info:
-                if 0x1700 <= ord(chars[i]) <= 0x171F:
-                    # It's in the Baybayin Unicode range but not recognized
-                    logger.warning(f"Unrecognized Baybayin character at position {i}: {chars[i]} (U+{ord(chars[i]):04X})")
                 return False
-                
-            # Vowel mark must follow a consonant
-            if char_info.char_type == BaybayinCharType.VOWEL_MARK:
-                if i == 0 or not self.get_char_info(chars[i-1]) or self.get_char_info(chars[i-1]).char_type != BaybayinCharType.CONSONANT:
-                    logger.warning(f"Vowel mark not following a consonant at position {i}")
-                    return False
-                    
-            # Virama (vowel killer) must follow a consonant
-            if char_info.char_type == BaybayinCharType.VIRAMA:
-                if i == 0 or not self.get_char_info(chars[i-1]) or self.get_char_info(chars[i-1]).char_type != BaybayinCharType.CONSONANT:
-                    logger.warning(f"Virama not following a consonant at position {i}")
-                    return False
-                    
+            if char_info.char_type == BaybayinCharType.VOWEL_MARK and (
+                i == 0 or not self.get_char_info(chars[i-1]) or 
+                self.get_char_info(chars[i-1]).char_type != BaybayinCharType.CONSONANT
+            ):
+                return False
+            if char_info.char_type == BaybayinCharType.VIRAMA and (
+                i == 0 or not self.get_char_info(chars[i-1]) or 
+                self.get_char_info(chars[i-1]).char_type != BaybayinCharType.CONSONANT
+            ):
+                return False
             i += 1
-            
         return True
-    
+
 def process_baybayin_text(text: str) -> Tuple[str, Optional[str], bool]:
     if not text:
         return text, None, False
@@ -1656,37 +1555,26 @@ def transliterate_to_baybayin(text: str) -> str:
     Transliterate Latin text to Baybayin script.
     Handles all Filipino vowels (a, e, i, o, u) and consonants,
     including final consonants with virama.
-    
-    Args:
-        text: Latin text to convert to Baybayin
-        
-    Returns:
-        Baybayin text
     """
     if not text:
         return ""
-    
-    # Handle prefix starting with '-' (like '-an')
-    if text.startswith('-'):
-        # Skip the hyphen and process the rest
-        text = text[1:]
-    
+        
     # Normalize text: lowercase and remove diacritical marks
     text = text.lower().strip()
     text = ''.join(c for c in unicodedata.normalize('NFD', text) 
-                   if not unicodedata.combining(c))
+                  if not unicodedata.combining(c))
     
     # Define Baybayin character mappings
     consonants = {
         'k': 'ᜃ', 'g': 'ᜄ', 'ng': 'ᜅ', 't': 'ᜆ', 'd': 'ᜇ', 'n': 'ᜈ',
         'p': 'ᜉ', 'b': 'ᜊ', 'm': 'ᜋ', 'y': 'ᜌ', 'l': 'ᜎ', 'w': 'ᜏ',
-        's': 'ᜐ', 'h': 'ᜑ', 'r': 'ᜍ'  # Added 'r' mapping
+        's': 'ᜐ', 'h': 'ᜑ'
     }
     vowels = {'a': 'ᜀ', 'i': 'ᜁ', 'e': 'ᜁ', 'u': 'ᜂ', 'o': 'ᜂ'}
     vowel_marks = {'i': 'ᜒ', 'e': 'ᜒ', 'u': 'ᜓ', 'o': 'ᜓ'}
-    virama = '᜔'  # Pamudpod (vowel killer)
     
-    result = []
+    # Process text by analyzing patterns
+    result = ""
     i = 0
     
     while i < len(text):
@@ -1695,52 +1583,36 @@ def transliterate_to_baybayin(text: str) -> str:
             if i + 2 < len(text) and text[i+2] in 'aeiou':
                 # ng + vowel
                 if text[i+2] == 'a':
-                    result.append(consonants['ng'])
+                    result += consonants['ng']
                 else:
-                    result.append(consonants['ng'] + vowel_marks[text[i+2]])
+                    result += consonants['ng'] + vowel_marks[text[i+2]]
                 i += 3
             else:
                 # Final 'ng'
-                result.append(consonants['ng'] + virama)
+                result += consonants['ng'] + '᜔'  # Add virama
                 i += 2
-                
         # Handle single consonants
-        elif text[i] in consonants:
+        elif text[i] in 'kgtdnpbmylswh':
             if i + 1 < len(text) and text[i+1] in 'aeiou':
                 # Consonant + vowel
                 if text[i+1] == 'a':
-                    result.append(consonants[text[i]])
+                    result += consonants[text[i]]
                 else:
-                    result.append(consonants[text[i]] + vowel_marks[text[i+1]])
+                    result += consonants[text[i]] + vowel_marks[text[i+1]]
                 i += 2
             else:
                 # Final consonant
-                result.append(consonants[text[i]] + virama)
+                result += consonants[text[i]] + '᜔'  # Add virama
                 i += 1
-                
         # Handle vowels
         elif text[i] in 'aeiou':
-            result.append(vowels[text[i]])
+            result += vowels[text[i]]
             i += 1
-            
-        # Skip spaces and other characters
-        elif text[i].isspace():
-            result.append(' ')
-            i += 1
+        # Skip other characters
         else:
-            # Skip non-convertible characters
             i += 1
     
-    # Final validation - ensure only valid characters are included
-    valid_output = ''.join(c for c in result if (0x1700 <= ord(c) <= 0x171F) or c.isspace())
-    
-    # Verify the output meets database constraints
-    if not re.match(r'^[\u1700-\u171F\s]*$', valid_output):
-        logger.warning(f"Transliterated Baybayin doesn't match required regex pattern: {valid_output}")
-        # Additional cleanup to ensure it matches the pattern
-        valid_output = re.sub(r'[^\u1700-\u171F\s]', '', valid_output)
-    
-    return valid_output
+    return result
 
 @with_transaction(commit=False)
 def verify_baybayin_data(cur):
@@ -1809,53 +1681,9 @@ def merge_baybayin_entries(cur, baybayin_id: int, romanized_id: int):
         logger.error(f"Error merging Baybayin entries: {str(e)}")
         raise
 
-def clean_baybayin_text(text: str) -> str:
-    """
-    Clean Baybayin text by removing non-Baybayin characters.
-    
-    Args:
-        text: Text that may contain Baybayin and other characters
-        
-    Returns:
-        Cleaned text with only valid Baybayin characters and spaces
-    """
-    if not text:
-        return ""
-    
-    # Keep only characters in the Baybayin Unicode range (U+1700 to U+171F) and spaces
-    cleaned = ''.join(c for c in text if (0x1700 <= ord(c) <= 0x171F) or c.isspace())
-    
-    # Normalize whitespace and trim
-    return re.sub(r'\s+', ' ', cleaned).strip()
-
 def extract_baybayin_text(text: str) -> List[str]:
-    """
-    Extract Baybayin text segments from a string.
-    
-    Args:
-        text: Text that may contain Baybayin
-        
-    Returns:
-        List of Baybayin segments
-    """
-    if not text:
-        return []
-    
-    # Split by non-Baybayin characters
-    parts = re.split(r'[^\u1700-\u171F\s]+', text)
-    results = []
-    
-    for part in parts:
-        # Clean and normalize
-        cleaned_part = clean_baybayin_text(part)
-        
-        # Make sure part contains at least one Baybayin character
-        if cleaned_part and any(0x1700 <= ord(c) <= 0x171F for c in cleaned_part):
-            # Verify it meets database constraints
-            if re.match(r'^[\u1700-\u171F\s]*$', cleaned_part):
-                results.append(cleaned_part)
-                
-    return results
+    parts = re.split(r'[^ᜀ-᜔\s]+', text)
+    return [part.strip() for part in parts if part.strip() and re.search(r'[\u1700-\u171F]', part)]
 
 def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = None) -> bool:
     """
@@ -1872,40 +1700,37 @@ def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = 
         return False
         
     try:
-        # Clean and validate the form
-        cleaned_form = clean_baybayin_text(baybayin_form)
-        if not cleaned_form:
-            logger.warning(f"No valid Baybayin characters found in: {baybayin_form}")
-            return False
-        
-        # Check against the database regex constraint
-        if not re.match(r'^[\u1700-\u171F\s]*$', cleaned_form):
-            logger.warning(f"Baybayin form doesn't match required regex pattern: {cleaned_form}")
-            return False
-            
-        # Create a romanizer to validate structure
         romanizer = BaybayinRomanizer()
-        if not romanizer.validate_text(cleaned_form):
-            logger.warning(f"Invalid Baybayin structure in: {cleaned_form}")
+        
+        # Split into parts that might contain Baybayin
+        parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_form)
+        valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
+        
+        if not valid_parts:
             return False
             
-        # If romanized form is provided, check if it matches our romanization
-        if romanized_form:
-            try:
-                generated_rom = romanizer.romanize(cleaned_form)
-                # Compare normalized versions to avoid case and diacritic issues
-                if normalize_lemma(generated_rom) == normalize_lemma(romanized_form):
-                    return True
-                else:
-                    logger.warning(f"Romanization mismatch: expected '{romanized_form}', got '{generated_rom}'")
-                    # Still return True if structure is valid but romanization doesn't match
-                    # This allows for different romanization standards
-                    return True
-            except Exception as e:
-                logger.error(f"Error during romanization validation: {e}")
+        # Check that ALL parts are valid Baybayin
+        for part in valid_parts:
+            if not romanizer.validate_text(part):
                 return False
         
-        # If no romanized form to check against, return True if the form is valid
+        # If romanized form is provided, check at least one part matches when romanized
+        if romanized_form:
+            normalized_romanized = normalize_lemma(romanized_form)
+            
+            # Try to match any part's romanization with the provided romanized form
+            for part in valid_parts:
+                try:
+                    generated_rom = romanizer.romanize(part)
+                    if normalize_lemma(generated_rom) == normalized_romanized:
+                        return True
+                except ValueError:
+                    continue
+                    
+            # No match was found between romanizations
+            return False
+        
+        # If no romanized form to check against, and all parts are valid, return True
         return True
         
     except Exception as e:
@@ -1913,58 +1738,31 @@ def validate_baybayin_entry(baybayin_form: str, romanized_form: Optional[str] = 
         return False
 
 @with_transaction(commit=True)
-def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form: Optional[str] = None) -> bool:
-    """
-    Process and store Baybayin data for a word.
-    
-    Args:
-        cur: Database cursor
-        word_id: Word ID to update
-        baybayin_form: The Baybayin text
-        romanized_form: Optional romanized form
-        
-    Returns:
-        bool: True if successful, False otherwise
-    """
+def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form: Optional[str] = None) -> None:
+    """Process and store Baybayin data for a word."""
     if not baybayin_form:
-        logger.warning(f"Empty Baybayin form for word_id {word_id}")
-        return False
-        
+        return
     try:
-        # Clean the baybayin form
-        cleaned_baybayin = clean_baybayin_text(baybayin_form)
-        
-        if not cleaned_baybayin:
-            logger.warning(f"No valid Baybayin characters found in: {baybayin_form} for word_id {word_id}")
-            return False
-        
-        # Verify it meets database constraints
-        if not re.match(r'^[\u1700-\u171F\s]*$', cleaned_baybayin):
-            logger.warning(f"Baybayin form doesn't match required regex pattern: {cleaned_baybayin}")
-            return False
-            
-        # Create a romanizer to validate structure
         romanizer = BaybayinRomanizer()
-        if not romanizer.validate_text(cleaned_baybayin):
-            logger.warning(f"Invalid Baybayin structure in: {cleaned_baybayin} for word_id {word_id}")
-            return False
-            
-        # Generate romanization if not provided
-        if not romanized_form:
-            try:
-                romanized_form = romanizer.romanize(cleaned_baybayin)
-            except Exception as e:
-                logger.error(f"Error generating romanization for word_id {word_id}: {e}")
-                # Try to continue with the process even if romanization fails
-                romanized_form = None
-        
-        # Verify the word exists before updating
-        cur.execute("SELECT 1 FROM words WHERE id = %s", (word_id,))
-        if not cur.fetchone():
-            logger.warning(f"Word ID {word_id} does not exist in the database")
-            return False
-        
-        # Update the word record
+        if not validate_baybayin_entry(baybayin_form, romanized_form):
+            logger.warning(f"Invalid Baybayin form for word_id {word_id}: {baybayin_form}")
+            return
+        parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_form)
+        valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
+        if not valid_parts:
+            return
+        cleaned_baybayin = None
+        romanized_value = None
+        for part in sorted(valid_parts, key=len, reverse=True):
+            if romanizer.validate_text(part):
+                try:
+                    romanized_value = romanizer.romanize(part)
+                    cleaned_baybayin = part
+                    break
+                except ValueError:
+                    continue
+        if not cleaned_baybayin:
+            return
         cur.execute("""
             UPDATE words 
             SET has_baybayin = TRUE,
@@ -1972,166 +1770,79 @@ def process_baybayin_data(cur, word_id: int, baybayin_form: str, romanized_form:
                 romanized_form = %s,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-        """, (cleaned_baybayin, romanized_form, word_id))
-        
-        return True
-        
+        """, (cleaned_baybayin, romanized_value, word_id))
     except Exception as e:
-        logger.error(f"Error processing Baybayin data for word_id {word_id}: {e}")
+        logger.error(f"Error processing Baybayin data for word_id {word_id}: {str(e)}")
         raise
 
 @with_transaction(commit=True)
 def process_baybayin_entries(cur):
     """Process all Baybayin entries in the database."""
     logger.info("Processing Baybayin entries...")
-    
-    try:
-        # Create a new BaybayinRomanizer instance
-        romanizer = BaybayinRomanizer()
-        
-        # Get all entries that contain Baybayin characters
-        cur.execute("""
-            SELECT id, lemma, language_code
-            FROM words 
-            WHERE lemma ~ '[\u1700-\u171F]'
-            OR baybayin_form IS NOT NULL
-            ORDER BY id ASC
-        """)
-        
-        baybayin_entries = cur.fetchall()
-        processed_count = 0
-        error_count = 0
-        skipped_count = 0
-        
-        logger.info(f"Found {len(baybayin_entries)} potential Baybayin entries to process")
-        
-        for entry in baybayin_entries:
-            baybayin_id, baybayin_lemma, language_code = entry
-            
-            try:
-                # Step 1: Extract Baybayin segments from the lemma
-                baybayin_segments = extract_baybayin_text(baybayin_lemma)
-                
-                # Step 2: Check if entry already has a valid Baybayin form
-                cur.execute("SELECT baybayin_form, romanized_form FROM words WHERE id = %s", (baybayin_id,))
-                existing_forms = cur.fetchone()
-                existing_baybayin = existing_forms[0] if existing_forms else None
-                existing_romanized = existing_forms[1] if existing_forms else None
-                
-                # Step 3: Process based on available data
-                if not baybayin_segments and existing_baybayin:
-                    # No new segments but has existing form - validate it
-                    cleaned_existing = clean_baybayin_text(existing_baybayin)
-                    
-                    if cleaned_existing and re.match(r'^[\u1700-\u171F\s]*$', cleaned_existing):
-                        # Generate romanization if missing
-                        if not existing_romanized:
-                            try:
-                                romanized = romanizer.romanize(cleaned_existing)
-                                cur.execute("""
-                                    UPDATE words
-                                    SET baybayin_form = %s,
-                                        romanized_form = %s
-                                    WHERE id = %s
-                                """, (cleaned_existing, romanized, baybayin_id))
-                                processed_count += 1
-                            except Exception as e:
-                                logger.error(f"Error updating romanization for word ID {baybayin_id}: {e}")
-                                error_count += 1
-                    else:
-                        # Invalid existing form - clear it
-                        cur.execute("""
-                            UPDATE words
-                            SET has_baybayin = FALSE,
-                                baybayin_form = NULL,
-                                romanized_form = NULL
-                            WHERE id = %s
-                        """, (baybayin_id,))
-                        skipped_count += 1
-                        logger.warning(f"Removed invalid Baybayin form for word ID {baybayin_id}")
-                
-                elif baybayin_segments:
-                    # Found new segments - use the longest valid one
-                    valid_segments = []
-                    for segment in baybayin_segments:
-                        try:
-                            romanized = romanizer.romanize(segment)
-                            valid_segments.append((segment, romanized))
-                        except Exception as e:
-                            logger.warning(f"Error romanizing segment '{segment}' for word ID {baybayin_id}: {e}")
-                    
-                    if valid_segments:
-                        # Sort by length to get the longest valid segment
-                        valid_segments.sort(key=lambda x: len(x[0]), reverse=True)
-                        cleaned_baybayin, romanized_value = valid_segments[0]
-                        
-                        # Update the record
-                        cur.execute("""
-                            UPDATE words 
-                            SET has_baybayin = TRUE,
-                                baybayin_form = %s,
-                                romanized_form = %s,
-                                updated_at = CURRENT_TIMESTAMP
-                            WHERE id = %s
-                        """, (cleaned_baybayin, romanized_value, baybayin_id))
-                        
-                        processed_count += 1
-                    else:
-                        # No valid segments found
-                        logger.warning(f"No valid Baybayin segments in entry {baybayin_id}: {baybayin_lemma}")
-                        cur.execute("""
-                            UPDATE words
-                            SET has_baybayin = FALSE,
-                                baybayin_form = NULL,
-                                romanized_form = NULL
-                            WHERE id = %s
-                        """, (baybayin_id,))
-                        skipped_count += 1
-                else:
-                    # No Baybayin data found - mark as not having Baybayin
-                    cur.execute("""
-                        UPDATE words
-                        SET has_baybayin = FALSE,
-                            baybayin_form = NULL,
-                            romanized_form = NULL
-                        WHERE id = %s
-                    """, (baybayin_id,))
-                    skipped_count += 1
-                
-                # Commit every 100 entries to avoid long-running transactions
-                if (processed_count + skipped_count + error_count) % 100 == 0:
-                    logger.info(f"Progress: {processed_count} processed, {skipped_count} skipped, {error_count} errors")
-                
-            except Exception as e:
-                logger.error(f"Error processing Baybayin entry {baybayin_id}: {str(e)}")
-                error_count += 1
-        
-        logger.info(f"Processed {processed_count} Baybayin entries, skipped {skipped_count}, with {error_count} errors")
-        return processed_count, error_count
-    
-    except Exception as e:
-        logger.error(f"Error in process_baybayin_entries: {str(e)}")
-        return 0, 0
+    cur.execute("""
+        SELECT id, lemma, language_code, normalized_lemma 
+        FROM words 
+        WHERE lemma ~ '[\u1700-\u171F]'
+        ORDER BY id ASC
+    """)
+    baybayin_entries = cur.fetchall()
+    conn = cur.connection
+    for baybayin_id, baybayin_lemma, language_code, _ in baybayin_entries:
+        try:
+            cur.execute("BEGIN")
+            parts = re.split(r'[^ᜀ-᜔\s]+', baybayin_lemma)
+            valid_parts = [p.strip() for p in parts if p.strip() and re.search(r'[\u1700-\u171F]', p)]
+            if not valid_parts:
+                logger.warning(f"No valid Baybayin segments found for entry {baybayin_id}: {baybayin_lemma}")
+                conn.commit()
+                continue
+            romanizer = BaybayinRomanizer()
+            cleaned_baybayin = None
+            romanized = None
+            for part in sorted(valid_parts, key=len, reverse=True):
+                if romanizer.validate_text(part):
+                    try:
+                        romanized = romanizer.romanize(part)
+                        cleaned_baybayin = part
+                        break
+                    except ValueError:
+                        continue
+            if not cleaned_baybayin or not romanized:
+                logger.warning(f"Could not process any Baybayin segments for entry {baybayin_id}")
+                conn.commit()
+                continue
+            logger.info(f"Updating Baybayin entry (ID: {baybayin_id}) with cleaned form")
+            cur.execute("""
+                UPDATE words 
+                SET romanized_form = %s,
+                    baybayin_form = %s,
+                    has_baybayin = TRUE,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = %s
+            """, (romanized, cleaned_baybayin, baybayin_id))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            logger.error(f"Error processing Baybayin entry {baybayin_id}: {str(e)}")
+            continue
 
 @with_transaction(commit=True)
 def cleanup_baybayin_data(cur):
     """Clean up Baybayin data in the database."""
     try:
-        logger.info("Starting Baybayin data cleanup...")
-        
-        # Step 1: Fix the baybayin_form field to comply with constraints
+        # Clean Baybayin form field by removing non-Baybayin characters
         cur.execute(r"""
             UPDATE words 
             SET baybayin_form = regexp_replace(
                 baybayin_form,
-                '[^\u1700-\u171F\s]',
+                '[^ᜀ-᜔\s]',
                 '',
                 'g'
             )
             WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL
         """)
         
-        # Step 2: Normalize whitespace in Baybayin form
+        # Normalize whitespace in Baybayin form
         cur.execute(r"""
             UPDATE words 
             SET baybayin_form = regexp_replace(
@@ -2143,56 +1854,21 @@ def cleanup_baybayin_data(cur):
             WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL
         """)
         
-        # Step 3: Remove has_baybayin flag if baybayin_form is empty or invalid
+        # Fix inconsistent flag states - remove has_baybayin if empty baybayin_form
         cur.execute("""
             UPDATE words
             SET has_baybayin = FALSE, baybayin_form = NULL
-            WHERE has_baybayin = TRUE AND (
-                baybayin_form IS NULL OR 
-                baybayin_form = '' OR 
-                baybayin_form !~ '[\u1700-\u171F]'
-            )
+            WHERE has_baybayin = TRUE AND (baybayin_form IS NULL OR baybayin_form = '' OR baybayin_form !~ '[\u1700-\u171F]')
         """)
         
-        # Step 4: Remove baybayin_form if has_baybayin is false
+        # Fix inconsistent flag states - remove baybayin_form if has_baybayin is false
         cur.execute("""
             UPDATE words
-            SET baybayin_form = NULL, romanized_form = NULL
+            SET baybayin_form = NULL
             WHERE has_baybayin = FALSE AND baybayin_form IS NOT NULL
         """)
         
-        # Step 5: Generate missing romanized forms
-        cur.execute("""
-            SELECT id, baybayin_form 
-            FROM words 
-            WHERE has_baybayin = TRUE 
-              AND baybayin_form IS NOT NULL 
-              AND baybayin_form ~ '[\u1700-\u171F]'
-              AND (romanized_form IS NULL OR romanized_form = '')
-        """)
-        
-        romanizer = BaybayinRomanizer()
-        missing_romanization_count = 0
-        
-        for word_id, baybayin_form in cur.fetchall():
-            try:
-                # Clean the form first
-                cleaned_form = clean_baybayin_text(baybayin_form)
-                
-                if cleaned_form and romanizer.validate_text(cleaned_form):
-                    romanized = romanizer.romanize(cleaned_form)
-                    if romanized:
-                        cur.execute("""
-                            UPDATE words 
-                            SET romanized_form = %s,
-                                baybayin_form = %s
-                            WHERE id = %s
-                        """, (romanized, cleaned_form, word_id))
-                        missing_romanization_count += 1
-            except Exception as e:
-                logger.warning(f"Error generating romanization for word ID {word_id}: {e}")
-        
-        # Step 6: Update search text to include Baybayin data for improved search
+        # Update search text to include Baybayin data for improved search
         cur.execute("""
             UPDATE words
             SET search_text = to_tsvector('simple',
@@ -2204,250 +1880,70 @@ def cleanup_baybayin_data(cur):
             WHERE has_baybayin = TRUE OR baybayin_form IS NOT NULL OR romanized_form IS NOT NULL
         """)
         
-        # Log results
-        cur.execute("SELECT COUNT(*) FROM words WHERE has_baybayin = TRUE")
-        baybayin_count = cur.fetchone()[0]
+        # Handle duplicate Baybayin forms - keep only one entry per language
+        cur.execute("""
+            WITH DuplicateBaybayin AS (
+                SELECT MIN(id) as keep_id,
+                       language_code,
+                       baybayin_form
+                FROM words
+                WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL
+                GROUP BY language_code, baybayin_form
+                HAVING COUNT(*) > 1
+            )
+            UPDATE words w
+            SET has_baybayin = FALSE,
+                baybayin_form = NULL
+            FROM DuplicateBaybayin d
+            WHERE w.language_code = d.language_code 
+              AND w.baybayin_form = d.baybayin_form 
+              AND w.id != d.keep_id
+        """)
         
-        logger.info(f"Baybayin data cleanup completed: {baybayin_count} valid Baybayin entries remain")
-        logger.info(f"Generated {missing_romanization_count} missing romanizations")
-        
+        logger.info("Baybayin data cleanup completed successfully")
         return True
         
     except Exception as e:
         logger.error(f"Error during Baybayin cleanup: {str(e)}")
         raise
-
+    
 @with_transaction(commit=False)
 def check_baybayin_consistency(cur):
     """Check for consistency issues in Baybayin data."""
     issues = []
-    
-    # Check for entries marked as Baybayin but missing romanization
     cur.execute("""
-        SELECT COUNT(*)
+        SELECT id, lemma
         FROM words
-        WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL AND romanized_form IS NULL
+        WHERE has_baybayin = TRUE AND romanized_form IS NULL
     """)
-    missing_rom_count = cur.fetchone()[0]
-    
-    if missing_rom_count > 0:
-        issues.append(f"Found {missing_rom_count} entries missing romanization")
-        
-        # Sample some problematic entries for the log
-        cur.execute("""
-            SELECT id, lemma, baybayin_form
-            FROM words
-            WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL AND romanized_form IS NULL
-            LIMIT 5
-        """)
-        
-        for word_id, lemma, baybayin in cur.fetchall():
-            logger.warning(f"Missing romanization for word ID {word_id}: {lemma} / {baybayin}")
-    
-    # Check for inconsistent flag states
+    missing_rom = cur.fetchall()
+    if missing_rom:
+        issues.append(f"Found {len(missing_rom)} entries missing romanization")
+        for word_id, lemma in missing_rom:
+            logger.warning(f"Missing romanization for word ID {word_id}: {lemma}")
     cur.execute("""
-        SELECT COUNT(*)
+        SELECT id, lemma
         FROM words
         WHERE (has_baybayin = TRUE AND baybayin_form IS NULL)
            OR (has_baybayin = FALSE AND baybayin_form IS NOT NULL)
     """)
-    inconsistent_count = cur.fetchone()[0]
-    
-    if inconsistent_count > 0:
-        issues.append(f"Found {inconsistent_count} entries with inconsistent Baybayin flags")
-        
-        # Sample some inconsistent entries
-        cur.execute("""
-            SELECT id, lemma, has_baybayin, baybayin_form
-            FROM words
-            WHERE (has_baybayin = TRUE AND baybayin_form IS NULL)
-               OR (has_baybayin = FALSE AND baybayin_form IS NOT NULL)
-            LIMIT 5
-        """)
-        
-        for word_id, lemma, has_flag, baybayin in cur.fetchall():
-            state = "marked as Baybayin but missing form" if has_flag else "has Baybayin form but not flagged"
-            logger.warning(f"Inconsistent Baybayin flags for word ID {word_id}: {lemma} ({state})")
-    
-    # Check for invalid characters in Baybayin form
+    inconsistent = cur.fetchall()
+    if inconsistent:
+        issues.append(f"Found {len(inconsistent)} entries with inconsistent Baybayin flags")
+        for word_id, lemma in inconsistent:
+            logger.warning(f"Inconsistent Baybayin flags for word ID {word_id}: {lemma}")
     cur.execute(r"""
-        SELECT COUNT(*)
+        SELECT id, lemma, baybayin_form
         FROM words
-        WHERE baybayin_form IS NOT NULL AND baybayin_form ~ '[^\u1700-\u171F\s]'
+        WHERE baybayin_form ~ '[^ᜀ-᜔\s]'
     """)
-    invalid_chars_count = cur.fetchone()[0]
-    
-    if invalid_chars_count > 0:
-        issues.append(f"Found {invalid_chars_count} entries with invalid Baybayin characters")
-        
-        # Sample some entries with invalid characters
-        cur.execute(r"""
-            SELECT id, lemma, baybayin_form
-            FROM words
-            WHERE baybayin_form IS NOT NULL AND baybayin_form ~ '[^\u1700-\u171F\s]'
-            LIMIT 5
-        """)
-        
-        for word_id, lemma, baybayin in cur.fetchall():
-            logger.warning(f"Invalid Baybayin characters in word ID {word_id}: {lemma} / {baybayin}")
-    
-    # Check for entries with Baybayin in the lemma field but not in baybayin_form
-    cur.execute(r"""
-        SELECT COUNT(*)
-        FROM words
-        WHERE lemma ~ '[\u1700-\u171F]' AND (baybayin_form IS NULL OR NOT has_baybayin)
-    """)
-    missing_baybayin_count = cur.fetchone()[0]
-    
-    if missing_baybayin_count > 0:
-        issues.append(f"Found {missing_baybayin_count} entries with Baybayin characters in lemma but not processed")
-    
-    return issues if issues else []
+    invalid_chars = cur.fetchall()
+    if invalid_chars:
+        issues.append(f"Found {len(invalid_chars)} entries with invalid Baybayin characters")
+        for word_id, lemma, baybayin in invalid_chars:
+            logger.warning(f"Invalid Baybayin characters in word ID {word_id}: {lemma}")
+    return issues
 
-@with_transaction(commit=True)
-def regenerate_all_romanizations(cur):
-    """Regenerate romanized forms for all Baybayin entries."""
-    regenerated_count = 0
-    error_count = 0
-    
-    try:
-        romanizer = BaybayinRomanizer()
-        
-        # Get all entries with Baybayin forms
-        cur.execute("""
-            SELECT id, baybayin_form
-            FROM words
-            WHERE has_baybayin = TRUE AND baybayin_form IS NOT NULL AND baybayin_form ~ '[\u1700-\u171F]'
-        """)
-        
-        entries = cur.fetchall()
-        
-        logger.info(f"Regenerating romanizations for {len(entries)} Baybayin entries")
-        
-        for word_id, baybayin_form in entries:
-            try:
-                # Clean the form
-                cleaned_form = clean_baybayin_text(baybayin_form)
-                
-                if cleaned_form and re.match(r'^[\u1700-\u171F\s]*$', cleaned_form):
-                    # Generate romanization
-                    romanized = romanizer.romanize(cleaned_form)
-                    
-                    # Update the entry
-                    cur.execute("""
-                        UPDATE words
-                        SET romanized_form = %s,
-                            baybayin_form = %s
-                        WHERE id = %s
-                    """, (romanized, cleaned_form, word_id))
-                    
-                    regenerated_count += 1
-                    
-                    # Log progress every 100 entries
-                    if regenerated_count % 100 == 0:
-                        logger.info(f"Regenerated {regenerated_count}/{len(entries)} romanizations")
-            except Exception as e:
-                logger.error(f"Error regenerating romanization for word ID {word_id}: {e}")
-                error_count += 1
-        
-        logger.info(f"Romanization regeneration complete: {regenerated_count} updated, {error_count} errors")
-        
-    except Exception as e:
-        logger.error(f"Error in regenerate_all_romanizations: {e}")
-        return 0, 0
-        
-    finally:
-        # This will always execute, even if there's an exception
-        logger.info(f"Romanization regeneration finished - processed {regenerated_count + error_count} entries")
-        
-    return regenerated_count, error_count
-
-@with_transaction(commit=True)
-def fix_baybayin_constraint_violations(cur):
-    """Fix Baybayin entries that violate the database constraint."""
-    fixed_count = 0
-    
-    try:
-        # Identify entries that would violate the constraint
-        cur.execute(r"""
-            SELECT id, lemma, baybayin_form
-            FROM words
-            WHERE baybayin_form IS NOT NULL AND baybayin_form !~ '^[\u1700-\u171F\s]*$'
-        """)
-        
-        violations = cur.fetchall()
-        
-        logger.info(f"Found {len(violations)} entries violating Baybayin regex constraint")
-        
-        for word_id, lemma, baybayin_form in violations:
-            # Clean the form
-            cleaned_form = clean_baybayin_text(baybayin_form)
-            
-            if cleaned_form and re.match(r'^[\u1700-\u171F\s]*$', cleaned_form):
-                # We can fix this entry
-                cur.execute("""
-                    UPDATE words
-                    SET baybayin_form = %s
-                    WHERE id = %s
-                """, (cleaned_form, word_id))
-                fixed_count += 1
-            else:
-                # Cannot fix, remove Baybayin data
-                cur.execute("""
-                    UPDATE words
-                    SET has_baybayin = FALSE,
-                        baybayin_form = NULL,
-                        romanized_form = NULL
-                    WHERE id = %s
-                """, (word_id,))
-                logger.warning(f"Removed invalid Baybayin form for word ID {word_id}: {lemma}")
-        
-        logger.info(f"Fixed {fixed_count} Baybayin constraint violations")
-        
-    except Exception as e:
-        logger.error(f"Error fixing Baybayin constraint violations: {e}")
-        return 0
-        
-    finally:
-        logger.info(f"Completed Baybayin constraint violation check")
-        
-    return fixed_count
-
-# Main function to run comprehensive Baybayin data repair
-def repair_baybayin_data():
-    """Run a comprehensive Baybayin data repair process."""
-    try:
-        with get_connection() as conn:
-            with conn.cursor() as cur:
-                logger.info("Starting comprehensive Baybayin data repair...")
-                
-                # Step 1: Fix constraint violations
-                fixed_count = fix_baybayin_constraint_violations(cur)
-                logger.info(f"Fixed {fixed_count} constraint violations")
-                
-                # Step 2: Clean up data
-                cleanup_baybayin_data(cur)
-                
-                # Step 3: Regenerate romanizations
-                regen_count, regen_errors = regenerate_all_romanizations(cur)
-                logger.info(f"Regenerated {regen_count} romanizations with {regen_errors} errors")
-                
-                # Step 4: Process entries with Baybayin in lemma
-                processed_count, error_count = process_baybayin_entries(cur)
-                logger.info(f"Processed {processed_count} entries with {error_count} errors")
-                
-                # Step 5: Verify consistency
-                issues = check_baybayin_consistency(cur)
-                if issues:
-                    logger.warning(f"Remaining issues: {', '.join(issues)}")
-                else:
-                    logger.info("No issues found after repair")
-                
-                logger.info("Baybayin data repair completed successfully")
-                return True
-    except Exception as e:
-        logger.error(f"Error in Baybayin data repair: {e}")
-        return False
 # -------------------------------------------------------------------
 # Word Insertion and Update Functions
 # -------------------------------------------------------------------
@@ -2483,40 +1979,7 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = "tl", check_exis
     result = cur.fetchone()
     
     if result:
-        word_id = result[0]
-        
-        # Update word with sources if provided
-        sources = kwargs.get('sources')
-        if sources:
-            try:
-                # Check if the word already has sources
-                cur.execute("SELECT source_info FROM words WHERE id = %s", (word_id,))
-                existing_source = cur.fetchone()[0]
-                
-                # Combine sources if they exist
-                if existing_source:
-                    # Handle different source formats
-                    if isinstance(existing_source, dict):
-                        # If it's already a dictionary, update it
-                        if sources not in existing_source.get('sources', []):
-                            if 'sources' in existing_source:
-                                existing_source['sources'].append(sources)
-                            else:
-                                existing_source['sources'] = [sources]
-                    elif isinstance(existing_source, str):
-                        # If it's a string, convert to a list
-                        if sources != existing_source:
-                            sources = f"{existing_source}, {sources}"
-                    
-                # Update the word with the new sources
-                cur.execute(
-                    "UPDATE words SET source_info = %s WHERE id = %s",
-                    (sources, word_id)
-                )
-            except Exception as e:
-                logger.warning(f"Error updating sources for existing word '{lemma}': {e}")
-        
-        return word_id
+        return result[0]
         
     if check_exists:
         return None
@@ -2562,7 +2025,6 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = "tl", check_exis
         romanized_form = kwargs.get('romanized_form')
         preferred_spelling = kwargs.get('preferred_spelling')
         tags = kwargs.get('tags')
-        sources = kwargs.get('sources', '')
         
         # Validate baybayin data
         if has_baybayin and baybayin_form:
@@ -2579,36 +2041,18 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = "tl", check_exis
         if romanized_form:
             search_text += f" {romanized_form}"
             
-        # Ensure sources is a valid JSON string or NULL
-        if sources is None or sources == '':
-            source_info = None
-        else:
-            # Check if it's already a JSON string
-            if isinstance(sources, (dict, list)):
-                source_info = json.dumps(sources)
-            else:
-                # It's a string, but make sure it's valid JSON
-                try:
-                    # Try to parse it as JSON first
-                    json.loads(sources)
-                    source_info = sources  # It's already valid JSON
-                except (json.JSONDecodeError, TypeError):
-                    # Not valid JSON, treat as plain text
-                    source_info = json.dumps(sources)
-            
         # Insert with parameterized query to prevent SQL injection
-        # FIX: Changed to_tsquery to to_tsvector for search_text
         cur.execute("""
             INSERT INTO words (
                 lemma, normalized_lemma, language_code, root_word_id, 
                 preferred_spelling, tags, has_baybayin, baybayin_form, 
-                romanized_form, search_text, source_info, created_at, updated_at
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, to_tsvector('simple', %s), %s, NOW(), NOW())
+                romanized_form, search_text, created_at, updated_at
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, to_tsvector('simple', %s), NOW(), NOW())
             RETURNING id
         """, (
             lemma, normalized_lemma, language_code, root_word_id,
             preferred_spelling, tags, has_baybayin, baybayin_form,
-            romanized_form, search_text, source_info
+            romanized_form, search_text
         ))
         
         return cur.fetchone()[0]
@@ -2995,46 +2439,20 @@ def insert_affixation(
     except Exception as e:
         logger.error(f"Error inserting affixation {root_id} -> {affixed_id}: {str(e)}")
 
-# Update for batch_get_or_create_word_ids function to properly handle sources
-
 @with_transaction(commit=True)
-def batch_get_or_create_word_ids(cur, entries: List[Tuple[str, str]], source: str = None, batch_size: int = 1000) -> Dict[Tuple[str, str], int]:
+def batch_get_or_create_word_ids(cur, entries: List[Tuple[str, str]], batch_size: int = 1000) -> Dict[Tuple[str, str], int]:
     """
     Create or get IDs for multiple words in batches.
     
     Args:
         cur: Database cursor
         entries: List of (lemma, language_code) tuples
-        source: Source information to add to the entries
         batch_size: Number of entries to process in each batch
         
     Returns:
         Dictionary mapping (lemma, language_code) to word_id
     """
     result = {}
-    
-    # Standardize source if provided
-    if source:
-        standardized_source = SourceStandardization.standardize_sources(source)
-    else:
-        standardized_source = None
-    
-    # Prepare source_info JSON for database
-    if standardized_source is None or standardized_source == '':
-        source_info = None
-    else:
-        # Check if it's already a JSON string
-        if isinstance(standardized_source, (dict, list)):
-            source_info = json.dumps(standardized_source)
-        else:
-            # It's a string, but make sure it's valid JSON
-            try:
-                # Try to parse it as JSON first
-                json.loads(standardized_source)
-                source_info = standardized_source  # It's already valid JSON
-            except (json.JSONDecodeError, TypeError):
-                # Not valid JSON, treat as plain text
-                source_info = json.dumps(standardized_source)
     
     for i in range(0, len(entries), batch_size):
         batch = entries[i:i + batch_size]
@@ -3064,51 +2482,6 @@ def batch_get_or_create_word_ids(cur, entries: List[Tuple[str, str]], source: st
         except Exception as e:
             logger.error(f"Error fetching existing words: {str(e)}")
             existing = {}
-        
-        # If source is provided, update sources for existing words
-        if source_info and existing:
-            for (lemma, lang), word_id in existing.items():
-                try:
-                    # Check if the word already has source information
-                    cur.execute("SELECT source_info FROM words WHERE id = %s", (word_id,))
-                    row = cur.fetchone()
-                    existing_source = row[0] if row and row[0] else None
-                    
-                    # If no existing source or different source, update it
-                    if not existing_source:
-                        cur.execute(
-                            "UPDATE words SET source_info = %s WHERE id = %s",
-                            (source_info, word_id)
-                        )
-                    elif standardized_source not in existing_source:
-                        # Combine sources if they're different
-                        try:
-                            # Try to parse existing source as JSON
-                            existing_json = json.loads(existing_source)
-                            if isinstance(existing_json, list):
-                                if standardized_source not in existing_json:
-                                    existing_json.append(standardized_source)
-                                combined_source = json.dumps(existing_json)
-                            elif isinstance(existing_json, dict):
-                                if 'sources' in existing_json:
-                                    if standardized_source not in existing_json['sources']:
-                                        existing_json['sources'].append(standardized_source)
-                                else:
-                                    existing_json['sources'] = [standardized_source]
-                                combined_source = json.dumps(existing_json)
-                            else:
-                                # Not a list or dict, treat as string
-                                combined_source = json.dumps(f"{existing_source}, {standardized_source}")
-                        except (json.JSONDecodeError, TypeError):
-                            # Not valid JSON, just combine strings
-                            combined_source = json.dumps(f"{existing_source}, {standardized_source}")
-                            
-                        cur.execute(
-                            "UPDATE words SET source_info = %s WHERE id = %s",
-                            (combined_source, word_id)
-                        )
-                except Exception as e:
-                    logger.warning(f"Error updating source for word '{lemma}': {e}")
             
         # Identify entries that need to be inserted
         to_insert = []
@@ -3121,19 +2494,17 @@ def batch_get_or_create_word_ids(cur, entries: List[Tuple[str, str]], source: st
         for lemma, norm, lang in to_insert:
             try:
                 search_text = ' '.join(word.strip() for word in re.findall(r'\w+', f"{lemma} {norm}"))
-                # FIX: Changed to_tsquery to to_tsvector for search_text
                 cur.execute("""
-                    INSERT INTO words (lemma, normalized_lemma, language_code, tags, search_text, source_info)
-                    VALUES (%s, %s, %s, %s, to_tsvector('simple', %s), %s)
+                    INSERT INTO words (lemma, normalized_lemma, language_code, tags, search_text)
+                    VALUES (%s, %s, %s, %s, to_tsvector('simple', %s))
                     ON CONFLICT ON CONSTRAINT words_lang_lemma_uniq
                     DO UPDATE SET 
                         lemma = EXCLUDED.lemma,
                         tags = EXCLUDED.tags,
                         search_text = to_tsvector('simple', EXCLUDED.lemma || ' ' || EXCLUDED.normalized_lemma),
-                        source_info = EXCLUDED.source_info,
                         updated_at = CURRENT_TIMESTAMP
                     RETURNING id
-                """, (lemma, norm, lang, "", search_text, source_info))
+                """, (lemma, norm, lang, "", search_text))
                 
                 word_id = cur.fetchone()[0]
                 
@@ -3150,6 +2521,7 @@ def batch_get_or_create_word_ids(cur, entries: List[Tuple[str, str]], source: st
         result.update(existing)
         
     return result
+
 # -------------------------------------------------------------------
 # Dictionary Entry Processing
 # -------------------------------------------------------------------
@@ -3285,6 +2657,7 @@ def process_kwf_dictionary(cur, filename: str):
                     stats["error_entries"] += 1
                     error_types[str(word_error)] = error_types.get(str(word_error), 0) + 1
                     continue
+                
                 # Process etymology information
                 if "etymology" in entry and entry["etymology"]:
                     etymology_text = entry["etymology"]
@@ -4926,11 +4299,6 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
         language_code = entry.get('language_code', 'tl')
         if not language_code:
             language_code = 'tl'  # Default to Tagalog
-            
-        # Standardize the source
-        source = filename
-        if filename:
-            source = SourceStandardization.standardize_sources(os.path.basename(filename))
 
         # Process Baybayin form if present
         baybayin_form = None
@@ -4951,7 +4319,7 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
             baybayin_form=baybayin_form,
             romanized_form=romanized_form,
             check_exists=check_exists,
-            sources=source
+            sources=filename
         )
 
         if not word_id:
@@ -4963,12 +4331,12 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
             if isinstance(prons, list):
                 for pron in prons:
                     try:
-                        insert_pronunciation(cur, word_id, pron, sources=source)
+                        insert_pronunciation(cur, word_id, pron, sources=filename)
                     except Exception as e:
                         logger.warning(f"Failed to insert pronunciation for '{word}': {str(e)}")
             elif isinstance(prons, (str, dict)):
                 try:
-                    insert_pronunciation(cur, word_id, prons, sources=source)
+                    insert_pronunciation(cur, word_id, prons, sources=filename)
                 except Exception as e:
                     logger.warning(f"Failed to insert pronunciation for '{word}': {str(e)}")
 
@@ -4978,12 +4346,12 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
             if isinstance(credits, list):
                 for credit in credits:
                     try:
-                        insert_credit(cur, word_id, credit, sources=source)
+                        insert_credit(cur, word_id, credit, sources=filename)
                     except Exception as e:
                         logger.warning(f"Failed to insert credit for '{word}': {str(e)}")
             elif isinstance(credits, (str, dict)):
                 try:
-                    insert_credit(cur, word_id, credits, sources=source)
+                    insert_credit(cur, word_id, credits, sources=filename)
                 except Exception as e:
                     logger.warning(f"Failed to insert credit for '{word}': {str(e)}")
 
@@ -4998,7 +4366,7 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
                         word_id,
                         etymology_text,
                         normalized_components=json.dumps(components) if components else None,
-                        sources=source
+                        sources=filename
                     )
                 except Exception as e:
                     logger.warning(f"Failed to insert etymology for '{word}': {str(e)}")
@@ -5017,7 +4385,7 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
                                     cur,
                                     word_id,
                                     definition_text,
-                                    sources=source
+                                    sources=filename
                                 )
                         # Handle dictionary definitions
                         elif isinstance(def_item, dict):
@@ -5049,12 +4417,12 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
                                 usage_notes=def_item.get('notes'),
                                 category=def_item.get('category'),
                                 tags=def_item.get('tags'),
-                                sources=source
+                                sources=filename
                             )
 
                             if definition_id:
                                 # Process definition relationships
-                                process_definition_relations(cur, word_id, definition_text, source)
+                                process_definition_relations(cur, word_id, definition_text, filename)
 
                     except Exception as e:
                         logger.warning(f"Failed to process definition for '{word}': {str(e)}")
@@ -5062,7 +4430,7 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
         # Process relationships
         if "related" in entry and isinstance(entry["related"], dict):
             try:
-                process_relationships(cur, word_id, entry["related"], source)
+                process_relationships(cur, word_id, entry["related"], filename)
             except Exception as e:
                 logger.warning(f"Failed to process relationships for '{word}': {str(e)}")
 
@@ -5075,7 +4443,7 @@ def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Option
         cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
         logger.error(f"Error processing entry for '{word}': {str(e)}")
         return None
-
+    
 @with_transaction(commit=False)  # Changed to commit=False to manage transactions manually
 def process_kaikki_jsonl(cur, filename: str):
     """Process Kaikki.org dictionary entries."""
@@ -6111,47 +5479,16 @@ def process_marayum_json(cur, filename: str):
 
     try:
         # Read and parse JSON file
-        logger.info(f"Loading Marayum dictionary file: {filename}")
         with open(filename, 'r', encoding='utf-8') as f:
-            try:
-                data = json.load(f)
-            except json.JSONDecodeError as e:
-                logger.error(f"Invalid JSON in {filename}: {str(e)}")
-                return 0, 1
+            data = json.load(f)
 
-        # Validate dictionary structure
-        if not isinstance(data, dict):
-            logger.error(f"Invalid JSON format in {filename}: Expected dictionary object")
-            return 0, 1
-
-        # Extract dictionary metadata
-        dict_info = data.get("dictionary_info", {})
-        
-        # Improved language code handling
-        raw_language_code = dict_info.get("base_language", "tl")
-        # Normalize complex language codes (handle Bikol-Boie'nen format)
-        if len(raw_language_code) > 3 or "-" in raw_language_code or "'" in raw_language_code:
-            # Create a simplified language code
-            language_code = raw_language_code.split('-')[0].lower()[:3]
-            logger.info(f"Normalized complex language code '{raw_language_code}' to '{language_code}'")
-        else:
-            language_code = raw_language_code
-        
-        # Normalize source name
-        source = SourceStandardization.standardize_sources(os.path.basename(filename))
-        
-        # Extract entries
-        entries = data.get("words", [])
-        if not entries:
-            logger.warning(f"No entries found in {filename}")
+        if not isinstance(data, (list, dict)):
+            logger.error(f"Invalid JSON format in {filename}")
             return 0, 0
-            
-        stats["total_entries"] = len(entries)
-        logger.info(f"Processing {stats['total_entries']} entries from {dict_info.get('name', 'unknown')} dictionary")
 
-        # Create a savepoint for this file
-        savepoint_name = f"marayum_{hashlib.md5(filename.encode()).hexdigest()[:8]}"
-        cur.execute(f"SAVEPOINT {savepoint_name}")
+        entries = data if isinstance(data, list) else data.get("entries", [])
+        stats["total_entries"] = len(entries)
+        source = SourceStandardization.standardize_sources(os.path.basename(filename))
 
         # Process each entry
         for entry_idx, entry in enumerate(entries, 1):
@@ -6160,225 +5497,170 @@ def process_marayum_json(cur, filename: str):
                     stats["skipped_entries"] += 1
                     continue
 
-                # Extract word from the headword field (matches your JSON structure)
-                word = entry.get("headword", "").strip() if isinstance(entry.get("headword"), str) else ""
-                # Fallback to "word" field if headword is empty
+                # Extract word and validate
+                word = entry.get("word", "").strip() if isinstance(entry.get("word"), str) else ""
                 if not word:
-                    word = entry.get("word", "").strip() if isinstance(entry.get("word"), str) else ""
-                
-                if not word:
-                    logger.warning(f"Empty word at index {entry_idx} in {filename}")
                     stats["skipped_entries"] += 1
                     continue
-                    
-                # Create word entry savepoint
-                word_savepoint = f"word_{entry_idx}_{hashlib.md5(word.encode()).hexdigest()[:8]}"
-                cur.execute(f"SAVEPOINT {word_savepoint}")
 
+                # Get language code
+                language_code = entry.get("language_code", "tl")
+                if not language_code:
+                    language_code = "tl"
+
+                # Process Baybayin form if present
+                baybayin_form = None
+                romanized_form = None
+                if "baybayin" in entry:
+                    baybayin_text = entry["baybayin"]
+                    if isinstance(baybayin_text, str) and baybayin_text.strip():
+                        baybayin_form = baybayin_text.strip()
+                        if not romanized_form:
+                            romanized_form = get_romanized_text(baybayin_form)
+
+                # Create or get word entry
                 try:
-                    # Extract metadata exactly as in your JSON structure
-                    pos = entry.get("pos", "")
-                    
-                    # Clean pronunciation (remove brackets)
-                    raw_pronunciation = entry.get("pronunciation", "")
-                    pronunciation = raw_pronunciation.strip('[]') if raw_pronunciation else ""
-                    
-                    etymology = entry.get("etymology", "")
-                    credits = entry.get("credits", "")
-                    comment = entry.get("comment", "")
-                    dialect = entry.get("dialect", "")
-                    is_core = entry.get("is_core", False)
-                    
-                    # Combine comments and dialect as tags if present
-                    tags = []
-                    if comment:
-                        tags.append(f"comment:{comment}")
-                    if dialect:
-                        tags.append(f"dialect:{dialect}")
-                    if is_core:
-                        tags.append("core_word")
-                    if dict_info.get("name"):
-                        tags.append(f"dictionary:{dict_info.get('name')}")
-                    
-                    # Get or create word entry
                     word_id = get_or_create_word_id(
                         cur,
                         word,
                         language_code=language_code,
-                        sources=source,
-                        tags=", ".join(tags) if tags else None
+                        has_baybayin=bool(baybayin_form),
+                        baybayin_form=baybayin_form,
+                        romanized_form=romanized_form,
+                        sources=source
                     )
 
                     if not word_id:
-                        logger.error(f"Failed to create word entry for '{word}' at index {entry_idx}")
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {word_savepoint}")
+                        logger.error(f"Failed to create/get word ID for '{word}'")
                         stats["error_entries"] += 1
                         continue
 
-                    # Process pronunciation if present
-                    if pronunciation:
+                except Exception as e:
+                    logger.error(f"Error creating word entry for '{word}': {str(e)}")
+                    stats["error_entries"] += 1
+                    continue
+
+                # Process pronunciations
+                if "pronunciation" in entry:
+                    pron_data = entry["pronunciation"]
+                    if isinstance(pron_data, str) and pron_data.strip():
                         try:
-                            pron_id = insert_pronunciation(cur, word_id, {
+                            if insert_pronunciation(cur, word_id, {
                                 'type': 'ipa',
-                                'value': pronunciation,  # Already cleaned above
-                                'metadata': {'original': raw_pronunciation},
-                                'sources': source
-                            })
-                            if pron_id:
+                                'value': pron_data.strip()
+                            }, source):
                                 stats["pronunciations_added"] += 1
                         except Exception as e:
-                            logger.warning(f"Error adding pronunciation for '{word}': {str(e)}")
+                            logger.warning(f"Error processing pronunciation for '{word}': {str(e)}")
 
-                    # Process etymology if present
-                    if etymology:
-                        try:
+                # Process credits
+                if "credits" in entry:
+                    credits = entry["credits"]
+                    if isinstance(credits, list):
+                        for credit in credits:
+                            if isinstance(credit, str) and credit.strip():
+                                try:
+                                    if insert_credit(cur, word_id, {
+                                        'text': credit.strip()
+                                    }, source):
+                                        stats["credits_added"] += 1
+                                except Exception as e:
+                                    logger.warning(f"Error processing credit for '{word}': {str(e)}")
+
+                # Process definitions
+                if "definitions" in entry:
+                    defs = entry["definitions"]
+                    if isinstance(defs, list):
+                        for def_item in defs:
+                            try:
+                                def_text = ""
+                                examples = []
+                                pos = ""
+                                
+                                if isinstance(def_item, str):
+                                    def_text = def_item.strip()
+                                elif isinstance(def_item, dict):
+                                    def_text = def_item.get("definition", "").strip()
+                                    pos = def_item.get("partOfSpeech", "").strip()
+                                    ex_list = def_item.get("examples", [])
+                                    if isinstance(ex_list, list):
+                                        examples = [ex.strip() for ex in ex_list if isinstance(ex, str) and ex.strip()]
+
+                                if def_text:
+                                    def_id = insert_definition(
+                                        cur,
+                                        word_id,
+                                        def_text,
+                                        part_of_speech=standardize_entry_pos(pos),
+                                        examples=json.dumps(examples) if examples else None,
+                                        sources=source
+                                    )
+                                    if def_id:
+                                        stats["definitions_added"] += 1
+                                        stats["examples_added"] += len(examples)
+
+                            except Exception as e:
+                                logger.warning(f"Error processing definition for '{word}': {str(e)}")
+
+                # Process etymology
+                if "etymology" in entry and isinstance(entry["etymology"], str):
+                    try:
+                        etymology_text = entry["etymology"].strip()
+                        if etymology_text:
                             insert_etymology(
-                                cur, 
-                                word_id,
-                                etymology_text=etymology,
-                                sources=source
-                            )
-                        except Exception as e:
-                            logger.warning(f"Error adding etymology for '{word}': {str(e)}")
-
-                    # Process credits if present
-                    if credits:
-                        try:
-                            credit_id = insert_credit(cur, word_id, {
-                                'text': credits.replace('\n', ' ').strip()
-                            }, source)
-                            if credit_id:
-                                stats["credits_added"] += 1
-                        except Exception as e:
-                            logger.warning(f"Error adding credits for '{word}': {str(e)}")
-
-                    # Process definitions - Following your exact JSON structure
-                    definitions = entry.get("definitions", [])
-                    for def_item in definitions:
-                        if not isinstance(def_item, dict):
-                            continue
-                            
-                        definition_text = def_item.get("definition", "").strip()
-                        if not definition_text:
-                            continue
-                            
-                        # Process examples - Following your exact JSON structure
-                        examples = def_item.get("examples", [])
-                        examples_data = []
-                        
-                        if examples and isinstance(examples, list):
-                            for ex in examples:
-                                if isinstance(ex, dict):
-                                    ex_text = ex.get("text", "").strip()
-                                    translation = ex.get("translation", "").strip()
-                                    
-                                    if ex_text:
-                                        example_entry = {"text": ex_text}
-                                        if translation:
-                                            example_entry["translation"] = translation
-                                        examples_data.append(example_entry)
-                                        stats["examples_added"] += 1
-                        
-                        # Insert definition
-                        try:
-                            def_id = insert_definition(
                                 cur,
                                 word_id,
-                                definition_text,
-                                part_of_speech=pos,
-                                examples=json.dumps(examples_data) if examples_data else None,
+                                etymology_text,
                                 sources=source
                             )
-                            
-                            if def_id:
-                                stats["definitions_added"] += 1
-                        except Exception as e:
-                            logger.warning(f"Error adding definition for '{word}': {str(e)}")
+                    except Exception as e:
+                        logger.warning(f"Error processing etymology for '{word}': {str(e)}")
 
-                    # Process see_also references - Modified to match your exact JSON structure
-                    see_also = entry.get("see_also", [])
-                    if see_also and isinstance(see_also, list):
-                        for rel in see_also:
-                            if isinstance(rel, dict):
-                                # Handle the format in your JSON structure
-                                rel_word = rel.get("text", "").strip()
-                                rel_pk = rel.get("pk", None)  # Get the pk if present
-                                
-                                if rel_word:
-                                    try:
-                                        rel_id = None
-                                        # If we have a pk, try to find the word by ID first
-                                        if rel_pk:
-                                            cur.execute("SELECT id FROM words WHERE id = %s", (rel_pk,))
-                                            result = cur.fetchone()
-                                            if result:
-                                                rel_id = result[0]
-                                        
-                                        # If we couldn't find by ID, or no ID was provided, look up or create by name
-                                        if not rel_id:
-                                            rel_id = get_or_create_word_id(cur, rel_word, language_code=language_code)
-                                        
-                                        if rel_id and rel_id != word_id:  # Avoid self-references
-                                            insert_relation(
+                # Process relationships
+                if "related" in entry and isinstance(entry["related"], dict):
+                    for rel_type, rel_words in entry["related"].items():
+                        if isinstance(rel_words, list):
+                            for rel_word in rel_words:
+                                try:
+                                    if isinstance(rel_word, str) and rel_word.strip():
+                                        rel_id = get_or_create_word_id(cur, rel_word.strip(), language_code)
+                                        if rel_id:
+                                            if insert_relation(
                                                 cur,
                                                 word_id,
                                                 rel_id,
-                                                RelationshipType.SEE_ALSO,
-                                                sources=source
-                                            )
-                                            stats["relations_added"] += 1
-                                    except Exception as e:
-                                        logger.warning(f"Error adding relation for '{word}' to '{rel_word}': {str(e)}")
+                                                rel_type,
+                                                source
+                                            ):
+                                                stats["relations_added"] += 1
+                                except Exception as e:
+                                    logger.warning(f"Error processing relation for '{word}': {str(e)}")
 
-                    stats["processed_entries"] += 1
-                    cur.execute(f"RELEASE SAVEPOINT {word_savepoint}")
-                    
-                    # Log progress periodically
-                    if stats["processed_entries"] % 20 == 0:
-                        logger.info(f"Processed {stats['processed_entries']}/{stats['total_entries']} entries from {filename}")
-                
-                except Exception as e:
-                    logger.error(f"Error processing entry '{word}' at index {entry_idx}: {str(e)}")
-                    logger.error(f"Entry data sample: {json.dumps(entry)[:200]}...")
-                    cur.execute(f"ROLLBACK TO SAVEPOINT {word_savepoint}")
-                    stats["error_entries"] += 1
-            
+                stats["processed_entries"] += 1
+                if stats["processed_entries"] % 1000 == 0:
+                    logger.info(f"Successfully processed {stats['processed_entries']} entries so far.")
+
             except Exception as e:
-                logger.error(f"Unexpected error processing entry at index {entry_idx}: {str(e)}")
+                logger.error(f"Error processing entry {entry_idx}: {str(e)}")
                 stats["error_entries"] += 1
-                # Continue with next entry
 
-        # Release the file savepoint
-        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-        
-        # Log summary
         logger.info(f"Completed processing {filename}")
-        logger.info(f"  Total entries: {stats['total_entries']}")
-        logger.info(f"  Processed: {stats['processed_entries']}")
-        logger.info(f"  Skipped: {stats['skipped_entries']}")
-        logger.info(f"  Errors: {stats['error_entries']}")
-        logger.info(f"  Definitions added: {stats['definitions_added']}")
-        logger.info(f"  Examples added: {stats['examples_added']}")
-        logger.info(f"  Pronunciations added: {stats['pronunciations_added']}")
-        logger.info(f"  Credits added: {stats['credits_added']}")
-        logger.info(f"  Relations added: {stats['relations_added']}")
+        logger.info(f"Total entries: {stats['total_entries']}")
+        logger.info(f"Processed: {stats['processed_entries']}")
+        logger.info(f"Skipped: {stats['skipped_entries']}")
+        logger.info(f"Errors: {stats['error_entries']}")
+        logger.info(f"Definitions added: {stats['definitions_added']}")
+        logger.info(f"Examples added: {stats['examples_added']}")
+        logger.info(f"Pronunciations added: {stats['pronunciations_added']}")
+        logger.info(f"Credits added: {stats['credits_added']}")
+        logger.info(f"Relations added: {stats['relations_added']}")
 
         return stats["processed_entries"], stats["error_entries"]
 
     except Exception as e:
         logger.error(f"Error processing Marayum JSON file {filename}: {str(e)}")
-        if cur and hasattr(cur, 'connection') and hasattr(cur.connection, 'rollback'):
-            try:
-                # Roll back to the file savepoint if it exists
-                cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-            except:
-                # If savepoint rollback fails, try full rollback
-                try:
-                    cur.connection.rollback()
-                except:
-                    pass
         return 0, 1
-     
+
 @with_transaction(commit=True)
 def process_marayum_directory(cur, directory_path: str):
     """Process all Project Marayum dictionary files in the specified directory."""
@@ -6963,171 +6245,53 @@ def lookup_word(args):
     console = Console()
     
     try:
-        logger.info(f"Starting lookup for word: '{args.word}'")
-        conn = get_connection()
-        cur = conn.cursor()
-        
-        # First verify that pg_trgm extension is installed
-        try:
-            cur.execute("SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm'")
-            has_pg_trgm = cur.fetchone() is not None
-            logger.info(f"pg_trgm extension installed: {has_pg_trgm}")
-        except Exception as e:
-            logger.warning(f"Could not check for pg_trgm extension: {str(e)}")
-            has_pg_trgm = False
-        
-        # Search across all relevant fields
-        logger.info(f"Executing exact match query for '{args.word}'")
-        query = """
-            SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
-                   w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
-                   w.romanized_form, w.tags, w.source_info
-            FROM words w
-            LEFT JOIN pronunciations p ON w.id = p.word_id
-            WHERE LOWER(w.lemma) = LOWER(%s)
-               OR LOWER(w.normalized_lemma) = LOWER(%s)
-               OR LOWER(w.romanized_form) = LOWER(%s)
-               OR LOWER(w.baybayin_form) = LOWER(%s)
-               OR LOWER(p.value) = LOWER(%s)
-        """
-        try:
-            cur.execute(query, (args.word, args.word, args.word, args.word, args.word))
-            results = cur.fetchall()
-            logger.info(f"Found {len(results)} exact matches")
-        except Exception as e:
-            logger.error(f"Error in exact match query: {str(e)}")
-            logger.error(f"Query: {query}")
-            logger.error(f"Parameters: {(args.word, args.word, args.word, args.word, args.word)}")
-            import traceback
-            logger.error(f"Traceback: {traceback.format_exc()}")
-            raise
-        
-        if not results:
-            # Try either fuzzy search or ILIKE depending on extension availability
-            if has_pg_trgm:
-                logger.info(f"No exact matches, trying fuzzy search for '{args.word}'")
-                try:
-                    fuzzy_query = """
-                        SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
-                               w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
-                               w.romanized_form, w.tags, w.source_info,
-                               similarity(w.lemma, %s) as sim_score
-                        FROM words w
-                        WHERE w.lemma % %s
-                        ORDER BY sim_score DESC
-                        LIMIT 5
-                    """
-                    cur.execute(fuzzy_query, (args.word, args.word))
-                    fuzzy_results = cur.fetchall()
-                    logger.info(f"Found {len(fuzzy_results)} fuzzy matches")
-                    
-                    if fuzzy_results:
-                        logger.info(f"Fuzzy matches: {[r[1] for r in fuzzy_results]}")
-                        results = [result[:-1] for result in fuzzy_results]
-                        console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
-                    else:
-                        # Fall back to ILIKE if no fuzzy matches
-                        logger.info("No fuzzy matches, falling back to ILIKE search")
-                except Exception as e:
-                    logger.error(f"Error in fuzzy search query: {str(e)}")
-                    logger.error(f"Falling back to ILIKE search due to error")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-            else:
-                logger.info("pg_trgm not available, using ILIKE search instead")
+        with DBConnection() as conn:  # Use DBConnection directly instead of get_db_connection
+            cur = conn.cursor()
             
-            # If we have no results yet, try ILIKE search
+            # Search across all relevant fields
+            cur.execute("""
+                SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
+                       w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
+                       w.romanized_form, w.tags, w.is_root, w.sources,
+                       w.badlit_form, w.is_proper_noun, w.is_abbreviation, 
+                       w.is_initialism
+                FROM words w
+                LEFT JOIN pronunciations p ON w.id = p.word_id
+                WHERE LOWER(w.lemma) = LOWER(%s)
+                   OR LOWER(w.normalized_lemma) = LOWER(%s)
+                   OR LOWER(w.romanized_form) = LOWER(%s)
+                   OR LOWER(w.baybayin_form) = LOWER(%s)
+                   OR LOWER(p.value) = LOWER(%s)
+            """, (args.word, args.word, args.word, args.word, args.word))
+            
+            results = cur.fetchall()
+            
             if not results:
-                logger.info(f"Trying ILIKE search for '{args.word}'")
-                ilike_query = """
+                # Try fuzzy search if exact match not found
+                cur.execute("""
                     SELECT DISTINCT w.id, w.lemma, w.language_code, w.normalized_lemma, 
-                          w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
-                          w.romanized_form, w.tags, w.source_info
+                        w.preferred_spelling, w.has_baybayin, w.baybayin_form, 
+                        w.romanized_form, w.tags, w.is_root, w.sources,
+                        w.badlit_form, w.is_proper_noun, w.is_abbreviation, 
+                        w.is_initialism,
+                        similarity(w.lemma, %s) as sim_score
                     FROM words w
-                    WHERE w.lemma ILIKE %s
-                    OR w.normalized_lemma ILIKE %s
+                    WHERE w.lemma % %s
+                    ORDER BY sim_score DESC
                     LIMIT 5
-                """
-                try:
-                    cur.execute(ilike_query, (f"%{args.word}%", f"%{args.word}%"))
-                    ilike_results = cur.fetchall()
-                    logger.info(f"ILIKE search found {len(ilike_results)} matches")
-                    
-                    if ilike_results:
-                        logger.info(f"ILIKE matches: {[r[1] for r in ilike_results]}")
-                        console.print(f"\n[yellow]Found words containing '[bold]{args.word}[/]':[/]")
-                        results = ilike_results
-                    else:
-                        # Check if word exists in database at all
-                        logger.info("Checking database contents")
-                        cur.execute("SELECT COUNT(*) FROM words")
-                        word_count = cur.fetchone()[0]
-                        logger.info(f"Total words in database: {word_count}")
-                        
-                        if word_count == 0:
-                            console.print("[red]Database appears to be empty. Try importing data first with 'migrate' command.[/]")
-                        else:
-                            # Sample some words to see what's in the database
-                            cur.execute("SELECT lemma, language_code FROM words LIMIT 5")
-                            sample_words = cur.fetchall()
-                            logger.info(f"Sample words in database: {sample_words}")
-                            
-                            console.print(f"\n[yellow]No entries found for '[bold]{args.word}[/]'[/]")
-                            console.print("[yellow]Database contains words but none match your query.[/]")
-                        return
-                except Exception as e:
-                    logger.error(f"Error in ILIKE search: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"\n[red]Error searching for word: {str(e)}[/]")
+                """, (args.word, args.word))
+                results = cur.fetchall()
+                
+                if not results:
+                    console.print(f"\n[yellow]No entries found for '[bold]{args.word}[/]'[/]")
                     return
-            else:
-                # Trim the sim_score from the fuzzy results to match expected column count
-                try:
-                    logger.info("Trimming similarity score from fuzzy results")
-                    results = [result[:-1] for result in fuzzy_results]
-                    console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
-                except Exception as e:
-                    logger.error(f"Error trimming fuzzy results: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    raise
-        
-        for idx, result in enumerate(results):
-            try:
-                logger.info(f"Processing result {idx+1}/{len(results)}")
                 
-                # Check if we have enough columns in the result
-                if len(result) < 10:
-                    logger.warning(f"Incomplete result data: expected 10 columns, got {len(result)}")
-                    logger.warning(f"Result data: {result}")
-                    logger.warning(f"Word: {result[1] if len(result) > 1 else 'unknown'}")
-                    continue
-                
-                # Unpack result with detailed logging
-                try:
-                    word_id = result[0]
-                    logger.info(f"Word ID: {word_id}")
-                    
-                    lemma = result[1]
-                    logger.info(f"Lemma: {lemma}")
-                    
-                    lang_code = result[2]
-                    logger.info(f"Language code: {lang_code}")
-                    
-                    norm_lemma = result[3]
-                    pref_spell = result[4]
-                    has_bayb = result[5]
-                    bayb_form = result[6]
-                    rom_form = result[7]
-                    tags = result[8]
-                    sources = result[9]
-                except Exception as e:
-                    logger.error(f"Error unpacking result columns: {str(e)}")
-                    logger.error(f"Result structure: {result}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    raise
+                console.print(f"\n[yellow]No exact matches found. Showing similar words:[/]")
+            
+            for result in results:
+                (word_id, lemma, lang_code, norm_lemma, pref_spell, 
+                has_bayb, bayb_form, rom_form, tags, is_root, sources,
+                badlit_form, is_proper, is_abbrev, is_init) = result[:15]  # Exclude similarity score if present
                 
                 # Print word header with metadata
                 console.print(f"\n[bold blue]═══ {lemma} ═══[/]")
@@ -7139,437 +6303,251 @@ def lookup_word(args):
                     info_table.add_row("[dim]Normalized:[/]", norm_lemma)
                 if pref_spell:
                     info_table.add_row("[dim]Preferred:[/]", pref_spell)
+                if is_root:
+                    info_table.add_row("[dim]Root Word:[/]", "Yes")
                 if sources:
-                    try:
-                        if isinstance(sources, dict) or (isinstance(sources, str) and sources.startswith('{')):
-                            # Try to format JSON sources
-                            try:
-                                src_dict = sources if isinstance(sources, dict) else json.loads(sources)
-                                sources_str = ', '.join(f"{k}: {v}" for k, v in src_dict.items())
-                                info_table.add_row("[dim]Sources:[/]", sources_str)
-                            except Exception as json_e:
-                                logger.warning(f"Error parsing sources JSON: {str(json_e)}")
-                                info_table.add_row("[dim]Sources:[/]", str(sources))
-                        else:
-                            info_table.add_row("[dim]Sources:[/]", str(sources))
-                    except Exception as e:
-                        logger.error(f"Error handling sources: {str(e)}")
-                        logger.error(f"Sources value: {sources} (type: {type(sources).__name__})")
+                    info_table.add_row("[dim]Sources:[/]", sources)
                 if tags:
                     info_table.add_row("[dim]Tags:[/]", tags)
+                
+                # Add special flags
+                flags = []
+                if is_proper: flags.append("Proper Noun")
+                if is_abbrev: flags.append("Abbreviation")
+                if is_init: flags.append("Initialism")
+                if flags:
+                    info_table.add_row("[dim]Flags:[/]", ", ".join(flags))
                 
                 console.print(info_table)
                 
                 # Print Baybayin information if available
                 if has_bayb:
-                    logger.info("Processing Baybayin data")
                     baybayin_table = Table(title="[bold cyan]Baybayin Forms[/]", 
                                         show_header=False, box=box.ROUNDED)
                     if bayb_form:
                         baybayin_table.add_row("Baybayin:", bayb_form)
                     if rom_form:
                         baybayin_table.add_row("Romanized:", rom_form)
+                    if badlit_form:
+                        baybayin_table.add_row("Badlit:", badlit_form)
                     console.print(baybayin_table)
                 
                 # Get and print pronunciations
-                try:
-                    logger.info(f"Querying pronunciations for word_id {word_id}")
-                    cur.execute("""
-                        SELECT type, value, tags, metadata, sources
-                        FROM pronunciations
-                        WHERE word_id = %s
-                        ORDER BY type
-                    """, (word_id,))
+                cur.execute("""
+                    SELECT type, value, tags, metadata, sources
+                    FROM pronunciations
+                    WHERE word_id = %s
+                    ORDER BY type
+                """, (word_id,))
+                prons = cur.fetchall()
+                
+                if prons:
+                    pron_table = Table(title="[bold cyan]Pronunciations[/]",
+                                    show_header=True, box=box.ROUNDED)
+                    pron_table.add_column("Type")
+                    pron_table.add_column("Value")
+                    pron_table.add_column("Details")
                     
-                    prons = cur.fetchall()
-                    logger.info(f"Found {len(prons)} pronunciations")
+                    for type_, value, tags, metadata, sources in prons:
+                        details = []
+                        if metadata:
+                            try:
+                                meta_dict = json.loads(metadata)
+                                if 'styles' in meta_dict:
+                                    details.append(f"Style: {', '.join(meta_dict['styles'])}")
+                            except json.JSONDecodeError:
+                                pass
+                        if tags:
+                            details.append(f"Tags: {tags}")
+                        if sources:
+                            details.append(f"Source: {sources}")
+                        
+                        pron_table.add_row(
+                            type_ or "Standard",
+                            value,
+                            "\n".join(details) if details else ""
+                        )
                     
-                    if prons:
-                        pron_table = Table(title="[bold cyan]Pronunciations[/]",
-                                        show_header=True, box=box.ROUNDED)
-                        pron_table.add_column("Type")
-                        pron_table.add_column("Value")
-                        pron_table.add_column("Details")
-                        
-                        for pron in prons:
-                            type_ = pron[0]
-                            value = pron[1]
-                            p_tags = pron[2]
-                            metadata = pron[3]
-                            p_sources = pron[4]
-                            
-                            details = []
-                            if metadata:
-                                try:
-                                    meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
-                                    if meta_dict and 'styles' in meta_dict:
-                                        details.append(f"Style: {', '.join(meta_dict['styles'])}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing pronunciation metadata: {str(e)}")
-                            if p_tags:
-                                details.append(f"Tags: {p_tags}")
-                            if p_sources:
-                                details.append(f"Source: {p_sources}")
-                            
-                            pron_table.add_row(
-                                type_ or "Standard",
-                                value,
-                                "\n".join(details) if details else ""
-                            )
-                        
-                        console.print(pron_table)
-                except Exception as e:
-                    logger.error(f"Error retrieving pronunciations: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve pronunciations: {str(e)}[/]")
+                    console.print(pron_table)
                 
                 # Get and print etymologies
-                try:
-                    logger.info(f"Querying etymologies for word_id {word_id}")
-                    cur.execute("""
-                        SELECT etymology_text, normalized_components, language_codes, sources
-                        FROM etymologies
-                        WHERE word_id = %s
-                    """, (word_id,))
-                    
-                    etyms = cur.fetchall()
-                    logger.info(f"Found {len(etyms)} etymologies")
-                    
-                    if etyms:
-                        console.print("\n[bold cyan]Etymology:[/]")
-                        for etym in etyms:
-                            etym_text = etym[0]
-                            comps = etym[1]
-                            langs = etym[2]
-                            e_sources = etym[3]
-                            
-                            etym_panel = Panel(
-                                Text(etym_text),
-                                title="Etymology" + (f" [{e_sources}]" if e_sources else ""),
-                                subtitle=langs if langs else None
-                            )
-                            console.print(etym_panel)
-                            if comps:
-                                try:
-                                    comp_dict = json.loads(comps) if isinstance(comps, str) else comps
-                                    if comp_dict:
-                                        console.print("[dim]Components:[/]")
-                                        for comp in comp_dict:
-                                            console.print(f"• {comp}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing etymology components: {str(e)}")
-                except Exception as e:
-                    logger.error(f"Error retrieving etymologies: {str(e)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve etymologies: {str(e)}[/]")
+                cur.execute("""
+                    SELECT etymology_text, normalized_components, language_codes, sources
+                    FROM etymologies
+                    WHERE word_id = %s
+                """, (word_id,))
+                etyms = cur.fetchall()
+                
+                if etyms:
+                    console.print("\n[bold cyan]Etymology:[/]")
+                    for etym_text, comps, langs, sources in etyms:
+                        etym_panel = Panel(
+                            Text(etym_text),
+                            title="Etymology" + (f" [{sources}]" if sources else ""),
+                            subtitle=langs if langs else None
+                        )
+                        console.print(etym_panel)
+                        if comps:
+                            try:
+                                comp_dict = json.loads(comps)
+                                if comp_dict:
+                                    console.print("[dim]Components:[/]")
+                                    for comp in comp_dict:
+                                        console.print(f"• {comp}")
+                            except json.JSONDecodeError:
+                                pass
                 
                 # Get and print definitions grouped by part of speech
-                try:
-                    logger.info(f"Querying definitions for word_id {word_id}")
-                    def_query = """
-                        SELECT d.definition_text, d.examples, d.usage_notes, d.tags, d.sources,
-                               p.name_tl AS pos_name
-                        FROM definitions d
-                        LEFT JOIN parts_of_speech p ON d.standardized_pos_id = p.id
-                        WHERE d.word_id = %s
-                        ORDER BY p.name_tl, d.id
-                    """
+                cur.execute("""
+                    SELECT d.part_of_speech, 
+                        d.definition,
+                        d.examples,
+                        d.usage_notes,
+                        d.tags,
+                        d.sources,
+                        d.metadata,
+                        d.category
+                    FROM definitions d
+                    WHERE d.word_id = %s
+                    ORDER BY d.part_of_speech, d.id
+                """, (word_id,))
+                
+                current_pos = None
+                for pos, text, examples, notes, def_tags, def_sources, metadata, category in cur.fetchall():
+                    if pos != current_pos:
+                        console.print(f"\n[bold cyan]{pos or 'Uncategorized'}:[/]")
+                        current_pos = pos
                     
-                    cur.execute(def_query, (word_id,))
-                    definitions = cur.fetchall()
-                    logger.info(f"Found {len(definitions)} definitions")
+                    def_panel = Panel(Text(text), title=category if category else None)
+                    console.print(def_panel)
                     
-                    if definitions:
-                        console.print("\n[bold cyan]Definitions:[/]")
-                        current_pos = None
-                        
-                        for def_idx, definition in enumerate(definitions):
-                            logger.info(f"Processing definition {def_idx+1}/{len(definitions)}")
-                            
-                            try:
-                                def_text = definition[0]
-                                examples = definition[1]
-                                notes = definition[2]
-                                def_tags = definition[3]
-                                def_sources = definition[4]
-                                pos = definition[5]
-                            except Exception as e:
-                                logger.error(f"Error unpacking definition columns: {str(e)}")
-                                logger.error(f"Definition structure: {definition}")
-                                continue
-                            
-                            if pos != current_pos:
-                                console.print(f"\n[bold cyan]{pos or 'Uncategorized'}:[/]")
-                                current_pos = pos
-                            
-                            def_panel = Panel(Text(def_text))
-                            console.print(def_panel)
-                            
-                            if examples:
-                                logger.info("Processing definition examples")
-                                try:
-                                    ex_list = json.loads(examples) if isinstance(examples, str) else examples
-                                    logger.info(f"Example type: {type(ex_list).__name__}")
-                                    
-                                    if ex_list:
-                                        console.print("[dim]Examples:[/]")
-                                        if isinstance(ex_list, list):
-                                            for ex_idx, ex in enumerate(ex_list):
-                                                logger.info(f"Processing example {ex_idx+1}/{len(ex_list)}")
-                                                if isinstance(ex, dict):
-                                                    console.print(f"• {ex.get('text', '')}")
-                                                    if 'translation' in ex:
-                                                        console.print(f"  [dim]{ex['translation']}[/]")
-                                                else:
-                                                    console.print(f"• {ex}")
-                                        else:
-                                            console.print(f"• {ex_list}")
-                                except (json.JSONDecodeError, TypeError, AttributeError) as e:
-                                    logger.warning(f"Error processing examples: {str(e)}")
-                                    logger.warning(f"Examples data: {examples}")
-                                    console.print(f"• {examples}")
-                            
-                            if notes:
-                                console.print(f"[dim]Notes:[/] {notes}")
-                            
-                            if def_tags:
-                                console.print(f"[dim]Tags:[/] {def_tags}")
-                    else:
-                        logger.warning(f"No definitions found for word ID {word_id}")
-                except Exception as e:
-                    logger.error(f"Error retrieving definitions for {lemma}: {str(e)}")
-                    logger.error(f"Query: {def_query}")
-                    logger.error(f"Parameters: {(word_id,)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve definitions: {str(e)}[/]")
+                    if examples:
+                        try:
+                            ex_list = json.loads(examples)
+                            console.print("[dim]Examples:[/]")
+                            for ex in ex_list:
+                                if isinstance(ex, dict):
+                                    console.print(f"• {ex['text']}")
+                                    if 'translation' in ex:
+                                        console.print(f"  [dim]{ex['translation']}[/]")
+                                else:
+                                    console.print(f"• {ex}")
+                        except json.JSONDecodeError:
+                            console.print(f"• {examples}")
+                    
+                    if notes:
+                        console.print(f"[dim]Notes:[/] {notes}")
+                    
+                    if def_tags:
+                        console.print(f"[dim]Tags:[/] {def_tags}")
+                    
+                    if metadata:
+                        try:
+                            meta_dict = json.loads(metadata)
+                            if meta_dict:
+                                console.print("[dim]Additional Information:[/]")
+                                for key, value in meta_dict.items():
+                                    console.print(f"• {key}: {value}")
+                        except json.JSONDecodeError:
+                            pass
                 
                 # Get and print relationships
-                try:
-                    logger.info(f"Querying relations for word_id {word_id}")
-                    rel_query = """
-                        SELECT r.relation_type,
-                               w.lemma,
-                               r.metadata,
-                               r.sources
-                        FROM relations r
-                        JOIN words w ON r.to_word_id = w.id
-                        WHERE r.from_word_id = %s
-                        ORDER BY r.relation_type
-                    """
+                cur.execute("""
+                    SELECT r.relation_type,
+                        w.lemma,
+                        r.metadata,
+                        r.sources
+                    FROM relations r
+                    JOIN words w ON r.to_word_id = w.id
+                    WHERE r.from_word_id = %s
+                    ORDER BY r.relation_type
+                """, (word_id,))
+                rels = cur.fetchall()
+                
+                if rels:
+                    console.print("\n[bold cyan]Related Words:[/]")
+                    current_type = None
+                    rel_table = Table(show_header=False, box=box.SIMPLE)
                     
-                    cur.execute(rel_query, (word_id,))
-                    rels = cur.fetchall()
-                    logger.info(f"Found {len(rels)} relations")
-                    
-                    if rels:
-                        console.print("\n[bold cyan]Related Words:[/]")
-                        current_type = None
-                        rel_table = None
-                        
-                        for rel_idx, rel in enumerate(rels):
-                            logger.info(f"Processing relation {rel_idx+1}/{len(rels)}")
-                            
-                            try:
-                                rel_type = rel[0]
-                                rel_word = rel[1]
-                                metadata = rel[2]
-                                rel_sources = rel[3]
-                            except Exception as e:
-                                logger.error(f"Error unpacking relation columns: {str(e)}")
-                                logger.error(f"Relation structure: {rel}")
-                                continue
-                            
-                            if rel_type != current_type:
-                                if rel_table:
-                                    console.print(rel_table)
+                    for rel_type, rel_word, metadata, rel_sources in rels:
+                        if rel_type != current_type:
+                            if current_type:
+                                console.print(rel_table)
                                 rel_table = Table(show_header=False, box=box.SIMPLE)
-                                console.print(f"\n[bold]{rel_type.title()}:[/]")
-                                current_type = rel_type
-                            
-                            details = []
-                            if metadata:
-                                try:
-                                    meta_dict = json.loads(metadata) if isinstance(metadata, str) else metadata
-                                    if meta_dict:
-                                        if 'confidence' in meta_dict:
-                                            details.append(f"{meta_dict['confidence']}% confidence")
-                                        if 'tags' in meta_dict:
-                                            details.append(f"Tags: {meta_dict['tags']}")
-                                except (json.JSONDecodeError, TypeError) as e:
-                                    logger.warning(f"Error parsing relation metadata: {str(e)}")
-                            if rel_sources:
-                                details.append(f"Source: {rel_sources}")
-                            
-                            rel_table.add_row(
-                                "•",
-                                rel_word,
-                                f"[dim]({', '.join(details)})[/]" if details else ""
-                            )
+                            console.print(f"\n[bold]{rel_type.title()}:[/]")
+                            current_type = rel_type
                         
-                        if rel_table:
-                            console.print(rel_table)
-                    else:
-                        logger.info(f"No relations found for word ID {word_id}")
-                except Exception as e:
-                    logger.error(f"Error retrieving relations for {lemma}: {str(e)}")
-                    logger.error(f"Query: {rel_query}")
-                    logger.error(f"Parameters: {(word_id,)}")
-                    import traceback
-                    logger.error(f"Traceback: {traceback.format_exc()}")
-                    console.print(f"[yellow]Could not retrieve relations: {str(e)}[/]")
+                        details = []
+                        if metadata:
+                            try:
+                                meta_dict = json.loads(metadata)
+                                if 'confidence' in meta_dict:
+                                    details.append(f"{meta_dict['confidence']}% confidence")
+                                if 'tags' in meta_dict:
+                                    details.append(f"Tags: {meta_dict['tags']}")
+                            except json.JSONDecodeError:
+                                pass
+                        if rel_sources:
+                            details.append(f"Source: {rel_sources}")
+                        
+                        rel_table.add_row(
+                            "•",
+                            rel_word,
+                            f"[dim]({', '.join(details)})[/]" if details else ""
+                        )
+                    
+                    if current_type:
+                        console.print(rel_table)
                 
                 console.print("\n" + "─" * 80 + "\n")
-            except Exception as e:
-                logger.error(f"Error processing result {idx+1}: {str(e)}")
-                import traceback
-                logger.error(f"Traceback: {traceback.format_exc()}")
-                logger.error(f"Result data: {result}")
-                console.print(f"[red]Error processing result: {str(e)}[/]")
 
     except Exception as e:
         logger.error(f"Error looking up word: {str(e)}")
-        logger.error(f"Word: {args.word}")
-        import traceback
-        logger.error(f"Traceback: {traceback.format_exc()}")
-        
-        # Additional database diagnostics
-        try:
-            diagnostics_conn = get_connection()
-            diagnostics_cur = diagnostics_conn.cursor()
-            
-            # Check if database extensions are installed
-            logger.info("Diagnostic: checking database extensions")
-            diagnostics_cur.execute("""
-                SELECT extname FROM pg_extension
-            """)
-            extensions = [row[0] for row in diagnostics_cur.fetchall()]
-            logger.info(f"Installed extensions: {extensions}")
-            
-            # Check if the word exists with direct lemma search
-            logger.info(f"Diagnostic: checking if word '{args.word}' exists with direct lemma match")
-            diagnostics_cur.execute("""
-                SELECT COUNT(*) FROM words WHERE lemma = %s
-            """, (args.word,))
-            exact_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Diagnostic result: Word '{args.word}' exact matches: {exact_count}")
-            
-            # Check if the word exists at all
-            logger.info(f"Diagnostic: checking if word '{args.word}' exists in any form")
-            diagnostics_cur.execute("""
-                SELECT COUNT(*) FROM words WHERE lemma ILIKE %s
-            """, (f"%{args.word}%",))
-            exists_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Diagnostic result: Word '{args.word}' partial matches: {exists_count}")
-            
-            # Examine database size
-            logger.info("Diagnostic: checking database size")
-            diagnostics_cur.execute("SELECT COUNT(*) FROM words")
-            word_count = diagnostics_cur.fetchone()[0]
-            diagnostics_cur.execute("SELECT COUNT(*) FROM definitions")
-            def_count = diagnostics_cur.fetchone()[0]
-            logger.info(f"Database size: {word_count} words, {def_count} definitions")
-            
-            # Check database schema
-            logger.info("Diagnostic: verifying database schema")
-            diagnostics_cur.execute("""
-                SELECT column_name, data_type 
-                FROM information_schema.columns 
-                WHERE table_name = 'words'
-                ORDER BY ordinal_position
-            """)
-            columns = diagnostics_cur.fetchall()
-            logger.info(f"Diagnostic: words table has {len(columns)} columns")
-            for col in columns:
-                logger.info(f"  Column: {col[0]}, Type: {col[1]}")
-                
-            diagnostics_conn.close()
-        except Exception as diag_e:
-            logger.error(f"Error during diagnostics: {str(diag_e)}")
-        
-        console.print(f"[red]Error looking up word '{args.word}': {str(e)}[/]")
-        console.print("[yellow]Check logs for detailed error information[/]")
-        console.print("[yellow]Possible solutions: [/]")
-        console.print("1. Make sure you've imported your dictionary with: `python dictionary_manager.py migrate --file chavacano-english_processed.json`")
-        console.print("2. Ensure PostgreSQL extensions are installed with: `python dictionary_manager.py verify --repair`")
-    finally:
-        if 'conn' in locals() and conn:
-            conn.close()
-            logger.info("Database connection closed")
-
-def display_dictionary_stats_cli(args):
-    """Display dictionary statistics from the command line."""
-    try:
-        # Get a proper database connection and cursor
-        conn = get_connection()
-        with conn.cursor() as cur:
-            display_dictionary_stats(cur)
-        
-        # Make sure to close the connection when done
-        if conn:
-            conn.close()
-    except Exception as e:
-        console = Console()
-        console.print(f"[red]Error displaying dictionary stats: {str(e)}[/]")
-
+        console.print(f"[red]Error looking up word: {str(e)}[/]")
 
 @with_transaction(commit=False)
-def display_dictionary_stats(cur):
+def display_dictionary_stats(args):
     """Display comprehensive dictionary statistics."""
     console = Console()
     try:
-        # Overall Statistics
-        overall_table = Table(title="[bold blue]Overall Statistics[/]", box=box.ROUNDED)
-        overall_table.add_column("Metric", style="cyan")
-        overall_table.add_column("Count", justify="right", style="green")
-        overall_table.add_column("Details", style="dim")
-        
-        # Check which columns exist in the words table
-        cur.execute("""
-            SELECT column_name 
-            FROM information_schema.columns 
-            WHERE table_name = 'words'
-        """)
-        available_columns = {row[0] for row in cur.fetchall()}
-        
-        # Basic counts with details - build dynamically based on available columns
-        basic_queries = {
-            "Total Words": ("SELECT COUNT(*) FROM words", None),
-            "Total Definitions": ("SELECT COUNT(*) FROM definitions", None),
-            "Total Relations": ("SELECT COUNT(*) FROM relations", None),
-            "Total Etymologies": ("SELECT COUNT(*) FROM etymologies", None),
-            "Total Pronunciations": ("SELECT COUNT(*) FROM pronunciations", None),
-            "Total Credits": ("SELECT COUNT(*) FROM credits", None),
-            "Words with Baybayin": ("SELECT COUNT(*) FROM words WHERE has_baybayin = TRUE", None),
-            "Words with Examples": ("""
-                SELECT COUNT(DISTINCT word_id) 
-                FROM definitions 
-                WHERE examples IS NOT NULL
-            """, None),
-            "Words with Etymology": ("""
-                SELECT COUNT(DISTINCT word_id) 
-                FROM etymologies
-            """, None),
-            "Words with Pronunciation": ("""
-                SELECT COUNT(DISTINCT word_id) 
-                FROM pronunciations
-            """, None)
-        }
-        
-        # Add optional columns if they exist
-        if 'is_proper_noun' in available_columns:
-            basic_queries["Proper Nouns"] = ("SELECT COUNT(*) FROM words WHERE is_proper_noun = TRUE", None)
-        if 'is_abbreviation' in available_columns:
-            basic_queries["Abbreviations"] = ("SELECT COUNT(*) FROM words WHERE is_abbreviation = TRUE", None)
-        if 'is_initialism' in available_columns:
-            basic_queries["Initialisms"] = ("SELECT COUNT(*) FROM words WHERE is_initialism = TRUE", None)
-        if 'root_word_id' in available_columns:
-            basic_queries["Words with Root"] = ("SELECT COUNT(*) FROM words WHERE root_word_id IS NOT NULL", None)
-        
-        for label, (query, detail_query) in basic_queries.items():
-            try:
+        with DBConnection() as conn:
+            cur = conn.cursor()
+            
+            # Overall Statistics
+            overall_table = Table(title="[bold blue]Overall Statistics[/]", box=box.ROUNDED)
+            overall_table.add_column("Metric", style="cyan")
+            overall_table.add_column("Count", justify="right", style="green")
+            overall_table.add_column("Details", style="dim")
+            
+            # Basic counts with details
+            basic_queries = {
+                "Total Words": ("SELECT COUNT(*) FROM words", None),
+                "Total Definitions": ("SELECT COUNT(*) FROM definitions", None),
+                "Total Relations": ("SELECT COUNT(*) FROM relations", None),
+                "Total Etymologies": ("SELECT COUNT(*) FROM etymologies", None),
+                "Total Pronunciations": ("SELECT COUNT(*) FROM pronunciations", None),
+                "Total Credits": ("SELECT COUNT(*) FROM credits", None),
+                "Words with Baybayin": ("SELECT COUNT(*) FROM words WHERE has_baybayin = TRUE", None),
+                "Root Words": ("SELECT COUNT(*) FROM words WHERE is_root = TRUE", None),
+                "Proper Nouns": ("SELECT COUNT(*) FROM words WHERE is_proper_noun = TRUE", None),
+                "Abbreviations": ("SELECT COUNT(*) FROM words WHERE is_abbreviation = TRUE", None),
+                "Initialisms": ("SELECT COUNT(*) FROM words WHERE is_initialism = TRUE", None),
+                "Words with Examples": ("""
+                    SELECT COUNT(DISTINCT word_id) 
+                    FROM definitions 
+                    WHERE examples IS NOT NULL
+                """, None),
+                "Words with Etymology": ("""
+                    SELECT COUNT(DISTINCT word_id) 
+                    FROM etymologies
+                """, None),
+                "Words with Pronunciation": ("""
+                    SELECT COUNT(DISTINCT word_id) 
+                    FROM pronunciations
+                """, None)
+            }
+            
+            for label, (query, detail_query) in basic_queries.items():
                 cur.execute(query)
                 count = cur.fetchone()[0]
                 details = ""
@@ -7577,12 +6555,8 @@ def display_dictionary_stats(cur):
                     cur.execute(detail_query)
                     details = cur.fetchone()[0]
                 overall_table.add_row(label, f"{count:,}", details)
-            except Exception as e:
-                logger.warning(f"Error getting stats for {label}: {e}")
-                overall_table.add_row(label, "N/A", f"Error: {str(e)}")
-        
-        # Language Statistics with more details
-        try:
+            
+            # Language Statistics with more details
             cur.execute("""
                 SELECT 
                     w.language_code,
@@ -7623,51 +6597,18 @@ def display_dictionary_stats(cur):
                     f"{bayb:,}"
                 )
             
-            console.print("\n[bold]Dictionary Statistics[/]")
-            console.print(overall_table)
-            console.print()
-            console.print(lang_table)
-        except Exception as e:
-            logger.error(f"Error displaying language statistics: {str(e)}")
-            console.print(f"[red]Error displaying language statistics: {str(e)}[/]")
-            console.print(overall_table)
-        
-        # Parts of Speech Statistics with examples
-        try:
-            # Check if standardized_pos_id exists
+            # Parts of Speech Statistics with examples
             cur.execute("""
-                SELECT EXISTS (
-                    SELECT FROM information_schema.columns 
-                    WHERE table_name = 'definitions' AND column_name = 'standardized_pos_id'
-                )
+                SELECT 
+                    part_of_speech,
+                    COUNT(*) as count,
+                    COUNT(DISTINCT word_id) as unique_words,
+                    COUNT(CASE WHEN examples IS NOT NULL THEN 1 END) as with_examples
+                FROM definitions
+                WHERE part_of_speech IS NOT NULL AND part_of_speech != ''
+                GROUP BY part_of_speech
+                ORDER BY count DESC
             """)
-            
-            has_standardized_pos = cur.fetchone()[0]
-            
-            if has_standardized_pos:
-                cur.execute("""
-                    SELECT 
-                        p.name_tl,
-                        COUNT(*) as count,
-                        COUNT(DISTINCT d.word_id) as unique_words,
-                        COUNT(CASE WHEN d.examples IS NOT NULL THEN 1 END) as with_examples
-                    FROM definitions d
-                    JOIN parts_of_speech p ON d.standardized_pos_id = p.id
-                    GROUP BY p.name_tl
-                    ORDER BY count DESC
-                """)
-            else:
-                # Fallback to using part_of_speech text field
-                cur.execute("""
-                    SELECT 
-                        COALESCE(part_of_speech, 'Unknown'),
-                        COUNT(*) as count,
-                        COUNT(DISTINCT word_id) as unique_words,
-                        COUNT(CASE WHEN examples IS NOT NULL THEN 1 END) as with_examples
-                    FROM definitions
-                    GROUP BY part_of_speech
-                    ORDER BY count DESC
-                """)
             
             pos_table = Table(title="[bold blue]Parts of Speech[/]", box=box.ROUNDED)
             pos_table.add_column("Part of Speech", style="yellow")
@@ -7675,24 +6616,15 @@ def display_dictionary_stats(cur):
             pos_table.add_column("Unique Words", justify="right", style="green")
             pos_table.add_column("With Examples", justify="right", style="green")
             
-            pos_results = cur.fetchall()
-            if pos_results:
-                for pos, count, unique_words, with_examples in pos_results:
-                    pos_table.add_row(
-                        pos or "Uncategorized",
-                        f"{count:,}",
-                        f"{unique_words:,}",
-                        f"{with_examples:,}"
-                    )
-                
-                console.print()
-                console.print(pos_table)
-        except Exception as e:
-            logger.error(f"Error displaying part of speech statistics: {str(e)}")
-            console.print(f"[red]Error displaying part of speech statistics: {str(e)}[/]")
-        
-        # Relationship Statistics by category
-        try:
+            for pos, count, unique_words, with_examples in cur.fetchall():
+                pos_table.add_row(
+                    pos,
+                    f"{count:,}",
+                    f"{unique_words:,}",
+                    f"{with_examples:,}"
+                )
+            
+            # Relationship Statistics by category
             cur.execute("""
                 SELECT 
                     r.relation_type,
@@ -7704,93 +6636,54 @@ def display_dictionary_stats(cur):
                 ORDER BY count DESC
             """)
             
-            rel_results = cur.fetchall()
-            if rel_results:
-                rel_table = Table(title="[bold blue]Relationship Types[/]", box=box.ROUNDED)
-                rel_table.add_column("Type", style="yellow")
-                rel_table.add_column("Total", justify="right", style="green")
-                rel_table.add_column("Unique Sources", justify="right", style="green")
-                rel_table.add_column("Unique Targets", justify="right", style="green")
-                
-                for rel_type, count, sources, targets in rel_results:
-                    rel_table.add_row(
-                        rel_type or "Unknown",
-                        f"{count:,}",
-                        f"{sources:,}",
-                        f"{targets:,}"
-                    )
-                
-                console.print()
-                console.print(rel_table)
-        except Exception as e:
-            logger.error(f"Error displaying relationship statistics: {str(e)}")
-            console.print(f"[red]Error displaying relationship statistics: {str(e)}[/]")
-        
-        # Source Statistics with more details
-        try:
-            # First check if source_info column exists
-            if 'source_info' in available_columns:
-                # Get source statistics from source_info
-                cur.execute("""
-                    SELECT 
-                        COALESCE(source_info, 'Unknown') as source_name,
-                        COUNT(*) as word_count
-                    FROM words
-                    GROUP BY source_name
-                    ORDER BY word_count DESC
-                """)
-                
-                source_results = cur.fetchall()
-                if source_results:
-                    source_table = Table(title="[bold blue]Source Distribution[/]", box=box.ROUNDED)
-                    source_table.add_column("Source", style="yellow")
-                    source_table.add_column("Words", justify="right", style="green")
-                    
-                    for source, count in source_results:
-                        source_table.add_row(
-                            source or "Unknown",
-                            f"{count:,}"
-                        )
-                    
-                    console.print()
-                    console.print(source_table)
+            rel_table = Table(title="[bold blue]Relationship Types[/]", box=box.ROUNDED)
+            rel_table.add_column("Type", style="yellow")
+            rel_table.add_column("Total", justify="right", style="green")
+            rel_table.add_column("Unique Sources", justify="right", style="green")
+            rel_table.add_column("Unique Targets", justify="right", style="green")
             
-            # Also check definitions sources
+            for rel_type, count, sources, targets in cur.fetchall():
+                rel_table.add_row(
+                    rel_type,
+                    f"{count:,}",
+                    f"{sources:,}",
+                    f"{targets:,}"
+                )
+            
+            # Source Statistics with more details
             cur.execute("""
-                SELECT 
-                    COALESCE(sources, 'Unknown') as source_name,
-                    COUNT(*) as def_count,
-                    COUNT(DISTINCT word_id) as word_count,
-                    COUNT(CASE WHEN examples IS NOT NULL THEN 1 END) as example_count
-                FROM definitions
-                GROUP BY sources
-                ORDER BY def_count DESC
+                WITH source_stats AS (
+                    SELECT 
+                        CASE
+                            WHEN sources LIKE '%Project Marayum%' THEN 'Project Marayum'
+                            WHEN sources LIKE '%kaikki%' THEN 'kaikki.org'
+                            WHEN sources LIKE '%kwf%' THEN 'KWF Dictionary'
+                            ELSE sources
+                        END as source_name,
+                        COUNT(*) as def_count,
+                        COUNT(DISTINCT word_id) as word_count,
+                        COUNT(CASE WHEN examples IS NOT NULL THEN 1 END) as example_count
+                    FROM definitions
+                    GROUP BY source_name
+                )
+                SELECT * FROM source_stats ORDER BY def_count DESC
             """)
             
-            def_source_results = cur.fetchall()
-            if def_source_results:
-                def_source_table = Table(title="[bold blue]Definition Sources[/]", box=box.ROUNDED)
-                def_source_table.add_column("Source", style="yellow")
-                def_source_table.add_column("Definitions", justify="right", style="green")
-                def_source_table.add_column("Words", justify="right", style="green")
-                def_source_table.add_column("With Examples", justify="right", style="green")
-                
-                for source, def_count, word_count, example_count in def_source_results:
-                    def_source_table.add_row(
-                        source or "Unknown",
-                        f"{def_count:,}",
-                        f"{word_count:,}",
-                        f"{example_count:,}"
-                    )
-                
-                console.print()
-                console.print(def_source_table)
-        except Exception as e:
-            logger.error(f"Error displaying source statistics: {str(e)}")
-            console.print(f"[yellow]Could not generate source statistics: {str(e)}[/]")
-        
-        # Baybayin Statistics with details
-        try:
+            source_table = Table(title="[bold blue]Definition Sources[/]", box=box.ROUNDED)
+            source_table.add_column("Source", style="yellow")
+            source_table.add_column("Definitions", justify="right", style="green")
+            source_table.add_column("Words", justify="right", style="green")
+            source_table.add_column("With Examples", justify="right", style="green")
+            
+            for source, def_count, word_count, example_count in cur.fetchall():
+                source_table.add_row(
+                    source or "Unknown",
+                    f"{def_count:,}",
+                    f"{word_count:,}",
+                    f"{example_count:,}"
+                )
+            
+            # Baybayin Statistics with details
             baybayin_table = Table(title="[bold blue]Baybayin Statistics[/]", box=box.ROUNDED)
             baybayin_table.add_column("Metric", style="yellow")
             baybayin_table.add_column("Count", justify="right", style="green")
@@ -7800,56 +6693,57 @@ def display_dictionary_stats(cur):
                 "Total Baybayin Forms": (
                     "SELECT COUNT(*) FROM words WHERE baybayin_form IS NOT NULL",
                     """SELECT COUNT(DISTINCT language_code) 
-                    FROM words WHERE baybayin_form IS NOT NULL"""
+                       FROM words WHERE baybayin_form IS NOT NULL"""
                 ),
                 "With Romanization": (
                     "SELECT COUNT(*) FROM words WHERE romanized_form IS NOT NULL",
                     None
                 ),
+                "With Badlit": (
+                    "SELECT COUNT(*) FROM words WHERE badlit_form IS NOT NULL",
+                    None
+                ),
+                "Complete Forms": (
+                    """SELECT COUNT(*) FROM words 
+                       WHERE baybayin_form IS NOT NULL 
+                       AND romanized_form IS NOT NULL 
+                       AND badlit_form IS NOT NULL""",
+                    None
+                ),
                 "Verified Forms": (
                     """SELECT COUNT(*) FROM words 
-                    WHERE has_baybayin = TRUE 
-                    AND baybayin_form IS NOT NULL""",
+                       WHERE has_baybayin = TRUE 
+                       AND baybayin_form IS NOT NULL""",
                     None
                 )
             }
             
-            # Only add Badlit stats if the column exists
-            if 'badlit_form' in available_columns:
-                baybayin_queries["With Badlit"] = (
-                    "SELECT COUNT(*) FROM words WHERE badlit_form IS NOT NULL",
-                    None
-                )
-                baybayin_queries["Complete Forms"] = (
-                    """SELECT COUNT(*) FROM words 
-                    WHERE baybayin_form IS NOT NULL 
-                    AND romanized_form IS NOT NULL 
-                    AND badlit_form IS NOT NULL""",
-                    None
-                )
-            
             for label, (query, detail_query) in baybayin_queries.items():
-                try:
-                    cur.execute(query)
-                    count = cur.fetchone()[0]
-                    details = ""
-                    if detail_query:
-                        cur.execute(detail_query)
-                        details = f"across {cur.fetchone()[0]} languages"
-                    baybayin_table.add_row(label, f"{count:,}", details)
-                except Exception as e:
-                    logger.warning(f"Error getting Baybayin stats for {label}: {e}")
-                    baybayin_table.add_row(label, "N/A", f"Error: {str(e)}")
+                cur.execute(query)
+                count = cur.fetchone()[0]
+                details = ""
+                if detail_query:
+                    cur.execute(detail_query)
+                    details = f"across {cur.fetchone()[0]} languages"
+                baybayin_table.add_row(label, f"{count:,}", details)
             
+            # Print all tables
+            console.print("\n[bold]Dictionary Statistics[/]")
+            console.print(overall_table)
+            console.print()
+            console.print(lang_table)
+            console.print()
+            console.print(pos_table)
+            console.print()
+            console.print(rel_table)
+            console.print()
+            console.print(source_table)
             console.print()
             console.print(baybayin_table)
-        except Exception as e:
-            logger.error(f"Error displaying Baybayin statistics: {str(e)}")
-            console.print(f"[yellow]Could not generate Baybayin statistics: {str(e)}[/]")
-        
-        # Print timestamp
-        console.print(f"\n[dim]Statistics generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}[/]")
-        
+            
+            # Print timestamp
+            console.print(f"\n[dim]Statistics generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}[/]")
+            
     except Exception as e:
         logger.error(f"Error displaying dictionary stats: {str(e)}")
         console.print(f"[red]Error: {str(e)}[/]")
@@ -7861,352 +6755,212 @@ def display_leaderboard(cur, console):
         console.print("\n[bold cyan]📊 Dictionary Contributors Leaderboard[/]", justify="center")
         
         # Definition Contributors
-        try:
-            cur.execute("""
-                WITH source_stats AS (
-                    SELECT 
-                        CASE
-                            WHEN sources ILIKE '%project marayum%' THEN 'Project Marayum'
-                            WHEN sources ILIKE '%marayum%' THEN 'Project Marayum'
-                            WHEN sources ILIKE '%kaikki-ceb%' THEN 'kaikki.org (Cebuano)'
-                            WHEN sources ILIKE '%kaikki.jsonl%' THEN 'kaikki.org (Tagalog)'
-                            WHEN sources ILIKE '%kaikki%' AND sources ILIKE '%ceb%' THEN 'kaikki.org (Cebuano)'
-                            WHEN sources ILIKE '%kaikki%' THEN 'kaikki.org (Tagalog)'
-                            WHEN sources ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                            WHEN sources ILIKE '%kwf_dictionary%' THEN 'KWF Diksiyonaryo'
-                            WHEN sources ILIKE '%tagalog.com%' THEN 'tagalog.com'
-                            WHEN sources ILIKE '%root_words%' THEN 'tagalog.com'
-                            WHEN sources ILIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
-                            WHEN sources ILIKE '%tagalog-words%' THEN 'diksiyonaryo.ph'
-                            ELSE COALESCE(sources, 'Unknown')
-                        END AS source_name,
-                        COUNT(*) AS def_count,
-                        COUNT(DISTINCT word_id) AS unique_words,
-                        COUNT(CASE WHEN examples IS NOT NULL AND examples != '' THEN 1 END) AS with_examples,
-                        COUNT(DISTINCT standardized_pos_id) AS pos_count,
-                        COUNT(CASE WHEN usage_notes IS NOT NULL AND usage_notes != '' THEN 1 END) AS with_notes
-                    FROM definitions
-                    GROUP BY source_name
-                )
+        cur.execute("""
+            WITH source_stats AS (
                 SELECT 
-                    source_name,
-                    def_count,
-                    unique_words,
-                    with_examples,
-                    pos_count,
-                    with_notes,
-                    ROUND(100.0 * with_examples / NULLIF(def_count, 0), 1) as example_percentage,
-                    ROUND(100.0 * with_notes / NULLIF(def_count, 0), 1) as notes_percentage
-                FROM source_stats
-                ORDER BY def_count DESC
-            """)
+                    CASE
+                        WHEN LOWER(TRIM(sources)) LIKE '%project marayum%' THEN 'Project Marayum'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kaikki-ceb%' THEN 'kaikki.org (Cebuano)'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kaikki%' THEN 'kaikki.org (Tagalog)'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kwf%' THEN 'KWF Diksiyonaryo'
+                        WHEN LOWER(TRIM(sources)) LIKE '%tagalog.com%' THEN 'tagalog.com'
+                        WHEN LOWER(TRIM(sources)) LIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
+                        ELSE COALESCE(sources, 'Unknown')
+                    END AS source_name,
+                    COUNT(*) AS def_count,
+                    COUNT(DISTINCT word_id) AS unique_words,
+                    COUNT(CASE WHEN examples IS NOT NULL THEN 1 END) AS with_examples,
+                    COUNT(DISTINCT d.part_of_speech) AS pos_count,
+                    COUNT(CASE WHEN d.usage_notes IS NOT NULL THEN 1 END) AS with_notes
+                FROM definitions d
+                GROUP BY source_name
+            )
+            SELECT 
+                source_name,
+                def_count,
+                unique_words,
+                with_examples,
+                pos_count,
+                with_notes,
+                ROUND(100.0 * with_examples / NULLIF(def_count, 0), 1) as example_percentage,
+                ROUND(100.0 * with_notes / NULLIF(def_count, 0), 1) as notes_percentage
+            FROM source_stats
+            ORDER BY def_count DESC
+        """)
+        
+        def_results = cur.fetchall()
+        if def_results:
+            def_table = Table(title="[bold blue]Definition Contributors[/]", box=box.ROUNDED)
+            def_table.add_column("Source", style="yellow")
+            def_table.add_column("Definitions", justify="right", style="green")
+            def_table.add_column("Words", justify="right", style="green")
+            def_table.add_column("Examples", justify="right", style="cyan")
+            def_table.add_column("POS Types", justify="right", style="cyan")
+            def_table.add_column("Notes", justify="right", style="cyan")
+            def_table.add_column("Coverage", style="dim")
             
-            def_results = cur.fetchall()
-            if def_results:
-                def_table = Table(title="[bold blue]Definition Contributors[/]", box=box.ROUNDED)
-                def_table.add_column("Source", style="yellow")
-                def_table.add_column("Definitions", justify="right", style="green")
-                def_table.add_column("Words", justify="right", style="green")
-                def_table.add_column("Examples", justify="right", style="cyan")
-                def_table.add_column("POS Types", justify="right", style="cyan")
-                def_table.add_column("Notes", justify="right", style="cyan")
-                def_table.add_column("Coverage", style="dim")
-                
-                for row in def_results:
-                    source = row[0] if len(row) > 0 else "Unknown"
-                    defs = row[1] if len(row) > 1 else 0
-                    words = row[2] if len(row) > 2 else 0
-                    examples = row[3] if len(row) > 3 else 0
-                    pos = row[4] if len(row) > 4 else 0
-                    notes = row[5] if len(row) > 5 else 0
-                    ex_pct = row[6] if len(row) > 6 else 0
-                    notes_pct = row[7] if len(row) > 7 else 0
-                    
-                    coverage = f"Examples: {ex_pct}%, Notes: {notes_pct}%"
-                    def_table.add_row(
-                        source,
-                        f"{defs:,}",
-                        f"{words:,}",
-                        f"{examples:,}",
-                        str(pos),
-                        f"{notes:,}",
-                        coverage
-                    )
-                
-                console.print(def_table)
-                console.print()
-        except Exception as e:
-            logger.error(f"Error generating definition statistics: {str(e)}")
-            console.print(f"[yellow]Could not generate definition statistics: {str(e)}[/]")
+            for row in def_results:
+                (source, defs, words, examples, pos, notes, ex_pct, notes_pct) = row
+                coverage = f"Examples: {ex_pct}%, Notes: {notes_pct}%"
+                def_table.add_row(
+                    source,
+                    f"{defs:,}",
+                    f"{words:,}",
+                    f"{examples:,}",
+                    str(pos),
+                    f"{notes:,}",
+                    coverage
+                )
+            
+            console.print(def_table)
+            console.print()
         
         # Etymology Contributors
-        try:
-            cur.execute("""
-                WITH etym_stats AS (
-                    SELECT 
-                        CASE
-                            WHEN sources ILIKE '%project marayum%' THEN 'Project Marayum'
-                            WHEN sources ILIKE '%marayum%' THEN 'Project Marayum'
-                            WHEN sources ILIKE '%kaikki-ceb%' THEN 'kaikki.org (Cebuano)'
-                            WHEN sources ILIKE '%kaikki.jsonl%' THEN 'kaikki.org (Tagalog)'
-                            WHEN sources ILIKE '%kaikki%' AND sources ILIKE '%ceb%' THEN 'kaikki.org (Cebuano)'
-                            WHEN sources ILIKE '%kaikki%' THEN 'kaikki.org (Tagalog)'
-                            WHEN sources ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                            WHEN sources ILIKE '%kwf_dictionary%' THEN 'KWF Diksiyonaryo'
-                            WHEN sources ILIKE '%tagalog.com%' THEN 'tagalog.com'
-                            WHEN sources ILIKE '%root_words%' THEN 'tagalog.com'
-                            WHEN sources ILIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
-                            WHEN sources ILIKE '%tagalog-words%' THEN 'diksiyonaryo.ph'
-                            ELSE COALESCE(sources, 'Unknown')
-                        END AS source_name,
-                        COUNT(*) AS etym_count,
-                        COUNT(DISTINCT word_id) AS unique_words,
-                        COUNT(CASE WHEN normalized_components IS NOT NULL THEN 1 END) AS with_components,
-                        COUNT(CASE WHEN language_codes IS NOT NULL THEN 1 END) AS with_lang_codes
-                    FROM etymologies
-                    GROUP BY source_name
-                )
-                SELECT *,
-                    ROUND(100.0 * with_components / NULLIF(etym_count, 0), 1) as comp_percentage,
-                    ROUND(100.0 * with_lang_codes / NULLIF(etym_count, 0), 1) as lang_percentage
-                FROM etym_stats
-                ORDER BY etym_count DESC
-            """)
+        cur.execute("""
+            WITH etym_stats AS (
+                SELECT 
+                    CASE
+                        WHEN LOWER(TRIM(sources)) LIKE '%project marayum%' THEN 'Project Marayum'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kaikki%' THEN 'kaikki.org'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kwf%' THEN 'KWF Diksiyonaryo'
+                        ELSE COALESCE(sources, 'Unknown')
+                    END AS source_name,
+                    COUNT(*) AS etym_count,
+                    COUNT(DISTINCT word_id) AS unique_words,
+                    COUNT(CASE WHEN normalized_components IS NOT NULL THEN 1 END) AS with_components,
+                    COUNT(CASE WHEN language_codes IS NOT NULL THEN 1 END) AS with_lang_codes
+                FROM etymologies
+                GROUP BY source_name
+            )
+            SELECT *,
+                ROUND(100.0 * with_components / NULLIF(etym_count, 0), 1) as comp_percentage,
+                ROUND(100.0 * with_lang_codes / NULLIF(etym_count, 0), 1) as lang_percentage
+            FROM etym_stats
+            ORDER BY etym_count DESC
+        """)
+        
+        etym_results = cur.fetchall()
+        if etym_results:
+            etym_table = Table(title="[bold blue]Etymology Contributors[/]", box=box.ROUNDED)
+            etym_table.add_column("Source", style="yellow")
+            etym_table.add_column("Etymologies", justify="right", style="green")
+            etym_table.add_column("Words", justify="right", style="green")
+            etym_table.add_column("Components", justify="right", style="cyan")
+            etym_table.add_column("Lang Codes", justify="right", style="cyan")
+            etym_table.add_column("Coverage", style="dim")
             
-            etym_results = cur.fetchall()
-            if etym_results:
-                etym_table = Table(title="[bold blue]Etymology Contributors[/]", box=box.ROUNDED)
-                etym_table.add_column("Source", style="yellow")
-                etym_table.add_column("Etymologies", justify="right", style="green")
-                etym_table.add_column("Words", justify="right", style="green")
-                etym_table.add_column("Components", justify="right", style="cyan")
-                etym_table.add_column("Lang Codes", justify="right", style="cyan")
-                etym_table.add_column("Coverage", style="dim")
-                
-                for row in etym_results:
-                    source = row[0] if len(row) > 0 else "Unknown"
-                    count = row[1] if len(row) > 1 else 0
-                    words = row[2] if len(row) > 2 else 0
-                    comps = row[3] if len(row) > 3 else 0
-                    langs = row[4] if len(row) > 4 else 0
-                    comp_pct = row[5] if len(row) > 5 else 0
-                    lang_pct = row[6] if len(row) > 6 else 0
-                    
-                    coverage = f"Components: {comp_pct}%, Languages: {lang_pct}%"
-                    etym_table.add_row(
-                        source,
-                        f"{count:,}",
-                        f"{words:,}",
-                        f"{comps:,}",
-                        f"{langs:,}",
-                        coverage
-                    )
-                
-                console.print(etym_table)
-                console.print()
-        except Exception as e:
-            logger.error(f"Error generating etymology statistics: {str(e)}")
-            console.print(f"[yellow]Could not generate etymology statistics: {str(e)}[/]")
+            for row in etym_results:
+                (source, count, words, comps, langs, comp_pct, lang_pct) = row
+                coverage = f"Components: {comp_pct}%, Languages: {lang_pct}%"
+                etym_table.add_row(
+                    source,
+                    f"{count:,}",
+                    f"{words:,}",
+                    f"{comps:,}",
+                    f"{langs:,}",
+                    coverage
+                )
+            
+            console.print(etym_table)
+            console.print()
         
         # Baybayin Contributors
-        try:
-            # Try different approaches to detect source info in words table
-            try:
-                # First check if source_info column exists and its type
-                cur.execute("""
-                    SELECT column_name, data_type 
-                    FROM information_schema.columns 
-                    WHERE table_name = 'words' AND column_name IN ('source_info', 'sources')
-                """)
-                columns_info = cur.fetchall()
-                column_types = {col[0]: col[1] for col in columns_info}
-                
-                # Determine the appropriate column and SQL based on what exists
-                if 'source_info' in column_types:
-                    source_col = 'source_info'
-                    is_jsonb = column_types['source_info'].upper() == 'JSONB'
-                elif 'sources' in column_types:
-                    source_col = 'sources'
-                    is_jsonb = column_types['sources'].upper() == 'JSONB'
-                else:
-                    # Fallback to tags if neither source column exists
-                    source_col = 'tags'
-                    is_jsonb = False
-                
-                # Construct the appropriate SQL
-                if is_jsonb:
-                    source_expr = f"{source_col}::text"
-                else:
-                    source_expr = source_col
-                
-                # Main SQL with proper source column
-                source_detection_sql = f"""
-                    WITH baybayin_stats AS (
-                        SELECT 
-                            CASE
-                                WHEN {source_expr} ILIKE '%project marayum%' THEN 'Project Marayum'
-                                WHEN {source_expr} ILIKE '%marayum%' THEN 'Project Marayum'
-                                WHEN {source_expr} ILIKE '%kaikki-ceb%' THEN 'kaikki.org (Cebuano)'
-                                WHEN {source_expr} ILIKE '%kaikki.jsonl%' THEN 'kaikki.org (Tagalog)'
-                                WHEN {source_expr} ILIKE '%kaikki%' AND {source_expr} ILIKE '%ceb%' THEN 'kaikki.org (Cebuano)'
-                                WHEN {source_expr} ILIKE '%kaikki%' THEN 'kaikki.org (Tagalog)'
-                                WHEN {source_expr} ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                                WHEN {source_expr} ILIKE '%kwf_dictionary%' THEN 'KWF Diksiyonaryo'
-                                WHEN {source_expr} ILIKE '%tagalog.com%' THEN 'tagalog.com'
-                                WHEN {source_expr} ILIKE '%root_words%' THEN 'tagalog.com'
-                                WHEN {source_expr} ILIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
-                                WHEN {source_expr} ILIKE '%tagalog-words%' THEN 'diksiyonaryo.ph'
-                                WHEN tags ILIKE '%marayum%' THEN 'Project Marayum'
-                                WHEN tags ILIKE '%kaikki%' THEN 'kaikki.org'
-                                WHEN tags ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                                ELSE 'Unknown'
-                            END AS source_name,
-                            COUNT(*) AS total_count,
-                            COUNT(CASE WHEN baybayin_form IS NOT NULL THEN 1 END) AS with_baybayin,
-                            COUNT(CASE WHEN romanized_form IS NOT NULL THEN 1 END) AS with_romanized,
-                            COUNT(CASE WHEN badlit_form IS NOT NULL THEN 1 END) AS with_badlit
-                        FROM words
-                        WHERE has_baybayin = TRUE
-                        GROUP BY source_name
-                    )
-                """
-            except Exception as e:
-                logger.warning(f"Error checking words table columns: {str(e)}")
-                # Fallback to a simpler approach if column detection fails
-                source_detection_sql = """
-                    WITH baybayin_stats AS (
-                        SELECT 
-                            CASE
-                                WHEN tags ILIKE '%marayum%' THEN 'Project Marayum'
-                                WHEN tags ILIKE '%kaikki%' THEN 'kaikki.org'
-                                WHEN tags ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                                WHEN tags ILIKE '%tagalog.com%' THEN 'tagalog.com'
-                                WHEN tags ILIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
-                                ELSE 'Unknown'
-                            END AS source_name,
-                            COUNT(*) AS total_count,
-                            COUNT(CASE WHEN baybayin_form IS NOT NULL THEN 1 END) AS with_baybayin,
-                            COUNT(CASE WHEN romanized_form IS NOT NULL THEN 1 END) AS with_romanized,
-                            COUNT(CASE WHEN badlit_form IS NOT NULL THEN 1 END) AS with_badlit
-                        FROM words
-                        WHERE has_baybayin = TRUE
-                        GROUP BY source_name
-                    )
-                """
-                
-            # Execute the query with percentage calculations
-            cur.execute(f"""
-                {source_detection_sql}
-                SELECT *,
-                    ROUND(100.0 * with_baybayin / NULLIF(total_count, 0), 1) as baybayin_percentage,
-                    ROUND(100.0 * with_romanized / NULLIF(total_count, 0), 1) as rom_percentage,
-                    ROUND(100.0 * with_badlit / NULLIF(total_count, 0), 1) as badlit_percentage
-                FROM baybayin_stats
-                ORDER BY total_count DESC
-            """)
+        cur.execute("""
+            WITH baybayin_stats AS (
+                SELECT 
+                    CASE
+                        WHEN LOWER(TRIM(sources)) LIKE '%project marayum%' THEN 'Project Marayum'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kaikki%' THEN 'kaikki.org'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kwf%' THEN 'KWF Diksiyonaryo'
+                        ELSE COALESCE(sources, 'Unknown')
+                    END AS source_name,
+                    COUNT(*) AS total_count,
+                    COUNT(CASE WHEN baybayin_form IS NOT NULL THEN 1 END) AS with_baybayin,
+                    COUNT(CASE WHEN romanized_form IS NOT NULL THEN 1 END) AS with_romanized,
+                    COUNT(CASE WHEN badlit_form IS NOT NULL THEN 1 END) AS with_badlit
+                FROM words
+                WHERE has_baybayin = TRUE
+                GROUP BY source_name
+            )
+            SELECT *,
+                ROUND(100.0 * with_baybayin / NULLIF(total_count, 0), 1) as baybayin_percentage,
+                ROUND(100.0 * with_romanized / NULLIF(total_count, 0), 1) as rom_percentage,
+                ROUND(100.0 * with_badlit / NULLIF(total_count, 0), 1) as badlit_percentage
+            FROM baybayin_stats
+            ORDER BY total_count DESC
+        """)
+        
+        baybayin_results = cur.fetchall()
+        if baybayin_results:
+            baybayin_table = Table(title="[bold blue]Baybayin Contributors[/]", box=box.ROUNDED)
+            baybayin_table.add_column("Source", style="yellow")
+            baybayin_table.add_column("Total", justify="right", style="green")
+            baybayin_table.add_column("Baybayin", justify="right", style="cyan")
+            baybayin_table.add_column("Romanized", justify="right", style="cyan")
+            baybayin_table.add_column("Badlit", justify="right", style="cyan")
+            baybayin_table.add_column("Coverage", style="dim")
             
-            baybayin_results = cur.fetchall()
-            if baybayin_results:
-                baybayin_table = Table(title="[bold blue]Baybayin Contributors[/]", box=box.ROUNDED)
-                baybayin_table.add_column("Source", style="yellow")
-                baybayin_table.add_column("Total", justify="right", style="green")
-                baybayin_table.add_column("Baybayin", justify="right", style="cyan")
-                baybayin_table.add_column("Romanized", justify="right", style="cyan")
-                baybayin_table.add_column("Badlit", justify="right", style="cyan")
-                baybayin_table.add_column("Coverage", style="dim")
-                
-                for row in baybayin_results:
-                    source = row[0] if len(row) > 0 else "Unknown"
-                    total = row[1] if len(row) > 1 else 0
-                    bayb = row[2] if len(row) > 2 else 0
-                    rom = row[3] if len(row) > 3 else 0
-                    badlit = row[4] if len(row) > 4 else 0
-                    bayb_pct = row[5] if len(row) > 5 else 0
-                    rom_pct = row[6] if len(row) > 6 else 0
-                    badlit_pct = row[7] if len(row) > 7 else 0
-                    
-                    coverage = f"B: {bayb_pct}%, R: {rom_pct}%, BL: {badlit_pct}%"
-                    baybayin_table.add_row(
-                        source,
-                        f"{total:,}",
-                        f"{bayb:,}",
-                        f"{rom:,}",
-                        f"{badlit:,}",
-                        coverage
-                    )
-                
-                console.print(baybayin_table)
-                console.print()
-        except Exception as e:
-            logger.error(f"Error generating Baybayin statistics: {str(e)}")
-            console.print(f"[yellow]Could not generate Baybayin statistics: {str(e)}[/]")
+            for row in baybayin_results:
+                (source, total, bayb, rom, badlit, bayb_pct, rom_pct, badlit_pct) = row
+                coverage = f"B: {bayb_pct}%, R: {rom_pct}%, BL: {badlit_pct}%"
+                baybayin_table.add_row(
+                    source,
+                    f"{total:,}",
+                    f"{bayb:,}",
+                    f"{rom:,}",
+                    f"{badlit:,}",
+                    coverage
+                )
+            
+            console.print(baybayin_table)
+            console.print()
         
         # Relationship Contributors
-        try:
-            cur.execute("""
-                WITH rel_stats AS (
-                    SELECT 
-                        CASE
-                            WHEN sources ILIKE '%project marayum%' THEN 'Project Marayum'
-                            WHEN sources ILIKE '%marayum%' THEN 'Project Marayum'
-                            WHEN sources ILIKE '%kaikki-ceb%' THEN 'kaikki.org (Cebuano)'
-                            WHEN sources ILIKE '%kaikki.jsonl%' THEN 'kaikki.org (Tagalog)'
-                            WHEN sources ILIKE '%kaikki%' AND sources ILIKE '%ceb%' THEN 'kaikki.org (Cebuano)'
-                            WHEN sources ILIKE '%kaikki%' THEN 'kaikki.org (Tagalog)'
-                            WHEN sources ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                            WHEN sources ILIKE '%kwf_dictionary%' THEN 'KWF Diksiyonaryo'
-                            WHEN sources ILIKE '%tagalog.com%' THEN 'tagalog.com'
-                            WHEN sources ILIKE '%root_words%' THEN 'tagalog.com'
-                            WHEN sources ILIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
-                            WHEN sources ILIKE '%tagalog-words%' THEN 'diksiyonaryo.ph'
-                            ELSE COALESCE(sources, 'Unknown')
-                        END AS source_name,
-                        COUNT(*) AS total_rels,
-                        COUNT(DISTINCT relation_type) AS rel_types,
-                        COUNT(DISTINCT from_word_id) AS source_words,
-                        COUNT(DISTINCT to_word_id) AS target_words,
-                        COUNT(CASE WHEN metadata IS NOT NULL THEN 1 END) AS with_metadata
-                    FROM relations
-                    GROUP BY source_name
-                )
-                SELECT *,
-                    ROUND(100.0 * with_metadata / NULLIF(total_rels, 0), 1) as meta_percentage
-                FROM rel_stats
-                ORDER BY total_rels DESC
-            """)
+        cur.execute("""
+            WITH rel_stats AS (
+                SELECT 
+                    CASE
+                        WHEN LOWER(TRIM(sources)) LIKE '%project marayum%' THEN 'Project Marayum'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kaikki%' THEN 'kaikki.org'
+                        WHEN LOWER(TRIM(sources)) LIKE '%kwf%' THEN 'KWF Diksiyonaryo'
+                        ELSE COALESCE(sources, 'Unknown')
+                    END AS source_name,
+                    COUNT(*) AS total_rels,
+                    COUNT(DISTINCT relation_type) AS rel_types,
+                    COUNT(DISTINCT from_word_id) AS source_words,
+                    COUNT(DISTINCT to_word_id) AS target_words,
+                    COUNT(CASE WHEN metadata IS NOT NULL THEN 1 END) AS with_metadata
+                FROM relations
+                GROUP BY source_name
+            )
+            SELECT *,
+                ROUND(100.0 * with_metadata / NULLIF(total_rels, 0), 1) as meta_percentage
+            FROM rel_stats
+            ORDER BY total_rels DESC
+        """)
+        
+        rel_results = cur.fetchall()
+        if rel_results:
+            rel_table = Table(title="[bold blue]Relationship Contributors[/]", box=box.ROUNDED)
+            rel_table.add_column("Source", style="yellow")
+            rel_table.add_column("Relations", justify="right", style="green")
+            rel_table.add_column("Types", justify="right", style="cyan")
+            rel_table.add_column("Source Words", justify="right", style="cyan")
+            rel_table.add_column("Target Words", justify="right", style="cyan")
+            rel_table.add_column("With Metadata", justify="right", style="dim")
             
-            rel_results = cur.fetchall()
-            if rel_results:
-                rel_table = Table(title="[bold blue]Relationship Contributors[/]", box=box.ROUNDED)
-                rel_table.add_column("Source", style="yellow")
-                rel_table.add_column("Relations", justify="right", style="green")
-                rel_table.add_column("Types", justify="right", style="cyan")
-                rel_table.add_column("Source Words", justify="right", style="cyan")
-                rel_table.add_column("Target Words", justify="right", style="cyan")
-                rel_table.add_column("With Metadata", justify="right", style="dim")
-                
-                for row in rel_results:
-                    source = row[0] if len(row) > 0 else "Unknown"
-                    total = row[1] if len(row) > 1 else 0
-                    types = row[2] if len(row) > 2 else 0
-                    sources = row[3] if len(row) > 3 else 0
-                    targets = row[4] if len(row) > 4 else 0
-                    meta = row[5] if len(row) > 5 else 0
-                    meta_pct = row[6] if len(row) > 6 else 0
-                    
-                    rel_table.add_row(
-                        source,
-                        f"{total:,}",
-                        str(types),
-                        f"{sources:,}",
-                        f"{targets:,}",
-                        f"{meta:,} ({meta_pct}%)"
-                    )
-                
-                console.print(rel_table)
-        except Exception as e:
-            logger.error(f"Error generating relationship statistics: {str(e)}")
-            console.print(f"[yellow]Could not generate relationship statistics: {str(e)}[/]")
+            for row in rel_results:
+                (source, total, types, sources, targets, meta, meta_pct) = row
+                rel_table.add_row(
+                    source,
+                    f"{total:,}",
+                    str(types),
+                    f"{sources:,}",
+                    f"{targets:,}",
+                    f"{meta:,} ({meta_pct}%)"
+                )
+            
+            console.print(rel_table)
         
         # Print timestamp
         console.print(f"\n[dim]Leaderboard generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}[/]")
@@ -9080,6 +7834,9 @@ def purge_database_cli(args):
 
 def lookup_word_cli(args):
     lookup_word(args)
+
+def display_dictionary_stats_cli(args):
+    display_dictionary_stats(args)
 
 def display_leaderboard_cli(args):
     """Display a leaderboard of dictionary contributors."""

@@ -1,0 +1,4 @@
+2025-03-30 14:34:08,577 - ERROR - Error looking up word: column w.is_root does not exist
+LINE 4: ...                        w.romanized_form, w.tags, w.is_root,...
+                                                             ^
+
