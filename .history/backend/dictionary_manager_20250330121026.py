@@ -539,35 +539,6 @@ CREATE INDEX IF NOT EXISTS idx_words_language ON words(language_code);
 CREATE INDEX IF NOT EXISTS idx_words_search ON words USING gin(search_text);
 CREATE INDEX IF NOT EXISTS idx_words_root ON words(root_word_id);
 
--- Create pronunciations table
-CREATE TABLE IF NOT EXISTS pronunciations (
-    id SERIAL PRIMARY KEY,
-    word_id INTEGER NOT NULL REFERENCES words(id) ON DELETE CASCADE,
-    type VARCHAR(20) NOT NULL DEFAULT 'ipa',
-    value TEXT NOT NULL,
-    tags JSONB,
-    metadata JSONB,
-    sources TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT pronunciations_unique UNIQUE(word_id, type, value)
-);
-CREATE INDEX IF NOT EXISTS idx_pronunciations_word ON pronunciations(word_id);
-CREATE INDEX IF NOT EXISTS idx_pronunciations_type ON pronunciations(type);
-CREATE INDEX IF NOT EXISTS idx_pronunciations_value ON pronunciations(value);
-
--- Create credits table
-CREATE TABLE IF NOT EXISTS credits (
-    id SERIAL PRIMARY KEY,
-    word_id INTEGER NOT NULL REFERENCES words(id) ON DELETE CASCADE,
-    credit TEXT NOT NULL,
-    sources TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT credits_unique UNIQUE(word_id, credit)
-);
-CREATE INDEX IF NOT EXISTS idx_credits_word ON credits(word_id);
-
 -- Create definitions table
 CREATE TABLE IF NOT EXISTS definitions (
     id SERIAL PRIMARY KEY,
@@ -605,7 +576,7 @@ CREATE INDEX IF NOT EXISTS idx_relations_type ON relations(relation_type);
 CREATE INDEX IF NOT EXISTS idx_relations_metadata ON relations USING GIN(metadata);
 CREATE INDEX IF NOT EXISTS idx_relations_metadata_strength ON relations((metadata->>'strength'));
 
--- Create etymologies table
+DROP TABLE IF EXISTS etymologies CASCADE;
 CREATE TABLE IF NOT EXISTS etymologies (
     id SERIAL PRIMARY KEY,
     word_id INT NOT NULL REFERENCES words(id) ON DELETE CASCADE,
@@ -647,7 +618,6 @@ CREATE TABLE IF NOT EXISTS affixations (
 CREATE INDEX IF NOT EXISTS idx_affixations_root ON affixations(root_word_id);
 CREATE INDEX IF NOT EXISTS idx_affixations_affixed ON affixations(affixed_word_id);
 
--- Create triggers for timestamp updates
 DO $$ BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM pg_trigger 
@@ -681,48 +651,22 @@ DO $$ BEGIN
             FOR EACH ROW
             EXECUTE FUNCTION update_timestamp();
     END IF;
-    
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_trigger 
-         WHERE tgname = 'update_pronunciations_timestamp'
-         AND tgrelid = 'pronunciations'::regclass
-    ) THEN
-        CREATE TRIGGER update_pronunciations_timestamp
-            BEFORE UPDATE ON pronunciations
-            FOR EACH ROW
-            EXECUTE FUNCTION update_timestamp();
-    END IF;
-    
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_trigger 
-         WHERE tgname = 'update_credits_timestamp'
-         AND tgrelid = 'credits'::regclass
-    ) THEN
-        CREATE TRIGGER update_credits_timestamp
-            BEFORE UPDATE ON credits
-            FOR EACH ROW
-            EXECUTE FUNCTION update_timestamp();
-    END IF;
 END $$;
 """
 
 def create_or_update_tables(conn):
-    """Create or update the database tables."""
     logger.info("Starting table creation/update process.")
-    
     cur = conn.cursor()
     try:
-        # Drop existing tables in correct order
         cur.execute("""
             DROP TABLE IF EXISTS 
-                credits, pronunciations, definition_relations, affixations, 
-                relations, etymologies, definitions, words, parts_of_speech CASCADE;
+                 definition_relations, affixations, relations, etymologies, 
+                 definitions, words, parts_of_speech CASCADE;
         """)
-        
-        # Create tables
         cur.execute(TABLE_CREATION_SQL)
+                 # Add the schema migration SQL
+        conn.commit()
         
-        # Insert standard parts of speech
         pos_entries = [
             ('n', 'Noun', 'Pangngalan', 'Word that refers to a person, place, thing, or idea'),
             ('v', 'Verb', 'Pandiwa', 'Word that expresses action or state of being'),
@@ -744,63 +688,51 @@ def create_or_update_tables(conn):
             ('var', 'Variant', 'Varyant', 'Alternative form or spelling'),
             ('unc', 'Uncategorized', 'Hindi Tiyak', 'Part of speech not yet determined')
         ]
-        
         for code, name_en, name_tl, desc in pos_entries:
             cur.execute("""
                 INSERT INTO parts_of_speech (code, name_en, name_tl, description)
                 VALUES (%s, %s, %s, %s)
                 ON CONFLICT (code) DO UPDATE 
-                SET name_en = EXCLUDED.name_en,
-                    name_tl = EXCLUDED.name_tl,
-                    description = EXCLUDED.description
+                 SET name_en = EXCLUDED.name_en,
+                     name_tl = EXCLUDED.name_tl,
+                     description = EXCLUDED.description
             """, (code, name_en, name_tl, desc))
         
         conn.commit()
         logger.info("Tables created or updated successfully.")
-        
     except Exception as e:
         conn.rollback()
         logger.error(f"Schema creation error: {str(e)}")
         raise
     finally:
         cur.close()
-        
-@with_transaction(commit=False)
+
+@with_transaction(commit=True)
 def insert_pronunciation(cur, word_id: int, pronunciation_data: Union[str, Dict], sources: str = "") -> Optional[int]:
     """Insert pronunciation data for a word."""
     try:
-        # Validate word exists
-        cur.execute("SELECT 1 FROM words WHERE id = %s", (word_id,))
-        if not cur.fetchone():
-            logger.error(f"Cannot insert pronunciation: word ID {word_id} does not exist")
-            return None
-
         # Handle different pronunciation data formats
         if isinstance(pronunciation_data, dict):
             pron_type = pronunciation_data.get('type', 'ipa')
             value = pronunciation_data.get('value', '')
-            tags = pronunciation_data.get('tags', [])
-            metadata = pronunciation_data.get('metadata', {})
-            sources = pronunciation_data.get('sources', sources)
+            tags = pronunciation_data.get('tags')
+            metadata = pronunciation_data.get('metadata')
         else:
             pron_type = 'ipa'
-            value = str(pronunciation_data).strip()
-            tags = []
-            metadata = {}
+            value = str(pronunciation_data)
+            tags = None
+            metadata = None
 
-        # Validate data
         if not value:
-            logger.warning(f"Empty pronunciation value for word ID {word_id}")
             return None
 
-        # Insert or update
         cur.execute("""
             INSERT INTO pronunciations (word_id, type, value, tags, metadata, sources)
             VALUES (%s, %s, %s, %s, %s, %s)
             ON CONFLICT (word_id, type, value) 
-            DO UPDATE SET
-                tags = COALESCE(EXCLUDED.tags, pronunciations.tags),
-                metadata = COALESCE(EXCLUDED.metadata, pronunciations.metadata),
+            DO UPDATE SET 
+                tags = EXCLUDED.tags,
+                metadata = EXCLUDED.metadata,
                 sources = CASE 
                     WHEN pronunciations.sources IS NULL THEN EXCLUDED.sources
                     WHEN EXCLUDED.sources IS NULL THEN pronunciations.sources
@@ -819,32 +751,23 @@ def insert_pronunciation(cur, word_id: int, pronunciation_data: Union[str, Dict]
         return cur.fetchone()[0]
     except Exception as e:
         logger.error(f"Error inserting pronunciation for word ID {word_id}: {str(e)}")
-        raise
+        return None
 
-@with_transaction(commit=False)
+@with_transaction(commit=True)
 def insert_credit(cur, word_id: int, credit_data: Union[str, Dict], sources: str = "") -> Optional[int]:
     """Insert credit data for a word."""
     try:
-        # Validate word exists
-        cur.execute("SELECT 1 FROM words WHERE id = %s", (word_id,))
-        if not cur.fetchone():
-            logger.error(f"Cannot insert credit: word ID {word_id} does not exist")
-            return None
-
         # Handle different credit data formats
         if isinstance(credit_data, dict):
-            credit_text = credit_data.get('text', '').strip()
+            credit_text = credit_data.get('text', '')
             credit_sources = credit_data.get('sources', sources)
         else:
-            credit_text = str(credit_data).strip()
+            credit_text = str(credit_data)
             credit_sources = sources
 
-        # Validate credit data
         if not credit_text:
-            logger.warning(f"Empty credit text for word ID {word_id}")
             return None
 
-        # Insert or update
         cur.execute("""
             INSERT INTO credits (word_id, credit, sources)
             VALUES (%s, %s, %s)
@@ -861,99 +784,76 @@ def insert_credit(cur, word_id: int, credit_data: Union[str, Dict], sources: str
         return cur.fetchone()[0]
     except Exception as e:
         logger.error(f"Error inserting credit for word ID {word_id}: {str(e)}")
-        raise
+        return None
 
 @with_transaction(commit=False)
-def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Optional[int]:
-    """
-    Process a single dictionary entry.
-    Currently only handles basic word creation, pronunciations, and credits.
-    
-    Args:
-        cur: Database cursor
-        entry: Dictionary containing entry data
-        filename: Source filename (optional)
-        check_exists: Whether to check if word already exists before creating
-    
-    Returns:
-        Optional[int]: Word ID if successful, None if failed
-    """
-    if not isinstance(entry, dict):
-        logger.warning("Invalid entry format: not a dictionary")
-        return None
-
-    # Extract basic word information
-    word = entry.get('word', '').strip()
-    if not word:
-        logger.warning("Empty word in entry")
-        return None
-
-    # Create savepoint for this entry
-    savepoint_name = f"entry_{hash(word)}"
-    cur.execute(f"SAVEPOINT {savepoint_name}")
-
+def process_entry(cur, entry: Dict, filename=None, check_exists=False):
+    """Process a single dictionary entry with proper transaction handling."""
     try:
-        # Process language code
-        language_code = entry.get('language_code', 'tl')
-        if not language_code:
-            language_code = 'tl'  # Default to Tagalog
+        # Extract basic word info
+        if not isinstance(entry, dict):
+            logger.warning("Entry is not a dictionary")
+            return None
 
-        # Get or create word entry
-        cur.execute("""
-            INSERT INTO words (lemma, normalized_lemma, language_code, sources)
-            VALUES (%s, %s, %s, %s)
-            ON CONFLICT (lemma, language_code) 
-            DO UPDATE SET
-                sources = CASE 
-                    WHEN words.sources IS NULL THEN EXCLUDED.sources
-                    WHEN EXCLUDED.sources IS NULL THEN words.sources
-                    ELSE words.sources || ', ' || EXCLUDED.sources
-                END
-            RETURNING id
-        """, (word, normalize_lemma(word), language_code, filename))
-        
-        word_id = cur.fetchone()[0]
-        if not word_id:
-            raise ValueError(f"Failed to create or get word ID for '{word}'")
+        word = entry.get('word', '')
+        if isinstance(word, dict):
+            word = word.get('text', '')
+        if not isinstance(word, str) or not word.strip():
+            logger.warning("Invalid or empty word")
+            return None
+            
+        word = word.strip()
+        language_code = entry.get('language_code', 'tl')
+
+        # Create word entry
+        try:
+            word_id = get_or_create_word_id(
+                cur, 
+                word, 
+                language_code=language_code,
+                check_exists=check_exists,
+                sources=filename if filename else None
+            )
+            if not word_id:
+                return None
+        except Exception as e:
+            logger.error(f"Failed to create word entry for '{word}': {str(e)}")
+            return None
 
         # Process pronunciations
-        if "pronunciations" in entry:
-            prons = entry["pronunciations"]
+        if 'pronunciations' in entry:
+            prons = entry['pronunciations']
             if isinstance(prons, list):
                 for pron in prons:
                     try:
                         insert_pronunciation(cur, word_id, pron, sources=filename)
                     except Exception as e:
-                        logger.warning(f"Failed to insert pronunciation for '{word}': {str(e)}")
-            elif isinstance(prons, (str, dict)):
+                        logger.warning(f"Failed to insert pronunciation for {word}: {str(e)}")
+            elif prons:  # Single pronunciation
                 try:
                     insert_pronunciation(cur, word_id, prons, sources=filename)
                 except Exception as e:
-                    logger.warning(f"Failed to insert pronunciation for '{word}': {str(e)}")
+                    logger.warning(f"Failed to insert pronunciation for {word}: {str(e)}")
 
         # Process credits
-        if "credits" in entry:
-            credits = entry["credits"]
+        if 'credits' in entry:
+            credits = entry['credits']
             if isinstance(credits, list):
                 for credit in credits:
                     try:
                         insert_credit(cur, word_id, credit, sources=filename)
                     except Exception as e:
-                        logger.warning(f"Failed to insert credit for '{word}': {str(e)}")
-            elif isinstance(credits, (str, dict)):
+                        logger.warning(f"Failed to insert credit for {word}: {str(e)}")
+            elif credits:  # Single credit
                 try:
                     insert_credit(cur, word_id, credits, sources=filename)
                 except Exception as e:
-                    logger.warning(f"Failed to insert credit for '{word}': {str(e)}")
+                    logger.warning(f"Failed to insert credit for {word}: {str(e)}")
 
-        # Release savepoint if everything succeeded
-        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
         return word_id
 
     except Exception as e:
-        # Roll back to savepoint on error
-        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-        logger.error(f"Error processing entry for '{word}': {str(e)}")
+        logger.error(f"Error processing entry: {str(e)}")
         return None
 
 # Define standard part of speech mappings
@@ -1258,60 +1158,6 @@ def extract_meaning(text: str) -> Tuple[str, Optional[str]]:
         clean_text = text.replace(match.group(0), '').strip()
         return clean_text, meaning
     return text, None
-
-def validate_schema(cur):
-    """Validate database schema and constraints."""
-    try:
-        # Check required tables exist
-        cur.execute("""
-            SELECT EXISTS (
-                SELECT FROM information_schema.tables 
-                WHERE table_name = 'words'
-            )
-        """)
-        if not cur.fetchone()[0]:
-            raise DatabaseError("Required table 'words' does not exist")
-
-        # Check required indexes
-        required_indexes = [
-            ('words_lemma_idx', 'words', 'lemma'),
-            ('words_normalized_lemma_idx', 'words', 'normalized_lemma'),
-            ('pronunciations_word_id_idx', 'pronunciations', 'word_id'),
-            ('credits_word_id_idx', 'credits', 'word_id')
-        ]
-        
-        for index_name, table, column in required_indexes:
-            cur.execute("""
-                SELECT EXISTS (
-                    SELECT FROM pg_indexes 
-                    WHERE indexname = %s
-                )
-            """, (index_name,))
-            if not cur.fetchone()[0]:
-                raise DatabaseError(f"Required index {index_name} on {table}({column}) does not exist")
-
-        # Check foreign key constraints
-        required_fks = [
-            ('pronunciations', 'word_id', 'words', 'id'),
-            ('credits', 'word_id', 'words', 'id')
-        ]
-        
-        for table, column, ref_table, ref_column in required_fks:
-            cur.execute("""
-                SELECT EXISTS (
-                    SELECT FROM information_schema.key_column_usage
-                    WHERE table_name = %s
-                    AND column_name = %s
-                    AND referenced_table_name = %s
-                    AND referenced_column_name = %s
-                )
-            """, (table, column, ref_table, ref_column))
-            if not cur.fetchone()[0]:
-                raise DatabaseError(f"Required foreign key constraint missing: {table}({column}) -> {ref_table}({ref_column})")
-
-    except Exception as e:
-        logger.error(f"Schema validation failed: {str(e)}")
-        raise
 
 def validate_word_data(data: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(data, dict):
@@ -4266,184 +4112,126 @@ def extract_baybayin_info(entry: Dict) -> Tuple[Optional[str], Optional[str]]:
         return baybayin_form, romanized_form
     return None, None
 
-@with_transaction(commit=False)
-def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Optional[int]:
+def process_entry(cur, entry: Dict, filename=None, check_exists=False):
     """
     Process a single dictionary entry.
-    
-    Args:
-        cur: Database cursor
-        entry: Dictionary containing entry data
-        filename: Source filename (optional)
-        check_exists: Whether to check if word already exists before creating
-    
-    Returns:
-        Optional[int]: Word ID if successful, None if failed
     """
-    if not isinstance(entry, dict):
-        logger.warning("Invalid entry format: not a dictionary")
-        return None
-
-    # Extract basic word information
-    word = entry.get('word', '').strip()
-    if not word:
-        logger.warning("Empty word in entry")
-        return None
-
-    # Create savepoint for this entry
-    savepoint_name = f"entry_{hash(word)}"
-    cur.execute(f"SAVEPOINT {savepoint_name}")
-
     try:
-        # Process language code
-        language_code = entry.get('language_code', 'tl')
-        if not language_code:
-            language_code = 'tl'  # Default to Tagalog
+        word = entry.get("word")
+        if not word:
+            return
+        language_code = entry.get("language_code") or entry.get("lang_code", "tl")
 
-        # Process Baybayin form if present
-        baybayin_form = None
-        romanized_form = None
-        if entry.get('baybayin'):
-            baybayin_text = entry['baybayin']
-            if isinstance(baybayin_text, str) and baybayin_text.strip():
-                baybayin_form = baybayin_text.strip()
-                if not romanized_form:
-                    romanized_form = get_romanized_text(baybayin_form)
+        word_id = get_or_create_word_id(cur, word, language_code=language_code, check_exists=check_exists)
+        
+        # If word_id is None, the word exists and check_exists is True, so skip this entry
+        if word_id is None:
+            return None
 
-        # Get or create word entry
-        word_id = get_or_create_word_id(
-            cur,
-            word,
-            language_code=language_code,
-            has_baybayin=bool(baybayin_form),
-            baybayin_form=baybayin_form,
-            romanized_form=romanized_form,
-            check_exists=check_exists,
-            sources=filename
+        # Extract any Baybayin form
+        baybayin_form, romanized_form = extract_baybayin_info(entry)
+        if baybayin_form:
+            process_baybayin_data(cur, word_id, baybayin_form, romanized_form)
+
+        # Insert definitions from `definitions` or `senses`
+        definitions = entry.get('definitions') or entry.get('senses', [])
+        for definition in definitions:
+            text = None
+            pos = entry.get('pos', '')
+            examples = None
+            usage_notes = None
+            tags = None
+
+            if isinstance(definition, dict):
+                text = definition.get('text')
+                if not text and 'glosses' in definition and isinstance(definition['glosses'], list) and definition['glosses']:
+                    text = definition['glosses'][0]
+                # sense-level pos override
+                if 'pos' in definition:
+                    pos = definition['pos']
+                if 'examples' in definition:
+                    ex_data = definition['examples']
+                    if isinstance(ex_data, list):
+                        examples = json.dumps(ex_data)
+                    else:
+                        examples = json.dumps([ex_data])
+                if 'usage_notes' in definition:
+                    un_data = definition['usage_notes']
+                    if isinstance(un_data, list):
+                        usage_notes = json.dumps(un_data)
+                    else:
+                        usage_notes = json.dumps([un_data])
+                
+                # Extract tags such as "colloquial", "figuratively", etc.
+                tags = extract_definition_tags(definition)
+                
+                # Extract any sense-level relations
+                if filename:  # Only call if filename is provided
+                    extract_sense_relations(cur, word_id, definition, language_code, 
+                                          SourceStandardization.standardize_sources(os.path.basename(filename)))
+            else:
+                # It's just a string
+                text = definition
+
+            if text:
+                text = re.sub(r'\.{3,}$', '', text).strip()
+                source = SourceStandardization.standardize_sources(os.path.basename(filename)) if filename else ""
+                insert_definition(
+                    cur,
+                    word_id,
+                    text,
+                    part_of_speech=standardize_entry_pos(pos),
+                    examples=examples,
+                    usage_notes=usage_notes,
+                    tags=json.dumps(tags) if tags else None,
+                    sources=source
+                )
+
+        # Insert etymology if present
+        if 'etymology' in entry and entry['etymology'].strip():
+            ety_text = entry['etymology']
+            comps = extract_etymology_components(ety_text)
+            
+            # Store full etymology structure if available
+            etymology_structure = None
+            if 'etymology_templates' in entry and isinstance(entry['etymology_templates'], list):
+                etymology_structure = json.dumps(entry['etymology_templates'])
+            
+            source = SourceStandardization.standardize_sources(os.path.basename(filename)) if filename else ""
+            insert_etymology(
+                cur,
+                word_id,
+                ety_text,
+                normalized_components=json.dumps(comps) if comps else None,
+                etymology_structure=etymology_structure,
+                sources=source
+            )
+
+        # Process direct relationship arrays
+        source = SourceStandardization.standardize_sources(os.path.basename(filename)) if filename else ""
+        process_direct_relations(
+            cur, 
+            word_id, 
+            entry, 
+            language_code, 
+            source
         )
-
-        if not word_id:
-            raise ValueError(f"Failed to create or get word ID for '{word}'")
-
-        # Process pronunciations
-        if "pronunciations" in entry:
-            prons = entry["pronunciations"]
-            if isinstance(prons, list):
-                for pron in prons:
-                    try:
-                        insert_pronunciation(cur, word_id, pron, sources=filename)
-                    except Exception as e:
-                        logger.warning(f"Failed to insert pronunciation for '{word}': {str(e)}")
-            elif isinstance(prons, (str, dict)):
-                try:
-                    insert_pronunciation(cur, word_id, prons, sources=filename)
-                except Exception as e:
-                    logger.warning(f"Failed to insert pronunciation for '{word}': {str(e)}")
-
-        # Process credits
-        if "credits" in entry:
-            credits = entry["credits"]
-            if isinstance(credits, list):
-                for credit in credits:
-                    try:
-                        insert_credit(cur, word_id, credit, sources=filename)
-                    except Exception as e:
-                        logger.warning(f"Failed to insert credit for '{word}': {str(e)}")
-            elif isinstance(credits, (str, dict)):
-                try:
-                    insert_credit(cur, word_id, credits, sources=filename)
-                except Exception as e:
-                    logger.warning(f"Failed to insert credit for '{word}': {str(e)}")
-
-        # Process etymology
-        if "etymology" in entry and entry["etymology"]:
-            etymology_text = entry["etymology"]
-            if isinstance(etymology_text, str) and etymology_text.strip():
-                try:
-                    components = extract_etymology_components(etymology_text)
-                    insert_etymology(
-                        cur,
-                        word_id,
-                        etymology_text,
-                        normalized_components=json.dumps(components) if components else None,
-                        sources=filename
-                    )
-                except Exception as e:
-                    logger.warning(f"Failed to insert etymology for '{word}': {str(e)}")
-
-        # Process definitions
-        if "definitions" in entry:
-            defs = entry["definitions"]
-            if isinstance(defs, list):
-                for def_item in defs:
-                    try:
-                        # Handle string definitions
-                        if isinstance(def_item, str):
-                            definition_text = def_item.strip()
-                            if definition_text:
-                                insert_definition(
-                                    cur,
-                                    word_id,
-                                    definition_text,
-                                    sources=filename
-                                )
-                        # Handle dictionary definitions
-                        elif isinstance(def_item, dict):
-                            definition_text = def_item.get('definition', '').strip()
-                            if not definition_text:
-                                continue
-
-                            # Process examples
-                            examples = def_item.get('examples', [])
-                            examples_json = None
-                            if examples:
-                                normalized_examples = []
-                                if isinstance(examples, list):
-                                    for ex in examples:
-                                        if isinstance(ex, str):
-                                            normalized_examples.append(ex)
-                                        elif isinstance(ex, dict) and 'text' in ex:
-                                            normalized_examples.append(ex['text'])
-                                if normalized_examples:
-                                    examples_json = json.dumps(normalized_examples)
-
-                            # Insert definition
-                            definition_id = insert_definition(
-                                cur,
-                                word_id,
-                                definition_text,
-                                examples=examples_json,
-                                part_of_speech=def_item.get('pos', ''),
-                                usage_notes=def_item.get('notes'),
-                                category=def_item.get('category'),
-                                tags=def_item.get('tags'),
-                                sources=filename
-                            )
-
-                            if definition_id:
-                                # Process definition relationships
-                                process_definition_relations(cur, word_id, definition_text, filename)
-
-                    except Exception as e:
-                        logger.warning(f"Failed to process definition for '{word}': {str(e)}")
-
-        # Process relationships
-        if "related" in entry and isinstance(entry["related"], dict):
-            try:
-                process_relationships(cur, word_id, entry["related"], filename)
-            except Exception as e:
-                logger.warning(f"Failed to process relationships for '{word}': {str(e)}")
-
-        # Release savepoint if everything succeeded
-        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+        
+        # Insert relationships with robust mapping (for the 'relations' dict)
+        if 'relations' in entry and isinstance(entry['relations'], dict):
+            process_relations(
+                cur,
+                word_id,
+                entry['relations'],
+                lang_code=language_code,
+                source=source
+            )
+        
         return word_id
-
     except Exception as e:
-        # Roll back to savepoint on error
-        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-        logger.error(f"Error processing entry for '{word}': {str(e)}")
+        logger.error(f"Error processing entry: {entry.get('word', 'unknown')}. Error: {str(e)}")
         return None
-    
+
 @with_transaction(commit=False)  # Changed to commit=False to manage transactions manually
 def process_kaikki_jsonl(cur, filename: str):
     """Process Kaikki.org dictionary entries."""

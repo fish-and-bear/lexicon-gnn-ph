@@ -1,0 +1,5 @@
+2025-03-30 09:20:18,838 - INFO - Looking up word: Namespace(command='lookup', word='atep', debug=False, format='rich')
+2025-03-30 09:20:18,839 - INFO - Word argument value: 'atep'
+2025-03-30 09:20:18,868 - INFO - Normalized word: atep
+2025-03-30 09:20:18,869 - INFO - Database connection test successful
+2025-03-30 09:20:18,875 - INFO - Word data fetched: False

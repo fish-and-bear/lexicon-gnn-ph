@@ -539,35 +539,6 @@ CREATE INDEX IF NOT EXISTS idx_words_language ON words(language_code);
 CREATE INDEX IF NOT EXISTS idx_words_search ON words USING gin(search_text);
 CREATE INDEX IF NOT EXISTS idx_words_root ON words(root_word_id);
 
--- Create pronunciations table
-CREATE TABLE IF NOT EXISTS pronunciations (
-    id SERIAL PRIMARY KEY,
-    word_id INTEGER NOT NULL REFERENCES words(id) ON DELETE CASCADE,
-    type VARCHAR(20) NOT NULL DEFAULT 'ipa',
-    value TEXT NOT NULL,
-    tags JSONB,
-    metadata JSONB,
-    sources TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT pronunciations_unique UNIQUE(word_id, type, value)
-);
-CREATE INDEX IF NOT EXISTS idx_pronunciations_word ON pronunciations(word_id);
-CREATE INDEX IF NOT EXISTS idx_pronunciations_type ON pronunciations(type);
-CREATE INDEX IF NOT EXISTS idx_pronunciations_value ON pronunciations(value);
-
--- Create credits table
-CREATE TABLE IF NOT EXISTS credits (
-    id SERIAL PRIMARY KEY,
-    word_id INTEGER NOT NULL REFERENCES words(id) ON DELETE CASCADE,
-    credit TEXT NOT NULL,
-    sources TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT credits_unique UNIQUE(word_id, credit)
-);
-CREATE INDEX IF NOT EXISTS idx_credits_word ON credits(word_id);
-
 -- Create definitions table
 CREATE TABLE IF NOT EXISTS definitions (
     id SERIAL PRIMARY KEY,
@@ -605,7 +576,7 @@ CREATE INDEX IF NOT EXISTS idx_relations_type ON relations(relation_type);
 CREATE INDEX IF NOT EXISTS idx_relations_metadata ON relations USING GIN(metadata);
 CREATE INDEX IF NOT EXISTS idx_relations_metadata_strength ON relations((metadata->>'strength'));
 
--- Create etymologies table
+DROP TABLE IF EXISTS etymologies CASCADE;
 CREATE TABLE IF NOT EXISTS etymologies (
     id SERIAL PRIMARY KEY,
     word_id INT NOT NULL REFERENCES words(id) ON DELETE CASCADE,
@@ -647,7 +618,6 @@ CREATE TABLE IF NOT EXISTS affixations (
 CREATE INDEX IF NOT EXISTS idx_affixations_root ON affixations(root_word_id);
 CREATE INDEX IF NOT EXISTS idx_affixations_affixed ON affixations(affixed_word_id);
 
--- Create triggers for timestamp updates
 DO $$ BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM pg_trigger 
@@ -681,48 +651,22 @@ DO $$ BEGIN
             FOR EACH ROW
             EXECUTE FUNCTION update_timestamp();
     END IF;
-    
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_trigger 
-         WHERE tgname = 'update_pronunciations_timestamp'
-         AND tgrelid = 'pronunciations'::regclass
-    ) THEN
-        CREATE TRIGGER update_pronunciations_timestamp
-            BEFORE UPDATE ON pronunciations
-            FOR EACH ROW
-            EXECUTE FUNCTION update_timestamp();
-    END IF;
-    
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_trigger 
-         WHERE tgname = 'update_credits_timestamp'
-         AND tgrelid = 'credits'::regclass
-    ) THEN
-        CREATE TRIGGER update_credits_timestamp
-            BEFORE UPDATE ON credits
-            FOR EACH ROW
-            EXECUTE FUNCTION update_timestamp();
-    END IF;
 END $$;
 """
 
 def create_or_update_tables(conn):
-    """Create or update the database tables."""
     logger.info("Starting table creation/update process.")
-    
     cur = conn.cursor()
     try:
-        # Drop existing tables in correct order
         cur.execute("""
             DROP TABLE IF EXISTS 
-                credits, pronunciations, definition_relations, affixations, 
-                relations, etymologies, definitions, words, parts_of_speech CASCADE;
+                 definition_relations, affixations, relations, etymologies, 
+                 definitions, words, parts_of_speech CASCADE;
         """)
-        
-        # Create tables
         cur.execute(TABLE_CREATION_SQL)
+                 # Add the schema migration SQL
+        conn.commit()
         
-        # Insert standard parts of speech
         pos_entries = [
             ('n', 'Noun', 'Pangngalan', 'Word that refers to a person, place, thing, or idea'),
             ('v', 'Verb', 'Pandiwa', 'Word that expresses action or state of being'),
@@ -744,28 +688,26 @@ def create_or_update_tables(conn):
             ('var', 'Variant', 'Varyant', 'Alternative form or spelling'),
             ('unc', 'Uncategorized', 'Hindi Tiyak', 'Part of speech not yet determined')
         ]
-        
         for code, name_en, name_tl, desc in pos_entries:
             cur.execute("""
                 INSERT INTO parts_of_speech (code, name_en, name_tl, description)
                 VALUES (%s, %s, %s, %s)
                 ON CONFLICT (code) DO UPDATE 
-                SET name_en = EXCLUDED.name_en,
-                    name_tl = EXCLUDED.name_tl,
-                    description = EXCLUDED.description
+                 SET name_en = EXCLUDED.name_en,
+                     name_tl = EXCLUDED.name_tl,
+                     description = EXCLUDED.description
             """, (code, name_en, name_tl, desc))
         
         conn.commit()
         logger.info("Tables created or updated successfully.")
-        
     except Exception as e:
         conn.rollback()
         logger.error(f"Schema creation error: {str(e)}")
         raise
     finally:
         cur.close()
-        
-@with_transaction(commit=False)
+
+@with_transaction(commit=False)  # Let the parent transaction handle commits
 def insert_pronunciation(cur, word_id: int, pronunciation_data: Union[str, Dict], sources: str = "") -> Optional[int]:
     """Insert pronunciation data for a word."""
     try:
@@ -788,12 +730,17 @@ def insert_pronunciation(cur, word_id: int, pronunciation_data: Union[str, Dict]
             tags = []
             metadata = {}
 
-        # Validate data
+        # Validate pronunciation data
         if not value:
             logger.warning(f"Empty pronunciation value for word ID {word_id}")
             return None
 
-        # Insert or update
+        # Validate IPA format if applicable
+        if pron_type == 'ipa' and not is_valid_ipa(value):
+            logger.warning(f"Invalid IPA format for word ID {word_id}: {value}")
+            return None
+
+        # Insert with proper error handling
         cur.execute("""
             INSERT INTO pronunciations (word_id, type, value, tags, metadata, sources)
             VALUES (%s, %s, %s, %s, %s, %s)
@@ -821,7 +768,7 @@ def insert_pronunciation(cur, word_id: int, pronunciation_data: Union[str, Dict]
         logger.error(f"Error inserting pronunciation for word ID {word_id}: {str(e)}")
         raise
 
-@with_transaction(commit=False)
+@with_transaction(commit=False)  # Let the parent transaction handle commits
 def insert_credit(cur, word_id: int, credit_data: Union[str, Dict], sources: str = "") -> Optional[int]:
     """Insert credit data for a word."""
     try:
@@ -844,7 +791,7 @@ def insert_credit(cur, word_id: int, credit_data: Union[str, Dict], sources: str
             logger.warning(f"Empty credit text for word ID {word_id}")
             return None
 
-        # Insert or update
+        # Insert with proper error handling
         cur.execute("""
             INSERT INTO credits (word_id, credit, sources)
             VALUES (%s, %s, %s)
@@ -861,7 +808,7 @@ def insert_credit(cur, word_id: int, credit_data: Union[str, Dict], sources: str
         return cur.fetchone()[0]
     except Exception as e:
         logger.error(f"Error inserting credit for word ID {word_id}: {str(e)}")
-        raise
+        raise 
 
 @with_transaction(commit=False)
 def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Optional[int]:

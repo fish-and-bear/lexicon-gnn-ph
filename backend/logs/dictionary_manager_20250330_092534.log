@@ -1,0 +1,25 @@
+2025-03-30 09:25:34,067 - INFO - Looking up word: Namespace(command='lookup', word='ngatanan', debug=False, format='rich')
+2025-03-30 09:25:34,067 - INFO - Word argument value: 'ngatanan'
+2025-03-30 09:25:34,095 - INFO - Normalized word: ngatanan
+2025-03-30 09:25:34,096 - INFO - Database connection test successful
+2025-03-30 09:25:34,111 - INFO - Word data fetched: True
+2025-03-30 09:25:34,111 - INFO - Beginning to unpack word data
+2025-03-30 09:25:34,111 - INFO - Successfully unpacked word data
+2025-03-30 09:25:34,112 - INFO - word_id: 237233, lemma: ngatanan, language_code: cebuano
+2025-03-30 09:25:34,112 - INFO - has_baybayin: False, baybayin_form: None, romanized_form: None
+2025-03-30 09:25:34,112 - INFO - preferred_spelling: None, root_word_id: None
+2025-03-30 09:25:34,112 - INFO - def_sources type: <class 'list'>, ety_sources type: <class 'list'>
+2025-03-30 09:25:34,113 - INFO - tags type: <class 'NoneType'>, source_info type: <class 'dict'>
+2025-03-30 09:25:34,113 - INFO - Building basic information tree
+2025-03-30 09:25:34,113 - INFO - Adding preferred spelling if available
+2025-03-30 09:25:34,114 - INFO - Adding Baybayin form if available
+2025-03-30 09:25:34,114 - INFO - Adding root word if available
+2025-03-30 09:25:34,114 - INFO - Gathering sources - starting
+2025-03-30 09:25:34,114 - INFO - Processing tags
+2025-03-30 09:25:34,114 - INFO - Processing source_info
+2025-03-30 09:25:34,114 - INFO - Processing def_sources
+2025-03-30 09:25:34,115 - INFO - def_sources content: [None]
+2025-03-30 09:25:34,115 - WARNING - Found None value in def_sources
+2025-03-30 09:25:34,115 - INFO - Processing ety_sources
+2025-03-30 09:25:34,115 - INFO - ety_sources content: [None]
+2025-03-30 09:25:34,116 - WARNING - Found None value in ety_sources

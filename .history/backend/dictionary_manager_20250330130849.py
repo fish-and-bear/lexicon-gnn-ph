@@ -706,11 +706,11 @@ DO $$ BEGIN
 END $$;
 """
 
-def create_or_update_tables(conn):
+@with_transaction(commit=True)
+def create_or_update_tables(cur):
     """Create or update the database tables."""
     logger.info("Starting table creation/update process.")
     
-    cur = conn.cursor()
     try:
         # Drop existing tables in correct order
         cur.execute("""
@@ -755,16 +755,12 @@ def create_or_update_tables(conn):
                     description = EXCLUDED.description
             """, (code, name_en, name_tl, desc))
         
-        conn.commit()
         logger.info("Tables created or updated successfully.")
         
     except Exception as e:
-        conn.rollback()
         logger.error(f"Schema creation error: {str(e)}")
         raise
-    finally:
-        cur.close()
-        
+    
 @with_transaction(commit=False)
 def insert_pronunciation(cur, word_id: int, pronunciation_data: Union[str, Dict], sources: str = "") -> Optional[int]:
     """Insert pronunciation data for a word."""

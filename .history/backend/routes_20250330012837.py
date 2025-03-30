@@ -546,9 +546,6 @@ class WordQuerySchema(Schema):
     include_relations = fields.Bool(default=True)
     include_etymology = fields.Bool(default=True)
     include_metadata = fields.Bool(default=True)
-    include_pronunciation = fields.Bool(default=False)
-    include_idioms = fields.Bool(default=False)
-    include_source_info = fields.Bool(default=False)
 
 class SearchQuerySchema(Schema):
     """Schema for search query parameters."""
@@ -558,17 +555,11 @@ class SearchQuerySchema(Schema):
     language = fields.Str(validate=validate.OneOf(['tl', 'ceb']), default='tl')
     include_baybayin = fields.Bool(default=True)
     min_similarity = fields.Float(validate=validate.Range(min=0.0, max=1.0), default=0.3)
-    mode = fields.Str(validate=validate.OneOf(['all', 'exact', 'phonetic', 'baybayin', 'fuzzy', 'etymology']), default='all')
-    sort = fields.Str(validate=validate.OneOf(['relevance', 'alphabetical', 'created', 'updated', 'etymology']), default='relevance')
+    mode = fields.Str(validate=validate.OneOf(['all', 'exact', 'phonetic', 'baybayin', 'fuzzy']), default='all')
+    sort = fields.Str(validate=validate.OneOf(['relevance', 'alphabetical', 'created', 'updated']), default='relevance')
     order = fields.Str(validate=validate.OneOf(['asc', 'desc']), default='desc')
     include_definitions = fields.Bool(default=True)
     include_etymology = fields.Bool(default=False)
-    include_pronunciation = fields.Bool(default=False)
-    include_idioms = fields.Bool(default=False)
-    include_source_info = fields.Bool(default=False)
-    filter_has_etymology = fields.Bool(default=False)
-    filter_has_pronunciation = fields.Bool(default=False)
-    filter_has_idioms = fields.Bool(default=False)
 
 class PaginationSchema(Schema):
     """Schema for pagination parameters."""
@@ -581,11 +572,6 @@ class WordDetailSchema(Schema):
     include_relations = fields.Bool(missing=True)
     include_etymology = fields.Bool(missing=True)
     include_metadata = fields.Bool(missing=True)
-    include_pronunciation = fields.Bool(missing=False)
-    include_idioms = fields.Bool(missing=False)
-    include_source_info = fields.Bool(missing=False)
-    include_affixes = fields.Bool(missing=True)
-    include_definition_relations = fields.Bool(missing=False)
 
 class WordRelationshipSchema(Schema):
     """Schema for word relationship parameters."""
@@ -640,9 +626,6 @@ class RelationsQuerySchema(Schema):
         # General relationships
         'related'
     ], error="Invalid relation type specified"), missing=None)
-    include_metadata = fields.Bool(default=False)
-    include_source_info = fields.Bool(default=False)
-    include_strength = fields.Bool(default=False)
     
 class AffixesQuerySchema(Schema):
     """Schema for affixes query parameters."""
@@ -650,8 +633,6 @@ class AffixesQuerySchema(Schema):
     type = fields.Str(validate=validate.OneOf([
         'prefix', 'infix', 'suffix', 'circumfix', 'reduplication', 'compound'
     ], error="Invalid affix type specified"), missing=None)
-    include_source_info = fields.Bool(default=False)
-    include_examples = fields.Bool(default=False)
     
 def validate_query_params(schema_cls):
     """
@@ -850,11 +831,6 @@ def get_word(word, **params):
         include_relations (bool): Include word relationships (default: True)
         include_etymology (bool): Include etymology (default: True)
         include_metadata (bool): Include additional metadata (default: True)
-        include_pronunciation (bool): Include pronunciation (default: False)
-        include_idioms (bool): Include idioms (default: False)
-        include_source_info (bool): Include source information (default: False)
-        include_affixes (bool): Include affix relationships (default: True)
-        include_definition_relations (bool): Include definition relations (default: False)
     
     Returns:
         Detailed word information
@@ -865,11 +841,6 @@ def get_word(word, **params):
         include_relations = params.get('include_relations', True)
         include_etymology = params.get('include_etymology', True)
         include_metadata = params.get('include_metadata', True)
-        include_pronunciation = params.get('include_pronunciation', False)
-        include_idioms = params.get('include_idioms', False)
-        include_source_info = params.get('include_source_info', False)
-        include_affixes = params.get('include_affixes', True)
-        include_definition_relations = params.get('include_definition_relations', False)
         language_code = request.args.get('language_code', 'tl')
         
         # Validate language code
@@ -880,14 +851,12 @@ def get_word(word, **params):
         query_options = []
         if include_definitions:
             query_options.append(joinedload(Word.definitions).joinedload(Definition.standardized_pos))
-            if include_definition_relations:
-                query_options.append(joinedload(Word.definitions).joinedload(Definition.definition_relations).joinedload(DefinitionRelation.word))
+            query_options.append(joinedload(Word.definitions).joinedload(Definition.definition_relations).joinedload(DefinitionRelation.word))
         if include_etymology:
             query_options.append(joinedload(Word.etymologies))
         if include_relations:
             query_options.append(joinedload(Word.relations_from).joinedload(Relation.to_word))
             query_options.append(joinedload(Word.relations_to).joinedload(Relation.from_word))
-        if include_affixes:
             query_options.append(joinedload(Word.affixations_as_root).joinedload(Affixation.affixed_word))
             query_options.append(joinedload(Word.affixations_as_affixed).joinedload(Affixation.root_word))
         
@@ -931,16 +900,6 @@ def get_word(word, **params):
             include_metadata=include_metadata
         )
         
-        # Add additional requested data
-        if include_pronunciation and word_entry.pronunciation_data:
-            word_data["pronunciation"] = word_entry.pronunciation_data
-            
-        if include_idioms:
-            word_data["idioms"] = word_entry.get_idioms_list()
-            
-        if include_source_info:
-            word_data["source_info"] = word_entry.source_info
-            
         # Return success response
         return success_response(
             word_data,
@@ -950,12 +909,7 @@ def get_word(word, **params):
                     "definitions": include_definitions,
                     "relations": include_relations,
                     "etymology": include_etymology,
-                    "metadata": include_metadata,
-                    "pronunciation": include_pronunciation,
-                    "idioms": include_idioms,
-                    "source_info": include_source_info,
-                    "affixes": include_affixes,
-                    "definition_relations": include_definition_relations
+                    "metadata": include_metadata
                 }
             }
         )
@@ -968,7 +922,7 @@ def get_word(word, **params):
 @validate_query_params(SearchQuerySchema)
 def search_words(**params):
     """
-    Search words with enhanced filtering and sorting.
+    Search words with basic filtering and sorting.
     
     Query Parameters:
         q (str): Search query
@@ -977,20 +931,17 @@ def search_words(**params):
         language (str): Language code (default: 'tl')
         include_baybayin (bool): Include baybayin matches (default: True)
         min_similarity (float): Minimum similarity threshold (default: 0.3)
-        mode (str): Search mode (all, exact, phonetic, baybayin, fuzzy, etymology) (default: all)
-        sort (str): Sorting field (relevance, alphabetical, created, updated, etymology) (default: relevance)
+        mode (str): Search mode (all, exact, phonetic, baybayin, fuzzy) (default: all)
+        sort (str): Sorting field (relevance, alphabetical, created, updated) (default: relevance)
         order (str): Sort order (asc, desc) (default: desc)
         include_definitions (bool): Include definitions in results (default: True)
         include_etymology (bool): Include etymology in results (default: False)
-        include_pronunciation (bool): Include pronunciation data (default: False)
-        include_idioms (bool): Include idioms (default: False)
-        include_source_info (bool): Include source information (default: False)
-        filter_has_etymology (bool): Filter words with etymology (default: False)
-        filter_has_pronunciation (bool): Filter words with pronunciation (default: False)
-        filter_has_idioms (bool): Filter words with idioms (default: False)
+    
+    Returns:
+        Search results based on query parameters
     """
     try:
-        # Log search request
+        # Log search request for debugging
         logger.info(
             "search_request",
             params=params,
@@ -998,7 +949,7 @@ def search_words(**params):
             user_agent=request.headers.get('User-Agent')
         )
         
-        # Check rate limit
+        # Check rate limit for search endpoint
         is_allowed, remaining = check_rate_limit(f"rate_limit:{request.remote_addr}:search", limit=60, window=60)
         if not is_allowed:
             return rate_limit_exceeded_response()
@@ -1013,201 +964,273 @@ def search_words(**params):
         sort = params.get("sort", "relevance")
         order = params.get("order", "desc")
         pos = params.get("pos")
-        
-        # Extract include flags
         include_definitions = params.get("include_definitions", True)
         include_etymology = params.get("include_etymology", False)
-        include_pronunciation = params.get("include_pronunciation", False)
-        include_idioms = params.get("include_idioms", False)
-        include_source_info = params.get("include_source_info", False)
         
-        # Extract filter flags
-        filter_has_etymology = params.get("filter_has_etymology", False)
-        filter_has_pronunciation = params.get("filter_has_pronunciation", False)
-        filter_has_idioms = params.get("filter_has_idioms", False)
-        
-        # Validate query
+        # Validate parameters
         if not query or len(query.strip()) == 0:
             return error_response("Search query cannot be empty", 400, error_code="ERR_VALIDATION")
         
-        # Normalize query
+        # Normalize query for consistent matching
         normalized_query = normalize_word(query)
+        
+        # Safety check
         if not normalized_query:
             normalized_query = query.lower()
         
-        # Build base query with eager loading based on includes
-        base_query = Word.query
+        # Track which search strategy we're using for debugging
+        search_strategy = "basic"
         
-        # Add eager loading options
-        if include_definitions:
-            base_query = base_query.options(
-                joinedload(Word.definitions).joinedload(Definition.standardized_pos)
-            )
-        if include_etymology:
-            base_query = base_query.options(
-                joinedload(Word.etymologies)
-            )
+        # Use a flag to determine if we need to fall back
+        use_fallback = False
         
-        # Apply language filter
-        base_query = base_query.filter(Word.language_code == language)
-        
-        # Apply mode-specific filters
-        if mode == 'exact':
-            base_query = base_query.filter(Word.normalized_lemma == normalized_query)
-        elif mode == 'phonetic':
-            try:
-                # Try PostgreSQL metaphone
-                test_query = db.session.query(func.metaphone('test', 4))
-                test_query.first()
+        try:
+            # Try to use PostgreSQL-specific features
+            # If they fail, we'll catch the exception and use the fallback approach
+            
+            # Build basic SQLAlchemy query
+            base_query = db.session.query(Word).filter(Word.language_code == language)
+            
+            # Apply mode-specific filters
+            if mode == 'exact':
+                base_query = base_query.filter(Word.normalized_lemma == normalized_query)
+            elif mode == 'phonetic':
+                # For phonetic search, try using PostgreSQL's metaphone function if available
+                try:
+                    search_strategy = "phonetic-pg"
+                    # Create a simple test query first to check if metaphone is available
+                    test_query = db.session.query(func.metaphone('test', 4))
+                    test_query.first()  # Try to execute the test query
+                    
+                    # If we get here, metaphone is available
+                    base_query = base_query.filter(
+                        func.metaphone(Word.normalized_lemma, 10) == func.metaphone(normalized_query, 10)
+                    )
+                except Exception as e:
+                    # Fallback to simple prefix matching if metaphone is not available
+                    search_strategy = "phonetic-fallback"
+                    logger.warning(f"Metaphone function not available, using prefix fallback: {str(e)}")
+                    # Use first 3 characters for prefix matching as a simple phonetic approximation
+                    if len(normalized_query) >= 3:
+                        base_query = base_query.filter(Word.normalized_lemma.like(f'{normalized_query[:3]}%'))
+                    else:
+                        base_query = base_query.filter(Word.normalized_lemma.like(f'{normalized_query}%'))
+            elif mode == 'baybayin' and include_baybayin:
                 base_query = base_query.filter(
-                    func.metaphone(Word.normalized_lemma, 10) == func.metaphone(normalized_query, 10)
+                    Word.has_baybayin == True,
+                    Word.baybayin_form.isnot(None),
+                    Word.baybayin_form.like(f'{query}%')
                 )
-            except Exception:
-                # Fallback to prefix matching
-                if len(normalized_query) >= 3:
-                    base_query = base_query.filter(Word.normalized_lemma.like(f'{normalized_query[:3]}%'))
-                else:
-                    base_query = base_query.filter(Word.normalized_lemma.like(f'{normalized_query}%'))
-        elif mode == 'baybayin' and include_baybayin:
-            base_query = base_query.filter(
-                Word.has_baybayin == True,
-                Word.baybayin_form.isnot(None),
-                Word.baybayin_form.like(f'{query}%')
-            )
-        elif mode == 'fuzzy':
-            try:
-                # Try PostgreSQL similarity
-                test_query = db.session.query(func.similarity('test', 'test'))
-                test_query.first()
+            elif mode == 'fuzzy':
+                # For fuzzy search, try PostgreSQL similarity if available
+                try:
+                    search_strategy = "fuzzy-pg"
+                    # Create a simple test query first to check if similarity is available
+                    test_query = db.session.query(func.similarity('test', 'test'))
+                    test_query.first()  # Try to execute the test query
+                    
+                    # If we get here, similarity is available
+                    base_query = base_query.filter(
+                        func.similarity(Word.normalized_lemma, normalized_query) > min_similarity
+                    )
+                except Exception as e:
+                    # Fallback to LIKE with wildcards if similarity is not available
+                    search_strategy = "fuzzy-fallback"
+                    logger.warning(f"Similarity function not available, using LIKE fallback: {str(e)}")
+                    base_query = base_query.filter(
+                        or_(
+                            Word.lemma.ilike(f'%{query}%'),
+                            Word.normalized_lemma.ilike(f'%{normalized_query}%')
+                        )
+                    )
+            else:
+                # Default 'all' mode - combine different search approaches
+                search_strategy = "all-combined"
                 base_query = base_query.filter(
-                    func.similarity(Word.normalized_lemma, normalized_query) > min_similarity
+                    or_(
+                        # Exact match gets highest priority
+                        Word.normalized_lemma == normalized_query,
+                        # Then starts-with matches
+                        Word.normalized_lemma.like(f'{normalized_query}%'),
+                        # Then contains matches
+                        Word.lemma.ilike(f'%{query}%'),
+                        Word.normalized_lemma.ilike(f'%{normalized_query}%'),
+                        # Then preferred spelling matches
+                        Word.preferred_spelling == query,
+                        # Then baybayin matches if requested
+                        and_(
+                            Word.has_baybayin == True,
+                            Word.baybayin_form.isnot(None),
+                            Word.baybayin_form.like(f'{query}%')
+                        ) if include_baybayin else False
+                    )
                 )
-            except Exception:
-                # Fallback to LIKE
-                base_query = base_query.filter(
+            
+            # Apply part of speech filter if specified
+            if pos:
+                base_query = base_query.join(Word.definitions).join(Definition.standardized_pos).filter(
+                    PartOfSpeech.code == pos
+                ).distinct()
+            
+            # Apply sorting
+            if sort == 'alphabetical':
+                base_query = base_query.order_by(Word.lemma.asc() if order == 'asc' else Word.lemma.desc())
+            elif sort == 'created':
+                base_query = base_query.order_by(Word.created_at.asc() if order == 'asc' else Word.created_at.desc())
+            elif sort == 'updated':
+                base_query = base_query.order_by(Word.updated_at.asc() if order == 'asc' else Word.updated_at.desc())
+            else:  # relevance - prioritize exact matches
+                search_strategy += "-relevance"
+                # Try PostgreSQL-specific ordering if available
+                try:
+                    if order == 'asc':
+                        base_query = base_query.order_by(
+                            (Word.normalized_lemma != normalized_query).asc(),
+                            (not_(Word.normalized_lemma.like(f'{normalized_query}%'))).asc(),
+                            Word.lemma.asc()
+                        )
+                    else:
+                        base_query = base_query.order_by(
+                            (Word.normalized_lemma == normalized_query).desc(),
+                            (Word.normalized_lemma.like(f'{normalized_query}%')).desc(),
+                            Word.lemma.asc()
+                        )
+                except Exception as e:
+                    # Fallback to simpler ordering if expression-based ordering fails
+                    search_strategy += "-simple"
+                    logger.warning(f"Advanced ordering not available, using simpler ordering: {str(e)}")
+                    # Simple ordering based on case-insensitive starts-with
+                    if order == 'asc':
+                        base_query = base_query.order_by(Word.lemma.asc())
+                    else:
+                        # For descending, we can at least try to prioritize exact matches first
+                        try:
+                            exact_matches = [w.id for w in db.session.query(Word.id).filter(
+                                Word.normalized_lemma == normalized_query,
+                                Word.language_code == language
+                            ).all()]
+                            
+                            startswith_matches = [w.id for w in db.session.query(Word.id).filter(
+                                Word.normalized_lemma.like(f'{normalized_query}%'),
+                                Word.normalized_lemma != normalized_query,
+                                Word.language_code == language
+                            ).all()]
+                            
+                            # Use a CASE expression for ordering if the database supports it
+                            base_query = base_query.order_by(
+                                # First exact matches
+                                case((Word.id.in_(exact_matches), 1), else_=
+                                    # Then starts-with matches  
+                                    case((Word.id.in_(startswith_matches), 2), else_=3)
+                                ),
+                                Word.lemma.asc()
+                            )
+                        except Exception as case_error:
+                            logger.warning(f"Case-based ordering not available: {str(case_error)}")
+                            # Simplest fallback - just alphabetical ordering
+                            base_query = base_query.order_by(Word.lemma.asc())
+            
+            # Check if we have a valid query before executing
+            if base_query is None:
+                use_fallback = True
+                raise ValueError("Search query construction failed")
+            
+            # Limit results and eager load relationships with proper error handling
+            try:
+                if include_definitions and include_etymology:
+                    base_query = base_query.options(
+                        joinedload(Word.definitions).joinedload(Definition.standardized_pos),
+                        joinedload(Word.etymologies)
+                    )
+                elif include_definitions:
+                    base_query = base_query.options(
+                        joinedload(Word.definitions).joinedload(Definition.standardized_pos)
+                    )
+                elif include_etymology:
+                    base_query = base_query.options(
+                        joinedload(Word.etymologies)
+                    )
+                
+                # Execute query with appropriate limit
+                words = base_query.limit(limit).all()
+            except Exception as load_error:
+                logger.error(f"Error eager loading relationships: {str(load_error)}")
+                # Try again without eager loading
+                words = db.session.query(Word).filter(
+                    Word.language_code == language,
+                    or_(
+                        Word.normalized_lemma == normalized_query,
+                        Word.normalized_lemma.like(f'{normalized_query}%'),
+                        Word.lemma.ilike(f'%{query}%'),
+                        Word.normalized_lemma.ilike(f'%{normalized_query}%')
+                    )
+                ).limit(limit).all()
+                
+        except Exception as query_error:
+            # Log the specific error
+            logger.error(f"Database query error: {str(query_error)}")
+            use_fallback = True
+        
+        # If needed, fall back to a simpler search approach
+        if use_fallback or words is None:
+            # Fall back to a simpler search approach
+            logger.info("Falling back to a simpler search approach")
+            search_strategy = "simple-fallback"
+            
+            # Create a new session to avoid transaction issues
+            db.session.rollback()
+            
+            # Simplest possible query - just a basic LIKE search
+            try:
+                words = Word.query.filter(
+                    Word.language_code == language,
                     or_(
                         Word.lemma.ilike(f'%{query}%'),
                         Word.normalized_lemma.ilike(f'%{normalized_query}%')
                     )
-                )
-        elif mode == 'etymology':
-            base_query = base_query.join(Word.etymologies).filter(
-                or_(
-                    Etymology.etymology_text.ilike(f'%{query}%'),
-                    Etymology.language_codes.ilike(f'%{query}%'),
-                    Etymology.normalized_components.ilike(f'%{query}%')
-                )
-            )
-        else:  # 'all' mode
-            base_query = base_query.filter(
-                or_(
-                    Word.normalized_lemma == normalized_query,
-                    Word.normalized_lemma.like(f'{normalized_query}%'),
-                    Word.lemma.ilike(f'%{query}%'),
-                    Word.normalized_lemma.ilike(f'%{normalized_query}%'),
-                    Word.preferred_spelling == query,
-                    and_(
-                        Word.has_baybayin == True,
-                        Word.baybayin_form.isnot(None),
-                        Word.baybayin_form.like(f'{query}%')
-                    ) if include_baybayin else False,
-                    Word.search_text.op('@@')(func.plainto_tsquery('simple', normalized_query))
-                )
-            )
-        
-        # Apply additional filters
-        if pos:
-            base_query = base_query.join(Word.definitions).join(Definition.standardized_pos).filter(
-                PartOfSpeech.code == pos
-            ).distinct()
-            
-        if filter_has_etymology:
-            base_query = base_query.join(Word.etymologies)
-            
-        if filter_has_pronunciation:
-            base_query = base_query.filter(Word.pronunciation_data.isnot(None))
-            
-        if filter_has_idioms:
-            base_query = base_query.filter(Word.idioms != '[]')
-        
-        # Apply sorting
-        if sort == 'alphabetical':
-            base_query = base_query.order_by(Word.lemma.asc() if order == 'asc' else Word.lemma.desc())
-        elif sort == 'created':
-            base_query = base_query.order_by(Word.created_at.asc() if order == 'asc' else Word.created_at.desc())
-        elif sort == 'updated':
-            base_query = base_query.order_by(Word.updated_at.asc() if order == 'asc' else Word.updated_at.desc())
-        elif sort == 'etymology':
-            base_query = base_query.outerjoin(Word.etymologies).group_by(Word.id).order_by(
-                func.count(Etymology.id).asc() if order == 'asc' else func.count(Etymology.id).desc()
-            )
-        else:  # relevance
-            try:
-                if order == 'asc':
-                    base_query = base_query.order_by(
-                        (Word.normalized_lemma != normalized_query).asc(),
-                        (not_(Word.normalized_lemma.like(f'{normalized_query}%'))).asc(),
-                        Word.lemma.asc()
+                ).limit(limit).all()
+                
+                # If still failing, return an error
+                if words is None:
+                    return error_response(
+                        "Search query failed", 
+                        500, 
+                        {"error_details": "Unable to execute query after fallback"}, 
+                        "ERR_SEARCH_QUERY"
                     )
-                else:
-                    base_query = base_query.order_by(
-                        (Word.normalized_lemma == normalized_query).desc(),
-                        (Word.normalized_lemma.like(f'{normalized_query}%')).desc(),
-                        Word.lemma.asc()
-                    )
-            except Exception:
-                # Fallback to simpler ordering
-                if order == 'asc':
-                    base_query = base_query.order_by(Word.lemma.asc())
-                else:
-                    try:
-                        exact_matches = [w.id for w in db.session.query(Word.id).filter(
-                            Word.normalized_lemma == normalized_query,
-                            Word.language_code == language
-                        ).all()]
-                        
-                        startswith_matches = [w.id for w in db.session.query(Word.id).filter(
-                            Word.normalized_lemma.like(f'{normalized_query}%'),
-                            Word.normalized_lemma != normalized_query,
-                            Word.language_code == language
-                        ).all()]
-                        
-                        base_query = base_query.order_by(
-                            case((Word.id.in_(exact_matches), 1), else_=
-                                case((Word.id.in_(startswith_matches), 2), else_=3)
-                            ),
-                            Word.lemma.asc()
-                        )
-                    except Exception:
-                        base_query = base_query.order_by(Word.lemma.asc())
+            except Exception as fallback_error:
+                logger.error(f"Fallback search failed: {str(fallback_error)}")
+                return error_response(
+                    "Search query failed", 
+                    500, 
+                    {"error_details": str(fallback_error)}, 
+                    "ERR_SEARCH_QUERY"
+                )
         
-        # Execute query
-        words = base_query.limit(limit).all()
-        
-        # Format results
+        # Format search results
         search_results = []
         for word in words:
-            # Calculate relevance score
+            # Calculate a simple relevance score
             relevance = 0.0
             if word.normalized_lemma == normalized_query:
-                relevance = 1.0
+                relevance = 1.0  # Exact match gets highest score
             elif word.normalized_lemma.startswith(normalized_query):
-                relevance = 0.8
+                relevance = 0.8  # Starts with the query
             elif normalized_query in word.normalized_lemma:
-                relevance = 0.6
+                relevance = 0.6  # Contains the query
             elif word.lemma.lower() == query.lower():
-                relevance = 0.9
+                relevance = 0.9  # Matches ignoring case
             elif word.preferred_spelling == query:
-                relevance = 0.7
+                relevance = 0.7  # Matches preferred spelling
             elif word.has_baybayin and word.baybayin_form and query in word.baybayin_form:
-                relevance = 0.7
+                relevance = 0.7  # Baybayin match
             else:
-                relevance = 0.4
-            
+                relevance = 0.4  # Fallback for other matches
+                
             # Get definitions if requested
             word_definitions = []
             if include_definitions and word.definitions:
-                word_definitions = [d.definition_text for d in word.definitions[:3]]
+                word_definitions = [d.definition_text for d in word.definitions[:3]]  # Limit to 3 definitions for brevity
             
             # Get parts of speech
             pos_codes = []
@@ -1247,8 +1270,6 @@ def search_words(**params):
                     "relations": relation_count
                 },
                 "has_etymology": bool(word.etymologies),
-                "has_pronunciation": bool(word.pronunciation_data),
-                "has_idioms": bool(word.idioms and word.idioms != '[]'),
                 "has_relations": bool(hasattr(word, 'relations_from') and (word.relations_from or word.relations_to)),
                 "relevance": relevance,
                 "created_at": word.created_at.isoformat() if word.created_at else None,
@@ -1258,37 +1279,36 @@ def search_words(**params):
             # Add definitions if requested
             if include_definitions and word_definitions:
                 result["definitions"] = word_definitions
-            
+                
             # Add etymology if requested
             if include_etymology and word.etymologies:
                 etymology_data = {
-                    "text": word.etymologies[0].etymology_text,
-                    "sources": word.etymologies[0].get_sources_list() if hasattr(word.etymologies[0], 'get_sources_list') else [],
-                    "languages": word.etymologies[0].get_language_codes_list() if hasattr(word.etymologies[0], 'get_language_codes_list') else [],
-                    "components": word.etymologies[0].get_components_list() if hasattr(word.etymologies[0], 'get_components_list') else []
+                    "text": word.etymologies[0].etymology_text
                 }
+                
+                # Add sources if available
+                if hasattr(word.etymologies[0], 'get_sources_list'):
+                    etymology_data["sources"] = word.etymologies[0].get_sources_list()
+                
+                # Add languages if available
+                if hasattr(word.etymologies[0], 'get_language_codes_list'):
+                    etymology_data["languages"] = word.etymologies[0].get_language_codes_list()
+                
+                # Add components if available
+                if hasattr(word.etymologies[0], 'get_components_list'):
+                    etymology_data["components"] = word.etymologies[0].get_components_list()
+                
                 result["etymology"] = etymology_data
-            
-            # Add pronunciation if requested
-            if include_pronunciation and word.pronunciation_data:
-                result["pronunciation"] = word.pronunciation_data
-            
-            # Add idioms if requested
-            if include_idioms and word.idioms and word.idioms != '[]':
-                result["idioms"] = word.get_idioms_list()
-            
-            # Add source info if requested
-            if include_source_info and word.source_info:
-                result["source_info"] = word.source_info
             
             search_results.append(result)
         
-        # Create response metadata
+        # Create response with search metadata
         response_meta = {
             "query": query,
             "normalized_query": normalized_query,
             "mode": mode,
             "total": len(search_results),
+            "search_strategy": search_strategy,
             "params": {
                 "limit": limit,
                 "language": language,
@@ -1298,13 +1318,7 @@ def search_words(**params):
                 "order": order,
                 "include_definitions": include_definitions,
                 "include_etymology": include_etymology,
-                "include_pronunciation": include_pronunciation,
-                "include_idioms": include_idioms,
-                "include_source_info": include_source_info,
-                "include_baybayin": include_baybayin,
-                "filter_has_etymology": filter_has_etymology,
-                "filter_has_pronunciation": filter_has_pronunciation,
-                "filter_has_idioms": filter_has_idioms
+                "include_baybayin": include_baybayin
             },
             "execution_time_ms": int((datetime.now(timezone.utc) - g.start_time).total_seconds() * 1000)
         }
@@ -1313,6 +1327,7 @@ def search_words(**params):
             "search_completed",
             query=query,
             results_count=len(search_results),
+            strategy=search_strategy,
             execution_time_ms=response_meta["execution_time_ms"]
         )
         
@@ -1564,16 +1579,7 @@ def get_statistics():
     Get comprehensive dictionary statistics.
     
     Returns:
-        Dictionary statistics including:
-        - Total counts for words, definitions, etymologies, relations, etc.
-        - Language-specific statistics
-        - Part of speech distribution
-        - Relation type distribution
-        - Affix type distribution
-        - Baybayin coverage
-        - Etymology coverage
-        - Daily additions
-        - Quality metrics
+        Dictionary statistics including counts, distributions, and metrics
     """
     try:
         # Use a single SQL query for efficiency
@@ -1584,21 +1590,16 @@ def get_statistics():
                     p.name_en,
                     p.name_tl,
                     COUNT(DISTINCT d.word_id) as word_count,
-                    COUNT(d.id) as definition_count,
-                    COUNT(DISTINCT dr.word_id) as related_words_count
+                    COUNT(d.id) as definition_count
                 FROM parts_of_speech p
                 LEFT JOIN definitions d ON p.id = d.standardized_pos_id
-                LEFT JOIN definition_relations dr ON d.id = dr.definition_id
                 GROUP BY p.id, p.code, p.name_en, p.name_tl
                 ORDER BY p.code
             ),
             relation_stats AS (
                 SELECT 
                     relation_type,
-                    COUNT(*) as count,
-                    COUNT(DISTINCT from_word_id) as from_words_count,
-                    COUNT(DISTINCT to_word_id) as to_words_count,
-                    COUNT(CASE WHEN metadata IS NOT NULL AND metadata != '{}'::jsonb THEN 1 END) as with_metadata_count
+                    COUNT(*) as count
                 FROM relations
                 GROUP BY relation_type
                 ORDER BY count DESC
@@ -1608,9 +1609,6 @@ def get_statistics():
                     language_code,
                     COUNT(*) as word_count,
                     COUNT(CASE WHEN has_baybayin THEN 1 END) as baybayin_count,
-                    COUNT(CASE WHEN pronunciation_data IS NOT NULL THEN 1 END) as pronunciation_count,
-                    COUNT(CASE WHEN idioms != '[]' THEN 1 END) as idioms_count,
-                    COUNT(CASE WHEN source_info != '{}' THEN 1 END) as with_sources_count,
                     MIN(created_at) as first_added,
                     MAX(created_at) as last_added
                 FROM words
@@ -1619,10 +1617,7 @@ def get_statistics():
             affixation_stats AS (
                 SELECT 
                     affix_type,
-                    COUNT(*) as count,
-                    COUNT(DISTINCT root_word_id) as root_words_count,
-                    COUNT(DISTINCT affixed_word_id) as affixed_words_count,
-                    array_agg(DISTINCT sources) as source_types
+                    COUNT(*) as count
                 FROM affixations
                 GROUP BY affix_type
                 ORDER BY count DESC
@@ -1630,63 +1625,11 @@ def get_statistics():
             daily_stats AS (
                 SELECT 
                     date_trunc('day', created_at) as day,
-                    COUNT(*) as words_added,
-                    COUNT(CASE WHEN has_baybayin THEN 1 END) as baybayin_added
+                    COUNT(*) as words_added
                 FROM words
                 WHERE created_at > NOW() - INTERVAL '30 days'
                 GROUP BY day
                 ORDER BY day
-            ),
-            etymology_stats AS (
-                SELECT 
-                    COUNT(DISTINCT e.word_id) as words_with_etymology,
-                    COUNT(DISTINCT e.language_codes) as unique_language_codes,
-                    COUNT(CASE WHEN e.normalized_components IS NOT NULL THEN 1 END) as with_components,
-                    COUNT(CASE WHEN e.etymology_structure IS NOT NULL THEN 1 END) as with_structure
-                FROM etymologies e
-            ),
-            definition_stats AS (
-                SELECT 
-                    COUNT(CASE WHEN examples IS NOT NULL THEN 1 END) as with_examples,
-                    COUNT(CASE WHEN usage_notes IS NOT NULL THEN 1 END) as with_usage_notes,
-                    COUNT(CASE WHEN tags IS NOT NULL THEN 1 END) as with_tags,
-                    AVG(array_length(regexp_split_to_array(definition_text, E'\\\\s+'), 1)) as avg_length
-                FROM definitions
-            ),
-            quality_metrics AS (
-                SELECT
-                    COUNT(CASE WHEN data_quality_score >= 80 THEN 1 END) as high_quality_entries,
-                    COUNT(CASE WHEN data_quality_score >= 50 AND data_quality_score < 80 THEN 1 END) as medium_quality_entries,
-                    COUNT(CASE WHEN data_quality_score < 50 THEN 1 END) as low_quality_entries,
-                    AVG(data_quality_score) as avg_quality_score
-                FROM (
-                    SELECT w.id,
-                           CASE
-                               WHEN w.has_baybayin THEN 15
-                               ELSE 0
-                           END +
-                           CASE
-                               WHEN w.pronunciation_data IS NOT NULL THEN 10
-                               ELSE 0
-                           END +
-                           CASE
-                               WHEN w.idioms != '[]' THEN 10
-                               ELSE 0
-                           END +
-                           CASE
-                               WHEN EXISTS (SELECT 1 FROM etymologies e WHERE e.word_id = w.id) THEN 20
-                               ELSE 0
-                           END +
-                           CASE
-                               WHEN EXISTS (SELECT 1 FROM definitions d WHERE d.word_id = w.id) THEN 25
-                               ELSE 0
-                           END +
-                           CASE
-                               WHEN EXISTS (SELECT 1 FROM relations r WHERE r.from_word_id = w.id OR r.to_word_id = w.id) THEN 20
-                               ELSE 0
-                           END as data_quality_score
-                    FROM words w
-                ) quality_scores
             )
             SELECT
                 (SELECT COUNT(*) FROM words) as total_words,
@@ -1696,22 +1639,16 @@ def get_statistics():
                 (SELECT COUNT(*) FROM relations) as total_relations,
                 (SELECT COUNT(*) FROM definition_relations) as total_definition_relations,
                 (SELECT COUNT(*) FROM affixations) as total_affixations,
-                (SELECT COUNT(*) FROM words WHERE pronunciation_data IS NOT NULL) as total_pronunciations,
-                (SELECT COUNT(*) FROM words WHERE idioms != '[]') as total_idioms,
                 (SELECT json_agg(pos_stats) FROM pos_stats) as pos_distribution,
                 (SELECT json_agg(relation_stats) FROM relation_stats) as relation_distribution,
                 (SELECT json_agg(language_stats) FROM language_stats) as language_distribution,
                 (SELECT json_agg(affixation_stats) FROM affixation_stats) as affixation_distribution,
                 (SELECT json_agg(daily_stats) FROM daily_stats) as daily_additions,
-                (SELECT json_agg(etymology_stats) FROM etymology_stats) as etymology_stats,
-                (SELECT json_agg(definition_stats) FROM definition_stats) as definition_stats,
-                (SELECT json_agg(quality_metrics) FROM quality_metrics) as quality_metrics,
                 (SELECT COUNT(DISTINCT language_code) FROM words) as language_count,
-                (SELECT COUNT(*) FROM words WHERE root_word_id IS NULL) as root_words_count,
-                (SELECT COUNT(*) FROM words WHERE root_word_id IS NOT NULL) as derived_words_count,
-                (SELECT COUNT(DISTINCT root_word_id) FROM affixations) as words_with_affixes,
-                (SELECT COUNT(DISTINCT word_id) FROM definitions WHERE examples IS NOT NULL) as words_with_examples,
-                (SELECT COUNT(DISTINCT word_id) FROM definitions WHERE usage_notes IS NOT NULL) as words_with_usage_notes
+                (SELECT AVG(array_length(regexp_split_to_array(definition_text, '[[:space:]]+'), 1))::float 
+                 FROM definitions) as avg_definition_length,
+                (SELECT COUNT(*) FROM words WHERE idioms IS NOT NULL AND idioms != '[]') as words_with_idioms,
+                (SELECT COUNT(*) FROM words WHERE root_word_id IS NULL) as root_words_count
         """)).fetchone()
         
         # Format the response
@@ -1723,13 +1660,8 @@ def get_statistics():
                 "relations": stats.total_relations,
                 "definition_relations": stats.total_definition_relations,
                 "affixations": stats.total_affixations,
-                "pronunciations": stats.total_pronunciations,
-                "idioms": stats.total_idioms,
-                "root_words": stats.root_words_count,
-                "derived_words": stats.derived_words_count,
-                "words_with_affixes": stats.words_with_affixes,
-                "words_with_examples": stats.words_with_examples,
-                "words_with_usage_notes": stats.words_with_usage_notes
+                "words_with_idioms": stats.words_with_idioms,
+                "root_words": stats.root_words_count
             },
             "baybayin": {
                 "total": stats.baybayin_words,
@@ -1743,25 +1675,8 @@ def get_statistics():
             "relations": stats.relation_distribution,
             "affixations": stats.affixation_distribution,
             "daily_additions": stats.daily_additions,
-            "etymology": stats.etymology_stats[0] if stats.etymology_stats else None,
-            "definitions": stats.definition_stats[0] if stats.definition_stats else None,
-            "quality": {
-                "metrics": stats.quality_metrics[0] if stats.quality_metrics else None,
-                "distribution": {
-                    "high_quality": {
-                        "count": stats.quality_metrics[0]["high_quality_entries"] if stats.quality_metrics else 0,
-                        "percentage": round((stats.quality_metrics[0]["high_quality_entries"] / stats.total_words * 100), 2) if stats.total_words > 0 and stats.quality_metrics else 0
-                    },
-                    "medium_quality": {
-                        "count": stats.quality_metrics[0]["medium_quality_entries"] if stats.quality_metrics else 0,
-                        "percentage": round((stats.quality_metrics[0]["medium_quality_entries"] / stats.total_words * 100), 2) if stats.total_words > 0 and stats.quality_metrics else 0
-                    },
-                    "low_quality": {
-                        "count": stats.quality_metrics[0]["low_quality_entries"] if stats.quality_metrics else 0,
-                        "percentage": round((stats.quality_metrics[0]["low_quality_entries"] / stats.total_words * 100), 2) if stats.total_words > 0 and stats.quality_metrics else 0
-                    },
-                    "average_score": round(stats.quality_metrics[0]["avg_quality_score"], 2) if stats.quality_metrics else 0
-                }
+            "metrics": {
+                "avg_definition_length": round(stats.avg_definition_length, 2) if stats.avg_definition_length else 0
             }
         })
     except Exception as e:
@@ -2510,942 +2425,6 @@ def get_relation_description(relation_type: str) -> str:
         "related": "Words with a semantic or etymological connection"
     }
     return descriptions.get(relation_type, "Relationship between words")
-
-@bp.route("/api/v2/words/<path:word>/pronunciation", methods=["GET"])
-@cached(prefix="word_pronunciation", ttl=3600)
-@validate_query_params(PronunciationSchema)
-def get_word_pronunciation(word, **params):
-    """Get pronunciation details for a word."""
-    try:
-        word_entry = Word.query.filter(
-            Word.normalized_lemma == normalize_word(word),
-            Word.language_code == params.get("language", "tl")
-        ).first()
-        
-        if not word_entry:
-            return error_response("Word not found", 404)
-            
-        if not word_entry.pronunciation_data:
-            return error_response("No pronunciation data available", 404)
-            
-        # Extract pronunciation data based on parameters
-        pronunciation = {}
-        if params.get("include_ipa", True) and "ipa" in word_entry.pronunciation_data:
-            pronunciation["ipa"] = word_entry.pronunciation_data["ipa"]
-            
-        if params.get("include_audio", True) and "audio" in word_entry.pronunciation_data:
-            pronunciation["audio"] = word_entry.pronunciation_data["audio"]
-            
-        if params.get("include_hyphenation", True) and "hyphenation" in word_entry.pronunciation_data:
-            pronunciation["hyphenation"] = word_entry.pronunciation_data["hyphenation"]
-            
-        if "sounds" in word_entry.pronunciation_data:
-            pronunciation["sounds"] = word_entry.pronunciation_data["sounds"]
-            
-        return success_response(pronunciation)
-    except Exception as e:
-        logger.error(f"Error in get_word_pronunciation: {str(e)}", exc_info=True)
-        return error_response("Failed to retrieve pronunciation data")
-
-@bp.route("/api/v2/words/<path:word>/etymology/details", methods=["GET"])
-@cached(prefix="etymology_details", ttl=3600)
-@validate_query_params(EtymologySchema)
-def get_etymology_details(word, **params):
-    """Get detailed etymology information for a word."""
-    try:
-        word_entry = Word.query.options(
-            joinedload(Word.etymologies)
-        ).filter(
-            Word.normalized_lemma == normalize_word(word),
-            Word.language_code == params.get("language", "tl")
-        ).first()
-        
-        if not word_entry:
-            return error_response("Word not found", 404)
-            
-        if not word_entry.etymologies:
-            return error_response("No etymology data available", 404)
-            
-        etymology_data = []
-        for etymology in word_entry.etymologies:
-            entry = {
-                "text": etymology.etymology_text,
-                "sources": etymology.get_sources_list()
-            }
-            
-            if params.get("include_components", True):
-                entry["components"] = etymology.get_components_list()
-                
-            if params.get("include_language_codes", True):
-                entry["language_codes"] = etymology.get_language_codes_list()
-                
-            if params.get("include_structure", False) and etymology.etymology_structure:
-                try:
-                    entry["structure"] = json.loads(etymology.etymology_structure)
-                except json.JSONDecodeError:
-                    entry["structure"] = None
-                    
-            etymology_data.append(entry)
-            
-        # Group by language if requested
-        if params.get("group_by_language", False):
-            grouped_data = {}
-            for etym in etymology_data:
-                for lang in etym.get("language_codes", []):
-                    if lang not in grouped_data:
-                        grouped_data[lang] = []
-                    grouped_data[lang].append(etym)
-            return success_response(grouped_data)
-            
-        return success_response(etymology_data)
-    except Exception as e:
-        logger.error(f"Error in get_etymology_details: {str(e)}", exc_info=True)
-        return error_response("Failed to retrieve etymology details")
-
-@bp.route("/api/v2/words/<path:word>/idioms", methods=["GET"])
-@cached(prefix="word_idioms", ttl=3600)
-def get_word_idioms(word):
-    """Get idioms associated with a word."""
-    try:
-        word_entry = Word.query.filter(
-            Word.normalized_lemma == normalize_word(word)
-        ).first()
-        
-        if not word_entry:
-            return error_response("Word not found", 404)
-            
-        idioms = word_entry.get_idioms_list()
-        if not idioms:
-            return error_response("No idioms found for this word", 404)
-            
-        return success_response(idioms)
-    except Exception as e:
-        logger.error(f"Error in get_word_idioms: {str(e)}", exc_info=True)
-        return error_response("Failed to retrieve idioms")
-
-@bp.route("/api/v2/words/<path:word>/definition-relations", methods=["GET"])
-@cached(prefix="definition_relations", ttl=3600)
-def get_definition_relations(word):
-    """Get relations specific to word definitions."""
-    try:
-        word_entry = Word.query.options(
-            joinedload(Word.definitions).joinedload(Definition.definition_relations)
-        ).filter(
-            Word.normalized_lemma == normalize_word(word)
-        ).first()
-        
-        if not word_entry:
-            return error_response("Word not found", 404)
-            
-        relations = []
-        for definition in word_entry.definitions:
-            def_relations = []
-            for relation in definition.definition_relations:
-                def_relations.append({
-                    "word": relation.word.lemma,
-                    "type": relation.relation_type,
-                    "sources": relation.get_sources_list()
-                })
-            
-            if def_relations:
-                relations.append({
-                    "definition": definition.definition_text,
-                    "relations": def_relations
-                })
-                
-        return success_response(relations)
-    except Exception as e:
-        logger.error(f"Error in get_definition_relations: {str(e)}", exc_info=True)
-        return error_response("Failed to retrieve definition relations")
-
-@bp.route("/api/v2/words/<path:word>/quality", methods=["GET"])
-@cached(prefix="word_quality", ttl=3600)
-def get_word_quality(word):
-    """
-    Get quality metrics and improvement suggestions for a word.
-    
-    Path Parameters:
-        word (str): The word to analyze
-        
-    Returns:
-        Quality metrics and suggestions for improvement
-    """
-    try:
-        # Find word with eager loading
-        word_entry = Word.query.options(
-            joinedload(Word.definitions).joinedload(Definition.standardized_pos),
-            joinedload(Word.etymologies),
-            joinedload(Word.relations_from),
-            joinedload(Word.relations_to),
-            joinedload(Word.affixations_as_root),
-            joinedload(Word.affixations_as_affixed)
-        ).filter(
-            Word.normalized_lemma == normalize_word(word)
-        ).first()
-        
-        if not word_entry:
-            return error_response("Word not found", 404)
-            
-        # Calculate quality metrics
-        metrics = {
-            "completeness": {
-                "basic_info": {
-                    "score": 0,
-                    "max_score": 30,
-                    "details": {
-                        "has_lemma": bool(word_entry.lemma),
-                        "has_normalized_lemma": bool(word_entry.normalized_lemma),
-                        "has_language_code": bool(word_entry.language_code),
-                        "has_baybayin": word_entry.has_baybayin,
-                        "has_pronunciation": bool(word_entry.pronunciation_data),
-                        "has_source_info": bool(word_entry.source_info and word_entry.source_info != '{}')
-                    }
-                },
-                "definitions": {
-                    "score": 0,
-                    "max_score": 25,
-                    "details": {
-                        "count": len(word_entry.definitions) if word_entry.definitions else 0,
-                        "with_pos": sum(1 for d in word_entry.definitions if d.standardized_pos) if word_entry.definitions else 0,
-                        "with_examples": sum(1 for d in word_entry.definitions if d.examples) if word_entry.definitions else 0,
-                        "with_usage_notes": sum(1 for d in word_entry.definitions if d.usage_notes) if word_entry.definitions else 0,
-                        "with_tags": sum(1 for d in word_entry.definitions if d.tags) if word_entry.definitions else 0
-                    }
-                },
-                "etymology": {
-                    "score": 0,
-                    "max_score": 20,
-                    "details": {
-                        "count": len(word_entry.etymologies) if word_entry.etymologies else 0,
-                        "with_components": sum(1 for e in word_entry.etymologies if e.normalized_components) if word_entry.etymologies else 0,
-                        "with_language_codes": sum(1 for e in word_entry.etymologies if e.language_codes) if word_entry.etymologies else 0,
-                        "with_structure": sum(1 for e in word_entry.etymologies if e.etymology_structure) if word_entry.etymologies else 0
-                    }
-                },
-                "relationships": {
-                    "score": 0,
-                    "max_score": 15,
-                    "details": {
-                        "outgoing_relations": len(word_entry.relations_from) if word_entry.relations_from else 0,
-                        "incoming_relations": len(word_entry.relations_to) if word_entry.relations_to else 0,
-                        "affixations_as_root": len(word_entry.affixations_as_root) if word_entry.affixations_as_root else 0,
-                        "affixations_as_affixed": len(word_entry.affixations_as_affixed) if word_entry.affixations_as_affixed else 0
-                    }
-                },
-                "additional_features": {
-                    "score": 0,
-                    "max_score": 10,
-                    "details": {
-                        "has_idioms": bool(word_entry.idioms and word_entry.idioms != '[]'),
-                        "has_tags": bool(word_entry.tags),
-                        "has_preferred_spelling": bool(word_entry.preferred_spelling),
-                        "is_root_word": word_entry.root_word_id is None
-                    }
-                }
-            }
-        }
-        
-        # Calculate scores
-        # Basic info score
-        basic_details = metrics["completeness"]["basic_info"]["details"]
-        basic_score = sum([
-            15 if basic_details["has_lemma"] and basic_details["has_normalized_lemma"] else 0,
-            5 if basic_details["has_language_code"] else 0,
-            4 if basic_details["has_baybayin"] else 0,
-            3 if basic_details["has_pronunciation"] else 0,
-            3 if basic_details["has_source_info"] else 0
-        ])
-        metrics["completeness"]["basic_info"]["score"] = basic_score
-        
-        # Definitions score
-        def_details = metrics["completeness"]["definitions"]["details"]
-        def_score = min(25, sum([
-            5 * def_details["count"],  # 5 points per definition
-            2 * def_details["with_pos"],  # 2 points per POS
-            2 * def_details["with_examples"],  # 2 points per example
-            1 * def_details["with_usage_notes"],  # 1 point per usage note
-            1 * def_details["with_tags"]  # 1 point per tag
-        ]))
-        metrics["completeness"]["definitions"]["score"] = def_score
-        
-        # Etymology score
-        etym_details = metrics["completeness"]["etymology"]["details"]
-        etym_score = min(20, sum([
-            10 * etym_details["count"],  # 10 points per etymology
-            3 * etym_details["with_components"],  # 3 points per component
-            3 * etym_details["with_language_codes"],  # 3 points per language code
-            4 * etym_details["with_structure"]  # 4 points per structure
-        ]))
-        metrics["completeness"]["etymology"]["score"] = etym_score
-        
-        # Relationships score
-        rel_details = metrics["completeness"]["relationships"]["details"]
-        rel_score = min(15, sum([
-            2 * rel_details["outgoing_relations"],  # 2 points per outgoing relation
-            2 * rel_details["incoming_relations"],  # 2 points per incoming relation
-            2 * rel_details["affixations_as_root"],  # 2 points per root affixation
-            2 * rel_details["affixations_as_affixed"]  # 2 points per affixed form
-        ]))
-        metrics["completeness"]["relationships"]["score"] = rel_score
-        
-        # Additional features score
-        add_details = metrics["completeness"]["additional_features"]["details"]
-        add_score = sum([
-            3 if add_details["has_idioms"] else 0,
-            2 if add_details["has_tags"] else 0,
-            2 if add_details["has_preferred_spelling"] else 0,
-            3 if add_details["is_root_word"] else 0
-        ])
-        metrics["completeness"]["additional_features"]["score"] = add_score
-        
-        # Calculate total score
-        total_score = sum(
-            category["score"] 
-            for category in metrics["completeness"].values()
-        )
-        total_possible = sum(
-            category["max_score"] 
-            for category in metrics["completeness"].values()
-        )
-        
-        # Generate improvement suggestions
-        suggestions = []
-        
-        if basic_score < metrics["completeness"]["basic_info"]["max_score"]:
-            if not basic_details["has_baybayin"]:
-                suggestions.append({
-                    "category": "basic_info",
-                    "priority": "high",
-                    "suggestion": "Add Baybayin script representation",
-                    "impact": "Improves cultural authenticity and search capabilities"
-                })
-            if not basic_details["has_pronunciation"]:
-                suggestions.append({
-                    "category": "basic_info",
-                    "priority": "medium",
-                    "suggestion": "Add pronunciation data",
-                    "impact": "Helps users understand correct pronunciation"
-                })
-            if not basic_details["has_source_info"]:
-                suggestions.append({
-                    "category": "basic_info",
-                    "priority": "low",
-                    "suggestion": "Add source information",
-                    "impact": "Improves data provenance tracking"
-                })
-                
-        if def_score < metrics["completeness"]["definitions"]["max_score"]:
-            if def_details["count"] == 0:
-                suggestions.append({
-                    "category": "definitions",
-                    "priority": "critical",
-                    "suggestion": "Add at least one definition",
-                    "impact": "Essential for word meaning"
-                })
-            elif def_details["with_pos"] < def_details["count"]:
-                suggestions.append({
-                    "category": "definitions",
-                    "priority": "high",
-                    "suggestion": "Add part of speech for all definitions",
-                    "impact": "Clarifies word usage"
-                })
-            if def_details["with_examples"] < def_details["count"]:
-                suggestions.append({
-                    "category": "definitions",
-                    "priority": "medium",
-                    "suggestion": "Add usage examples",
-                    "impact": "Helps understand word in context"
-                })
-                
-        if etym_score < metrics["completeness"]["etymology"]["max_score"]:
-            if etym_details["count"] == 0:
-                suggestions.append({
-                    "category": "etymology",
-                    "priority": "high",
-                    "suggestion": "Add etymology information",
-                    "impact": "Provides word origin and history"
-                })
-            elif etym_details["with_components"] < etym_details["count"]:
-                suggestions.append({
-                    "category": "etymology",
-                    "priority": "medium",
-                    "suggestion": "Add etymology components",
-                    "impact": "Clarifies word formation"
-                })
-                
-        if rel_score < metrics["completeness"]["relationships"]["max_score"]:
-            if rel_details["outgoing_relations"] + rel_details["incoming_relations"] == 0:
-                suggestions.append({
-                    "category": "relationships",
-                    "priority": "high",
-                    "suggestion": "Add related words (synonyms, antonyms, etc.)",
-                    "impact": "Improves word network and discoverability"
-                })
-            if rel_details["affixations_as_root"] + rel_details["affixations_as_affixed"] == 0:
-                suggestions.append({
-                    "category": "relationships",
-                    "priority": "medium",
-                    "suggestion": "Add affixation relationships",
-                    "impact": "Shows word formation patterns"
-                })
-                
-        if add_score < metrics["completeness"]["additional_features"]["max_score"]:
-            if not add_details["has_idioms"]:
-                suggestions.append({
-                    "category": "additional_features",
-                    "priority": "low",
-                    "suggestion": "Add idiomatic expressions",
-                    "impact": "Enriches usage understanding"
-                })
-            if not add_details["has_tags"]:
-                suggestions.append({
-                    "category": "additional_features",
-                    "priority": "low",
-                    "suggestion": "Add relevant tags",
-                    "impact": "Improves categorization and search"
-                })
-        
-        # Sort suggestions by priority
-        priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
-        suggestions.sort(key=lambda x: priority_order[x["priority"]])
-        
-        return success_response({
-            "word": word_entry.lemma,
-            "normalized_lemma": word_entry.normalized_lemma,
-            "quality_score": {
-                "total": total_score,
-                "max_possible": total_possible,
-                "percentage": round((total_score / total_possible * 100), 2),
-                "rating": "high" if total_score >= 0.8 * total_possible else
-                         "medium" if total_score >= 0.5 * total_possible else
-                         "low"
-            },
-            "metrics": metrics,
-            "suggestions": suggestions
-        })
-    except Exception as e:
-        logger.error(f"Error in get_word_quality: {str(e)}", exc_info=True)
-        return error_response("Failed to analyze word quality")
-
-@bp.route("/api/v2/quality/aggregate", methods=["GET"])
-@cached(prefix="aggregate_quality", ttl=3600)
-def get_aggregate_quality():
-    """
-    Get aggregate quality metrics for the entire dictionary.
-    
-    Returns:
-        Aggregate quality metrics and statistics
-    """
-    try:
-        # Use a single SQL query for efficiency
-        stats = db.session.execute(text("""
-            WITH word_metrics AS (
-                SELECT
-                    w.id,
-                    w.language_code,
-                    CASE
-                        WHEN w.has_baybayin THEN 15
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN w.pronunciation_data IS NOT NULL THEN 10
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN w.idioms != '[]' THEN 10
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM etymologies e WHERE e.word_id = w.id) THEN 20
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM definitions d WHERE d.word_id = w.id) THEN 25
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM relations r WHERE r.from_word_id = w.id OR r.to_word_id = w.id) THEN 20
-                        ELSE 0
-                    END as quality_score,
-                    CASE
-                        WHEN w.has_baybayin THEN 1
-                        ELSE 0
-                    END as has_baybayin,
-                    CASE
-                        WHEN w.pronunciation_data IS NOT NULL THEN 1
-                        ELSE 0
-                    END as has_pronunciation,
-                    CASE
-                        WHEN w.idioms != '[]' THEN 1
-                        ELSE 0
-                    END as has_idioms,
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM etymologies e WHERE e.word_id = w.id) THEN 1
-                        ELSE 0
-                    END as has_etymology,
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM definitions d WHERE d.word_id = w.id) THEN 1
-                        ELSE 0
-                    END as has_definitions,
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM relations r WHERE r.from_word_id = w.id OR r.to_word_id = w.id) THEN 1
-                        ELSE 0
-                    END as has_relations
-                FROM words w
-            ),
-            language_metrics AS (
-                SELECT
-                    language_code,
-                    COUNT(*) as total_words,
-                    AVG(quality_score) as avg_quality_score,
-                    COUNT(CASE WHEN quality_score >= 80 THEN 1 END) as high_quality_words,
-                    COUNT(CASE WHEN quality_score >= 50 AND quality_score < 80 THEN 1 END) as medium_quality_words,
-                    COUNT(CASE WHEN quality_score < 50 THEN 1 END) as low_quality_words,
-                    SUM(has_baybayin) as words_with_baybayin,
-                    SUM(has_pronunciation) as words_with_pronunciation,
-                    SUM(has_idioms) as words_with_idioms,
-                    SUM(has_etymology) as words_with_etymology,
-                    SUM(has_definitions) as words_with_definitions,
-                    SUM(has_relations) as words_with_relations
-                FROM word_metrics
-                GROUP BY language_code
-            ),
-            definition_metrics AS (
-                SELECT
-                    w.language_code,
-                    COUNT(d.id) as total_definitions,
-                    COUNT(CASE WHEN d.examples IS NOT NULL THEN 1 END) as definitions_with_examples,
-                    COUNT(CASE WHEN d.usage_notes IS NOT NULL THEN 1 END) as definitions_with_usage_notes,
-                    COUNT(CASE WHEN d.tags IS NOT NULL THEN 1 END) as definitions_with_tags,
-                    COUNT(CASE WHEN d.standardized_pos_id IS NOT NULL THEN 1 END) as definitions_with_pos,
-                    AVG(array_length(regexp_split_to_array(d.definition_text, E'\\\\s+'), 1)) as avg_definition_length
-                FROM words w
-                JOIN definitions d ON w.id = d.word_id
-                GROUP BY w.language_code
-            ),
-            etymology_metrics AS (
-                SELECT
-                    w.language_code,
-                    COUNT(e.id) as total_etymologies,
-                    COUNT(CASE WHEN e.normalized_components IS NOT NULL THEN 1 END) as etymologies_with_components,
-                    COUNT(CASE WHEN e.language_codes IS NOT NULL THEN 1 END) as etymologies_with_languages,
-                    COUNT(CASE WHEN e.etymology_structure IS NOT NULL THEN 1 END) as etymologies_with_structure
-                FROM words w
-                JOIN etymologies e ON w.id = e.word_id
-                GROUP BY w.language_code
-            ),
-            relation_metrics AS (
-                SELECT
-                    w.language_code,
-                    COUNT(r.id) as total_relations,
-                    COUNT(DISTINCT r.relation_type) as unique_relation_types,
-                    COUNT(CASE WHEN r.metadata IS NOT NULL AND r.metadata != '{}'::jsonb THEN 1 END) as relations_with_metadata
-                FROM words w
-                JOIN relations r ON w.id = r.from_word_id
-                GROUP BY w.language_code
-            )
-            SELECT
-                lm.*,
-                dm.total_definitions,
-                dm.definitions_with_examples,
-                dm.definitions_with_usage_notes,
-                dm.definitions_with_tags,
-                dm.definitions_with_pos,
-                dm.avg_definition_length,
-                em.total_etymologies,
-                em.etymologies_with_components,
-                em.etymologies_with_languages,
-                em.etymologies_with_structure,
-                rm.total_relations,
-                rm.unique_relation_types,
-                rm.relations_with_metadata
-            FROM language_metrics lm
-            LEFT JOIN definition_metrics dm USING (language_code)
-            LEFT JOIN etymology_metrics em USING (language_code)
-            LEFT JOIN relation_metrics rm USING (language_code)
-            ORDER BY lm.total_words DESC
-        """)).fetchall()
-        
-        # Format results by language
-        results = {}
-        for row in stats:
-            language_stats = {
-                "total_words": row.total_words,
-                "quality_scores": {
-                    "average": round(row.avg_quality_score, 2),
-                    "distribution": {
-                        "high": {
-                            "count": row.high_quality_words,
-                            "percentage": round((row.high_quality_words / row.total_words * 100), 2)
-                        },
-                        "medium": {
-                            "count": row.medium_quality_words,
-                            "percentage": round((row.medium_quality_words / row.total_words * 100), 2)
-                        },
-                        "low": {
-                            "count": row.low_quality_words,
-                            "percentage": round((row.low_quality_words / row.total_words * 100), 2)
-                        }
-                    }
-                },
-                "features": {
-                    "baybayin": {
-                        "count": row.words_with_baybayin,
-                        "percentage": round((row.words_with_baybayin / row.total_words * 100), 2)
-                    },
-                    "pronunciation": {
-                        "count": row.words_with_pronunciation,
-                        "percentage": round((row.words_with_pronunciation / row.total_words * 100), 2)
-                    },
-                    "idioms": {
-                        "count": row.words_with_idioms,
-                        "percentage": round((row.words_with_idioms / row.total_words * 100), 2)
-                    },
-                    "etymology": {
-                        "count": row.words_with_etymology,
-                        "percentage": round((row.words_with_etymology / row.total_words * 100), 2)
-                    },
-                    "definitions": {
-                        "count": row.words_with_definitions,
-                        "percentage": round((row.words_with_definitions / row.total_words * 100), 2)
-                    },
-                    "relations": {
-                        "count": row.words_with_relations,
-                        "percentage": round((row.words_with_relations / row.total_words * 100), 2)
-                    }
-                },
-                "definitions": {
-                    "total": row.total_definitions,
-                    "average_per_word": round(row.total_definitions / row.total_words, 2) if row.total_definitions else 0,
-                    "with_examples": {
-                        "count": row.definitions_with_examples,
-                        "percentage": round((row.definitions_with_examples / row.total_definitions * 100), 2) if row.total_definitions else 0
-                    },
-                    "with_usage_notes": {
-                        "count": row.definitions_with_usage_notes,
-                        "percentage": round((row.definitions_with_usage_notes / row.total_definitions * 100), 2) if row.total_definitions else 0
-                    },
-                    "with_tags": {
-                        "count": row.definitions_with_tags,
-                        "percentage": round((row.definitions_with_tags / row.total_definitions * 100), 2) if row.total_definitions else 0
-                    },
-                    "with_pos": {
-                        "count": row.definitions_with_pos,
-                        "percentage": round((row.definitions_with_pos / row.total_definitions * 100), 2) if row.total_definitions else 0
-                    },
-                    "average_length": round(row.avg_definition_length, 1) if row.avg_definition_length else 0
-                },
-                "etymologies": {
-                    "total": row.total_etymologies,
-                    "average_per_word": round(row.total_etymologies / row.total_words, 2) if row.total_etymologies else 0,
-                    "with_components": {
-                        "count": row.etymologies_with_components,
-                        "percentage": round((row.etymologies_with_components / row.total_etymologies * 100), 2) if row.total_etymologies else 0
-                    },
-                    "with_languages": {
-                        "count": row.etymologies_with_languages,
-                        "percentage": round((row.etymologies_with_languages / row.total_etymologies * 100), 2) if row.total_etymologies else 0
-                    },
-                    "with_structure": {
-                        "count": row.etymologies_with_structure,
-                        "percentage": round((row.etymologies_with_structure / row.total_etymologies * 100), 2) if row.total_etymologies else 0
-                    }
-                },
-                "relations": {
-                    "total": row.total_relations,
-                    "average_per_word": round(row.total_relations / row.total_words, 2) if row.total_relations else 0,
-                    "unique_types": row.unique_relation_types,
-                    "with_metadata": {
-                        "count": row.relations_with_metadata,
-                        "percentage": round((row.relations_with_metadata / row.total_relations * 100), 2) if row.total_relations else 0
-                    }
-                }
-            }
-            results[row.language_code] = language_stats
-            
-        # Calculate overall statistics
-        overall_stats = {
-            "total_words": sum(stats.total_words for stats in results.values()),
-            "average_quality_score": round(
-                sum(stats["quality_scores"]["average"] * stats["total_words"] for stats in results.values()) /
-                sum(stats["total_words"] for stats in results.values()),
-                2
-            ),
-            "total_definitions": sum(stats["definitions"]["total"] for stats in results.values() if "definitions" in stats),
-            "total_etymologies": sum(stats["etymologies"]["total"] for stats in results.values() if "etymologies" in stats),
-            "total_relations": sum(stats["relations"]["total"] for stats in results.values() if "relations" in stats),
-            "baybayin_coverage": round(
-                sum(stats["features"]["baybayin"]["count"] for stats in results.values()) /
-                sum(stats["total_words"] for stats in results.values()) * 100,
-                2
-            )
-        }
-        
-        return success_response({
-            "by_language": results,
-            "overall": overall_stats
-        })
-    except Exception as e:
-        logger.error(f"Error in get_aggregate_quality: {str(e)}", exc_info=True)
-        return error_response("Failed to retrieve aggregate quality metrics")
-
-@bp.route("/api/v2/quality/suggestions", methods=["GET"])
-@cached(prefix="quality_suggestions", ttl=3600)
-def get_quality_suggestions():
-    """
-    Get quality improvement suggestions for the entire dictionary.
-    
-    Query Parameters:
-        language (str): Language code filter (default: all)
-        min_quality (int): Minimum quality score (default: 0)
-        max_quality (int): Maximum quality score (default: 100)
-        limit (int): Maximum number of suggestions (default: 100)
-        category (str): Filter by category (basic_info, definitions, etymology, relationships, additional_features)
-        priority (str): Filter by priority (critical, high, medium, low)
-    
-    Returns:
-        List of quality improvement suggestions with affected words
-    """
-    try:
-        # Extract parameters
-        language = request.args.get("language")
-        min_quality = request.args.get("min_quality", type=int, default=0)
-        max_quality = request.args.get("max_quality", type=int, default=100)
-        limit = min(request.args.get("limit", type=int, default=100), 1000)
-        category = request.args.get("category")
-        priority = request.args.get("priority")
-        
-        # Build query for finding words needing improvement
-        sql = text("""
-            WITH word_scores AS (
-                SELECT
-                    w.id,
-                    w.lemma,
-                    w.normalized_lemma,
-                    w.language_code,
-                    CASE
-                        WHEN w.has_baybayin THEN 15
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN w.pronunciation_data IS NOT NULL THEN 10
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN w.idioms != '[]' THEN 10
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM etymologies e WHERE e.word_id = w.id) THEN 20
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM definitions d WHERE d.word_id = w.id) THEN 25
-                        ELSE 0
-                    END +
-                    CASE
-                        WHEN EXISTS (SELECT 1 FROM relations r WHERE r.from_word_id = w.id OR r.to_word_id = w.id) THEN 20
-                        ELSE 0
-                    END as quality_score,
-                    w.has_baybayin,
-                    w.pronunciation_data IS NOT NULL as has_pronunciation,
-                    w.idioms != '[]' as has_idioms,
-                    EXISTS (SELECT 1 FROM etymologies e WHERE e.word_id = w.id) as has_etymology,
-                    EXISTS (SELECT 1 FROM definitions d WHERE d.word_id = w.id) as has_definitions,
-                    EXISTS (SELECT 1 FROM relations r WHERE r.from_word_id = w.id OR r.to_word_id = w.id) as has_relations,
-                    (SELECT COUNT(*) FROM definitions d WHERE d.word_id = w.id) as definition_count,
-                    (SELECT COUNT(*) FROM definitions d WHERE d.word_id = w.id AND d.examples IS NOT NULL) as definitions_with_examples,
-                    (SELECT COUNT(*) FROM definitions d WHERE d.word_id = w.id AND d.usage_notes IS NOT NULL) as definitions_with_usage_notes,
-                    (SELECT COUNT(*) FROM etymologies e WHERE e.word_id = w.id) as etymology_count,
-                    (SELECT COUNT(*) FROM etymologies e WHERE e.word_id = w.id AND e.normalized_components IS NOT NULL) as etymologies_with_components,
-                    (SELECT COUNT(*) FROM relations r WHERE r.from_word_id = w.id OR r.to_word_id = w.id) as relation_count
-                FROM words w
-                WHERE (:language IS NULL OR w.language_code = :language)
-            )
-            SELECT *
-            FROM word_scores
-            WHERE quality_score BETWEEN :min_quality AND :max_quality
-            ORDER BY quality_score ASC
-            LIMIT :limit
-        """)
-        
-        # Execute query
-        words = db.session.execute(
-            sql,
-            {
-                "language": language,
-                "min_quality": min_quality,
-                "max_quality": max_quality,
-                "limit": limit
-            }
-        ).fetchall()
-        
-        # Generate suggestions
-        suggestions = []
-        
-        # Helper function to add suggestion if it matches filters
-        def add_suggestion(word, category_name, priority_level, suggestion_text, impact_text):
-            if (not category or category == category_name) and (not priority or priority == priority_level):
-                suggestions.append({
-                    "word": {
-                        "id": word.id,
-                        "lemma": word.lemma,
-                        "normalized_lemma": word.normalized_lemma,
-                        "language_code": word.language_code,
-                        "quality_score": word.quality_score
-                    },
-                    "category": category_name,
-                    "priority": priority_level,
-                    "suggestion": suggestion_text,
-                    "impact": impact_text
-                })
-        
-        for word in words:
-            # Critical suggestions
-            if not word.has_definitions:
-                add_suggestion(
-                    word,
-                    "definitions",
-                    "critical",
-                    "Add at least one definition",
-                    "Essential for word meaning and usability"
-                )
-            
-            # High priority suggestions
-            if not word.has_baybayin and word.language_code == 'tl':
-                add_suggestion(
-                    word,
-                    "basic_info",
-                    "high",
-                    "Add Baybayin script representation",
-                    "Improves cultural authenticity and search capabilities"
-                )
-            
-            if word.has_definitions and word.definitions_with_examples == 0:
-                add_suggestion(
-                    word,
-                    "definitions",
-                    "high",
-                    "Add usage examples to definitions",
-                    "Helps users understand word usage in context"
-                )
-            
-            if not word.has_etymology:
-                add_suggestion(
-                    word,
-                    "etymology",
-                    "high",
-                    "Add etymology information",
-                    "Provides word origin and historical context"
-                )
-            
-            # Medium priority suggestions
-            if not word.has_pronunciation:
-                add_suggestion(
-                    word,
-                    "basic_info",
-                    "medium",
-                    "Add pronunciation data",
-                    "Helps users pronounce the word correctly"
-                )
-            
-            if word.has_etymology and word.etymologies_with_components == 0:
-                add_suggestion(
-                    word,
-                    "etymology",
-                    "medium",
-                    "Add etymology components",
-                    "Clarifies word formation and relationships"
-                )
-            
-            if word.has_definitions and word.definitions_with_usage_notes == 0:
-                add_suggestion(
-                    word,
-                    "definitions",
-                    "medium",
-                    "Add usage notes to definitions",
-                    "Provides additional context and guidance"
-                )
-            
-            if not word.has_relations:
-                add_suggestion(
-                    word,
-                    "relationships",
-                    "medium",
-                    "Add word relationships",
-                    "Improves word network and discoverability"
-                )
-            
-            # Low priority suggestions
-            if not word.has_idioms:
-                add_suggestion(
-                    word,
-                    "additional_features",
-                    "low",
-                    "Add idiomatic expressions",
-                    "Enriches usage understanding"
-                )
-        
-        # Sort suggestions by priority and quality score
-        priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
-        suggestions.sort(key=lambda x: (
-            priority_order[x["priority"]],
-            x["word"]["quality_score"]
-        ))
-        
-        # Group suggestions by category
-        grouped_suggestions = {}
-        for suggestion in suggestions:
-            cat = suggestion["category"]
-            if cat not in grouped_suggestions:
-                grouped_suggestions[cat] = {
-                    "total": 0,
-                    "by_priority": {
-                        "critical": [],
-                        "high": [],
-                        "medium": [],
-                        "low": []
-                    }
-                }
-            grouped_suggestions[cat]["total"] += 1
-            grouped_suggestions[cat]["by_priority"][suggestion["priority"]].append(suggestion)
-        
-        # Calculate statistics
-        stats = {
-            "total_suggestions": len(suggestions),
-            "by_priority": {
-                "critical": len([s for s in suggestions if s["priority"] == "critical"]),
-                "high": len([s for s in suggestions if s["priority"] == "high"]),
-                "medium": len([s for s in suggestions if s["priority"] == "medium"]),
-                "low": len([s for s in suggestions if s["priority"] == "low"])
-            },
-            "by_category": {
-                cat: {
-                    "total": data["total"],
-                    "by_priority": {
-                        p: len(suggestions)
-                        for p, suggestions in data["by_priority"].items()
-                    }
-                }
-                for cat, data in grouped_suggestions.items()
-            }
-        }
-        
-        return success_response({
-            "suggestions": suggestions[:limit],
-            "statistics": stats,
-            "filters": {
-                "language": language,
-                "min_quality": min_quality,
-                "max_quality": max_quality,
-                "category": category,
-                "priority": priority
-            },
-            "total_words_analyzed": len(words)
-        })
-    except Exception as e:
-        logger.error(f"Error in get_quality_suggestions: {str(e)}", exc_info=True)
-        return error_response("Failed to retrieve quality suggestions")
 
 # Create and configure the Flask application instance if running directly
 if __name__ == "__main__":

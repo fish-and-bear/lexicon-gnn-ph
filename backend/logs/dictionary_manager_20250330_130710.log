@@ -1,0 +1,1 @@
+2025-03-30 13:07:10,336 - ERROR - Error during migration: 'psycopg2.extensions.connection' object has no attribute 'connection'

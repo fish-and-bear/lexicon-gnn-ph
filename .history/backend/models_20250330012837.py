@@ -1,12 +1,12 @@
 """
-Filipino Dictionary Database Models with enhanced functionality and data validation.
+Filipino Dictionary Database Models
 """
 
 from sqlalchemy import (
     Column, Integer, String, Text, ForeignKey, Boolean, DateTime, 
-    func, Index, UniqueConstraint, DDL, event, text, Float, JSON
+    func, Index, UniqueConstraint, DDL, event, text
 )
-from sqlalchemy.orm import relationship, validates, backref
+from sqlalchemy.orm import relationship, validates
 from sqlalchemy.dialects.postgresql import JSONB, TSVECTOR
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -16,117 +16,43 @@ import hashlib
 from datetime import datetime, timedelta, UTC
 from typing import List, Dict, Any, Optional
 import logging
-from unidecode import unidecode
-
-# Set up logging
-logger = logging.getLogger(__name__)
 
 # Set up SQLAlchemy
 db = SQLAlchemy()
 
-# Helper functions
-def normalize_text(text: str) -> str:
-    """Normalize text for consistent comparison."""
-    if not text:
-        return ""
-    # Convert to lowercase and remove diacritics
-    normalized = unidecode(text.lower())
-    # Remove non-word characters except hyphens
-    normalized = re.sub(r'[^\w\s\-]', '', normalized)
-    return normalized.strip()
-
+# Helper function for Baybayin romanization
 def get_romanized_text(text: str) -> str:
-    """Convert Baybayin text to romanized form with enhanced accuracy."""
+    """Convert Baybayin text to romanized form."""
     if not text:
         return text
     if not any(0x1700 <= ord(c) <= 0x171F for c in text):
         return text
     
-    # Enhanced mapping with more accurate representations
     mapping = {
-        'ᜀ': 'a', 'ᜁ': 'i', 'ᜂ': 'u', 'ᜃ': 'ka', 'ᜄ': 'ga', 
-        'ᜅ': 'nga', 'ᜆ': 'ta', 'ᜇ': 'da', 'ᜈ': 'na',
-        'ᜉ': 'pa', 'ᜊ': 'ba', 'ᜋ': 'ma', 'ᜌ': 'ya', 
-        'ᜎ': 'la', 'ᜏ': 'wa', 'ᜐ': 'sa', 'ᜑ': 'ha',
-        'ᜒ': 'i', 'ᜓ': 'u', '᜔': '', '᜵': ',', '᜶': '.',
-        # Additional combinations
-        'ᜃ᜔': 'k', 'ᜄ᜔': 'g', 'ᜅ᜔': 'ng',
-        'ᜆ᜔': 't', 'ᜇ᜔': 'd', 'ᜈ᜔': 'n',
-        'ᜉ᜔': 'p', 'ᜊ᜔': 'b', 'ᜋ᜔': 'm',
-        'ᜌ᜔': 'y', 'ᜎ᜔': 'l', 'ᜏ᜔': 'w',
-        'ᜐ᜔': 's', 'ᜑ᜔': 'h'
+        'ᜀ': 'a', 'ᜁ': 'i', 'ᜂ': 'u',
+        'ᜃ': 'ka', 'ᜄ': 'ga', 'ᜅ': 'nga',
+        'ᜆ': 'ta', 'ᜇ': 'da', 'ᜈ': 'na',
+        'ᜉ': 'pa', 'ᜊ': 'ba', 'ᜋ': 'ma',
+        'ᜌ': 'ya', 'ᜎ': 'la', 'ᜏ': 'wa',
+        'ᜐ': 'sa', 'ᜑ': 'ha',
+        'ᜒ': 'i', 'ᜓ': 'u', '᜔': '',
+        '᜵': ',', '᜶': '.'
     }
     
     result = []
-    i = 0
-    while i < len(text):
-        # Check for two-character combinations first
-        if i + 1 < len(text) and text[i:i+2] in mapping:
-            result.append(mapping[text[i:i+2]])
-            i += 2
-        elif text[i] in mapping:
-            result.append(mapping[text[i]])
-            i += 1
-        else:
-            result.append(text[i])
-            i += 1
+    for char in text:
+        result.append(mapping.get(char, char))
     
     return ''.join(result)
 
-def calculate_text_similarity(text1: str, text2: str) -> float:
-    """Calculate similarity between two texts."""
-    if not text1 or not text2:
-        return 0.0
-    
-    # Normalize texts
-    text1 = normalize_text(text1)
-    text2 = normalize_text(text2)
-    
-    # Calculate Levenshtein distance
-    len1, len2 = len(text1), len(text2)
-    if len1 == 0:
-        return 0.0
-    if len2 == 0:
-        return 0.0
-    
-    # Initialize matrix
-    matrix = [[0] * (len2 + 1) for _ in range(len1 + 1)]
-    for i in range(len1 + 1):
-        matrix[i][0] = i
-    for j in range(len2 + 1):
-        matrix[0][j] = j
-    
-    # Fill matrix
-    for i in range(1, len1 + 1):
-        for j in range(1, len2 + 1):
-            if text1[i-1] == text2[j-1]:
-                matrix[i][j] = matrix[i-1][j-1]
-            else:
-                matrix[i][j] = min(
-                    matrix[i-1][j] + 1,    # deletion
-                    matrix[i][j-1] + 1,    # insertion
-                    matrix[i-1][j-1] + 1   # substitution
-                )
-    
-    # Calculate similarity score
-    max_len = max(len1, len2)
-    distance = matrix[len1][len2]
-    similarity = 1 - (distance / max_len)
-    
-    return round(similarity, 3)
-
 # Create text search indexes DDL
-word_search_ddl = DDL("""
-    CREATE INDEX IF NOT EXISTS idx_words_search ON words USING gin(search_text);
-    CREATE INDEX IF NOT EXISTS idx_words_normalized ON words USING gin(to_tsvector('simple', normalized_lemma));
-    CREATE INDEX IF NOT EXISTS idx_words_baybayin ON words USING gin(to_tsvector('simple', baybayin_form)) 
-    WHERE has_baybayin = true;
-""")
+word_search_ddl = DDL(
+    "CREATE INDEX IF NOT EXISTS idx_words_search ON words USING gin(search_text)"
+)
 
-etymology_search_ddl = DDL("""
-    CREATE INDEX IF NOT EXISTS idx_etymologies_langs ON etymologies USING gin(to_tsvector('simple', language_codes));
-    CREATE INDEX IF NOT EXISTS idx_etymologies_components ON etymologies USING gin(to_tsvector('simple', normalized_components));
-""")
+etymology_search_ddl = DDL(
+    "CREATE INDEX IF NOT EXISTS idx_etymologies_langs ON etymologies USING gin(to_tsvector('simple', language_codes))"
+)
 
 # Timestamp trigger DDL
 timestamp_trigger = DDL("""
@@ -141,7 +67,6 @@ timestamp_trigger = DDL("""
 
 # Word model
 class Word(db.Model):
-    """Enhanced word model with additional fields and functionality."""
     __tablename__ = 'words'
     
     id = Column(Integer, primary_key=True)
@@ -159,60 +84,17 @@ class Word(db.Model):
     source_info = Column(JSONB, default=dict)
     data_hash = Column(Text)
     search_text = Column(TSVECTOR)
-    metadata = Column(JSONB, default=dict)
-    verification_status = Column(String(32), default='unverified')
-    verification_notes = Column(Text)
-    last_verified_at = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
     updated_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
 
     # Relationships
-    definitions = relationship(
-        "Definition",
-        back_populates="word",
-        cascade="all, delete-orphan",
-        lazy="joined"
-    )
-    etymologies = relationship(
-        "Etymology",
-        back_populates="word",
-        cascade="all, delete-orphan",
-        lazy="joined"
-    )
-    relations_from = relationship(
-        "Relation",
-        foreign_keys="[Relation.from_word_id]",
-        back_populates="from_word",
-        cascade="all, delete-orphan",
-        lazy="joined"
-    )
-    relations_to = relationship(
-        "Relation",
-        foreign_keys="[Relation.to_word_id]",
-        back_populates="to_word",
-        cascade="all, delete-orphan",
-        lazy="joined"
-    )
-    affixations_as_root = relationship(
-        "Affixation",
-        foreign_keys="[Affixation.root_word_id]",
-        back_populates="root_word",
-        cascade="all, delete-orphan",
-        lazy="joined"
-    )
-    affixations_as_affixed = relationship(
-        "Affixation",
-        foreign_keys="[Affixation.affixed_word_id]",
-        back_populates="affixed_word",
-        cascade="all, delete-orphan",
-        lazy="joined"
-    )
-    root_word = relationship(
-        "Word",
-        remote_side=[id],
-        backref=backref("derived_words", lazy="joined"),
-        lazy="joined"
-    )
+    definitions = relationship("Definition", back_populates="word", cascade="all, delete-orphan")
+    etymologies = relationship("Etymology", back_populates="word", cascade="all, delete-orphan")
+    relations_from = relationship("Relation", foreign_keys="[Relation.from_word_id]", back_populates="from_word", cascade="all, delete-orphan")
+    relations_to = relationship("Relation", foreign_keys="[Relation.to_word_id]", back_populates="to_word", cascade="all, delete-orphan")
+    affixations_as_root = relationship("Affixation", foreign_keys="[Affixation.root_word_id]", back_populates="root_word", cascade="all, delete-orphan")
+    affixations_as_affixed = relationship("Affixation", foreign_keys="[Affixation.affixed_word_id]", back_populates="affixed_word", cascade="all, delete-orphan")
+    root_word = relationship("Word", remote_side=[id], backref="derived_words")
 
     __table_args__ = (
         UniqueConstraint('normalized_lemma', 'language_code', name='words_lang_lemma_uniq'),
@@ -222,10 +104,6 @@ class Word(db.Model):
         Index('idx_words_romanized', 'romanized_form'),
         Index('idx_words_language', 'language_code'),
         Index('idx_words_root', 'root_word_id'),
-        Index('idx_words_verification', 'verification_status'),
-        Index('idx_words_created', 'created_at'),
-        Index('idx_words_updated', 'updated_at'),
-        Index('idx_words_quality', 'data_hash')
     )
 
     @hybrid_property
@@ -235,27 +113,18 @@ class Word(db.Model):
     
     @hybrid_property
     def has_complete_data(self) -> bool:
-        """Check if word has complete data."""
-        return bool(
-            self.definitions and
-            (self.etymologies or self.relations_from) and
-            self.source_info
-        )
-    
-    @hybrid_property
-    def is_verified(self) -> bool:
-        """Check if word is verified."""
-        return self.verification_status == 'verified'
+        """Check if word has complete data (definitions, etymology, etc.)."""
+        return bool(self.definitions and (self.etymologies or self.relations_from))
     
     @validates('lemma', 'normalized_lemma')
     def validate_lemma(self, key, value):
-        """Validate lemma fields."""
+        """Validate lemma and normalized_lemma field values."""
         if not value or not isinstance(value, str):
             raise ValueError(f"{key} must be a non-empty string")
         if len(value) > 255:
             raise ValueError(f"{key} must be less than 255 characters")
-        return value.strip()
-    
+        return value
+
     @validates('language_code')
     def validate_language_code(self, key, code):
         """Validate language code."""
@@ -264,26 +133,17 @@ class Word(db.Model):
             raise ValueError(f"Invalid language code: {code}. Must be one of: {', '.join(valid_codes)}")
         return code
     
-    @validates('verification_status')
-    def validate_verification_status(self, key, status):
-        """Validate verification status."""
-        valid_statuses = ['unverified', 'verified', 'needs_review', 'disputed']
-        if status not in valid_statuses:
-            raise ValueError(f"Invalid verification status: {status}")
-        return status
-    
     def validate_baybayin(self):
-        """Validate Baybayin form and generate romanized form."""
+        """Validate baybayin form and generate romanized form if needed."""
         if self.has_baybayin and not self.baybayin_form:
             raise ValueError("Baybayin form required when has_baybayin is True")
         
-        if self.baybayin_form:
-            if not re.match(r'^[\u1700-\u171F\s]*$', self.baybayin_form):
-                raise ValueError("Invalid Baybayin characters")
+        if self.baybayin_form and not re.match(r'^[\u1700-\u171F\\\\s]*$', self.baybayin_form):
+            raise ValueError("Invalid Baybayin characters")
             
-            if not self.romanized_form:
-                self.romanized_form = get_romanized_text(self.baybayin_form)
-    
+        if self.has_baybayin and not self.romanized_form:
+            self.romanized_form = get_romanized_text(self.baybayin_form)
+
     def update_search_vector(self):
         """Update the search vector with all searchable content."""
         search_parts = [
@@ -293,167 +153,74 @@ class Word(db.Model):
             ' '.join(d.definition_text for d in self.definitions),
             ' '.join(e.etymology_text for e in self.etymologies),
             self.baybayin_form or '',
-            self.romanized_form or '',
-            ' '.join(self.get_tags_list()),
-            ' '.join(tag for d in self.definitions for tag in d.get_tags_list())
+            self.romanized_form or ''
         ]
-        self.search_text = func.to_tsvector('simple', ' '.join(filter(None, search_parts)))
-    
+        self.search_text = func.to_tsvector('simple', ' '.join(search_parts))
+        
     def calculate_data_quality_score(self) -> int:
-        """Calculate comprehensive data quality score."""
+        """Calculate data quality score based on completeness."""
         score = 0
         
-        # Basic data completeness (30 points)
+        # Basic data completeness
         if self.lemma and self.normalized_lemma:
-            score += 15
-        if self.language_code:
-            score += 5
-        if self.has_baybayin and self.baybayin_form and self.romanized_form:
-            score += 5
-        if self.pronunciation_data:
-            score += 5
-            
-        # Definitions quality (25 points)
+            score += 10
         if self.definitions:
-            def_score = min(len(self.definitions) * 5, 15)
-            def_score += sum(2 for d in self.definitions if d.examples)
-            def_score += sum(2 for d in self.definitions if d.usage_notes)
-            def_score += sum(1 for d in self.definitions if d.tags)
-            score += min(def_score, 25)
-            
-        # Etymology quality (20 points)
+            score += min(len(self.definitions) * 5, 25)
         if self.etymologies:
-            etym_score = min(len(self.etymologies) * 5, 10)
-            etym_score += sum(2 for e in self.etymologies if e.normalized_components)
-            etym_score += sum(2 for e in self.etymologies if e.language_codes)
-            etym_score += sum(1 for e in self.etymologies if e.etymology_structure)
-            score += min(etym_score, 20)
+            score += min(len(self.etymologies) * 5, 20)
             
-        # Relationships quality (15 points)
-        rel_score = 0
+        # Source quality
+        if self.source_info:
+            reliable_sources = ['kwf', 'upd', 'diksiyonaryo']
+            source_json = self.source_info
+            if isinstance(source_json, str):
+                try:
+                    source_json = json.loads(source_json)
+                except:
+                    source_json = {}
+            score += sum(5 for source in source_json if source in reliable_sources)
+            
+        # Relations completeness
         if self.relations_from or self.relations_to:
-            rel_count = len(self.relations_from) + len(self.relations_to)
-            rel_score += min(rel_count * 2, 10)
-        if self.affixations_as_root or self.affixations_as_affixed:
-            aff_count = len(self.affixations_as_root) + len(self.affixations_as_affixed)
-            rel_score += min(aff_count * 1, 5)
-        score += rel_score
-        
-        # Additional features (10 points)
-        if self.idioms and self.idioms != '[]':
-            score += 3
-        if self.source_info and self.source_info != '{}':
-            score += 3
-        if self.tags:
-            score += 2
-        if self.is_verified:
-            score += 2
+            score += 10
             
-        return min(score, 100)
-    
-    def calculate_similarity_score(self, other_word: 'Word') -> float:
-        """Calculate similarity score with another word."""
-        if not other_word:
-            return 0.0
+        # Baybayin completeness
+        if self.has_baybayin and self.baybayin_form and self.romanized_form:
+            score += 15
             
-        # Calculate base similarity from lemmas
-        base_similarity = calculate_text_similarity(self.lemma, other_word.lemma)
-        
-        # Add points for shared features
-        feature_score = 0.0
-        
-        # Check language
-        if self.language_code == other_word.language_code:
-            feature_score += 0.1
-            
-        # Check Baybayin
-        if self.has_baybayin and other_word.has_baybayin:
-            baybayin_similarity = calculate_text_similarity(
-                self.baybayin_form,
-                other_word.baybayin_form
-            )
-            feature_score += baybayin_similarity * 0.1
-            
-        # Check etymologies
-        if self.etymologies and other_word.etymologies:
-            shared_languages = set(
-                lang for e in self.etymologies for lang in e.get_language_codes_list()
-            ).intersection(
-                lang for e in other_word.etymologies for lang in e.get_language_codes_list()
-            )
-            if shared_languages:
-                feature_score += len(shared_languages) * 0.05
-                
-        # Check definitions
-        if self.definitions and other_word.definitions:
-            def_similarity = max(
-                calculate_text_similarity(d1.definition_text, d2.definition_text)
-                for d1 in self.definitions
-                for d2 in other_word.definitions
-            )
-            feature_score += def_similarity * 0.2
-            
-        # Calculate final score
-        final_score = base_similarity * 0.6 + feature_score
-        return round(min(final_score, 1.0), 3)
-    
+        return min(score, 100)  # Cap at 100
+
     def generate_data_hash(self) -> str:
         """Generate a hash of the word's data for change detection."""
-        data_parts = [
-            self.lemma,
-            self.normalized_lemma,
-            self.language_code,
-            self.baybayin_form or '',
-            self.romanized_form or '',
-            str(sorted([d.definition_text for d in self.definitions])),
-            str(sorted([e.etymology_text for e in self.etymologies])),
-            str(sorted([r.relation_type for r in self.relations_from])),
-            str(sorted([r.relation_type for r in self.relations_to])),
-            str(self.source_info or {}),
-            str(self.metadata or {})
-        ]
-        data_string = '|'.join(data_parts)
+        data_string = f"{self.lemma}{self.normalized_lemma}{self.language_code}"
+        data_string += str(sorted([d.definition_text for d in self.definitions]))
+        data_string += str(sorted([e.etymology_text for e in self.etymologies]))
         return hashlib.sha256(data_string.encode()).hexdigest()
-    
+
     def get_tags_list(self) -> List[str]:
         """Get tags as a list."""
-        if not self.tags:
-            return []
-        try:
-            return json.loads(self.tags) if isinstance(self.tags, str) else self.tags
-        except json.JSONDecodeError:
-            return [tag.strip() for tag in self.tags.split(',') if tag.strip()]
+        return [tag.strip() for tag in self.tags.split(",")] if self.tags else []
     
     def get_idioms_list(self) -> List[Dict[str, Any]]:
         """Get idioms as a list of dictionaries."""
         if not self.idioms or self.idioms == '[]':
             return []
         
-        try:
-            idioms = json.loads(self.idioms) if isinstance(self.idioms, str) else self.idioms
-            return [
-                {
-                    'idiom': idiom.get('idiom', '') or idiom.get('text', ''),
-                    'meaning': idiom.get('meaning', ''),
-                    'examples': idiom.get('examples', []),
-                    'notes': idiom.get('notes'),
-                    'tags': idiom.get('tags', []),
-                    'source': idiom.get('source')
-                }
-                for idiom in idioms
-                if isinstance(idiom, dict) and (idiom.get('idiom') or idiom.get('text'))
-            ]
-        except json.JSONDecodeError:
-            return []
+        if isinstance(self.idioms, str):
+            try:
+                return json.loads(self.idioms)
+            except json.JSONDecodeError:
+                return []
+        return self.idioms
     
-    def get_related_words(self, relation_type: Optional[str] = None) -> List[Dict[str, Any]]:
-        """Get related words with optional type filter."""
+    def get_related_words(self, relation_type=None) -> List[Dict[str, Any]]:
+        """Get related words of a specific type."""
         result = []
         
         for rel in self.relations_from:
             if relation_type and rel.relation_type.lower() != relation_type.lower():
                 continue
-            
+                
             related_word = {
                 "id": rel.to_word.id,
                 "word": rel.to_word.lemma,
@@ -461,40 +228,33 @@ class Word(db.Model):
                 "language_code": rel.to_word.language_code,
                 "relation_type": rel.relation_type,
                 "has_baybayin": rel.to_word.has_baybayin,
-                "baybayin_form": rel.to_word.baybayin_form if rel.to_word.has_baybayin else None,
-                "verification_status": rel.to_word.verification_status
+                "baybayin_form": rel.to_word.baybayin_form if rel.to_word.has_baybayin else None
             }
             
+            # Include metadata if available
             if rel.metadata:
-                related_word.update({
-                    "strength": rel.metadata.get('strength'),
-                    "tags": rel.metadata.get('tags', []),
-                    "english_equivalent": rel.metadata.get('english'),
-                    "notes": rel.metadata.get('notes'),
-                    "metadata": rel.metadata
-                })
-            
+                # Add specific fields that UI might need
+                if 'strength' in rel.metadata:
+                    related_word['strength'] = rel.metadata['strength']
+                if 'tags' in rel.metadata and rel.metadata['tags']:
+                    related_word['tags'] = rel.metadata['tags']
+                if 'english' in rel.metadata and rel.metadata['english']:
+                    related_word['english_equivalent'] = rel.metadata['english']
+                # Add all metadata for completeness
+                related_word['metadata'] = rel.metadata
+                
             result.append(related_word)
-        
+            
         return result
     
     def get_etymology_summary(self) -> str:
         """Get a summary of the word's etymology."""
         if not self.etymologies:
-            return "Etymology unknown"
-        
-        summaries = []
-        for etym in self.etymologies:
-            summary = etym.etymology_text
-            if etym.language_codes:
-                langs = etym.get_language_codes_list()
-                if langs:
-                    summary += f" [{', '.join(langs)}]"
-            summaries.append(summary)
-        
-        return "; ".join(summaries)
+            return "Unknown etymology"
+            
+        return "; ".join([etym.etymology_text for etym in self.etymologies])
     
-    def to_dict(self, include_definitions=True, include_relations=True,
+    def to_dict(self, include_definitions=True, include_relations=True, 
                 include_etymology=True, include_metadata=True) -> Dict[str, Any]:
         """Convert word to dictionary with configurable depth."""
         result = {
@@ -507,33 +267,31 @@ class Word(db.Model):
             "romanized_form": self.romanized_form if self.has_baybayin else None,
             "preferred_spelling": self.preferred_spelling,
             "tags": self.get_tags_list(),
-            "verification_status": self.verification_status,
-            "verification_notes": self.verification_notes,
-            "last_verified_at": self.last_verified_at.isoformat() if self.last_verified_at else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
-            "is_root_word": self.is_root_word,
-            "has_complete_data": self.has_complete_data,
-            "quality_score": self.calculate_data_quality_score()
+            "is_root_word": self.is_root_word
         }
         
         if include_metadata:
+            # Add additional metadata
+            idioms_data = self.get_idioms_list()
             result.update({
-                "idioms": self.get_idioms_list(),
+                "idioms": idioms_data,
                 "pronunciation_data": self.pronunciation_data,
                 "source_info": self.source_info,
-                "metadata": self.metadata,
+                "data_quality_score": self.calculate_data_quality_score(),
                 "data_hash": self.data_hash,
                 "root_word_id": self.root_word_id
             })
         
         if include_definitions and self.definitions:
             result["definitions"] = [d.to_dict() for d in self.definitions]
-        
+            
         if include_etymology and self.etymologies:
             result["etymologies"] = [e.to_dict() for e in self.etymologies]
-        
+            
         if include_relations:
+            # Organize relations
             relations = {
                 "synonyms": self.get_related_words("synonym"),
                 "antonyms": self.get_related_words("antonym"),
@@ -552,27 +310,51 @@ class Word(db.Model):
             # Add root word relation
             for rel in self.relations_from:
                 if rel.relation_type.lower() == "derived_from":
-                    relations["root"] = {
+                    root_relation = {
                         "id": rel.to_word.id,
                         "word": rel.to_word.lemma,
                         "normalized_lemma": rel.to_word.normalized_lemma,
-                        "language_code": rel.to_word.language_code,
-                        "verification_status": rel.to_word.verification_status,
-                        "metadata": rel.metadata
+                        "language_code": rel.to_word.language_code
                     }
+                    
+                    # Include metadata if available
+                    if rel.metadata:
+                        # Add specific fields that UI might need
+                        if 'strength' in rel.metadata:
+                            root_relation['strength'] = rel.metadata['strength']
+                        if 'tags' in rel.metadata and rel.metadata['tags']:
+                            root_relation['tags'] = rel.metadata['tags']
+                        if 'english' in rel.metadata and rel.metadata['english']:
+                            root_relation['english_equivalent'] = rel.metadata['english']
+                        # Add all metadata for completeness
+                        root_relation['metadata'] = rel.metadata
+                    
+                    relations["root"] = root_relation
                     break
-            
+                    
             # Add derived words
             for rel in self.relations_to:
                 if rel.relation_type.lower() == "derived_from":
-                    relations["derived"].append({
+                    derived_relation = {
                         "id": rel.from_word.id,
                         "word": rel.from_word.lemma,
                         "normalized_lemma": rel.from_word.normalized_lemma,
-                        "language_code": rel.from_word.language_code,
-                        "verification_status": rel.from_word.verification_status,
-                        "metadata": rel.metadata
-                    })
+                        "language_code": rel.from_word.language_code
+                    }
+                    
+                    # Include metadata if available
+                    if rel.metadata:
+                        # Add specific fields that UI might need
+                        if 'strength' in rel.metadata:
+                            derived_relation['strength'] = rel.metadata['strength']
+                        if 'tags' in rel.metadata and rel.metadata['tags']:
+                            derived_relation['tags'] = rel.metadata['tags']
+                        if 'english' in rel.metadata and rel.metadata['english']:
+                            derived_relation['english_equivalent'] = rel.metadata['english']
+                        # Add all metadata for completeness
+                        derived_relation['metadata'] = rel.metadata
+                    
+                    relations["derived"].append(derived_relation)
             
             # Add affixations
             if hasattr(self, 'affixations_as_root'):
@@ -582,10 +364,9 @@ class Word(db.Model):
                         "affixed_word": aff.affixed_word.lemma,
                         "normalized_word": aff.affixed_word.normalized_lemma,
                         "type": aff.affix_type,
-                        "sources": aff.get_sources_list(),
-                        "metadata": aff.metadata
+                        "sources": aff.sources.split(", ") if aff.sources else []
                     })
-            
+                    
             if hasattr(self, 'affixations_as_affixed'):
                 for aff in self.affixations_as_affixed:
                     relations["affixations"]["as_affixed"].append({
@@ -593,17 +374,15 @@ class Word(db.Model):
                         "root_word": aff.root_word.lemma,
                         "normalized_word": aff.root_word.normalized_lemma,
                         "type": aff.affix_type,
-                        "sources": aff.get_sources_list(),
-                        "metadata": aff.metadata
+                        "sources": aff.sources.split(", ") if aff.sources else []
                     })
-            
+                    
             result["relations"] = relations
-        
+            
         return result
 
 
 class Definition(db.Model):
-    """Enhanced definition model with additional fields and functionality."""
     __tablename__ = 'definitions'
     
     id = Column(Integer, primary_key=True)
@@ -615,39 +394,28 @@ class Definition(db.Model):
     usage_notes = Column(Text)
     tags = Column(Text)
     sources = Column(Text, nullable=False)
-    metadata = Column(JSONB, default=dict)
-    verification_status = Column(String(32), default='unverified')
-    verification_notes = Column(Text)
-    last_verified_at = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
     updated_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
-    
+
     # Relationships
-    word = relationship("Word", back_populates="definitions", lazy="joined")
-    standardized_pos = relationship("PartOfSpeech", back_populates="definitions", lazy="joined")
-    definition_relations = relationship(
-        "DefinitionRelation",
-        back_populates="definition",
-        cascade="all, delete-orphan",
-        lazy="joined"
-    )
-    
+    word = relationship("Word", back_populates="definitions")
+    standardized_pos = relationship("PartOfSpeech", back_populates="definitions")
+    definition_relations = relationship("DefinitionRelation", back_populates="definition", cascade="all, delete-orphan")
+
     __table_args__ = (
         Index('idx_definitions_pos', 'standardized_pos_id'),
         Index('idx_definitions_word_id', 'word_id'),
         Index('idx_definitions_tags', 'tags'),
-        Index('idx_definitions_verification', 'verification_status'),
-        Index('idx_definitions_created', 'created_at'),
         UniqueConstraint('word_id', 'definition_text', 'standardized_pos_id', name='definitions_unique')
     )
-    
+
     @validates('definition_text')
     def validate_definition_text(self, key, value):
         """Validate definition text."""
         if not value or not isinstance(value, str):
             raise ValueError("Definition text must be a non-empty string")
         return value.strip()
-    
+
     @validates('sources')
     def validate_sources(self, key, value):
         """Validate sources."""
@@ -655,106 +423,49 @@ class Definition(db.Model):
             raise ValueError("Sources must be a non-empty string")
         return value.strip()
     
-    @validates('verification_status')
-    def validate_verification_status(self, key, status):
-        """Validate verification status."""
-        valid_statuses = ['unverified', 'verified', 'needs_review', 'disputed']
-        if status not in valid_statuses:
-            raise ValueError(f"Invalid verification status: {status}")
-        return status
-    
-    def get_examples_list(self) -> List[Dict[str, Any]]:
-        """Get examples as a list of dictionaries."""
+    def get_examples_list(self) -> List[str]:
+        """Get examples as a list of strings."""
         if not self.examples:
             return []
-        
+            
         try:
             examples = json.loads(self.examples)
             if isinstance(examples, list):
-                return [
-                    {
-                        'text': ex.get('text', ex) if isinstance(ex, dict) else str(ex),
-                        'translation': ex.get('translation') if isinstance(ex, dict) else None,
-                        'notes': ex.get('notes') if isinstance(ex, dict) else None,
-                        'source': ex.get('source') if isinstance(ex, dict) else None,
-                        'tags': ex.get('tags', []) if isinstance(ex, dict) else []
-                    }
-                    for ex in examples
-                ]
-            return [{'text': str(examples)}]
+                return examples
+            return [str(examples)]
         except json.JSONDecodeError:
-            return [{'text': line.strip()} for line in self.examples.split('\n') if line.strip()]
+            return [line.strip() for line in self.examples.split('\n') if line.strip()]
     
-    def get_usage_notes_list(self) -> List[Dict[str, Any]]:
-        """Get usage notes as a list of dictionaries."""
+    def get_usage_notes_list(self) -> List[str]:
+        """Get usage notes as a list of strings."""
         if not self.usage_notes:
             return []
-        
+            
         try:
             notes = json.loads(self.usage_notes)
             if isinstance(notes, list):
-                return [
-                    {
-                        'text': note.get('text', note) if isinstance(note, dict) else str(note),
-                        'type': note.get('type') if isinstance(note, dict) else None,
-                        'source': note.get('source') if isinstance(note, dict) else None
-                    }
-                    for note in notes
-                ]
-            return [{'text': str(notes)}]
+                return notes
+            return [str(notes)]
         except json.JSONDecodeError:
-            return [{'text': line.strip()} for line in self.usage_notes.split('\n') if line.strip()]
+            return [line.strip() for line in self.usage_notes.split('\n') if line.strip()]
     
     def get_tags_list(self) -> List[str]:
-        """Get tags as a list."""
+        """Get tags as a list of strings."""
         if not self.tags:
             return []
+            
         try:
-            return json.loads(self.tags) if isinstance(self.tags, str) else self.tags
+            tags = json.loads(self.tags)
+            if isinstance(tags, list):
+                return tags
+            return [str(tags)]
         except json.JSONDecodeError:
             return [tag.strip() for tag in self.tags.split(',') if tag.strip()]
     
     def get_sources_list(self) -> List[str]:
-        """Get sources as a list."""
+        """Get sources as a list of strings."""
         return [source.strip() for source in self.sources.split(",")] if self.sources else []
-    
-    def calculate_quality_score(self) -> int:
-        """Calculate quality score for the definition."""
-        score = 0
-        
-        # Basic completeness (40 points)
-        if self.definition_text:
-            score += 20
-        if self.standardized_pos:
-            score += 10
-        if self.sources:
-            score += 10
-            
-        # Examples (20 points)
-        examples = self.get_examples_list()
-        if examples:
-            example_score = min(len(examples) * 5, 15)
-            if any(ex.get('translation') for ex in examples):
-                example_score += 5
-            score += example_score
-            
-        # Usage notes (15 points)
-        usage_notes = self.get_usage_notes_list()
-        if usage_notes:
-            score += min(len(usage_notes) * 5, 15)
-            
-        # Related words (15 points)
-        if self.definition_relations:
-            score += min(len(self.definition_relations) * 3, 15)
-            
-        # Additional features (10 points)
-        if self.tags:
-            score += 5
-        if self.verification_status == 'verified':
-            score += 5
-            
-        return min(score, 100)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert definition to dictionary."""
         result = {
@@ -765,12 +476,8 @@ class Definition(db.Model):
             "usage_notes": self.get_usage_notes_list(),
             "tags": self.get_tags_list(),
             "sources": self.get_sources_list(),
-            "verification_status": self.verification_status,
-            "verification_notes": self.verification_notes,
-            "last_verified_at": self.last_verified_at.isoformat() if self.last_verified_at else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
-            "quality_score": self.calculate_quality_score()
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
         }
         
         # Add part of speech details if available
@@ -784,26 +491,20 @@ class Definition(db.Model):
             }
         
         # Add definition relations if available
-        if self.definition_relations:
+        if hasattr(self, 'definition_relations') and self.definition_relations:
             result["related_words"] = [
                 {
                     "word": rel.word.lemma,
                     "type": rel.relation_type,
-                    "sources": rel.get_sources_list(),
-                    "metadata": rel.metadata
+                    "sources": rel.sources.split(", ") if rel.sources else []
                 }
                 for rel in self.definition_relations
             ]
-        
-        # Add metadata if available
-        if self.metadata:
-            result["metadata"] = self.metadata
         
         return result
 
 
 class Etymology(db.Model):
-    """Enhanced etymology model with additional fields and functionality."""
     __tablename__ = 'etymologies'
     
     id = Column(Integer, primary_key=True)
@@ -813,24 +514,16 @@ class Etymology(db.Model):
     etymology_structure = Column(Text)
     language_codes = Column(Text)
     sources = Column(Text, nullable=False)
-    metadata = Column(JSONB, default=dict)
-    confidence_score = Column(Float)
-    verification_status = Column(String(32), default='unverified')
-    verification_notes = Column(Text)
-    last_verified_at = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
     updated_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
-    
+
     # Relationships
-    word = relationship("Word", back_populates="etymologies", lazy="joined")
-    
+    word = relationship("Word", back_populates="etymologies")
+
     __table_args__ = (
         UniqueConstraint('word_id', 'etymology_text', name='etymologies_wordid_etymtext_uniq'),
         Index('idx_etymologies_word', 'word_id'),
-        Index('idx_etymologies_structure', 'etymology_structure'),
-        Index('idx_etymologies_verification', 'verification_status'),
-        Index('idx_etymologies_confidence', 'confidence_score'),
-        Index('idx_etymologies_created', 'created_at')
+        Index('idx_etymologies_structure', 'etymology_structure')
     )
     
     @validates('etymology_text')
@@ -839,7 +532,7 @@ class Etymology(db.Model):
         if not value or not isinstance(value, str):
             raise ValueError("Etymology text must be a non-empty string")
         return value.strip()
-    
+
     @validates('sources')
     def validate_sources(self, key, value):
         """Validate sources."""
@@ -847,103 +540,41 @@ class Etymology(db.Model):
             raise ValueError("Sources must be a non-empty string")
         return value.strip()
     
-    @validates('verification_status')
-    def validate_verification_status(self, key, status):
-        """Validate verification status."""
-        valid_statuses = ['unverified', 'verified', 'needs_review', 'disputed']
-        if status not in valid_statuses:
-            raise ValueError(f"Invalid verification status: {status}")
-        return status
-    
-    @validates('confidence_score')
-    def validate_confidence_score(self, key, value):
-        """Validate confidence score."""
-        if value is not None:
-            if not isinstance(value, (int, float)):
-                raise ValueError("Confidence score must be a number")
-            if not 0 <= value <= 1:
-                raise ValueError("Confidence score must be between 0 and 1")
-        return value
-    
-    def get_components_list(self) -> List[Dict[str, Any]]:
-        """Get normalized components as a list of dictionaries."""
+    def get_components_list(self) -> List[str]:
+        """Get normalized components as a list of strings."""
         if not self.normalized_components:
             return []
-        
+            
         try:
             components = json.loads(self.normalized_components)
             if isinstance(components, list):
-                return [
-                    {
-                        'text': comp.get('text', comp) if isinstance(comp, dict) else str(comp),
-                        'language': comp.get('language') if isinstance(comp, dict) else None,
-                        'meaning': comp.get('meaning') if isinstance(comp, dict) else None,
-                        'notes': comp.get('notes') if isinstance(comp, dict) else None,
-                        'confidence': comp.get('confidence') if isinstance(comp, dict) else None
-                    }
-                    for comp in components
-                ]
+                return components
             return []
         except json.JSONDecodeError:
             if ';' in self.normalized_components:
-                components = self.normalized_components.split(';')
+                return [comp.strip() for comp in self.normalized_components.split(';') if comp.strip()]
             elif ',' in self.normalized_components:
-                components = self.normalized_components.split(',')
-            else:
-                components = [self.normalized_components]
-            return [{'text': comp.strip()} for comp in components if comp.strip()]
+                return [comp.strip() for comp in self.normalized_components.split(',') if comp.strip()]
+            return [self.normalized_components] if self.normalized_components.strip() else []
     
-    def get_etymology_structure(self) -> Optional[Dict[str, Any]]:
+    def get_etymology_structure(self) -> Optional[Dict]:
         """Get the structured etymology data if available."""
         if not self.etymology_structure:
             return None
-        
+            
         try:
             return json.loads(self.etymology_structure)
         except json.JSONDecodeError:
             return None
     
     def get_language_codes_list(self) -> List[str]:
-        """Get language codes as a list."""
+        """Get language codes as a list of strings."""
         return [lang.strip() for lang in self.language_codes.split(",")] if self.language_codes else []
     
     def get_sources_list(self) -> List[str]:
-        """Get sources as a list."""
+        """Get sources as a list of strings."""
         return [source.strip() for source in self.sources.split(",")] if self.sources else []
-    
-    def calculate_quality_score(self) -> int:
-        """Calculate quality score for the etymology."""
-        score = 0
-        
-        # Basic completeness (40 points)
-        if self.etymology_text:
-            score += 20
-        if self.language_codes:
-            score += 10
-        if self.sources:
-            score += 10
-            
-        # Components (20 points)
-        components = self.get_components_list()
-        if components:
-            comp_score = min(len(components) * 5, 15)
-            if any(comp.get('meaning') for comp in components):
-                comp_score += 5
-            score += comp_score
-            
-        # Structure (20 points)
-        structure = self.get_etymology_structure()
-        if structure:
-            score += 20
-            
-        # Additional features (20 points)
-        if self.confidence_score is not None:
-            score += 10
-        if self.verification_status == 'verified':
-            score += 10
-            
-        return min(score, 100)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert etymology to dictionary."""
         result = {
@@ -952,29 +583,19 @@ class Etymology(db.Model):
             "components": self.get_components_list(),
             "language_codes": self.get_language_codes_list(),
             "sources": self.get_sources_list(),
-            "confidence_score": self.confidence_score,
-            "verification_status": self.verification_status,
-            "verification_notes": self.verification_notes,
-            "last_verified_at": self.last_verified_at.isoformat() if self.last_verified_at else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
-            "quality_score": self.calculate_quality_score()
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
         }
         
         # Add etymology structure if available
-        structure = self.get_etymology_structure()
-        if structure:
-            result["etymology_structure"] = structure
-            
-        # Add metadata if available
-        if self.metadata:
-            result["metadata"] = self.metadata
+        etymology_structure = self.get_etymology_structure()
+        if etymology_structure:
+            result["etymology_structure"] = etymology_structure
             
         return result
 
 
 class Relation(db.Model):
-    """Enhanced relation model with additional fields and functionality."""
     __tablename__ = 'relations'
     
     id = Column(Integer, primary_key=True)
@@ -983,36 +604,20 @@ class Relation(db.Model):
     relation_type = Column(String(64), nullable=False)
     sources = Column(Text, nullable=False)
     metadata = Column(JSONB, default=dict)
-    confidence_score = Column(Float)
-    verification_status = Column(String(32), default='unverified')
-    verification_notes = Column(Text)
-    last_verified_at = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
-    
+
     # Relationships
-    from_word = relationship(
-        "Word",
-        foreign_keys=[from_word_id],
-        back_populates="relations_from",
-        lazy="joined"
-    )
-    to_word = relationship(
-        "Word",
-        foreign_keys=[to_word_id],
-        back_populates="relations_to",
-        lazy="joined"
-    )
-    
+    from_word = relationship("Word", foreign_keys=[from_word_id], back_populates="relations_from")
+    to_word = relationship("Word", foreign_keys=[to_word_id], back_populates="relations_to")
+
     __table_args__ = (
         UniqueConstraint('from_word_id', 'to_word_id', 'relation_type', name='relations_unique'),
         Index('idx_relations_from', 'from_word_id'),
         Index('idx_relations_to', 'to_word_id'),
         Index('idx_relations_type', 'relation_type'),
-        Index('idx_relations_metadata', 'metadata', postgresql_using='gin'),
-        Index('idx_relations_verification', 'verification_status'),
-        Index('idx_relations_confidence', 'confidence_score')
+        Index('idx_relations_metadata', 'metadata', postgresql_using='gin')
     )
-    
+
     VALID_TYPES = [
         # Basic semantic relationships
         'synonym', 'antonym', 'variant', 'spelling_variant',
@@ -1027,8 +632,7 @@ class Relation(db.Model):
         'borrowed_from', 'loaned_to', 'cognate', 'descendant_of', 'ancestor_of',
         
         # Structural relationships
-        'component_of', 'abbreviation_of', 'has_abbreviation',
-        'initialism_of', 'has_initialism',
+        'component_of', 'abbreviation_of', 'has_abbreviation', 'initialism_of', 'has_initialism',
         
         # General relationships
         'related'
@@ -1038,12 +642,11 @@ class Relation(db.Model):
     def validate_relation_type(self, key, value):
         """Validate relation type."""
         if value not in self.VALID_TYPES:
-            logger.warning(
-                f"Non-standard relation type encountered: '{value}'. " +
-                f"Standard types are: {', '.join(self.VALID_TYPES)}"
-            )
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Non-standard relation type encountered: '{value}'. " +
+                          f"Standard types are: {', '.join(self.VALID_TYPES)}")
         return value
-    
+
     @validates('sources')
     def validate_sources(self, key, value):
         """Validate sources."""
@@ -1051,57 +654,10 @@ class Relation(db.Model):
             raise ValueError("Sources must be a non-empty string")
         return value.strip()
     
-    @validates('verification_status')
-    def validate_verification_status(self, key, status):
-        """Validate verification status."""
-        valid_statuses = ['unverified', 'verified', 'needs_review', 'disputed']
-        if status not in valid_statuses:
-            raise ValueError(f"Invalid verification status: {status}")
-        return status
-    
-    @validates('confidence_score')
-    def validate_confidence_score(self, key, value):
-        """Validate confidence score."""
-        if value is not None:
-            if not isinstance(value, (int, float)):
-                raise ValueError("Confidence score must be a number")
-            if not 0 <= value <= 1:
-                raise ValueError("Confidence score must be between 0 and 1")
-        return value
-    
     def get_sources_list(self) -> List[str]:
-        """Get sources as a list."""
+        """Get sources as a list of strings."""
         return [source.strip() for source in self.sources.split(",")] if self.sources else []
-    
-    def calculate_quality_score(self) -> int:
-        """Calculate quality score for the relation."""
-        score = 0
-        
-        # Basic completeness (40 points)
-        if self.relation_type in self.VALID_TYPES:
-            score += 20
-        if self.sources:
-            score += 20
-            
-        # Metadata (30 points)
-        if self.metadata:
-            meta_score = 0
-            if self.metadata.get('strength') is not None:
-                meta_score += 10
-            if self.metadata.get('tags'):
-                meta_score += 10
-            if self.metadata.get('notes'):
-                meta_score += 10
-            score += meta_score
-            
-        # Additional features (30 points)
-        if self.confidence_score is not None:
-            score += 15
-        if self.verification_status == 'verified':
-            score += 15
-            
-        return min(score, 100)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert relation to dictionary."""
         result = {
@@ -1110,27 +666,20 @@ class Relation(db.Model):
                 "id": self.from_word.id,
                 "lemma": self.from_word.lemma,
                 "normalized_lemma": self.from_word.normalized_lemma,
-                "language_code": self.from_word.language_code,
-                "verification_status": self.from_word.verification_status
+                "language_code": self.from_word.language_code
             },
             "to_word": {
                 "id": self.to_word.id,
                 "lemma": self.to_word.lemma,
                 "normalized_lemma": self.to_word.normalized_lemma,
-                "language_code": self.to_word.language_code,
-                "verification_status": self.to_word.verification_status
+                "language_code": self.to_word.language_code
             },
             "relation_type": self.relation_type,
             "sources": self.get_sources_list(),
-            "confidence_score": self.confidence_score,
-            "verification_status": self.verification_status,
-            "verification_notes": self.verification_notes,
-            "last_verified_at": self.last_verified_at.isoformat() if self.last_verified_at else None,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "quality_score": self.calculate_quality_score()
+            "created_at": self.created_at.isoformat() if self.created_at else None
         }
         
-        # Add metadata if available
+        # Include metadata if available
         if self.metadata:
             result["metadata"] = self.metadata
             
@@ -1138,7 +687,6 @@ class Relation(db.Model):
 
 
 class DefinitionRelation(db.Model):
-    """Enhanced definition relation model with additional fields and functionality."""
     __tablename__ = 'definition_relations'
     
     id = Column(Integer, primary_key=True)
@@ -1146,44 +694,28 @@ class DefinitionRelation(db.Model):
     word_id = Column(Integer, ForeignKey('words.id', ondelete='CASCADE'), nullable=False)
     relation_type = Column(String(64), nullable=False)
     sources = Column(Text, nullable=False)
-    metadata = Column(JSONB, default=dict)
-    confidence_score = Column(Float)
-    verification_status = Column(String(32), default='unverified')
-    verification_notes = Column(Text)
-    last_verified_at = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
-    
+
     # Relationships
-    definition = relationship("Definition", back_populates="definition_relations", lazy="joined")
-    word = relationship("Word", lazy="joined")
-    
+    definition = relationship("Definition", back_populates="definition_relations")
+    word = relationship("Word")
+
     __table_args__ = (
         UniqueConstraint('definition_id', 'word_id', 'relation_type', name='definition_relations_unique'),
         Index('idx_def_relations_def', 'definition_id'),
-        Index('idx_def_relations_word', 'word_id'),
-        Index('idx_def_relations_type', 'relation_type'),
-        Index('idx_def_relations_verification', 'verification_status'),
-        Index('idx_def_relations_confidence', 'confidence_score')
+        Index('idx_def_relations_word', 'word_id')
     )
-    
-    VALID_TYPES = [
-        'synonym', 'antonym', 'variant',
-        'example', 'see_also', 'usage',
-        'hypernym', 'hyponym',
-        'holonym', 'meronym',
-        'derived', 'root'
-    ]
-    
+
     @validates('relation_type')
     def validate_relation_type(self, key, value):
         """Validate relation type."""
-        if value not in self.VALID_TYPES:
-            logger.warning(
-                f"Non-standard definition relation type encountered: '{value}'. " +
-                f"Standard types are: {', '.join(self.VALID_TYPES)}"
-            )
+        standard_types = ['synonym', 'antonym', 'variant', 'example', 'see_also', 'usage']
+        if value not in standard_types:
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Non-standard definition relation type encountered: '{value}'. " +
+                          f"Standard types are: {', '.join(standard_types)}")
         return value
-    
+
     @validates('sources')
     def validate_sources(self, key, value):
         """Validate sources."""
@@ -1191,88 +723,28 @@ class DefinitionRelation(db.Model):
             raise ValueError("Sources must be a non-empty string")
         return value.strip()
     
-    @validates('verification_status')
-    def validate_verification_status(self, key, status):
-        """Validate verification status."""
-        valid_statuses = ['unverified', 'verified', 'needs_review', 'disputed']
-        if status not in valid_statuses:
-            raise ValueError(f"Invalid verification status: {status}")
-        return status
-    
-    @validates('confidence_score')
-    def validate_confidence_score(self, key, value):
-        """Validate confidence score."""
-        if value is not None:
-            if not isinstance(value, (int, float)):
-                raise ValueError("Confidence score must be a number")
-            if not 0 <= value <= 1:
-                raise ValueError("Confidence score must be between 0 and 1")
-        return value
-    
     def get_sources_list(self) -> List[str]:
-        """Get sources as a list."""
+        """Get sources as a list of strings."""
         return [source.strip() for source in self.sources.split(",")] if self.sources else []
-    
-    def calculate_quality_score(self) -> int:
-        """Calculate quality score for the definition relation."""
-        score = 0
-        
-        # Basic completeness (40 points)
-        if self.relation_type in self.VALID_TYPES:
-            score += 20
-        if self.sources:
-            score += 20
-            
-        # Metadata (30 points)
-        if self.metadata:
-            meta_score = 0
-            if self.metadata.get('strength') is not None:
-                meta_score += 10
-            if self.metadata.get('tags'):
-                meta_score += 10
-            if self.metadata.get('notes'):
-                meta_score += 10
-            score += meta_score
-            
-        # Additional features (30 points)
-        if self.confidence_score is not None:
-            score += 15
-        if self.verification_status == 'verified':
-            score += 15
-            
-        return min(score, 100)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert definition relation to dictionary."""
-        result = {
+        return {
             "id": self.id,
             "definition_id": self.definition_id,
             "word": {
                 "id": self.word.id,
                 "lemma": self.word.lemma,
                 "normalized_lemma": self.word.normalized_lemma,
-                "language_code": self.word.language_code,
-                "verification_status": self.word.verification_status
+                "language_code": self.word.language_code
             },
             "relation_type": self.relation_type,
             "sources": self.get_sources_list(),
-            "confidence_score": self.confidence_score,
-            "verification_status": self.verification_status,
-            "verification_notes": self.verification_notes,
-            "last_verified_at": self.last_verified_at.isoformat() if self.last_verified_at else None,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "quality_score": self.calculate_quality_score()
+            "created_at": self.created_at.isoformat() if self.created_at else None
         }
-        
-        # Add metadata if available
-        if self.metadata:
-            result["metadata"] = self.metadata
-            
-        return result
 
 
 class Affixation(db.Model):
-    """Enhanced affixation model with additional fields and functionality."""
     __tablename__ = 'affixations'
     
     id = Column(Integer, primary_key=True)
@@ -1280,42 +752,21 @@ class Affixation(db.Model):
     affixed_word_id = Column(Integer, ForeignKey('words.id', ondelete='CASCADE'), nullable=False)
     affix_type = Column(String(64), nullable=False)
     sources = Column(Text, nullable=False)
-    metadata = Column(JSONB, default=dict)
-    examples = Column(JSONB, default=list)
-    confidence_score = Column(Float)
-    verification_status = Column(String(32), default='unverified')
-    verification_notes = Column(Text)
-    last_verified_at = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.current_timestamp())
-    
+
     # Relationships
-    root_word = relationship(
-        "Word",
-        foreign_keys=[root_word_id],
-        back_populates="affixations_as_root",
-        lazy="joined"
-    )
-    affixed_word = relationship(
-        "Word",
-        foreign_keys=[affixed_word_id],
-        back_populates="affixations_as_affixed",
-        lazy="joined"
-    )
+    root_word = relationship("Word", foreign_keys=[root_word_id], back_populates="affixations_as_root")
+    affixed_word = relationship("Word", foreign_keys=[affixed_word_id], back_populates="affixations_as_affixed")
     
     __table_args__ = (
         UniqueConstraint('root_word_id', 'affixed_word_id', 'affix_type', name='affixations_unique'),
         Index('idx_affixations_root', 'root_word_id'),
-        Index('idx_affixations_affixed', 'affixed_word_id'),
-        Index('idx_affixations_type', 'affix_type'),
-        Index('idx_affixations_verification', 'verification_status'),
-        Index('idx_affixations_confidence', 'confidence_score')
+        Index('idx_affixations_affixed', 'affixed_word_id')
     )
-    
+
     VALID_TYPES = [
-        'prefix', 'infix', 'suffix',
-        'circumfix', 'reduplication', 'compound',
-        'prefix_reduplication', 'suffix_reduplication',
-        'partial_reduplication', 'full_reduplication'
+        'prefix', 'infix', 'suffix', 'circumfix', 
+        'reduplication', 'compound'
     ]
     
     @validates('affix_type')
@@ -1324,7 +775,7 @@ class Affixation(db.Model):
         if value not in self.VALID_TYPES:
             raise ValueError(f"Invalid affix type. Must be one of: {', '.join(self.VALID_TYPES)}")
         return value
-    
+
     @validates('sources')
     def validate_sources(self, key, value):
         """Validate sources."""
@@ -1332,132 +783,43 @@ class Affixation(db.Model):
             raise ValueError("Sources must be a non-empty string")
         return value.strip()
     
-    @validates('verification_status')
-    def validate_verification_status(self, key, status):
-        """Validate verification status."""
-        valid_statuses = ['unverified', 'verified', 'needs_review', 'disputed']
-        if status not in valid_statuses:
-            raise ValueError(f"Invalid verification status: {status}")
-        return status
-    
-    @validates('confidence_score')
-    def validate_confidence_score(self, key, value):
-        """Validate confidence score."""
-        if value is not None:
-            if not isinstance(value, (int, float)):
-                raise ValueError("Confidence score must be a number")
-            if not 0 <= value <= 1:
-                raise ValueError("Confidence score must be between 0 and 1")
-        return value
-    
     def get_sources_list(self) -> List[str]:
-        """Get sources as a list."""
+        """Get sources as a list of strings."""
         return [source.strip() for source in self.sources.split(",")] if self.sources else []
-    
-    def get_examples_list(self) -> List[Dict[str, Any]]:
-        """Get examples as a list of dictionaries."""
-        if not self.examples:
-            return []
-        
-        try:
-            examples = json.loads(self.examples) if isinstance(self.examples, str) else self.examples
-            return [
-                {
-                    'text': ex.get('text', ex) if isinstance(ex, dict) else str(ex),
-                    'translation': ex.get('translation') if isinstance(ex, dict) else None,
-                    'notes': ex.get('notes') if isinstance(ex, dict) else None,
-                    'source': ex.get('source') if isinstance(ex, dict) else None,
-                    'tags': ex.get('tags', []) if isinstance(ex, dict) else []
-                }
-                for ex in examples
-            ]
-        except json.JSONDecodeError:
-            return []
-    
-    def calculate_quality_score(self) -> int:
-        """Calculate quality score for the affixation."""
-        score = 0
-        
-        # Basic completeness (40 points)
-        if self.affix_type in self.VALID_TYPES:
-            score += 20
-        if self.sources:
-            score += 20
-            
-        # Examples (20 points)
-        examples = self.get_examples_list()
-        if examples:
-            example_score = min(len(examples) * 5, 15)
-            if any(ex.get('translation') for ex in examples):
-                example_score += 5
-            score += example_score
-            
-        # Metadata (20 points)
-        if self.metadata:
-            meta_score = 0
-            if self.metadata.get('process'):
-                meta_score += 10
-            if self.metadata.get('notes'):
-                meta_score += 10
-            score += meta_score
-            
-        # Additional features (20 points)
-        if self.confidence_score is not None:
-            score += 10
-        if self.verification_status == 'verified':
-            score += 10
-            
-        return min(score, 100)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert affixation to dictionary."""
-        result = {
+        return {
             "id": self.id,
             "root_word": {
                 "id": self.root_word.id,
                 "lemma": self.root_word.lemma,
                 "normalized_lemma": self.root_word.normalized_lemma,
-                "language_code": self.root_word.language_code,
-                "verification_status": self.root_word.verification_status
+                "language_code": self.root_word.language_code
             },
             "affixed_word": {
                 "id": self.affixed_word.id,
                 "lemma": self.affixed_word.lemma,
                 "normalized_lemma": self.affixed_word.normalized_lemma,
-                "language_code": self.affixed_word.language_code,
-                "verification_status": self.affixed_word.verification_status
+                "language_code": self.affixed_word.language_code
             },
             "affix_type": self.affix_type,
             "sources": self.get_sources_list(),
-            "examples": self.get_examples_list(),
-            "confidence_score": self.confidence_score,
-            "verification_status": self.verification_status,
-            "verification_notes": self.verification_notes,
-            "last_verified_at": self.last_verified_at.isoformat() if self.last_verified_at else None,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "quality_score": self.calculate_quality_score()
+            "created_at": self.created_at.isoformat() if self.created_at else None
         }
-        
-        # Add metadata if available
-        if self.metadata:
-            result["metadata"] = self.metadata
-            
-        return result
 
 
 class PartOfSpeech(db.Model):
-    """Enhanced part of speech model with additional fields and functionality."""
     __tablename__ = 'parts_of_speech'
-    
+
     id = Column(Integer, primary_key=True)
     code = Column(String(32), nullable=False, unique=True)
     name_en = Column(String(64), nullable=False)
     name_tl = Column(String(64), nullable=False)
     description = Column(Text)
-    metadata = Column(JSONB, default=dict)
-    
+
     # Relationships
-    definitions = relationship("Definition", back_populates="standardized_pos", lazy="joined")
+    definitions = relationship("Definition", back_populates="standardized_pos")
     
     __table_args__ = (
         Index('idx_parts_of_speech_code', 'code'),
@@ -1472,7 +834,7 @@ class PartOfSpeech(db.Model):
             raise ValueError("Code must be a non-empty string")
         if len(value) > 32:
             raise ValueError("Code must be less than 32 characters")
-        return value.strip().lower()
+        return value
     
     @validates('name_en', 'name_tl')
     def validate_name(self, key, value):
@@ -1481,37 +843,17 @@ class PartOfSpeech(db.Model):
             raise ValueError(f"{key} must be a non-empty string")
         if len(value) > 64:
             raise ValueError(f"{key} must be less than 64 characters")
-        return value.strip()
-    
-    def get_word_count(self) -> int:
-        """Get count of words using this part of speech."""
-        return len(self.definitions)
-    
-    def get_language_distribution(self) -> Dict[str, int]:
-        """Get distribution of words by language."""
-        distribution = {}
-        for definition in self.definitions:
-            lang = definition.word.language_code
-            distribution[lang] = distribution.get(lang, 0) + 1
-        return distribution
-    
+        return value
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert part of speech to dictionary."""
-        result = {
+        return {
             "id": self.id,
             "code": self.code,
             "name_en": self.name_en,
             "name_tl": self.name_tl,
-            "description": self.description,
-            "word_count": self.get_word_count(),
-            "language_distribution": self.get_language_distribution()
+            "description": self.description
         }
-        
-        # Add metadata if available
-        if self.metadata:
-            result["metadata"] = self.metadata
-            
-        return result
 
 
 # Register DDL event listeners
@@ -1650,12 +992,7 @@ def create_word_indexes(target, connection, **kw):
         {"name": "idx_word_affixations", "table": "affixations", "columns": "(root_word_id, affixed_word_id, affix_type)", "type": ""},
         {"name": "idx_word_etymologies", "table": "etymologies", "columns": "(word_id)", "type": ""},
         {"name": "idx_word_definitions", "table": "definitions", "columns": "(word_id, standardized_pos_id)", "type": ""},
-        {"name": "idx_definition_relations", "table": "definition_relations", "columns": "(definition_id, word_id)", "type": ""},
-        {"name": "idx_word_verification", "table": "words", "columns": "(verification_status)", "type": ""},
-        {"name": "idx_etymology_verification", "table": "etymologies", "columns": "(verification_status)", "type": ""},
-        {"name": "idx_relation_verification", "table": "relations", "columns": "(verification_status)", "type": ""},
-        {"name": "idx_affixation_verification", "table": "affixations", "columns": "(verification_status)", "type": ""},
-        {"name": "idx_definition_verification", "table": "definitions", "columns": "(verification_status)", "type": ""}
+        {"name": "idx_definition_relations", "table": "definition_relations", "columns": "(definition_id, word_id)", "type": ""}
     ]
     
     # Try to create each index separately with error handling
@@ -1665,7 +1002,7 @@ def create_word_indexes(target, connection, **kw):
             connection.execute(text(sql))
             print(f"Created or verified index: {idx['name']}")
         except Exception as e:
-            print(f"Failed to create index {idx['name']}: {e}")
+            print(f"WARNING: Failed to create index {idx['name']}: {e}")
             # Try a fallback approach for the search_text GIN index which is most critical
             if idx['name'] == 'idx_word_search_text':
                 try:
