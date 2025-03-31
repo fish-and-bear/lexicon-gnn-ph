@@ -1,0 +1,22 @@
+2025-03-30 19:29:11,038 - INFO - Starting lookup for word: 'harot'
+2025-03-30 19:29:11,101 - INFO - pg_trgm extension installed: True
+2025-03-30 19:29:11,102 - INFO - Executing exact match query for 'harot'
+2025-03-30 19:29:11,302 - INFO - Found 1 exact matches
+2025-03-30 19:29:11,303 - INFO - Processing result 1/1
+2025-03-30 19:29:11,303 - INFO - Word ID: 116877
+2025-03-30 19:29:11,303 - INFO - Lemma: harot
+2025-03-30 19:29:11,304 - INFO - Language code: tl
+2025-03-30 19:29:11,309 - INFO - Querying pronunciations for word_id 116877
+2025-03-30 19:29:11,321 - INFO - Found 3 pronunciations
+2025-03-30 19:29:11,329 - INFO - Querying etymologies for word_id 116877
+2025-03-30 19:29:11,337 - INFO - Found 0 etymologies
+2025-03-30 19:29:11,338 - INFO - Querying definitions for word_id 116877
+2025-03-30 19:29:11,346 - INFO - Found 5 definitions
+2025-03-30 19:29:11,347 - INFO - Processing definition 1/5
+2025-03-30 19:29:11,349 - INFO - Processing definition 2/5
+2025-03-30 19:29:11,350 - INFO - Processing definition 3/5
+2025-03-30 19:29:11,352 - INFO - Processing definition 4/5
+2025-03-30 19:29:11,353 - INFO - Processing definition 5/5
+2025-03-30 19:29:11,354 - INFO - Querying relations for word_id 116877
+2025-03-30 19:29:11,360 - INFO - Found 19 relations
+2025-03-30 19:29:11,374 - INFO - Database connection closed

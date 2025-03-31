@@ -1,0 +1,2153 @@
+2025-03-31 09:09:40,429 - INFO - Starting table creation/update process.
+2025-03-31 09:09:40,959 - INFO - Tables created or updated successfully.
+2025-03-31 09:09:40,965 - INFO - Processing Marayum dictionaries from directory: ..\data\marayum_dictionaries
+2025-03-31 09:09:40,967 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\onhan-english_processed.json
+2025-03-31 09:09:40,968 - INFO - Found 0 words in onhan-english
+2025-03-31 09:09:40,969 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\onhan-english_processed.json
+2025-03-31 09:09:40,970 - WARNING - No language code mapping found for: Onhan
+2025-03-31 09:09:40,970 - INFO - Processing Onhan dictionary (code: onhan)
+2025-03-31 09:09:40,971 - INFO - Processed ..\data\marayum_dictionaries\onhan-english_processed.json:
+2025-03-31 09:09:40,971 - INFO -   Entries processed: 0
+2025-03-31 09:09:40,971 - INFO -   Definitions added: 0
+2025-03-31 09:09:40,972 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:40,972 - INFO -   Examples added: 0
+2025-03-31 09:09:40,973 - INFO -   Relations added: 0
+2025-03-31 09:09:40,973 - INFO -   Entries skipped: 0
+2025-03-31 09:09:40,973 - INFO -   Errors: 0
+2025-03-31 09:09:40,974 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\onhan-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:40,974 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\waray-english_processed.json
+2025-03-31 09:09:40,975 - INFO - Found 0 words in waray-english
+2025-03-31 09:09:40,975 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\waray-english_processed.json
+2025-03-31 09:09:40,976 - INFO - Processing Waray dictionary (code: war)
+2025-03-31 09:09:40,977 - INFO - Processed ..\data\marayum_dictionaries\waray-english_processed.json:
+2025-03-31 09:09:40,977 - INFO -   Entries processed: 0
+2025-03-31 09:09:40,978 - INFO -   Definitions added: 0
+2025-03-31 09:09:40,978 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:40,978 - INFO -   Examples added: 0
+2025-03-31 09:09:40,978 - INFO -   Relations added: 0
+2025-03-31 09:09:40,979 - INFO -   Entries skipped: 0
+2025-03-31 09:09:40,979 - INFO -   Errors: 0
+2025-03-31 09:09:40,979 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\waray-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:40,980 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\ibanag-english_processed.json
+2025-03-31 09:09:40,980 - INFO - Found 0 words in ibanag-english
+2025-03-31 09:09:40,981 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\ibanag-english_processed.json
+2025-03-31 09:09:40,981 - WARNING - No language code mapping found for: Ibanag
+2025-03-31 09:09:40,982 - INFO - Processing Ibanag dictionary (code: ibanag)
+2025-03-31 09:09:40,982 - INFO - Processed ..\data\marayum_dictionaries\ibanag-english_processed.json:
+2025-03-31 09:09:40,983 - INFO -   Entries processed: 0
+2025-03-31 09:09:40,983 - INFO -   Definitions added: 0
+2025-03-31 09:09:40,983 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:40,983 - INFO -   Examples added: 0
+2025-03-31 09:09:40,983 - INFO -   Relations added: 0
+2025-03-31 09:09:40,984 - INFO -   Entries skipped: 0
+2025-03-31 09:09:40,984 - INFO -   Errors: 0
+2025-03-31 09:09:40,984 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\ibanag-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:40,985 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\iranon-english_processed.json
+2025-03-31 09:09:40,985 - INFO - Found 0 words in iranon-english
+2025-03-31 09:09:40,986 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\iranon-english_processed.json
+2025-03-31 09:09:40,986 - WARNING - No language code mapping found for: Iranon
+2025-03-31 09:09:40,986 - INFO - Processing Iranon dictionary (code: iranon)
+2025-03-31 09:09:40,986 - INFO - Processed ..\data\marayum_dictionaries\iranon-english_processed.json:
+2025-03-31 09:09:40,986 - INFO -   Entries processed: 0
+2025-03-31 09:09:40,987 - INFO -   Definitions added: 0
+2025-03-31 09:09:40,987 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:40,987 - INFO -   Examples added: 0
+2025-03-31 09:09:40,988 - INFO -   Relations added: 0
+2025-03-31 09:09:40,988 - INFO -   Entries skipped: 0
+2025-03-31 09:09:40,988 - INFO -   Errors: 0
+2025-03-31 09:09:40,988 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\iranon-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:40,988 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\itawis-english_processed.json
+2025-03-31 09:09:40,989 - INFO - Found 0 words in itawis-english
+2025-03-31 09:09:40,989 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\itawis-english_processed.json
+2025-03-31 09:09:40,990 - WARNING - No language code mapping found for: Itawis
+2025-03-31 09:09:40,990 - INFO - Processing Itawis dictionary (code: itawis)
+2025-03-31 09:09:40,991 - INFO - Processed ..\data\marayum_dictionaries\itawis-english_processed.json:
+2025-03-31 09:09:40,991 - INFO -   Entries processed: 0
+2025-03-31 09:09:40,991 - INFO -   Definitions added: 0
+2025-03-31 09:09:40,992 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:40,992 - INFO -   Examples added: 0
+2025-03-31 09:09:40,992 - INFO -   Relations added: 0
+2025-03-31 09:09:40,992 - INFO -   Entries skipped: 0
+2025-03-31 09:09:40,992 - INFO -   Errors: 0
+2025-03-31 09:09:40,992 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\itawis-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:40,993 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\ivatan-english_processed.json
+2025-03-31 09:09:40,993 - INFO - Found 0 words in ivatan-english
+2025-03-31 09:09:40,993 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\ivatan-english_processed.json
+2025-03-31 09:09:40,994 - WARNING - No language code mapping found for: Ivatan
+2025-03-31 09:09:40,994 - INFO - Processing Ivatan dictionary (code: ivatan)
+2025-03-31 09:09:40,994 - INFO - Processed ..\data\marayum_dictionaries\ivatan-english_processed.json:
+2025-03-31 09:09:40,995 - INFO -   Entries processed: 0
+2025-03-31 09:09:40,995 - INFO -   Definitions added: 0
+2025-03-31 09:09:40,995 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:40,995 - INFO -   Examples added: 0
+2025-03-31 09:09:40,995 - INFO -   Relations added: 0
+2025-03-31 09:09:40,995 - INFO -   Entries skipped: 0
+2025-03-31 09:09:40,996 - INFO -   Errors: 0
+2025-03-31 09:09:40,996 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\ivatan-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:40,996 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\manide-english_processed.json
+2025-03-31 09:09:40,996 - INFO - Found 0 words in manide-english
+2025-03-31 09:09:40,997 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\manide-english_processed.json
+2025-03-31 09:09:40,997 - WARNING - No language code mapping found for: Manide
+2025-03-31 09:09:40,998 - INFO - Processing Manide dictionary (code: manide)
+2025-03-31 09:09:40,998 - INFO - Processed ..\data\marayum_dictionaries\manide-english_processed.json:
+2025-03-31 09:09:40,998 - INFO -   Entries processed: 0
+2025-03-31 09:09:40,998 - INFO -   Definitions added: 0
+2025-03-31 09:09:40,998 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:40,998 - INFO -   Examples added: 0
+2025-03-31 09:09:40,999 - INFO -   Relations added: 0
+2025-03-31 09:09:40,999 - INFO -   Entries skipped: 0
+2025-03-31 09:09:40,999 - INFO -   Errors: 0
+2025-03-31 09:09:40,999 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\manide-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:40,999 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\gaddang-english_processed.json
+2025-03-31 09:09:41,000 - INFO - Found 0 words in gaddang-english
+2025-03-31 09:09:41,000 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\gaddang-english_processed.json
+2025-03-31 09:09:41,001 - WARNING - No language code mapping found for: Gaddang
+2025-03-31 09:09:41,002 - INFO - Processing Gaddang dictionary (code: gaddang)
+2025-03-31 09:09:41,002 - INFO - Processed ..\data\marayum_dictionaries\gaddang-english_processed.json:
+2025-03-31 09:09:41,002 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,002 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,002 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,002 - INFO -   Examples added: 0
+2025-03-31 09:09:41,002 - INFO -   Relations added: 0
+2025-03-31 09:09:41,003 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,003 - INFO -   Errors: 0
+2025-03-31 09:09:41,003 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\gaddang-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,003 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\cuyonon-english_processed.json
+2025-03-31 09:09:41,004 - INFO - Found 0 words in cuyonon-english
+2025-03-31 09:09:41,004 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\cuyonon-english_processed.json
+2025-03-31 09:09:41,004 - WARNING - No language code mapping found for: Cuyonon
+2025-03-31 09:09:41,004 - INFO - Processing Cuyonon dictionary (code: cuyonon)
+2025-03-31 09:09:41,004 - INFO - Processed ..\data\marayum_dictionaries\cuyonon-english_processed.json:
+2025-03-31 09:09:41,005 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,005 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,005 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,005 - INFO -   Examples added: 0
+2025-03-31 09:09:41,005 - INFO -   Relations added: 0
+2025-03-31 09:09:41,005 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,005 - INFO -   Errors: 0
+2025-03-31 09:09:41,005 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\cuyonon-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,006 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\ilocano-english_processed.json
+2025-03-31 09:09:41,006 - INFO - Found 0 words in ilocano-english
+2025-03-31 09:09:41,006 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\ilocano-english_processed.json
+2025-03-31 09:09:41,007 - WARNING - No language code mapping found for: Ilocano
+2025-03-31 09:09:41,007 - INFO - Processing Ilocano dictionary (code: ilocano)
+2025-03-31 09:09:41,007 - INFO - Processed ..\data\marayum_dictionaries\ilocano-english_processed.json:
+2025-03-31 09:09:41,007 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,008 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,008 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,008 - INFO -   Examples added: 0
+2025-03-31 09:09:41,008 - INFO -   Relations added: 0
+2025-03-31 09:09:41,009 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,009 - INFO -   Errors: 0
+2025-03-31 09:09:41,009 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\ilocano-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,009 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\pangasinan-english_processed.json
+2025-03-31 09:09:41,010 - INFO - Found 0 words in pangasinan-english
+2025-03-31 09:09:41,010 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\pangasinan-english_processed.json
+2025-03-31 09:09:41,011 - WARNING - No language code mapping found for: Pangasinan
+2025-03-31 09:09:41,011 - INFO - Processing Pangasinan dictionary (code: pangasinan)
+2025-03-31 09:09:41,011 - INFO - Processed ..\data\marayum_dictionaries\pangasinan-english_processed.json:
+2025-03-31 09:09:41,011 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,011 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,011 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,011 - INFO -   Examples added: 0
+2025-03-31 09:09:41,012 - INFO -   Relations added: 0
+2025-03-31 09:09:41,012 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,012 - INFO -   Errors: 0
+2025-03-31 09:09:41,012 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\pangasinan-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,013 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-albay-english_processed.json
+2025-03-31 09:09:41,014 - INFO - Found 0 words in bikol-albay-english
+2025-03-31 09:09:41,014 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-albay-english_processed.json
+2025-03-31 09:09:41,015 - INFO - Processing Bikol-Albay dictionary (code: bik)
+2025-03-31 09:09:41,015 - INFO - Processed ..\data\marayum_dictionaries\bikol-albay-english_processed.json:
+2025-03-31 09:09:41,015 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,015 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,016 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,016 - INFO -   Examples added: 0
+2025-03-31 09:09:41,016 - INFO -   Relations added: 0
+2025-03-31 09:09:41,017 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,017 - INFO -   Errors: 0
+2025-03-31 09:09:41,017 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-albay-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,018 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-libon-english_processed.json
+2025-03-31 09:09:41,019 - INFO - Found 0 words in bikol-libon-english
+2025-03-31 09:09:41,019 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-libon-english_processed.json
+2025-03-31 09:09:41,020 - INFO - Processing Bikol-Libon dictionary (code: bik)
+2025-03-31 09:09:41,020 - INFO - Processed ..\data\marayum_dictionaries\bikol-libon-english_processed.json:
+2025-03-31 09:09:41,021 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,021 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,021 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,021 - INFO -   Examples added: 0
+2025-03-31 09:09:41,022 - INFO -   Relations added: 0
+2025-03-31 09:09:41,022 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,022 - INFO -   Errors: 0
+2025-03-31 09:09:41,023 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-libon-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,023 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\kapampangan-english_processed.json
+2025-03-31 09:09:41,024 - INFO - Found 0 words in kapampangan-english
+2025-03-31 09:09:41,024 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\kapampangan-english_processed.json
+2025-03-31 09:09:41,024 - WARNING - No language code mapping found for: Kapampangan
+2025-03-31 09:09:41,024 - INFO - Processing Kapampangan dictionary (code: kapampangan)
+2025-03-31 09:09:41,025 - INFO - Processed ..\data\marayum_dictionaries\kapampangan-english_processed.json:
+2025-03-31 09:09:41,025 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,025 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,025 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,025 - INFO -   Examples added: 0
+2025-03-31 09:09:41,025 - INFO -   Relations added: 0
+2025-03-31 09:09:41,026 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,026 - INFO -   Errors: 0
+2025-03-31 09:09:41,026 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\kapampangan-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,027 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-miraya-english_processed.json
+2025-03-31 09:09:41,027 - INFO - Found 0 words in bikol-miraya-english
+2025-03-31 09:09:41,027 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-miraya-english_processed.json
+2025-03-31 09:09:41,028 - INFO - Processing Bikol-Miraya dictionary (code: bik)
+2025-03-31 09:09:41,028 - INFO - Processed ..\data\marayum_dictionaries\bikol-miraya-english_processed.json:
+2025-03-31 09:09:41,028 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,028 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,029 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,029 - INFO -   Examples added: 0
+2025-03-31 09:09:41,029 - INFO -   Relations added: 0
+2025-03-31 09:09:41,029 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,030 - INFO -   Errors: 0
+2025-03-31 09:09:41,030 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-miraya-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,030 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\maguindanaon-english_processed.json
+2025-03-31 09:09:41,030 - INFO - Found 0 words in maguindanaon-english
+2025-03-31 09:09:41,031 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\maguindanaon-english_processed.json
+2025-03-31 09:09:41,031 - WARNING - No language code mapping found for: Maguindanaon
+2025-03-31 09:09:41,032 - INFO - Processing Maguindanaon dictionary (code: maguindanaon)
+2025-03-31 09:09:41,032 - INFO - Processed ..\data\marayum_dictionaries\maguindanaon-english_processed.json:
+2025-03-31 09:09:41,032 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,033 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,033 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,033 - INFO -   Examples added: 0
+2025-03-31 09:09:41,033 - INFO -   Relations added: 0
+2025-03-31 09:09:41,033 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,033 - INFO -   Errors: 0
+2025-03-31 09:09:41,034 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\maguindanaon-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,034 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-partido-english_processed.json
+2025-03-31 09:09:41,034 - INFO - Found 0 words in bikol-partido-english
+2025-03-31 09:09:41,035 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-partido-english_processed.json
+2025-03-31 09:09:41,035 - INFO - Processing Bikol-Partido dictionary (code: bik)
+2025-03-31 09:09:41,035 - INFO - Processed ..\data\marayum_dictionaries\bikol-partido-english_processed.json:
+2025-03-31 09:09:41,035 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,035 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,036 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,036 - INFO -   Examples added: 0
+2025-03-31 09:09:41,036 - INFO -   Relations added: 0
+2025-03-31 09:09:41,036 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,036 - INFO -   Errors: 0
+2025-03-31 09:09:41,037 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-partido-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,037 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json
+2025-03-31 09:09:41,038 - INFO - Found 0 words in isneg-yapayao-english
+2025-03-31 09:09:41,038 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json
+2025-03-31 09:09:41,039 - WARNING - No language code mapping found for: Isneg Yapayao
+2025-03-31 09:09:41,039 - INFO - Processing Isneg Yapayao dictionary (code: isneg)
+2025-03-31 09:09:41,039 - INFO - Processed ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json:
+2025-03-31 09:09:41,040 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,040 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,040 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,040 - INFO -   Examples added: 0
+2025-03-31 09:09:41,040 - INFO -   Relations added: 0
+2025-03-31 09:09:41,041 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,041 - INFO -   Errors: 0
+2025-03-31 09:09:41,041 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,041 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json
+2025-03-31 09:09:41,042 - INFO - Found 0 words in bikol-rinconada-english
+2025-03-31 09:09:41,042 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json
+2025-03-31 09:09:41,042 - INFO - Processing Bikol-Rinconada dictionary (code: bik)
+2025-03-31 09:09:41,043 - INFO - Processed ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json:
+2025-03-31 09:09:41,043 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,044 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,044 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,044 - INFO -   Examples added: 0
+2025-03-31 09:09:41,044 - INFO -   Relations added: 0
+2025-03-31 09:09:41,044 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,045 - INFO -   Errors: 0
+2025-03-31 09:09:41,045 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,045 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json
+2025-03-31 09:09:41,046 - INFO - Found 0 words in blaan-koronadal-english
+2025-03-31 09:09:41,046 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json
+2025-03-31 09:09:41,046 - WARNING - No language code mapping found for: Blaan-Koronadal
+2025-03-31 09:09:41,047 - INFO - Processing Blaan-Koronadal dictionary (code: blaan)
+2025-03-31 09:09:41,047 - INFO - Processed ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json:
+2025-03-31 09:09:41,048 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,048 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,048 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,048 - INFO -   Examples added: 0
+2025-03-31 09:09:41,049 - INFO -   Relations added: 0
+2025-03-31 09:09:41,049 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,049 - INFO -   Errors: 0
+2025-03-31 09:09:41,049 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,050 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json
+2025-03-31 09:09:41,051 - INFO - Found 0 words in blaan-sarangani-english
+2025-03-31 09:09:41,051 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json
+2025-03-31 09:09:41,052 - WARNING - No language code mapping found for: Blaan-Sarangani
+2025-03-31 09:09:41,053 - INFO - Processing Blaan-Sarangani dictionary (code: blaan)
+2025-03-31 09:09:41,053 - INFO - Processed ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json:
+2025-03-31 09:09:41,053 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,053 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,053 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,054 - INFO -   Examples added: 0
+2025-03-31 09:09:41,054 - INFO -   Relations added: 0
+2025-03-31 09:09:41,054 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,054 - INFO -   Errors: 0
+2025-03-31 09:09:41,054 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,054 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json
+2025-03-31 09:09:41,055 - INFO - Found 0 words in bikol-west-albay-english
+2025-03-31 09:09:41,055 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json
+2025-03-31 09:09:41,056 - INFO - Processing Bikol-West Albay dictionary (code: bik)
+2025-03-31 09:09:41,056 - INFO - Processed ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json:
+2025-03-31 09:09:41,057 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,057 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,057 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,058 - INFO -   Examples added: 0
+2025-03-31 09:09:41,058 - INFO -   Relations added: 0
+2025-03-31 09:09:41,058 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,058 - INFO -   Errors: 0
+2025-03-31 09:09:41,058 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,058 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json
+2025-03-31 09:09:41,059 - INFO - Found 0 words in manobo-erumanen-english
+2025-03-31 09:09:41,059 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json
+2025-03-31 09:09:41,060 - WARNING - No language code mapping found for: Manobo (Erumanen)
+2025-03-31 09:09:41,061 - INFO - Processing Manobo (Erumanen) dictionary (code: manobo)
+2025-03-31 09:09:41,061 - INFO - Processed ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json:
+2025-03-31 09:09:41,061 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,062 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,062 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,062 - INFO -   Examples added: 0
+2025-03-31 09:09:41,063 - INFO -   Relations added: 0
+2025-03-31 09:09:41,063 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,063 - INFO -   Errors: 0
+2025-03-31 09:09:41,064 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,064 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json
+2025-03-31 09:09:41,065 - INFO - Found 0 words in cebuano-cotabato-english
+2025-03-31 09:09:41,065 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json
+2025-03-31 09:09:41,066 - INFO - Processing Cebuano (Cotabato) dictionary (code: ceb)
+2025-03-31 09:09:41,066 - INFO - Processed ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json:
+2025-03-31 09:09:41,067 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,067 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,068 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,068 - INFO -   Examples added: 0
+2025-03-31 09:09:41,068 - INFO -   Relations added: 0
+2025-03-31 09:09:41,069 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,069 - INFO -   Errors: 0
+2025-03-31 09:09:41,070 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,070 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json
+2025-03-31 09:09:41,071 - INFO - Found 0 words in tagalog-marinduque-english
+2025-03-31 09:09:41,071 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json
+2025-03-31 09:09:41,071 - INFO - Processing Tagalog (Marinduque) dictionary (code: tgl)
+2025-03-31 09:09:41,072 - INFO - Processed ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json:
+2025-03-31 09:09:41,072 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,072 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,072 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,072 - INFO -   Examples added: 0
+2025-03-31 09:09:41,073 - INFO -   Relations added: 0
+2025-03-31 09:09:41,073 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,073 - INFO -   Errors: 0
+2025-03-31 09:09:41,073 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,074 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json
+2025-03-31 09:09:41,074 - INFO - Found 0 words in hiligaynon-cotabato-english
+2025-03-31 09:09:41,074 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json
+2025-03-31 09:09:41,075 - INFO - Processing Hiligaynon (Cotabato) dictionary (code: hil)
+2025-03-31 09:09:41,075 - INFO - Processed ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json:
+2025-03-31 09:09:41,075 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,076 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,076 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,077 - INFO -   Examples added: 0
+2025-03-31 09:09:41,078 - INFO -   Relations added: 0
+2025-03-31 09:09:41,079 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,079 - INFO -   Errors: 0
+2025-03-31 09:09:41,079 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,079 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json
+2025-03-31 09:09:41,080 - INFO - Found 0 words in ifugao-tuwali-ihapo-english
+2025-03-31 09:09:41,080 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json
+2025-03-31 09:09:41,081 - WARNING - No language code mapping found for: Ifugao Tuwali (Ihapo)
+2025-03-31 09:09:41,081 - INFO - Processing Ifugao Tuwali (Ihapo) dictionary (code: ifugao)
+2025-03-31 09:09:41,081 - INFO - Processed ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json:
+2025-03-31 09:09:41,081 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,082 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,082 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,083 - INFO -   Examples added: 0
+2025-03-31 09:09:41,083 - INFO -   Relations added: 0
+2025-03-31 09:09:41,083 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,083 - INFO -   Errors: 0
+2025-03-31 09:09:41,084 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,084 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json
+2025-03-31 09:09:41,085 - INFO - Found 0 words in bikol-northern-catanduanes-english
+2025-03-31 09:09:41,085 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json
+2025-03-31 09:09:41,086 - INFO - Processing Bikol-Northern Catanduanes dictionary (code: bik)
+2025-03-31 09:09:41,086 - INFO - Processed ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json:
+2025-03-31 09:09:41,086 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,087 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,087 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,087 - INFO -   Examples added: 0
+2025-03-31 09:09:41,087 - INFO -   Relations added: 0
+2025-03-31 09:09:41,088 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,088 - INFO -   Errors: 0
+2025-03-31 09:09:41,088 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,088 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json
+2025-03-31 09:09:41,089 - INFO - Found 0 words in bikol-southern-catanduanes-english
+2025-03-31 09:09:41,089 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json
+2025-03-31 09:09:41,090 - INFO - Processing Bikol-Southern Catanduanes dictionary (code: bik)
+2025-03-31 09:09:41,090 - INFO - Processed ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json:
+2025-03-31 09:09:41,090 - INFO -   Entries processed: 0
+2025-03-31 09:09:41,090 - INFO -   Definitions added: 0
+2025-03-31 09:09:41,091 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,091 - INFO -   Examples added: 0
+2025-03-31 09:09:41,092 - INFO -   Relations added: 0
+2025-03-31 09:09:41,092 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,092 - INFO -   Errors: 0
+2025-03-31 09:09:41,093 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,094 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\chavacano-english_processed.json
+2025-03-31 09:09:41,095 - INFO - Found 1 words in chavacano-english
+2025-03-31 09:09:41,095 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\chavacano-english_processed.json
+2025-03-31 09:09:41,096 - WARNING - No language code mapping found for: Chavacano
+2025-03-31 09:09:41,096 - INFO - Processing Chavacano dictionary (code: chavacano)
+2025-03-31 09:09:41,132 - INFO - Processed ..\data\marayum_dictionaries\chavacano-english_processed.json:
+2025-03-31 09:09:41,133 - INFO -   Entries processed: 1
+2025-03-31 09:09:41,133 - INFO -   Definitions added: 1
+2025-03-31 09:09:41,134 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,134 - INFO -   Examples added: 1
+2025-03-31 09:09:41,134 - INFO -   Relations added: 0
+2025-03-31 09:09:41,135 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,135 - INFO -   Errors: 0
+2025-03-31 09:09:41,135 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\chavacano-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,136 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\masbatenyo-english_processed.json
+2025-03-31 09:09:41,137 - INFO - Found 3 words in masbatenyo-english
+2025-03-31 09:09:41,137 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\masbatenyo-english_processed.json
+2025-03-31 09:09:41,137 - WARNING - No language code mapping found for: Masbatenyo
+2025-03-31 09:09:41,137 - INFO - Processing Masbatenyo dictionary (code: masbatenyo)
+2025-03-31 09:09:41,139 - WARNING - Empty pronunciation value for word ID 2
+2025-03-31 09:09:41,143 - WARNING - Empty pronunciation value for word ID 3
+2025-03-31 09:09:41,147 - WARNING - Empty pronunciation value for word ID 4
+2025-03-31 09:09:41,149 - INFO - Processed ..\data\marayum_dictionaries\masbatenyo-english_processed.json:
+2025-03-31 09:09:41,150 - INFO -   Entries processed: 3
+2025-03-31 09:09:41,150 - INFO -   Definitions added: 3
+2025-03-31 09:09:41,150 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,150 - INFO -   Examples added: 6
+2025-03-31 09:09:41,151 - INFO -   Relations added: 0
+2025-03-31 09:09:41,151 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,151 - INFO -   Errors: 0
+2025-03-31 09:09:41,152 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\masbatenyo-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,152 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-central-english_processed.json
+2025-03-31 09:09:41,153 - INFO - Found 4 words in bikol-central-english
+2025-03-31 09:09:41,153 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-central-english_processed.json
+2025-03-31 09:09:41,154 - INFO - Processing Bikol-Central dictionary (code: bik)
+2025-03-31 09:09:41,169 - INFO - Processed ..\data\marayum_dictionaries\bikol-central-english_processed.json:
+2025-03-31 09:09:41,169 - INFO -   Entries processed: 4
+2025-03-31 09:09:41,170 - INFO -   Definitions added: 4
+2025-03-31 09:09:41,170 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,170 - INFO -   Examples added: 4
+2025-03-31 09:09:41,171 - INFO -   Relations added: 0
+2025-03-31 09:09:41,171 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,171 - INFO -   Errors: 0
+2025-03-31 09:09:41,171 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-central-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,171 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\aklanon-english_processed.json
+2025-03-31 09:09:41,172 - INFO - Found 7 words in aklanon-english
+2025-03-31 09:09:41,172 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\aklanon-english_processed.json
+2025-03-31 09:09:41,173 - WARNING - No language code mapping found for: Aklanon
+2025-03-31 09:09:41,173 - INFO - Processing Aklanon dictionary (code: aklanon)
+2025-03-31 09:09:41,198 - INFO - Processed ..\data\marayum_dictionaries\aklanon-english_processed.json:
+2025-03-31 09:09:41,199 - INFO -   Entries processed: 7
+2025-03-31 09:09:41,199 - INFO -   Definitions added: 7
+2025-03-31 09:09:41,200 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,200 - INFO -   Examples added: 21
+2025-03-31 09:09:41,201 - INFO -   Relations added: 0
+2025-03-31 09:09:41,201 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,201 - INFO -   Errors: 0
+2025-03-31 09:09:41,202 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\aklanon-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,202 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\surigaonon-english_processed.json
+2025-03-31 09:09:41,203 - INFO - Found 18 words in surigaonon-english
+2025-03-31 09:09:41,203 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\surigaonon-english_processed.json
+2025-03-31 09:09:41,204 - WARNING - No language code mapping found for: Surigaonon
+2025-03-31 09:09:41,205 - INFO - Processing Surigaonon dictionary (code: surigaonon)
+2025-03-31 09:09:41,207 - WARNING - Empty pronunciation value for word ID 16
+2025-03-31 09:09:41,212 - WARNING - Empty pronunciation value for word ID 17
+2025-03-31 09:09:41,216 - WARNING - Empty pronunciation value for word ID 18
+2025-03-31 09:09:41,221 - WARNING - Empty pronunciation value for word ID 19
+2025-03-31 09:09:41,225 - WARNING - Empty pronunciation value for word ID 20
+2025-03-31 09:09:41,229 - WARNING - Empty pronunciation value for word ID 21
+2025-03-31 09:09:41,232 - WARNING - Empty pronunciation value for word ID 22
+2025-03-31 09:09:41,236 - WARNING - Empty pronunciation value for word ID 23
+2025-03-31 09:09:41,240 - WARNING - Empty pronunciation value for word ID 24
+2025-03-31 09:09:41,244 - WARNING - Empty pronunciation value for word ID 25
+2025-03-31 09:09:41,248 - WARNING - Empty pronunciation value for word ID 26
+2025-03-31 09:09:41,252 - WARNING - Empty pronunciation value for word ID 27
+2025-03-31 09:09:41,256 - WARNING - Empty pronunciation value for word ID 28
+2025-03-31 09:09:41,260 - WARNING - Empty pronunciation value for word ID 29
+2025-03-31 09:09:41,264 - WARNING - Empty pronunciation value for word ID 30
+2025-03-31 09:09:41,268 - WARNING - Empty pronunciation value for word ID 31
+2025-03-31 09:09:41,272 - WARNING - Empty pronunciation value for word ID 32
+2025-03-31 09:09:41,276 - WARNING - Empty pronunciation value for word ID 33
+2025-03-31 09:09:41,279 - INFO - Processed ..\data\marayum_dictionaries\surigaonon-english_processed.json:
+2025-03-31 09:09:41,279 - INFO -   Entries processed: 18
+2025-03-31 09:09:41,280 - INFO -   Definitions added: 18
+2025-03-31 09:09:41,280 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,280 - INFO -   Examples added: 18
+2025-03-31 09:09:41,281 - INFO -   Relations added: 0
+2025-03-31 09:09:41,281 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,282 - INFO -   Errors: 0
+2025-03-31 09:09:41,282 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\surigaonon-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,282 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-boienen-english_processed.json
+2025-03-31 09:09:41,285 - INFO - Found 88 words in bikol-boienen-english
+2025-03-31 09:09:41,285 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\bikol-boienen-english_processed.json
+2025-03-31 09:09:41,287 - INFO - Processing Bikol-Boie&#x27;nen dictionary (code: bik)
+2025-03-31 09:09:41,290 - WARNING - Empty pronunciation value for word ID 34
+2025-03-31 09:09:41,294 - WARNING - Empty pronunciation value for word ID 35
+2025-03-31 09:09:41,318 - WARNING - Empty pronunciation value for word ID 36
+2025-03-31 09:09:41,325 - WARNING - Empty pronunciation value for word ID 38
+2025-03-31 09:09:41,329 - WARNING - Empty pronunciation value for word ID 39
+2025-03-31 09:09:41,334 - WARNING - Empty pronunciation value for word ID 40
+2025-03-31 09:09:41,343 - WARNING - Empty pronunciation value for word ID 42
+2025-03-31 09:09:41,356 - WARNING - Empty pronunciation value for word ID 45
+2025-03-31 09:09:41,361 - WARNING - Empty pronunciation value for word ID 46
+2025-03-31 09:09:41,382 - WARNING - Empty pronunciation value for word ID 48
+2025-03-31 09:09:41,391 - WARNING - Empty pronunciation value for word ID 50
+2025-03-31 09:09:41,395 - WARNING - Empty pronunciation value for word ID 51
+2025-03-31 09:09:41,406 - WARNING - Empty pronunciation value for word ID 53
+2025-03-31 09:09:41,410 - WARNING - Empty pronunciation value for word ID 54
+2025-03-31 09:09:41,424 - WARNING - Empty pronunciation value for word ID 57
+2025-03-31 09:09:41,427 - WARNING - Skipping self-relationship for word ID 57
+2025-03-31 09:09:41,428 - WARNING - Skipping self-relationship for word ID 57
+2025-03-31 09:09:41,429 - WARNING - Skipping self-relationship for word ID 57
+2025-03-31 09:09:41,429 - WARNING - Skipping self-relationship for word ID 57
+2025-03-31 09:09:41,430 - WARNING - Empty pronunciation value for word ID 57
+2025-03-31 09:09:41,432 - WARNING - Skipping self-relationship for word ID 57
+2025-03-31 09:09:41,432 - WARNING - Skipping self-relationship for word ID 57
+2025-03-31 09:09:41,433 - WARNING - Empty pronunciation value for word ID 49
+2025-03-31 09:09:41,444 - WARNING - Empty pronunciation value for word ID 59
+2025-03-31 09:09:41,448 - WARNING - Empty pronunciation value for word ID 60
+2025-03-31 09:09:41,458 - WARNING - Empty pronunciation value for word ID 62
+2025-03-31 09:09:41,462 - WARNING - Empty pronunciation value for word ID 37
+2025-03-31 09:09:41,473 - WARNING - Empty pronunciation value for word ID 63
+2025-03-31 09:09:41,482 - WARNING - Empty pronunciation value for word ID 41
+2025-03-31 09:09:41,491 - WARNING - Empty pronunciation value for word ID 65
+2025-03-31 09:09:41,495 - WARNING - Empty pronunciation value for word ID 66
+2025-03-31 09:09:41,514 - WARNING - Empty pronunciation value for word ID 71
+2025-03-31 09:09:41,520 - WARNING - Empty pronunciation value for word ID 72
+2025-03-31 09:09:41,540 - WARNING - Empty pronunciation value for word ID 74
+2025-03-31 09:09:41,551 - WARNING - Empty pronunciation value for word ID 76
+2025-03-31 09:09:41,564 - WARNING - Empty pronunciation value for word ID 78
+2025-03-31 09:09:41,568 - WARNING - Empty pronunciation value for word ID 79
+2025-03-31 09:09:41,572 - WARNING - Empty pronunciation value for word ID 80
+2025-03-31 09:09:41,575 - WARNING - Empty pronunciation value for word ID 75
+2025-03-31 09:09:41,583 - WARNING - Empty pronunciation value for word ID 81
+2025-03-31 09:09:41,593 - WARNING - Empty pronunciation value for word ID 82
+2025-03-31 09:09:41,597 - WARNING - Empty pronunciation value for word ID 83
+2025-03-31 09:09:41,604 - WARNING - Empty pronunciation value for word ID 85
+2025-03-31 09:09:41,609 - WARNING - Empty pronunciation value for word ID 86
+2025-03-31 09:09:41,620 - WARNING - Empty pronunciation value for word ID 89
+2025-03-31 09:09:41,624 - WARNING - Empty pronunciation value for word ID 90
+2025-03-31 09:09:41,633 - WARNING - Empty pronunciation value for word ID 91
+2025-03-31 09:09:41,643 - WARNING - Empty pronunciation value for word ID 93
+2025-03-31 09:09:41,647 - WARNING - Empty pronunciation value for word ID 94
+2025-03-31 09:09:41,682 - WARNING - Empty pronunciation value for word ID 97
+2025-03-31 09:09:41,686 - WARNING - Empty pronunciation value for word ID 96
+2025-03-31 09:09:41,702 - WARNING - Empty pronunciation value for word ID 98
+2025-03-31 09:09:41,706 - WARNING - Empty pronunciation value for word ID 99
+2025-03-31 09:09:41,711 - WARNING - Empty pronunciation value for word ID 100
+2025-03-31 09:09:41,719 - WARNING - Empty pronunciation value for word ID 101
+2025-03-31 09:09:41,728 - WARNING - Empty pronunciation value for word ID 103
+2025-03-31 09:09:41,732 - WARNING - Empty pronunciation value for word ID 104
+2025-03-31 09:09:41,753 - WARNING - Empty pronunciation value for word ID 106
+2025-03-31 09:09:41,757 - WARNING - Empty pronunciation value for word ID 107
+2025-03-31 09:09:41,766 - WARNING - Empty pronunciation value for word ID 108
+2025-03-31 09:09:41,775 - WARNING - Empty pronunciation value for word ID 77
+2025-03-31 09:09:41,781 - WARNING - Empty pronunciation value for word ID 55
+2025-03-31 09:09:41,785 - WARNING - Empty pronunciation value for word ID 56
+2025-03-31 09:09:41,797 - WARNING - Empty pronunciation value for word ID 43
+2025-03-31 09:09:41,803 - WARNING - Empty pronunciation value for word ID 110
+2025-03-31 09:09:41,807 - WARNING - Empty pronunciation value for word ID 111
+2025-03-31 09:09:41,810 - WARNING - Empty pronunciation value for word ID 112
+2025-03-31 09:09:41,818 - WARNING - Empty pronunciation value for word ID 114
+2025-03-31 09:09:41,821 - WARNING - Empty pronunciation value for word ID 73
+2025-03-31 09:09:41,827 - WARNING - Empty pronunciation value for word ID 105
+2025-03-31 09:09:41,831 - WARNING - Empty pronunciation value for word ID 44
+2025-03-31 09:09:41,842 - WARNING - Empty pronunciation value for word ID 87
+2025-03-31 09:09:41,848 - WARNING - Empty pronunciation value for word ID 117
+2025-03-31 09:09:41,867 - WARNING - Empty pronunciation value for word ID 121
+2025-03-31 09:09:41,872 - WARNING - Empty pronunciation value for word ID 122
+2025-03-31 09:09:41,882 - INFO - Processed ..\data\marayum_dictionaries\bikol-boienen-english_processed.json:
+2025-03-31 09:09:41,883 - INFO -   Entries processed: 88
+2025-03-31 09:09:41,883 - INFO -   Definitions added: 88
+2025-03-31 09:09:41,884 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:41,884 - INFO -   Examples added: 313
+2025-03-31 09:09:41,884 - INFO -   Relations added: 60
+2025-03-31 09:09:41,885 - INFO -   Entries skipped: 0
+2025-03-31 09:09:41,885 - INFO -   Errors: 0
+2025-03-31 09:09:41,885 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:41,886 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\asi-english_processed.json
+2025-03-31 09:09:41,895 - INFO - Found 513 words in asi-english
+2025-03-31 09:09:41,895 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\asi-english_processed.json
+2025-03-31 09:09:41,909 - WARNING - No language code mapping found for: Asi
+2025-03-31 09:09:41,909 - INFO - Processing Asi dictionary (code: asi)
+2025-03-31 09:09:41,925 - WARNING - Skipping self-relationship for word ID 126
+2025-03-31 09:09:41,925 - WARNING - Skipping self-relationship for word ID 126
+2025-03-31 09:09:41,931 - WARNING - Skipping self-relationship for word ID 126
+2025-03-31 09:09:41,931 - WARNING - Skipping self-relationship for word ID 126
+2025-03-31 09:09:43,776 - INFO - Processed ..\data\marayum_dictionaries\asi-english_processed.json:
+2025-03-31 09:09:43,777 - INFO -   Entries processed: 513
+2025-03-31 09:09:43,777 - INFO -   Definitions added: 504
+2025-03-31 09:09:43,778 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:43,778 - INFO -   Examples added: 590
+2025-03-31 09:09:43,779 - INFO -   Relations added: 2
+2025-03-31 09:09:43,779 - INFO -   Entries skipped: 0
+2025-03-31 09:09:43,780 - INFO -   Errors: 0
+2025-03-31 09:09:43,781 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\asi-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:43,782 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\hiligaynon-english_processed.json
+2025-03-31 09:09:43,795 - INFO - Found 559 words in hiligaynon-english
+2025-03-31 09:09:43,796 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\hiligaynon-english_processed.json
+2025-03-31 09:09:43,809 - INFO - Processing Hiligaynon dictionary (code: hil)
+2025-03-31 09:09:43,814 - WARNING - Empty pronunciation value for word ID 632
+2025-03-31 09:09:43,820 - WARNING - Empty pronunciation value for word ID 633
+2025-03-31 09:09:43,825 - WARNING - Empty pronunciation value for word ID 634
+2025-03-31 09:09:43,832 - WARNING - Empty pronunciation value for word ID 635
+2025-03-31 09:09:43,837 - WARNING - Empty pronunciation value for word ID 636
+2025-03-31 09:09:43,843 - WARNING - Empty pronunciation value for word ID 637
+2025-03-31 09:09:43,849 - WARNING - Empty pronunciation value for word ID 638
+2025-03-31 09:09:43,854 - WARNING - Empty pronunciation value for word ID 639
+2025-03-31 09:09:43,859 - WARNING - Empty pronunciation value for word ID 640
+2025-03-31 09:09:43,865 - WARNING - Empty pronunciation value for word ID 641
+2025-03-31 09:09:43,876 - WARNING - Empty pronunciation value for word ID 643
+2025-03-31 09:09:43,886 - WARNING - Empty pronunciation value for word ID 644
+2025-03-31 09:09:43,894 - WARNING - Empty pronunciation value for word ID 646
+2025-03-31 09:09:43,899 - WARNING - Empty pronunciation value for word ID 647
+2025-03-31 09:09:43,904 - WARNING - Empty pronunciation value for word ID 648
+2025-03-31 09:09:43,910 - WARNING - Empty pronunciation value for word ID 649
+2025-03-31 09:09:43,921 - WARNING - Empty pronunciation value for word ID 651
+2025-03-31 09:09:43,926 - WARNING - Empty pronunciation value for word ID 652
+2025-03-31 09:09:43,931 - WARNING - Empty pronunciation value for word ID 653
+2025-03-31 09:09:43,935 - WARNING - Empty pronunciation value for word ID 654
+2025-03-31 09:09:43,939 - WARNING - Empty pronunciation value for word ID 655
+2025-03-31 09:09:43,943 - WARNING - Empty pronunciation value for word ID 656
+2025-03-31 09:09:43,947 - WARNING - Empty pronunciation value for word ID 657
+2025-03-31 09:09:43,951 - WARNING - Empty pronunciation value for word ID 658
+2025-03-31 09:09:43,956 - WARNING - Empty pronunciation value for word ID 659
+2025-03-31 09:09:43,961 - WARNING - Empty pronunciation value for word ID 660
+2025-03-31 09:09:43,965 - WARNING - Empty pronunciation value for word ID 661
+2025-03-31 09:09:43,969 - WARNING - Empty pronunciation value for word ID 662
+2025-03-31 09:09:43,974 - WARNING - Empty pronunciation value for word ID 663
+2025-03-31 09:09:43,979 - WARNING - Empty pronunciation value for word ID 664
+2025-03-31 09:09:43,983 - WARNING - Empty pronunciation value for word ID 665
+2025-03-31 09:09:43,992 - WARNING - Empty pronunciation value for word ID 667
+2025-03-31 09:09:43,996 - WARNING - Empty pronunciation value for word ID 668
+2025-03-31 09:09:43,999 - WARNING - Empty pronunciation value for word ID 669
+2025-03-31 09:09:44,004 - WARNING - Empty pronunciation value for word ID 670
+2025-03-31 09:09:44,009 - WARNING - Empty pronunciation value for word ID 671
+2025-03-31 09:09:44,014 - WARNING - Empty pronunciation value for word ID 672
+2025-03-31 09:09:44,018 - WARNING - Empty pronunciation value for word ID 673
+2025-03-31 09:09:44,022 - WARNING - Empty pronunciation value for word ID 674
+2025-03-31 09:09:44,038 - WARNING - Empty pronunciation value for word ID 677
+2025-03-31 09:09:44,048 - WARNING - Empty pronunciation value for word ID 678
+2025-03-31 09:09:44,054 - WARNING - Empty pronunciation value for word ID 679
+2025-03-31 09:09:44,060 - WARNING - Empty pronunciation value for word ID 680
+2025-03-31 09:09:44,064 - WARNING - Empty pronunciation value for word ID 681
+2025-03-31 09:09:44,069 - WARNING - Empty pronunciation value for word ID 682
+2025-03-31 09:09:44,073 - WARNING - Empty pronunciation value for word ID 683
+2025-03-31 09:09:44,077 - WARNING - Empty pronunciation value for word ID 684
+2025-03-31 09:09:44,082 - WARNING - Empty pronunciation value for word ID 685
+2025-03-31 09:09:44,090 - WARNING - Empty pronunciation value for word ID 687
+2025-03-31 09:09:44,095 - WARNING - Empty pronunciation value for word ID 688
+2025-03-31 09:09:44,100 - WARNING - Empty pronunciation value for word ID 689
+2025-03-31 09:09:44,105 - WARNING - Empty pronunciation value for word ID 690
+2025-03-31 09:09:44,109 - WARNING - Empty pronunciation value for word ID 691
+2025-03-31 09:09:44,114 - WARNING - Empty pronunciation value for word ID 692
+2025-03-31 09:09:44,118 - WARNING - Empty pronunciation value for word ID 693
+2025-03-31 09:09:44,122 - WARNING - Empty pronunciation value for word ID 694
+2025-03-31 09:09:44,127 - WARNING - Empty pronunciation value for word ID 695
+2025-03-31 09:09:44,131 - WARNING - Empty pronunciation value for word ID 696
+2025-03-31 09:09:44,140 - WARNING - Empty pronunciation value for word ID 698
+2025-03-31 09:09:44,145 - WARNING - Empty pronunciation value for word ID 699
+2025-03-31 09:09:44,150 - WARNING - Empty pronunciation value for word ID 700
+2025-03-31 09:09:44,154 - WARNING - Empty pronunciation value for word ID 701
+2025-03-31 09:09:44,157 - WARNING - Empty pronunciation value for word ID 702
+2025-03-31 09:09:44,162 - WARNING - Empty pronunciation value for word ID 703
+2025-03-31 09:09:44,170 - WARNING - Empty pronunciation value for word ID 705
+2025-03-31 09:09:44,172 - WARNING - Empty pronunciation value for word ID 706
+2025-03-31 09:09:44,177 - WARNING - Empty pronunciation value for word ID 707
+2025-03-31 09:09:44,181 - WARNING - Empty pronunciation value for word ID 708
+2025-03-31 09:09:44,185 - WARNING - Empty pronunciation value for word ID 709
+2025-03-31 09:09:44,189 - WARNING - Empty pronunciation value for word ID 710
+2025-03-31 09:09:44,193 - WARNING - Empty pronunciation value for word ID 711
+2025-03-31 09:09:44,198 - WARNING - Empty pronunciation value for word ID 712
+2025-03-31 09:09:44,200 - WARNING - Skipping self-relationship for word ID 712
+2025-03-31 09:09:44,201 - WARNING - Skipping self-relationship for word ID 712
+2025-03-31 09:09:44,203 - WARNING - Empty pronunciation value for word ID 713
+2025-03-31 09:09:44,207 - WARNING - Empty pronunciation value for word ID 714
+2025-03-31 09:09:44,215 - WARNING - Empty pronunciation value for word ID 716
+2025-03-31 09:09:44,218 - WARNING - Empty pronunciation value for word ID 717
+2025-03-31 09:09:44,229 - WARNING - Empty pronunciation value for word ID 719
+2025-03-31 09:09:44,244 - WARNING - Empty pronunciation value for word ID 723
+2025-03-31 09:09:44,249 - WARNING - Empty pronunciation value for word ID 724
+2025-03-31 09:09:44,260 - WARNING - Empty pronunciation value for word ID 727
+2025-03-31 09:09:44,264 - WARNING - Empty pronunciation value for word ID 728
+2025-03-31 09:09:44,269 - WARNING - Empty pronunciation value for word ID 729
+2025-03-31 09:09:44,273 - WARNING - Empty pronunciation value for word ID 730
+2025-03-31 09:09:44,277 - WARNING - Empty pronunciation value for word ID 731
+2025-03-31 09:09:44,282 - WARNING - Empty pronunciation value for word ID 732
+2025-03-31 09:09:44,286 - WARNING - Empty pronunciation value for word ID 733
+2025-03-31 09:09:44,295 - WARNING - Empty pronunciation value for word ID 735
+2025-03-31 09:09:44,300 - WARNING - Empty pronunciation value for word ID 736
+2025-03-31 09:09:44,304 - WARNING - Empty pronunciation value for word ID 737
+2025-03-31 09:09:44,308 - WARNING - Empty pronunciation value for word ID 738
+2025-03-31 09:09:44,313 - WARNING - Empty pronunciation value for word ID 739
+2025-03-31 09:09:44,318 - WARNING - Empty pronunciation value for word ID 740
+2025-03-31 09:09:44,322 - WARNING - Empty pronunciation value for word ID 741
+2025-03-31 09:09:44,328 - WARNING - Skipping self-relationship for word ID 742
+2025-03-31 09:09:44,329 - WARNING - Skipping self-relationship for word ID 742
+2025-03-31 09:09:44,331 - WARNING - Empty pronunciation value for word ID 743
+2025-03-31 09:09:44,338 - WARNING - Empty pronunciation value for word ID 745
+2025-03-31 09:09:44,343 - WARNING - Empty pronunciation value for word ID 746
+2025-03-31 09:09:44,357 - WARNING - Empty pronunciation value for word ID 748
+2025-03-31 09:09:44,362 - WARNING - Empty pronunciation value for word ID 749
+2025-03-31 09:09:44,367 - WARNING - Empty pronunciation value for word ID 750
+2025-03-31 09:09:44,371 - WARNING - Empty pronunciation value for word ID 751
+2025-03-31 09:09:44,376 - WARNING - Empty pronunciation value for word ID 752
+2025-03-31 09:09:44,380 - WARNING - Empty pronunciation value for word ID 753
+2025-03-31 09:09:44,385 - WARNING - Empty pronunciation value for word ID 754
+2025-03-31 09:09:44,389 - WARNING - Empty pronunciation value for word ID 755
+2025-03-31 09:09:44,393 - WARNING - Empty pronunciation value for word ID 756
+2025-03-31 09:09:44,400 - WARNING - Empty pronunciation value for word ID 758
+2025-03-31 09:09:44,404 - WARNING - Empty pronunciation value for word ID 759
+2025-03-31 09:09:44,412 - WARNING - Empty pronunciation value for word ID 761
+2025-03-31 09:09:44,415 - WARNING - Empty pronunciation value for word ID 715
+2025-03-31 09:09:44,423 - WARNING - Empty pronunciation value for word ID 762
+2025-03-31 09:09:44,427 - WARNING - Empty pronunciation value for word ID 763
+2025-03-31 09:09:44,431 - WARNING - Empty pronunciation value for word ID 764
+2025-03-31 09:09:44,435 - WARNING - Empty pronunciation value for word ID 765
+2025-03-31 09:09:44,442 - WARNING - Empty pronunciation value for word ID 767
+2025-03-31 09:09:44,452 - WARNING - Empty pronunciation value for word ID 769
+2025-03-31 09:09:44,456 - WARNING - Empty pronunciation value for word ID 770
+2025-03-31 09:09:44,461 - WARNING - Empty pronunciation value for word ID 771
+2025-03-31 09:09:44,467 - WARNING - Empty pronunciation value for word ID 772
+2025-03-31 09:09:44,471 - WARNING - Empty pronunciation value for word ID 773
+2025-03-31 09:09:44,476 - WARNING - Empty pronunciation value for word ID 774
+2025-03-31 09:09:44,481 - WARNING - Empty pronunciation value for word ID 775
+2025-03-31 09:09:44,485 - WARNING - Empty pronunciation value for word ID 776
+2025-03-31 09:09:44,489 - WARNING - Empty pronunciation value for word ID 777
+2025-03-31 09:09:44,493 - WARNING - Empty pronunciation value for word ID 778
+2025-03-31 09:09:44,497 - WARNING - Empty pronunciation value for word ID 779
+2025-03-31 09:09:44,501 - WARNING - Empty pronunciation value for word ID 780
+2025-03-31 09:09:44,506 - WARNING - Empty pronunciation value for word ID 781
+2025-03-31 09:09:44,513 - WARNING - Empty pronunciation value for word ID 782
+2025-03-31 09:09:44,517 - WARNING - Empty pronunciation value for word ID 783
+2025-03-31 09:09:44,525 - WARNING - Empty pronunciation value for word ID 785
+2025-03-31 09:09:44,530 - WARNING - Empty pronunciation value for word ID 786
+2025-03-31 09:09:44,534 - WARNING - Empty pronunciation value for word ID 787
+2025-03-31 09:09:44,539 - WARNING - Empty pronunciation value for word ID 788
+2025-03-31 09:09:44,543 - WARNING - Empty pronunciation value for word ID 789
+2025-03-31 09:09:44,547 - WARNING - Empty pronunciation value for word ID 790
+2025-03-31 09:09:44,553 - WARNING - Empty pronunciation value for word ID 791
+2025-03-31 09:09:44,557 - WARNING - Empty pronunciation value for word ID 792
+2025-03-31 09:09:44,563 - WARNING - Empty pronunciation value for word ID 793
+2025-03-31 09:09:44,568 - WARNING - Empty pronunciation value for word ID 794
+2025-03-31 09:09:44,573 - WARNING - Empty pronunciation value for word ID 795
+2025-03-31 09:09:44,580 - WARNING - Empty pronunciation value for word ID 796
+2025-03-31 09:09:44,584 - WARNING - Empty pronunciation value for word ID 797
+2025-03-31 09:09:44,589 - WARNING - Empty pronunciation value for word ID 798
+2025-03-31 09:09:44,593 - WARNING - Empty pronunciation value for word ID 799
+2025-03-31 09:09:44,600 - WARNING - Empty pronunciation value for word ID 801
+2025-03-31 09:09:44,605 - WARNING - Empty pronunciation value for word ID 802
+2025-03-31 09:09:44,609 - WARNING - Empty pronunciation value for word ID 803
+2025-03-31 09:09:44,613 - WARNING - Empty pronunciation value for word ID 804
+2025-03-31 09:09:44,617 - WARNING - Empty pronunciation value for word ID 805
+2025-03-31 09:09:44,622 - WARNING - Empty pronunciation value for word ID 806
+2025-03-31 09:09:44,627 - WARNING - Empty pronunciation value for word ID 807
+2025-03-31 09:09:44,635 - WARNING - Empty pronunciation value for word ID 809
+2025-03-31 09:09:44,647 - WARNING - Empty pronunciation value for word ID 812
+2025-03-31 09:09:44,652 - WARNING - Empty pronunciation value for word ID 813
+2025-03-31 09:09:44,656 - WARNING - Empty pronunciation value for word ID 814
+2025-03-31 09:09:44,660 - WARNING - Empty pronunciation value for word ID 815
+2025-03-31 09:09:44,665 - WARNING - Empty pronunciation value for word ID 816
+2025-03-31 09:09:44,670 - WARNING - Empty pronunciation value for word ID 817
+2025-03-31 09:09:44,674 - WARNING - Empty pronunciation value for word ID 818
+2025-03-31 09:09:44,679 - WARNING - Empty pronunciation value for word ID 819
+2025-03-31 09:09:44,684 - WARNING - Empty pronunciation value for word ID 820
+2025-03-31 09:09:44,689 - WARNING - Empty pronunciation value for word ID 821
+2025-03-31 09:09:44,694 - WARNING - Empty pronunciation value for word ID 822
+2025-03-31 09:09:44,698 - WARNING - Empty pronunciation value for word ID 823
+2025-03-31 09:09:44,710 - WARNING - Empty pronunciation value for word ID 826
+2025-03-31 09:09:44,715 - WARNING - Empty pronunciation value for word ID 827
+2025-03-31 09:09:44,720 - WARNING - Empty pronunciation value for word ID 828
+2025-03-31 09:09:44,724 - WARNING - Empty pronunciation value for word ID 829
+2025-03-31 09:09:44,733 - WARNING - Empty pronunciation value for word ID 830
+2025-03-31 09:09:44,747 - WARNING - Empty pronunciation value for word ID 833
+2025-03-31 09:09:44,760 - WARNING - Empty pronunciation value for word ID 836
+2025-03-31 09:09:44,765 - WARNING - Empty pronunciation value for word ID 837
+2025-03-31 09:09:44,774 - WARNING - Empty pronunciation value for word ID 839
+2025-03-31 09:09:44,779 - WARNING - Empty pronunciation value for word ID 840
+2025-03-31 09:09:44,784 - WARNING - Empty pronunciation value for word ID 841
+2025-03-31 09:09:44,790 - WARNING - Empty pronunciation value for word ID 842
+2025-03-31 09:09:44,795 - WARNING - Empty pronunciation value for word ID 843
+2025-03-31 09:09:44,800 - WARNING - Empty pronunciation value for word ID 844
+2025-03-31 09:09:44,804 - WARNING - Empty pronunciation value for word ID 845
+2025-03-31 09:09:44,811 - WARNING - Empty pronunciation value for word ID 847
+2025-03-31 09:09:44,814 - WARNING - Empty pronunciation value for word ID 848
+2025-03-31 09:09:44,820 - WARNING - Empty pronunciation value for word ID 849
+2025-03-31 09:09:44,824 - WARNING - Empty pronunciation value for word ID 850
+2025-03-31 09:09:44,829 - WARNING - Empty pronunciation value for word ID 851
+2025-03-31 09:09:44,834 - WARNING - Empty pronunciation value for word ID 852
+2025-03-31 09:09:44,838 - WARNING - Empty pronunciation value for word ID 853
+2025-03-31 09:09:44,842 - WARNING - Empty pronunciation value for word ID 854
+2025-03-31 09:09:44,846 - WARNING - Empty pronunciation value for word ID 855
+2025-03-31 09:09:44,850 - WARNING - Empty pronunciation value for word ID 856
+2025-03-31 09:09:44,863 - WARNING - Empty pronunciation value for word ID 859
+2025-03-31 09:09:44,868 - WARNING - Empty pronunciation value for word ID 860
+2025-03-31 09:09:44,873 - WARNING - Empty pronunciation value for word ID 861
+2025-03-31 09:09:44,877 - WARNING - Empty pronunciation value for word ID 862
+2025-03-31 09:09:44,883 - WARNING - Empty pronunciation value for word ID 863
+2025-03-31 09:09:44,887 - WARNING - Empty pronunciation value for word ID 864
+2025-03-31 09:09:44,891 - WARNING - Empty pronunciation value for word ID 865
+2025-03-31 09:09:44,895 - WARNING - Empty pronunciation value for word ID 866
+2025-03-31 09:09:44,900 - WARNING - Empty pronunciation value for word ID 867
+2025-03-31 09:09:44,905 - WARNING - Empty pronunciation value for word ID 868
+2025-03-31 09:09:44,913 - WARNING - Empty pronunciation value for word ID 870
+2025-03-31 09:09:44,927 - WARNING - Empty pronunciation value for word ID 873
+2025-03-31 09:09:44,932 - WARNING - Empty pronunciation value for word ID 874
+2025-03-31 09:09:44,937 - WARNING - Empty pronunciation value for word ID 875
+2025-03-31 09:09:44,941 - WARNING - Empty pronunciation value for word ID 876
+2025-03-31 09:09:44,951 - WARNING - Empty pronunciation value for word ID 878
+2025-03-31 09:09:44,956 - WARNING - Empty pronunciation value for word ID 879
+2025-03-31 09:09:44,961 - WARNING - Empty pronunciation value for word ID 880
+2025-03-31 09:09:44,971 - WARNING - Empty pronunciation value for word ID 882
+2025-03-31 09:09:44,984 - WARNING - Empty pronunciation value for word ID 884
+2025-03-31 09:09:44,990 - WARNING - Empty pronunciation value for word ID 885
+2025-03-31 09:09:44,997 - WARNING - Empty pronunciation value for word ID 886
+2025-03-31 09:09:45,002 - WARNING - Empty pronunciation value for word ID 887
+2025-03-31 09:09:45,020 - WARNING - Empty pronunciation value for word ID 890
+2025-03-31 09:09:45,025 - WARNING - Empty pronunciation value for word ID 891
+2025-03-31 09:09:45,030 - WARNING - Empty pronunciation value for word ID 892
+2025-03-31 09:09:45,041 - WARNING - Empty pronunciation value for word ID 894
+2025-03-31 09:09:45,046 - WARNING - Empty pronunciation value for word ID 895
+2025-03-31 09:09:45,056 - WARNING - Empty pronunciation value for word ID 897
+2025-03-31 09:09:45,062 - WARNING - Empty pronunciation value for word ID 898
+2025-03-31 09:09:45,075 - WARNING - Empty pronunciation value for word ID 900
+2025-03-31 09:09:45,080 - WARNING - Empty pronunciation value for word ID 901
+2025-03-31 09:09:45,085 - WARNING - Empty pronunciation value for word ID 902
+2025-03-31 09:09:45,091 - WARNING - Empty pronunciation value for word ID 903
+2025-03-31 09:09:45,095 - WARNING - Empty pronunciation value for word ID 904
+2025-03-31 09:09:45,109 - WARNING - Empty pronunciation value for word ID 906
+2025-03-31 09:09:45,117 - WARNING - Empty pronunciation value for word ID 908
+2025-03-31 09:09:45,125 - WARNING - Empty pronunciation value for word ID 909
+2025-03-31 09:09:45,141 - WARNING - Empty pronunciation value for word ID 911
+2025-03-31 09:09:45,148 - WARNING - Empty pronunciation value for word ID 912
+2025-03-31 09:09:45,159 - WARNING - Empty pronunciation value for word ID 914
+2025-03-31 09:09:45,166 - WARNING - Empty pronunciation value for word ID 915
+2025-03-31 09:09:45,187 - WARNING - Empty pronunciation value for word ID 919
+2025-03-31 09:09:45,192 - WARNING - Empty pronunciation value for word ID 920
+2025-03-31 09:09:45,197 - WARNING - Empty pronunciation value for word ID 921
+2025-03-31 09:09:45,205 - WARNING - Empty pronunciation value for word ID 923
+2025-03-31 09:09:45,210 - WARNING - Empty pronunciation value for word ID 924
+2025-03-31 09:09:45,215 - WARNING - Empty pronunciation value for word ID 925
+2025-03-31 09:09:45,221 - WARNING - Empty pronunciation value for word ID 926
+2025-03-31 09:09:45,226 - WARNING - Empty pronunciation value for word ID 927
+2025-03-31 09:09:45,232 - WARNING - Empty pronunciation value for word ID 928
+2025-03-31 09:09:45,237 - WARNING - Empty pronunciation value for word ID 929
+2025-03-31 09:09:45,242 - WARNING - Empty pronunciation value for word ID 930
+2025-03-31 09:09:45,256 - WARNING - Empty pronunciation value for word ID 932
+2025-03-31 09:09:45,270 - WARNING - Empty pronunciation value for word ID 933
+2025-03-31 09:09:45,276 - WARNING - Empty pronunciation value for word ID 934
+2025-03-31 09:09:45,280 - WARNING - Empty pronunciation value for word ID 935
+2025-03-31 09:09:45,285 - WARNING - Empty pronunciation value for word ID 936
+2025-03-31 09:09:45,290 - WARNING - Empty pronunciation value for word ID 937
+2025-03-31 09:09:45,295 - WARNING - Empty pronunciation value for word ID 938
+2025-03-31 09:09:45,301 - WARNING - Empty pronunciation value for word ID 939
+2025-03-31 09:09:45,307 - WARNING - Empty pronunciation value for word ID 940
+2025-03-31 09:09:45,312 - WARNING - Empty pronunciation value for word ID 941
+2025-03-31 09:09:45,316 - WARNING - Empty pronunciation value for word ID 942
+2025-03-31 09:09:45,323 - WARNING - Empty pronunciation value for word ID 944
+2025-03-31 09:09:45,331 - WARNING - Empty pronunciation value for word ID 946
+2025-03-31 09:09:45,334 - WARNING - Empty pronunciation value for word ID 947
+2025-03-31 09:09:45,340 - WARNING - Empty pronunciation value for word ID 948
+2025-03-31 09:09:45,345 - WARNING - Empty pronunciation value for word ID 949
+2025-03-31 09:09:45,349 - WARNING - Empty pronunciation value for word ID 950
+2025-03-31 09:09:45,366 - WARNING - Empty pronunciation value for word ID 953
+2025-03-31 09:09:45,371 - WARNING - Empty pronunciation value for word ID 954
+2025-03-31 09:09:45,376 - WARNING - Empty pronunciation value for word ID 955
+2025-03-31 09:09:45,380 - WARNING - Empty pronunciation value for word ID 956
+2025-03-31 09:09:45,396 - WARNING - Empty pronunciation value for word ID 957
+2025-03-31 09:09:45,401 - WARNING - Empty pronunciation value for word ID 958
+2025-03-31 09:09:45,405 - WARNING - Empty pronunciation value for word ID 959
+2025-03-31 09:09:45,408 - WARNING - Empty pronunciation value for word ID 931
+2025-03-31 09:09:45,418 - WARNING - Empty pronunciation value for word ID 961
+2025-03-31 09:09:45,423 - WARNING - Empty pronunciation value for word ID 962
+2025-03-31 09:09:45,428 - WARNING - Empty pronunciation value for word ID 963
+2025-03-31 09:09:45,431 - WARNING - Skipping self-relationship for word ID 963
+2025-03-31 09:09:45,431 - WARNING - Skipping self-relationship for word ID 963
+2025-03-31 09:09:45,433 - WARNING - Empty pronunciation value for word ID 964
+2025-03-31 09:09:45,437 - WARNING - Empty pronunciation value for word ID 835
+2025-03-31 09:09:45,442 - WARNING - Empty pronunciation value for word ID 965
+2025-03-31 09:09:45,446 - WARNING - Empty pronunciation value for word ID 966
+2025-03-31 09:09:45,452 - WARNING - Empty pronunciation value for word ID 967
+2025-03-31 09:09:45,457 - WARNING - Empty pronunciation value for word ID 968
+2025-03-31 09:09:45,465 - WARNING - Empty pronunciation value for word ID 970
+2025-03-31 09:09:45,469 - WARNING - Empty pronunciation value for word ID 971
+2025-03-31 09:09:45,473 - WARNING - Empty pronunciation value for word ID 972
+2025-03-31 09:09:45,478 - WARNING - Empty pronunciation value for word ID 973
+2025-03-31 09:09:45,483 - WARNING - Empty pronunciation value for word ID 974
+2025-03-31 09:09:45,491 - WARNING - Empty pronunciation value for word ID 975
+2025-03-31 09:09:45,496 - WARNING - Empty pronunciation value for word ID 976
+2025-03-31 09:09:45,507 - WARNING - Empty pronunciation value for word ID 978
+2025-03-31 09:09:45,512 - WARNING - Empty pronunciation value for word ID 979
+2025-03-31 09:09:45,516 - WARNING - Empty pronunciation value for word ID 980
+2025-03-31 09:09:45,521 - WARNING - Empty pronunciation value for word ID 981
+2025-03-31 09:09:45,526 - WARNING - Empty pronunciation value for word ID 982
+2025-03-31 09:09:45,530 - WARNING - Empty pronunciation value for word ID 983
+2025-03-31 09:09:45,534 - WARNING - Empty pronunciation value for word ID 984
+2025-03-31 09:09:45,542 - WARNING - Empty pronunciation value for word ID 986
+2025-03-31 09:09:45,547 - WARNING - Empty pronunciation value for word ID 987
+2025-03-31 09:09:45,551 - WARNING - Empty pronunciation value for word ID 988
+2025-03-31 09:09:45,556 - WARNING - Empty pronunciation value for word ID 989
+2025-03-31 09:09:45,566 - WARNING - Empty pronunciation value for word ID 991
+2025-03-31 09:09:45,579 - WARNING - Empty pronunciation value for word ID 994
+2025-03-31 09:09:45,583 - WARNING - Empty pronunciation value for word ID 995
+2025-03-31 09:09:45,588 - WARNING - Empty pronunciation value for word ID 996
+2025-03-31 09:09:45,592 - WARNING - Empty pronunciation value for word ID 997
+2025-03-31 09:09:45,600 - WARNING - Empty pronunciation value for word ID 998
+2025-03-31 09:09:45,606 - WARNING - Empty pronunciation value for word ID 999
+2025-03-31 09:09:45,610 - WARNING - Empty pronunciation value for word ID 1000
+2025-03-31 09:09:45,619 - WARNING - Empty pronunciation value for word ID 1002
+2025-03-31 09:09:45,623 - WARNING - Empty pronunciation value for word ID 1003
+2025-03-31 09:09:45,628 - WARNING - Empty pronunciation value for word ID 1004
+2025-03-31 09:09:45,634 - WARNING - Empty pronunciation value for word ID 1005
+2025-03-31 09:09:45,640 - WARNING - Empty pronunciation value for word ID 1006
+2025-03-31 09:09:45,645 - WARNING - Empty pronunciation value for word ID 1007
+2025-03-31 09:09:45,665 - WARNING - Empty pronunciation value for word ID 1011
+2025-03-31 09:09:45,672 - WARNING - Empty pronunciation value for word ID 1012
+2025-03-31 09:09:45,676 - WARNING - Empty pronunciation value for word ID 825
+2025-03-31 09:09:45,687 - WARNING - Empty pronunciation value for word ID 1014
+2025-03-31 09:09:45,692 - WARNING - Empty pronunciation value for word ID 1015
+2025-03-31 09:09:45,696 - WARNING - Empty pronunciation value for word ID 1016
+2025-03-31 09:09:45,700 - WARNING - Empty pronunciation value for word ID 1017
+2025-03-31 09:09:45,708 - WARNING - Empty pronunciation value for word ID 1018
+2025-03-31 09:09:45,712 - WARNING - Empty pronunciation value for word ID 1019
+2025-03-31 09:09:45,718 - WARNING - Empty pronunciation value for word ID 1021
+2025-03-31 09:09:45,724 - WARNING - Empty pronunciation value for word ID 1022
+2025-03-31 09:09:45,731 - WARNING - Empty pronunciation value for word ID 1023
+2025-03-31 09:09:45,739 - WARNING - Empty pronunciation value for word ID 1024
+2025-03-31 09:09:45,746 - WARNING - Empty pronunciation value for word ID 1025
+2025-03-31 09:09:45,755 - WARNING - Empty pronunciation value for word ID 1026
+2025-03-31 09:09:45,763 - WARNING - Empty pronunciation value for word ID 1027
+2025-03-31 09:09:45,770 - WARNING - Empty pronunciation value for word ID 1028
+2025-03-31 09:09:45,789 - WARNING - Empty pronunciation value for word ID 1029
+2025-03-31 09:09:45,797 - WARNING - Empty pronunciation value for word ID 1030
+2025-03-31 09:09:45,805 - WARNING - Empty pronunciation value for word ID 1031
+2025-03-31 09:09:45,813 - WARNING - Empty pronunciation value for word ID 1032
+2025-03-31 09:09:45,820 - WARNING - Empty pronunciation value for word ID 1033
+2025-03-31 09:09:45,828 - WARNING - Empty pronunciation value for word ID 1034
+2025-03-31 09:09:45,834 - WARNING - Empty pronunciation value for word ID 1035
+2025-03-31 09:09:45,850 - WARNING - Empty pronunciation value for word ID 1036
+2025-03-31 09:09:45,863 - WARNING - Empty pronunciation value for word ID 1037
+2025-03-31 09:09:45,870 - WARNING - Empty pronunciation value for word ID 1038
+2025-03-31 09:09:45,878 - WARNING - Empty pronunciation value for word ID 1039
+2025-03-31 09:09:45,884 - WARNING - Empty pronunciation value for word ID 1040
+2025-03-31 09:09:45,893 - WARNING - Empty pronunciation value for word ID 1041
+2025-03-31 09:09:45,899 - WARNING - Empty pronunciation value for word ID 1042
+2025-03-31 09:09:45,904 - WARNING - Empty pronunciation value for word ID 1043
+2025-03-31 09:09:45,909 - WARNING - Empty pronunciation value for word ID 1044
+2025-03-31 09:09:45,914 - WARNING - Empty pronunciation value for word ID 1045
+2025-03-31 09:09:45,920 - WARNING - Empty pronunciation value for word ID 1046
+2025-03-31 09:09:45,925 - WARNING - Empty pronunciation value for word ID 1047
+2025-03-31 09:09:45,930 - WARNING - Empty pronunciation value for word ID 1048
+2025-03-31 09:09:45,936 - WARNING - Empty pronunciation value for word ID 1049
+2025-03-31 09:09:45,944 - WARNING - Empty pronunciation value for word ID 1050
+2025-03-31 09:09:45,952 - WARNING - Empty pronunciation value for word ID 1051
+2025-03-31 09:09:45,959 - WARNING - Empty pronunciation value for word ID 1052
+2025-03-31 09:09:45,967 - WARNING - Empty pronunciation value for word ID 1053
+2025-03-31 09:09:45,975 - WARNING - Empty pronunciation value for word ID 1054
+2025-03-31 09:09:45,981 - WARNING - Empty pronunciation value for word ID 1055
+2025-03-31 09:09:45,986 - WARNING - Empty pronunciation value for word ID 1056
+2025-03-31 09:09:45,991 - WARNING - Empty pronunciation value for word ID 1057
+2025-03-31 09:09:45,997 - WARNING - Empty pronunciation value for word ID 1058
+2025-03-31 09:09:46,002 - WARNING - Empty pronunciation value for word ID 725
+2025-03-31 09:09:46,011 - WARNING - Empty pronunciation value for word ID 1059
+2025-03-31 09:09:46,016 - WARNING - Empty pronunciation value for word ID 1060
+2025-03-31 09:09:46,024 - WARNING - Empty pronunciation value for word ID 1062
+2025-03-31 09:09:46,037 - WARNING - Empty pronunciation value for word ID 1063
+2025-03-31 09:09:46,043 - WARNING - Empty pronunciation value for word ID 1064
+2025-03-31 09:09:46,048 - WARNING - Empty pronunciation value for word ID 1065
+2025-03-31 09:09:46,053 - WARNING - Empty pronunciation value for word ID 1066
+2025-03-31 09:09:46,058 - WARNING - Empty pronunciation value for word ID 1067
+2025-03-31 09:09:46,063 - WARNING - Empty pronunciation value for word ID 1068
+2025-03-31 09:09:46,069 - WARNING - Empty pronunciation value for word ID 1069
+2025-03-31 09:09:46,075 - WARNING - Empty pronunciation value for word ID 1070
+2025-03-31 09:09:46,081 - WARNING - Empty pronunciation value for word ID 1071
+2025-03-31 09:09:46,088 - WARNING - Empty pronunciation value for word ID 1072
+2025-03-31 09:09:46,093 - WARNING - Empty pronunciation value for word ID 1073
+2025-03-31 09:09:46,099 - WARNING - Empty pronunciation value for word ID 1074
+2025-03-31 09:09:46,105 - WARNING - Empty pronunciation value for word ID 1075
+2025-03-31 09:09:46,112 - WARNING - Empty pronunciation value for word ID 1076
+2025-03-31 09:09:46,124 - WARNING - Empty pronunciation value for word ID 1078
+2025-03-31 09:09:46,130 - WARNING - Empty pronunciation value for word ID 1079
+2025-03-31 09:09:46,137 - WARNING - Empty pronunciation value for word ID 1080
+2025-03-31 09:09:46,143 - WARNING - Empty pronunciation value for word ID 1081
+2025-03-31 09:09:46,150 - WARNING - Empty pronunciation value for word ID 1082
+2025-03-31 09:09:46,155 - WARNING - Empty pronunciation value for word ID 1083
+2025-03-31 09:09:46,160 - WARNING - Empty pronunciation value for word ID 1084
+2025-03-31 09:09:46,166 - WARNING - Empty pronunciation value for word ID 1085
+2025-03-31 09:09:46,170 - WARNING - Empty pronunciation value for word ID 1086
+2025-03-31 09:09:46,174 - WARNING - Empty pronunciation value for word ID 1087
+2025-03-31 09:09:46,179 - WARNING - Empty pronunciation value for word ID 1088
+2025-03-31 09:09:46,193 - WARNING - Empty pronunciation value for word ID 1089
+2025-03-31 09:09:46,198 - WARNING - Empty pronunciation value for word ID 1090
+2025-03-31 09:09:46,203 - WARNING - Empty pronunciation value for word ID 1091
+2025-03-31 09:09:46,209 - WARNING - Empty pronunciation value for word ID 1092
+2025-03-31 09:09:46,214 - WARNING - Empty pronunciation value for word ID 1093
+2025-03-31 09:09:46,220 - WARNING - Empty pronunciation value for word ID 1094
+2025-03-31 09:09:46,225 - WARNING - Empty pronunciation value for word ID 1095
+2025-03-31 09:09:46,229 - WARNING - Empty pronunciation value for word ID 1096
+2025-03-31 09:09:46,233 - WARNING - Empty pronunciation value for word ID 1097
+2025-03-31 09:09:46,238 - WARNING - Empty pronunciation value for word ID 1098
+2025-03-31 09:09:46,243 - WARNING - Empty pronunciation value for word ID 1099
+2025-03-31 09:09:46,247 - WARNING - Empty pronunciation value for word ID 893
+2025-03-31 09:09:46,255 - WARNING - Empty pronunciation value for word ID 1100
+2025-03-31 09:09:46,259 - WARNING - Empty pronunciation value for word ID 1101
+2025-03-31 09:09:46,263 - WARNING - Empty pronunciation value for word ID 872
+2025-03-31 09:09:46,271 - WARNING - Empty pronunciation value for word ID 1102
+2025-03-31 09:09:46,280 - WARNING - Empty pronunciation value for word ID 1104
+2025-03-31 09:09:46,283 - WARNING - Empty pronunciation value for word ID 1105
+2025-03-31 09:09:46,296 - WARNING - Empty pronunciation value for word ID 918
+2025-03-31 09:09:46,309 - WARNING - Empty pronunciation value for word ID 1107
+2025-03-31 09:09:46,314 - WARNING - Empty pronunciation value for word ID 1108
+2025-03-31 09:09:46,331 - WARNING - Empty pronunciation value for word ID 1112
+2025-03-31 09:09:46,341 - WARNING - Empty pronunciation value for word ID 1114
+2025-03-31 09:09:46,346 - WARNING - Empty pronunciation value for word ID 1115
+2025-03-31 09:09:46,350 - WARNING - Empty pronunciation value for word ID 1116
+2025-03-31 09:09:46,355 - WARNING - Empty pronunciation value for word ID 1117
+2025-03-31 09:09:46,360 - WARNING - Empty pronunciation value for word ID 1118
+2025-03-31 09:09:46,364 - WARNING - Empty pronunciation value for word ID 1119
+2025-03-31 09:09:46,368 - WARNING - Empty pronunciation value for word ID 1120
+2025-03-31 09:09:46,372 - WARNING - Empty pronunciation value for word ID 1121
+2025-03-31 09:09:46,377 - WARNING - Empty pronunciation value for word ID 1122
+2025-03-31 09:09:46,381 - WARNING - Empty pronunciation value for word ID 1123
+2025-03-31 09:09:46,386 - WARNING - Empty pronunciation value for word ID 1124
+2025-03-31 09:09:46,390 - WARNING - Empty pronunciation value for word ID 1125
+2025-03-31 09:09:46,394 - WARNING - Empty pronunciation value for word ID 1126
+2025-03-31 09:09:46,399 - WARNING - Empty pronunciation value for word ID 1127
+2025-03-31 09:09:46,407 - WARNING - Empty pronunciation value for word ID 1129
+2025-03-31 09:09:46,411 - WARNING - Empty pronunciation value for word ID 1130
+2025-03-31 09:09:46,416 - WARNING - Empty pronunciation value for word ID 1131
+2025-03-31 09:09:46,420 - WARNING - Empty pronunciation value for word ID 1132
+2025-03-31 09:09:46,426 - WARNING - Empty pronunciation value for word ID 1133
+2025-03-31 09:09:46,430 - WARNING - Empty pronunciation value for word ID 1134
+2025-03-31 09:09:46,434 - WARNING - Empty pronunciation value for word ID 1135
+2025-03-31 09:09:46,441 - WARNING - Empty pronunciation value for word ID 1136
+2025-03-31 09:09:46,445 - WARNING - Empty pronunciation value for word ID 1137
+2025-03-31 09:09:46,450 - WARNING - Empty pronunciation value for word ID 1138
+2025-03-31 09:09:46,454 - WARNING - Empty pronunciation value for word ID 1139
+2025-03-31 09:09:46,458 - WARNING - Empty pronunciation value for word ID 1140
+2025-03-31 09:09:46,469 - WARNING - Empty pronunciation value for word ID 1141
+2025-03-31 09:09:46,480 - WARNING - Empty pronunciation value for word ID 1144
+2025-03-31 09:09:46,484 - WARNING - Empty pronunciation value for word ID 1145
+2025-03-31 09:09:46,487 - WARNING - Empty pronunciation value for word ID 721
+2025-03-31 09:09:46,495 - WARNING - Empty pronunciation value for word ID 1146
+2025-03-31 09:09:46,499 - WARNING - Empty pronunciation value for word ID 1147
+2025-03-31 09:09:46,504 - WARNING - Empty pronunciation value for word ID 1148
+2025-03-31 09:09:46,508 - WARNING - Empty pronunciation value for word ID 1149
+2025-03-31 09:09:46,513 - WARNING - Empty pronunciation value for word ID 1150
+2025-03-31 09:09:46,518 - WARNING - Empty pronunciation value for word ID 1151
+2025-03-31 09:09:46,524 - WARNING - Empty pronunciation value for word ID 1152
+2025-03-31 09:09:46,529 - WARNING - Empty pronunciation value for word ID 1153
+2025-03-31 09:09:46,533 - WARNING - Empty pronunciation value for word ID 1154
+2025-03-31 09:09:46,542 - WARNING - Empty pronunciation value for word ID 1156
+2025-03-31 09:09:46,548 - WARNING - Empty pronunciation value for word ID 1157
+2025-03-31 09:09:46,553 - WARNING - Empty pronunciation value for word ID 1158
+2025-03-31 09:09:46,557 - WARNING - Empty pronunciation value for word ID 1159
+2025-03-31 09:09:46,562 - WARNING - Empty pronunciation value for word ID 1160
+2025-03-31 09:09:46,567 - WARNING - Empty pronunciation value for word ID 1161
+2025-03-31 09:09:46,580 - WARNING - Empty pronunciation value for word ID 1163
+2025-03-31 09:09:46,586 - WARNING - Empty pronunciation value for word ID 1164
+2025-03-31 09:09:46,591 - WARNING - Empty pronunciation value for word ID 1165
+2025-03-31 09:09:46,596 - WARNING - Empty pronunciation value for word ID 1166
+2025-03-31 09:09:46,601 - WARNING - Empty pronunciation value for word ID 1167
+2025-03-31 09:09:46,605 - WARNING - Empty pronunciation value for word ID 1168
+2025-03-31 09:09:46,609 - WARNING - Empty pronunciation value for word ID 1169
+2025-03-31 09:09:46,614 - WARNING - Empty pronunciation value for word ID 1170
+2025-03-31 09:09:46,618 - WARNING - Empty pronunciation value for word ID 1171
+2025-03-31 09:09:46,622 - WARNING - Empty pronunciation value for word ID 1172
+2025-03-31 09:09:46,628 - WARNING - Empty pronunciation value for word ID 1173
+2025-03-31 09:09:46,632 - WARNING - Empty pronunciation value for word ID 1113
+2025-03-31 09:09:46,641 - WARNING - Empty pronunciation value for word ID 1174
+2025-03-31 09:09:46,645 - WARNING - Empty pronunciation value for word ID 1175
+2025-03-31 09:09:46,657 - WARNING - Empty pronunciation value for word ID 1177
+2025-03-31 09:09:46,662 - WARNING - Empty pronunciation value for word ID 1178
+2025-03-31 09:09:46,672 - WARNING - Empty pronunciation value for word ID 1180
+2025-03-31 09:09:46,683 - WARNING - Empty pronunciation value for word ID 1181
+2025-03-31 09:09:46,689 - WARNING - Empty pronunciation value for word ID 1182
+2025-03-31 09:09:46,694 - WARNING - Empty pronunciation value for word ID 913
+2025-03-31 09:09:46,698 - WARNING - Empty pronunciation value for word ID 1183
+2025-03-31 09:09:46,712 - WARNING - Empty pronunciation value for word ID 1185
+2025-03-31 09:09:46,718 - WARNING - Empty pronunciation value for word ID 1186
+2025-03-31 09:09:46,722 - WARNING - Empty pronunciation value for word ID 1187
+2025-03-31 09:09:46,727 - WARNING - Empty pronunciation value for word ID 1188
+2025-03-31 09:09:46,731 - WARNING - Empty pronunciation value for word ID 1189
+2025-03-31 09:09:46,736 - WARNING - Empty pronunciation value for word ID 1190
+2025-03-31 09:09:46,740 - WARNING - Empty pronunciation value for word ID 1191
+2025-03-31 09:09:46,745 - WARNING - Empty pronunciation value for word ID 1192
+2025-03-31 09:09:46,749 - WARNING - Empty pronunciation value for word ID 1193
+2025-03-31 09:09:46,754 - WARNING - Empty pronunciation value for word ID 1194
+2025-03-31 09:09:46,758 - WARNING - Empty pronunciation value for word ID 1195
+2025-03-31 09:09:46,764 - WARNING - Empty pronunciation value for word ID 1196
+2025-03-31 09:09:46,769 - WARNING - Empty pronunciation value for word ID 1197
+2025-03-31 09:09:46,772 - WARNING - Empty pronunciation value for word ID 1198
+2025-03-31 09:09:46,777 - WARNING - Empty pronunciation value for word ID 1199
+2025-03-31 09:09:46,781 - WARNING - Empty pronunciation value for word ID 1200
+2025-03-31 09:09:46,786 - WARNING - Empty pronunciation value for word ID 1201
+2025-03-31 09:09:46,788 - INFO - Processed ..\data\marayum_dictionaries\hiligaynon-english_processed.json:
+2025-03-31 09:09:46,789 - INFO -   Entries processed: 559
+2025-03-31 09:09:46,789 - INFO -   Definitions added: 537
+2025-03-31 09:09:46,790 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:46,790 - INFO -   Examples added: 1653
+2025-03-31 09:09:46,790 - INFO -   Relations added: 68
+2025-03-31 09:09:46,790 - INFO -   Entries skipped: 0
+2025-03-31 09:09:46,790 - INFO -   Errors: 0
+2025-03-31 09:09:46,791 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\hiligaynon-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:46,792 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\cebuano-english_processed.json
+2025-03-31 09:09:46,806 - INFO - Found 680 words in cebuano-english
+2025-03-31 09:09:46,806 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\cebuano-english_processed.json
+2025-03-31 09:09:46,825 - INFO - Processing Cebuano dictionary (code: ceb)
+2025-03-31 09:09:46,827 - WARNING - Empty pronunciation value for word ID 1202
+2025-03-31 09:09:46,832 - WARNING - Empty pronunciation value for word ID 1203
+2025-03-31 09:09:46,838 - WARNING - Empty pronunciation value for word ID 1204
+2025-03-31 09:09:46,843 - WARNING - Empty pronunciation value for word ID 1205
+2025-03-31 09:09:46,849 - WARNING - Empty pronunciation value for word ID 1206
+2025-03-31 09:09:46,861 - WARNING - Empty pronunciation value for word ID 1208
+2025-03-31 09:09:46,874 - WARNING - Empty pronunciation value for word ID 1210
+2025-03-31 09:09:46,886 - WARNING - Empty pronunciation value for word ID 1212
+2025-03-31 09:09:46,894 - WARNING - Empty pronunciation value for word ID 1213
+2025-03-31 09:09:46,898 - WARNING - Empty pronunciation value for word ID 1214
+2025-03-31 09:09:46,902 - WARNING - Empty pronunciation value for word ID 1215
+2025-03-31 09:09:46,911 - WARNING - Empty pronunciation value for word ID 1217
+2025-03-31 09:09:46,918 - WARNING - Empty pronunciation value for word ID 1219
+2025-03-31 09:09:46,926 - WARNING - Empty pronunciation value for word ID 1221
+2025-03-31 09:09:46,930 - WARNING - Empty pronunciation value for word ID 1222
+2025-03-31 09:09:46,934 - WARNING - Empty pronunciation value for word ID 1223
+2025-03-31 09:09:46,938 - WARNING - Empty pronunciation value for word ID 1224
+2025-03-31 09:09:46,942 - WARNING - Empty pronunciation value for word ID 1225
+2025-03-31 09:09:46,947 - WARNING - Empty pronunciation value for word ID 1226
+2025-03-31 09:09:46,951 - WARNING - Empty pronunciation value for word ID 1227
+2025-03-31 09:09:46,959 - WARNING - Empty pronunciation value for word ID 1229
+2025-03-31 09:09:46,963 - WARNING - Empty pronunciation value for word ID 1230
+2025-03-31 09:09:46,974 - WARNING - Empty pronunciation value for word ID 1232
+2025-03-31 09:09:46,980 - WARNING - Empty pronunciation value for word ID 1233
+2025-03-31 09:09:46,985 - WARNING - Empty pronunciation value for word ID 1234
+2025-03-31 09:09:46,989 - WARNING - Empty pronunciation value for word ID 1235
+2025-03-31 09:09:46,994 - WARNING - Empty pronunciation value for word ID 1236
+2025-03-31 09:09:46,998 - WARNING - Empty pronunciation value for word ID 1237
+2025-03-31 09:09:47,002 - WARNING - Empty pronunciation value for word ID 1238
+2025-03-31 09:09:47,007 - WARNING - Empty pronunciation value for word ID 1239
+2025-03-31 09:09:47,025 - WARNING - Empty pronunciation value for word ID 1242
+2025-03-31 09:09:47,031 - WARNING - Empty pronunciation value for word ID 1243
+2025-03-31 09:09:47,037 - WARNING - Empty pronunciation value for word ID 1244
+2025-03-31 09:09:47,042 - WARNING - Empty pronunciation value for word ID 1245
+2025-03-31 09:09:47,047 - WARNING - Empty pronunciation value for word ID 1246
+2025-03-31 09:09:47,051 - WARNING - Empty pronunciation value for word ID 1247
+2025-03-31 09:09:47,057 - WARNING - Empty pronunciation value for word ID 1248
+2025-03-31 09:09:47,063 - WARNING - Empty pronunciation value for word ID 1249
+2025-03-31 09:09:47,067 - WARNING - Empty pronunciation value for word ID 1250
+2025-03-31 09:09:47,082 - WARNING - Empty pronunciation value for word ID 1253
+2025-03-31 09:09:47,087 - WARNING - Empty pronunciation value for word ID 1254
+2025-03-31 09:09:47,094 - WARNING - Empty pronunciation value for word ID 1255
+2025-03-31 09:09:47,100 - WARNING - Empty pronunciation value for word ID 1256
+2025-03-31 09:09:47,107 - WARNING - Empty pronunciation value for word ID 1257
+2025-03-31 09:09:47,112 - WARNING - Empty pronunciation value for word ID 1258
+2025-03-31 09:09:47,117 - WARNING - Empty pronunciation value for word ID 1259
+2025-03-31 09:09:47,123 - WARNING - Empty pronunciation value for word ID 1260
+2025-03-31 09:09:47,133 - WARNING - Empty pronunciation value for word ID 1262
+2025-03-31 09:09:47,139 - WARNING - Empty pronunciation value for word ID 1263
+2025-03-31 09:09:47,143 - WARNING - Empty pronunciation value for word ID 1264
+2025-03-31 09:09:47,148 - WARNING - Empty pronunciation value for word ID 1265
+2025-03-31 09:09:47,152 - WARNING - Skipping self-relationship for word ID 1265
+2025-03-31 09:09:47,152 - WARNING - Skipping self-relationship for word ID 1265
+2025-03-31 09:09:47,154 - WARNING - Empty pronunciation value for word ID 1266
+2025-03-31 09:09:47,159 - WARNING - Empty pronunciation value for word ID 1267
+2025-03-31 09:09:47,164 - WARNING - Empty pronunciation value for word ID 1268
+2025-03-31 09:09:47,174 - WARNING - Empty pronunciation value for word ID 1269
+2025-03-31 09:09:47,179 - WARNING - Empty pronunciation value for word ID 1270
+2025-03-31 09:09:47,184 - WARNING - Empty pronunciation value for word ID 1271
+2025-03-31 09:09:47,194 - WARNING - Empty pronunciation value for word ID 1273
+2025-03-31 09:09:47,201 - WARNING - Empty pronunciation value for word ID 1274
+2025-03-31 09:09:47,206 - WARNING - Empty pronunciation value for word ID 1275
+2025-03-31 09:09:47,211 - WARNING - Empty pronunciation value for word ID 1276
+2025-03-31 09:09:47,215 - WARNING - Empty pronunciation value for word ID 1277
+2025-03-31 09:09:47,223 - WARNING - Empty pronunciation value for word ID 1279
+2025-03-31 09:09:47,229 - WARNING - Empty pronunciation value for word ID 1280
+2025-03-31 09:09:47,240 - WARNING - Empty pronunciation value for word ID 1282
+2025-03-31 09:09:47,246 - WARNING - Empty pronunciation value for word ID 1283
+2025-03-31 09:09:47,256 - WARNING - Empty pronunciation value for word ID 1285
+2025-03-31 09:09:47,262 - WARNING - Empty pronunciation value for word ID 1286
+2025-03-31 09:09:47,267 - WARNING - Empty pronunciation value for word ID 1287
+2025-03-31 09:09:47,274 - WARNING - Empty pronunciation value for word ID 1288
+2025-03-31 09:09:47,283 - WARNING - Empty pronunciation value for word ID 1290
+2025-03-31 09:09:47,288 - WARNING - Empty pronunciation value for word ID 1291
+2025-03-31 09:09:47,294 - WARNING - Empty pronunciation value for word ID 1292
+2025-03-31 09:09:47,299 - WARNING - Empty pronunciation value for word ID 1293
+2025-03-31 09:09:47,305 - WARNING - Empty pronunciation value for word ID 1294
+2025-03-31 09:09:47,313 - WARNING - Empty pronunciation value for word ID 1295
+2025-03-31 09:09:47,321 - WARNING - Empty pronunciation value for word ID 1296
+2025-03-31 09:09:47,328 - WARNING - Empty pronunciation value for word ID 1297
+2025-03-31 09:09:47,343 - WARNING - Empty pronunciation value for word ID 1299
+2025-03-31 09:09:47,349 - WARNING - Empty pronunciation value for word ID 1300
+2025-03-31 09:09:47,361 - WARNING - Empty pronunciation value for word ID 1298
+2025-03-31 09:09:47,373 - WARNING - Empty pronunciation value for word ID 1302
+2025-03-31 09:09:47,391 - WARNING - Empty pronunciation value for word ID 1303
+2025-03-31 09:09:47,412 - WARNING - Empty pronunciation value for word ID 1304
+2025-03-31 09:09:47,437 - WARNING - Empty pronunciation value for word ID 1306
+2025-03-31 09:09:47,457 - WARNING - Empty pronunciation value for word ID 1308
+2025-03-31 09:09:47,462 - WARNING - Empty pronunciation value for word ID 1309
+2025-03-31 09:09:47,468 - WARNING - Empty pronunciation value for word ID 1310
+2025-03-31 09:09:47,478 - WARNING - Empty pronunciation value for word ID 1312
+2025-03-31 09:09:47,484 - WARNING - Empty pronunciation value for word ID 1313
+2025-03-31 09:09:47,489 - WARNING - Empty pronunciation value for word ID 1314
+2025-03-31 09:09:47,496 - WARNING - Empty pronunciation value for word ID 1315
+2025-03-31 09:09:47,508 - WARNING - Empty pronunciation value for word ID 1317
+2025-03-31 09:09:47,514 - WARNING - Empty pronunciation value for word ID 1318
+2025-03-31 09:09:47,523 - WARNING - Empty pronunciation value for word ID 1320
+2025-03-31 09:09:47,532 - WARNING - Empty pronunciation value for word ID 1321
+2025-03-31 09:09:47,544 - WARNING - Empty pronunciation value for word ID 1323
+2025-03-31 09:09:47,591 - WARNING - Empty pronunciation value for word ID 1330
+2025-03-31 09:09:47,607 - WARNING - Empty pronunciation value for word ID 1333
+2025-03-31 09:09:47,613 - WARNING - Empty pronunciation value for word ID 1334
+2025-03-31 09:09:47,620 - WARNING - Empty pronunciation value for word ID 1335
+2025-03-31 09:09:47,626 - WARNING - Empty pronunciation value for word ID 1316
+2025-03-31 09:09:47,635 - WARNING - Empty pronunciation value for word ID 1336
+2025-03-31 09:09:47,642 - WARNING - Empty pronunciation value for word ID 1337
+2025-03-31 09:09:47,647 - WARNING - Empty pronunciation value for word ID 1338
+2025-03-31 09:09:47,653 - WARNING - Empty pronunciation value for word ID 1339
+2025-03-31 09:09:47,658 - WARNING - Empty pronunciation value for word ID 1340
+2025-03-31 09:09:47,664 - WARNING - Empty pronunciation value for word ID 1341
+2025-03-31 09:09:47,669 - WARNING - Empty pronunciation value for word ID 1342
+2025-03-31 09:09:47,673 - WARNING - Empty pronunciation value for word ID 1307
+2025-03-31 09:09:47,682 - WARNING - Empty pronunciation value for word ID 1343
+2025-03-31 09:09:47,687 - WARNING - Empty pronunciation value for word ID 1344
+2025-03-31 09:09:47,691 - WARNING - Empty pronunciation value for word ID 1345
+2025-03-31 09:09:47,704 - WARNING - Empty pronunciation value for word ID 1347
+2025-03-31 09:09:47,709 - WARNING - Empty pronunciation value for word ID 1348
+2025-03-31 09:09:47,714 - WARNING - Empty pronunciation value for word ID 1349
+2025-03-31 09:09:47,730 - WARNING - Empty pronunciation value for word ID 1352
+2025-03-31 09:09:47,736 - WARNING - Empty pronunciation value for word ID 1353
+2025-03-31 09:09:47,741 - WARNING - Empty pronunciation value for word ID 1354
+2025-03-31 09:09:47,747 - WARNING - Empty pronunciation value for word ID 1355
+2025-03-31 09:09:47,757 - WARNING - Empty pronunciation value for word ID 1356
+2025-03-31 09:09:47,762 - WARNING - Empty pronunciation value for word ID 1357
+2025-03-31 09:09:47,772 - WARNING - Empty pronunciation value for word ID 1358
+2025-03-31 09:09:47,796 - WARNING - Empty pronunciation value for word ID 1363
+2025-03-31 09:09:47,808 - WARNING - Empty pronunciation value for word ID 1365
+2025-03-31 09:09:47,812 - WARNING - Empty pronunciation value for word ID 1366
+2025-03-31 09:09:47,817 - WARNING - Empty pronunciation value for word ID 1367
+2025-03-31 09:09:47,822 - WARNING - Empty pronunciation value for word ID 1368
+2025-03-31 09:09:47,832 - WARNING - Empty pronunciation value for word ID 1370
+2025-03-31 09:09:47,835 - WARNING - Empty pronunciation value for word ID 1359
+2025-03-31 09:09:47,841 - WARNING - Empty pronunciation value for word ID 1371
+2025-03-31 09:09:47,847 - WARNING - Empty pronunciation value for word ID 1372
+2025-03-31 09:09:47,855 - WARNING - Empty pronunciation value for word ID 1373
+2025-03-31 09:09:47,860 - WARNING - Empty pronunciation value for word ID 1374
+2025-03-31 09:09:47,870 - WARNING - Empty pronunciation value for word ID 1375
+2025-03-31 09:09:47,880 - WARNING - Empty pronunciation value for word ID 1240
+2025-03-31 09:09:47,894 - WARNING - Empty pronunciation value for word ID 1360
+2025-03-31 09:09:47,906 - WARNING - Empty pronunciation value for word ID 1376
+2025-03-31 09:09:47,911 - WARNING - Empty pronunciation value for word ID 1377
+2025-03-31 09:09:47,917 - WARNING - Empty pronunciation value for word ID 1378
+2025-03-31 09:09:47,922 - WARNING - Empty pronunciation value for word ID 1379
+2025-03-31 09:09:47,934 - WARNING - Empty pronunciation value for word ID 1381
+2025-03-31 09:09:47,940 - WARNING - Empty pronunciation value for word ID 1382
+2025-03-31 09:09:47,951 - WARNING - Empty pronunciation value for word ID 1384
+2025-03-31 09:09:47,955 - WARNING - Empty pronunciation value for word ID 1385
+2025-03-31 09:09:47,960 - WARNING - Empty pronunciation value for word ID 1386
+2025-03-31 09:09:47,966 - WARNING - Empty pronunciation value for word ID 1387
+2025-03-31 09:09:47,971 - WARNING - Empty pronunciation value for word ID 1388
+2025-03-31 09:09:47,981 - WARNING - Empty pronunciation value for word ID 1390
+2025-03-31 09:09:47,990 - WARNING - Empty pronunciation value for word ID 1392
+2025-03-31 09:09:47,995 - WARNING - Empty pronunciation value for word ID 1393
+2025-03-31 09:09:48,005 - WARNING - Empty pronunciation value for word ID 1395
+2025-03-31 09:09:48,011 - WARNING - Empty pronunciation value for word ID 1396
+2025-03-31 09:09:48,016 - WARNING - Empty pronunciation value for word ID 1397
+2025-03-31 09:09:48,028 - WARNING - Empty pronunciation value for word ID 1399
+2025-03-31 09:09:48,033 - WARNING - Empty pronunciation value for word ID 1400
+2025-03-31 09:09:48,043 - WARNING - Empty pronunciation value for word ID 1394
+2025-03-31 09:09:48,057 - WARNING - Empty pronunciation value for word ID 1402
+2025-03-31 09:09:48,062 - WARNING - Empty pronunciation value for word ID 1403
+2025-03-31 09:09:48,073 - WARNING - Empty pronunciation value for word ID 1405
+2025-03-31 09:09:48,079 - WARNING - Empty pronunciation value for word ID 1406
+2025-03-31 09:09:48,101 - WARNING - Empty pronunciation value for word ID 1409
+2025-03-31 09:09:48,107 - WARNING - Empty pronunciation value for word ID 1410
+2025-03-31 09:09:48,112 - WARNING - Empty pronunciation value for word ID 1411
+2025-03-31 09:09:48,118 - WARNING - Empty pronunciation value for word ID 1412
+2025-03-31 09:09:48,135 - WARNING - Empty pronunciation value for word ID 1415
+2025-03-31 09:09:48,141 - WARNING - Empty pronunciation value for word ID 1416
+2025-03-31 09:09:48,147 - WARNING - Empty pronunciation value for word ID 1417
+2025-03-31 09:09:48,154 - WARNING - Empty pronunciation value for word ID 1418
+2025-03-31 09:09:48,160 - WARNING - Empty pronunciation value for word ID 1419
+2025-03-31 09:09:48,166 - WARNING - Empty pronunciation value for word ID 1420
+2025-03-31 09:09:48,172 - WARNING - Empty pronunciation value for word ID 1421
+2025-03-31 09:09:48,186 - WARNING - Empty pronunciation value for word ID 1423
+2025-03-31 09:09:48,191 - WARNING - Empty pronunciation value for word ID 1424
+2025-03-31 09:09:48,197 - WARNING - Empty pronunciation value for word ID 1425
+2025-03-31 09:09:48,206 - WARNING - Empty pronunciation value for word ID 1427
+2025-03-31 09:09:48,210 - WARNING - Empty pronunciation value for word ID 1428
+2025-03-31 09:09:48,222 - WARNING - Empty pronunciation value for word ID 1430
+2025-03-31 09:09:48,227 - WARNING - Empty pronunciation value for word ID 1431
+2025-03-31 09:09:48,233 - WARNING - Empty pronunciation value for word ID 1432
+2025-03-31 09:09:48,251 - WARNING - Empty pronunciation value for word ID 1435
+2025-03-31 09:09:48,255 - WARNING - Empty pronunciation value for word ID 1331
+2025-03-31 09:09:48,272 - WARNING - Empty pronunciation value for word ID 1437
+2025-03-31 09:09:48,282 - WARNING - Empty pronunciation value for word ID 1329
+2025-03-31 09:09:48,294 - WARNING - Empty pronunciation value for word ID 1439
+2025-03-31 09:09:48,299 - WARNING - Empty pronunciation value for word ID 1440
+2025-03-31 09:09:48,304 - WARNING - Empty pronunciation value for word ID 1441
+2025-03-31 09:09:48,309 - WARNING - Empty pronunciation value for word ID 1442
+2025-03-31 09:09:48,321 - WARNING - Empty pronunciation value for word ID 1444
+2025-03-31 09:09:48,326 - WARNING - Empty pronunciation value for word ID 1445
+2025-03-31 09:09:48,346 - WARNING - Empty pronunciation value for word ID 1447
+2025-03-31 09:09:48,358 - WARNING - Empty pronunciation value for word ID 1449
+2025-03-31 09:09:48,363 - WARNING - Empty pronunciation value for word ID 1450
+2025-03-31 09:09:48,372 - WARNING - Empty pronunciation value for word ID 1452
+2025-03-31 09:09:48,394 - WARNING - Empty pronunciation value for word ID 1455
+2025-03-31 09:09:48,401 - WARNING - Empty pronunciation value for word ID 1456
+2025-03-31 09:09:48,415 - WARNING - Empty pronunciation value for word ID 1458
+2025-03-31 09:09:48,420 - WARNING - Empty pronunciation value for word ID 1429
+2025-03-31 09:09:48,434 - WARNING - Empty pronunciation value for word ID 1459
+2025-03-31 09:09:48,441 - WARNING - Empty pronunciation value for word ID 1460
+2025-03-31 09:09:48,448 - WARNING - Empty pronunciation value for word ID 1461
+2025-03-31 09:09:48,455 - WARNING - Empty pronunciation value for word ID 1462
+2025-03-31 09:09:48,462 - WARNING - Empty pronunciation value for word ID 1463
+2025-03-31 09:09:48,469 - WARNING - Empty pronunciation value for word ID 1464
+2025-03-31 09:09:48,495 - WARNING - Empty pronunciation value for word ID 1261
+2025-03-31 09:09:48,507 - WARNING - Empty pronunciation value for word ID 1468
+2025-03-31 09:09:48,515 - WARNING - Empty pronunciation value for word ID 1469
+2025-03-31 09:09:48,522 - WARNING - Empty pronunciation value for word ID 1470
+2025-03-31 09:09:48,528 - WARNING - Empty pronunciation value for word ID 1471
+2025-03-31 09:09:48,535 - WARNING - Empty pronunciation value for word ID 1472
+2025-03-31 09:09:48,543 - WARNING - Empty pronunciation value for word ID 1473
+2025-03-31 09:09:48,551 - WARNING - Empty pronunciation value for word ID 1474
+2025-03-31 09:09:48,559 - WARNING - Empty pronunciation value for word ID 1475
+2025-03-31 09:09:48,566 - WARNING - Empty pronunciation value for word ID 1476
+2025-03-31 09:09:48,577 - WARNING - Empty pronunciation value for word ID 1477
+2025-03-31 09:09:48,585 - WARNING - Empty pronunciation value for word ID 1478
+2025-03-31 09:09:48,593 - WARNING - Empty pronunciation value for word ID 1479
+2025-03-31 09:09:48,601 - WARNING - Empty pronunciation value for word ID 1480
+2025-03-31 09:09:48,609 - WARNING - Empty pronunciation value for word ID 1481
+2025-03-31 09:09:48,618 - WARNING - Empty pronunciation value for word ID 1482
+2025-03-31 09:09:48,630 - WARNING - Empty pronunciation value for word ID 1483
+2025-03-31 09:09:48,638 - WARNING - Empty pronunciation value for word ID 1484
+2025-03-31 09:09:48,655 - WARNING - Empty pronunciation value for word ID 1305
+2025-03-31 09:09:48,671 - WARNING - Empty pronunciation value for word ID 1486
+2025-03-31 09:09:48,690 - WARNING - Empty pronunciation value for word ID 1488
+2025-03-31 09:09:48,698 - WARNING - Empty pronunciation value for word ID 1489
+2025-03-31 09:09:48,713 - WARNING - Empty pronunciation value for word ID 1491
+2025-03-31 09:09:48,721 - WARNING - Empty pronunciation value for word ID 1492
+2025-03-31 09:09:48,731 - WARNING - Empty pronunciation value for word ID 1493
+2025-03-31 09:09:48,752 - WARNING - Empty pronunciation value for word ID 1496
+2025-03-31 09:09:48,770 - WARNING - Empty pronunciation value for word ID 1498
+2025-03-31 09:09:48,779 - WARNING - Empty pronunciation value for word ID 1499
+2025-03-31 09:09:48,787 - WARNING - Empty pronunciation value for word ID 1500
+2025-03-31 09:09:48,794 - WARNING - Empty pronunciation value for word ID 1501
+2025-03-31 09:09:48,802 - WARNING - Empty pronunciation value for word ID 1502
+2025-03-31 09:09:48,817 - WARNING - Empty pronunciation value for word ID 1504
+2025-03-31 09:09:48,857 - WARNING - Empty pronunciation value for word ID 1506
+2025-03-31 09:09:48,864 - WARNING - Empty pronunciation value for word ID 1507
+2025-03-31 09:09:48,885 - WARNING - Empty pronunciation value for word ID 1508
+2025-03-31 09:09:48,893 - WARNING - Empty pronunciation value for word ID 1509
+2025-03-31 09:09:48,901 - WARNING - Empty pronunciation value for word ID 1510
+2025-03-31 09:09:48,908 - WARNING - Empty pronunciation value for word ID 1511
+2025-03-31 09:09:48,915 - WARNING - Empty pronunciation value for word ID 1512
+2025-03-31 09:09:48,925 - WARNING - Empty pronunciation value for word ID 1514
+2025-03-31 09:09:48,937 - WARNING - Empty pronunciation value for word ID 1516
+2025-03-31 09:09:48,944 - WARNING - Empty pronunciation value for word ID 1517
+2025-03-31 09:09:48,953 - WARNING - Empty pronunciation value for word ID 1518
+2025-03-31 09:09:48,961 - WARNING - Empty pronunciation value for word ID 1519
+2025-03-31 09:09:48,977 - WARNING - Empty pronunciation value for word ID 1521
+2025-03-31 09:09:48,986 - WARNING - Empty pronunciation value for word ID 1522
+2025-03-31 09:09:48,993 - WARNING - Empty pronunciation value for word ID 1523
+2025-03-31 09:09:49,000 - WARNING - Empty pronunciation value for word ID 1524
+2025-03-31 09:09:49,007 - WARNING - Empty pronunciation value for word ID 1525
+2025-03-31 09:09:49,014 - WARNING - Empty pronunciation value for word ID 1526
+2025-03-31 09:09:49,053 - WARNING - Empty pronunciation value for word ID 1530
+2025-03-31 09:09:49,062 - WARNING - Empty pronunciation value for word ID 1531
+2025-03-31 09:09:49,069 - WARNING - Empty pronunciation value for word ID 1216
+2025-03-31 09:09:49,087 - WARNING - Empty pronunciation value for word ID 1533
+2025-03-31 09:09:49,095 - WARNING - Empty pronunciation value for word ID 1534
+2025-03-31 09:09:49,101 - WARNING - Empty pronunciation value for word ID 1535
+2025-03-31 09:09:49,113 - WARNING - Empty pronunciation value for word ID 1537
+2025-03-31 09:09:49,120 - WARNING - Empty pronunciation value for word ID 1538
+2025-03-31 09:09:49,138 - WARNING - Empty pronunciation value for word ID 1540
+2025-03-31 09:09:49,144 - WARNING - Empty pronunciation value for word ID 1541
+2025-03-31 09:09:49,150 - WARNING - Empty pronunciation value for word ID 1380
+2025-03-31 09:09:49,185 - WARNING - Empty pronunciation value for word ID 1545
+2025-03-31 09:09:49,192 - WARNING - Empty pronunciation value for word ID 1546
+2025-03-31 09:09:49,206 - WARNING - Empty pronunciation value for word ID 1548
+2025-03-31 09:09:49,212 - WARNING - Empty pronunciation value for word ID 1549
+2025-03-31 09:09:49,219 - WARNING - Empty pronunciation value for word ID 1550
+2025-03-31 09:09:49,225 - WARNING - Empty pronunciation value for word ID 1551
+2025-03-31 09:09:49,232 - WARNING - Empty pronunciation value for word ID 1552
+2025-03-31 09:09:49,239 - WARNING - Empty pronunciation value for word ID 1553
+2025-03-31 09:09:49,245 - WARNING - Empty pronunciation value for word ID 1554
+2025-03-31 09:09:49,257 - WARNING - Empty pronunciation value for word ID 1556
+2025-03-31 09:09:49,264 - WARNING - Empty pronunciation value for word ID 1557
+2025-03-31 09:09:49,270 - WARNING - Empty pronunciation value for word ID 1558
+2025-03-31 09:09:49,286 - WARNING - Empty pronunciation value for word ID 1560
+2025-03-31 09:09:49,291 - WARNING - Empty pronunciation value for word ID 1559
+2025-03-31 09:09:49,303 - WARNING - Empty pronunciation value for word ID 1561
+2025-03-31 09:09:49,309 - WARNING - Empty pronunciation value for word ID 1562
+2025-03-31 09:09:49,323 - WARNING - Empty pronunciation value for word ID 1564
+2025-03-31 09:09:49,329 - WARNING - Empty pronunciation value for word ID 1565
+2025-03-31 09:09:49,334 - WARNING - Empty pronunciation value for word ID 1566
+2025-03-31 09:09:49,341 - WARNING - Empty pronunciation value for word ID 1567
+2025-03-31 09:09:49,347 - WARNING - Empty pronunciation value for word ID 1568
+2025-03-31 09:09:49,353 - WARNING - Empty pronunciation value for word ID 1569
+2025-03-31 09:09:49,359 - WARNING - Empty pronunciation value for word ID 1570
+2025-03-31 09:09:49,379 - WARNING - Empty pronunciation value for word ID 1571
+2025-03-31 09:09:49,398 - WARNING - Empty pronunciation value for word ID 1573
+2025-03-31 09:09:49,403 - WARNING - Empty pronunciation value for word ID 1505
+2025-03-31 09:09:49,415 - WARNING - Empty pronunciation value for word ID 1574
+2025-03-31 09:09:49,451 - WARNING - Empty pronunciation value for word ID 1580
+2025-03-31 09:09:49,497 - WARNING - Empty pronunciation value for word ID 1586
+2025-03-31 09:09:49,504 - WARNING - Empty pronunciation value for word ID 1587
+2025-03-31 09:09:49,525 - WARNING - Empty pronunciation value for word ID 1591
+2025-03-31 09:09:49,531 - WARNING - Empty pronunciation value for word ID 1592
+2025-03-31 09:09:49,538 - WARNING - Empty pronunciation value for word ID 1593
+2025-03-31 09:09:49,544 - WARNING - Empty pronunciation value for word ID 1594
+2025-03-31 09:09:49,550 - WARNING - Empty pronunciation value for word ID 1595
+2025-03-31 09:09:49,556 - WARNING - Empty pronunciation value for word ID 1596
+2025-03-31 09:09:49,566 - WARNING - Empty pronunciation value for word ID 1598
+2025-03-31 09:09:49,572 - WARNING - Empty pronunciation value for word ID 1599
+2025-03-31 09:09:49,578 - WARNING - Empty pronunciation value for word ID 1600
+2025-03-31 09:09:49,584 - WARNING - Empty pronunciation value for word ID 1601
+2025-03-31 09:09:49,589 - WARNING - Empty pronunciation value for word ID 1547
+2025-03-31 09:09:49,595 - WARNING - Empty pronunciation value for word ID 1602
+2025-03-31 09:09:49,600 - WARNING - Empty pronunciation value for word ID 1603
+2025-03-31 09:09:49,606 - WARNING - Empty pronunciation value for word ID 1604
+2025-03-31 09:09:49,617 - WARNING - Empty pronunciation value for word ID 1606
+2025-03-31 09:09:49,628 - WARNING - Empty pronunciation value for word ID 1608
+2025-03-31 09:09:49,633 - WARNING - Empty pronunciation value for word ID 1332
+2025-03-31 09:09:49,650 - WARNING - Empty pronunciation value for word ID 1364
+2025-03-31 09:09:49,662 - WARNING - Empty pronunciation value for word ID 1609
+2025-03-31 09:09:49,671 - WARNING - Empty pronunciation value for word ID 1610
+2025-03-31 09:09:49,676 - WARNING - Empty pronunciation value for word ID 1611
+2025-03-31 09:09:49,687 - WARNING - Empty pronunciation value for word ID 1613
+2025-03-31 09:09:49,693 - WARNING - Empty pronunciation value for word ID 1614
+2025-03-31 09:09:49,698 - WARNING - Empty pronunciation value for word ID 1572
+2025-03-31 09:09:49,714 - WARNING - Empty pronunciation value for word ID 1615
+2025-03-31 09:09:49,722 - WARNING - Empty pronunciation value for word ID 1616
+2025-03-31 09:09:49,728 - WARNING - Empty pronunciation value for word ID 1617
+2025-03-31 09:09:49,734 - WARNING - Empty pronunciation value for word ID 1618
+2025-03-31 09:09:49,746 - WARNING - Empty pronunciation value for word ID 1619
+2025-03-31 09:09:49,766 - WARNING - Empty pronunciation value for word ID 1620
+2025-03-31 09:09:49,772 - WARNING - Empty pronunciation value for word ID 1621
+2025-03-31 09:09:49,776 - WARNING - Empty pronunciation value for word ID 1497
+2025-03-31 09:09:49,790 - WARNING - Empty pronunciation value for word ID 1623
+2025-03-31 09:09:49,797 - WARNING - Empty pronunciation value for word ID 1624
+2025-03-31 09:09:49,803 - WARNING - Empty pronunciation value for word ID 1625
+2025-03-31 09:09:49,815 - WARNING - Empty pronunciation value for word ID 1626
+2025-03-31 09:09:49,836 - WARNING - Empty pronunciation value for word ID 1627
+2025-03-31 09:09:49,843 - WARNING - Empty pronunciation value for word ID 1628
+2025-03-31 09:09:49,849 - WARNING - Empty pronunciation value for word ID 1629
+2025-03-31 09:09:49,855 - WARNING - Empty pronunciation value for word ID 1383
+2025-03-31 09:09:49,870 - WARNING - Empty pronunciation value for word ID 1631
+2025-03-31 09:09:49,877 - WARNING - Empty pronunciation value for word ID 1632
+2025-03-31 09:09:49,883 - WARNING - Empty pronunciation value for word ID 1633
+2025-03-31 09:09:49,897 - WARNING - Empty pronunciation value for word ID 1635
+2025-03-31 09:09:49,916 - WARNING - Empty pronunciation value for word ID 1637
+2025-03-31 09:09:49,923 - WARNING - Empty pronunciation value for word ID 1638
+2025-03-31 09:09:49,930 - WARNING - Empty pronunciation value for word ID 1639
+2025-03-31 09:09:49,938 - WARNING - Empty pronunciation value for word ID 1640
+2025-03-31 09:09:49,945 - WARNING - Empty pronunciation value for word ID 1641
+2025-03-31 09:09:49,951 - WARNING - Empty pronunciation value for word ID 1642
+2025-03-31 09:09:49,958 - WARNING - Empty pronunciation value for word ID 1643
+2025-03-31 09:09:49,964 - WARNING - Empty pronunciation value for word ID 1644
+2025-03-31 09:09:49,968 - WARNING - Empty pronunciation value for word ID 1645
+2025-03-31 09:09:49,976 - WARNING - Empty pronunciation value for word ID 1646
+2025-03-31 09:09:49,983 - WARNING - Empty pronunciation value for word ID 1647
+2025-03-31 09:09:49,989 - WARNING - Empty pronunciation value for word ID 1648
+2025-03-31 09:09:49,995 - WARNING - Empty pronunciation value for word ID 1649
+2025-03-31 09:09:50,001 - WARNING - Empty pronunciation value for word ID 1650
+2025-03-31 09:09:50,006 - WARNING - Empty pronunciation value for word ID 1448
+2025-03-31 09:09:50,017 - WARNING - Empty pronunciation value for word ID 1651
+2025-03-31 09:09:50,028 - WARNING - Empty pronunciation value for word ID 1652
+2025-03-31 09:09:50,034 - WARNING - Empty pronunciation value for word ID 1653
+2025-03-31 09:09:50,051 - WARNING - Empty pronunciation value for word ID 1655
+2025-03-31 09:09:50,064 - WARNING - Empty pronunciation value for word ID 1657
+2025-03-31 09:09:50,074 - WARNING - Empty pronunciation value for word ID 1389
+2025-03-31 09:09:50,085 - WARNING - Empty pronunciation value for word ID 1520
+2025-03-31 09:09:50,098 - WARNING - Empty pronunciation value for word ID 1658
+2025-03-31 09:09:50,103 - WARNING - Empty pronunciation value for word ID 1401
+2025-03-31 09:09:50,119 - WARNING - Empty pronunciation value for word ID 1660
+2025-03-31 09:09:50,125 - WARNING - Empty pronunciation value for word ID 1485
+2025-03-31 09:09:50,151 - WARNING - Empty pronunciation value for word ID 1663
+2025-03-31 09:09:50,160 - WARNING - Empty pronunciation value for word ID 1664
+2025-03-31 09:09:50,171 - WARNING - Empty pronunciation value for word ID 1351
+2025-03-31 09:09:50,185 - WARNING - Empty pronunciation value for word ID 1666
+2025-03-31 09:09:50,196 - WARNING - Empty pronunciation value for word ID 1668
+2025-03-31 09:09:50,213 - WARNING - Empty pronunciation value for word ID 1670
+2025-03-31 09:09:50,226 - WARNING - Empty pronunciation value for word ID 1654
+2025-03-31 09:09:50,238 - WARNING - Empty pronunciation value for word ID 1672
+2025-03-31 09:09:50,244 - WARNING - Empty pronunciation value for word ID 1673
+2025-03-31 09:09:50,251 - WARNING - Empty pronunciation value for word ID 1674
+2025-03-31 09:09:50,257 - WARNING - Empty pronunciation value for word ID 1675
+2025-03-31 09:09:50,263 - WARNING - Empty pronunciation value for word ID 1467
+2025-03-31 09:09:50,281 - WARNING - Empty pronunciation value for word ID 1677
+2025-03-31 09:09:50,288 - WARNING - Empty pronunciation value for word ID 1678
+2025-03-31 09:09:50,294 - WARNING - Empty pronunciation value for word ID 1679
+2025-03-31 09:09:50,305 - WARNING - Empty pronunciation value for word ID 1681
+2025-03-31 09:09:50,313 - WARNING - Empty pronunciation value for word ID 1682
+2025-03-31 09:09:50,320 - WARNING - Empty pronunciation value for word ID 1683
+2025-03-31 09:09:50,327 - WARNING - Empty pronunciation value for word ID 1684
+2025-03-31 09:09:50,334 - WARNING - Empty pronunciation value for word ID 1685
+2025-03-31 09:09:50,359 - WARNING - Empty pronunciation value for word ID 1689
+2025-03-31 09:09:50,366 - WARNING - Empty pronunciation value for word ID 1690
+2025-03-31 09:09:50,374 - WARNING - Empty pronunciation value for word ID 1691
+2025-03-31 09:09:50,386 - WARNING - Empty pronunciation value for word ID 1693
+2025-03-31 09:09:50,391 - WARNING - Empty pronunciation value for word ID 1694
+2025-03-31 09:09:50,402 - WARNING - Empty pronunciation value for word ID 1696
+2025-03-31 09:09:50,409 - WARNING - Empty pronunciation value for word ID 1697
+2025-03-31 09:09:50,423 - WARNING - Empty pronunciation value for word ID 1699
+2025-03-31 09:09:50,429 - WARNING - Empty pronunciation value for word ID 1581
+2025-03-31 09:09:50,440 - WARNING - Empty pronunciation value for word ID 1700
+2025-03-31 09:09:50,452 - WARNING - Empty pronunciation value for word ID 1701
+2025-03-31 09:09:50,470 - WARNING - Empty pronunciation value for word ID 1702
+2025-03-31 09:09:50,476 - WARNING - Empty pronunciation value for word ID 1703
+2025-03-31 09:09:50,483 - WARNING - Empty pronunciation value for word ID 1704
+2025-03-31 09:09:50,505 - WARNING - Empty pronunciation value for word ID 1708
+2025-03-31 09:09:50,511 - WARNING - Empty pronunciation value for word ID 1709
+2025-03-31 09:09:50,517 - WARNING - Empty pronunciation value for word ID 1710
+2025-03-31 09:09:50,528 - WARNING - Empty pronunciation value for word ID 1712
+2025-03-31 09:09:50,533 - WARNING - Empty pronunciation value for word ID 1713
+2025-03-31 09:09:50,540 - WARNING - Empty pronunciation value for word ID 1714
+2025-03-31 09:09:50,546 - WARNING - Empty pronunciation value for word ID 1715
+2025-03-31 09:09:50,564 - WARNING - Empty pronunciation value for word ID 1718
+2025-03-31 09:09:50,568 - WARNING - Empty pronunciation value for word ID 1719
+2025-03-31 09:09:50,573 - WARNING - Empty pronunciation value for word ID 1720
+2025-03-31 09:09:50,579 - WARNING - Empty pronunciation value for word ID 1721
+2025-03-31 09:09:50,584 - WARNING - Empty pronunciation value for word ID 1722
+2025-03-31 09:09:50,589 - WARNING - Empty pronunciation value for word ID 1723
+2025-03-31 09:09:50,595 - WARNING - Empty pronunciation value for word ID 1724
+2025-03-31 09:09:50,599 - WARNING - Empty pronunciation value for word ID 1422
+2025-03-31 09:09:50,618 - WARNING - Empty pronunciation value for word ID 1494
+2025-03-31 09:09:50,628 - WARNING - Empty pronunciation value for word ID 1727
+2025-03-31 09:09:50,634 - WARNING - Empty pronunciation value for word ID 1728
+2025-03-31 09:09:50,640 - WARNING - Empty pronunciation value for word ID 1729
+2025-03-31 09:09:50,646 - WARNING - Empty pronunciation value for word ID 1730
+2025-03-31 09:09:50,651 - WARNING - Empty pronunciation value for word ID 1731
+2025-03-31 09:09:50,660 - WARNING - Empty pronunciation value for word ID 1733
+2025-03-31 09:09:50,665 - WARNING - Empty pronunciation value for word ID 1734
+2025-03-31 09:09:50,670 - WARNING - Empty pronunciation value for word ID 1735
+2025-03-31 09:09:50,676 - WARNING - Empty pronunciation value for word ID 1736
+2025-03-31 09:09:50,681 - WARNING - Empty pronunciation value for word ID 1737
+2025-03-31 09:09:50,686 - WARNING - Empty pronunciation value for word ID 1738
+2025-03-31 09:09:50,691 - WARNING - Empty pronunciation value for word ID 1739
+2025-03-31 09:09:50,707 - WARNING - Empty pronunciation value for word ID 1742
+2025-03-31 09:09:50,713 - WARNING - Empty pronunciation value for word ID 1743
+2025-03-31 09:09:50,719 - WARNING - Empty pronunciation value for word ID 1744
+2025-03-31 09:09:50,725 - WARNING - Empty pronunciation value for word ID 1745
+2025-03-31 09:09:50,731 - WARNING - Empty pronunciation value for word ID 1746
+2025-03-31 09:09:50,737 - WARNING - Empty pronunciation value for word ID 1747
+2025-03-31 09:09:50,741 - WARNING - Empty pronunciation value for word ID 1748
+2025-03-31 09:09:50,747 - WARNING - Empty pronunciation value for word ID 1749
+2025-03-31 09:09:50,752 - WARNING - Empty pronunciation value for word ID 1707
+2025-03-31 09:09:50,763 - WARNING - Empty pronunciation value for word ID 1750
+2025-03-31 09:09:50,778 - WARNING - Empty pronunciation value for word ID 1753
+2025-03-31 09:09:50,784 - WARNING - Empty pronunciation value for word ID 1754
+2025-03-31 09:09:50,790 - WARNING - Empty pronunciation value for word ID 1755
+2025-03-31 09:09:50,796 - WARNING - Empty pronunciation value for word ID 1756
+2025-03-31 09:09:50,802 - WARNING - Empty pronunciation value for word ID 1757
+2025-03-31 09:09:50,818 - WARNING - Empty pronunciation value for word ID 1760
+2025-03-31 09:09:50,823 - WARNING - Empty pronunciation value for word ID 1761
+2025-03-31 09:09:50,834 - WARNING - Empty pronunciation value for word ID 1763
+2025-03-31 09:09:50,839 - WARNING - Empty pronunciation value for word ID 1764
+2025-03-31 09:09:50,850 - WARNING - Empty pronunciation value for word ID 1766
+2025-03-31 09:09:50,856 - WARNING - Empty pronunciation value for word ID 1767
+2025-03-31 09:09:50,862 - WARNING - Empty pronunciation value for word ID 1768
+2025-03-31 09:09:50,868 - WARNING - Empty pronunciation value for word ID 1769
+2025-03-31 09:09:50,874 - WARNING - Empty pronunciation value for word ID 1770
+2025-03-31 09:09:50,880 - WARNING - Empty pronunciation value for word ID 1771
+2025-03-31 09:09:50,885 - WARNING - Empty pronunciation value for word ID 1772
+2025-03-31 09:09:50,890 - WARNING - Empty pronunciation value for word ID 1773
+2025-03-31 09:09:50,896 - WARNING - Empty pronunciation value for word ID 1774
+2025-03-31 09:09:50,902 - WARNING - Empty pronunciation value for word ID 1775
+2025-03-31 09:09:50,907 - WARNING - Empty pronunciation value for word ID 1776
+2025-03-31 09:09:50,912 - WARNING - Empty pronunciation value for word ID 1777
+2025-03-31 09:09:50,917 - WARNING - Empty pronunciation value for word ID 1778
+2025-03-31 09:09:50,924 - WARNING - Empty pronunciation value for word ID 1779
+2025-03-31 09:09:50,942 - WARNING - Empty pronunciation value for word ID 1780
+2025-03-31 09:09:50,954 - WARNING - Empty pronunciation value for word ID 1781
+2025-03-31 09:09:50,960 - WARNING - Empty pronunciation value for word ID 1782
+2025-03-31 09:09:50,965 - WARNING - Empty pronunciation value for word ID 1783
+2025-03-31 09:09:50,971 - WARNING - Empty pronunciation value for word ID 1784
+2025-03-31 09:09:50,975 - WARNING - Empty pronunciation value for word ID 1563
+2025-03-31 09:09:50,986 - WARNING - Empty pronunciation value for word ID 1785
+2025-03-31 09:09:50,996 - WARNING - Empty pronunciation value for word ID 1787
+2025-03-31 09:09:51,002 - WARNING - Empty pronunciation value for word ID 1788
+2025-03-31 09:09:51,007 - WARNING - Empty pronunciation value for word ID 1789
+2025-03-31 09:09:51,013 - WARNING - Empty pronunciation value for word ID 1790
+2025-03-31 09:09:51,019 - WARNING - Empty pronunciation value for word ID 1791
+2025-03-31 09:09:51,025 - WARNING - Empty pronunciation value for word ID 1792
+2025-03-31 09:09:51,036 - WARNING - Empty pronunciation value for word ID 1794
+2025-03-31 09:09:51,042 - WARNING - Empty pronunciation value for word ID 1795
+2025-03-31 09:09:51,047 - WARNING - Empty pronunciation value for word ID 1796
+2025-03-31 09:09:51,052 - WARNING - Empty pronunciation value for word ID 1671
+2025-03-31 09:09:51,057 - WARNING - Empty pronunciation value for word ID 1797
+2025-03-31 09:09:51,062 - WARNING - Empty pronunciation value for word ID 1798
+2025-03-31 09:09:51,074 - WARNING - Empty pronunciation value for word ID 1800
+2025-03-31 09:09:51,080 - WARNING - Empty pronunciation value for word ID 1801
+2025-03-31 09:09:51,093 - WARNING - Empty pronunciation value for word ID 1804
+2025-03-31 09:09:51,098 - WARNING - Empty pronunciation value for word ID 1805
+2025-03-31 09:09:51,104 - WARNING - Empty pronunciation value for word ID 1806
+2025-03-31 09:09:51,110 - WARNING - Empty pronunciation value for word ID 1807
+2025-03-31 09:09:51,115 - WARNING - Empty pronunciation value for word ID 1808
+2025-03-31 09:09:51,121 - WARNING - Empty pronunciation value for word ID 1809
+2025-03-31 09:09:51,126 - WARNING - Empty pronunciation value for word ID 1810
+2025-03-31 09:09:51,131 - WARNING - Empty pronunciation value for word ID 1811
+2025-03-31 09:09:51,137 - WARNING - Empty pronunciation value for word ID 1812
+2025-03-31 09:09:51,144 - WARNING - Empty pronunciation value for word ID 1813
+2025-03-31 09:09:51,150 - WARNING - Empty pronunciation value for word ID 1814
+2025-03-31 09:09:51,155 - WARNING - Empty pronunciation value for word ID 1281
+2025-03-31 09:09:51,164 - WARNING - Empty pronunciation value for word ID 1799
+2025-03-31 09:09:51,174 - WARNING - Empty pronunciation value for word ID 1815
+2025-03-31 09:09:51,180 - WARNING - Empty pronunciation value for word ID 1816
+2025-03-31 09:09:51,189 - WARNING - Empty pronunciation value for word ID 1686
+2025-03-31 09:09:51,201 - WARNING - Empty pronunciation value for word ID 1818
+2025-03-31 09:09:51,207 - WARNING - Empty pronunciation value for word ID 1819
+2025-03-31 09:09:51,214 - WARNING - Empty pronunciation value for word ID 1820
+2025-03-31 09:09:51,220 - WARNING - Empty pronunciation value for word ID 1821
+2025-03-31 09:09:51,243 - WARNING - Empty pronunciation value for word ID 1824
+2025-03-31 09:09:51,252 - WARNING - Empty pronunciation value for word ID 1825
+2025-03-31 09:09:51,257 - WARNING - Empty pronunciation value for word ID 1542
+2025-03-31 09:09:51,264 - WARNING - Empty pronunciation value for word ID 1826
+2025-03-31 09:09:51,271 - WARNING - Empty pronunciation value for word ID 1827
+2025-03-31 09:09:51,278 - WARNING - Empty pronunciation value for word ID 1828
+2025-03-31 09:09:51,285 - WARNING - Empty pronunciation value for word ID 1829
+2025-03-31 09:09:51,296 - WARNING - Empty pronunciation value for word ID 1831
+2025-03-31 09:09:51,302 - WARNING - Empty pronunciation value for word ID 1832
+2025-03-31 09:09:51,308 - WARNING - Empty pronunciation value for word ID 1822
+2025-03-31 09:09:51,325 - WARNING - Empty pronunciation value for word ID 1833
+2025-03-31 09:09:51,331 - WARNING - Empty pronunciation value for word ID 1823
+2025-03-31 09:09:51,350 - WARNING - Empty pronunciation value for word ID 1834
+2025-03-31 09:09:51,356 - WARNING - Empty pronunciation value for word ID 1835
+2025-03-31 09:09:51,366 - WARNING - Empty pronunciation value for word ID 1836
+2025-03-31 09:09:51,373 - WARNING - Empty pronunciation value for word ID 1837
+2025-03-31 09:09:51,381 - WARNING - Empty pronunciation value for word ID 1838
+2025-03-31 09:09:51,388 - WARNING - Empty pronunciation value for word ID 1839
+2025-03-31 09:09:51,401 - WARNING - Empty pronunciation value for word ID 1840
+2025-03-31 09:09:51,408 - WARNING - Empty pronunciation value for word ID 1841
+2025-03-31 09:09:51,430 - WARNING - Empty pronunciation value for word ID 1843
+2025-03-31 09:09:51,452 - WARNING - Empty pronunciation value for word ID 1845
+2025-03-31 09:09:51,459 - WARNING - Empty pronunciation value for word ID 1846
+2025-03-31 09:09:51,464 - WARNING - Empty pronunciation value for word ID 1847
+2025-03-31 09:09:51,478 - WARNING - Empty pronunciation value for word ID 1848
+2025-03-31 09:09:51,490 - WARNING - Empty pronunciation value for word ID 1849
+2025-03-31 09:09:51,496 - WARNING - Empty pronunciation value for word ID 1850
+2025-03-31 09:09:51,502 - WARNING - Empty pronunciation value for word ID 1851
+2025-03-31 09:09:51,509 - WARNING - Empty pronunciation value for word ID 1852
+2025-03-31 09:09:51,515 - WARNING - Empty pronunciation value for word ID 1853
+2025-03-31 09:09:51,521 - WARNING - Empty pronunciation value for word ID 1854
+2025-03-31 09:09:51,527 - WARNING - Empty pronunciation value for word ID 1855
+2025-03-31 09:09:51,533 - WARNING - Empty pronunciation value for word ID 1856
+2025-03-31 09:09:51,539 - WARNING - Empty pronunciation value for word ID 1857
+2025-03-31 09:09:51,544 - WARNING - Empty pronunciation value for word ID 1544
+2025-03-31 09:09:51,556 - WARNING - Empty pronunciation value for word ID 1858
+2025-03-31 09:09:51,561 - WARNING - Empty pronunciation value for word ID 1859
+2025-03-31 09:09:51,567 - WARNING - Empty pronunciation value for word ID 1860
+2025-03-31 09:09:51,573 - WARNING - Empty pronunciation value for word ID 1861
+2025-03-31 09:09:51,580 - WARNING - Empty pronunciation value for word ID 1862
+2025-03-31 09:09:51,586 - WARNING - Empty pronunciation value for word ID 1863
+2025-03-31 09:09:51,592 - WARNING - Empty pronunciation value for word ID 1864
+2025-03-31 09:09:51,615 - WARNING - Empty pronunciation value for word ID 1866
+2025-03-31 09:09:51,621 - WARNING - Empty pronunciation value for word ID 1867
+2025-03-31 09:09:51,627 - WARNING - Empty pronunciation value for word ID 1868
+2025-03-31 09:09:51,632 - WARNING - Empty pronunciation value for word ID 1869
+2025-03-31 09:09:51,638 - WARNING - Empty pronunciation value for word ID 1870
+2025-03-31 09:09:51,643 - WARNING - Empty pronunciation value for word ID 1241
+2025-03-31 09:09:51,647 - WARNING - Empty pronunciation value for word ID 1413
+2025-03-31 09:09:51,658 - WARNING - Empty pronunciation value for word ID 1871
+2025-03-31 09:09:51,664 - WARNING - Empty pronunciation value for word ID 1872
+2025-03-31 09:09:51,670 - WARNING - Empty pronunciation value for word ID 1873
+2025-03-31 09:09:51,676 - WARNING - Empty pronunciation value for word ID 1874
+2025-03-31 09:09:51,680 - WARNING - Empty pronunciation value for word ID 1698
+2025-03-31 09:09:51,694 - WARNING - Empty pronunciation value for word ID 1875
+2025-03-31 09:09:51,700 - WARNING - Empty pronunciation value for word ID 1876
+2025-03-31 09:09:51,706 - WARNING - Empty pronunciation value for word ID 1877
+2025-03-31 09:09:51,712 - WARNING - Empty pronunciation value for word ID 1878
+2025-03-31 09:09:51,721 - WARNING - Empty pronunciation value for word ID 1588
+2025-03-31 09:09:51,733 - WARNING - Empty pronunciation value for word ID 1880
+2025-03-31 09:09:51,738 - WARNING - Empty pronunciation value for word ID 1881
+2025-03-31 09:09:51,748 - WARNING - Empty pronunciation value for word ID 1883
+2025-03-31 09:09:51,753 - WARNING - Empty pronunciation value for word ID 1884
+2025-03-31 09:09:51,758 - WARNING - Empty pronunciation value for word ID 1885
+2025-03-31 09:09:51,763 - WARNING - Empty pronunciation value for word ID 1886
+2025-03-31 09:09:51,773 - WARNING - Empty pronunciation value for word ID 1888
+2025-03-31 09:09:51,779 - WARNING - Empty pronunciation value for word ID 1889
+2025-03-31 09:09:51,785 - WARNING - Empty pronunciation value for word ID 1890
+2025-03-31 09:09:51,791 - WARNING - Empty pronunciation value for word ID 1891
+2025-03-31 09:09:51,798 - WARNING - Empty pronunciation value for word ID 1892
+2025-03-31 09:09:51,804 - WARNING - Empty pronunciation value for word ID 1893
+2025-03-31 09:09:51,810 - WARNING - Empty pronunciation value for word ID 1894
+2025-03-31 09:09:51,815 - WARNING - Empty pronunciation value for word ID 1895
+2025-03-31 09:09:51,818 - INFO - Processed ..\data\marayum_dictionaries\cebuano-english_processed.json:
+2025-03-31 09:09:51,819 - INFO -   Entries processed: 680
+2025-03-31 09:09:51,819 - INFO -   Definitions added: 673
+2025-03-31 09:09:51,819 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:51,820 - INFO -   Examples added: 1379
+2025-03-31 09:09:51,820 - INFO -   Relations added: 172
+2025-03-31 09:09:51,820 - INFO -   Entries skipped: 0
+2025-03-31 09:09:51,820 - INFO -   Errors: 0
+2025-03-31 09:09:51,821 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\cebuano-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:51,821 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\kinaray-a-english_processed.json
+2025-03-31 09:09:51,835 - INFO - Found 600 words in kinaray-a-english
+2025-03-31 09:09:51,835 - INFO - Processing Marayum dictionary file: ..\data\marayum_dictionaries\kinaray-a-english_processed.json
+2025-03-31 09:09:51,848 - WARNING - No language code mapping found for: Kinaray-a
+2025-03-31 09:09:51,849 - INFO - Processing Kinaray-a dictionary (code: kinaray)
+2025-03-31 09:09:51,852 - WARNING - Empty pronunciation value for word ID 1896
+2025-03-31 09:09:51,857 - WARNING - Empty pronunciation value for word ID 1897
+2025-03-31 09:09:51,884 - WARNING - Empty pronunciation value for word ID 1901
+2025-03-31 09:09:51,890 - WARNING - Empty pronunciation value for word ID 1902
+2025-03-31 09:09:51,900 - WARNING - Empty pronunciation value for word ID 1904
+2025-03-31 09:09:51,910 - WARNING - Empty pronunciation value for word ID 1906
+2025-03-31 09:09:51,915 - WARNING - Empty pronunciation value for word ID 1907
+2025-03-31 09:09:51,921 - WARNING - Empty pronunciation value for word ID 1908
+2025-03-31 09:09:51,926 - WARNING - Empty pronunciation value for word ID 1909
+2025-03-31 09:09:51,931 - WARNING - Empty pronunciation value for word ID 1910
+2025-03-31 09:09:51,937 - WARNING - Empty pronunciation value for word ID 1911
+2025-03-31 09:09:51,943 - WARNING - Empty pronunciation value for word ID 1912
+2025-03-31 09:09:51,964 - WARNING - Empty pronunciation value for word ID 1916
+2025-03-31 09:09:51,970 - WARNING - Empty pronunciation value for word ID 1917
+2025-03-31 09:09:51,981 - WARNING - Empty pronunciation value for word ID 1919
+2025-03-31 09:09:51,987 - WARNING - Empty pronunciation value for word ID 1920
+2025-03-31 09:09:51,993 - WARNING - Empty pronunciation value for word ID 1921
+2025-03-31 09:09:51,999 - WARNING - Empty pronunciation value for word ID 1922
+2025-03-31 09:09:52,004 - WARNING - Empty pronunciation value for word ID 1923
+2025-03-31 09:09:52,010 - WARNING - Empty pronunciation value for word ID 1924
+2025-03-31 09:09:52,016 - WARNING - Empty pronunciation value for word ID 1925
+2025-03-31 09:09:52,024 - WARNING - Empty pronunciation value for word ID 1927
+2025-03-31 09:09:52,030 - WARNING - Empty pronunciation value for word ID 1928
+2025-03-31 09:09:52,036 - WARNING - Empty pronunciation value for word ID 1929
+2025-03-31 09:09:52,041 - WARNING - Empty pronunciation value for word ID 1930
+2025-03-31 09:09:52,047 - WARNING - Empty pronunciation value for word ID 1931
+2025-03-31 09:09:52,071 - WARNING - Empty pronunciation value for word ID 1936
+2025-03-31 09:09:52,076 - WARNING - Empty pronunciation value for word ID 1937
+2025-03-31 09:09:52,096 - WARNING - Empty pronunciation value for word ID 1940
+2025-03-31 09:09:52,102 - WARNING - Empty pronunciation value for word ID 1941
+2025-03-31 09:09:52,108 - WARNING - Empty pronunciation value for word ID 1942
+2025-03-31 09:09:52,113 - WARNING - Empty pronunciation value for word ID 1943
+2025-03-31 09:09:52,124 - WARNING - Empty pronunciation value for word ID 1945
+2025-03-31 09:09:52,128 - WARNING - Empty pronunciation value for word ID 1946
+2025-03-31 09:09:52,133 - WARNING - Empty pronunciation value for word ID 1947
+2025-03-31 09:09:52,139 - WARNING - Empty pronunciation value for word ID 1948
+2025-03-31 09:09:52,145 - WARNING - Empty pronunciation value for word ID 1949
+2025-03-31 09:09:52,151 - WARNING - Empty pronunciation value for word ID 1950
+2025-03-31 09:09:52,156 - WARNING - Empty pronunciation value for word ID 1951
+2025-03-31 09:09:52,161 - WARNING - Empty pronunciation value for word ID 1952
+2025-03-31 09:09:52,177 - WARNING - Empty pronunciation value for word ID 1955
+2025-03-31 09:09:52,182 - WARNING - Empty pronunciation value for word ID 1956
+2025-03-31 09:09:52,187 - WARNING - Empty pronunciation value for word ID 1957
+2025-03-31 09:09:52,197 - WARNING - Empty pronunciation value for word ID 1959
+2025-03-31 09:09:52,203 - WARNING - Empty pronunciation value for word ID 1960
+2025-03-31 09:09:52,209 - WARNING - Empty pronunciation value for word ID 1961
+2025-03-31 09:09:52,215 - WARNING - Empty pronunciation value for word ID 1962
+2025-03-31 09:09:52,221 - WARNING - Empty pronunciation value for word ID 1963
+2025-03-31 09:09:52,227 - WARNING - Empty pronunciation value for word ID 1964
+2025-03-31 09:09:52,234 - WARNING - Empty pronunciation value for word ID 1965
+2025-03-31 09:09:52,240 - WARNING - Empty pronunciation value for word ID 1966
+2025-03-31 09:09:52,245 - WARNING - Empty pronunciation value for word ID 1967
+2025-03-31 09:09:52,250 - WARNING - Empty pronunciation value for word ID 1968
+2025-03-31 09:09:52,260 - WARNING - Empty pronunciation value for word ID 1970
+2025-03-31 09:09:52,265 - WARNING - Empty pronunciation value for word ID 1971
+2025-03-31 09:09:52,271 - WARNING - Empty pronunciation value for word ID 1972
+2025-03-31 09:09:52,276 - WARNING - Empty pronunciation value for word ID 1973
+2025-03-31 09:09:52,286 - WARNING - Empty pronunciation value for word ID 1975
+2025-03-31 09:09:52,291 - WARNING - Empty pronunciation value for word ID 1976
+2025-03-31 09:09:52,304 - WARNING - Empty pronunciation value for word ID 1979
+2025-03-31 09:09:52,310 - WARNING - Empty pronunciation value for word ID 1980
+2025-03-31 09:09:52,316 - WARNING - Empty pronunciation value for word ID 1981
+2025-03-31 09:09:52,321 - WARNING - Empty pronunciation value for word ID 1982
+2025-03-31 09:09:52,325 - WARNING - Empty pronunciation value for word ID 1983
+2025-03-31 09:09:52,335 - WARNING - Empty pronunciation value for word ID 1985
+2025-03-31 09:09:52,341 - WARNING - Empty pronunciation value for word ID 1938
+2025-03-31 09:09:52,394 - WARNING - Empty pronunciation value for word ID 1993
+2025-03-31 09:09:52,427 - WARNING - Empty pronunciation value for word ID 1999
+2025-03-31 09:09:52,431 - WARNING - Empty pronunciation value for word ID 2000
+2025-03-31 09:09:52,436 - WARNING - Empty pronunciation value for word ID 2001
+2025-03-31 09:09:52,446 - WARNING - Empty pronunciation value for word ID 2003
+2025-03-31 09:09:52,453 - WARNING - Empty pronunciation value for word ID 2004
+2025-03-31 09:09:52,458 - WARNING - Empty pronunciation value for word ID 2005
+2025-03-31 09:09:52,472 - WARNING - Empty pronunciation value for word ID 2008
+2025-03-31 09:09:52,477 - WARNING - Empty pronunciation value for word ID 2009
+2025-03-31 09:09:52,482 - WARNING - Empty pronunciation value for word ID 2010
+2025-03-31 09:09:52,487 - WARNING - Empty pronunciation value for word ID 2011
+2025-03-31 09:09:52,492 - WARNING - Empty pronunciation value for word ID 2012
+2025-03-31 09:09:52,501 - WARNING - Empty pronunciation value for word ID 2014
+2025-03-31 09:09:52,520 - WARNING - Empty pronunciation value for word ID 2016
+2025-03-31 09:09:52,525 - WARNING - Empty pronunciation value for word ID 2017
+2025-03-31 09:09:52,530 - WARNING - Empty pronunciation value for word ID 2018
+2025-03-31 09:09:52,535 - WARNING - Empty pronunciation value for word ID 2019
+2025-03-31 09:09:52,544 - WARNING - Empty pronunciation value for word ID 2021
+2025-03-31 09:09:52,550 - WARNING - Empty pronunciation value for word ID 2022
+2025-03-31 09:09:52,556 - WARNING - Empty pronunciation value for word ID 2023
+2025-03-31 09:09:52,563 - WARNING - Empty pronunciation value for word ID 2024
+2025-03-31 09:09:52,573 - WARNING - Empty pronunciation value for word ID 2026
+2025-03-31 09:09:52,578 - WARNING - Empty pronunciation value for word ID 2027
+2025-03-31 09:09:52,593 - WARNING - Empty pronunciation value for word ID 2030
+2025-03-31 09:09:52,598 - WARNING - Empty pronunciation value for word ID 2031
+2025-03-31 09:09:52,606 - WARNING - Empty pronunciation value for word ID 2033
+2025-03-31 09:09:52,611 - WARNING - Empty pronunciation value for word ID 2034
+2025-03-31 09:09:52,616 - WARNING - Empty pronunciation value for word ID 2035
+2025-03-31 09:09:52,623 - WARNING - Empty pronunciation value for word ID 2037
+2025-03-31 09:09:52,629 - WARNING - Empty pronunciation value for word ID 2038
+2025-03-31 09:09:52,634 - WARNING - Empty pronunciation value for word ID 2039
+2025-03-31 09:09:52,640 - WARNING - Empty pronunciation value for word ID 2040
+2025-03-31 09:09:52,651 - WARNING - Empty pronunciation value for word ID 2042
+2025-03-31 09:09:52,657 - WARNING - Empty pronunciation value for word ID 2043
+2025-03-31 09:09:52,662 - WARNING - Empty pronunciation value for word ID 2044
+2025-03-31 09:09:52,668 - WARNING - Empty pronunciation value for word ID 2045
+2025-03-31 09:09:52,674 - WARNING - Empty pronunciation value for word ID 2046
+2025-03-31 09:09:52,679 - WARNING - Empty pronunciation value for word ID 2047
+2025-03-31 09:09:52,683 - WARNING - Empty pronunciation value for word ID 2048
+2025-03-31 09:09:52,689 - WARNING - Empty pronunciation value for word ID 2049
+2025-03-31 09:09:52,695 - WARNING - Empty pronunciation value for word ID 2050
+2025-03-31 09:09:52,716 - WARNING - Empty pronunciation value for word ID 2052
+2025-03-31 09:09:52,721 - WARNING - Empty pronunciation value for word ID 2053
+2025-03-31 09:09:52,763 - WARNING - Empty pronunciation value for word ID 2058
+2025-03-31 09:09:52,768 - WARNING - Empty pronunciation value for word ID 2059
+2025-03-31 09:09:52,773 - WARNING - Empty pronunciation value for word ID 2060
+2025-03-31 09:09:52,779 - WARNING - Empty pronunciation value for word ID 2061
+2025-03-31 09:09:52,784 - WARNING - Empty pronunciation value for word ID 2062
+2025-03-31 09:09:52,789 - WARNING - Empty pronunciation value for word ID 2063
+2025-03-31 09:09:52,795 - WARNING - Empty pronunciation value for word ID 2064
+2025-03-31 09:09:52,804 - WARNING - Skipping self-relationship for word ID 2064
+2025-03-31 09:09:52,805 - WARNING - Skipping self-relationship for word ID 2064
+2025-03-31 09:09:52,836 - WARNING - Empty pronunciation value for word ID 2067
+2025-03-31 09:09:52,841 - WARNING - Empty pronunciation value for word ID 2068
+2025-03-31 09:09:52,850 - WARNING - Empty pronunciation value for word ID 2070
+2025-03-31 09:09:52,874 - WARNING - Empty pronunciation value for word ID 2075
+2025-03-31 09:09:52,879 - WARNING - Empty pronunciation value for word ID 2076
+2025-03-31 09:09:52,887 - WARNING - Empty pronunciation value for word ID 2077
+2025-03-31 09:09:52,892 - WARNING - Empty pronunciation value for word ID 2078
+2025-03-31 09:09:52,898 - WARNING - Empty pronunciation value for word ID 2079
+2025-03-31 09:09:52,922 - WARNING - Empty pronunciation value for word ID 2083
+2025-03-31 09:09:52,946 - WARNING - Empty pronunciation value for word ID 2088
+2025-03-31 09:09:52,954 - WARNING - Empty pronunciation value for word ID 2089
+2025-03-31 09:09:52,958 - WARNING - Empty pronunciation value for word ID 2090
+2025-03-31 09:09:52,963 - WARNING - Empty pronunciation value for word ID 2091
+2025-03-31 09:09:52,969 - WARNING - Empty pronunciation value for word ID 2092
+2025-03-31 09:09:52,977 - WARNING - Empty pronunciation value for word ID 2094
+2025-03-31 09:09:52,981 - WARNING - Empty pronunciation value for word ID 2095
+2025-03-31 09:09:52,998 - WARNING - Empty pronunciation value for word ID 2098
+2025-03-31 09:09:53,008 - WARNING - Empty pronunciation value for word ID 2100
+2025-03-31 09:09:53,013 - WARNING - Empty pronunciation value for word ID 2101
+2025-03-31 09:09:53,055 - WARNING - Empty pronunciation value for word ID 2107
+2025-03-31 09:09:53,060 - WARNING - Empty pronunciation value for word ID 2108
+2025-03-31 09:09:53,065 - WARNING - Empty pronunciation value for word ID 2109
+2025-03-31 09:09:53,071 - WARNING - Empty pronunciation value for word ID 2110
+2025-03-31 09:09:53,087 - WARNING - Empty pronunciation value for word ID 2113
+2025-03-31 09:09:53,093 - WARNING - Empty pronunciation value for word ID 2114
+2025-03-31 09:09:53,102 - WARNING - Empty pronunciation value for word ID 2116
+2025-03-31 09:09:53,109 - WARNING - Empty pronunciation value for word ID 2117
+2025-03-31 09:09:53,114 - WARNING - Empty pronunciation value for word ID 2118
+2025-03-31 09:09:53,123 - WARNING - Empty pronunciation value for word ID 2120
+2025-03-31 09:09:53,132 - WARNING - Empty pronunciation value for word ID 2122
+2025-03-31 09:09:53,148 - WARNING - Empty pronunciation value for word ID 2125
+2025-03-31 09:09:53,154 - WARNING - Empty pronunciation value for word ID 2126
+2025-03-31 09:09:53,163 - WARNING - Empty pronunciation value for word ID 2128
+2025-03-31 09:09:53,187 - WARNING - Empty pronunciation value for word ID 2129
+2025-03-31 09:09:53,192 - WARNING - Empty pronunciation value for word ID 2130
+2025-03-31 09:09:53,197 - WARNING - Empty pronunciation value for word ID 2131
+2025-03-31 09:09:53,202 - WARNING - Empty pronunciation value for word ID 2132
+2025-03-31 09:09:53,207 - WARNING - Empty pronunciation value for word ID 2133
+2025-03-31 09:09:53,229 - WARNING - Empty pronunciation value for word ID 2137
+2025-03-31 09:09:53,234 - WARNING - Empty pronunciation value for word ID 2138
+2025-03-31 09:09:53,254 - WARNING - Empty pronunciation value for word ID 2140
+2025-03-31 09:09:53,260 - WARNING - Empty pronunciation value for word ID 2141
+2025-03-31 09:09:53,266 - WARNING - Empty pronunciation value for word ID 2142
+2025-03-31 09:09:53,298 - WARNING - Empty pronunciation value for word ID 2147
+2025-03-31 09:09:53,318 - WARNING - Empty pronunciation value for word ID 2151
+2025-03-31 09:09:53,324 - WARNING - Empty pronunciation value for word ID 2152
+2025-03-31 09:09:53,330 - WARNING - Empty pronunciation value for word ID 2153
+2025-03-31 09:09:53,335 - WARNING - Empty pronunciation value for word ID 2154
+2025-03-31 09:09:53,340 - WARNING - Empty pronunciation value for word ID 2155
+2025-03-31 09:09:53,350 - WARNING - Empty pronunciation value for word ID 2157
+2025-03-31 09:09:53,357 - WARNING - Empty pronunciation value for word ID 2158
+2025-03-31 09:09:53,362 - WARNING - Empty pronunciation value for word ID 2159
+2025-03-31 09:09:53,367 - WARNING - Empty pronunciation value for word ID 2160
+2025-03-31 09:09:53,372 - WARNING - Empty pronunciation value for word ID 2161
+2025-03-31 09:09:53,377 - WARNING - Empty pronunciation value for word ID 2162
+2025-03-31 09:09:53,382 - WARNING - Empty pronunciation value for word ID 2163
+2025-03-31 09:09:53,392 - WARNING - Empty pronunciation value for word ID 2165
+2025-03-31 09:09:53,397 - WARNING - Empty pronunciation value for word ID 2166
+2025-03-31 09:09:53,402 - WARNING - Empty pronunciation value for word ID 2167
+2025-03-31 09:09:53,408 - WARNING - Empty pronunciation value for word ID 2168
+2025-03-31 09:09:53,414 - WARNING - Empty pronunciation value for word ID 2169
+2025-03-31 09:09:53,419 - WARNING - Empty pronunciation value for word ID 2170
+2025-03-31 09:09:53,426 - WARNING - Empty pronunciation value for word ID 2172
+2025-03-31 09:09:53,433 - WARNING - Empty pronunciation value for word ID 2173
+2025-03-31 09:09:53,438 - WARNING - Empty pronunciation value for word ID 2174
+2025-03-31 09:09:53,443 - WARNING - Empty pronunciation value for word ID 2175
+2025-03-31 09:09:53,454 - WARNING - Empty pronunciation value for word ID 2177
+2025-03-31 09:09:53,459 - WARNING - Empty pronunciation value for word ID 2178
+2025-03-31 09:09:53,472 - WARNING - Empty pronunciation value for word ID 2180
+2025-03-31 09:09:53,477 - WARNING - Empty pronunciation value for word ID 2181
+2025-03-31 09:09:53,483 - WARNING - Empty pronunciation value for word ID 2182
+2025-03-31 09:09:53,497 - WARNING - Empty pronunciation value for word ID 2185
+2025-03-31 09:09:53,501 - WARNING - Empty pronunciation value for word ID 2186
+2025-03-31 09:09:53,506 - WARNING - Empty pronunciation value for word ID 2187
+2025-03-31 09:09:53,511 - WARNING - Empty pronunciation value for word ID 2188
+2025-03-31 09:09:53,515 - WARNING - Empty pronunciation value for word ID 2189
+2025-03-31 09:09:53,522 - WARNING - Empty pronunciation value for word ID 2190
+2025-03-31 09:09:53,533 - WARNING - Empty pronunciation value for word ID 2192
+2025-03-31 09:09:53,545 - WARNING - Empty pronunciation value for word ID 2194
+2025-03-31 09:09:53,552 - WARNING - Empty pronunciation value for word ID 2195
+2025-03-31 09:09:53,559 - WARNING - Empty pronunciation value for word ID 2196
+2025-03-31 09:09:53,564 - WARNING - Empty pronunciation value for word ID 2197
+2025-03-31 09:09:53,576 - WARNING - Empty pronunciation value for word ID 2199
+2025-03-31 09:09:53,582 - WARNING - Empty pronunciation value for word ID 2200
+2025-03-31 09:09:53,595 - WARNING - Empty pronunciation value for word ID 2202
+2025-03-31 09:09:53,602 - WARNING - Empty pronunciation value for word ID 2203
+2025-03-31 09:09:53,609 - WARNING - Empty pronunciation value for word ID 2204
+2025-03-31 09:09:53,628 - WARNING - Skipping self-relationship for word ID 2205
+2025-03-31 09:09:53,629 - WARNING - Skipping self-relationship for word ID 2205
+2025-03-31 09:09:53,632 - WARNING - Empty pronunciation value for word ID 2207
+2025-03-31 09:09:53,644 - WARNING - Empty pronunciation value for word ID 2209
+2025-03-31 09:09:53,652 - WARNING - Empty pronunciation value for word ID 2210
+2025-03-31 09:09:53,657 - WARNING - Empty pronunciation value for word ID 2211
+2025-03-31 09:09:53,701 - WARNING - Empty pronunciation value for word ID 2216
+2025-03-31 09:09:53,721 - WARNING - Empty pronunciation value for word ID 2217
+2025-03-31 09:09:53,740 - WARNING - Empty pronunciation value for word ID 2219
+2025-03-31 09:09:53,747 - WARNING - Empty pronunciation value for word ID 2220
+2025-03-31 09:09:53,753 - WARNING - Empty pronunciation value for word ID 2221
+2025-03-31 09:09:53,758 - WARNING - Empty pronunciation value for word ID 2218
+2025-03-31 09:09:53,783 - WARNING - Empty pronunciation value for word ID 2222
+2025-03-31 09:09:53,789 - WARNING - Empty pronunciation value for word ID 2223
+2025-03-31 09:09:53,795 - WARNING - Empty pronunciation value for word ID 2224
+2025-03-31 09:09:53,809 - WARNING - Empty pronunciation value for word ID 2226
+2025-03-31 09:09:53,815 - WARNING - Empty pronunciation value for word ID 2227
+2025-03-31 09:09:53,823 - WARNING - Empty pronunciation value for word ID 2229
+2025-03-31 09:09:53,827 - WARNING - Empty pronunciation value for word ID 2230
+2025-03-31 09:09:53,833 - WARNING - Empty pronunciation value for word ID 2231
+2025-03-31 09:09:53,840 - WARNING - Empty pronunciation value for word ID 2232
+2025-03-31 09:09:53,846 - WARNING - Empty pronunciation value for word ID 2233
+2025-03-31 09:09:53,853 - WARNING - Empty pronunciation value for word ID 2234
+2025-03-31 09:09:53,859 - WARNING - Empty pronunciation value for word ID 2235
+2025-03-31 09:09:53,875 - WARNING - Empty pronunciation value for word ID 2237
+2025-03-31 09:09:53,900 - WARNING - Empty pronunciation value for word ID 2241
+2025-03-31 09:09:53,913 - WARNING - Empty pronunciation value for word ID 2243
+2025-03-31 09:09:53,924 - WARNING - Empty pronunciation value for word ID 2245
+2025-03-31 09:09:53,930 - WARNING - Empty pronunciation value for word ID 2246
+2025-03-31 09:09:53,937 - WARNING - Empty pronunciation value for word ID 2247
+2025-03-31 09:09:53,944 - WARNING - Empty pronunciation value for word ID 2248
+2025-03-31 09:09:53,950 - WARNING - Empty pronunciation value for word ID 2249
+2025-03-31 09:09:53,957 - WARNING - Empty pronunciation value for word ID 2250
+2025-03-31 09:09:53,964 - WARNING - Empty pronunciation value for word ID 2251
+2025-03-31 09:09:53,975 - WARNING - Empty pronunciation value for word ID 2253
+2025-03-31 09:09:53,983 - WARNING - Empty pronunciation value for word ID 2254
+2025-03-31 09:09:53,995 - WARNING - Empty pronunciation value for word ID 2214
+2025-03-31 09:09:54,019 - WARNING - Empty pronunciation value for word ID 2256
+2025-03-31 09:09:54,025 - WARNING - Empty pronunciation value for word ID 2257
+2025-03-31 09:09:54,032 - WARNING - Empty pronunciation value for word ID 2258
+2025-03-31 09:09:54,044 - WARNING - Empty pronunciation value for word ID 1992
+2025-03-31 09:09:54,056 - WARNING - Empty pronunciation value for word ID 2260
+2025-03-31 09:09:54,062 - WARNING - Empty pronunciation value for word ID 2261
+2025-03-31 09:09:54,069 - WARNING - Empty pronunciation value for word ID 2262
+2025-03-31 09:09:54,103 - WARNING - Empty pronunciation value for word ID 2266
+2025-03-31 09:09:54,109 - WARNING - Empty pronunciation value for word ID 2267
+2025-03-31 09:09:54,120 - WARNING - Empty pronunciation value for word ID 2269
+2025-03-31 09:09:54,126 - WARNING - Empty pronunciation value for word ID 2270
+2025-03-31 09:09:54,160 - WARNING - Empty pronunciation value for word ID 2274
+2025-03-31 09:09:54,171 - WARNING - Empty pronunciation value for word ID 2276
+2025-03-31 09:09:54,179 - WARNING - Empty pronunciation value for word ID 2278
+2025-03-31 09:09:54,186 - WARNING - Empty pronunciation value for word ID 2279
+2025-03-31 09:09:54,192 - WARNING - Empty pronunciation value for word ID 2280
+2025-03-31 09:09:54,204 - WARNING - Empty pronunciation value for word ID 2282
+2025-03-31 09:09:54,210 - WARNING - Empty pronunciation value for word ID 2283
+2025-03-31 09:09:54,216 - WARNING - Empty pronunciation value for word ID 2284
+2025-03-31 09:09:54,221 - WARNING - Empty pronunciation value for word ID 2285
+2025-03-31 09:09:54,235 - WARNING - Empty pronunciation value for word ID 2286
+2025-03-31 09:09:54,242 - WARNING - Empty pronunciation value for word ID 2287
+2025-03-31 09:09:54,267 - WARNING - Empty pronunciation value for word ID 2288
+2025-03-31 09:09:54,274 - WARNING - Empty pronunciation value for word ID 2289
+2025-03-31 09:09:54,280 - WARNING - Empty pronunciation value for word ID 2290
+2025-03-31 09:09:54,287 - WARNING - Empty pronunciation value for word ID 2291
+2025-03-31 09:09:54,294 - WARNING - Empty pronunciation value for word ID 2292
+2025-03-31 09:09:54,301 - WARNING - Empty pronunciation value for word ID 2293
+2025-03-31 09:09:54,309 - WARNING - Empty pronunciation value for word ID 2294
+2025-03-31 09:09:54,315 - WARNING - Empty pronunciation value for word ID 2295
+2025-03-31 09:09:54,322 - WARNING - Empty pronunciation value for word ID 2296
+2025-03-31 09:09:54,327 - WARNING - Empty pronunciation value for word ID 2297
+2025-03-31 09:09:54,334 - WARNING - Empty pronunciation value for word ID 2298
+2025-03-31 09:09:54,340 - WARNING - Empty pronunciation value for word ID 2299
+2025-03-31 09:09:54,347 - WARNING - Empty pronunciation value for word ID 2300
+2025-03-31 09:09:54,365 - WARNING - Empty pronunciation value for word ID 2302
+2025-03-31 09:09:54,377 - WARNING - Empty pronunciation value for word ID 2056
+2025-03-31 09:09:54,389 - WARNING - Empty pronunciation value for word ID 2073
+2025-03-31 09:09:54,407 - WARNING - Empty pronunciation value for word ID 2304
+2025-03-31 09:09:54,413 - WARNING - Empty pronunciation value for word ID 2305
+2025-03-31 09:09:54,428 - WARNING - Empty pronunciation value for word ID 2306
+2025-03-31 09:09:54,439 - WARNING - Empty pronunciation value for word ID 2308
+2025-03-31 09:09:54,445 - WARNING - Empty pronunciation value for word ID 2309
+2025-03-31 09:09:54,450 - WARNING - Empty pronunciation value for word ID 2310
+2025-03-31 09:09:54,456 - WARNING - Empty pronunciation value for word ID 2311
+2025-03-31 09:09:54,463 - WARNING - Empty pronunciation value for word ID 2312
+2025-03-31 09:09:54,474 - WARNING - Empty pronunciation value for word ID 2314
+2025-03-31 09:09:54,480 - WARNING - Empty pronunciation value for word ID 2315
+2025-03-31 09:09:54,487 - WARNING - Empty pronunciation value for word ID 2316
+2025-03-31 09:09:54,491 - WARNING - Empty pronunciation value for word ID 2317
+2025-03-31 09:09:54,497 - WARNING - Empty pronunciation value for word ID 2318
+2025-03-31 09:09:54,503 - WARNING - Empty pronunciation value for word ID 2319
+2025-03-31 09:09:54,516 - WARNING - Empty pronunciation value for word ID 2320
+2025-03-31 09:09:54,523 - WARNING - Empty pronunciation value for word ID 2321
+2025-03-31 09:09:54,529 - WARNING - Empty pronunciation value for word ID 2322
+2025-03-31 09:09:54,544 - WARNING - Empty pronunciation value for word ID 2325
+2025-03-31 09:09:54,551 - WARNING - Empty pronunciation value for word ID 2097
+2025-03-31 09:09:54,578 - WARNING - Empty pronunciation value for word ID 2328
+2025-03-31 09:09:54,589 - WARNING - Empty pronunciation value for word ID 2330
+2025-03-31 09:09:54,600 - WARNING - Empty pronunciation value for word ID 2332
+2025-03-31 09:09:54,606 - WARNING - Empty pronunciation value for word ID 2333
+2025-03-31 09:09:54,612 - WARNING - Empty pronunciation value for word ID 2334
+2025-03-31 09:09:54,627 - WARNING - Empty pronunciation value for word ID 2335
+2025-03-31 09:09:54,648 - WARNING - Empty pronunciation value for word ID 2339
+2025-03-31 09:09:54,659 - WARNING - Empty pronunciation value for word ID 2340
+2025-03-31 09:09:54,668 - WARNING - Empty pronunciation value for word ID 2342
+2025-03-31 09:09:54,674 - WARNING - Empty pronunciation value for word ID 2343
+2025-03-31 09:09:54,680 - WARNING - Empty pronunciation value for word ID 2344
+2025-03-31 09:09:54,685 - WARNING - Empty pronunciation value for word ID 2345
+2025-03-31 09:09:54,690 - WARNING - Empty pronunciation value for word ID 2104
+2025-03-31 09:09:54,723 - WARNING - Empty pronunciation value for word ID 2346
+2025-03-31 09:09:54,731 - WARNING - Empty pronunciation value for word ID 2348
+2025-03-31 09:09:54,742 - WARNING - Empty pronunciation value for word ID 2350
+2025-03-31 09:09:54,749 - WARNING - Empty pronunciation value for word ID 2351
+2025-03-31 09:09:54,757 - WARNING - Empty pronunciation value for word ID 2353
+2025-03-31 09:09:54,764 - WARNING - Empty pronunciation value for word ID 2354
+2025-03-31 09:09:54,775 - WARNING - Empty pronunciation value for word ID 2356
+2025-03-31 09:09:54,813 - WARNING - Empty pronunciation value for word ID 1915
+2025-03-31 09:09:54,828 - WARNING - Empty pronunciation value for word ID 2360
+2025-03-31 09:09:54,838 - WARNING - Empty pronunciation value for word ID 2358
+2025-03-31 09:09:54,849 - WARNING - Empty pronunciation value for word ID 2361
+2025-03-31 09:09:54,856 - WARNING - Empty pronunciation value for word ID 2362
+2025-03-31 09:09:54,860 - WARNING - Empty pronunciation value for word ID 2363
+2025-03-31 09:09:54,865 - WARNING - Empty pronunciation value for word ID 2364
+2025-03-31 09:09:54,871 - WARNING - Empty pronunciation value for word ID 2365
+2025-03-31 09:09:54,880 - WARNING - Empty pronunciation value for word ID 2367
+2025-03-31 09:09:54,886 - WARNING - Empty pronunciation value for word ID 2368
+2025-03-31 09:09:54,891 - WARNING - Empty pronunciation value for word ID 2369
+2025-03-31 09:09:54,936 - WARNING - Empty pronunciation value for word ID 2373
+2025-03-31 09:09:54,942 - WARNING - Empty pronunciation value for word ID 2374
+2025-03-31 09:09:54,948 - WARNING - Empty pronunciation value for word ID 2375
+2025-03-31 09:09:54,953 - WARNING - Empty pronunciation value for word ID 2376
+2025-03-31 09:09:54,959 - WARNING - Empty pronunciation value for word ID 2377
+2025-03-31 09:09:54,967 - WARNING - Empty pronunciation value for word ID 2378
+2025-03-31 09:09:54,972 - WARNING - Empty pronunciation value for word ID 2379
+2025-03-31 09:09:54,983 - WARNING - Empty pronunciation value for word ID 2381
+2025-03-31 09:09:54,989 - WARNING - Empty pronunciation value for word ID 2382
+2025-03-31 09:09:54,995 - WARNING - Empty pronunciation value for word ID 2383
+2025-03-31 09:09:55,001 - WARNING - Empty pronunciation value for word ID 2384
+2025-03-31 09:09:55,007 - WARNING - Empty pronunciation value for word ID 2385
+2025-03-31 09:09:55,014 - WARNING - Empty pronunciation value for word ID 2386
+2025-03-31 09:09:55,020 - WARNING - Empty pronunciation value for word ID 2387
+2025-03-31 09:09:55,026 - WARNING - Empty pronunciation value for word ID 2388
+2025-03-31 09:09:55,033 - WARNING - Empty pronunciation value for word ID 2389
+2025-03-31 09:09:55,039 - WARNING - Empty pronunciation value for word ID 2390
+2025-03-31 09:09:55,045 - WARNING - Empty pronunciation value for word ID 2391
+2025-03-31 09:09:55,054 - WARNING - Empty pronunciation value for word ID 2393
+2025-03-31 09:09:55,062 - WARNING - Empty pronunciation value for word ID 2394
+2025-03-31 09:09:55,077 - WARNING - Empty pronunciation value for word ID 2396
+2025-03-31 09:09:55,082 - WARNING - Empty pronunciation value for word ID 2206
+2025-03-31 09:09:55,102 - WARNING - Empty pronunciation value for word ID 2398
+2025-03-31 09:09:55,108 - WARNING - Empty pronunciation value for word ID 2399
+2025-03-31 09:09:55,114 - WARNING - Empty pronunciation value for word ID 2400
+2025-03-31 09:09:55,120 - WARNING - Empty pronunciation value for word ID 2401
+2025-03-31 09:09:55,126 - WARNING - Empty pronunciation value for word ID 2402
+2025-03-31 09:09:55,157 - WARNING - Skipping self-relationship for word ID 2397
+2025-03-31 09:09:55,158 - WARNING - Skipping self-relationship for word ID 2397
+2025-03-31 09:09:55,183 - WARNING - Empty pronunciation value for word ID 2405
+2025-03-31 09:09:55,190 - WARNING - Empty pronunciation value for word ID 2406
+2025-03-31 09:09:55,201 - WARNING - Empty pronunciation value for word ID 2408
+2025-03-31 09:09:55,207 - WARNING - Empty pronunciation value for word ID 2409
+2025-03-31 09:09:55,219 - WARNING - Empty pronunciation value for word ID 2410
+2025-03-31 09:09:55,224 - WARNING - Empty pronunciation value for word ID 2411
+2025-03-31 09:09:55,230 - WARNING - Empty pronunciation value for word ID 2412
+2025-03-31 09:09:55,242 - WARNING - Empty pronunciation value for word ID 2414
+2025-03-31 09:09:55,248 - WARNING - Empty pronunciation value for word ID 2415
+2025-03-31 09:09:55,255 - WARNING - Empty pronunciation value for word ID 2416
+2025-03-31 09:09:55,262 - WARNING - Empty pronunciation value for word ID 2417
+2025-03-31 09:09:55,269 - WARNING - Empty pronunciation value for word ID 2418
+2025-03-31 09:09:55,295 - WARNING - Skipping self-relationship for word ID 2395
+2025-03-31 09:09:55,296 - WARNING - Skipping self-relationship for word ID 2395
+2025-03-31 09:09:55,299 - WARNING - Empty pronunciation value for word ID 2422
+2025-03-31 09:09:55,305 - WARNING - Empty pronunciation value for word ID 2423
+2025-03-31 09:09:55,330 - WARNING - Empty pronunciation value for word ID 2426
+2025-03-31 09:09:55,347 - WARNING - Empty pronunciation value for word ID 2425
+2025-03-31 09:09:55,365 - WARNING - Empty pronunciation value for word ID 2429
+2025-03-31 09:09:55,390 - WARNING - Empty pronunciation value for word ID 2432
+2025-03-31 09:09:55,409 - WARNING - Empty pronunciation value for word ID 2434
+2025-03-31 09:09:55,416 - WARNING - Empty pronunciation value for word ID 2435
+2025-03-31 09:09:55,422 - WARNING - Empty pronunciation value for word ID 2436
+2025-03-31 09:09:55,428 - WARNING - Empty pronunciation value for word ID 2437
+2025-03-31 09:09:55,434 - WARNING - Empty pronunciation value for word ID 2438
+2025-03-31 09:09:55,445 - WARNING - Empty pronunciation value for word ID 2440
+2025-03-31 09:09:55,452 - WARNING - Empty pronunciation value for word ID 2441
+2025-03-31 09:09:55,458 - WARNING - Empty pronunciation value for word ID 2442
+2025-03-31 09:09:55,463 - WARNING - Empty pronunciation value for word ID 2443
+2025-03-31 09:09:55,469 - WARNING - Empty pronunciation value for word ID 2444
+2025-03-31 09:09:55,475 - WARNING - Empty pronunciation value for word ID 2445
+2025-03-31 09:09:55,481 - WARNING - Empty pronunciation value for word ID 2446
+2025-03-31 09:09:55,486 - WARNING - Empty pronunciation value for word ID 2447
+2025-03-31 09:09:55,492 - WARNING - Empty pronunciation value for word ID 2448
+2025-03-31 09:09:55,502 - WARNING - Empty pronunciation value for word ID 2450
+2025-03-31 09:09:55,508 - WARNING - Empty pronunciation value for word ID 2451
+2025-03-31 09:09:55,514 - WARNING - Empty pronunciation value for word ID 2452
+2025-03-31 09:09:55,526 - WARNING - Empty pronunciation value for word ID 2454
+2025-03-31 09:09:55,532 - WARNING - Empty pronunciation value for word ID 2455
+2025-03-31 09:09:55,540 - WARNING - Empty pronunciation value for word ID 2428
+2025-03-31 09:09:55,546 - WARNING - Empty pronunciation value for word ID 2456
+2025-03-31 09:09:55,556 - WARNING - Empty pronunciation value for word ID 2458
+2025-03-31 09:09:55,561 - WARNING - Empty pronunciation value for word ID 2459
+2025-03-31 09:09:55,567 - WARNING - Empty pronunciation value for word ID 2460
+2025-03-31 09:09:55,572 - WARNING - Empty pronunciation value for word ID 2461
+2025-03-31 09:09:55,611 - WARNING - Empty pronunciation value for word ID 2464
+2025-03-31 09:09:55,624 - WARNING - Empty pronunciation value for word ID 2466
+2025-03-31 09:09:55,630 - WARNING - Empty pronunciation value for word ID 2467
+2025-03-31 09:09:55,636 - WARNING - Empty pronunciation value for word ID 2468
+2025-03-31 09:09:55,641 - WARNING - Empty pronunciation value for word ID 2469
+2025-03-31 09:09:55,647 - WARNING - Empty pronunciation value for word ID 2470
+2025-03-31 09:09:55,652 - WARNING - Empty pronunciation value for word ID 2471
+2025-03-31 09:09:55,675 - WARNING - Empty pronunciation value for word ID 2473
+2025-03-31 09:09:55,685 - WARNING - Empty pronunciation value for word ID 2475
+2025-03-31 09:09:55,691 - WARNING - Empty pronunciation value for word ID 2476
+2025-03-31 09:09:55,697 - WARNING - Empty pronunciation value for word ID 2477
+2025-03-31 09:09:55,706 - WARNING - Skipping self-relationship for word ID 1996
+2025-03-31 09:09:55,706 - WARNING - Skipping self-relationship for word ID 1996
+2025-03-31 09:09:55,707 - WARNING - Empty pronunciation value for word ID 1997
+2025-03-31 09:09:55,730 - WARNING - Empty pronunciation value for word ID 2478
+2025-03-31 09:09:55,757 - WARNING - Empty pronunciation value for word ID 2483
+2025-03-31 09:09:55,767 - WARNING - Empty pronunciation value for word ID 2485
+2025-03-31 09:09:55,773 - WARNING - Empty pronunciation value for word ID 2486
+2025-03-31 09:09:55,779 - WARNING - Empty pronunciation value for word ID 2487
+2025-03-31 09:09:55,785 - WARNING - Empty pronunciation value for word ID 2488
+2025-03-31 09:09:55,808 - WARNING - Empty pronunciation value for word ID 2489
+2025-03-31 09:09:55,814 - WARNING - Empty pronunciation value for word ID 2490
+2025-03-31 09:09:55,827 - WARNING - Empty pronunciation value for word ID 2491
+2025-03-31 09:09:55,834 - WARNING - Empty pronunciation value for word ID 2492
+2025-03-31 09:09:55,840 - WARNING - Empty pronunciation value for word ID 2480
+2025-03-31 09:09:55,851 - WARNING - Empty pronunciation value for word ID 2493
+2025-03-31 09:09:55,857 - WARNING - Empty pronunciation value for word ID 2494
+2025-03-31 09:09:55,862 - WARNING - Empty pronunciation value for word ID 2495
+2025-03-31 09:09:55,867 - WARNING - Empty pronunciation value for word ID 2496
+2025-03-31 09:09:55,872 - WARNING - Empty pronunciation value for word ID 2497
+2025-03-31 09:09:55,881 - WARNING - Empty pronunciation value for word ID 2499
+2025-03-31 09:09:55,886 - WARNING - Empty pronunciation value for word ID 2500
+2025-03-31 09:09:55,891 - WARNING - Empty pronunciation value for word ID 2501
+2025-03-31 09:09:55,896 - WARNING - Empty pronunciation value for word ID 2502
+2025-03-31 09:09:55,910 - WARNING - Empty pronunciation value for word ID 2505
+2025-03-31 09:09:55,915 - WARNING - Empty pronunciation value for word ID 2506
+2025-03-31 09:09:55,920 - WARNING - Empty pronunciation value for word ID 2507
+2025-03-31 09:09:55,925 - WARNING - Empty pronunciation value for word ID 2508
+2025-03-31 09:09:55,930 - WARNING - Empty pronunciation value for word ID 2509
+2025-03-31 09:09:55,937 - INFO - Processed ..\data\marayum_dictionaries\kinaray-a-english_processed.json:
+2025-03-31 09:09:55,938 - INFO -   Entries processed: 600
+2025-03-31 09:09:55,938 - INFO -   Definitions added: 559
+2025-03-31 09:09:55,938 - INFO -   Pronunciations added: 0
+2025-03-31 09:09:55,938 - INFO -   Examples added: 2358
+2025-03-31 09:09:55,938 - INFO -   Relations added: 151
+2025-03-31 09:09:55,939 - INFO -   Entries skipped: 0
+2025-03-31 09:09:55,939 - INFO -   Errors: 0
+2025-03-31 09:09:55,939 - ERROR - Error processing Marayum dictionary file ..\data\marayum_dictionaries\kinaray-a-english_processed.json: too many values to unpack (expected 2)
+2025-03-31 09:09:55,940 - INFO - Completed processing Marayum dictionaries:
+2025-03-31 09:09:55,940 - INFO -   Files processed: 0
+2025-03-31 09:09:55,940 - INFO -   Files skipped: 39
+2025-03-31 09:09:55,941 - INFO -   Total entries processed: 0
+2025-03-31 09:09:55,941 - INFO -   Total words consolidated: 0
+2025-03-31 09:09:55,941 - INFO -   Total errors encountered: 39
