@@ -1,63 +1,154 @@
+"""
+GraphQL schema for the Filipino Dictionary API with comprehensive type definitions and relationships.
+"""
+
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 from sqlalchemy import func, or_, and_, not_, case
 from models import (
     Word as WordModel,
     Definition as DefinitionModel,
-    PartsOfSpeech as PartsOfSpeechModel,
     Etymology as EtymologyModel,
     Relation as RelationModel,
     Affixation as AffixationModel,
-    DefinitionRelation as DefinitionRelationModel,
+    PartOfSpeech as PartOfSpeechModel,
+    Pronunciation as PronunciationModel,
+    DefinitionRelation as DefinitionRelationModel
 )
-from database import db_session
+from database import db_session, cached_query
+from dictionary_manager import RelationshipType, RelationshipCategory
 import json
 from typing import List, Dict, Any, Optional
 from marshmallow import Schema, fields, validate
 import re
+from datetime import datetime
+from prometheus_client import Counter
+import logging
+from unidecode import unidecode
+
+# Configure logging
+logger = logging.getLogger(__name__)
+
+# Metrics
+GRAPHQL_QUERIES = Counter('graphql_queries_total', 'Total GraphQL queries', ['operation'])
+GRAPHQL_ERRORS = Counter('graphql_errors_total', 'Total GraphQL errors', ['error_type'])
+
+def normalize_lemma(text: str) -> str:
+    """Normalize a lemma by removing diacritics and converting to lowercase."""
+    if not text:
+        return ""
+    return unidecode(text).lower().strip()
+
+def calculate_similarity(text1: str, text2: str) -> float:
+    """Calculate similarity between two strings."""
+    if not text1 or not text2:
+        return 0.0
+    text1 = normalize_lemma(text1)
+    text2 = normalize_lemma(text2)
+    if text1 == text2:
+        return 1.0
+    # Simple substring match for now
+    if text1 in text2 or text2 in text1:
+        return 0.8
+    # Levenshtein distance could be added here
+    return 0.0
+
+# Types for Relationships
+class RelationshipMetadata(graphene.ObjectType):
+    """Type for relationship metadata."""
+    type = graphene.String(required=True)
+    category = graphene.String(required=True)
+    bidirectional = graphene.Boolean(required=True)
+    inverse = graphene.String()
+    transitive = graphene.Boolean(required=True)
+    strength = graphene.Float(required=True)
+    description = graphene.String()
+
+    @staticmethod
+    def from_relationship_type(rel_type: RelationshipType) -> 'RelationshipMetadata':
+        """Convert a RelationshipType to RelationshipMetadata."""
+        return RelationshipMetadata(
+            type=rel_type.value[0],
+            category=rel_type.category.value,
+            bidirectional=rel_type.bidirectional,
+            inverse=rel_type.inverse.value[0] if rel_type.inverse else None,
+            transitive=rel_type.transitive,
+            strength=rel_type.strength,
+            description=rel_type.description
+        )
 
 class MetaInfoType(graphene.ObjectType):
     """Type for generic meta info fields."""
-    strength = graphene.Float()
-    tags = graphene.List(graphene.String)
-    english_equivalent = graphene.String()
-    notes = graphene.String()
-    source_details = graphene.JSONString()
-
-class PronunciationType(graphene.ObjectType):
-    """Type for pronunciation data."""
-    ipa = graphene.String(description="International Phonetic Alphabet representation")
-    audio = graphene.List(graphene.String, description="List of audio file URLs")
-    hyphenation = graphene.String(description="Syllable separation")
-    sounds = graphene.List(graphene.JSONString, description="Detailed sound components")
-    stress_pattern = graphene.String(description="Word stress pattern")
-    phonemes = graphene.List(graphene.String, description="List of phonemes")
-    variants = graphene.List(graphene.String, description="Pronunciation variants")
+    strength = graphene.Float(description='Confidence strength of the relationship')
+    confidence = graphene.Float(description='Confidence score of the data')
+    tags = graphene.List(graphene.String, description='Associated tags')
+    english_equivalent = graphene.String(description='English equivalent or translation')
+    notes = graphene.String(description='Additional notes')
+    source_details = graphene.JSONString(description='Detailed source information')
+    created_at = graphene.DateTime(description='Creation timestamp')
+    updated_at = graphene.DateTime(description='Last update timestamp')
+    verification_status = graphene.String(description='Verification status')
+    verification_notes = graphene.String(description='Notes from verification process')
+    last_verified_at = graphene.DateTime(description='Last verification timestamp')
 
 class RelationType(SQLAlchemyObjectType):
     """Type for word relationships."""
     class Meta:
         model = RelationModel
-        interfaces = (graphene.relay.Node, )
+        interfaces = (graphene.relay.Node,)
     
-    meta_info = graphene.Field(MetaInfoType)
+    relation_type = graphene.String()
+    category = graphene.String()
+    bidirectional = graphene.Boolean()
     strength = graphene.Float()
-    tags = graphene.List(graphene.String)
-    source_details = graphene.JSONString()
-    
-    def resolve_meta_info(self, info):
-        if not self.meta_info:
+    from_word = graphene.Field(lambda: WordType)
+    to_word = graphene.Field(lambda: WordType)
+    sources = graphene.List(graphene.String)
+    meta_info = graphene.Field(MetaInfoType)
+    metadata = graphene.Field(RelationshipMetadata)
+
+    def resolve_metadata(self, info):
+        """Resolve the full relationship metadata."""
+        try:
+            rel_type = RelationshipType[self.relation_type]
+            return RelationshipMetadata.from_relationship_type(rel_type)
+        except (KeyError, ValueError):
             return None
-        return MetaInfoType(**self.meta_info)
+
+    def resolve_relation_type(self, info):
+        """Resolve the relationship type."""
+        try:
+            rel_type = RelationshipType[self.relation_type]
+            return rel_type.value[0]
+        except (KeyError, ValueError):
+            return self.relation_type
+
+    def resolve_category(self, info):
+        """Resolve the relationship category."""
+        try:
+            rel_type = RelationshipType[self.relation_type]
+            return rel_type.category.value
+        except (KeyError, ValueError):
+            return None
+
+class PronunciationType(SQLAlchemyObjectType):
+    """Type for pronunciation data."""
+    class Meta:
+        model = PronunciationModel
+        interfaces = (graphene.relay.Node,)
     
-    def resolve_strength(self, info):
-        return self.meta_info.get('strength') if self.meta_info else None
-    
-    def resolve_tags(self, info):
-        return self.meta_info.get('tags', []) if self.meta_info else []
-    
-    def resolve_source_details(self, info):
-        return self.meta_info.get('source_details') if self.meta_info else None
+    type = graphene.String()
+    value = graphene.String()
+    variants = graphene.List(graphene.String)
+    phonemes = graphene.List(graphene.String)
+    stress_pattern = graphene.String()
+    syllable_count = graphene.Int()
+    is_primary = graphene.Boolean()
+    dialect = graphene.String()
+    region = graphene.String()
+    usage_frequency = graphene.Float()
+    sources = graphene.List(graphene.String)
+    meta_info = graphene.Field(MetaInfoType)
 
 class EtymologyComponentType(graphene.ObjectType):
     """Type for etymology components."""
@@ -66,74 +157,31 @@ class EtymologyComponentType(graphene.ObjectType):
     meaning = graphene.String()
     notes = graphene.String()
     confidence = graphene.Float()
+    is_reconstructed = graphene.Boolean()
+    period = graphene.String()
+    source = graphene.String()
 
 class EtymologyType(SQLAlchemyObjectType):
     """Type for word etymologies."""
     class Meta:
         model = EtymologyModel
-        interfaces = (graphene.relay.Node, )
+        interfaces = (graphene.relay.Node,)
     
     components = graphene.List(EtymologyComponentType)
     language_codes = graphene.List(graphene.String)
     structure = graphene.JSONString()
-    confidence = graphene.Float()
+    confidence_score = graphene.Float()
+    sources = graphene.List(graphene.String)
+    meta_info = graphene.Field(MetaInfoType)
     
     def resolve_components(self, info):
         if not self.normalized_components:
             return []
         try:
             components = json.loads(self.normalized_components)
-            if isinstance(components, list):
-                return [EtymologyComponentType(**comp) if isinstance(comp, dict) else 
-                       EtymologyComponentType(text=comp) for comp in components]
+            return [EtymologyComponentType(**comp) for comp in components]
+        except json.JSONDecodeError:
             return []
-        except json.JSONDecodeError:
-            components = self.normalized_components.split(';')
-            return [EtymologyComponentType(text=comp.strip()) for comp in components if comp.strip()]
-    
-    def resolve_language_codes(self, info):
-        return self.language_codes.split(',') if self.language_codes else []
-    
-    def resolve_structure(self, info):
-        if not self.etymology_structure:
-            return None
-        try:
-            return json.loads(self.etymology_structure)
-        except json.JSONDecodeError:
-            return None
-    
-    def resolve_confidence(self, info):
-        if not self.etymology_structure:
-            return None
-        try:
-            structure = json.loads(self.etymology_structure)
-            return structure.get('confidence')
-        except json.JSONDecodeError:
-            return None
-
-class DefinitionRelationType(SQLAlchemyObjectType):
-    """Type for definition-specific relationships."""
-    class Meta:
-        model = DefinitionRelationModel
-        interfaces = (graphene.relay.Node, )
-    
-    meta_info = graphene.Field(MetaInfoType)
-    
-    def resolve_meta_info(self, info):
-        if not hasattr(self, 'meta_info') or not self.meta_info:
-            return None
-        return MetaInfoType(**self.meta_info)
-
-class PartsOfSpeechType(SQLAlchemyObjectType):
-    """Type for parts of speech."""
-    class Meta:
-        model = PartsOfSpeechModel
-        interfaces = (graphene.relay.Node, )
-    
-    word_count = graphene.Int()
-    
-    def resolve_word_count(self, info):
-        return DefinitionModel.query.filter_by(standardized_pos_id=self.id).count()
 
 class ExampleType(graphene.ObjectType):
     """Type for usage examples."""
@@ -142,559 +190,256 @@ class ExampleType(graphene.ObjectType):
     notes = graphene.String()
     source = graphene.String()
     tags = graphene.List(graphene.String)
+    context = graphene.String()
+    dialect = graphene.String()
+    region = graphene.String()
+    period = graphene.String()
+    register = graphene.String()
+    meta_info = graphene.Field(MetaInfoType)
 
 class DefinitionType(SQLAlchemyObjectType):
     """Type for word definitions."""
     class Meta:
         model = DefinitionModel
-        interfaces = (graphene.relay.Node, )
+        interfaces = (graphene.relay.Node,)
     
-    part_of_speech = graphene.Field(PartsOfSpeechType)
+    definition_text = graphene.String()
+    part_of_speech = graphene.Field(lambda: PartOfSpeechType)
     examples = graphene.List(ExampleType)
     usage_notes = graphene.List(graphene.String)
-    related_words = graphene.List(graphene.String)
-    sources = graphene.List(graphene.String)
+    register = graphene.String()
+    domain = graphene.String()
+    dialect = graphene.String()
+    region = graphene.String()
+    time_period = graphene.String()
+    frequency = graphene.Float()
+    confidence_score = graphene.Float()
     tags = graphene.List(graphene.String)
+    sources = graphene.List(graphene.String)
     meta_info = graphene.Field(MetaInfoType)
-    
-    def resolve_part_of_speech(self, info):
-        return self.standardized_pos
-    
-    def resolve_examples(self, info):
-        if not self.examples:
-            return []
-        try:
-            examples = json.loads(self.examples)
-            if isinstance(examples, list):
-                return [ExampleType(**ex) if isinstance(ex, dict) else 
-                       ExampleType(text=str(ex)) for ex in examples]
-            return [ExampleType(text=str(examples))]
-        except json.JSONDecodeError:
-            return [ExampleType(text=line.strip()) 
-                   for line in self.examples.split('\n') if line.strip()]
-    
-    def resolve_usage_notes(self, info):
-        if not self.usage_notes:
-            return []
-        try:
-            notes = json.loads(self.usage_notes)
-            return notes if isinstance(notes, list) else [str(notes)]
-        except json.JSONDecodeError:
-            return [line.strip() for line in self.usage_notes.split('\n') if line.strip()]
-    
-    def resolve_sources(self, info):
-        return self.sources.split(', ') if self.sources else []
-    
-    def resolve_related_words(self, info):
-        if hasattr(self, 'definition_relations'):
-            return [relation.word.lemma for relation in self.definition_relations]
-        return []
-    
-    def resolve_tags(self, info):
-        if not self.tags:
-            return []
-        try:
-            return json.loads(self.tags) if isinstance(self.tags, str) else self.tags
-        except json.JSONDecodeError:
-            return [tag.strip() for tag in self.tags.split(',') if tag.strip()]
-    
-    def resolve_meta_info(self, info):
-        if not hasattr(self, 'meta_info') or not self.meta_info:
-            return None
-        return MetaInfoType(**self.meta_info)
+    related_definitions = graphene.List(lambda: DefinitionType)
 
 class AffixationType(SQLAlchemyObjectType):
     """Type for word affixations."""
     class Meta:
         model = AffixationModel
-        interfaces = (graphene.relay.Node, )
+        interfaces = (graphene.relay.Node,)
     
-    root_word = graphene.String()
-    affixed_word = graphene.String()
-    meta_info = graphene.Field(MetaInfoType)
-    examples = graphene.List(ExampleType)
-    
-    def resolve_root_word(self, info):
-        return self.root_word.lemma if self.root_word else None
-    
-    def resolve_affixed_word(self, info):
-        return self.affixed_word.lemma if self.affixed_word else None
-    
-    def resolve_meta_info(self, info):
-        if not hasattr(self, 'meta_info') or not self.meta_info:
-            return None
-        return MetaInfoType(**self.meta_info)
-    
-    def resolve_examples(self, info):
-        if not hasattr(self, 'examples') or not self.examples:
-            return []
-        try:
-            examples = json.loads(self.examples)
-            return [ExampleType(**ex) if isinstance(ex, dict) else 
-                   ExampleType(text=str(ex)) for ex in examples]
-        except (json.JSONDecodeError, AttributeError):
-            return []
-
-class RelationshipsType(graphene.ObjectType):
-    """Type for word relationships summary."""
-    root_word = graphene.String()
-    synonyms = graphene.List(graphene.String)
-    antonyms = graphene.List(graphene.String)
-    related = graphene.List(graphene.String)
-    derived_from = graphene.List(graphene.String)
-    derived_forms = graphene.List(graphene.String)
-    affixations = graphene.Field(lambda: AffixationsType)
-    variants = graphene.List(graphene.String)
-    hypernyms = graphene.List(graphene.String)
-    hyponyms = graphene.List(graphene.String)
+    affix_type = graphene.String()
+    position = graphene.String()
+    value = graphene.String()
+    root_word = graphene.Field(lambda: WordType)
+    affixed_word = graphene.Field(lambda: WordType)
+    sources = graphene.List(graphene.String)
     meta_info = graphene.Field(MetaInfoType)
 
-class AffixationsType(graphene.ObjectType):
-    """Type for word affixation summary."""
-    as_root = graphene.List(graphene.String)
-    as_affixed = graphene.List(graphene.String)
+class PartOfSpeechType(SQLAlchemyObjectType):
+    """Type for parts of speech."""
+    class Meta:
+        model = PartOfSpeechModel
+        interfaces = (graphene.relay.Node,)
+    
+    code = graphene.String()
+    name_en = graphene.String()
+    name_tl = graphene.String()
+    description = graphene.String()
     meta_info = graphene.Field(MetaInfoType)
-
-class IdiomType(graphene.ObjectType):
-    """Type for idiomatic expressions."""
-    idiom = graphene.String()
-    meaning = graphene.String()
-    examples = graphene.List(ExampleType)
-    notes = graphene.String()
-    tags = graphene.List(graphene.String)
-    source = graphene.String()
-
-class QualityMetricsType(graphene.ObjectType):
-    """Type for word quality metrics."""
-    total_score = graphene.Int()
-    completeness = graphene.Float()
-    accuracy = graphene.Float()
-    richness = graphene.Float()
-    has_baybayin = graphene.Boolean()
-    has_pronunciation = graphene.Boolean()
-    has_etymology = graphene.Boolean()
-    has_examples = graphene.Boolean()
-    has_relations = graphene.Boolean()
-    definition_count = graphene.Int()
-    relation_count = graphene.Int()
-    example_count = graphene.Int()
 
 class WordType(SQLAlchemyObjectType):
     """Type for dictionary words."""
     class Meta:
         model = WordModel
-        interfaces = (graphene.relay.Node, )
+        interfaces = (graphene.relay.Node,)
     
-    pronunciation = graphene.Field(PronunciationType)
-    etymology = graphene.Field(EtymologyType)
-    etymologies = graphene.List(EtymologyType)
-    definitions = graphene.List(DefinitionType)
-    relationships = graphene.Field(RelationshipsType)
+    lemma = graphene.String()
+    normalized_lemma = graphene.String()
+    language_code = graphene.String()
     has_baybayin = graphene.Boolean()
     baybayin_form = graphene.String()
     romanized_form = graphene.String()
+    is_root = graphene.Boolean()
+    root_word = graphene.Field(lambda: WordType)
     preferred_spelling = graphene.String()
-    language_code = graphene.String()
+    alternative_spellings = graphene.List(graphene.String)
+    syllable_count = graphene.Int()
+    pronunciation_guide = graphene.String()
+    stress_pattern = graphene.String()
+    formality_level = graphene.String()
+    usage_frequency = graphene.Float()
+    geographic_region = graphene.String()
+    time_period = graphene.String()
+    cultural_notes = graphene.String()
+    grammatical_categories = graphene.List(graphene.String)
+    semantic_domains = graphene.List(graphene.String)
+    etymology_confidence = graphene.Float()
+    data_quality_score = graphene.Float()
     tags = graphene.List(graphene.String)
-    idioms = graphene.List(IdiomType)
-    quality_metrics = graphene.Field(QualityMetricsType)
+    definitions = graphene.List(DefinitionType)
+    etymologies = graphene.List(EtymologyType)
+    pronunciations = graphene.List(PronunciationType)
+    relations = graphene.List(RelationType)
+    affixations = graphene.List(AffixationType)
     meta_info = graphene.Field(MetaInfoType)
-    source_info = graphene.JSONString()
-    
-    def resolve_pronunciation(self, info):
-        if not self.pronunciation_data:
-            return None
-        try:
-            data = json.loads(self.pronunciation_data) if isinstance(self.pronunciation_data, str) else self.pronunciation_data
-            return PronunciationType(
-                ipa=data.get('ipa'),
-                audio=data.get('audio', []),
-                hyphenation=data.get('hyphenation'),
-                sounds=data.get('sounds', []),
-                stress_pattern=data.get('stress_pattern'),
-                phonemes=data.get('phonemes', []),
-                variants=data.get('variants', [])
-            )
-        except (json.JSONDecodeError, AttributeError):
-            return None
-    
-    def resolve_etymology(self, info):
-        return self.etymologies[0] if self.etymologies else None
-    
-    def resolve_etymologies(self, info):
-        return self.etymologies if hasattr(self, 'etymologies') else []
-    
-    def resolve_relationships(self, info):
-        # Group relations by type
-        synonyms = []
-        antonyms = []
-        related = []
-        derived_from = []
-        derived_forms = []
-        variants = []
-        hypernyms = []
-        hyponyms = []
-        
-        # Process outgoing relations
-        for relation in self.relations_from:
-            rel_type = relation.relation_type.lower()
-            rel_word = relation.to_word.lemma
-            
-            if rel_type == 'synonym':
-                synonyms.append(rel_word)
-            elif rel_type == 'antonym':
-                antonyms.append(rel_word)
-            elif rel_type == 'related':
-                related.append(rel_word)
-            elif rel_type in ('derived_from', 'root_of'):
-                derived_from.append(rel_word)
-            elif rel_type in ('derivative', 'derived_form'):
-                derived_forms.append(rel_word)
-            elif rel_type == 'variant':
-                variants.append(rel_word)
-            elif rel_type == 'hypernym_of':
-                hyponyms.append(rel_word)
-            elif rel_type == 'hyponym_of':
-                hypernyms.append(rel_word)
-        
-        # Process incoming relations
-        for relation in self.relations_to:
-            rel_type = relation.relation_type.lower()
-            if rel_type == 'derived_from' or rel_type == 'root_of':
-                derived_forms.append(relation.from_word.lemma)
-        
-        # Process affixations
-        affixations_as_root = [aff.affixed_word.lemma for aff in self.affixations_as_root] if hasattr(self, 'affixations_as_root') else []
-        affixations_as_affixed = [aff.root_word.lemma for aff in self.affixations_as_affixed] if hasattr(self, 'affixations_as_affixed') else []
-        
-        return RelationshipsType(
-            root_word=self.root_word.lemma if self.root_word else None,
-            synonyms=list(set(synonyms)),
-            antonyms=list(set(antonyms)),
-            related=list(set(related)),
-            derived_from=list(set(derived_from)),
-            derived_forms=list(set(derived_forms)),
-            variants=list(set(variants)),
-            hypernyms=list(set(hypernyms)),
-            hyponyms=list(set(hyponyms)),
-            affixations=AffixationsType(
-                as_root=affixations_as_root,
-                as_affixed=affixations_as_affixed
-            )
-        )
-    
-    def resolve_tags(self, info):
-        return self.tags.split(',') if self.tags else []
-    
-    def resolve_idioms(self, info):
-        if not self.idioms or self.idioms == '[]':
-            return []
-        
-        try:
-            idioms_data = json.loads(self.idioms) if isinstance(self.idioms, str) else self.idioms
-            return [
-                IdiomType(
-                    idiom=idiom.get('idiom', '') or idiom.get('text', ''),
-                    meaning=idiom.get('meaning', ''),
-                    examples=[ExampleType(**ex) if isinstance(ex, dict) else ExampleType(text=ex) 
-                             for ex in idiom.get('examples', [])],
-                    notes=idiom.get('notes'),
-                    tags=idiom.get('tags', []),
-                    source=idiom.get('source')
-                )
-                for idiom in idioms_data
-                if isinstance(idiom, dict) and (idiom.get('idiom') or idiom.get('text')) and idiom.get('meaning')
-            ]
-        except (json.JSONDecodeError, AttributeError):
-            return []
-    
-    def resolve_quality_metrics(self, info):
-        if not hasattr(self, 'calculate_data_quality_score'):
-            return None
-            
-        total_score = self.calculate_data_quality_score()
-        definition_count = len(self.definitions) if self.definitions else 0
-        relation_count = (
-            len(self.relations_from) if hasattr(self, 'relations_from') else 0
-        ) + (
-            len(self.relations_to) if hasattr(self, 'relations_to') else 0
-        )
-        example_count = sum(
-            len(d.get_examples_list()) for d in self.definitions
-            if hasattr(d, 'get_examples_list')
-        ) if self.definitions else 0
-        
-        return QualityMetricsType(
-            total_score=total_score,
-            completeness=total_score / 100.0,
-            accuracy=0.8,  # Default value, could be calculated based on verification status
-            richness=min(1.0, (definition_count + relation_count + example_count) / 20.0),
-            has_baybayin=self.has_baybayin,
-            has_pronunciation=bool(self.pronunciation_data),
-            has_etymology=bool(self.etymologies),
-            has_examples=example_count > 0,
-            has_relations=relation_count > 0,
-            definition_count=definition_count,
-            relation_count=relation_count,
-            example_count=example_count
-        )
-    
-    def resolve_meta_info(self, info):
-        if not hasattr(self, 'meta_info') or not self.meta_info:
-            return None
-        return MetaInfoType(**self.meta_info)
-    
-    def resolve_source_info(self, info):
-        return self.source_info if self.source_info else None
-
-class NetworkWordInfoType(graphene.ObjectType):
-    """Type for word network information."""
-    word = graphene.String()
-    definition = graphene.String()
-    derivatives = graphene.List(graphene.String)
-    root_word = graphene.String()
-    synonyms = graphene.List(graphene.String)
-    antonyms = graphene.List(graphene.String)
-    baybayin = graphene.String()
-    has_baybayin = graphene.Boolean()
-    quality_score = graphene.Int()
-    meta_info = graphene.Field(MetaInfoType)
-
-class NodeType(graphene.ObjectType):
-    """Type for network nodes."""
-    id = graphene.String()
-    group = graphene.String()
-    info = graphene.Field(NetworkWordInfoType)
-    meta_info = graphene.Field(MetaInfoType)
-
-class LinkType(graphene.ObjectType):
-    """Type for network links."""
-    source = graphene.String()
-    target = graphene.String()
-    type = graphene.String()
-    meta_info = graphene.Field(MetaInfoType)
-
-class WordNetworkType(graphene.ObjectType):
-    """Type for word relationship networks."""
-    nodes = graphene.List(NodeType)
-    links = graphene.List(LinkType)
-    meta_info = graphene.Field(MetaInfoType)
-
-class SearchQuerySchema(Schema):
-    """Schema for search query parameters."""
-    q = fields.Str(required=True, validate=validate.Length(min=1))
-    limit = fields.Int(validate=validate.Range(min=1, max=50), default=10)
-    pos = fields.Str(validate=validate.OneOf(['n', 'v', 'adj', 'adv', 'pron', 'prep', 'conj', 'intj', 'det', 'affix']))
-    language = fields.Str()  # Accept any valid language code
-    include_baybayin = fields.Bool(default=True)
-    min_similarity = fields.Float(validate=validate.Range(min=0.0, max=1.0), default=0.3)
-    mode = fields.Str(validate=validate.OneOf(['all', 'exact', 'phonetic', 'baybayin']), default='all')
-    sort = fields.Str(validate=validate.OneOf(['relevance', 'alphabetical', 'created', 'updated']), default='relevance')
-    order = fields.Str(validate=validate.OneOf(['asc', 'desc']), default='desc')
-
-class WordQuerySchema(Schema):
-    """Schema for word query parameters."""
-    language_code = fields.Str()  # Accept any valid language code
-    include_definitions = fields.Bool(default=True)
-    include_relations = fields.Bool(default=True)
-    include_etymology = fields.Bool(default=True)
-
-class WordSchema(Schema):
-    """Schema for word entries."""
-    id = fields.Int(dump_only=True)
-    lemma = fields.Str(required=True)
-    normalized_lemma = fields.Str()
-    language_code = fields.Str(required=True)  # Accept any valid language code
-    has_baybayin = fields.Bool()
-    baybayin_form = fields.Str()
-    romanized_form = fields.Str()
-    is_root = fields.Bool()
-    root_word = fields.Nested('self', only=('id', 'lemma', 'language_code'))
-    preferred_spelling = fields.Str()
-    alternative_spellings = fields.List(fields.Str())
-    syllable_count = fields.Int()
-    pronunciation_guide = fields.Str()
-    stress_pattern = fields.Str()
-    formality_level = fields.Str()
-    usage_frequency = fields.Float()
-    geographic_region = fields.Str()
-    time_period = fields.Str()
-    cultural_notes = fields.Str()
-    grammatical_categories = fields.List(fields.Str())
-    semantic_domains = fields.List(fields.Str())
-    etymology_confidence = fields.Float()
-    data_quality_score = fields.Float()
-    pronunciation_data = fields.Dict()
-    tags = fields.List(fields.Str())
-    idioms = fields.List(fields.Dict())
-    source_info = fields.Dict()
-    meta_info = fields.Dict()  # Changed from metadata
-    verification_status = fields.Str(validate=validate.OneOf([
-        'unverified', 'verified', 'needs_review', 'disputed'
-    ]))
-    verification_notes = fields.Str()
-    last_verified_at = fields.DateTime()
-    created_at = fields.DateTime(dump_only=True)
-    updated_at = fields.DateTime(dump_only=True)
-    etymology = fields.Nested(EtymologySchema)
-    definitions = fields.List(fields.Nested(DefinitionSchema))
-    pronunciations = fields.List(fields.Nested(PronunciationSchema))
-    relations = fields.List(fields.Nested(RelationSchema))
-    affixations = fields.Dict(keys=fields.Str(), values=fields.List(fields.Nested(AffixationSchema)))
 
 class Query(graphene.ObjectType):
-    """Root query type."""
+    """Root query type with comprehensive search capabilities."""
     node = graphene.relay.Node.Field()
-    all_words = SQLAlchemyConnectionField(WordType)
+    
+    # Single item queries
+    word = graphene.Field(
+        WordType,
+        lemma=graphene.String(required=True),
+        language=graphene.String()
+    )
+    
+    definition = graphene.Field(
+        DefinitionType,
+        id=graphene.ID(required=True)
+    )
+    
+    etymology = graphene.Field(
+        EtymologyType,
+        id=graphene.ID(required=True)
+    )
+    
     get_word = graphene.Field(
         WordType,
         word=graphene.String(required=True),
         language=graphene.String()
     )
-    get_word_network = graphene.Field(
-        WordNetworkType,
-        word=graphene.String(required=True),
-        depth=graphene.Int(),
-        breadth=graphene.Int(),
-        include_etymology=graphene.Boolean(),
-        include_affixes=graphene.Boolean()
+    
+    baybayin_words = graphene.Field(
+        graphene.List(WordType),
+        text=graphene.String(required=True)
     )
-    search_words = graphene.List(
+    
+    get_word_network = graphene.Field(
         WordType,
-        query=graphene.String(),
+        word=graphene.String(required=True),
+        max_depth=graphene.Int(default_value=2)
+    )
+    
+    # List queries with filtering
+    all_words = graphene.List(
+        WordType,
         language=graphene.String(),
-        pos=graphene.String(),
         has_baybayin=graphene.Boolean(),
         has_etymology=graphene.Boolean(),
-        min_quality=graphene.Int(),
+        min_quality=graphene.Float(),
+        limit=graphene.Int(),
+        offset=graphene.Int()
+    )
+    
+    search_words = graphene.List(
+        WordType,
+        query=graphene.String(required=True),
+        mode=graphene.String(),
+        language=graphene.String(),
+        include_relations=graphene.Boolean(),
+        min_similarity=graphene.Float(),
         limit=graphene.Int()
     )
-    baybayin_words = graphene.List(
+    
+    related_words = graphene.List(
         WordType,
-        limit=graphene.Int(),
-        min_quality=graphene.Int(),
-        has_etymology=graphene.Boolean()
+        word_id=graphene.ID(required=True),
+        relation_type=graphene.String(),
+        max_distance=graphene.Int()
     )
-    parts_of_speech = graphene.List(PartsOfSpeechType)
-    etymology_components = graphene.List(
-        graphene.String,
-        word=graphene.String(required=True),
+    
+    # Statistics queries
+    word_statistics = graphene.Field(
+        graphene.JSONString,
         language=graphene.String()
     )
     
-    def resolve_get_word(self, info, word, language=None):
-        """Get word by lemma, removing any trailing numbers."""
-        # Remove trailing numbers from the word
-        clean_word = re.sub(r'\d+$', '', word)
-        query = WordModel.query.filter(
-            func.lower(func.unaccent(WordModel.lemma)) == func.lower(func.unaccent(clean_word))
-        )
+    etymology_statistics = graphene.Field(
+        graphene.JSONString,
+        language=graphene.String()
+    )
+    
+    def resolve_word(self, info, lemma, language=None):
+        query = WordModel.query.filter(WordModel.normalized_lemma == normalize_lemma(lemma))
         if language:
             query = query.filter(WordModel.language_code == language)
         return query.first()
     
-    def resolve_get_word_network(self, info, word, depth=2, breadth=10,
-                               include_etymology=True, include_affixes=True):
+    def resolve_definition(self, info, id):
+        return DefinitionModel.query.get(id)
+    
+    def resolve_etymology(self, info, id):
+        return EtymologyModel.query.get(id)
+    
+    def resolve_get_word(self, info, word, language=None):
+        """Resolve get_word query with enhanced error handling."""
         try:
-            from word_network import get_related_words
-            network = get_related_words(
-                word, depth, breadth,
-                include_etymology=include_etymology,
-                include_affixes=include_affixes
-            )
-            return WordNetworkType(
-                nodes=[NodeType(
-                    id=node['id'],
-                    group=node['group'],
-                    info=NetworkWordInfoType(**node['info']),
-                    meta_info=MetaInfoType(**node.get('meta_info', {})) if node.get('meta_info') else None
-                ) for node in network['nodes']],
-                links=[LinkType(
-                    source=link['source'],
-                    target=link['target'],
-                    type=link['type'],
-                    meta_info=MetaInfoType(**link.get('meta_info', {})) if link.get('meta_info') else None
-                ) for link in network['links']],
-                meta_info=MetaInfoType(**network.get('meta_info', {})) if network.get('meta_info') else None
-            )
-        except ImportError:
-            word_obj = WordModel.query.filter(
-                func.lower(func.unaccent(WordModel.lemma)) == 
-                func.lower(func.unaccent(word))
+            if not word:
+                raise ValueError("Invalid word")
+            
+            normalized = normalize_lemma(word)
+            query = WordModel.query.filter(WordModel.normalized_lemma == normalized)
+            
+            if language:
+                query = query.filter(WordModel.language_code == language)
+            
+            result = query.first()
+            if not result:
+                logger.info("Word not found", word=word, language=language)
+            
+            return result
+        except Exception as e:
+            logger.error("Error in get_word resolver", error=str(e), traceback=True)
+            return None
+    
+    def resolve_baybayin_words(self, info, text):
+        """Resolve baybayin_words query with enhanced validation."""
+        try:
+            if not text:
+                return []
+            
+            # Validate Baybayin text
+            if not any(0x1700 <= ord(c) <= 0x171F for c in text):
+                logger.warning("Invalid Baybayin text", text=text)
+                return []
+            
+            return WordModel.query.filter(
+                WordModel.has_baybayin == True,
+                WordModel.baybayin_form.ilike(f"%{text}%")
+            ).all()
+        except Exception as e:
+            logger.error("Error in baybayin_words resolver", error=str(e), traceback=True)
+            return []
+    
+    def resolve_get_word_network(self, info, word, max_depth=2):
+        """Resolve get_word_network query with depth control."""
+        try:
+            if not word:
+                return None
+            
+            base_word = WordModel.query.filter(
+                WordModel.normalized_lemma == normalize_lemma(word)
             ).first()
             
-            if not word_obj:
-                return WordNetworkType(nodes=[], links=[])
+            if not base_word:
+                return None
             
-            # Build simple network
-            nodes = [NodeType(
-                id=str(word_obj.id),
-                group="root",
-                info=NetworkWordInfoType(
-                    word=word_obj.lemma,
-                    has_baybayin=word_obj.has_baybayin,
-                    baybayin=word_obj.baybayin_form,
-                    definition=word_obj.definitions[0].definition_text if word_obj.definitions else "",
-                    synonyms=[],
-                    antonyms=[],
-                    derivatives=[],
-                    root_word=None,
-                    quality_score=word_obj.calculate_data_quality_score()
-                )
-            )]
-            
-            return WordNetworkType(nodes=nodes, links=[])
+            # The network is built through the relationships defined in the model
+            # The depth is controlled by the GraphQL query itself
+            return base_word
+        except Exception as e:
+            logger.error("Error in get_word_network resolver", error=str(e), traceback=True)
+            return None
     
-    def resolve_search_words(self, info, query=None, language=None, pos=None,
-                           has_baybayin=None, has_etymology=None,
-                           min_quality=None, limit=20):
-        """Search words, handling numeric suffixes appropriately."""
-        base_query = WordModel.query
-        
-        if query:
-            # Remove trailing numbers from search query
-            clean_query = re.sub(r'\d+$', '', query)
-            base_query = base_query.filter(
-                WordModel.search_text.op('@@')(func.plainto_tsquery('simple', clean_query))
-            )
+    @cached_query(timeout=300)
+    def resolve_all_words(self, info, language=None, has_baybayin=None,
+                         has_etymology=None, min_quality=None,
+                         limit=100, offset=0):
+        query = WordModel.query
         
         if language:
-            base_query = base_query.filter(WordModel.language_code == language)
-        
-        if pos:
-            base_query = base_query.join(WordModel.definitions).join(DefinitionModel.standardized_pos).filter(
-                PartsOfSpeechModel.code == pos
-            )
-        
+            query = query.filter(WordModel.language_code == language)
         if has_baybayin is not None:
-            base_query = base_query.filter(WordModel.has_baybayin == has_baybayin)
-        
-        if has_etymology is not None:
-            if has_etymology:
-                base_query = base_query.join(WordModel.etymologies)
-            else:
-                base_query = base_query.outerjoin(WordModel.etymologies).filter(
-                    EtymologyModel.id.is_(None)
-                )
-        
-        if min_quality is not None:
-            base_query = base_query.filter(
-                WordModel.calculate_data_quality_score() >= min_quality
-            )
-        
-        return base_query.order_by(
-            func.similarity(WordModel.lemma, query).desc() if query else WordModel.lemma
-        ).limit(limit).all()
-    
-    def resolve_baybayin_words(self, info, limit=10, min_quality=None,
-                             has_etymology=None):
-        query = WordModel.query.filter(WordModel.has_baybayin == True)
-        
-        if min_quality is not None:
-            query = query.filter(
-                WordModel.calculate_data_quality_score() >= min_quality
-            )
-        
+            query = query.filter(WordModel.has_baybayin == has_baybayin)
         if has_etymology is not None:
             if has_etymology:
                 query = query.join(WordModel.etymologies)
@@ -702,38 +447,80 @@ class Query(graphene.ObjectType):
                 query = query.outerjoin(WordModel.etymologies).filter(
                     EtymologyModel.id.is_(None)
                 )
+        if min_quality is not None:
+            query = query.filter(WordModel.quality_score >= min_quality)
         
-        return query.limit(limit).all()
+        return query.order_by(WordModel.lemma).offset(offset).limit(limit).all()
     
-    def resolve_parts_of_speech(self, info):
-        return PartsOfSpeechModel.query.all()
-    
-    def resolve_etymology_components(self, info, word, language=None):
-        word_obj = WordModel.query.filter(
-            func.lower(func.unaccent(WordModel.lemma)) == 
-            func.lower(func.unaccent(word))
+    def resolve_search_words(self, info, query, mode='all', language=None,
+                           include_relations=True, min_similarity=0.3, limit=10):
+        GRAPHQL_QUERIES.labels(operation='search_words').inc()
+        
+        try:
+            base_query = WordModel.query
+            normalized_query = normalize_lemma(query)
+            
+            if mode == 'exact':
+                base_query = base_query.filter(
+                    WordModel.normalized_lemma == normalized_query
+                )
+            elif mode == 'baybayin':
+                base_query = base_query.filter(
+                    WordModel.has_baybayin == True,
+                    WordModel.baybayin_form.ilike(f"%{query}%")
+                )
+            else:
+                # Use ILIKE for basic text search
+                base_query = base_query.filter(
+                    or_(
+                        WordModel.normalized_lemma.ilike(f"%{normalized_query}%"),
+                        WordModel.lemma.ilike(f"%{query}%")
+                    )
         )
         
         if language:
-            word_obj = word_obj.filter(WordModel.language_code == language)
+                base_query = base_query.filter(WordModel.language_code == language)
             
-        word_obj = word_obj.first()
-        
-        if not word_obj or not word_obj.etymologies:
+            # Order by exact matches first, then by similarity
+            results = base_query.order_by(
+                case(
+                    [(WordModel.normalized_lemma == normalized_query, 0)],
+                    else_=1
+                ),
+                WordModel.lemma
+            ).limit(limit).all()
+            
+            return results
+            
+        except Exception as e:
+            GRAPHQL_ERRORS.labels(error_type='search_error').inc()
+            logger.error("Search error", error=str(e), traceback=True)
             return []
         
-        components = []
-        for etymology in word_obj.etymologies:
-            if etymology.normalized_components:
-                try:
-                    comps = json.loads(etymology.normalized_components)
-                    if isinstance(comps, list):
-                        components.extend(comps)
-                    else:
-                        components.extend(etymology.normalized_components.split(';'))
-                except:
-                    components.extend(etymology.normalized_components.split(';'))
-        
-        return list(set(components))
+    @cached_query(timeout=3600)
+    def resolve_word_statistics(self, info, language=None):
+        try:
+            query = db_session.query(
+                func.count(WordModel.id).label('total_words'),
+                func.count(case([(WordModel.has_baybayin == True, 1)])).label('baybayin_words'),
+                func.count(case([(WordModel.root_word_id.is_(None), 1)])).label('root_words'),
+                func.avg(WordModel.quality_score).label('avg_quality')
+            )
+            
+            if language:
+                query = query.filter(WordModel.language_code == language)
+            
+            stats = query.first()
+            return {
+                'total_words': stats.total_words,
+                'baybayin_words': stats.baybayin_words,
+                'root_words': stats.root_words,
+                'average_quality': float(stats.avg_quality) if stats.avg_quality else 0.0,
+                'timestamp': datetime.utcnow().isoformat()
+            }
+        except Exception as e:
+            GRAPHQL_ERRORS.labels(error_type='statistics_error').inc()
+            logger.error("Statistics error", error=str(e))
+            return {}
 
 schema = graphene.Schema(query=Query)
