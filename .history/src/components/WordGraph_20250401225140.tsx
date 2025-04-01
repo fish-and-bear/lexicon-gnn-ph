@@ -333,8 +333,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .force("charge", d3.forceManyBody<CustomNode>().strength(-300).distanceMax(350)) // Slightly stronger charge for spacing
         // Increase collision radius significantly to account for text labels
         .force("collide", d3.forceCollide<CustomNode>().radius(d => getNodeRadius(d) + 25).strength(1.0))
-        // Set simulation center to 0,0
-        .force("center", d3.forceCenter(0, 0))
+        .force("center", d3.forceCenter(width / 2, height / 2))
         .on("tick", ticked);
 
         return simulationRef.current;
@@ -364,12 +363,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const createLinks = useCallback((g: d3.Selection<SVGGElement, unknown, null, undefined>, linksData: CustomLink[]) => {
       // Draw links first (behind nodes and labels)
       const linkGroup = g.append("g")
-      .attr("class", "links")
-      .selectAll("line")
+          .attr("class", "links")
+          .selectAll("line")
           .data(linksData, (d: any) => `${(typeof d.source === 'object' ? d.source.id : d.source)}_${(typeof d.target === 'object' ? d.target.id : d.target)}`)
           .join(
               enter => enter.append("line")
-      .attr("class", "link")
+                  .attr("class", "link")
                   .attr("stroke", theme === "dark" ? "#666" : "#ccc") // Consistent neutral color
                   .attr("stroke-opacity", 0) // Start transparent
                   .attr("stroke-width", 1.5) // Consistent width
@@ -400,7 +399,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       simulation: d3.Simulation<CustomNode, CustomLink> | null
       ) => {
     const drag = simulation ? createDragBehavior(simulation) : null;
-    
+
     // Node groups (circles only)
     const nodeGroups = g.append("g")
       .attr("class", "nodes")
@@ -414,8 +413,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
                   .style("opacity", 0); // Start transparent
 
               nodeGroup.append("circle")
-      .attr("r", d => getNodeRadius(d))
-      .attr("fill", d => getNodeColor(d.group))
+                  .attr("r", d => getNodeRadius(d))
+                  .attr("fill", d => getNodeColor(d.group))
                   // Subtle outline using darker shade of fill
                   .attr("stroke", d => d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888")
                   .attr("stroke-width", 1.5);
@@ -440,10 +439,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
             enter => {
                 const textElement = enter.append("text")
                     .attr("class", "node-label")
-      .attr("text-anchor", "middle")
+                    .attr("text-anchor", "middle")
                     .attr("font-size", "10px") // Slightly larger base size for external text
                     .attr("font-weight", d => d.id === mainWord ? "600" : "400")
-      .text(d => d.word)
+                    .text(d => d.word)
                     .attr("x", d => d.x ?? 0) // Initial position
                     .attr("y", d => (d.y ?? 0) + getNodeRadius(d) + 12)
                     .style("opacity", 0) // Start transparent
@@ -481,7 +480,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .on("click", (event, d) => {
           event.stopPropagation();
           if (isDraggingRef.current) return;
-          
+
           const connectedIds = new Set<string>([d.id]);
           const connectedLinkElements: SVGLineElement[] = [];
            d3.selectAll<SVGLineElement, CustomLink>(".link").filter(l => {
@@ -493,7 +492,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
            }).each(function() { connectedLinkElements.push(this); });
 
           setSelectedNodeId(d.id);
-          
+
           // Strong dimming of non-connected elements
           d3.selectAll<SVGGElement, CustomNode>(".node")
               .classed("selected connected", false)
@@ -722,13 +721,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       if (linkForce) {
         linkForce.links(currentFilteredLinks);
       }
-      // Pin the main node to simulation center (0,0)
+      currentSim.alpha(1).restart();
+
+      // Pin the main node after a short delay to allow initial positioning
       const mainNodeData = filteredNodes.find(n => n.id === mainWord);
       if (mainNodeData) {
-          mainNodeData.fx = 0;
-          mainNodeData.fy = 0;
+          mainNodeData.fx = width / 2;
+          mainNodeData.fy = height / 2;
       }
-      currentSim.alpha(1).restart();
     }
 
     setTimeout(() => centerOnMainWord(svg, filteredNodes), 800);

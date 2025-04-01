@@ -49,49 +49,59 @@ svg {
 
 .controls-container {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 8px 12px;
-  gap: 15px;
-  background-color: var(--controls-background-color, #e9ecef);
-  border-top: 1px solid var(--border-color, #dee2e6);
+  gap: 20px;
+  background-color: var(--card-bg-color-transparent, rgba(255, 255, 255, 0.7));
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
   z-index: 10;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-color);
 }
 
 .zoom-controls {
-  display: flex;
-  gap: 5px;
+  display: inline-flex;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.05));
 }
 
 .zoom-button {
-  padding: 8px 15px;
+  padding: 6px 12px;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  background-color: var(--button-color);
-  color: var(--button-text-color);
+  background-color: var(--button-bg-color, #f0f0f0);
+  color: var(--button-text-color, #333);
   border: none;
-  border-radius: 6px;
-  transition: background-color 0.3s, transform 0.1s;
+  border-right: 1px solid var(--button-border-color, #ccc);
+  border-radius: 0;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.zoom-button:last-child {
+  border-right: none;
 }
 
 .zoom-button:hover {
-  background-color: var(--primary-color);
+  background-color: var(--button-hover-bg-color, #e0e0e0);
 }
 
 .zoom-button:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
 .graph-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  flex-wrap: nowrap;
+  gap: 25px;
   align-items: center;
 }
 
@@ -99,18 +109,15 @@ svg {
   display: flex;
   align-items: center;
   gap: 8px;
-  min-width: 150px;
 }
 
-.MuiSlider-root {
-  width: 100% !important;
-  color: var(--accent-color) !important;
+.slider-container .MuiTypography-caption {
+  color: var(--text-color-secondary);
+  white-space: nowrap;
+  font-size: 11px;
 }
 
-.MuiTypography-caption {
-  font-size: 0.9rem !important;
-  color: var(--text-color) !important;
-  min-width: 90px;
+.slider-container .MuiSlider-root {
 }
 
 .node {
@@ -246,7 +253,9 @@ svg {
 
 @media (max-width: 480px) {
   .controls-container {
-    padding: 10px;
+    padding: 6px 8px;
+    gap: 10px;
+    justify-content: center;
   }
 
   .zoom-button {
@@ -283,6 +292,14 @@ svg {
   .color-box {
     width: 10px;
     height: 10px;
+  }
+
+  .graph-controls {
+    gap: 15px;
+  }
+
+  .slider-container .MuiSlider-root {
+    width: 80px !important;
   }
 }
 

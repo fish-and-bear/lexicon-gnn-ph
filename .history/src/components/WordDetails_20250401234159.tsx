@@ -27,9 +27,6 @@ import Link from '@mui/material/Link';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
 
-// Add d3 import here at the top
-import * as d3 from 'd3';
-
 // MUI Icons
 // import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -544,5 +541,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     </Paper>
   );
 });
+
+// Add d3 import if isColorLight needs it and it's not already imported
+import * as d3 from 'd3';
 
 export default WordDetails;

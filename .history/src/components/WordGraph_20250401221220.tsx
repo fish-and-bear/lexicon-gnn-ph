@@ -130,22 +130,23 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, []);
 
   const getNodeColor = useCallback((group: string): string => {
+    // More vibrant, fun color palette
     switch (group) {
-      case "main": return "#1d3557";
-      case "root": return "#e63946";
-      case "derived": return "#2a9d8f";
-      case "synonym": return "#457b9d";
-      case "antonym": return "#f77f00";
-      case "variant": return "#f4a261";
-      case "related": return "#fcbf49";
-      case "taxonomic": return "#8338ec";
-      case "part_whole": return "#3a86ff";
-      case "usage": return "#0ead69";
-      case "etymology": return "#3d5a80";
-      case "component_of": return "#ffb01f";
-      case "cognate": return "#9381ff";
-      case "associated": return "#adb5bd";
-      default: return "#6c757d";
+      case "main": return "#4361ee"; // Brighter blue
+      case "root": return "#e63946"; // Vibrant red
+      case "derived": return "#06d6a0"; // Teal
+      case "synonym": return "#118ab2"; // Blue
+      case "antonym": return "#ff7b00"; // Orange
+      case "variant": return "#ffd166"; // Yellow
+      case "related": return "#7209b7"; // Purple
+      case "taxonomic": return "#8338ec"; // Lavender
+      case "part_whole": return "#3a86ff"; // Light blue
+      case "usage": return "#0ead69"; // Green
+      case "etymology": return "#3d5a80"; // Navy blue
+      case "component_of": return "#ffb01f"; // Amber
+      case "cognate": return "#9381ff"; // Light purple
+      case "associated": return "#adb5bd"; // Gray
+      default: return "#6c757d"; // Dark gray
     }
   }, []);
 
@@ -172,12 +173,9 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, [wordNetwork]);
 
   const baseNodes = useMemo<CustomNode[]>(() => {
-    // Ensure wordNetwork and mainWord exist before proceeding
-    if (!wordNetwork?.nodes || !mainWord) {
-        return []; // Return empty array if prerequisites are missing
-    }
+    if (!wordNetwork?.nodes || !mainWord) return [];
 
-    const mappedNodes = wordNetwork.nodes.map(node => {
+    return wordNetwork.nodes.map(node => {
       let calculatedGroup = 'associated';
       if (node.label === mainWord) {
         calculatedGroup = 'main';
@@ -207,17 +205,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
         index: undefined, x: undefined, y: undefined, vx: undefined, vy: undefined, fx: undefined, fy: undefined
       };
     });
-
-    // Filter out duplicate nodes based on id (label), keeping the first occurrence
-    const uniqueNodes: CustomNode[] = []; // Explicitly type the array
-    const seenIds = new Set<string>();
-    for (const node of mappedNodes) {
-        if (!seenIds.has(node.id)) {
-            uniqueNodes.push(node);
-            seenIds.add(node.id);
-        }
-    }
-    return uniqueNodes; // Now guaranteed to return CustomNode[]
   }, [wordNetwork, mainWord, baseLinks, mapRelationshipToGroup]);
 
   const filteredNodes = useMemo<CustomNode[]>(() => {
@@ -274,10 +261,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, [filteredNodes]);
 
   const getNodeRadius = useCallback((node: CustomNode) => {
-    // Simplified, consistent sizing
-    if (node.id === mainWord) return 20;
-    if (node.group === 'root') return 16;
-    return 13;
+    if (node.id === mainWord) return 22;
+    if (node.group === 'root') return 18;
+    const connFactor = node.connections ? Math.min(node.connections, 5) : 0; // Cap connection influence
+    return 12 + connFactor; // Base size + connection bonus
   }, [mainWord]);
 
   const setupZoom = useCallback((svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, g: d3.Selection<SVGGElement, unknown, null, undefined>) => {
@@ -302,38 +289,27 @@ const WordGraph: React.FC<WordGraphProps> = ({
       const svg = d3.select(svgRef.current);
       const nodeSelection = svg.selectAll<SVGGElement, CustomNode>(".node");
       const linkSelection = svg.selectAll<SVGLineElement, CustomLink>(".link");
-      const labelSelection = svg.selectAll<SVGTextElement, CustomNode>(".node-label"); // Select external labels
 
-      // Update node group positions
       nodeSelection.attr("transform", d => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
 
-      // Update link line coordinates
       linkSelection
           .attr("x1", d => (typeof d.source === 'object' ? d.source.x ?? 0 : 0))
           .attr("y1", d => (typeof d.source === 'object' ? d.source.y ?? 0 : 0))
           .attr("x2", d => (typeof d.target === 'object' ? d.target.x ?? 0 : 0))
           .attr("y2", d => (typeof d.target === 'object' ? d.target.y ?? 0 : 0));
+  }, []);
 
-      // Update external text label positions (e.g., slightly below node)
-      labelSelection
-          .attr("x", d => d.x ?? 0)
-          .attr("y", d => (d.y ?? 0) + getNodeRadius(d) + 12); // Adjust offset as needed
-
-  }, [getNodeRadius]); // Added getNodeRadius dependency
-
-  const setupSimulation = useCallback((nodes: CustomNode[], links: CustomLink[], width: number, height: number) => {
+  const setupSimulation = useCallback((nodes: CustomNode[], links: CustomLink[]) => {
       simulationRef.current = d3.forceSimulation<CustomNode>(nodes)
-        .alphaDecay(0.025) // Slightly slower decay for potentially better label settling
+        .alphaDecay(0.022)
         .velocityDecay(0.4)
         .force("link", d3.forceLink<CustomNode, CustomLink>()
           .id(d => d.id)
           .links(links)
-          .distance(110) // Moderate consistent distance
+          .distance(110)
           .strength(0.4))
-        .force("charge", d3.forceManyBody<CustomNode>().strength(-300).distanceMax(350)) // Slightly stronger charge for spacing
-        // Increase collision radius significantly to account for text labels
-        .force("collide", d3.forceCollide<CustomNode>().radius(d => getNodeRadius(d) + 25).strength(1.0))
-        // Set simulation center to 0,0
+        .force("charge", d3.forceManyBody<CustomNode>().strength(-300).distanceMax(300))
+        .force("collide", d3.forceCollide<CustomNode>().radius(d => getNodeRadius(d) + 6).strength(1.0))
         .force("center", d3.forceCenter(0, 0))
         .on("tick", ticked);
 
@@ -361,38 +337,161 @@ const WordGraph: React.FC<WordGraphProps> = ({
         });
   }, []);
 
-  const createLinks = useCallback((g: d3.Selection<SVGGElement, unknown, null, undefined>, linksData: CustomLink[]) => {
-      // Draw links first (behind nodes and labels)
-      const linkGroup = g.append("g")
+  const createLinks = useCallback((
+    g: d3.Selection<SVGGElement, unknown, null, undefined>,
+    linksData: CustomLink[]
+  ) => {
+    // Categorize relationships for visual distinction
+    const getRelationshipCategory = (type: string): string => {
+      const synonymLike = ["synonym", "antonym", "variant"];
+      const semanticRelated = ["related", "taxonomic", "part_whole", "component_of", "usage", "associated"];
+      const etymological = ["derived", "etymology", "cognate"];
+      
+      if (synonymLike.includes(type)) return "synonym-like";
+      if (semanticRelated.includes(type)) return "semantic";
+      if (etymological.includes(type)) return "etymology";
+      return "other";
+    };
+    
+    // Create marker defs for arrows if they don't exist
+    const svg = d3.select(svgRef.current);
+    
+    // Remove existing defs to prevent duplicates
+    svg.selectAll("defs").remove();
+    
+    const defs = svg.append("defs");
+    
+    // Create curved line generator
+    const line = d3.line<[number, number]>()
+      .curve(d3.curveBasis);
+    
+    // Create animated dashed lines
+    defs.append("filter")
+      .attr("id", "link-glow")
+      .attr("height", "300%")
+      .attr("width", "300%")
+      .attr("x", "-100%")
+      .attr("y", "-100%")
+      .append("feGaussianBlur")
+      .attr("stdDeviation", "2")
+      .attr("result", "blur");
+    
+    // Create link gradient for each relationship category
+    ["synonym-like", "semantic", "etymology", "other"].forEach(category => {
+      // Determine colors based on category
+      let startColor, endColor;
+      
+      switch(category) {
+        case "synonym-like":
+          startColor = "#4cc9f0";
+          endColor = "#4895ef";
+          break;
+        case "semantic":
+          startColor = "#f72585";
+          endColor = "#b5179e";
+          break;
+        case "etymology":
+          startColor = "#e9c46a";
+          endColor = "#f4a261";
+          break;
+        default:
+          startColor = "#adb5bd";
+          endColor = "#6c757d";
+      }
+      
+      const gradient = defs.append("linearGradient")
+        .attr("id", `link-gradient-${category}`)
+        .attr("gradientUnits", "userSpaceOnUse")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "100%")
+        .attr("y2", "100%");
+      
+      gradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", startColor);
+        
+      gradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", endColor);
+    });
+    
+    // Define marker for each category
+    ["synonym-like", "semantic", "etymology", "other"].forEach(category => {
+      let color;
+      switch(category) {
+        case "synonym-like": color = "#4895ef"; break;
+        case "semantic": color = "#b5179e"; break;
+        case "etymology": color = "#f4a261"; break;
+        default: color = "#6c757d";
+      }
+      
+      defs.append("marker")
+        .attr("id", `arrowhead-${category}`)
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 15)
+        .attr("refY", 0)
+        .attr("orient", "auto")
+        .attr("markerWidth", 5)
+        .attr("markerHeight", 5)
+        .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("fill", color);
+    });
+    
+    const linkGroups = g.append("g")
       .attr("class", "links")
-      .selectAll("line")
-          .data(linksData, (d: any) => `${(typeof d.source === 'object' ? d.source.id : d.source)}_${(typeof d.target === 'object' ? d.target.id : d.target)}`)
-          .join(
-              enter => enter.append("line")
-      .attr("class", "link")
-                  .attr("stroke", theme === "dark" ? "#666" : "#ccc") // Consistent neutral color
-                  .attr("stroke-opacity", 0) // Start transparent
-                  .attr("stroke-width", 1.5) // Consistent width
-                  .attr("stroke-linecap", "round")
-                  .attr("x1", d => (typeof d.source === 'object' ? d.source.x ?? 0 : 0))
-                  .attr("y1", d => (typeof d.source === 'object' ? d.source.y ?? 0 : 0))
-                  .attr("x2", d => (typeof d.target === 'object' ? d.target.x ?? 0 : 0))
-                  .attr("y2", d => (typeof d.target === 'object' ? d.target.y ?? 0 : 0))
-                  // Add title element for link tooltip
-                  .call(enter => enter.append("title").text((d: CustomLink) => d.relationship))
-                  .call(enter => enter.transition().duration(300).attr("stroke-opacity", 0.6)), // Default opacity slightly higher
-              update => update
-                  // Ensure updates reset to default style before transitions
-                  .attr("stroke", theme === "dark" ? "#666" : "#ccc")
-                  .attr("stroke-width", 1.5)
-                  .call(update => update.transition().duration(300)
-                        .attr("stroke-opacity", 0.6)), // Transition opacity on update if needed
-              exit => exit
-                  .call(exit => exit.transition().duration(300).attr("stroke-opacity", 0))
-                  .remove()
+      .selectAll("path")
+      .data(linksData, (d: any) => `${(typeof d.source === 'object' ? d.source.id : d.source)}_${(typeof d.target === 'object' ? d.target.id : d.target)}`)
+      .join(
+        enter => {
+          // Get the relationship category for styling
+          const getCategory = (d: CustomLink) => {
+            const relType = d.relationship.toLowerCase();
+            return getRelationshipCategory(relType);
+          };
+          
+          // Create paths with curved lines
+          const path = enter.append("path")
+            .attr("class", d => `link link-${getCategory(d)}`)
+            .attr("stroke", d => `url(#link-gradient-${getCategory(d)})`)
+            .attr("stroke-width", 1.5)
+            .attr("fill", "none")
+            .attr("opacity", 0)
+            .attr("marker-end", d => `url(#arrowhead-${getCategory(d)})`)
+            .style("stroke-dasharray", d => {
+              const category = getCategory(d);
+              switch(category) {
+                case "synonym-like": return "none"; // Solid
+                case "semantic": return "5,3"; // Dashed
+                case "etymology": return "2,2"; // Dotted
+                default: return "3,3,1,3"; // Dash-dot
+              }
+            });
+          
+          // Apply enter animation with path drawing effect
+          path.call(enter => enter.transition()
+            .delay((_, i) => i * 10) // Stagger for visual interest
+            .duration(600)
+            .attrTween("stroke-dashoffset", function() {
+              const length = this.getTotalLength();
+              return d3.interpolate(length, 0);
+            })
+            .attr("opacity", 0.6)
           );
-      return linkGroup;
-  }, [theme]);
+          
+          return path;
+        },
+        update => update,
+        exit => exit.call(exit => exit.transition()
+          .duration(300)
+          .attr("opacity", 0)
+          .remove()
+        )
+      );
+    
+    return linkGroups;
+  }, []);
 
   const createNodes = useCallback((
       g: d3.Selection<SVGGElement, unknown, null, undefined>,
@@ -401,231 +500,342 @@ const WordGraph: React.FC<WordGraphProps> = ({
       ) => {
     const drag = simulation ? createDragBehavior(simulation) : null;
     
-    // Node groups (circles only)
+    // Add a gradient definition for each node type
+    const defs = g.append("defs");
+    
+    // Create gradients for each node group
+    Object.entries({
+      "main": getNodeColor("main"),
+      "root": getNodeColor("root"),
+      "derived": getNodeColor("derived"),
+      "synonym": getNodeColor("synonym"),
+      "antonym": getNodeColor("antonym"),
+      "variant": getNodeColor("variant"),
+      "related": getNodeColor("related"),
+      "taxonomic": getNodeColor("taxonomic"),
+      "part_whole": getNodeColor("part_whole"),
+      "usage": getNodeColor("usage"),
+      "etymology": getNodeColor("etymology"),
+      "component_of": getNodeColor("component_of"),
+      "cognate": getNodeColor("cognate"),
+      "associated": getNodeColor("associated"),
+    }).forEach(([group, color]) => {
+      const gradId = `node-gradient-${group}`;
+      const grad = defs.append("radialGradient")
+        .attr("id", gradId)
+        .attr("cx", "30%")
+        .attr("cy", "30%")
+        .attr("r", "70%");
+      
+      // Lighter center, original color at edge
+      const c = d3.color(color);
+      if (c) {
+        grad.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", c.brighter(0.7).formatHex());
+          
+        grad.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", color);
+      }
+    });
+    
+    // Add pulsing animation for main node
+    const pulseAnimation = defs.append("filter")
+      .attr("id", "pulse-animation")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+      
+    // Create the animation components
+    const animator = pulseAnimation.append("feGaussianBlur")
+      .attr("in", "SourceGraphic")
+      .attr("stdDeviation", "0")
+      .attr("result", "blur");
+      
+    const animateValues = "0;1;2;2;1;0";
+    const animKeyTimes = "0;0.2;0.4;0.6;0.8;1";
+    
+    animator.append("animate")
+      .attr("attributeName", "stdDeviation")
+      .attr("values", "0;0.5;1;1;0.5;0")
+      .attr("keyTimes", animKeyTimes)
+      .attr("dur", "4s")
+      .attr("repeatCount", "indefinite");
+    
+    // Create node groups
     const nodeGroups = g.append("g")
       .attr("class", "nodes")
-      .selectAll("g.node") // More specific selector
+      .selectAll("g")
         .data(nodesData, (d: any) => (d as CustomNode).id)
       .join(
           enter => {
               const nodeGroup = enter.append("g")
                   .attr("class", d => `node node-group-${d.group} ${d.id === mainWord ? "main-node" : ""}`)
                   .attr("transform", d => `translate(${d.x ?? 0}, ${d.y ?? 0})`)
-                  .style("opacity", 0); // Start transparent
+                  .style("opacity", 0);
 
+              // Add a subtle shadow/glow effect
               nodeGroup.append("circle")
-      .attr("r", d => getNodeRadius(d))
-      .attr("fill", d => getNodeColor(d.group))
-                  // Subtle outline using darker shade of fill
-                  .attr("stroke", d => d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888")
-                  .attr("stroke-width", 1.5);
+                .attr("class", "node-shadow")
+                .attr("r", d => getNodeRadius(d) + 2)
+                .attr("fill", d => d.id === mainWord 
+                  ? `url(#node-gradient-${d.group})` 
+                  : `url(#node-gradient-${d.group})`)
+                .attr("filter", "drop-shadow(0 0 3px rgba(0,0,0,0.2))") 
+                .attr("opacity", 0.3)
+                .attr("stroke", "none");
+                
+              // Main circle
+              nodeGroup.append("circle")
+                .attr("class", "node-circle")
+                .attr("r", d => getNodeRadius(d))
+                .attr("fill", d => `url(#node-gradient-${d.group})`)
+                .attr("stroke", d => d3.color(getNodeColor(d.group))?.darker(0.6).formatHex() ?? (theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"))
+                .attr("stroke-width", 1.5);
 
-              // NO internal text or title here
+              // Add a filter to the main word node for the pulsing effect
+              if (mainWord) {
+                nodeGroup.filter(d => d.id === mainWord)
+                  .select(".node-shadow")
+                  .attr("filter", "url(#pulse-animation)")
+                  .attr("opacity", 0.4);
+              }
 
-              nodeGroup.call(enter => enter.transition().duration(300).style("opacity", 1));
+              // Text group with halo
+              const textGroup = nodeGroup.append("text")
+                  .attr("dy", ".35em")
+                  .attr("text-anchor", "middle")
+                  .attr("font-size", d => d.id === mainWord ? "11px" : "9px")
+                  .attr("font-weight", d => d.id === mainWord ? "600" : "400")
+                  .text(d => d.word)
+                  .style("pointer-events", "none");
+      
+              // Halo
+              textGroup.clone(true)
+                  .lower()
+                  .attr("fill", "none")
+                  .attr("stroke", theme === "dark" ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
+                  // Make main word halo slightly thicker
+                  .attr("stroke-width", d => d.id === mainWord ? 4 : 3.5)
+                  .attr("stroke-linejoin", "round");
+
+              // Main text fill
+              nodeGroup.select("text:not([stroke])")
+                  .attr("fill", d => getTextColorForBackground(getNodeColor(d.group)));
+
+              // Add tooltips
+              nodeGroup.append("title").text(d => `${d.word}\nGroup: ${d.group}\nConnections: ${d.connections ?? 0}`);
+
+              // Apply fade-in transition with a slight bounce effect
+              nodeGroup.call(enter => enter.transition()
+                .duration(500)
+                .style("opacity", 1)
+                .attrTween("transform", function(d) {
+                  const startX = d.x ?? 0;
+                  const startY = d.y ?? 0;
+                  return function(t) {
+                    // Add a small bounce effect
+                    const bounce = Math.sin(t * Math.PI) * 5 * (1-t);
+                    return `translate(${startX},${startY + bounce})`;
+                  };
+                })
+              );
+              
               return nodeGroup;
           },
           update => update,
           exit => exit
-              .call(exit => exit.transition().duration(300).style("opacity", 0))
+              .call(exit => exit.transition()
+                .duration(300)
+                .style("opacity", 0)
+                .attrTween("transform", function(d) {
+                  const startX = d.x ?? 0;
+                  const startY = d.y ?? 0;
+                  return function(t) {
+                    return `translate(${startX},${startY - 10 * t})`;
+                  };
+                })
+              )
               .remove()
       );
 
-    // External Labels (drawn after nodes/links)
-    const labelGroup = g.append("g")
-        .attr("class", "labels")
-        .selectAll("text.node-label") // More specific selector
-        .data(nodesData, (d: any) => (d as CustomNode).id)
-        .join(
-            enter => {
-                const textElement = enter.append("text")
-                    .attr("class", "node-label")
-      .attr("text-anchor", "middle")
-                    .attr("font-size", "10px") // Slightly larger base size for external text
-                    .attr("font-weight", d => d.id === mainWord ? "600" : "400")
-      .text(d => d.word)
-                    .attr("x", d => d.x ?? 0) // Initial position
-                    .attr("y", d => (d.y ?? 0) + getNodeRadius(d) + 12)
-                    .style("opacity", 0) // Start transparent
-                    .style("pointer-events", "none") // Prevent blocking node interactions
-                    .style("user-select", "none");
-
-                // Halo for contrast against background
-                textElement.clone(true)
-                    .lower()
-                    .attr("fill", "none")
-                    .attr("stroke", theme === "dark" ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
-                    .attr("stroke-width", 3)
-                    .attr("stroke-linejoin", "round");
-
-                // Set main text fill color based on theme
-                textElement.attr("fill", theme === "dark" ? "#eee" : "#222");
-
-                textElement.call(enter => enter.transition().duration(300).style("opacity", 1));
-                return textElement;
-            },
-            update => update, // Could update text content if needed
-            exit => exit
-                .call(exit => exit.transition().duration(300).style("opacity", 0))
-                .remove()
-        );
-
       if (drag) nodeGroups.call(drag as any);
-    return nodeGroups; // Return the node groups for interaction setup
+    return nodeGroups;
   }, [createDragBehavior, getNodeRadius, getNodeColor, theme, mainWord]);
 
   const setupNodeInteractions = useCallback((
-      nodeSelection: d3.Selection<d3.BaseType, CustomNode, SVGGElement, unknown>
+    nodeGroups: d3.Selection<SVGGElement, CustomNode, SVGGElement, unknown>,
+    linkGroups: d3.Selection<SVGPathElement, CustomLink, SVGGElement, unknown>
   ) => {
-      nodeSelection
-        .on("click", (event, d) => {
-          event.stopPropagation();
-          if (isDraggingRef.current) return;
-          
-          const connectedIds = new Set<string>([d.id]);
-          const connectedLinkElements: SVGLineElement[] = [];
-           d3.selectAll<SVGLineElement, CustomLink>(".link").filter(l => {
-               const sourceId = typeof l.source === 'object' ? (l.source as CustomNode).id : l.source as string;
-               const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
-               if (sourceId === d.id) { connectedIds.add(targetId); return true; }
-               if (targetId === d.id) { connectedIds.add(sourceId); return true; }
-               return false;
-           }).each(function() { connectedLinkElements.push(this); });
+    // Helper to get connecting links for a node
+    const getConnectedLinks = (nodeId: string) => {
+      return linkGroups.filter(d => {
+        const sourceId = typeof d.source === 'object' ? d.source.id : d.source;
+        const targetId = typeof d.target === 'object' ? d.target.id : d.target;
+        return sourceId === nodeId || targetId === nodeId;
+      });
+    };
+    
+    // Helper to get connecting nodes for a node
+    const getConnectedNodes = (nodeId: string) => {
+      const connectedNodes = new Set<string>();
+      
+      linkGroups.each(d => {
+        const sourceId = typeof d.source === 'object' ? d.source.id : d.source;
+        const targetId = typeof d.target === 'object' ? d.target.id : d.target;
+        
+        if (sourceId === nodeId) {
+          connectedNodes.add(targetId);
+        } else if (targetId === nodeId) {
+          connectedNodes.add(sourceId);
+        }
+      });
+      
+      return nodeGroups.filter(d => connectedNodes.has(d.id));
+    };
 
-          setSelectedNodeId(d.id);
-          
-          // Strong dimming of non-connected elements
-          d3.selectAll<SVGGElement, CustomNode>(".node")
-              .classed("selected connected", false)
-              .filter(n => !connectedIds.has(n.id)) // Filter non-connected
-              .transition("dim_node").duration(250)
-              .style("opacity", 0.1);
-          d3.selectAll<SVGLineElement, CustomLink>(".link")
-              .classed("highlighted", false)
-              // Filter non-connected links. Need to access link source/target IDs.
-              .filter(l => {
-                  const sourceId = typeof l.source === 'object' ? (l.source as CustomNode).id : l.source as string;
-                  const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
-                  return !(connectedIds.has(sourceId) && connectedIds.has(targetId));
-              })
-              .transition("dim_link").duration(250)
-              .attr("stroke", theme === "dark" ? "#444" : "#ddd") // Very faint stroke color
-              .attr("stroke-opacity", 0.05)
-              .attr("stroke-width", 1.0);
+    // Add click for pinning
+    nodeGroups.on("click", (event, d) => {
+      event.stopPropagation();
+      
+      // Toggle pinned state with visual effect
+      d.fx = d.fx ? null : d.x;
+      d.fy = d.fy ? null : d.y;
+      
+      // Update visual appearance for pinned state
+      d3.select(event.currentTarget)
+        .classed("pinned", !!d.fx)
+        .select(".node-circle")
+        .transition()
+        .duration(300)
+        .attr("stroke-width", d.fx ? 3 : 1.5)
+        .attr("stroke-dasharray", d.fx ? "3,2" : "none");
+        
+      // Show brief indication of pinned/unpinned
+      const statusText = d3.select(event.currentTarget)
+        .append("text")
+        .attr("class", "status-text")
+        .attr("dy", -20)
+        .attr("text-anchor", "middle")
+        .attr("fill", theme === "dark" ? "#fff" : "#000")
+        .style("pointer-events", "none")
+        .style("font-size", "9px")
+        .style("opacity", 0)
+        .text(d.fx ? "Pinned" : "Unpinned");
+        
+      statusText.transition()
+        .duration(300)
+        .style("opacity", 1)
+        .transition()
+        .delay(1000)
+        .duration(300)
+        .style("opacity", 0)
+        .remove();
+    });
 
-          // Highlight selected node and connected nodes
-          const targetNodeElement = d3.select(event.currentTarget as Element);
-          targetNodeElement.classed("selected", true)
-              .transition("highlight_node").duration(250)
-              .style("opacity", 1)
-              .select("circle") // Ensure border highlight is applied
-                  .attr("stroke-width", 2.5)
-                  .attr("stroke", d3.color(getNodeColor(d.group))?.brighter(0.8).formatHex() ?? (theme === "dark" ? "#eee" : "#333"));
+    // Hover effects with fun animations
+    nodeGroups.on("mouseenter", (event, d) => {
+      const currentNode = d3.select(event.currentTarget);
+      
+      // Highlight current node
+      currentNode
+        .raise() // Bring to front
+        .transition()
+        .duration(200)
+        .select(".node-circle")
+        .attr("stroke-width", 3)
+        .attr("r", getNodeRadius(d) * 1.1); // Slightly enlarge
+      
+      // Add a subtle pulse effect
+      currentNode.select(".node-shadow")
+        .transition()
+        .duration(300)
+        .attr("r", getNodeRadius(d) + 5)
+        .attr("opacity", 0.5);
+      
+      // Highlight connected links
+      const connectedLinks = getConnectedLinks(d.id);
+      connectedLinks
+        .raise() // Bring to front
+        .transition()
+        .duration(200)
+        .attr("stroke-width", 2.5)
+        .attr("opacity", 1);
+        
+      // Highlight connected nodes
+      const connectedNodes = getConnectedNodes(d.id);
+      connectedNodes
+        .raise() // Bring to front
+        .transition()
+        .duration(200)
+        .select(".node-circle")
+        .attr("stroke-width", 2);
+      
+      // Dim other nodes
+      nodeGroups.filter(n => n.id !== d.id && !connectedNodes.filter(cn => cn.id === n.id).empty())
+        .transition()
+        .duration(200)
+        .style("opacity", 0.7);
+      
+      // Dim other links
+      linkGroups.filter(l => {
+        const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
+        const targetId = typeof l.target === 'object' ? l.target.id : l.target;
+        return sourceId !== d.id && targetId !== d.id;
+      })
+      .transition()
+      .duration(200)
+      .style("opacity", 0.2);
+      
+      // Show tooltip with animation
+      if (d.word) {
+        setTooltipContent(`
+          <div style="font-weight: bold">${d.word}</div>
+          <div>Group: ${d.group}</div>
+          <div>Connections: ${d.connections ?? 0}</div>
+        `);
+        setHoveredNode(d);
+      }
+    });
 
-          d3.selectAll<SVGGElement, CustomNode>(".node")
-              .filter(n => connectedIds.has(n.id) && n.id !== d.id) // Connected but not the clicked one
-              .classed("connected", true)
-              .transition("highlight_node").duration(250)
-              .style("opacity", 1)
-              .select("circle") // Reset border if it was dimmed
-                   .attr("stroke", n => d3.color(getNodeColor(n.group))?.darker(0.8).formatHex() ?? "#888")
-                   .attr("stroke-width", 1.5);
-
-           // Highlight connected links
-           d3.selectAll<SVGLineElement, CustomLink>(connectedLinkElements)
-            .classed("highlighted", true)
-            .raise()
-            .transition("highlight_link").duration(250)
-            .attr("stroke", (l: CustomLink) => { // Color link based on neighbour
-                const sourceId = typeof l.source === 'object' ? (l.source as CustomNode).id : l.source as string;
-                const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
-                const neighbourNode = sourceId === d.id ? nodeMap.get(targetId) : nodeMap.get(sourceId);
-                return neighbourNode ? getNodeColor(neighbourNode.group) : (theme === "dark" ? "#aaa" : "#666");
-            })
-            .attr("stroke-opacity", 0.9)
-            .attr("stroke-width", 2.5);
-
-           if (onNodeClick) onNodeClick(d.id);
-        })
-        .on("mouseover", (event, d) => {
-            if (isDraggingRef.current) return;
-            const nodeElement = d3.select(event.currentTarget as Element);
-            if (tooltipTimeoutId) clearTimeout(tooltipTimeoutId);
-
-            // Hover Effect: Highlight border only
-            nodeElement.select("circle")
-               .transition("hover_border").duration(100)
-               .attr("stroke-width", 2.5)
-               .attr("stroke", d3.color(getNodeColor(d.group))?.brighter(0.8).formatHex() ?? (theme === "dark" ? "#eee" : "#333"));
-            nodeElement.raise();
-            // NO dimming of others
-
-            const timeoutId = setTimeout(() => { setHoveredNode({ ...d }); }, 200);
-            setTooltipTimeoutId(timeoutId);
-        })
-        .on("mouseout", (event, d_unknown) => {
-            if (isDraggingRef.current) return;
-            if (tooltipTimeoutId) clearTimeout(tooltipTimeoutId);
-            setHoveredNode(null);
-
-            const nodeElement = d3.select(event.currentTarget as Element);
-            const d = d_unknown as CustomNode;
-
-            // Revert hover effect for the circle
-             const circleSelection = nodeElement.select<SVGCircleElement>("circle").data([d]);
-
-             // Transition width first
-             circleSelection.transition("hover_border_width").duration(150)
-                  .attr("stroke-width", (n: CustomNode) => n.id === selectedNodeId ? 2.5 : (n.pinned ? 3 : 1.5));
-
-            // Then transition stroke color, always reverting to default dark unless pinned/selected
-             circleSelection.transition("hover_border_color").duration(150)
-                 .attr("stroke", (n: CustomNode) => {
-                     const baseColor = getNodeColor(n.group);
-                     if (n.id === selectedNodeId) { // Keep selected highlight color
-                         return d3.color(baseColor)?.brighter(0.8).formatHex() ?? baseColor ?? (theme === "dark" ? "#eee" : "#333");
-                     }
-                     if (n.pinned) { // Keep pinned color
-                         return baseColor;
-                     }
-                     // Default dark color
-                     return d3.color(baseColor)?.darker(0.8).formatHex() ?? baseColor ?? "#888";
-                 });
-
-             // NO restoration of other opacities needed
-        })
-        .on("dblclick", (event, d_unknown) => {
-             event.preventDefault();
-             const d = d_unknown as CustomNode; // Cast early
-             d.pinned = !d.pinned;
-             d.fx = d.pinned ? d.x : null;
-             d.fy = d.pinned ? d.y : null;
-
-             // Select the circle and re-bind the typed data *before* the transition
-             const circleSelection = d3.select(event.currentTarget as Element)
-                                     .select<SVGCircleElement>('circle')
-                                     .data([d]); // Re-bind typed data
-
-             // Now apply transitions using the correctly typed selection
-             circleSelection.transition().duration(150)
-                 .attr("stroke-width", (n: CustomNode) => n.id === selectedNodeId ? 2.5 : (n.pinned ? 3 : 1.5))
-                 .attr("stroke-dasharray", (n: CustomNode) => n.pinned ? "5,3" : "none")
-                 .attr("stroke", (n: CustomNode) => {
-                     const baseColor = getNodeColor(n.group);
-                     let finalColor: string;
-                     if (n.pinned) {
-                         finalColor = baseColor;
-                     } else {
-                         if (n.id === selectedNodeId) {
-                             finalColor = d3.color(baseColor)?.brighter(0.8).formatHex() ?? baseColor ?? (theme === "dark" ? "#eee" : "#333");
-                         } else {
-                             finalColor = d3.color(baseColor)?.darker(0.8).formatHex() ?? baseColor ?? "#888";
-                         }
-                     }
-                     return finalColor;
-                 });
-        });
-  }, [selectedNodeId, onNodeClick, getNodeRadius, getNodeColor, theme, nodeMap]);
+    // Mouse leave effect
+    nodeGroups.on("mouseleave", (event, d) => {
+      const currentNode = d3.select(event.currentTarget);
+      
+      // Reset current node
+      currentNode
+        .transition()
+        .duration(300)
+        .select(".node-circle")
+        .attr("stroke-width", d.fx ? 3 : 1.5) // Maintain pinned style if pinned
+        .attr("r", getNodeRadius(d));
+      
+      // Reset shadow
+      currentNode.select(".node-shadow")
+        .transition()
+        .duration(300)
+        .attr("r", getNodeRadius(d) + 2)
+        .attr("opacity", 0.3);
+      
+      // Reset all nodes
+      nodeGroups
+        .transition()
+        .duration(300)
+        .style("opacity", 1);
+      
+      // Reset all links
+      linkGroups
+        .transition()
+        .duration(300)
+        .attr("stroke-width", 1.5)
+        .style("opacity", 0.6);
+      
+      // Hide tooltip
+      setHoveredNode(null);
+    });
+  }, [getNodeRadius, theme]);
 
   // Define handleResetZoom before centerOnMainWord
   const handleResetZoom = useCallback(() => {
@@ -710,11 +920,11 @@ const WordGraph: React.FC<WordGraphProps> = ({
          console.warn("Graph has nodes but no links connect them within the current depth/breadth.");
     }
 
-    const currentSim = setupSimulation(filteredNodes, currentFilteredLinks, width, height);
+    const currentSim = setupSimulation(filteredNodes, currentFilteredLinks);
 
-    createLinks(g, currentFilteredLinks);
+    const linkGroups = createLinks(g, currentFilteredLinks);
     const nodeElements = createNodes(g, filteredNodes, currentSim);
-    setupNodeInteractions(nodeElements);
+    setupNodeInteractions(nodeElements, linkGroups);
 
     if (currentSim) {
       currentSim.nodes(filteredNodes);
@@ -722,13 +932,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       if (linkForce) {
         linkForce.links(currentFilteredLinks);
       }
-      // Pin the main node to simulation center (0,0)
+      currentSim.alpha(1).restart();
+
+      // Pin the main node after a short delay to allow initial positioning
       const mainNodeData = filteredNodes.find(n => n.id === mainWord);
       if (mainNodeData) {
-          mainNodeData.fx = 0;
+          mainNodeData.fx = 0; // Pin to center (since forceCenter is 0,0)
           mainNodeData.fy = 0;
       }
-      currentSim.alpha(1).restart();
     }
 
     setTimeout(() => centerOnMainWord(svg, filteredNodes), 800);

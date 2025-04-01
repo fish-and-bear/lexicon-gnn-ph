@@ -85,6 +85,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
   // State for tooltip delay
   const [tooltipTimeoutId, setTooltipTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
 
   useEffect(() => {
     if (!wordNetwork || !wordNetwork.nodes || !Array.isArray(wordNetwork.nodes) || 
@@ -280,19 +281,22 @@ const WordGraph: React.FC<WordGraphProps> = ({
     return 13;
   }, [mainWord]);
 
-  const setupZoom = useCallback((svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, g: d3.Selection<SVGGElement, unknown, null, undefined>) => {
-    const containerRect = svg.node()?.parentElement?.getBoundingClientRect();
-    const width = containerRect ? containerRect.width : 800;
-    const height = containerRect ? containerRect.height : 600;
+  const setupZoom = useCallback((svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, g: d3.Selection<SVGGElement, unknown, null, undefined>, width: number, height: number) => {
     const zoom = d3.zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.1, 8]) // Increased max zoom slightly
+      .scaleExtent([0.1, 8])
       .interpolate(d3.interpolateZoom)
       .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         if (!isDraggingRef.current) g.attr("transform", event.transform.toString());
       })
       .filter(event => !isDraggingRef.current && !isTransitioningRef.current && !event.ctrlKey && !event.button);
     svg.call(zoom);
-    const initialTransform = d3.zoomIdentity.translate(width / 2, height / 2);
+    // Set initial transform to center viewport on SVG origin (0,0)
+    // Since the force layout centers around width/2, height/2 and the main node is pinned there,
+    // this requires the viewport to be shifted initially. A better approach is below.
+    // *** Corrected Initial Transform ***
+    // We want the viewport center (width/2, height/2) to map to the SVG coordinate (width/2, height/2)
+    // where the main node is pinned. With scale 1, this requires translate(0,0).
+    const initialTransform = d3.zoomIdentity; // Equivalent to translate(0,0).scale(1)
     svg.call(zoom.transform, initialTransform);
     return zoom;
   }, []);
@@ -322,22 +326,20 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, [getNodeRadius]); // Added getNodeRadius dependency
 
   const setupSimulation = useCallback((nodes: CustomNode[], links: CustomLink[], width: number, height: number) => {
-      simulationRef.current = d3.forceSimulation<CustomNode>(nodes)
-        .alphaDecay(0.025) // Slightly slower decay for potentially better label settling
-        .velocityDecay(0.4)
-        .force("link", d3.forceLink<CustomNode, CustomLink>()
+    simulationRef.current = d3.forceSimulation<CustomNode>(nodes)
+      .alphaDecay(0.025) // Slightly slower decay for potentially better label settling
+      .velocityDecay(0.4)
+      .force("link", d3.forceLink<CustomNode, CustomLink>()
           .id(d => d.id)
           .links(links)
-          .distance(110) // Moderate consistent distance
+          .distance(100)
           .strength(0.4))
-        .force("charge", d3.forceManyBody<CustomNode>().strength(-300).distanceMax(350)) // Slightly stronger charge for spacing
-        // Increase collision radius significantly to account for text labels
-        .force("collide", d3.forceCollide<CustomNode>().radius(d => getNodeRadius(d) + 25).strength(1.0))
-        // Set simulation center to 0,0
-        .force("center", d3.forceCenter(0, 0))
-        .on("tick", ticked);
-
-        return simulationRef.current;
+      .force("charge", d3.forceManyBody<CustomNode>().strength(-250).distanceMax(300))
+      .force("collide", d3.forceCollide<CustomNode>().radius(d => getNodeRadius(d) + 25).strength(1.0))
+      // Ensure forceCenter uses width/2, height/2
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .on("tick", ticked);
+      return simulationRef.current;
   }, [getNodeRadius, ticked]);
 
   const createDragBehavior = useCallback((simulation: d3.Simulation<CustomNode, CustomLink>) => {
@@ -364,12 +366,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const createLinks = useCallback((g: d3.Selection<SVGGElement, unknown, null, undefined>, linksData: CustomLink[]) => {
       // Draw links first (behind nodes and labels)
       const linkGroup = g.append("g")
-      .attr("class", "links")
-      .selectAll("line")
+          .attr("class", "links")
+          .selectAll("line")
           .data(linksData, (d: any) => `${(typeof d.source === 'object' ? d.source.id : d.source)}_${(typeof d.target === 'object' ? d.target.id : d.target)}`)
           .join(
               enter => enter.append("line")
-      .attr("class", "link")
+                  .attr("class", "link")
                   .attr("stroke", theme === "dark" ? "#666" : "#ccc") // Consistent neutral color
                   .attr("stroke-opacity", 0) // Start transparent
                   .attr("stroke-width", 1.5) // Consistent width
@@ -400,7 +402,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       simulation: d3.Simulation<CustomNode, CustomLink> | null
       ) => {
     const drag = simulation ? createDragBehavior(simulation) : null;
-    
+
     // Node groups (circles only)
     const nodeGroups = g.append("g")
       .attr("class", "nodes")
@@ -414,8 +416,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
                   .style("opacity", 0); // Start transparent
 
               nodeGroup.append("circle")
-      .attr("r", d => getNodeRadius(d))
-      .attr("fill", d => getNodeColor(d.group))
+                  .attr("r", d => getNodeRadius(d))
+                  .attr("fill", d => getNodeColor(d.group))
                   // Subtle outline using darker shade of fill
                   .attr("stroke", d => d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888")
                   .attr("stroke-width", 1.5);
@@ -440,10 +442,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
             enter => {
                 const textElement = enter.append("text")
                     .attr("class", "node-label")
-      .attr("text-anchor", "middle")
+                    .attr("text-anchor", "middle")
                     .attr("font-size", "10px") // Slightly larger base size for external text
                     .attr("font-weight", d => d.id === mainWord ? "600" : "400")
-      .text(d => d.word)
+                    .text(d => d.word)
                     .attr("x", d => d.x ?? 0) // Initial position
                     .attr("y", d => (d.y ?? 0) + getNodeRadius(d) + 12)
                     .style("opacity", 0) // Start transparent
@@ -481,7 +483,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .on("click", (event, d) => {
           event.stopPropagation();
           if (isDraggingRef.current) return;
-          
+
           const connectedIds = new Set<string>([d.id]);
           const connectedLinkElements: SVGLineElement[] = [];
            d3.selectAll<SVGLineElement, CustomLink>(".link").filter(l => {
@@ -493,7 +495,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
            }).each(function() { connectedLinkElements.push(this); });
 
           setSelectedNodeId(d.id);
-          
+
           // Strong dimming of non-connected elements
           d3.selectAll<SVGGElement, CustomNode>(".node")
               .classed("selected connected", false)
@@ -560,7 +562,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             nodeElement.raise();
             // NO dimming of others
 
-            const timeoutId = setTimeout(() => { setHoveredNode({ ...d }); }, 200);
+            const timeoutId = setTimeout(() => setHoveredNode({ ...d }); }, 200);
             setTooltipTimeoutId(timeoutId);
         })
         .on("mouseout", (event, d_unknown) => {
@@ -686,7 +688,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
     const { width, height } = setupSvgDimensions(svg);
     const g = svg.append("g").attr("class", "graph-content");
-      const zoom = setupZoom(svg, g);
+      const zoom = setupZoom(svg, g, width, height);
       zoomRef.current = zoom;
 
     console.log("[Graph Effect] Base links count:", baseLinks.length);
@@ -722,13 +724,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       if (linkForce) {
         linkForce.links(currentFilteredLinks);
       }
-      // Pin the main node to simulation center (0,0)
+      currentSim.alpha(1).restart();
+
+      // Pin the main node after a short delay to allow initial positioning
       const mainNodeData = filteredNodes.find(n => n.id === mainWord);
       if (mainNodeData) {
-          mainNodeData.fx = 0;
-          mainNodeData.fy = 0;
+          mainNodeData.fx = width / 2;
+          mainNodeData.fy = height / 2;
       }
-      currentSim.alpha(1).restart();
     }
 
     setTimeout(() => centerOnMainWord(svg, filteredNodes), 800);
@@ -859,18 +862,26 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, []);
 
   const renderTooltip = useCallback(() => {
-    // Tooltip visibility is now handled by hoveredNode state directly (set via timeout)
-    if (!hoveredNode?.id || !hoveredNode?.x || !hoveredNode?.y || !svgRef.current) return null;
+    // Determine which node to show tooltip for
+    let nodeToShow: CustomNode | null | undefined = hoveredNode;
+    if (!nodeToShow && selectedNodeId) {
+        // If no hover, but there is a selection, find the selected node data
+        nodeToShow = nodeMap.get(selectedNodeId);
+    }
+
+    // Check if we have a valid node with coordinates
+    if (!nodeToShow?.id || nodeToShow.x === undefined || nodeToShow.y === undefined || !svgRef.current) {
+        return null;
+    }
 
     const svgNode = svgRef.current;
     const transform = d3.zoomTransform(svgNode);
+    const [screenX, screenY] = transform.apply([nodeToShow.x, nodeToShow.y]);
 
-    const [screenX, screenY] = transform.apply([hoveredNode.x, hoveredNode.y]);
+    const offsetX = (screenX > window.innerWidth / 2) ? -20 - 280 : 20; // Adjusted width approx
+    const offsetY = (screenY > window.innerHeight / 2) ? -20 - 100 : 20; // Adjusted height approx
 
-    const offsetX = (screenX > window.innerWidth / 2) ? -20 - 250 : 20;
-    const offsetY = (screenY > window.innerHeight / 2) ? -20 - 80 : 20;
-      
-      return (
+    return (
         <div
           className="node-tooltip"
           style={{
@@ -878,7 +889,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             left: `${screenX + offsetX}px`,
             top: `${screenY + offsetY}px`,
             background: theme === "dark" ? "rgba(30, 30, 30, 0.9)" : "rgba(250, 250, 250, 0.9)",
-            border: `1.5px solid ${getNodeColor(hoveredNode.group)}`, borderRadius: "8px",
+            border: `1.5px solid ${getNodeColor(nodeToShow.group)}`, borderRadius: "8px",
             padding: "10px 14px", maxWidth: "280px", zIndex: 1000, pointerEvents: "none",
             fontFamily: "system-ui, -apple-system, sans-serif",
             transition: "left 0.1s ease-out, top 0.1s ease-out, opacity 0.1s ease-out",
@@ -886,24 +897,24 @@ const WordGraph: React.FC<WordGraphProps> = ({
             opacity: 1,
           }}
         >
-           <h4 style={{ margin: 0, marginBottom: '6px', color: getNodeColor(hoveredNode.group), fontSize: '15px' }}>{hoveredNode.id}</h4>
+           <h4 style={{ margin: 0, marginBottom: '6px', color: getNodeColor(nodeToShow.group), fontSize: '15px' }}>{nodeToShow.id}</h4>
            <div style={{ display: "flex", alignItems: "center", gap: "6px", paddingBottom: "4px" }}>
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: getNodeColor(hoveredNode.group), flexShrink: 0 }}></span>
+              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: getNodeColor(nodeToShow.group), flexShrink: 0 }}></span>
               <span style={{ fontSize: "13px", color: theme === 'dark' ? '#ccc' : '#555', fontWeight: "500" }}>
-                  {hoveredNode.group.charAt(0).toUpperCase() + hoveredNode.group.slice(1).replace(/_/g, ' ')}
+                  {nodeToShow.group.charAt(0).toUpperCase() + nodeToShow.group.slice(1).replace(/_/g, ' ')}
               </span>
-          </div>
-           {hoveredNode.definitions && hoveredNode.definitions.length > 0 && (
+           </div>
+           {nodeToShow.definitions && nodeToShow.definitions.length > 0 && (
                 <p style={{ fontSize: '12px', color: theme === 'dark' ? '#bbb' : '#666', margin: '6px 0 0 0', fontStyle: 'italic' }}>
-                    {hoveredNode.definitions[0].length > 100 ? hoveredNode.definitions[0].substring(0, 97) + '...' : hoveredNode.definitions[0]}
-            </p>
-          )}
+                    {nodeToShow.definitions[0].length > 100 ? nodeToShow.definitions[0].substring(0, 97) + '...' : nodeToShow.definitions[0]}
+                </p>
+           )}
            <div style={{ fontSize: "11px", marginTop: "8px", color: theme === "dark" ? "#8b949e" : "#777777" }}>
-               Click to focus | Double-click to pin/unpin
-          </div>
+               Click/Tap to focus | Double-click/tap to pin/unpin
+           </div>
         </div>
       );
-  }, [hoveredNode, theme, getNodeColor]);
+  }, [hoveredNode, selectedNodeId, nodeMap, theme, getNodeColor, dimensions]); // Added selectedNodeId, nodeMap, dimensions
 
   if (!isValidNetwork) {
     return (

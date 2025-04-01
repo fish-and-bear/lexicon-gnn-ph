@@ -24,11 +24,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
-import { styled, useTheme, alpha } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
-
-// Add d3 import here at the top
-import * as d3 from 'd3';
 
 // MUI Icons
 // import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -51,32 +48,26 @@ function formatRelationType(type: string): string {
     .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize first letter of each word
 }
 
-// Define key graph colors locally for styling
-const graphColors = {
-  main: "#1d3557",
-  root: "#e63946",
-  derived: "#2a9d8f",
-  synonym: "#457b9d",
-  antonym: "#f77f00",
-  variant: "#f4a261",
-  related: "#fcbf49",
-  // Add other colors from your WordGraph getNodeColor if needed
-  associated: "#adb5bd",
-  default: "#6c757d"
-};
+// --- Color Mapping for Relations ---
+type MuiChipColor = "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
 
-// Helper to determine if a background color is light or dark
-const isColorLight = (hexColor: string): boolean => {
-  try {
-    const color = d3.color(hexColor);
-    if (!color) return true; // Default to light if parsing fails
-    const rgb = color.rgb();
-    // Standard luminance calculation
-    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-    return luminance > 0.5;
-  } catch (e) {
-    return true;
-  }
+const getRelationChipColor = (relationType: string): MuiChipColor => {
+    const typeLower = relationType.toLowerCase();
+    switch (typeLower) {
+        case 'synonym': return 'success';
+        case 'antonym': return 'error';
+        case 'root':
+        case 'root_of':
+        case 'derived_from': return 'primary';
+        case 'derived': return 'secondary';
+        case 'related':
+        case 'kaugnay':
+        case 'associated': return 'info';
+        case 'variant': return 'warning';
+        case 'etymology': return 'default'; // Or another color
+        // Add more specific mappings as needed
+        default: return 'default';
+    }
 };
 
 // Styled components (optional, can also use sx prop)
@@ -120,8 +111,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   onEtymologyNodeClick
 }) => {
   const theme = useTheme(); // Get theme object
-  const isWideScreen = useMediaQuery(theme.breakpoints.up('md')); // Use 'md' breakpoint for vertical tabs
-  const isDarkMode = theme.palette.mode === 'dark';
+  const isWideScreen = useMediaQuery(theme.breakpoints.up('sm')); // Check if screen is sm or wider
+  console.log("WordDetails rendering with wordInfo:", wordInfo); // Keep debug log
 
   const [activeTab, setActiveTab] = useState<string>('definitions'); // Use string for tab value
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -180,85 +171,47 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     const hasAudio = !!audioElement;
     const tags = wordInfo.tags ? wordInfo.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [];
 
-    // Use the graph's main color for header, adjust alpha
-    const headerBgColor = isDarkMode
-        ? alpha(graphColors.main, 0.6) // Slightly less transparent in dark mode
-        : alpha(graphColors.main, 0.1); // Very light tint in light mode
-    // Determine text color based on calculated header background
-    const effectiveHeaderBg = theme.palette.augmentColor({ color: { main: headerBgColor } });
-    const headerTextColor = effectiveHeaderBg.contrastText; // Use MUI contrast text
-
     return (
-      <Box sx={{ bgcolor: headerBgColor, color: headerTextColor }}>
-        <Box sx={{ p: 2.5 }}>
-            {/* Lemma and Audio Button */}
-            <Stack direction="row" spacing={1} alignItems="flex-start" sx={{ mb: 1 }}>
-               <Typography variant="h3" component="h1" sx={{ fontWeight: 700, flexGrow: 1, lineHeight: 1.2 }}>
-                 {wordInfo.lemma}
-               </Typography>
-               {hasAudio && (
-                 <IconButton
-                    onClick={playAudio}
-                    size="medium"
-                    title={isAudioPlaying ? "Stop Audio" : "Play Audio"}
-                    // Ensure icon color contrasts with header BG
-                    sx={{ color: headerTextColor, mt: 0.5, '&:hover': { bgcolor: alpha(headerTextColor, 0.1) } }}
-                 >
-                   {isAudioPlaying ? <StopCircleIcon /> : <VolumeUpIcon />}
-                 </IconButton>
-               )}
-            </Stack>
+      <Box sx={{ pt: isWideScreen ? 0 : 2, px: isWideScreen ? 0: 2.5, pb: 2 }}>
+        {/* Lemma and Audio Button */}
+        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 0.5 }}>
+           <Typography variant="h4" component="h1" sx={{ fontWeight: 600, flexGrow: 1 }}>
+             {wordInfo.lemma}
+           </Typography>
+           {hasAudio && (
+             <IconButton onClick={playAudio} size="medium" title={isAudioPlaying ? "Stop Audio" : "Play Audio"} color="primary">
+               {isAudioPlaying ? <StopCircleIcon /> : <VolumeUpIcon />}
+             </IconButton>
+           )}
+        </Stack>
 
-            {/* Pronunciation (IPA) */}
-            {ipaPronunciation && (
-                <Typography variant="h6" sx={{ color: alpha(headerTextColor, 0.85), fontStyle: 'italic', mb: 1.5, pl: 0.5 }}>
-                  /{ipaPronunciation.value}/
+        {/* Pronunciation (IPA) */}
+        {ipaPronunciation && (
+            <Typography variant="body1" color="text.secondary" sx={{ fontStyle: 'italic', mb: 1.5, pl: 0.5 }}>
+              /{ipaPronunciation.value}/
+            </Typography>
+        )}
+
+        {/* Baybayin */}
+        {wordInfo.has_baybayin && wordInfo.baybayin_form && (
+             <Box sx={{ my: 2, bgcolor: 'action.hover', p: 1.5, borderRadius: 1, display: 'inline-block' }}>
+                <Typography variant="h5" sx={{ fontFamily: 'Noto Sans Baybayin, sans-serif' }}>
+                    {wordInfo.baybayin_form}
                 </Typography>
-            )}
+                <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.5, textAlign: 'center' }}>
+                    Baybayin Script
+                </Typography>
+            </Box>
+        )}
 
-            {/* Baybayin */}
-            {wordInfo.has_baybayin && wordInfo.baybayin_form && (
-                 <Box sx={{ my: 2 }}>
-                    <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-                        Baybayin Script
-                    </Typography>
-                    <Typography
-                       variant="h4"
-                       sx={{
-                           fontFamily: 'Noto Sans Baybayin, sans-serif',
-                           p: 1,
-                           // Use a subtle inset background that works with headerTextColor
-                           bgcolor: alpha(headerTextColor, 0.08),
-                           borderRadius: 1,
-                           display: 'inline-block',
-                           lineHeight: 1,
-                       }}
-                    >
-                        {wordInfo.baybayin_form}
-                    </Typography>
-                </Box>
-            )}
-
-            {/* Tags */}
-            {tags.length > 0 && (
-              <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: 2 }}>
-                {tags.map((tag) => (
-                  <Chip
-                    key={tag}
-                    label={tag}
-                    size="small"
-                    sx={{
-                        color: alpha(headerTextColor, 0.9),
-                        borderColor: alpha(headerTextColor, 0.5), // Slightly more visible border
-                        bgcolor: 'transparent', // Transparent background
-                        '& .MuiChip-label': { fontWeight: 500 }
-                    }}
-                    variant="outlined"
-                  />
-                ))}
-              </Stack>
-            )}
-         </Box>
+        {/* Tags */}
+        {tags.length > 0 && (
+          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: 1.5 }}>
+            {tags.map((tag) => (
+              <Chip key={tag} label={tag} size="small" variant="outlined"/>
+            ))}
+          </Stack>
+        )}
       </Box>
     );
   };
@@ -319,46 +272,40 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
         const sortedTypes = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
 
         return (
+            // Use styled components for cleaner look
             <StyledAccordion defaultExpanded={false} disableGutters>
                 <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>{title}</Typography>
                     <Chip label={relations.length} size="small" sx={{ ml: 1.5 }}/>
                 </StyledAccordionSummary>
                 <StyledAccordionDetails>
-                    <Stack spacing={2}>
-                        {sortedTypes.map((type) => {
-                             // Get the corresponding graph color, fallback to default
-                             const chipColorHex = (graphColors as Record<string, string>)[type.toLowerCase()] || graphColors.default;
-                             const chipTextColor = isColorLight(chipColorHex) ? theme.palette.common.black : theme.palette.common.white;
-                            return (
-                                <Box key={type}>
-                                    <Typography variant="overline" display="block" sx={{ lineHeight: 1.5, mb: 0.5, color: 'text.secondary' }}>{formatRelationType(type)}</Typography>
-                                    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                                        {grouped[type].map((relatedItem, index) => {
-                                            const relatedWord: RelatedWord | undefined = direction === 'out' ? relatedItem.target_word : relatedItem.source_word;
-                                            return relatedWord?.lemma ? (
-                                                <Chip
-                                                    key={`${type}-${index}-${relatedWord.id}`}
-                                                    label={relatedWord.lemma}
-                                                    onClick={() => onWordLinkClick(relatedWord.lemma)}
-                                                    clickable
-                                                    size="small"
-                                                    // Use direct hex colors ensuring contrast
-                                                    sx={{
-                                                        bgcolor: chipColorHex,
-                                                        color: chipTextColor,
-                                                        cursor: 'pointer',
-                                                        '& .MuiChip-label': { fontWeight: 500 },
-                                                        '&:hover': { bgcolor: alpha(chipColorHex, 0.85) }
-                                                    }}
-                                                    title={`View ${relatedWord.lemma}`}
-                                                />
-                                            ) : null;
-                                        })}
-                                    </Stack>
-                                </Box>
-                            );
-                        })}
+                    <Stack spacing={2}> {/* Increased spacing between types */}
+                        {sortedTypes.map((type) => (
+                            <Box key={type}>
+                                <Typography variant="overline" display="block" sx={{ lineHeight: 1.5, mb: 0.5, color: 'text.secondary' }}>
+                                    {formatRelationType(type)}
+                                </Typography>
+                                <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+                                    {grouped[type].map((relatedItem, index) => {
+                                        const relatedWord: RelatedWord | undefined = direction === 'out' ? relatedItem.target_word : relatedItem.source_word;
+                                        return relatedWord?.lemma ? (
+                                            <Chip
+                                                key={`${type}-${index}-${relatedWord.id}`}
+                                                label={relatedWord.lemma}
+                                                onClick={() => onWordLinkClick(relatedWord.lemma)}
+                                                clickable
+                                                size="small"
+                                                // Apply color based on type
+                                                color={getRelationChipColor(relatedItem.relation_type)}
+                                                variant={getRelationChipColor(relatedItem.relation_type) === 'default' ? 'outlined' : 'filled'} // Use outlined for default
+                                                title={`View ${relatedWord.lemma}`}
+                                                sx={{ cursor: 'pointer' }}
+                                            />
+                                        ) : null; // Skip rendering if lemma is missing
+                                    })}
+                                </Stack>
+                            </Box>
+                        ))}
                     </Stack>
                 </StyledAccordionDetails>
             </StyledAccordion>
@@ -366,7 +313,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%' }}> {/* Ensure Box takes full width */}
             {renderRelationGroup("Incoming Relations", wordInfo.incoming_relations, 'in')}
             {renderRelationGroup("Outgoing Relations", wordInfo.outgoing_relations, 'out')}
         </Box>
@@ -400,7 +347,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
        const childrenIds = childrenEdges.map((edge: EtymologyEdge) => edge.target);
 
        return (
-          <ListItem key={node.id} sx={{ pl: level * 2.5, display: 'block', py: 0.5, borderLeft: level > 0 ? `1px dashed ${theme.palette.divider}` : 'none', ml: level > 0 ? 0.5 : 0 }}> {/* Indentation based on level */}
+          <ListItem key={node.id} sx={{ pl: level * 2.5, display: 'block', py: 0.5 }}> {/* Indentation based on level */}
              <ListItemText
                 primary={
                     <Typography variant="body2" component="span" sx={{ fontWeight: level === 0 ? 600 : 400 }}>
@@ -411,7 +358,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                 sx={{ my: 0 }}
              />
              {childrenIds.length > 0 && (
-                <List dense disablePadding sx={{ pl: 0 }}>
+                <List dense disablePadding sx={{ pl: 1 }}>
                    {childrenIds.map(childId => renderNode(childId, nodes, edges, level + 1))}
                 </List>
              )}
@@ -471,13 +418,11 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
             }
             
             const tabContent = (
-               <Box sx={{ flexGrow: 1, overflowY: 'auto', position: 'relative', bgcolor: 'background.default' }}>
-                  <Box sx={{ p: { xs: 1.5, sm: 2, md: 2.5 } }}>
-                      {activeTab === 'definitions' && renderDefinitionsTab()}
-                      {activeTab === 'relations' && renderRelationsTab()}
-                      {activeTab === 'etymology' && renderEtymologyTab()}
-                      {activeTab === 'credits' && renderCreditsTab()}
-                  </Box>
+               <Box sx={{ flexGrow: 1, overflowY: 'auto', position: 'relative', p: { xs: 1.5, sm: 2, md: 2.5 } }}>
+                  {activeTab === 'definitions' && renderDefinitionsTab()}
+                  {activeTab === 'relations' && renderRelationsTab()}
+                  {activeTab === 'etymology' && renderEtymologyTab()}
+                  {activeTab === 'credits' && renderCreditsTab()}
                </Box>
             );
 
@@ -490,27 +435,30 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                   value={activeTab}
                   onChange={handleTabChange}
                   aria-label="Word details sections"
-                  // Use main graph color for indicator, secondary for text
-                  textColor="secondary"
-                  indicatorColor="primary" // Set indicator to primary
-                  TabIndicatorProps={{
-                     style: {
-                        backgroundColor: graphColors.main // Use direct color for indicator
-                     }
-                  }}
+                  textColor="primary"
+                  indicatorColor="primary"
                   sx={isWideScreen ? {
-                      borderRight: 1, borderColor: 'divider', minWidth: 180,
-                      bgcolor: 'background.paper', pt: 1,
-                      '& .MuiTab-root': { alignItems: 'flex-start', textAlign: 'left', minHeight: 48, textTransform: 'none', fontWeight: 500, pt: 1.5, pb: 1.5, pl: 2.5 },
-                       // Use primary color for selected vertical tab text to match indicator
-                       '& .Mui-selected': { color: `${graphColors.main} !important` },
-                      '& .MuiTabs-indicator': { left: 0, width: 4, borderRadius: 1 }
+                      borderRight: 1,
+                      borderColor: 'divider',
+                      minWidth: 160, // Ensure tabs have enough width
+                      pr: 0,
+                      '& .MuiTab-root': {
+                          alignItems: 'flex-start', // Align text left
+                          textAlign: 'left',
+                          minHeight: 48,
+                          textTransform: 'none',
+                          fontWeight: 500,
+                      },
+                       '& .MuiTabs-indicator': {
+                          left: 0, // Indicator on the left for vertical
+                          width: 3, // Thicker indicator
+                          borderRadius: 1,
+                       }
                   } : {
-                      borderBottom: 1, borderColor: 'divider', minHeight: 48,
-                      bgcolor: 'background.paper',
-                      '& .MuiTab-root': { textTransform: 'none', minWidth: 'auto', px: 2 },
-                       // Use primary color for selected horizontal tab text
-                       '& .Mui-selected': { color: `${graphColors.main} !important` },
+                      borderBottom: 1,
+                      borderColor: 'divider',
+                      minHeight: 48,
+                      '& .MuiTab-root': { textTransform: 'none', minWidth: 'auto', px: 2 }
                   }}
                 >
                   <Tab label="Definitions" value="definitions" />
@@ -521,26 +469,30 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
             );
 
             return (
-    <Paper elevation={2} square sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper', overflow: 'hidden' }}>
+    <Paper elevation={0} square sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper' }}>
 
-      {/* Conditional Layout based on screen size */}
-      {isWideScreen ? (
-          <>
-            {renderHeader()}
-            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
-               {tabs}
-               {tabContent}
-            </Box>
-          </>
-      ) : (
-          <>
-            {renderHeader()}
-            {tabs}
-            {tabContent}
-          </>
+      {/* Header Area - Separated for vertical tabs */} 
+      {isWideScreen && (
+          <Box sx={{ p: 2.5, borderBottom: 1, borderColor: 'divider', bgcolor: 'action.selected' }}>
+             {renderHeader()}
+          </Box>
       )}
-      {/* Add comment about resizing parent */}
-      {/* For resizable sidebar functionality, the parent component (e.g., WordExplorer) needs layout adjustments (e.g., using SplitPane) */}
+
+      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: isWideScreen ? 'row' : 'column', overflow: 'hidden' }}>
+         {/* Render Header inside content area for horizontal tabs */} 
+         {!isWideScreen && (
+             <Box sx={{ px: 2.5, pt: 2.5, bgcolor: 'action.selected' }}>
+                 {renderHeader()}
+             </Box>
+         )}
+
+         {/* Tabs Panel */} 
+         {tabs}
+
+         {/* Content Panel */} 
+         {tabContent}
+      </Box>
+
     </Paper>
   );
 });

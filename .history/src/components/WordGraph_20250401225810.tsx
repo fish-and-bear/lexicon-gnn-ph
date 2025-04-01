@@ -333,8 +333,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .force("charge", d3.forceManyBody<CustomNode>().strength(-300).distanceMax(350)) // Slightly stronger charge for spacing
         // Increase collision radius significantly to account for text labels
         .force("collide", d3.forceCollide<CustomNode>().radius(d => getNodeRadius(d) + 25).strength(1.0))
-        // Set simulation center to 0,0
-        .force("center", d3.forceCenter(0, 0))
+        .force("center", d3.forceCenter(width / 2, height / 2))
         .on("tick", ticked);
 
         return simulationRef.current;
@@ -722,13 +721,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       if (linkForce) {
         linkForce.links(currentFilteredLinks);
       }
-      // Pin the main node to simulation center (0,0)
+      currentSim.alpha(1).restart();
+
+      // Pin the main node after a short delay to allow initial positioning
       const mainNodeData = filteredNodes.find(n => n.id === mainWord);
       if (mainNodeData) {
-          mainNodeData.fx = 0;
-          mainNodeData.fy = 0;
+          mainNodeData.fx = width / 2;
+          mainNodeData.fy = height / 2;
       }
-      currentSim.alpha(1).restart();
     }
 
     setTimeout(() => centerOnMainWord(svg, filteredNodes), 800);

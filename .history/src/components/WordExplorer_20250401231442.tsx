@@ -24,6 +24,41 @@ import axios from 'axios';
 import DOMPurify from 'dompurify';
 import { debounce } from "lodash";
 
+// MUI Core & Layout
+import Box from '@mui/material/Box';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip'; // For button hints
+
+// MUI Input & Buttons
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Popper from '@mui/material/Popper';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+
+// MUI Icons (Assuming they ARE installed, will remove if error persists)
+import SearchIcon from '@mui/icons-material/Search';
+import HistoryIcon from '@mui/icons-material/History'; // For history buttons
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ShuffleIcon from '@mui/icons-material/Shuffle'; // For random word
+import SettingsIcon from '@mui/icons-material/Settings'; // Example for debug/API test
+import InfoIcon from '@mui/icons-material/InfoOutlined'; // Example for API status
+import Brightness4Icon from '@mui/icons-material/Brightness4'; // Dark mode
+import Brightness7Icon from '@mui/icons-material/Brightness7'; // Light mode
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'; // Error icon
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Success icon
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.hapinas.net/api/v1';
 
 const WordExplorer: React.FC = () => {
@@ -67,6 +102,7 @@ const WordExplorer: React.FC = () => {
   const [showMetadata, setShowMetadata] = useState<boolean>(false);
 
   const detailsContainerRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null); // Ref for suggestions popper anchor
 
   // Initialize details width from localStorage
   useEffect(() => {
@@ -381,201 +417,6 @@ const WordExplorer: React.FC = () => {
         });
     }
   }, [mainWord, fetchWordNetworkData]);
-
-  const renderDefinitions = useCallback((wordInfo: WordInfo) => {
-    if (!wordInfo.definitions || wordInfo.definitions.length === 0) {
-      return (
-        <div className="definitions-section">
-          <div className="definitions-section-header">
-            <h3>Definitions</h3>
-            <span className="definition-count">0</span>
-          </div>
-          <p className="no-definitions">No definitions available for this word.</p>
-        </div>
-      );
-    }
-
-    // Group definitions by part of speech
-    const definitionsByPos: Record<string, Definition[]> = {};
-    wordInfo.definitions.forEach((def) => {
-      const posName = def.part_of_speech?.name_en || def.original_pos || 'Other';
-      if (!definitionsByPos[posName]) {
-        definitionsByPos[posName] = [];
-      }
-      definitionsByPos[posName].push(def);
-    });
-
-    // Sort parts of speech in a logical order
-    const sortedPosEntries = Object.entries(definitionsByPos).sort(([posA], [posB]) => {
-      // Define priority order for common parts of speech
-      const posOrder: { [key: string]: number } = {
-        'Noun': 1,
-        'Verb': 2,
-        'Adjective': 3,
-        'Adverb': 4,
-        'Pronoun': 5,
-        'Preposition': 6,
-        'Conjunction': 7,
-        'Interjection': 8,
-        'Other': 9
-      };
-      
-      // Get priority or default to high number (low priority)
-      const priorityA = posOrder[posA] || 10;
-      const priorityB = posOrder[posB] || 10;
-      
-      return priorityA - priorityB;
-    });
-
-    return (
-      <div className="definitions-section">
-        <div className="definitions-section-header">
-          <h3>Definitions</h3>
-          <span className="definition-count">{wordInfo.definitions.length}</span>
-        </div>
-        
-        {sortedPosEntries.map(([posName, definitions]: [string, any[]]) => (
-          <div key={posName} className="pos-group">
-            <div className="pos-group-header">
-              {posName}
-              <span className="pos-count">{definitions.length}</span>
-            </div>
-            
-            <div className="definition-cards-container">
-              {definitions.map((definition: Definition, index: number) => {
-                // Check for both possible property names for definition text
-                const definitionText = definition.definition_text || definition.text || '';
-                
-                // Pre-process the text to extract any trailing numbers for superscript
-                let textPart = definitionText;
-                let numberPart = '';
-                
-                // Check if the text ends with a number
-                const match = definitionText.match(/^(.*[^\d])(\d+)$/);
-                if (match) {
-                  textPart = match[1];
-                  numberPart = match[2];
-                }
-                
-                return (
-      <div key={index} className="definition-card">
-                    <div className="definition-number">{index + 1}</div>
-                    <div className="definition-content">
-                      <p className="definition-text">
-                        {textPart}
-                        {numberPart && <sup>{numberPart}</sup>}
-                      </p>
-                      
-        {definition.examples && definition.examples.length > 0 && (
-          <div className="examples">
-                          <h4>Examples</h4>
-                          <ul>
-                            {definition.examples.map((example: string, idx: number) => {
-                              // Check if example contains a translation (indicated by parentheses or em dash)
-                              const hasTranslation = example.includes('(') || example.includes('—') || example.includes(' - ');
-                              
-                              if (hasTranslation) {
-                                // Split the example into the phrase and translation
-                                let phrase, translation;
-                                
-                                if (example.includes('(')) {
-                                  [phrase, translation] = example.split(/\s*\(/);
-                                  translation = translation ? `(${translation}` : '';
-                                } else if (example.includes('—')) {
-                                  [phrase, translation] = example.split(/\s*—\s*/);
-                                } else if (example.includes(' - ')) {
-                                  [phrase, translation] = example.split(/\s*-\s*/);
-                                }
-                                
-                                return (
-                                  <li key={idx}>
-                                    <em>{phrase}</em>
-                                    {translation && <span className="translation">{translation}</span>}
-                                  </li>
-                                );
-                              }
-                              
-                              return <li key={idx}><em>{example}</em></li>;
-                            })}
-            </ul>
-          </div>
-        )}
-                      
-        {definition.usage_notes && definition.usage_notes.length > 0 && (
-          <div className="usage-notes">
-                          <h4>Usage Notes</h4>
-                          <ul>
-                            {definition.usage_notes.map((note: string, idx: number) => {
-                              // Check if note is a category tag (enclosed in square brackets)
-                              const isCategoryTag = note.match(/^\[(.*?)\]$/);
-                              if (isCategoryTag) {
-                                return (
-                                  <li key={idx}>
-                                    <em className="category-tag">{note}</em>
-                                  </li>
-                                );
-                              }
-                              
-                              // Check if note contains a detail section (indicated by colon)
-                              const hasDetail = note.includes(':');
-                              if (hasDetail) {
-                                const [label, detail] = note.split(/:\s*/);
-                                return (
-                                  <li key={idx}>
-                                    <em>{label}:</em>
-                                    <span className="note-detail">{detail}</span>
-                                  </li>
-                                );
-                              }
-                              
-                              return <li key={idx}>{note}</li>;
-                            })}
-            </ul>
-          </div>
-        )}
-                      
-                      {definition.sources && definition.sources.length > 0 && (
-                        <div className="definition-sources">
-                          <span className="sources-label">Sources:</span>
-                          <div className="source-tags">
-                            {definition.sources.map((source: string, idx: number) => (
-                              <span key={idx} className="source-tag">{source}</span>
-                            ))}
-      </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }, []);
-
-  const renderArraySection = useCallback((title: string, items?: string[]) => {
-    if (!items || items.length === 0) return null;
-    return (
-      <div className={title.toLowerCase().replace(/\s+/g, "-")}>
-        <h3>{title}</h3>
-        <ul className="word-list">
-          {items
-            .filter((item) => item.trim() !== "" && item.trim() !== "0")
-            .map((item, index) => (
-              <li
-                key={index}
-                onClick={() => handleNodeClick(item)}
-                className="clickable-word"
-              >
-                {item}
-              </li>
-            ))}
-        </ul>
-      </div>
-    );
-  }, [handleNodeClick]);
 
   const handleBack = useCallback(() => {
     if (currentHistoryIndex > 0) {
@@ -1149,204 +990,227 @@ const WordExplorer: React.FC = () => {
   }, [resetDisplay]); // Include resetDisplay if called on mount
 
   return (
-    <div className={`word-explorer ${theme} ${isLoading ? 'loading' : ''}`}>
-      <header className="header-content">
-        <h1>Filipino Root Word Explorer</h1>
-        <div className="header-buttons">
-          <button
-            onClick={handleRandomWord}
-            className="random-button"
-            title="Explore a random word"
-            disabled={isLoading}
+    <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        bgcolor: 'background.default', // Use theme background
+        color: 'text.primary'        // Use theme text color
+    }}>
+      {/* === Top App Bar === */}
+      <AppBar position="static" elevation={1} sx={{ bgcolor: 'background.paper' }}>
+        <Toolbar variant="dense">
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'text.primary' }}>
+            Filipino Word Explorer
+          </Typography>
+          
+          {/* API Status Indicator */}
+          <Tooltip title={`API Status: ${apiConnected === null ? 'Checking...' : apiConnected ? 'Connected' : 'Disconnected'}`}>
+             <IconButton size="small" sx={{ mr: 1 }} color={apiConnected === null ? 'default' : apiConnected ? 'success' : 'error'}>
+                 {apiConnected === null ? <InfoIcon fontSize="small" /> : apiConnected ? <CheckCircleIcon fontSize="small" /> : <ReportProblemIcon fontSize="small" />}
+             </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Explore Random Word">
+            {/* Wrap button for disabled tooltip */}
+            <span>
+              <IconButton onClick={handleRandomWord} disabled={isLoading} color="inherit">
+                <ShuffleIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+
+          <Tooltip title="Toggle Theme">
+            <IconButton onClick={toggleTheme} color="inherit">
+              {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Tooltip>
+          {/* Consider moving debug buttons here if desired */}
+          {/* 
+          <Tooltip title="Test API Connection">
+             <IconButton onClick={handleTestApiConnection} color="inherit">
+                <SettingsIcon />
+             </IconButton>
+          </Tooltip>
+          */}
+        </Toolbar>
+      </AppBar>
+
+      {/* === Search & Navigation Area === */}
+      <Container maxWidth="md" sx={{ pt: 2, pb: 1 }}>
+         <Paper elevation={0} sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
+             {/* History Buttons */}
+             <Tooltip title="Back in History">
+                <span>
+                   <IconButton onClick={handleBack} disabled={currentHistoryIndex <= 0} size="small">
+                     <ArrowBackIcon />
+                   </IconButton>
+                </span>
+             </Tooltip>
+             <Tooltip title="Forward in History">
+                <span>
+                   <IconButton onClick={handleForward} disabled={currentHistoryIndex >= wordHistory.length - 1} size="small">
+                     <ArrowForwardIcon />
+                   </IconButton>
+                </span>
+             </Tooltip>
+
+            {/* Search Input */}
+             <TextField
+                inputRef={searchInputRef} // Anchor for Popper
+                fullWidth
+                variant="outlined"
+                size="small"
+                placeholder="Enter a word..."
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleSearch(); }}}
+                InputProps={{
+                    startAdornment: (
+                    <InputAdornment position="start">
+                        <SearchIcon color="action" />
+                    </InputAdornment>
+                    ),
+                    endAdornment: isLoading ? (
+                        <InputAdornment position="end">
+                            <CircularProgress size={20} />
+                        </InputAdornment>
+                    ) : null,
+                }}
+                sx={{ bgcolor: 'background.default' }} // Slightly different bg for input?
+             />
+            {/* Search Button (Optional, Enter works) */}
+             {/* 
+             <Button variant="contained" onClick={() => handleSearch()} disabled={isLoading}>
+               Search
+             </Button> 
+             */}
+         </Paper>
+         {/* Suggestions Popper */}
+          <Popper
+            open={showSuggestions && searchResults.length > 0}
+            anchorEl={searchInputRef.current}
+            placement="bottom-start"
+            modifiers={[{ name: 'offset', options: { offset: [0, 4] }}]} // Small offset
+            style={{ zIndex: 1200, width: searchInputRef.current?.clientWidth }} // Match input width
           >
-            🎲 Random Word
-          </button>
-          <button
-            onClick={handleResetCircuitBreaker}
-            className="debug-button"
-            title="Reset API connection"
-          >
-            🔄 Reset API
-          </button>
-          <button
-            onClick={handleTestApiConnection}
-            className="debug-button"
-            title="Test API connection"
-          >
-            🔌 Test API
-          </button>
-          <div className={`api-status ${
-            apiConnected === null ? 'checking' : 
-            apiConnected ? 'connected' : 'disconnected'
-          }`}>
-            API: {apiConnected === null ? 'Checking...' : 
-                 apiConnected ? '✅ Connected' : '❌ Disconnected'}
-          </div>
-        <button
-          onClick={toggleTheme}
-          className="theme-toggle"
-          aria-label="Toggle theme"
-        >
-          {theme === "light" ? "🌙" : "☀️"}
-        </button>
-        </div>
-      </header>
-      <div className="search-container">
-        <button
-          onClick={handleBack}
-          disabled={currentHistoryIndex <= 0}
-          className="history-button"
-          aria-label="Go back"
-        >
-          ←
-        </button>
-        <button
-          onClick={handleForward}
-          disabled={currentHistoryIndex >= wordHistory.length - 1}
-          className="history-button"
-          aria-label="Go forward"
-        >
-          →
-        </button>
-        <div className="search-input-container">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                console.log("Enter key pressed! Calling handleSearch(). Input value:", inputValue);
-                e.preventDefault();
-                handleSearch();
-              }
-            }}
-            placeholder="Enter a word"
-            className="search-input"
-            aria-label="Search word"
-          />
-          {isLoading && <div className="search-loading">Loading...</div>}
-          {showSuggestions && searchResults.length > 0 && (
-            <ul className="search-suggestions">
-              {searchResults.map((result) => (
-                <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
-                  {result.word}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <button
-          onClick={() => handleSearch()}
-          disabled={isLoading}
-          className="search-button"
-        >
-          Search
-        </button>
-      </div>
-      {error && (
-        <div className="error-message">
-          <p>{error}</p>
-          {error.includes('Circuit breaker') && (
-            <button onClick={handleResetCircuitBreaker} className="reset-button">
-              Reset Connection
-            </button>
-          )}
-          {error.includes('API connection') && (
-            <div className="error-actions">
-              <button onClick={handleResetCircuitBreaker} className="reset-button">
-                Reset Connection
-              </button>
-              <button 
-                onClick={handleTestApiConnection} 
-                className="retry-button"
-              >
-                Test API Connection
-              </button>
-            </div>
-          )}
-          {error.includes('backend server') && (
-            <div className="error-actions">
-              <div className="backend-instructions">
-                <p><strong>To start the backend server:</strong></p>
-                <ol>
-                  <li>Open a new terminal/command prompt</li>
-                  <li>Navigate to the project directory</li>
-                  <li>Run: <code>cd backend</code></li>
-                  <li>Run: <code>python serve.py</code></li>
-                </ol>
-              </div>
-              <button 
-                onClick={handleTestApiConnection} 
-                className="retry-button"
-              >
-                Test API Connection
-              </button>
-            </div>
-          )}
-          {error.includes('Network error') && (
-            <div className="error-actions">
-              <button onClick={handleResetCircuitBreaker} className="reset-button">
-                Reset Connection
-              </button>
-              <button 
-                onClick={async () => {
-                  const isConnected = await testApiConnection();
-                  setApiConnected(isConnected);
-                  if (isConnected && inputValue) {
-                    handleSearch(inputValue);
-                  }
-                }} 
-                className="retry-button"
-              >
-                Test Connection & Retry
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      <main>
-        <div className="graph-container">
-          <div className="graph-content">
-            {isLoading && <div className="loading">Loading Network...</div>}
-            {!isLoading && wordNetwork && (
-              <WordGraph
-                wordNetwork={wordNetwork}
-                mainWord={mainWord}
-                onNodeClick={handleNodeClick}
-                onNetworkChange={handleNetworkChange}
-                initialDepth={depth}
-                initialBreadth={breadth}
+            <Paper elevation={3}>
+              <List dense disablePadding>
+                {searchResults.map((result) => (
+                  <ListItemButton key={result.id} onClick={() => handleSuggestionClick(result.word)} dense>
+                    <ListItemText primary={result.word} />
+                  </ListItemButton>
+                ))}
+              </List>
+            </Paper>
+          </Popper>
+      </Container>
+
+       {/* === Error Display Area === */}
+       {error && (
+            <Container maxWidth="lg" sx={{ mt: 1 }}>
+                <Alert severity="error" variant="outlined" onClose={() => setError(null)} sx={{ width: '100%' }}>
+                    {error}
+                    {/* Add specific buttons back if needed */}
+                    {(error.includes('Circuit breaker') || error.includes('API connection') || error.includes('Network error') ) && (
+                        <Button onClick={handleResetCircuitBreaker} size="small" sx={{ ml: 1 }}>Reset Connection</Button>
+                    )}
+                    {error.includes('backend server') && (
+                         <Button onClick={handleTestApiConnection} size="small" sx={{ ml: 1 }}>Test API</Button>
+                    )}
+                </Alert>
+            </Container>
+        )}
+
+      {/* === Main Content Area (Graph + Details) === */}
+      <Box sx={{
+        flexGrow: 1,
+        display: 'flex',
+        overflow: 'hidden', // Prevent overall scroll
+        p: 1, // Padding around graph/details
+        gap: 1 // Gap between graph/details
+      }}>
+
+        {/* --- Graph Panel --- */}
+        <Paper elevation={1} sx={{
+            flexGrow: 1, // Takes up remaining space
+            height: '100%', // Fill vertical space
+            display: 'flex',
+            flexDirection: 'column', // To contain graph and potential overlays
+            position: 'relative', // For positioning overlays
+            overflow: 'hidden' // Prevent scroll within paper
+        }}>
+            {/* The .graph-content class used by WordGraph needs to be inside here */} 
+            <Box className="graph-content" sx={{ flexGrow: 1, position: 'relative' }}> {/* Ensure WordGraph's container takes full space */} 
+                {isLoading && !wordNetwork && ( // Show main loading only if no network exists yet
+                   <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', bgcolor: 'rgba(0,0,0,0.1)', zIndex: 5 }}>
+                        <CircularProgress />
+                        <Typography sx={{ mt: 1 }}>Loading Network...</Typography>
+                    </Box>
+                )}
+                {/* Render WordGraph - it will handle its internal SVG sizing */}
+                {/* Pass a reasonable fallback network if needed during initial load or error? */} 
+                <WordGraph
+                    wordNetwork={wordNetwork} // Can be null
+                    mainWord={mainWord}
+                    onNodeClick={handleNodeClick}
+                    onNetworkChange={handleNetworkChange}
+                    initialDepth={depth}
+                    initialBreadth={breadth}
+                  />
+                 {!isLoading && !wordNetwork && !error && (
+                    <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}>
+                        <Typography>Enter a word to explore its network.</Typography>
+                    </Box>
+                )}
+             </Box>
+        </Paper>
+
+        {/* --- Details Panel (Resizable) --- */}
+        <Paper elevation={1} ref={detailsContainerRef} className="details-resizable-container" sx={{
+            // Initial width, user can resize
+            width: '450px', // Default width
+            minWidth: '300px',
+            maxWidth: '70%', // Max % of parent
+            height: '100%',
+            overflow: 'hidden', // Needed for resize handle and internal scroll
+            resize: 'horizontal', // Enable CSS horizontal resize
+            position: 'relative', // For potential internal absolute elements
+            display: 'flex', // To make WordDetails fill height
+            flexDirection: 'column'
+        }}>
+            {/* Loading state specific to details */} 
+            {isLoading && !selectedWordInfo && (
+                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                    <CircularProgress />
+                 </Box>
+            )}
+            {!isLoading && selectedWordInfo && (
+              <WordDetails
+                wordInfo={selectedWordInfo}
+                etymologyTree={etymologyTree}
+                isLoadingEtymology={isLoadingEtymology}
+                etymologyError={etymologyError}
+                onWordLinkClick={handleWordLinkClick}
+                onEtymologyNodeClick={handleNodeClick}
+                // Removed show/toggle Metadata
               />
             )}
-            {!isLoading && !wordNetwork && !error && (
-                <div className="empty-graph">Enter a word to explore its network.</div>
+             {!isLoading && !selectedWordInfo && (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'text.secondary' }}>
+                    <Typography>Select a node or search to view details.</Typography>
+                </Box>
             )}
-          </div>
-        </div>
-        <div ref={detailsContainerRef} className="details-container">
-          {isLoading && <div className="loading-spinner">Loading Details...</div>} 
-          {!isLoading && selectedWordInfo && (
-            <WordDetails
-              wordInfo={selectedWordInfo}
-              etymologyTree={etymologyTree}
-              isLoadingEtymology={isLoadingEtymology}
-              etymologyError={etymologyError}
-              onWordLinkClick={handleWordLinkClick}
-              onEtymologyNodeClick={handleNodeClick}
-            />
-          )}
-          {!isLoading && !selectedWordInfo && (
-                <div className="no-word-selected">Select a word or search to see details.</div>
-            )}
-             {/* Display general error messages */}
-            {error && <div className="error-message">Error: {error}</div>}
-        </div>
-      </main>
-      <footer className="footer">
-        © {new Date().getFullYear()} Filipino Root Word Explorer. All Rights
-        Reserved.
-      </footer>
-    </div>
+        </Paper>
+      </Box>
+
+      {/* === Footer (Optional) === */}
+      {/* 
+      <Box component="footer" sx={{ p: 1, textAlign: 'center', bgcolor: 'background.paper', borderTop: 1, borderColor: 'divider' }}>
+        <Typography variant="caption">© {new Date().getFullYear()} Filipino Root Word Explorer</Typography>
+      </Box> 
+      */}
+    </Box>
   );
 };
 
