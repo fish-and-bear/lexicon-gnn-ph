@@ -1579,14 +1579,12 @@ def get_word_comprehensive(word: str):
         # Set a timeout for these queries
         db.session.execute(text("SET statement_timeout TO '10000'"))  # 10 seconds
         
-        # Get word ID first using direct SQL - only include columns that exist in the database
+        # Get word ID first using direct SQL
         normalized_word = normalize_lemma(word)
         word_result = db.session.execute(text("""
-            SELECT id, lemma, normalized_lemma, language_code, 
-                   COALESCE(has_baybayin, FALSE) as has_baybayin, 
-                   baybayin_form, romanized_form,
-                   root_word_id, preferred_spelling, tags, 
-                   data_hash, search_text,
+            SELECT id, lemma, normalized_lemma, language_code, has_baybayin, baybayin_form, romanized_form,
+                   root_word_id, preferred_spelling, tags, idioms, source_info, data_hash, search_text,
+                   badlit_form, hyphenation, is_proper_noun, is_abbreviation, is_initialism, is_root,
                    created_at, updated_at
             FROM words WHERE normalized_lemma = :normalized
         """), {"normalized": normalized_word}).fetchone()
@@ -1599,353 +1597,312 @@ def get_word_comprehensive(word: str):
         
         word_id = word_result.id
         
-        # Build comprehensive response with safe access for all fields
+        # Build comprehensive response
         response = {
             # Basic word info
             "id": word_id,
             "lemma": word_result.lemma,
             "normalized_lemma": word_result.normalized_lemma,
             "language_code": word_result.language_code,
-            "has_baybayin": bool(word_result.has_baybayin),
+            "has_baybayin": word_result.has_baybayin,
             "baybayin_form": word_result.baybayin_form,
             "romanized_form": word_result.romanized_form,
             "root_word_id": word_result.root_word_id,
             "preferred_spelling": word_result.preferred_spelling,
             "tags": word_result.tags,
+            "idioms": word_result.idioms,
+            "source_info": word_result.source_info,
             "data_hash": word_result.data_hash,
             "search_text": word_result.search_text,
+            "badlit_form": word_result.badlit_form,
+            "hyphenation": word_result.hyphenation,
+            "is_proper_noun": word_result.is_proper_noun,
+            "is_abbreviation": word_result.is_abbreviation,
+            "is_initialism": word_result.is_initialism,
+            "is_root": word_result.is_root,
             "created_at": word_result.created_at.isoformat() if word_result.created_at else None,
             "updated_at": word_result.updated_at.isoformat() if word_result.updated_at else None,
         }
         
-        # Get definitions with a new transaction
-        try:
-            definitions = db.session.execute(text("""
-                SELECT id, definition_text, COALESCE(original_pos, '') as original_pos, 
-                       standardized_pos_id, COALESCE(examples, '') as examples, 
-                       COALESCE(usage_notes, '') as usage_notes, COALESCE(tags, '') as tags,
-                       created_at, updated_at, COALESCE(sources, '') as sources
-                FROM definitions WHERE word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
-            
-            response["definitions"] = []
-            for d in definitions:
-                def_data = {
-                    "id": d.id,
-                    "definition_text": d.definition_text,
-                    "original_pos": d.original_pos,
-                    "standardized_pos_id": d.standardized_pos_id,
-                    "examples": d.examples,
-                    "usage_notes": d.usage_notes,
-                    "tags": d.tags,
-                    "sources": d.sources,
-                    "created_at": d.created_at.isoformat() if d.created_at else None,
-                    "updated_at": d.updated_at.isoformat() if d.updated_at else None
-                }
-                
-                if d.standardized_pos_id:
-                    try:
-                        pos_info = db.session.execute(text("""
-                            SELECT id, code, name_en, name_tl, description
-                            FROM parts_of_speech WHERE id = :pos_id
-                        """), {"pos_id": d.standardized_pos_id}).fetchone()
-                        
-                        if pos_info:
-                            def_data["standardized_pos"] = {
-                                "id": pos_info.id,
-                                "code": pos_info.code,
-                                "name_en": pos_info.name_en,
-                                "name_tl": pos_info.name_tl,
-                                "description": pos_info.description
-                            }
-                    except Exception as e:
-                        logger.error(f"Error fetching pos info: {str(e)}")
-                        def_data["standardized_pos"] = None
-                
-                response["definitions"].append(def_data)
-        except Exception as e:
-            logger.error(f"Error fetching definitions: {str(e)}")
-            response["definitions"] = []
-            
-        # Get etymologies with a new transaction
-        try:
-            etymologies = db.session.execute(text("""
-                SELECT id, etymology_text, normalized_components, etymology_structure, language_codes,
-                       created_at, updated_at, COALESCE(sources, '') as sources
-                FROM etymologies WHERE word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
-            
-            response["etymologies"] = []
-            for etym in etymologies:
-                etym_data = {
-                    "id": etym.id,
-                    "etymology_text": etym.etymology_text,
-                    "normalized_components": etym.normalized_components,
-                    "etymology_structure": etym.etymology_structure,
-                    "language_codes": etym.language_codes,
-                    "sources": etym.sources,
-                    "created_at": etym.created_at.isoformat() if etym.created_at else None,
-                    "updated_at": etym.updated_at.isoformat() if etym.updated_at else None
-                }
-                
-                # Try to extract components if available
-                try:
-                    components = extract_etymology_components(etym.etymology_text)
-                    if components:
-                        if isinstance(components, dict) and 'original_text' in components:
-                            etym_data["components"] = [components]
-                        else:
-                            etym_data["components"] = components
-                except Exception as e:
-                    logger.error(f"Error extracting etymology components: {str(e)}")
-                    etym_data["components"] = []
-                    
-                response["etymologies"].append(etym_data)
-        except Exception as e:
-            logger.error(f"Error fetching etymologies: {str(e)}")
-            response["etymologies"] = []
+        # Get definitions
+        definitions = db.session.execute(text("""
+            SELECT id, definition_text, original_pos, standardized_pos_id, examples, usage_notes, tags,
+                   created_at, updated_at, sources
+            FROM definitions WHERE word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
         
-        # Get pronunciations with a new transaction
-        try:
-            pronunciations = db.session.execute(text("""
-                SELECT id, type, value, COALESCE(tags, '{}') as tags, 
-                       created_at, updated_at, COALESCE(sources, '') as sources
-                FROM pronunciations WHERE word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
-            
-            response["pronunciations"] = []
-            for pron in pronunciations:
-                response["pronunciations"].append({
-                    "id": pron.id,
-                    "type": pron.type,
-                    "value": pron.value,
-                    "tags": pron.tags,
-                    "sources": pron.sources,
-                    "created_at": pron.created_at.isoformat() if pron.created_at else None,
-                    "updated_at": pron.updated_at.isoformat() if pron.updated_at else None
-                })
-        except Exception as e:
-            logger.error(f"Error fetching pronunciations: {str(e)}")
-            response["pronunciations"] = []
+        response["definitions"] = []
+        for d in definitions:
+            pos_info = None
+            if d.standardized_pos_id:
+                pos_info = db.session.execute(text("""
+                    SELECT id, code, name_en, name_tl, description
+                    FROM parts_of_speech WHERE id = :pos_id
+                """), {"pos_id": d.standardized_pos_id}).fetchone()
+                
+            response["definitions"].append({
+                "id": d.id,
+                "definition_text": d.definition_text,
+                "original_pos": d.original_pos,
+                "standardized_pos_id": d.standardized_pos_id,
+                "standardized_pos": {
+                    "id": pos_info.id,
+                    "code": pos_info.code,
+                    "name_en": pos_info.name_en,
+                    "name_tl": pos_info.name_tl,
+                    "description": pos_info.description
+                } if pos_info else None,
+                "examples": d.examples,
+                "usage_notes": d.usage_notes,
+                "tags": d.tags,
+                "sources": d.sources,
+                "created_at": d.created_at.isoformat() if d.created_at else None,
+                "updated_at": d.updated_at.isoformat() if d.updated_at else None
+            })
         
-        # Get credits with a new transaction
-        try:
-            credits = db.session.execute(text("""
-                SELECT id, credit, created_at, updated_at
-                FROM credits WHERE word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
+        # Get etymologies
+        etymologies = db.session.execute(text("""
+            SELECT id, etymology_text, normalized_components, etymology_structure, language_codes,
+                   created_at, updated_at, sources
+            FROM etymologies WHERE word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
+        
+        response["etymologies"] = []
+        for etym in etymologies:
+            etym_data = {
+                "id": etym.id,
+                "etymology_text": etym.etymology_text,
+                "normalized_components": etym.normalized_components,
+                "etymology_structure": etym.etymology_structure,
+                "language_codes": etym.language_codes,
+                "sources": etym.sources,
+                "created_at": etym.created_at.isoformat() if etym.created_at else None,
+                "updated_at": etym.updated_at.isoformat() if etym.updated_at else None
+            }
             
-            response["credits"] = []
-            for credit in credits:
-                response["credits"].append({
-                    "id": credit.id,
-                    "credit": credit.credit,
-                    "created_at": credit.created_at.isoformat() if credit.created_at else None,
-                    "updated_at": credit.updated_at.isoformat() if credit.updated_at else None
-                })
-        except Exception as e:
-            logger.error(f"Error fetching credits: {str(e)}")
-            response["credits"] = []
+            # Try to extract components if available
+            try:
+                components = extract_etymology_components(etym.etymology_text)
+                if components:
+                    if isinstance(components, dict) and 'original_text' in components:
+                        etym_data["components"] = [components]
+                    else:
+                        etym_data["components"] = components
+            except Exception as e:
+                logger.error(f"Error extracting etymology components: {str(e)}")
+                etym_data["components"] = []
+                
+            response["etymologies"].append(etym_data)
+        
+        # Get pronunciations
+        pronunciations = db.session.execute(text("""
+            SELECT id, type, value, tags, pronunciation_metadata, created_at, updated_at, sources
+            FROM pronunciations WHERE word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
+        
+        response["pronunciations"] = []
+        for pron in pronunciations:
+            response["pronunciations"].append({
+                "id": pron.id,
+                "type": pron.type,
+                "value": pron.value,
+                "tags": pron.tags,
+                "pronunciation_metadata": pron.pronunciation_metadata,
+                "sources": pron.sources,
+                "created_at": pron.created_at.isoformat() if pron.created_at else None,
+                "updated_at": pron.updated_at.isoformat() if pron.updated_at else None
+            })
+        
+        # Get credits
+        credits = db.session.execute(text("""
+            SELECT id, credit, created_at, updated_at
+            FROM credits WHERE word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
+        
+        response["credits"] = []
+        for credit in credits:
+            response["credits"].append({
+                "id": credit.id,
+                "credit": credit.credit,
+                "created_at": credit.created_at.isoformat() if credit.created_at else None,
+                "updated_at": credit.updated_at.isoformat() if credit.updated_at else None
+            })
             
         # Get root word details if this word has a root
-        response["root_word"] = None
         if word_result.root_word_id:
-            try:
-                root_word = db.session.execute(text("""
-                    SELECT id, lemma, normalized_lemma, language_code, 
-                           COALESCE(has_baybayin, FALSE) as has_baybayin, baybayin_form
-                    FROM words WHERE id = :root_id
-                """), {"root_id": word_result.root_word_id}).fetchone()
-                
-                if root_word:
-                    response["root_word"] = {
-                        "id": root_word.id,
-                        "lemma": root_word.lemma,
-                        "normalized_lemma": root_word.normalized_lemma,
-                        "language_code": root_word.language_code,
-                        "has_baybayin": bool(root_word.has_baybayin),
-                        "baybayin_form": root_word.baybayin_form
-                    }
-            except Exception as e:
-                logger.error(f"Error fetching root word: {str(e)}")
+            root_word = db.session.execute(text("""
+                SELECT id, lemma, normalized_lemma, language_code, has_baybayin, baybayin_form
+                FROM words WHERE id = :root_id
+            """), {"root_id": word_result.root_word_id}).fetchone()
+            
+            if root_word:
+                response["root_word"] = {
+                    "id": root_word.id,
+                    "lemma": root_word.lemma,
+                    "normalized_lemma": root_word.normalized_lemma,
+                    "language_code": root_word.language_code,
+                    "has_baybayin": root_word.has_baybayin,
+                    "baybayin_form": root_word.baybayin_form
+                }
         
-        # Get derived words with a new transaction
-        try:
-            derived_words = db.session.execute(text("""
-                SELECT id, lemma, normalized_lemma, language_code, 
-                       COALESCE(has_baybayin, FALSE) as has_baybayin, baybayin_form
-                FROM words WHERE root_word_id = :word_id
-                LIMIT 100
-            """), {"word_id": word_id}).fetchall()
-            
-            response["derived_words"] = []
-            for derived in derived_words:
-                response["derived_words"].append({
-                    "id": derived.id,
-                    "lemma": derived.lemma,
-                    "normalized_lemma": derived.normalized_lemma,
-                    "language_code": derived.language_code,
-                    "has_baybayin": bool(derived.has_baybayin),
-                    "baybayin_form": derived.baybayin_form
-                })
-        except Exception as e:
-            logger.error(f"Error fetching derived words: {str(e)}")
-            response["derived_words"] = []
-            
-        # Get relations with a new transaction
-        try:
-            outgoing_relations = db.session.execute(text("""
-                SELECT r.id, r.relation_type, COALESCE(r.metadata, '{}') as metadata, COALESCE(r.sources, '') as sources,
-                       w.id as target_id, w.lemma as target_lemma, 
-                       w.language_code as target_language_code,
-                       COALESCE(w.has_baybayin, FALSE) as target_has_baybayin,
-                       w.baybayin_form as target_baybayin_form
-                FROM relations r
-                JOIN words w ON r.to_word_id = w.id
-                WHERE r.from_word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
-            
-            response["outgoing_relations"] = []
-            for rel in outgoing_relations:
-                response["outgoing_relations"].append({
-                    "id": rel.id,
-                    "relation_type": rel.relation_type,
-                    "metadata": rel.metadata,
-                    "sources": rel.sources,
-                    "target_word": {
-                        "id": rel.target_id,
-                        "lemma": rel.target_lemma,
-                        "language_code": rel.target_language_code,
-                        "has_baybayin": bool(rel.target_has_baybayin),
-                        "baybayin_form": rel.target_baybayin_form
-                    }
-                })
-        except Exception as e:
-            logger.error(f"Error fetching outgoing relations: {str(e)}")
-            response["outgoing_relations"] = []
+        # Get derived words (words that have this word as their root)
+        derived_words = db.session.execute(text("""
+            SELECT id, lemma, normalized_lemma, language_code, has_baybayin, baybayin_form
+            FROM words WHERE root_word_id = :word_id
+            LIMIT 100
+        """), {"word_id": word_id}).fetchall()
         
-        # Get incoming relations with a new transaction
-        try:
-            incoming_relations = db.session.execute(text("""
-                SELECT r.id, r.relation_type, COALESCE(r.metadata, '{}') as metadata, COALESCE(r.sources, '') as sources,
-                       w.id as source_id, w.lemma as source_lemma, 
-                       w.language_code as source_language_code,
-                       COALESCE(w.has_baybayin, FALSE) as source_has_baybayin,
-                       w.baybayin_form as source_baybayin_form
-                FROM relations r
-                JOIN words w ON r.from_word_id = w.id
-                WHERE r.to_word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
+        response["derived_words"] = []
+        for derived in derived_words:
+            response["derived_words"].append({
+                "id": derived.id,
+                "lemma": derived.lemma,
+                "normalized_lemma": derived.normalized_lemma,
+                "language_code": derived.language_code,
+                "has_baybayin": derived.has_baybayin,
+                "baybayin_form": derived.baybayin_form
+            })
             
-            response["incoming_relations"] = []
-            for rel in incoming_relations:
-                response["incoming_relations"].append({
-                    "id": rel.id,
-                    "relation_type": rel.relation_type,
-                    "metadata": rel.metadata,
-                    "sources": rel.sources,
-                    "source_word": {
-                        "id": rel.source_id,
-                        "lemma": rel.source_lemma,
-                        "language_code": rel.source_language_code,
-                        "has_baybayin": bool(rel.source_has_baybayin),
-                        "baybayin_form": rel.source_baybayin_form
-                    }
-                })
-        except Exception as e:
-            logger.error(f"Error fetching incoming relations: {str(e)}")
-            response["incoming_relations"] = []
+        # Get relations
+        # Outgoing relations (this word -> other words)
+        outgoing_relations = db.session.execute(text("""
+            SELECT r.id, r.relation_type, r.metadata, r.sources,
+                   w.id as target_id, w.lemma as target_lemma, 
+                   w.language_code as target_language_code,
+                   w.has_baybayin as target_has_baybayin,
+                   w.baybayin_form as target_baybayin_form
+            FROM relations r
+            JOIN words w ON r.to_word_id = w.id
+            WHERE r.from_word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
         
-        # Get affixations with a new transaction
-        try:
-            root_affixations = db.session.execute(text("""
-                SELECT a.id, a.affix_type, a.created_at, a.updated_at, COALESCE(a.sources, '') as sources,
-                       w.id as affixed_id, w.lemma as affixed_lemma, 
-                       w.language_code as affixed_language_code,
-                       COALESCE(w.has_baybayin, FALSE) as affixed_has_baybayin,
-                       w.baybayin_form as affixed_baybayin_form
-                FROM affixations a
-                JOIN words w ON a.affixed_word_id = w.id
-                WHERE a.root_word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
-            
-            response["root_affixations"] = []
-            for aff in root_affixations:
-                response["root_affixations"].append({
-                    "id": aff.id,
-                    "affix_type": aff.affix_type,
-                    "sources": aff.sources,
-                    "created_at": aff.created_at.isoformat() if aff.created_at else None,
-                    "updated_at": aff.updated_at.isoformat() if aff.updated_at else None,
-                    "affixed_word": {
-                        "id": aff.affixed_id,
-                        "lemma": aff.affixed_lemma,
-                        "language_code": aff.affixed_language_code,
-                        "has_baybayin": bool(aff.affixed_has_baybayin),
-                        "baybayin_form": aff.affixed_baybayin_form
-                    }
-                })
-        except Exception as e:
-            logger.error(f"Error fetching root affixations: {str(e)}")
-            response["root_affixations"] = []
+        response["outgoing_relations"] = []
+        for rel in outgoing_relations:
+            response["outgoing_relations"].append({
+                "id": rel.id,
+                "relation_type": rel.relation_type,
+                "metadata": rel.metadata,
+                "sources": rel.sources,
+                "target_word": {
+                    "id": rel.target_id,
+                    "lemma": rel.target_lemma,
+                    "language_code": rel.target_language_code,
+                    "has_baybayin": rel.target_has_baybayin,
+                    "baybayin_form": rel.target_baybayin_form
+                }
+            })
         
-        # Get affixed affixations with a new transaction
-        try:
-            affixed_affixations = db.session.execute(text("""
-                SELECT a.id, a.affix_type, a.created_at, a.updated_at, COALESCE(a.sources, '') as sources,
-                       w.id as root_id, w.lemma as root_lemma, 
-                       w.language_code as root_language_code,
-                       COALESCE(w.has_baybayin, FALSE) as root_has_baybayin,
-                       w.baybayin_form as root_baybayin_form
-                FROM affixations a
-                JOIN words w ON a.root_word_id = w.id
-                WHERE a.affixed_word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
-            
-            response["affixed_affixations"] = []
-            for aff in affixed_affixations:
-                response["affixed_affixations"].append({
-                    "id": aff.id,
-                    "affix_type": aff.affix_type,
-                    "sources": aff.sources,
-                    "created_at": aff.created_at.isoformat() if aff.created_at else None,
-                    "updated_at": aff.updated_at.isoformat() if aff.updated_at else None,
-                    "root_word": {
-                        "id": aff.root_id,
-                        "lemma": aff.root_lemma,
-                        "language_code": aff.root_language_code,
-                        "has_baybayin": bool(aff.root_has_baybayin),
-                        "baybayin_form": aff.root_baybayin_form
-                    }
-                })
-        except Exception as e:
-            logger.error(f"Error fetching affixed affixations: {str(e)}")
-            response["affixed_affixations"] = []
+        # Incoming relations (other words -> this word)
+        incoming_relations = db.session.execute(text("""
+            SELECT r.id, r.relation_type, r.metadata, r.sources,
+                   w.id as source_id, w.lemma as source_lemma, 
+                   w.language_code as source_language_code,
+                   w.has_baybayin as source_has_baybayin,
+                   w.baybayin_form as source_baybayin_form
+            FROM relations r
+            JOIN words w ON r.from_word_id = w.id
+            WHERE r.to_word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
+        
+        response["incoming_relations"] = []
+        for rel in incoming_relations:
+            response["incoming_relations"].append({
+                "id": rel.id,
+                "relation_type": rel.relation_type,
+                "metadata": rel.metadata,
+                "sources": rel.sources,
+                "source_word": {
+                    "id": rel.source_id,
+                    "lemma": rel.source_lemma,
+                    "language_code": rel.source_language_code,
+                    "has_baybayin": rel.source_has_baybayin,
+                    "baybayin_form": rel.source_baybayin_form
+                }
+            })
+        
+        # Get affixations
+        # Affixations where this word is the root
+        root_affixations = db.session.execute(text("""
+            SELECT a.id, a.affix_type, a.created_at, a.updated_at, a.sources,
+                   w.id as affixed_id, w.lemma as affixed_lemma, 
+                   w.language_code as affixed_language_code,
+                   w.has_baybayin as affixed_has_baybayin,
+                   w.baybayin_form as affixed_baybayin_form
+            FROM affixations a
+            JOIN words w ON a.affixed_word_id = w.id
+            WHERE a.root_word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
+        
+        response["root_affixations"] = []
+        for aff in root_affixations:
+            response["root_affixations"].append({
+                "id": aff.id,
+                "affix_type": aff.affix_type,
+                "sources": aff.sources,
+                "created_at": aff.created_at.isoformat() if aff.created_at else None,
+                "updated_at": aff.updated_at.isoformat() if aff.updated_at else None,
+                "affixed_word": {
+                    "id": aff.affixed_id,
+                    "lemma": aff.affixed_lemma,
+                    "language_code": aff.affixed_language_code,
+                    "has_baybayin": aff.affixed_has_baybayin,
+                    "baybayin_form": aff.affixed_baybayin_form
+                }
+            })
+        
+        # Affixations where this word is the affixed form
+        affixed_affixations = db.session.execute(text("""
+            SELECT a.id, a.affix_type, a.created_at, a.updated_at, a.sources,
+                   w.id as root_id, w.lemma as root_lemma, 
+                   w.language_code as root_language_code,
+                   w.has_baybayin as root_has_baybayin,
+                   w.baybayin_form as root_baybayin_form
+            FROM affixations a
+            JOIN words w ON a.root_word_id = w.id
+            WHERE a.affixed_word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
+        
+        response["affixed_affixations"] = []
+        for aff in affixed_affixations:
+            response["affixed_affixations"].append({
+                "id": aff.id,
+                "affix_type": aff.affix_type,
+                "sources": aff.sources,
+                "created_at": aff.created_at.isoformat() if aff.created_at else None,
+                "updated_at": aff.updated_at.isoformat() if aff.updated_at else None,
+                "root_word": {
+                    "id": aff.root_id,
+                    "lemma": aff.root_lemma,
+                    "language_code": aff.root_language_code,
+                    "has_baybayin": aff.root_has_baybayin,
+                    "baybayin_form": aff.root_baybayin_form
+                }
+            })
             
         # Add data completeness metrics
         response["data_completeness"] = {
-            "has_definitions": bool(response.get("definitions", [])),
-            "has_etymology": bool(response.get("etymologies", [])),
-            "has_pronunciations": bool(response.get("pronunciations", [])),
-            "has_baybayin": bool(response.get("has_baybayin") and response.get("baybayin_form")),
-            "has_relations": bool(response.get("outgoing_relations", []) or response.get("incoming_relations", [])),
-            "has_affixations": bool(response.get("root_affixations", []) or response.get("affixed_affixations", [])),
+            "has_definitions": bool(response["definitions"]),
+            "has_etymology": bool(response["etymologies"]),
+            "has_pronunciations": bool(response["pronunciations"]),
+            "has_baybayin": bool(response["has_baybayin"] and response["baybayin_form"]),
+            "has_relations": bool(response["outgoing_relations"] or response["incoming_relations"]),
+            "has_affixations": bool(response["root_affixations"] or response["affixed_affixations"]),
         }
         
         # Calculate some summary stats
         relation_types = {}
-        for rel in response.get("outgoing_relations", []):
+        for rel in response["outgoing_relations"]:
             relation_types[rel["relation_type"]] = relation_types.get(rel["relation_type"], 0) + 1
-        for rel in response.get("incoming_relations", []):
+        for rel in response["incoming_relations"]:
             relation_types[rel["relation_type"]] = relation_types.get(rel["relation_type"], 0) + 1
             
         response["relation_summary"] = relation_types
-        
+            
         return jsonify(response), 200
         
     except Exception as e:
-        logger.error(f"Error getting comprehensive word data: {str(e)}", exc_info=True)
-        return jsonify({"error": "Internal server error", "details": str(e)}), 500
+        logger.error(f"Error getting comprehensive word data: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
 
 # Add an endpoint to get all relationship types
 @bp.route("/relationships/types", methods=["GET"])

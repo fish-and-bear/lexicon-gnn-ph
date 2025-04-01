@@ -1618,97 +1618,100 @@ def get_word_comprehensive(word: str):
             "updated_at": word_result.updated_at.isoformat() if word_result.updated_at else None,
         }
         
-        # Get definitions with a new transaction
-        try:
-            definitions = db.session.execute(text("""
-                SELECT id, definition_text, COALESCE(original_pos, '') as original_pos, 
-                       standardized_pos_id, COALESCE(examples, '') as examples, 
-                       COALESCE(usage_notes, '') as usage_notes, COALESCE(tags, '') as tags,
-                       created_at, updated_at, COALESCE(sources, '') as sources
-                FROM definitions WHERE word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
-            
-            response["definitions"] = []
-            for d in definitions:
-                def_data = {
-                    "id": d.id,
-                    "definition_text": d.definition_text,
-                    "original_pos": d.original_pos,
-                    "standardized_pos_id": d.standardized_pos_id,
-                    "examples": d.examples,
-                    "usage_notes": d.usage_notes,
-                    "tags": d.tags,
-                    "sources": d.sources,
-                    "created_at": d.created_at.isoformat() if d.created_at else None,
-                    "updated_at": d.updated_at.isoformat() if d.updated_at else None
-                }
-                
-                if d.standardized_pos_id:
-                    try:
-                        pos_info = db.session.execute(text("""
-                            SELECT id, code, name_en, name_tl, description
-                            FROM parts_of_speech WHERE id = :pos_id
-                        """), {"pos_id": d.standardized_pos_id}).fetchone()
-                        
-                        if pos_info:
-                            def_data["standardized_pos"] = {
-                                "id": pos_info.id,
-                                "code": pos_info.code,
-                                "name_en": pos_info.name_en,
-                                "name_tl": pos_info.name_tl,
-                                "description": pos_info.description
-                            }
-                    except Exception as e:
-                        logger.error(f"Error fetching pos info: {str(e)}")
-                        def_data["standardized_pos"] = None
-                
-                response["definitions"].append(def_data)
-        except Exception as e:
-            logger.error(f"Error fetching definitions: {str(e)}")
-            response["definitions"] = []
-            
-        # Get etymologies with a new transaction
-        try:
-            etymologies = db.session.execute(text("""
-                SELECT id, etymology_text, normalized_components, etymology_structure, language_codes,
-                       created_at, updated_at, COALESCE(sources, '') as sources
-                FROM etymologies WHERE word_id = :word_id
-            """), {"word_id": word_id}).fetchall()
-            
-            response["etymologies"] = []
-            for etym in etymologies:
-                etym_data = {
-                    "id": etym.id,
-                    "etymology_text": etym.etymology_text,
-                    "normalized_components": etym.normalized_components,
-                    "etymology_structure": etym.etymology_structure,
-                    "language_codes": etym.language_codes,
-                    "sources": etym.sources,
-                    "created_at": etym.created_at.isoformat() if etym.created_at else None,
-                    "updated_at": etym.updated_at.isoformat() if etym.updated_at else None
-                }
-                
-                # Try to extract components if available
-                try:
-                    components = extract_etymology_components(etym.etymology_text)
-                    if components:
-                        if isinstance(components, dict) and 'original_text' in components:
-                            etym_data["components"] = [components]
-                        else:
-                            etym_data["components"] = components
-                except Exception as e:
-                    logger.error(f"Error extracting etymology components: {str(e)}")
-                    etym_data["components"] = []
-                    
-                response["etymologies"].append(etym_data)
-        except Exception as e:
-            logger.error(f"Error fetching etymologies: {str(e)}")
-            response["etymologies"] = []
+        # Add optional fields only if they exist
+        optional_fields = [
+            "idioms", "source_info", "badlit_form", "hyphenation",
+            "is_proper_noun", "is_abbreviation", "is_initialism", "is_root"
+        ]
         
-        # Get pronunciations with a new transaction
+        for field in optional_fields:
+            if hasattr(word_result, field) and getattr(word_result, field) is not None:
+                response[field] = getattr(word_result, field)
+        
+        # Get definitions
+        definitions = db.session.execute(text("""
+            SELECT id, definition_text, COALESCE(original_pos, '') as original_pos, 
+                   standardized_pos_id, COALESCE(examples, '') as examples, 
+                   COALESCE(usage_notes, '') as usage_notes, COALESCE(tags, '') as tags,
+                   created_at, updated_at, COALESCE(sources, '') as sources
+            FROM definitions WHERE word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
+        
+        response["definitions"] = []
+        for d in definitions:
+            def_data = {
+                "id": d.id,
+                "definition_text": d.definition_text,
+                "original_pos": d.original_pos,
+                "standardized_pos_id": d.standardized_pos_id,
+                "examples": d.examples,
+                "usage_notes": d.usage_notes,
+                "tags": d.tags,
+                "sources": d.sources,
+                "created_at": d.created_at.isoformat() if d.created_at else None,
+                "updated_at": d.updated_at.isoformat() if d.updated_at else None
+            }
+            
+            if d.standardized_pos_id:
+                try:
+                    pos_info = db.session.execute(text("""
+                        SELECT id, code, name_en, name_tl, description
+                        FROM parts_of_speech WHERE id = :pos_id
+                    """), {"pos_id": d.standardized_pos_id}).fetchone()
+                    
+                    if pos_info:
+                        def_data["standardized_pos"] = {
+                            "id": pos_info.id,
+                            "code": pos_info.code,
+                            "name_en": pos_info.name_en,
+                            "name_tl": pos_info.name_tl,
+                            "description": pos_info.description
+                        }
+                except Exception as e:
+                    logger.error(f"Error fetching pos info: {str(e)}")
+                    def_data["standardized_pos"] = None
+            
+            response["definitions"].append(def_data)
+        
+        # Get etymologies
+        etymologies = db.session.execute(text("""
+            SELECT id, etymology_text, normalized_components, etymology_structure, language_codes,
+                   created_at, updated_at, COALESCE(sources, '') as sources
+            FROM etymologies WHERE word_id = :word_id
+        """), {"word_id": word_id}).fetchall()
+        
+        response["etymologies"] = []
+        for etym in etymologies:
+            etym_data = {
+                "id": etym.id,
+                "etymology_text": etym.etymology_text,
+                "normalized_components": etym.normalized_components,
+                "etymology_structure": etym.etymology_structure,
+                "language_codes": etym.language_codes,
+                "sources": etym.sources,
+                "created_at": etym.created_at.isoformat() if etym.created_at else None,
+                "updated_at": etym.updated_at.isoformat() if etym.updated_at else None
+            }
+            
+            # Try to extract components if available
+            try:
+                components = extract_etymology_components(etym.etymology_text)
+                if components:
+                    if isinstance(components, dict) and 'original_text' in components:
+                        etym_data["components"] = [components]
+                    else:
+                        etym_data["components"] = components
+            except Exception as e:
+                logger.error(f"Error extracting etymology components: {str(e)}")
+                etym_data["components"] = []
+                
+            response["etymologies"].append(etym_data)
+        
+        # Get pronunciations
         try:
             pronunciations = db.session.execute(text("""
                 SELECT id, type, value, COALESCE(tags, '{}') as tags, 
+                       COALESCE(pronunciation_metadata, '{}') as pronunciation_metadata, 
                        created_at, updated_at, COALESCE(sources, '') as sources
                 FROM pronunciations WHERE word_id = :word_id
             """), {"word_id": word_id}).fetchall()
@@ -1720,6 +1723,7 @@ def get_word_comprehensive(word: str):
                     "type": pron.type,
                     "value": pron.value,
                     "tags": pron.tags,
+                    "pronunciation_metadata": pron.pronunciation_metadata,
                     "sources": pron.sources,
                     "created_at": pron.created_at.isoformat() if pron.created_at else None,
                     "updated_at": pron.updated_at.isoformat() if pron.updated_at else None
@@ -1728,7 +1732,7 @@ def get_word_comprehensive(word: str):
             logger.error(f"Error fetching pronunciations: {str(e)}")
             response["pronunciations"] = []
         
-        # Get credits with a new transaction
+        # Get credits
         try:
             credits = db.session.execute(text("""
                 SELECT id, credit, created_at, updated_at
@@ -1769,7 +1773,7 @@ def get_word_comprehensive(word: str):
             except Exception as e:
                 logger.error(f"Error fetching root word: {str(e)}")
         
-        # Get derived words with a new transaction
+        # Get derived words (words that have this word as their root)
         try:
             derived_words = db.session.execute(text("""
                 SELECT id, lemma, normalized_lemma, language_code, 
@@ -1792,7 +1796,8 @@ def get_word_comprehensive(word: str):
             logger.error(f"Error fetching derived words: {str(e)}")
             response["derived_words"] = []
             
-        # Get relations with a new transaction
+        # Get relations
+        # Outgoing relations (this word -> other words)
         try:
             outgoing_relations = db.session.execute(text("""
                 SELECT r.id, r.relation_type, COALESCE(r.metadata, '{}') as metadata, COALESCE(r.sources, '') as sources,
@@ -1824,7 +1829,7 @@ def get_word_comprehensive(word: str):
             logger.error(f"Error fetching outgoing relations: {str(e)}")
             response["outgoing_relations"] = []
         
-        # Get incoming relations with a new transaction
+        # Incoming relations (other words -> this word)
         try:
             incoming_relations = db.session.execute(text("""
                 SELECT r.id, r.relation_type, COALESCE(r.metadata, '{}') as metadata, COALESCE(r.sources, '') as sources,
@@ -1856,7 +1861,8 @@ def get_word_comprehensive(word: str):
             logger.error(f"Error fetching incoming relations: {str(e)}")
             response["incoming_relations"] = []
         
-        # Get affixations with a new transaction
+        # Get affixations
+        # Affixations where this word is the root
         try:
             root_affixations = db.session.execute(text("""
                 SELECT a.id, a.affix_type, a.created_at, a.updated_at, COALESCE(a.sources, '') as sources,
@@ -1889,7 +1895,7 @@ def get_word_comprehensive(word: str):
             logger.error(f"Error fetching root affixations: {str(e)}")
             response["root_affixations"] = []
         
-        # Get affixed affixations with a new transaction
+        # Affixations where this word is the affixed form
         try:
             affixed_affixations = db.session.execute(text("""
                 SELECT a.id, a.affix_type, a.created_at, a.updated_at, COALESCE(a.sources, '') as sources,
