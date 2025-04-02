@@ -51,32 +51,10 @@ function formatRelationType(type: string): string {
     .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize first letter of each word
 }
 
-// Define key graph colors locally for styling
+// Define key graph colors locally FOR HEADER/INDICATOR ACCENT ONLY
 const graphColors = {
   main: "#1d3557",
-  root: "#e63946",
-  derived: "#2a9d8f",
-  synonym: "#457b9d",
-  antonym: "#f77f00",
-  variant: "#f4a261",
-  related: "#fcbf49",
-  // Add other colors from your WordGraph getNodeColor if needed
-  associated: "#adb5bd",
-  default: "#6c757d"
-};
-
-// Helper to determine if a background color is light or dark
-const isColorLight = (hexColor: string): boolean => {
-  try {
-    const color = d3.color(hexColor);
-    if (!color) return true; // Default to light if parsing fails
-    const rgb = color.rgb();
-    // Standard luminance calculation
-    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-    return luminance > 0.5;
-  } catch (e) {
-    return true;
-  }
+  // Other graph colors are no longer needed here for chips
 };
 
 // --- Styled Components ---
@@ -124,6 +102,31 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
 const ExpandMoreIcon = () => <Typography sx={{ transform: 'rotate(90deg)', lineHeight: 0 }}>▶</Typography>;
 const VolumeUpIcon = () => <Typography sx={{ fontSize: '1.2em', lineHeight: 0 }}>🔊</Typography>;
 const StopCircleIcon = () => <Typography sx={{ fontSize: '1.2em', lineHeight: 0 }}>⏹️</Typography>;
+
+// --- Color Mapping for Relation Chips (Re-introduced) ---
+type MuiChipColor = "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
+
+const getRelationChipColor = (relationType: string): MuiChipColor => {
+    const typeLower = relationType.toLowerCase();
+    switch (typeLower) {
+        case 'synonym': return 'success';
+        case 'antonym': return 'error';
+        case 'root':
+        case 'root_of':
+        case 'derived_from': return 'primary';
+        case 'derived':
+        case 'derivative': return 'secondary';
+        case 'related':
+        case 'kaugnay':
+        case 'associated': return 'info';
+        case 'variant':
+        case 'part_whole': // Added part_whole
+             return 'warning';
+        case 'etymology': return 'default'; // Or another color
+        // Add more specific mappings as needed
+        default: return 'default';
+    }
+};
 
 const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   wordInfo,
@@ -335,10 +338,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
             {/* Use theme spacing for gap */}
             <Stack spacing={theme.spacing(2.5)}>
               {sortedTypes.map((type) => {
-                const chipColorHex = (graphColors as Record<string, string>)[type.toLowerCase()] || graphColors.default;
-                // For outlined, we want the border and text to use the color
-                const chipTextColor = chipColorHex; // Use hex directly for text/border
-                const isLightBg = theme.palette.mode === 'light';
+                // Get the MUI semantic color based on relation type
+                const chipColor = getRelationChipColor(type);
+                const chipVariant = chipColor === 'default' ? 'outlined' : 'filled';
 
                 return (
                   <Box key={type}>
@@ -354,18 +356,27 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                             onClick={() => onWordLinkClick(relatedWord.lemma)}
                             clickable
                             size="small"
-                            variant="outlined" // Use outlined variant
+                            // Apply semantic color and variant
+                            color={chipColor}
+                            variant={chipVariant}
                             sx={{
-                              color: chipTextColor,
-                              borderColor: chipTextColor,
                               cursor: 'pointer',
                               '& .MuiChip-label': { fontWeight: 500 },
-                              // More subtle hover: slight background fill
-                              '&:hover': {
-                                  bgcolor: alpha(chipTextColor, isLightBg ? 0.1 : 0.15),
-                              },
                               height: 'auto', // Allow chip height to adjust
-                              padding: theme.spacing(0.25, 0.75)
+                              padding: theme.spacing(0.25, 0.75),
+                              // Optional: Add subtle hover effect
+                              '&:hover': {
+                                  boxShadow: theme.shadows[1],
+                                  // For filled chips, slightly darken/lighten based on mode
+                                  ...(chipVariant === 'filled' && {
+                                      bgcolor: alpha(
+                                          chipColor === 'default' 
+                                              ? theme.palette.grey[500] // Use a specific shade like 500 for grey
+                                              : theme.palette[chipColor].main, // Use .main for other semantic colors
+                                          0.85
+                                      ),
+                                  })
+                              }
                             }}
                             title={`View ${relatedWord.lemma}`}
                           />
@@ -462,7 +473,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
      if (!wordInfo?.credits || wordInfo.credits.length === 0) {
        return <Alert severity="info" sx={{ m: 2 }}>No source information available.</Alert>;
      }
-      return (
+     return (
        <List dense sx={{ py: 1 }}>
          {wordInfo.credits.map((credit, index) => (
            <ListItem key={credit.id || index} sx={{ py: 1 }}>
@@ -536,7 +547,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                 </Tabs>
             );
 
-  return (
+            return (
     <Paper elevation={2} square sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper', overflow: 'hidden' }}>
 
       {/* Conditional Layout based on screen size */}

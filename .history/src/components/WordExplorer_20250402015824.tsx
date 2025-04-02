@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
+import SplitPane from 'react-split-pane';
 import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
 import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
+import "./SplitPane.css";
 import { WordNetwork, WordInfo, SearchResult, SearchOptions, EtymologyTree, Statistics, Definition } from "../types";
 import unidecode from "unidecode";
 import { 
@@ -25,6 +27,22 @@ import DOMPurify from 'dompurify';
 import { debounce } from "lodash";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.hapinas.net/api/v1';
+
+// Helper function to get initial size, ensuring it's within reasonable bounds
+const getInitialDetailSize = (min: number, max: number, defaultSize: number): number => {
+    const savedWidth = localStorage.getItem('wordDetailsWidth');
+    if (savedWidth) {
+        const parsedWidth = parseInt(savedWidth, 10);
+        if (!isNaN(parsedWidth) && parsedWidth >= min && parsedWidth <= max) {
+            return parsedWidth;
+        }
+    }
+    // Check window width for a better default on smaller screens
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        return Math.max(min, Math.min(max, 380)); // Smaller default for narrow windows
+    }
+    return defaultSize; 
+};
 
 const WordExplorer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -66,35 +84,7 @@ const WordExplorer: React.FC = () => {
   // Add a new state variable for toggling metadata
   const [showMetadata, setShowMetadata] = useState<boolean>(false);
 
-  const detailsContainerRef = useRef<HTMLDivElement>(null);
-
-  // Initialize details width from localStorage
-  useEffect(() => {
-    const savedWidth = localStorage.getItem('wordDetailsWidth');
-    if (savedWidth && detailsContainerRef.current) {
-      detailsContainerRef.current.style.width = `${savedWidth}px`;
-    }
-  }, []);
-
-  // Track changes to container width with ResizeObserver
-  useEffect(() => {
-    if (!detailsContainerRef.current) return;
-    
-    const resizeObserver = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        if (entry.target === detailsContainerRef.current) {
-          const newWidth = entry.contentRect.width;
-          localStorage.setItem('wordDetailsWidth', newWidth.toString());
-        }
-      }
-    });
-    
-    resizeObserver.observe(detailsContainerRef.current);
-    
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
+  const [detailPaneSize, setDetailPaneSize] = useState<number>(getInitialDetailSize(300, 800, 450));
 
   // Function to normalize input
   const normalizeInput = (input: string) => unidecode(input.trim().toLowerCase());
@@ -217,13 +207,13 @@ const WordExplorer: React.FC = () => {
       }
       
       const searchOptions: SearchOptions = { 
-        page: 1, 
-        per_page: 20, 
-        exclude_baybayin: true,
-        language: 'tl',
-        mode: 'all',
-        sort: 'relevance',
-        order: 'desc'
+          page: 1, 
+          per_page: 20, 
+          exclude_baybayin: true,
+          language: 'tl', 
+          mode: 'all', 
+          sort: 'relevance',
+          order: 'desc'
         };
       const searchResults = await searchWords(normalizedInput, searchOptions);
       
@@ -285,7 +275,7 @@ const WordExplorer: React.FC = () => {
       } else {
         setError(`No results found for "${wordToSearch}"`);
         setSelectedWordInfo(null);
-      setWordNetwork(null);
+        setWordNetwork(null);
       }
     } catch (err: any) {
       console.error("Error during search:", err);
@@ -302,7 +292,6 @@ const WordExplorer: React.FC = () => {
     console.log("Word link clicked:", word);
     if (word !== mainWord) {
       await handleSearch(word); // handleSearch is now defined before this
-      detailsContainerRef.current?.scrollTo(0, 0);
     }
   // handleSearch is now a valid dependency
   }, [mainWord, handleSearch]); 
@@ -313,10 +302,10 @@ const WordExplorer: React.FC = () => {
   const debouncedSearch = useCallback(
     debounce(async (query: string) => {
       if (query.length < 2) { // Only search if query is long enough
-            setSearchResults([]);
-            setShowSuggestions(false);
-                return;
-              }
+        setSearchResults([]);
+        setShowSuggestions(false);
+        return;
+      }
       setIsLoading(true); // Indicate loading for suggestions
       try {
         const searchOptions: SearchOptions = { page: 1, per_page: 10, language: 'tl', mode: 'all' };
@@ -325,14 +314,14 @@ const WordExplorer: React.FC = () => {
           const suggestions = results.words.map(word => ({ id: word.id, word: word.lemma })); // Map to simple {id, word}
           setSearchResults(suggestions);
           setShowSuggestions(suggestions.length > 0);
-          }
-        } catch (error) {
-        console.error("Error fetching search suggestions:", error);
-          setSearchResults([]);
-          setShowSuggestions(false);
-        } finally {
-          setIsLoading(false);
         }
+      } catch (error) {
+        console.error("Error fetching search suggestions:", error);
+        setSearchResults([]);
+        setShowSuggestions(false);
+      } finally {
+        setIsLoading(false);
+      }
     }, 300), // Debounce time
     [] // No dependencies needed for debounced function itself
   );
@@ -381,201 +370,6 @@ const WordExplorer: React.FC = () => {
         });
     }
   }, [mainWord, fetchWordNetworkData]);
-
-  const renderDefinitions = useCallback((wordInfo: WordInfo) => {
-    if (!wordInfo.definitions || wordInfo.definitions.length === 0) {
-      return (
-        <div className="definitions-section">
-          <div className="definitions-section-header">
-            <h3>Definitions</h3>
-            <span className="definition-count">0</span>
-          </div>
-          <p className="no-definitions">No definitions available for this word.</p>
-        </div>
-      );
-    }
-
-    // Group definitions by part of speech
-    const definitionsByPos: Record<string, Definition[]> = {};
-    wordInfo.definitions.forEach((def) => {
-      const posName = def.part_of_speech?.name_en || def.original_pos || 'Other';
-      if (!definitionsByPos[posName]) {
-        definitionsByPos[posName] = [];
-      }
-      definitionsByPos[posName].push(def);
-    });
-
-    // Sort parts of speech in a logical order
-    const sortedPosEntries = Object.entries(definitionsByPos).sort(([posA], [posB]) => {
-      // Define priority order for common parts of speech
-      const posOrder: { [key: string]: number } = {
-        'Noun': 1,
-        'Verb': 2,
-        'Adjective': 3,
-        'Adverb': 4,
-        'Pronoun': 5,
-        'Preposition': 6,
-        'Conjunction': 7,
-        'Interjection': 8,
-        'Other': 9
-      };
-      
-      // Get priority or default to high number (low priority)
-      const priorityA = posOrder[posA] || 10;
-      const priorityB = posOrder[posB] || 10;
-      
-      return priorityA - priorityB;
-    });
-
-    return (
-      <div className="definitions-section">
-        <div className="definitions-section-header">
-          <h3>Definitions</h3>
-          <span className="definition-count">{wordInfo.definitions.length}</span>
-        </div>
-        
-        {sortedPosEntries.map(([posName, definitions]: [string, any[]]) => (
-          <div key={posName} className="pos-group">
-            <div className="pos-group-header">
-              {posName}
-              <span className="pos-count">{definitions.length}</span>
-            </div>
-            
-            <div className="definition-cards-container">
-              {definitions.map((definition: Definition, index: number) => {
-                // Check for both possible property names for definition text
-                const definitionText = definition.definition_text || definition.text || '';
-                
-                // Pre-process the text to extract any trailing numbers for superscript
-                let textPart = definitionText;
-                let numberPart = '';
-                
-                // Check if the text ends with a number
-                const match = definitionText.match(/^(.*[^\d])(\d+)$/);
-                if (match) {
-                  textPart = match[1];
-                  numberPart = match[2];
-                }
-                
-                return (
-      <div key={index} className="definition-card">
-                    <div className="definition-number">{index + 1}</div>
-                    <div className="definition-content">
-                      <p className="definition-text">
-                        {textPart}
-                        {numberPart && <sup>{numberPart}</sup>}
-                      </p>
-                      
-        {definition.examples && definition.examples.length > 0 && (
-          <div className="examples">
-                          <h4>Examples</h4>
-                          <ul>
-                            {definition.examples.map((example: string, idx: number) => {
-                              // Check if example contains a translation (indicated by parentheses or em dash)
-                              const hasTranslation = example.includes('(') || example.includes('—') || example.includes(' - ');
-                              
-                              if (hasTranslation) {
-                                // Split the example into the phrase and translation
-                                let phrase, translation;
-                                
-                                if (example.includes('(')) {
-                                  [phrase, translation] = example.split(/\s*\(/);
-                                  translation = translation ? `(${translation}` : '';
-                                } else if (example.includes('—')) {
-                                  [phrase, translation] = example.split(/\s*—\s*/);
-                                } else if (example.includes(' - ')) {
-                                  [phrase, translation] = example.split(/\s*-\s*/);
-                                }
-                                
-                                return (
-                                  <li key={idx}>
-                                    <em>{phrase}</em>
-                                    {translation && <span className="translation">{translation}</span>}
-                                  </li>
-                                );
-                              }
-                              
-                              return <li key={idx}><em>{example}</em></li>;
-                            })}
-            </ul>
-          </div>
-        )}
-                      
-        {definition.usage_notes && definition.usage_notes.length > 0 && (
-          <div className="usage-notes">
-                          <h4>Usage Notes</h4>
-                          <ul>
-                            {definition.usage_notes.map((note: string, idx: number) => {
-                              // Check if note is a category tag (enclosed in square brackets)
-                              const isCategoryTag = note.match(/^\[(.*?)\]$/);
-                              if (isCategoryTag) {
-                                return (
-                                  <li key={idx}>
-                                    <em className="category-tag">{note}</em>
-                                  </li>
-                                );
-                              }
-                              
-                              // Check if note contains a detail section (indicated by colon)
-                              const hasDetail = note.includes(':');
-                              if (hasDetail) {
-                                const [label, detail] = note.split(/:\s*/);
-                                return (
-                                  <li key={idx}>
-                                    <em>{label}:</em>
-                                    <span className="note-detail">{detail}</span>
-                                  </li>
-                                );
-                              }
-                              
-                              return <li key={idx}>{note}</li>;
-                            })}
-            </ul>
-          </div>
-        )}
-                      
-                      {definition.sources && definition.sources.length > 0 && (
-                        <div className="definition-sources">
-                          <span className="sources-label">Sources:</span>
-                          <div className="source-tags">
-                            {definition.sources.map((source: string, idx: number) => (
-                              <span key={idx} className="source-tag">{source}</span>
-                            ))}
-      </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }, []);
-
-  const renderArraySection = useCallback((title: string, items?: string[]) => {
-    if (!items || items.length === 0) return null;
-    return (
-      <div className={title.toLowerCase().replace(/\s+/g, "-")}>
-        <h3>{title}</h3>
-        <ul className="word-list">
-          {items
-            .filter((item) => item.trim() !== "" && item.trim() !== "0")
-            .map((item, index) => (
-              <li
-                key={index}
-                onClick={() => handleNodeClick(item)}
-                className="clickable-word"
-              >
-                {item}
-              </li>
-            ))}
-        </ul>
-      </div>
-    );
-  }, [handleNodeClick]);
 
   const handleBack = useCallback(() => {
     if (currentHistoryIndex > 0) {
@@ -829,29 +623,30 @@ const WordExplorer: React.FC = () => {
     try {
       console.log('Fetching random word');
       
-      // Get random word (already returns comprehensive data)
+      // Get random word
       const randomWordData = await getRandomWord();
       console.log('Random word data:', randomWordData);
       
-      // Use the data directly from getRandomWord
+      // The random word API might not return fully normalized data, so fetch the detailed word info
       if (randomWordData && randomWordData.lemma) {
-        // Use randomWordData instead of wordData
-        setSelectedWordInfo(randomWordData);
-        setMainWord(randomWordData.lemma);
+        const wordData = await fetchWordDetails(randomWordData.lemma);
         
-        // Fetch word network and etymology tree using the random word's lemma/id
-        const networkData = await fetchWordNetworkData(randomWordData.lemma, depth, breadth);
+        setSelectedWordInfo(wordData);
+        setMainWord(wordData.lemma);
+        
+        // Fetch word network and etymology tree
+        const networkData = await fetchWordNetworkData(wordData.lemma, depth, breadth);
         console.log('Word network for random word:', networkData);
         
         setWordNetwork(networkData);
-        setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), randomWordData.lemma]);
+        setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), wordData.lemma]);
         setCurrentHistoryIndex(prevIndex => prevIndex + 1);
-        setInputValue(randomWordData.lemma);
+        setInputValue(wordData.lemma);
         
-        // Fetch etymology tree using the random word's ID
-        fetchEtymologyTree(randomWordData.id);
+        // Fetch etymology tree
+        fetchEtymologyTree(wordData.id);
       } else {
-        throw new Error("Could not fetch random word or lemma missing."); // Added lemma check message
+        throw new Error("Could not fetch random word.");
       }
     } catch (error) {
       console.error("Error fetching random word:", error);
@@ -1147,9 +942,17 @@ const WordExplorer: React.FC = () => {
     // resetDisplay(); 
   }, [resetDisplay]); // Include resetDisplay if called on mount
 
+  // Define handler for SplitPane drag finish
+  const handleDetailPaneResize = (newSize: number) => {
+    // Ensure size stays within bounds (SplitPane might enforce this, but double-check)
+    const clampedSize = Math.max(300, Math.min(800, newSize)); 
+    setDetailPaneSize(clampedSize);
+    localStorage.setItem('wordDetailsWidth', clampedSize.toString());
+  };
+
   return (
-    <div className={`word-explorer ${theme} ${isLoading ? 'loading' : ''}`}>
-      <header className="header-content">
+    <div className={`container ${theme}`}>
+      <header className="header">
         <h1>Filipino Root Word Explorer</h1>
         <div className="header-buttons">
           <button
@@ -1179,167 +982,106 @@ const WordExplorer: React.FC = () => {
             apiConnected ? 'connected' : 'disconnected'
           }`}>
             API: {apiConnected === null ? 'Checking...' : 
-                 apiConnected ? '✅ Connected' : '❌ Disconnected'}
+                 apiConnected ? `Connected (${apiEndpoint})` : 'Disconnected'}
+            {!apiConnected && <button onClick={handleResetCircuitBreaker}>Reset CB</button>}
+            <button onClick={handleTestApiConnection}>Test</button>
           </div>
-        <button
-          onClick={toggleTheme}
-          className="theme-toggle"
-          aria-label="Toggle theme"
-        >
-          {theme === "light" ? "🌙" : "☀️"}
-        </button>
+          <button
+            onClick={toggleTheme}
+            className="theme-toggle"
+            aria-label="Toggle theme"
+          >
+            {theme === "light" ? "🌙" : "☀️"}
+          </button>
         </div>
       </header>
-      <div className="search-container">
-        <button
-          onClick={handleBack}
-          disabled={currentHistoryIndex <= 0}
-          className="history-button"
-          aria-label="Go back"
+      <main className="main-content">
+        <SplitPane
+          split="vertical" // Split screen vertically
+          minSize={300}     // Minimum width for the details pane
+          maxSize={800}     // Maximum width for the details pane (adjust as needed)
+          defaultSize={detailPaneSize} // Use state for initial/saved size
+          onChange={setDetailPaneSize} // Update size in state during drag (optional)
+          onDragFinished={handleDetailPaneResize} // Save final size
+          className="word-explorer-split-pane" // Add class for styling
+          pane1Style={{ overflow: 'hidden' }} // Ensure graph pane doesn't cause scroll issues
+          pane2Style={{ overflow: 'hidden' }} // Ensure details pane doesn't cause scroll issues
+          resizerClassName="resizer-vertical" // Custom class for the dragger
         >
-          ←
-        </button>
-        <button
-          onClick={handleForward}
-          disabled={currentHistoryIndex >= wordHistory.length - 1}
-          className="history-button"
-          aria-label="Go forward"
-        >
-          →
-        </button>
-        <div className="search-input-container">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                console.log("Enter key pressed! Calling handleSearch(). Input value:", inputValue);
-                e.preventDefault();
-                handleSearch();
-              }
-            }}
-            placeholder="Enter a word"
-            className="search-input"
-            aria-label="Search word"
-          />
-          {isLoading && <div className="search-loading">Loading...</div>}
-          {showSuggestions && searchResults.length > 0 && (
-            <ul className="search-suggestions">
-              {searchResults.map((result) => (
-                <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
-                  {result.word}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <button
-          onClick={() => handleSearch()}
-          disabled={isLoading}
-          className="search-button"
-        >
-          Search
-        </button>
-      </div>
-      {error && (
-        <div className="error-message">
-          <p>{error}</p>
-          {error.includes('Circuit breaker') && (
-            <button onClick={handleResetCircuitBreaker} className="reset-button">
-              Reset Connection
-            </button>
-          )}
-          {error.includes('API connection') && (
-            <div className="error-actions">
-              <button onClick={handleResetCircuitBreaker} className="reset-button">
-                Reset Connection
-              </button>
-              <button 
-                onClick={handleTestApiConnection} 
-                className="retry-button"
-              >
-                Test API Connection
-              </button>
-            </div>
-          )}
-          {error.includes('backend server') && (
-            <div className="error-actions">
-              <div className="backend-instructions">
-                <p><strong>To start the backend server:</strong></p>
-                <ol>
-                  <li>Open a new terminal/command prompt</li>
-                  <li>Navigate to the project directory</li>
-                  <li>Run: <code>cd backend</code></li>
-                  <li>Run: <code>python serve.py</code></li>
-                </ol>
-              </div>
-              <button 
-                onClick={handleTestApiConnection} 
-                className="retry-button"
-              >
-                Test API Connection
-              </button>
-            </div>
-          )}
-          {error.includes('Network error') && (
-            <div className="error-actions">
-              <button onClick={handleResetCircuitBreaker} className="reset-button">
-                Reset Connection
-              </button>
-              <button 
-                onClick={async () => {
-                  const isConnected = await testApiConnection();
-                  setApiConnected(isConnected);
-                  if (isConnected && inputValue) {
-                    handleSearch(inputValue);
+          <div className="graph-container" style={{ height: '100%', width: '100%' }}>
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Enter a Filipino word..."
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    console.log("Enter key pressed! Calling handleSearch(). Input value:", inputValue);
+                    e.preventDefault();
+                    handleSearch();
                   }
-                }} 
-                className="retry-button"
-              >
-                Test Connection & Retry
+                }}
+                aria-label="Search Word Input"
+              />
+              <button onClick={() => handleSearch()} disabled={isLoading}>Search</button>
+              <button onClick={handleRandomWord} disabled={isLoading}>Random</button>
+              <button onClick={handleBack} disabled={currentHistoryIndex <= 0 || isLoading}>Back</button>
+              <button onClick={handleForward} disabled={currentHistoryIndex >= wordHistory.length - 1 || isLoading}>Forward</button>
+              {showSuggestions && searchResults.length > 0 && (
+                <ul className="suggestions-list">
+                  {searchResults.map((result) => (
+                    <li key={result.id} onClick={() => handleSuggestionClick(result.word)}>
+                      {result.word}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            
+            <div className="controls">
+              <label>Depth: <input type="number" value={depth} onChange={(e) => setDepth(parseInt(e.target.value, 10))} min="1" max="5" /></label>
+              <label>Breadth: <input type="number" value={breadth} onChange={(e) => setBreadth(parseInt(e.target.value, 10))} min="1" max="20" /></label>
+              <button onClick={() => setShowMetadata(prev => !prev)} title="Toggle Metadata Display">
+                {showMetadata ? 'Hide Metadata' : 'Show Metadata'}
               </button>
             </div>
-          )}
-        </div>
-      )}
-      <main>
-        <div className="graph-container">
-          <div className="graph-content">
-            {isLoading && <div className="loading">Loading Network...</div>}
+
+            {isLoading && <div className="loading-indicator">Loading Graph...</div>}
             {!isLoading && wordNetwork && (
-              <WordGraph
-                wordNetwork={wordNetwork}
-                mainWord={mainWord}
+              <WordGraph 
+                wordNetwork={wordNetwork} 
+                mainWord={mainWord} 
                 onNodeClick={handleNodeClick}
-                onNetworkChange={handleNetworkChange}
-                initialDepth={depth}
-                initialBreadth={breadth}
+                showMetadata={showMetadata}
               />
             )}
             {!isLoading && !wordNetwork && !error && (
-                <div className="empty-graph">Enter a word to explore its network.</div>
+              <div className="graph-placeholder">Enter a word to visualize its network.</div>
+            )}
+            {error && !isLoading && (
+              <div className="error-message">Error loading graph: {error}</div> 
             )}
           </div>
-        </div>
-        <div ref={detailsContainerRef} className="details-container">
-          {isLoading && <div className="loading-spinner">Loading Details...</div>} 
-          {!isLoading && selectedWordInfo && (
-            <WordDetails 
-              wordInfo={selectedWordInfo} 
-              etymologyTree={etymologyTree}
-              isLoadingEtymology={isLoadingEtymology}
-              etymologyError={etymologyError}
-              onWordLinkClick={handleWordLinkClick}
-              onEtymologyNodeClick={handleNodeClick}
-            />
-          )}
-          {!isLoading && !selectedWordInfo && (
-                <div className="no-word-selected">Select a word or search to see details.</div>
+
+          <div className="details-container" style={{ height: '100%', width: '100%' }}> 
+            {isLoading && <div className="loading-spinner">Loading Details...</div>}
+            {!isLoading && selectedWordInfo && (
+              <WordDetails
+                wordInfo={selectedWordInfo}
+                etymologyTree={etymologyTree}
+                isLoadingEtymology={isLoadingEtymology}
+                etymologyError={etymologyError}
+                onWordLinkClick={handleWordLinkClick}
+                onEtymologyNodeClick={handleNodeClick}
+              />
             )}
-             {/* Display general error messages */}
-            {error && <div className="error-message">Error: {error}</div>}
-        </div>
+            {!isLoading && !selectedWordInfo && (
+              <div className="no-word-selected">Select a word or search to see details.</div>
+            )}
+            {error && <div className="error-message">Error: {error}</div>} 
+          </div>
+        </SplitPane> 
       </main>
       <footer className="footer">
         © {new Date().getFullYear()} Filipino Root Word Explorer. All Rights

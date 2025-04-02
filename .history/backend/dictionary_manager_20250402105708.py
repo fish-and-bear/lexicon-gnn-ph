@@ -277,86 +277,6 @@ def with_db_transaction(func):
                 return func(cursor, *args, **kwargs)
     return wrapper
 
-def standardize_source_identifier(source_identifier: str) -> str:
-    """
-    Standardize a source identifier string.
-    
-    Args:
-        source_identifier: Raw source identifier (typically a filename)
-        
-    Returns:
-        Standardized source name
-    """
-    if not source_identifier:
-        return "unknown"
-        
-    # Use existing SourceStandardization class with fallback
-    standardized = SourceStandardization.standardize_sources(source_identifier)
-    
-    # If the standardization failed (returns None or empty string), use the original
-    if not standardized:
-        return source_identifier
-        
-    return standardized
-
-# Define constants for reusable values
-DEFAULT_LANGUAGE_CODE = "tl"
-SOURCE_INFO_FILES_KEY = "files"
-
-def update_word_source_info(current_source_info: Optional[Union[str, dict]], new_source_identifier: Optional[str]) -> str:
-    """
-    Updates the source_info JSON for a word entry, adding a new source identifier
-    to a list under the 'files' key if it's not already present.
-    
-    Args:
-        current_source_info: The current source_info from the words table.
-        new_source_identifier: The identifier (e.g., filename) to add.
-        
-    Returns:
-        A JSON string representation of the updated source_info.
-    """
-    # Better handling for empty or None new_source_identifier
-    if not new_source_identifier:
-        if isinstance(current_source_info, dict):
-            return json.dumps(current_source_info)
-        elif isinstance(current_source_info, str):
-            return current_source_info
-        else:
-            return '{}'
-    
-    # Parse current_source_info into a dictionary    
-    source_info_dict = {}
-    if isinstance(current_source_info, dict):
-        source_info_dict = current_source_info.copy()  # Use copy to avoid modifying the original
-    elif isinstance(current_source_info, str) and current_source_info:
-        try:
-            source_info_dict = json.loads(current_source_info)
-            if not isinstance(source_info_dict, dict):
-                source_info_dict = {}  # Reset if not a dictionary
-        except (json.JSONDecodeError, TypeError):
-            # Start fresh if invalid JSON
-            source_info_dict = {}
-    
-    # Ensure 'files' key exists and is a list
-    if SOURCE_INFO_FILES_KEY not in source_info_dict or not isinstance(source_info_dict[SOURCE_INFO_FILES_KEY], list):
-        source_info_dict[SOURCE_INFO_FILES_KEY] = []
-    
-    # Standardize the source identifier before adding
-    standardized_source = SourceStandardization.standardize_sources(new_source_identifier)
-    
-    # Add new source identifier if not already present
-    if standardized_source not in source_info_dict[SOURCE_INFO_FILES_KEY]:
-        source_info_dict[SOURCE_INFO_FILES_KEY].append(standardized_source)
-        source_info_dict[SOURCE_INFO_FILES_KEY].sort()  # Keep list sorted
-    
-    # Add metadata about when and how this source was added
-    if 'last_updated' not in source_info_dict:
-        source_info_dict['last_updated'] = {}
-        
-    source_info_dict['last_updated'][standardized_source] = datetime.now().isoformat()
-    
-    # Return JSON string
-    return json.dumps(source_info_dict)
 # -------------------------------------------------------------------
 # Setup Logging
 # -------------------------------------------------------------------
@@ -551,190 +471,6 @@ def with_transaction(commit=True):
                         
         return wrapper
     return decorator
-
-
-@with_transaction(commit=True)
-def fix_inconsistent_sources(cur) -> Dict:
-    """
-    Fix inconsistent source information across the database.
-    
-    Args:
-        cur: Database cursor
-        
-    Returns:
-        Statistics about the fixes
-    """
-    stats = {
-        'words_updated': 0,
-        'definitions_updated': 0,
-        'relations_updated': 0,
-        'etymologies_updated': 0
-    }
-    
-    try:
-        # Standardize sources in words table
-        cur.execute("""
-            WITH source_standardization AS (
-                SELECT id, 
-                       CASE
-                           WHEN source_info::text ILIKE '%kaikki-ceb.jsonl%' THEN 'kaikki.org (Cebuano)'
-                           WHEN source_info::text ILIKE '%kaikki.jsonl%' THEN 'kaikki.org (Tagalog)'
-                           WHEN source_info::text ILIKE '%kwf_dictionary.json%' THEN 'KWF Diksiyonaryo ng Wikang Filipino'
-                           WHEN source_info::text ILIKE '%root_words_with_associated_words_cleaned.json%' THEN 'tagalog.com'
-                           WHEN source_info::text ILIKE '%tagalog-words.json%' THEN 'diksiyonaryo.ph'
-                           WHEN source_info::text ILIKE '%marayum%' THEN 'Project Marayum'
-                           ELSE source_info::text
-                       END as standardized_source
-                FROM words
-                WHERE source_info IS NOT NULL
-            )
-            UPDATE words w
-            SET source_info = jsonb_build_object('files', jsonb_build_array(ss.standardized_source))
-            FROM source_standardization ss
-            WHERE w.id = ss.id
-            AND (source_info IS NULL OR source_info = '{}'::jsonb)
-        """)
-        stats['words_updated'] = cur.rowcount
-        
-        # Similar updates for other tables...
-        
-        return stats
-    except Exception as e:
-        logger.error(f"Error fixing inconsistent sources: {e}")
-        raise
-    
-@with_transaction(commit=False)
-def get_word_sources(cur, word_id: int) -> Dict:
-    """
-    Get comprehensive source information for a word.
-    
-    Args:
-        cur: Database cursor
-        word_id: ID of the word
-        
-    Returns:
-        Dictionary with source information
-    """
-    result = {
-        'word': None,
-        'direct_sources': [],
-        'definition_sources': [],
-        'relation_sources': [],
-        'etymology_sources': []
-    }
-    
-    try:
-        # Get word info
-        cur.execute("""
-            SELECT lemma, source_info 
-            FROM words 
-            WHERE id = %s
-        """, (word_id,))
-        word_row = cur.fetchone()
-        
-        if not word_row:
-            return result
-            
-        result['word'] = word_row[0]
-        
-        # Extract direct sources
-        if word_row[1]:
-            try:
-                source_info = json.loads(word_row[1]) if isinstance(word_row[1], str) else word_row[1]
-                if isinstance(source_info, dict) and SOURCE_INFO_FILES_KEY in source_info:
-                    result['direct_sources'] = source_info[SOURCE_INFO_FILES_KEY]
-            except (json.JSONDecodeError, TypeError):
-                pass
-                
-        # Get definition sources
-        cur.execute("""
-            SELECT DISTINCT sources 
-            FROM definitions 
-            WHERE word_id = %s AND sources IS NOT NULL
-        """, (word_id,))
-        for row in cur.fetchall():
-            if row[0] and row[0] not in result['definition_sources']:
-                result['definition_sources'].append(row[0])
-                
-        # Get relation sources
-        cur.execute("""
-            SELECT DISTINCT sources 
-            FROM relations 
-            WHERE (from_word_id = %s OR to_word_id = %s) AND sources IS NOT NULL
-        """, (word_id, word_id))
-        for row in cur.fetchall():
-            if row[0] and row[0] not in result['relation_sources']:
-                result['relation_sources'].append(row[0])
-                
-        # Get etymology sources
-        cur.execute("""
-            SELECT DISTINCT sources 
-            FROM etymologies 
-            WHERE word_id = %s AND sources IS NOT NULL
-        """, (word_id,))
-        for row in cur.fetchall():
-            if row[0] and row[0] not in result['etymology_sources']:
-                result['etymology_sources'].append(row[0])
-                
-        return result
-    except Exception as e:
-        logger.error(f"Error getting sources for word ID {word_id}: {e}")
-        return result
-
-@with_transaction(commit=True)
-def propagate_source_info(cur, word_id: int, source_identifier: str) -> bool:
-    """
-    Propagate source information to related records.
-    
-    Args:
-        cur: Database cursor
-        word_id: ID of the word
-        source_identifier: Source identifier to propagate
-        
-    Returns:
-        True if successful, False otherwise
-    """
-    try:
-        standardized_source = standardize_source_identifier(source_identifier)
-        
-        # Update related definitions
-        cur.execute("""
-            UPDATE definitions
-            SET sources = CASE
-                WHEN sources IS NULL OR sources = '' THEN %s
-                WHEN sources NOT LIKE %s THEN sources || ', ' || %s
-                ELSE sources
-            END
-            WHERE word_id = %s
-        """, (standardized_source, f'%{standardized_source}%', standardized_source, word_id))
-        
-        # Update related etymologies
-        cur.execute("""
-            UPDATE etymologies
-            SET sources = CASE
-                WHEN sources IS NULL OR sources = '' THEN %s
-                WHEN sources NOT LIKE %s THEN sources || ', ' || %s
-                ELSE sources
-            END
-            WHERE word_id = %s
-        """, (standardized_source, f'%{standardized_source}%', standardized_source, word_id))
-        
-        # Update related relations
-        cur.execute("""
-            UPDATE relations
-            SET sources = CASE
-                WHEN sources IS NULL OR sources = '' THEN %s
-                WHEN sources NOT LIKE %s THEN sources || ', ' || %s
-                ELSE sources
-            END
-            WHERE from_word_id = %s OR to_word_id = %s
-        """, (standardized_source, f'%{standardized_source}%', standardized_source, word_id, word_id))
-        
-        return True
-    except Exception as e:
-        logger.error(f"Error propagating source info for word ID {word_id}: {e}")
-        return False
-
 # -------------------------------------------------------------------
 # Database Schema Creation / Update
 # -------------------------------------------------------------------
@@ -1108,182 +844,103 @@ def create_or_update_tables(conn):
     finally:
         cur.close()
         
-@with_transaction(commit=True)
-def insert_pronunciation(cur, word_id: int, pronunciation_data: Union[str, Dict],
-                         source_identifier: str) -> Optional[int]:
-    """
-    Insert pronunciation data for a word. Handles string or dictionary input.
-    Uses ON CONFLICT to update existing pronunciations based on (word_id, type, value),
-    applying a 'last write wins' strategy for the 'sources' field.
-
-    Args:
-        cur: Database cursor.
-        word_id: ID of the word.
-        pronunciation_data: Pronunciation string (assumed IPA) or dictionary
-                           (e.g., {'type': 'ipa', 'value': '...', 'tags': [...]}).
-        source_identifier: Identifier for the data source (e.g., filename). MANDATORY.
-
-    Returns:
-        The ID of the inserted/updated pronunciation record, or None if failed.
-    """
-    if not source_identifier:
-        logger.error(f"CRITICAL: Skipping pronunciation insert for word ID {word_id}: Missing MANDATORY source identifier.")
-        return None
-
-    pron_type = 'ipa' # Default type
-    value = None
-    tags_list = []
-    metadata = {}
-
+@with_transaction(commit=False)
+def insert_pronunciation(cur, word_id: int, pronunciation_data: Union[str, Dict], sources: str = "") -> Optional[int]:
+    """Insert pronunciation data for a word."""
     try:
-        # Parse input data
-        if isinstance(pronunciation_data, dict):
-            # Prioritize keys from the dict, but allow source_identifier argument to override 'sources' key if present
-            pron_type = pronunciation_data.get('type', 'ipa') or 'ipa' # Default to 'ipa' if empty
-            value = pronunciation_data.get('value', '').strip() if isinstance(pronunciation_data.get('value'), str) else None
-            tags_input = pronunciation_data.get('tags')
-            if isinstance(tags_input, list):
-                 tags_list = tags_input
-            elif isinstance(tags_input, str):
-                 # Simple split if tags are a comma-separated string? Adapt as needed.
-                 tags_list = [tag.strip() for tag in tags_input.split(',') if tag.strip()]
-                 logger.debug(f"Parsed tags string '{tags_input}' into list for word ID {word_id}.")
-            # else: ignore invalid tags format
-
-            metadata_input = pronunciation_data.get('metadata')
-            if isinstance(metadata_input, dict):
-                metadata = metadata_input
-            # else: ignore invalid metadata format
-
-        elif isinstance(pronunciation_data, str):
-            value = pronunciation_data.strip()
-            # Assumed type is 'ipa' and no tags/metadata provided via string input
-        else:
-             logger.warning(f"Invalid pronunciation_data type for word ID {word_id} (source '{source_identifier}'): {type(pronunciation_data)}. Skipping.")
-             return None
-
-        if not value:
-            logger.warning(f"Empty pronunciation value for word ID {word_id} (source '{source_identifier}'). Skipping.")
+        # Validate word exists
+        cur.execute("SELECT 1 FROM words WHERE id = %s", (word_id,))
+        if not cur.fetchone():
+            logger.error(f"Cannot insert pronunciation: word ID {word_id} does not exist")
             return None
 
-        # Safely dump JSON fields (tags and metadata) for DB insertion (assuming JSONB columns)
-        tags_json = None
-        try:
-            tags_json = json.dumps(tags_list) # tags_list will be [] if not provided or invalid format
-        except TypeError as e:
-            logger.warning(f"Could not serialize tags for pronunciation (word ID {word_id}, source '{source_identifier}'): {e}. Tags: {tags_list}")
-            tags_json = '[]' # Fallback to empty JSON array string
+        # Handle different pronunciation data formats
+        if isinstance(pronunciation_data, dict):
+            pron_type = pronunciation_data.get('type', 'ipa')
+            value = pronunciation_data.get('value', '')
+            tags = pronunciation_data.get('tags', [])
+            metadata = pronunciation_data.get('metadata', {})
+            sources = pronunciation_data.get('sources', sources)
+        else:
+            pron_type = 'ipa'
+            value = str(pronunciation_data).strip()
+            tags = []
+            metadata = {}
 
-        metadata_json = None
-        try:
-            metadata_json = json.dumps(metadata) # metadata will be {} if not provided or invalid format
-        except TypeError as e:
-            logger.warning(f"Could not serialize metadata for pronunciation (word ID {word_id}, source '{source_identifier}'): {e}. Metadata: {metadata}")
-            metadata_json = '{}' # Fallback to empty JSON object string
+        # Validate data
+        if not value:
+            logger.warning(f"Empty pronunciation value for word ID {word_id}")
+            return None
 
-        # Prepare parameters for query
-        params = {
-            'word_id': word_id,
-            'type': pron_type,
-            'value': value,
-            'tags': tags_json,
-            'metadata': metadata_json,
-            'sources': source_identifier # Use mandatory source_identifier directly
-        }
-
-        # Insert or update pronunciation
+        # Insert or update
         cur.execute("""
             INSERT INTO pronunciations (word_id, type, value, tags, metadata, sources)
-            VALUES (%(word_id)s, %(type)s, %(value)s, %(tags)s::jsonb, %(metadata)s::jsonb, %(sources)s) -- Cast JSONs
-            ON CONFLICT (word_id, type, value) -- Conflict on word, type, and exact value
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT (word_id, type, value) 
             DO UPDATE SET
-                -- Update tags/metadata only if new value is not NULL (or empty JSON?) - COALESCE prefers new non-null
                 tags = COALESCE(EXCLUDED.tags, pronunciations.tags),
                 metadata = COALESCE(EXCLUDED.metadata, pronunciations.metadata),
-                -- Overwrite sources: Last write wins for this pronunciation record
-                sources = EXCLUDED.sources,
+                sources = CASE 
+                    WHEN pronunciations.sources IS NULL THEN EXCLUDED.sources
+                    WHEN EXCLUDED.sources IS NULL THEN pronunciations.sources
+                    ELSE pronunciations.sources || ', ' || EXCLUDED.sources
+                END,
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id
-        """, params)
-        pron_id = cur.fetchone()[0]
-        logger.debug(f"Inserted/Updated pronunciation (ID: {pron_id}, Type: {pron_type}) for word ID {word_id} from source '{source_identifier}'. Value: '{value}'")
-        return pron_id
-
-    except psycopg2.Error as e:
-        logger.error(f"Database error inserting pronunciation for word ID {word_id} from '{source_identifier}': {e.pgcode} {e.pgerror}", exc_info=True)
-        return None
+        """, (
+            word_id,
+            pron_type,
+            value,
+            json.dumps(tags) if tags else None,
+            json.dumps(metadata) if metadata else None,
+            sources
+        ))
+        return cur.fetchone()[0]
     except Exception as e:
-        logger.error(f"Unexpected error inserting pronunciation for word ID {word_id} from '{source_identifier}': {e}", exc_info=True)
-        return None
+        logger.error(f"Error inserting pronunciation for word ID {word_id}: {str(e)}")
+        raise
 
-
-@with_transaction(commit=True)
-def insert_credit(cur, word_id: int, credit_data: Union[str, Dict],
-                  source_identifier: str) -> Optional[int]:
-    """
-    Insert credit data for a word. Handles string or dictionary input.
-    Uses ON CONFLICT to update existing credits based on (word_id, credit),
-    applying a 'last write wins' strategy for the 'sources' field.
-
-    Args:
-        cur: Database cursor.
-        word_id: ID of the word.
-        credit_data: Credit string or dictionary (e.g., {'text': 'Source Name'}).
-                     If dict, the 'text' key is used.
-        source_identifier: Identifier for the data source (e.g., filename). MANDATORY.
-
-    Returns:
-        The ID of the inserted/updated credit record, or None if failed.
-    """
-    if not source_identifier:
-        logger.error(f"CRITICAL: Skipping credit insert for word ID {word_id}: Missing MANDATORY source identifier.")
-        return None
-
-    credit_text = None
+@with_transaction(commit=False)
+def insert_credit(cur, word_id: int, credit_data: Union[str, Dict], sources: str = "") -> Optional[int]:
+    """Insert credit data for a word."""
     try:
-        # Extract credit text
+        # Validate word exists
+        cur.execute("SELECT 1 FROM words WHERE id = %s", (word_id,))
+        if not cur.fetchone():
+            logger.error(f"Cannot insert credit: word ID {word_id} does not exist")
+            return None
+
+        # Handle different credit data formats
         if isinstance(credit_data, dict):
-            # Prioritize 'text' key if dict is provided
-            credit_text = credit_data.get('text', '').strip() if isinstance(credit_data.get('text'), str) else None
-        elif isinstance(credit_data, str):
-            credit_text = credit_data.strip()
+            credit_text = credit_data.get('text', '').strip()
+            credit_sources = credit_data.get('sources', sources)
         else:
-            logger.warning(f"Invalid credit_data type for word ID {word_id} (source '{source_identifier}'): {type(credit_data)}. Skipping.")
-            return None
+            credit_text = str(credit_data).strip()
+            credit_sources = sources
 
+        # Validate credit data
         if not credit_text:
-            logger.warning(f"Empty credit text for word ID {word_id} (source '{source_identifier}'). Skipping.")
+            logger.warning(f"Empty credit text for word ID {word_id}")
             return None
 
-        # Prepare parameters
-        params = {
-            'word_id': word_id,
-            'credit': credit_text,
-            'sources': source_identifier # Use mandatory source_identifier directly
-        }
-
-        # Insert or update credit
+        # Insert or update
         cur.execute("""
             INSERT INTO credits (word_id, credit, sources)
-            VALUES (%(word_id)s, %(credit)s, %(sources)s)
-            ON CONFLICT (word_id, credit) -- Conflict on word and exact credit text
+            VALUES (%s, %s, %s)
+            ON CONFLICT (word_id, credit)
             DO UPDATE SET
-                -- Overwrite sources: Last write wins for this credit record
-                sources = EXCLUDED.sources,
+                sources = CASE 
+                    WHEN credits.sources IS NULL THEN EXCLUDED.sources
+                    WHEN EXCLUDED.sources IS NULL THEN credits.sources
+                    ELSE credits.sources || ', ' || EXCLUDED.sources
+                END,
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id
-        """, params)
-        credit_id = cur.fetchone()[0]
-        logger.debug(f"Inserted/Updated credit (ID: {credit_id}) for word ID {word_id} from source '{source_identifier}'. Credit: '{credit_text}'")
-        return credit_id
-
-    except psycopg2.Error as e:
-        logger.error(f"Database error inserting credit for word ID {word_id} from '{source_identifier}': {e.pgcode} {e.pgerror}", exc_info=True)
-        return None
+        """, (word_id, credit_text, credit_sources))
+        return cur.fetchone()[0]
     except Exception as e:
-        logger.error(f"Unexpected error inserting credit for word ID {word_id} from '{source_identifier}': {e}", exc_info=True)
-        return None
-
+        logger.error(f"Error inserting credit for word ID {word_id}: {str(e)}")
+        raise
 
 @with_transaction(commit=False)
 def process_entry(cur, entry: Dict, filename=None, check_exists=False) -> Optional[int]:
@@ -2850,7 +2507,7 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = DEFAULT_LANGUAGE
     """
     Get the ID of a word, creating it if necessary.
     Updates the word's source_info JSONB field with the provided identifier.
-    
+
     Args:
         cur: Database cursor.
         lemma: The word lemma.
@@ -2858,7 +2515,7 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = DEFAULT_LANGUAGE
         source_identifier: Identifier for the data source (e.g., filename). Recommended.
         check_exists: If True, check existence before attempting insert (less efficient).
         **kwargs: Additional word attributes (e.g., has_baybayin, baybayin_form, root_word_id).
-        
+
     Returns:
         The word ID.
 
@@ -2868,7 +2525,7 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = DEFAULT_LANGUAGE
     """
     if not lemma:
         raise ValueError("Lemma cannot be empty")
-        
+
     normalized = normalize_lemma(lemma)
     word_id = None
 
@@ -2890,18 +2547,6 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = DEFAULT_LANGUAGE
         logger.warning(f"Word '{lemma}' ({language_code}, source: {source_identifier}) marked as has_baybayin but no form provided. Setting has_baybayin to False.")
         has_baybayin = False # Correct the inconsistency
 
-    # Standardize source identifier if provided
-    standardized_source = None
-    if source_identifier:
-        try:
-            standardized_source = SourceStandardization.standardize_sources(source_identifier)
-            if not standardized_source:
-                standardized_source = source_identifier  # Fallback to original if standardization fails
-                logger.debug(f"Source standardization failed for '{source_identifier}', using original")
-        except Exception as e:
-            logger.warning(f"Error standardizing source '{source_identifier}': {e}")
-            standardized_source = source_identifier  # Use original on error
-
     try:
          # Check if word exists and get its current ID and source_info
          cur.execute("""
@@ -2914,79 +2559,50 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = DEFAULT_LANGUAGE
              word_id = existing_word[0]
              current_source_info = existing_word[1] # Fetched as dict/list/etc. from JSONB
 
-             # Only update source info if a source identifier was provided
-             if standardized_source:
-                 # Update existing word's source info using the helper
-                 updated_source_json = update_word_source_info(current_source_info, standardized_source)
+             # Update existing word's source info using the helper
+             updated_source_json = update_word_source_info(current_source_info, source_identifier)
 
-                 # Parse the updated JSON string back to compare with the original dict/list
-                 updated_source_dict = {}
-                 try:
-                     updated_source_dict = json.loads(updated_source_json)
-                 except (json.JSONDecodeError, TypeError):
-                     logger.error(f"Failed to parse updated source JSON for word ID {word_id}: '{updated_source_json}'")
-                     # Decide how to handle - maybe skip update? For now, assume it might need update if parsing fails.
-                     pass # Let the update proceed cautiously
+             # Parse the updated JSON string back to compare with the original dict/list
+             updated_source_dict = {}
+             try:
+                 updated_source_dict = json.loads(updated_source_json)
+             except (json.JSONDecodeError, TypeError):
+                 logger.error(f"Failed to parse updated source JSON for word ID {word_id}: '{updated_source_json}'")
+                 # Decide how to handle - maybe skip update? For now, assume it might need update if parsing fails.
+                 pass # Let the update proceed cautiously
 
-                 # Only update if the source_info content has actually changed
-                 if updated_source_dict != (current_source_info or {}):
-                     cur.execute("""
-                         UPDATE words SET source_info = %s, updated_at = CURRENT_TIMESTAMP
-                         WHERE id = %s
-                     """, (updated_source_json, word_id))
-                     logger.debug(f"Word '{lemma}' ({language_code}) found (ID: {word_id}). Updated source_info from source '{standardized_source}'.")
-                     
-                     # Consider propagating the source to related records
-                     try:
-                         # Update definitions with this source if they exist
-                         cur.execute("""
-                             UPDATE definitions
-                             SET sources = CASE
-                                 WHEN sources IS NULL OR sources = '' THEN %s
-                                 WHEN position(%s IN sources) = 0 THEN sources || ', ' || %s
-                                 ELSE sources
-                             END
-                             WHERE word_id = %s
-                         """, (standardized_source, standardized_source, standardized_source, word_id))
-                         
-                         # Similar updates could be made for etymologies, relations, etc.
-                     except Exception as prop_e:
-                         logger.warning(f"Error propagating source '{standardized_source}' to related records for word ID {word_id}: {prop_e}")
-                 else:
-                     logger.debug(f"Word '{lemma}' ({language_code}) found (ID: {word_id}). Source_info already includes '{standardized_source}' or no update needed.")
+             # Only update if the source_info content has actually changed
+             if updated_source_dict != (current_source_info or {}):
+                 cur.execute("""
+                     UPDATE words SET source_info = %s, updated_at = CURRENT_TIMESTAMP
+                     WHERE id = %s
+                 """, (updated_source_json, word_id))
+                 logger.debug(f"Word '{lemma}' ({language_code}) found (ID: {word_id}). Updated source_info from source '{source_identifier}'.")
+             else:
+                 logger.debug(f"Word '{lemma}' ({language_code}) found (ID: {word_id}). Source_info already includes '{source_identifier}' or no update needed.")
 
-             # Consider updating other fields from kwargs when appropriate
-             # For now, just report we found the word
-             if not standardized_source:
-                 logger.debug(f"Word '{lemma}' ({language_code}) found (ID: {word_id}). No source provided for update.")
+             # Add logic here if other fields (e.g., baybayin_form, tags) should be updated
+             # based on the new source, potentially requiring merge strategies.
+             # For now, we prioritize getting/creating the ID and updating source_info.
 
          else:
              # Word doesn't exist, insert it
-             logger.debug(f"Word '{lemma}' ({language_code}) not found. Creating new entry from source '{standardized_source}'.")
-             initial_source_json = update_word_source_info(None, standardized_source)
-
-             # Calculate a data hash for consistency checking (optional enhancement)
-             data_hash = None
-             try:
-                 hash_input = f"{lemma}|{language_code}|{baybayin_form}|{romanized_form}|{tags}"
-                 data_hash = hashlib.md5(hash_input.encode('utf-8')).hexdigest()
-             except Exception as hash_e:
-                 logger.debug(f"Error generating data hash for '{lemma}': {hash_e}")
+             logger.debug(f"Word '{lemma}' ({language_code}) not found. Creating new entry from source '{source_identifier}'.")
+             initial_source_json = update_word_source_info(None, source_identifier)
 
              cur.execute("""
                  INSERT INTO words (
                      lemma, normalized_lemma, language_code,
                      has_baybayin, baybayin_form, romanized_form, root_word_id,
                      preferred_spelling, tags, source_info,
-                     idioms, pronunciation_data, word_metadata,
-                     data_hash, search_text
+                     idioms, pronunciation_data, word_metadata
+                     -- Add other fields from kwargs as necessary in schema
                  )
                  VALUES (
                      %(lemma)s, %(normalized)s, %(language_code)s,
                      %(has_baybayin)s, %(baybayin_form)s, %(romanized_form)s, %(root_word_id)s,
                      %(preferred_spelling)s, %(tags)s, %(source_info)s,
-                     %(idioms)s, %(pronunciation_data)s, %(word_metadata)s,
-                     %(data_hash)s, to_tsvector('simple', %(lemma)s || ' ' || %(normalized)s)
+                     %(idioms)s, %(pronunciation_data)s, %(word_metadata)s
                  )
                  RETURNING id
              """, {
@@ -2996,11 +2612,10 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = DEFAULT_LANGUAGE
                  'source_info': initial_source_json, # Directly use the JSON string
                  'idioms': idioms_json, # Assumed to be valid JSON string or None
                  'pronunciation_data': pronunciation_data_json, # Assumed to be valid JSON string or None
-                 'word_metadata': word_metadata_json, # Assumed to be valid JSON string or None
-                 'data_hash': data_hash # Add data hash for consistency checking
+                 'word_metadata': word_metadata_json # Assumed to be valid JSON string or None
              })
              word_id = cur.fetchone()[0]
-             logger.info(f"Word '{lemma}' ({language_code}) created (ID: {word_id}) from source '{standardized_source}'.")
+             logger.info(f"Word '{lemma}' ({language_code}) created (ID: {word_id}) from source '{source_identifier}'.")
 
     except psycopg2.Error as e:
          logger.error(f"Database error in get_or_create_word_id for '{lemma}' ({language_code}) from source '{source_identifier}': {e.pgcode} {e.pgerror}", exc_info=True)
@@ -3015,6 +2630,7 @@ def get_or_create_word_id(cur, lemma: str, language_code: str = DEFAULT_LANGUAGE
 
     return word_id
 
+
 @with_transaction(commit=True)
 def insert_definition(cur, word_id: int, definition_text: str,
                       source_identifier: str, # MANDATORY
@@ -3025,7 +2641,7 @@ def insert_definition(cur, word_id: int, definition_text: str,
     Insert definition data for a word. Uses ON CONFLICT to update existing definitions
     based on (word_id, definition_text, standardized_pos_id), applying a 'last write wins'
     strategy for the 'sources' field for the specific definition record.
-    
+
     Args:
         cur: Database cursor.
         word_id: The ID of the word this definition belongs to.
@@ -3035,7 +2651,7 @@ def insert_definition(cur, word_id: int, definition_text: str,
         examples: Usage examples (string).
         usage_notes: Notes on usage (string).
         tags: Tags associated with the definition (string).
-        
+
     Returns:
         The ID of the inserted/updated definition, or None if failed.
     """
@@ -3105,107 +2721,129 @@ def insert_definition(cur, word_id: int, definition_text: str,
         logger.error(f"Unexpected error inserting definition for word ID {word_id} from '{source_identifier}': {e}", exc_info=True)
         return None
 
+
+
 @with_transaction(commit=True)
 def insert_relation(
     cur, 
     from_word_id: int, 
     to_word_id: int, 
     relation_type: Union[RelationshipType, str], 
-    source_identifier: str, # MANDATORY
+    sources: str = "", 
     metadata: Optional[Dict] = None
 ) -> Optional[int]:
     """
-    Insert a relationship between two words. Uses ON CONFLICT to update existing relations
-    based on (from_word_id, to_word_id, relation_type), applying a 'last write wins'
-    strategy for the 'sources' field for the specific relation record.
+    Insert a relationship between two words into the 'relations' table.
+    
+    This function assumes that the schema uses a single 'relations' table.
+    It also uses a single transaction decorator to ensure proper commit/rollback.
     
     Args:
         cur: Database cursor.
-        from_word_id: ID of the source word.
-        to_word_id: ID of the target word.
-        relation_type: The type of relationship (RelationshipType enum or string).
-        source_identifier: Identifier for the data source (e.g., filename). MANDATORY.
-        metadata: Optional JSON metadata for the relationship (will be stored as JSONB).
+        from_word_id (int): ID of the source word.
+        to_word_id (int): ID of the target word.
+        relation_type (Union[RelationshipType, str]): The relationship type. 
+            If a string is provided, it will be normalized via RelationshipType.from_string.
+        sources (str): A string identifying the source(s) of this relationship.
+        metadata (Optional[Dict]): Additional metadata as a Python dict.
         
     Returns:
-        The ID of the inserted/updated relation, or None if failed.
+        Optional[int]: The ID of the inserted or updated relation, or None if skipped.
     """
+    # Avoid self-relationships
     if from_word_id == to_word_id:
-        logger.warning(f"Skipping self-relation for word ID {from_word_id}, type '{relation_type}', source '{source_identifier}'.")
+        logger.warning(f"Skipping self-relationship for word ID {from_word_id}")
         return None
-    if not source_identifier:
-         logger.error(f"CRITICAL: Skipping relation insert from {from_word_id} to {to_word_id}: Missing MANDATORY source identifier.")
-         return None # Corrected indentation
+        
+    # Verify both words exist
+    cur.execute("""
+        SELECT EXISTS(SELECT 1 FROM words WHERE id = %s),
+               EXISTS(SELECT 1 FROM words WHERE id = %s)
+    """, (from_word_id, to_word_id))
+    
+    from_exists, to_exists = cur.fetchone()
+    
+    if not from_exists or not to_exists:
+        logger.warning(f"Cannot create relation: {'From' if not from_exists else 'To'} word does not exist")
+        return None
 
-    rel_type_enum = None
-    rel_type_str = None
-    try:
-        # Standardize relation type
-        if isinstance(relation_type, RelationshipType):
-            rel_type_enum = relation_type
-            rel_type_str = rel_type_enum.rel_value
-        elif isinstance(relation_type, str):
-            relation_type_cleaned = relation_type.lower().strip()
-            if not relation_type_cleaned:
-                 logger.warning(f"Skipping relation insert from {from_word_id} to {to_word_id} (source '{source_identifier}'): Empty relation type string provided.")
-                 return None
-            try:
-                # Attempt to map string to enum value
-                rel_type_enum = RelationshipType.from_string(relation_type_cleaned)
-                rel_type_str = rel_type_enum.rel_value
-            except ValueError:
-                # If not a standard enum value, use the cleaned string directly
-                rel_type_str = relation_type_cleaned
-                logger.debug(f"Using non-standard relation type string '{rel_type_str}' from source '{source_identifier}'.")
-        else:
-             logger.warning(f"Skipping relation insert from {from_word_id} to {to_word_id} (source '{source_identifier}'): Invalid relation_type type '{type(relation_type)}'.")
-             return None
+    # Normalize the relationship type
+    if isinstance(relation_type, str):
+        try:
+            relation_type = RelationshipType.from_string(relation_type)
+        except ValueError:
+            logger.warning(f"Unknown relationship type: {relation_type}, defaulting to RELATED")
+            relation_type = RelationshipType.RELATED
 
-        # Dump metadata safely to JSON string for DB insertion (assuming metadata column is JSONB)
-        metadata_json = None
-        if metadata is not None: # Check explicitly for None, allow empty dict {}
-            if isinstance(metadata, dict):
-                try:
-                    metadata_json = json.dumps(metadata)
-                except TypeError as e:
-                    logger.warning(f"Could not serialize metadata for relation {from_word_id}->{to_word_id} (source '{source_identifier}'): {e}. Metadata: {metadata}")
-                    metadata_json = '{}' # Use empty JSON object string as fallback
-            else:
-                logger.warning(f"Metadata provided for relation {from_word_id}->{to_word_id} (source '{source_identifier}') is not a dict: {type(metadata)}. Storing as null.")
-                metadata_json = None # Store null if not a dict
+    rel_value = relation_type.rel_value
 
-        cur.execute("""
-            INSERT INTO relations (from_word_id, to_word_id, relation_type, sources, metadata)
-            VALUES (%(from_id)s, %(to_id)s, %(rel_type)s, %(sources)s, %(metadata)s::jsonb) -- Cast metadata to JSONB
-            ON CONFLICT (from_word_id, to_word_id, relation_type)
-            DO UPDATE SET
-                -- Overwrite sources: Last write wins for this relation record
-                sources = EXCLUDED.sources,
-                -- Update metadata only if the new value is not NULL
-                metadata = COALESCE(EXCLUDED.metadata, relations.metadata),
-                updated_at = CURRENT_TIMESTAMP
+    # Truncate sources if too long
+    max_source_length = 2096
+    if sources and len(sources) > max_source_length:
+        logger.warning(f"Source value too long ({len(sources)} chars), truncating")
+        sources = sources[:max_source_length]
+
+    # Prepare metadata JSON
+    metadata_json = None
+    if metadata:
+        try:
+            metadata_json = json.dumps(metadata)
+            # Optionally, enforce a maximum length for metadata JSON here if desired.
+        except Exception as e:
+            logger.error(f"Error serializing metadata: {e}")
+            metadata_json = "{}"
+
+    # Check if the relation already exists in the 'relations' table
+    cur.execute("""
+        SELECT id FROM relations 
+        WHERE from_word_id = %s AND to_word_id = %s AND relation_type = %s
+    """, (from_word_id, to_word_id, rel_value))
+    existing = cur.fetchone()
+    if existing:
+        # Update the existing relation with the new sources and metadata if provided
+        update_fields = ["sources = %s", "updated_at = NOW()"]
+        update_values = [sources]
+        if metadata_json is not None:
+            update_fields.append("metadata = %s")
+            update_values.append(metadata_json)
+        update_query = f"UPDATE relations SET {', '.join(update_fields)} WHERE id = %s"
+        update_values.append(existing[0])
+        cur.execute(update_query, tuple(update_values))
+        logger.debug(f"Updated relation '{rel_value}' from word ID {from_word_id} to {to_word_id}")
+        relation_id = existing[0]
+    else:
+        # Insert a new relation
+        fields = [
+            "from_word_id", "to_word_id", "relation_type", "sources", 
+            "created_at", "updated_at", "metadata"
+        ]
+        placeholders = ["%s", "%s", "%s", "%s", "NOW()", "NOW()", "%s"]
+        values = [from_word_id, to_word_id, rel_value, sources, metadata_json]
+        insert_query = f"""
+            INSERT INTO relations ({', '.join(fields)})
+            VALUES ({', '.join(placeholders)})
             RETURNING id
-        """, {
-            'from_id': from_word_id, 'to_id': to_word_id, 'rel_type': rel_type_str,
-            'sources': source_identifier,
-            'metadata': metadata_json # Pass the JSON string (or None)
-        })
+        """
+        cur.execute(insert_query, tuple(values))
         relation_id = cur.fetchone()[0]
-        logger.debug(f"Inserted/Updated relation (ID: {relation_id}) {from_word_id}->{to_word_id} ('{rel_type_str}') from source '{source_identifier}'.")
-        return relation_id
+        logger.debug(f"Inserted relation '{rel_value}' from word ID {from_word_id} to {to_word_id}")
 
-    except psycopg2.IntegrityError as e:
-         # Likely due to non-existent from_word_id or to_word_id (FK constraint violation)
-         logger.error(f"Integrity error inserting relation {from_word_id}->{to_word_id} ('{relation_type}') from '{source_identifier}'. Word ID might not exist. Error: {e.pgcode} {e.pgerror}")
-         return None
-    except psycopg2.Error as e:
-        logger.error(f"Database error inserting relation {from_word_id}->{to_word_id} ('{relation_type}') from '{source_identifier}': {e.pgcode} {e.pgerror}")
-        return None
-    except Exception as e:
-        logger.error(f"Unexpected error inserting relation {from_word_id}->{to_word_id} ('{relation_type}') from '{source_identifier}': {e}", exc_info=True)
-        return None
+    # For bidirectional relations, add the inverse if not already present.
+    if relation_type.bidirectional:
+        cur.execute("""
+            SELECT id FROM relations 
+            WHERE from_word_id = %s AND to_word_id = %s AND relation_type = %s
+        """, (to_word_id, from_word_id, rel_value))
+        if not cur.fetchone():
+            cur.execute("""
+                INSERT INTO relations 
+                (from_word_id, to_word_id, relation_type, sources, created_at, updated_at, metadata)
+                VALUES (%s, %s, %s, %s, NOW(), NOW(), %s)
+            """, (to_word_id, from_word_id, rel_value, sources, metadata_json))
+            logger.debug(f"Inserted bidirectional inverse relation '{rel_value}' from word ID {to_word_id} to {from_word_id}")
+    return relation_id
 
-
+@with_transaction(commit=True)
 def insert_definition_relation(cur, definition_id: int, word_id: int, relation_type: str, sources: str = "auto"):
     cur.execute("""
         INSERT INTO definition_relations 
@@ -3224,75 +2862,78 @@ def insert_etymology(
     cur,
     word_id: int,
     etymology_text: str,
-    source_identifier: str, # MANDATORY
-    normalized_components: Optional[str] = None,
-    etymology_structure: Optional[str] = None, # Consider if this should be JSON
-    language_codes: Optional[str] = None, # Comma-separated string
-) -> Optional[int]:
+    normalized_components: str = None,
+    etymology_structure: str = None,
+    language_codes: str = None,  # Use language_codes instead of source_languages
+    sources: str = ""
+) -> None:
     """
-    Inserts or updates an etymology record for a given word, linking it to a source.
-    The primary key for conflict resolution is (word_id, etymology_text).
-
+    Insert etymology information for a word.
+    
     Args:
-        cur: Database cursor.
-        word_id: ID of the word.
-        etymology_text: The etymological explanation.
-        source_identifier: Identifier for the data source (e.g., filename). MANDATORY.
-        normalized_components: Normalized components string.
-        etymology_structure: Structural information (string).
-        language_codes: Comma-separated language codes involved (string).
-
-    Returns:
-        The ID of the inserted/updated etymology record, or None if failed.
+        cur: Database cursor
+        word_id: ID of the word
+        etymology_text: Raw etymology text
+        normalized_components: Normalized components of the etymology
+        etymology_structure: JSON structure of the etymology
+        language_codes: Comma-separated list of language codes
+        sources: Sources of the etymology information
     """
-    etymology_text = etymology_text.strip() if isinstance(etymology_text, str) else None
-    if not etymology_text:
-        logger.warning(f"Skipping etymology insert for word ID {word_id} from source '{source_identifier}': Missing etymology text.")
-        return None
-    if not source_identifier:
-        logger.error(f"CRITICAL: Skipping etymology insert for word ID {word_id}: Missing MANDATORY source identifier.")
-        return None
-
     try:
-        # Prepare data, ensuring None is passed for empty optional fields
-        params = {
-            'word_id': word_id,
-            'etym_text': etymology_text,
-            'norm_comp': normalized_components.strip() if isinstance(normalized_components, str) else None,
-            'etym_struct': etymology_structure.strip() if isinstance(etymology_structure, str) else None,
-            'lang_codes': language_codes.strip() if isinstance(language_codes, str) else None,
-            'sources': source_identifier # Use mandatory source_identifier directly
-        } # <-- Corrected: Added missing closing brace
-
-        # Ensure cur.execute is correctly indented within the try block
+        # First check if an etymology already exists for this word
         cur.execute("""
-            INSERT INTO etymologies (
-                word_id, etymology_text, normalized_components,
-                etymology_structure, language_codes, sources
-            )
-            VALUES (%(word_id)s, %(etym_text)s, %(norm_comp)s,
-                    %(etym_struct)s, %(lang_codes)s, %(sources)s)
-            ON CONFLICT (word_id, etymology_text) -- Conflict on word and exact text match
-            DO UPDATE SET
-                -- Update optional fields only if the new value is not NULL
-                normalized_components = COALESCE(EXCLUDED.normalized_components, etymologies.normalized_components),
-                etymology_structure = COALESCE(EXCLUDED.etymology_structure, etymologies.etymology_structure),
-                language_codes = COALESCE(EXCLUDED.language_codes, etymologies.language_codes),
-                -- Overwrite sources: Last write wins for this etymology record
-                sources = EXCLUDED.sources,
-                updated_at = CURRENT_TIMESTAMP
-            RETURNING id
-        """, params)
-        etymology_id = cur.fetchone()[0]
-        logger.debug(f"Inserted/Updated etymology (ID: {etymology_id}) for word ID {word_id} from source '{source_identifier}'. Text: '{etymology_text[:50]}...'")
-        return etymology_id
-
-    except psycopg2.Error as e:
-        logger.error(f"Database error inserting etymology for word ID {word_id} from '{source_identifier}': {e.pgcode} {e.pgerror}", exc_info=True)
-        return None
+            SELECT id FROM etymologies WHERE word_id = %s
+        """, (word_id,))
+        
+        existing = cur.fetchone()
+        
+        if existing:
+            # Update existing etymology
+            cur.execute("""
+                UPDATE etymologies
+                SET etymology_text = %s,
+                    normalized_components = %s,
+                    etymology_structure = %s,
+                    language_codes = %s,
+                    sources = %s,
+                    updated_at = NOW()
+                WHERE word_id = %s
+            """, (
+                etymology_text,
+                normalized_components,
+                etymology_structure,
+                language_codes,
+                sources,
+                word_id
+            ))
+            logger.debug(f"Updated etymology for word ID {word_id}")
+        else:
+            # Insert new etymology
+            cur.execute("""
+                INSERT INTO etymologies (
+                    word_id,
+                    etymology_text,
+                    normalized_components,
+                    etymology_structure,
+                    language_codes,
+                    sources,
+                    created_at,
+                    updated_at
+                ) VALUES (
+                    %s, %s, %s, %s, %s, %s, NOW(), NOW()
+                )
+            """, (
+                word_id,
+                etymology_text,
+                normalized_components,
+                etymology_structure,
+                language_codes,
+                sources
+            ))
+            logger.debug(f"Inserted etymology for word ID {word_id}")
     except Exception as e:
-        logger.error(f"Unexpected error inserting etymology for word ID {word_id} from '{source_identifier}': {e}", exc_info=True)
-        return None
+        logger.error(f"Error in insert_etymology for word ID {word_id}: {str(e)}")
+        raise
 
 @with_transaction(commit=True)
 def insert_affixation(
@@ -3300,68 +2941,31 @@ def insert_affixation(
     root_id: int,
     affixed_id: int,
     affix_type: str,
-    source_identifier: str # MANDATORY
-) -> Optional[int]:
-    """
-    Insert an affixation relationship (e.g., root -> derived word).
-    Uses ON CONFLICT to update existing affixations based on (root_word_id, affixed_word_id, affix_type),
-    applying a 'last write wins' strategy for the 'sources' field.
-
-    Args:
-        cur: Database cursor.
-        root_id: ID of the root word.
-        affixed_id: ID of the affixed word.
-        affix_type: Type of affixation (e.g., 'prefix', 'suffix', 'infix', 'circumfix').
-        source_identifier: Identifier for the data source (e.g., filename). MANDATORY.
-
-    Returns:
-        The ID of the inserted/updated affixation record, or None if failed.
-    """
-    affix_type = affix_type.strip().lower() if isinstance(affix_type, str) else None # Normalize type
-    if not affix_type:
-         logger.warning(f"Skipping affixation insert for root {root_id}, affixed {affixed_id} (source '{source_identifier}'): Missing affix type.")
-         return None
-    if not source_identifier:
-         logger.error(f"CRITICAL: Skipping affixation insert for root {root_id}, affixed {affixed_id}: Missing MANDATORY source identifier.")
-         return None
-    if root_id == affixed_id:
-         logger.warning(f"Skipping self-affixation for word ID {root_id}, type '{affix_type}', source '{source_identifier}'.")
-         return None
+    sources: str
+) -> None:
+    """Insert an affixation relationship into the affixations table."""
+    if not root_id or not affixed_id or root_id == affixed_id:
+        return
 
     try:
-        # Prepare parameters
-        params = {
-            'root_id': root_id,
-            'affixed_id': affixed_id,
-            'affix_type': affix_type,
-            'sources': source_identifier # Use mandatory source_identifier directly
-        }
-
-        cur.execute("""
-            INSERT INTO affixations (root_word_id, affixed_word_id, affix_type, sources)
-            VALUES (%(root_id)s, %(affixed_id)s, %(affix_type)s, %(sources)s)
-            ON CONFLICT (root_word_id, affixed_word_id, affix_type) -- Conflict on exact triplet
+        cur.execute(
+            """
+            INSERT INTO affixations (
+                root_word_id, affixed_word_id, affix_type, sources
+            ) VALUES (%s, %s, %s, %s)
+            ON CONFLICT (root_word_id, affixed_word_id, affix_type)
             DO UPDATE SET
-                -- Overwrite sources: Last write wins for this affixation record
-                sources = EXCLUDED.sources,
-                updated_at = CURRENT_TIMESTAMP
-            RETURNING id
-        """, params)
-        affixation_id = cur.fetchone()[0]
-        logger.debug(f"Inserted/Updated affixation (ID: {affixation_id}) {root_id}(root) -> {affixed_id}(affixed) [{affix_type}] from source '{source_identifier}'.")
-        return affixation_id
-
-    except psycopg2.IntegrityError as e:
-         # Likely due to non-existent root_id or affixed_id (FK constraint violation)
-         logger.error(f"Integrity error inserting affixation {root_id}->{affixed_id} ({affix_type}) from '{source_identifier}'. Word ID might not exist. Error: {e.pgcode} {e.pgerror}")
-         return None
-    except psycopg2.Error as e:
-        logger.error(f"Database error inserting affixation {root_id}->{affixed_id} ({affix_type}) from '{source_identifier}': {e.pgcode} {e.pgerror}")
-        return None
+                sources = array_to_string(ARRAY(
+                    SELECT DISTINCT unnest(array_cat(
+                        string_to_array(affixations.sources, ', '),
+                        string_to_array(EXCLUDED.sources, ', ')
+                    ))
+                ), ', ')
+            """,
+            (root_id, affixed_id, affix_type, sources)
+        )
     except Exception as e:
-        logger.error(f"Unexpected error inserting affixation {root_id}->{affixed_id} ({affix_type}) from '{source_identifier}': {e}", exc_info=True)
-        return None
-
+        logger.error(f"Error inserting affixation {root_id} -> {affixed_id}: {str(e)}")
 
 # Update for batch_get_or_create_word_ids function to properly handle sources
 
@@ -3521,28 +3125,10 @@ def batch_get_or_create_word_ids(cur, entries: List[Tuple[str, str]], source: st
 # -------------------------------------------------------------------
 # Dictionary Entry Processing
 # -------------------------------------------------------------------
-@with_transaction(commit=False)  # Manage transactions manually
+@with_transaction(commit=False)  # Changed to commit=False to manage transactions manually
 def process_kwf_dictionary(cur, filename: str):
-    """
-    Process a KWF Dictionary JSON file and store entries in database.
-    
-    Args:
-        cur: Database cursor
-        filename: Path to KWF Dictionary JSON file
-        
-    Returns:
-        Dictionary with processing statistics
-    """
-    # Standardize the source identifier consistently
-    raw_source_identifier = os.path.basename(filename)
-    source_identifier = SourceStandardization.standardize_sources(raw_source_identifier)
-    
-    # Ensure we have a valid source identifier
-    if not source_identifier:
-        source_identifier = "KWF Diksiyonaryo ng Wikang Filipino"
-    
+    """Process a KWF Dictionary JSON file and store entries in database."""
     logger.info(f"Processing KWF Dictionary: {filename}")
-    logger.info(f"Using standardized source identifier: '{source_identifier}'")
     
     # Statistics tracking
     stats = {
@@ -3556,8 +3142,7 @@ def process_kwf_dictionary(cur, filename: str):
         "antonyms_added": 0,
         "refs_added": 0,
         "affixes_processed": 0,
-        "relations_added": 0,
-        "source_updates": 0
+        "relations_added": 0
     }
     error_types = {}  # Track unique error types
     
@@ -3586,28 +3171,7 @@ def process_kwf_dictionary(cur, filename: str):
         
         # Determine the data structure format
         entries = data if isinstance(data, list) else data.get("entries", [])
-        
-        # Extract dictionary metadata if available
-        dictionary_metadata = {}
-        if isinstance(data, dict):
-            # Try to extract dictionary metadata
-            for meta_key in ['version', 'publisher', 'date', 'description', 'copyright']:
-                if meta_key in data:
-                    dictionary_metadata[meta_key] = data[meta_key]
-        
-        # Create source metadata object
-        source_metadata = {
-            "name": "KWF Diksiyonaryo ng Wikang Filipino",
-            "file": raw_source_identifier,
-            "processed_timestamp": datetime.now().isoformat()
-        }
-        
-        # Add any additional metadata we found
-        if dictionary_metadata:
-            source_metadata.update(dictionary_metadata)
-            
-        # Convert to JSON string for storage
-        source_metadata_json = json.dumps(source_metadata)
+        standardized_source = SourceStandardization.standardize_sources(os.path.basename(filename))
         
         # Add a mapping for common relationship types in KWF data
         RELATION_TYPE_MAPPING = {
@@ -3620,513 +3184,378 @@ def process_kwf_dictionary(cur, filename: str):
             "related": "related"
         }
         
-        # Process each entry with a progress bar
-        with tqdm(total=stats["total_entries"], desc=f"Processing {os.path.basename(filename)}", unit="entry") as pbar:
-            for entry_index, entry in enumerate(entries):
-                # Skip empty entries
-                if not entry:
+        # Process each entry
+        for entry_index, entry in enumerate(entries):
+            # Skip empty entries
+            if not entry:
+                stats["skipped_entries"] += 1
+                continue
+                
+            # Create a savepoint for this entry
+            savepoint_name = f"kwf_entry_{entry_index}"
+            try:
+                cur.execute(f"SAVEPOINT {savepoint_name}")
+                
+                # Extract the word - handle both formats
+                if isinstance(entry, dict) and "word" in entry:
+                    word = entry["word"]
+                    formatted_word = word
+                elif isinstance(entry, dict) and "headWord" in entry:
+                    word = entry["headWord"]
+                    formatted_word = word
+                else:
+                    logger.warning(f"Entry #{entry_index} is missing 'word' or 'headWord' field, skipping")
                     stats["skipped_entries"] += 1
-                    pbar.update(1)
+                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                     continue
-                    
-                # Create a savepoint for this entry
-                savepoint_name = f"kwf_entry_{entry_index}"
+                
+                # Check if word is valid
+                if not word or not isinstance(word, str):
+                    logger.warning(f"Invalid word in entry #{entry_index}, skipping")
+                    stats["skipped_entries"] += 1
+                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+                    continue
+                
+                # Standardize the word
+                language_code = entry.get("language_code", "tl")
+                if not language_code:
+                    language_code = "tl"  # Default to Tagalog
+                
+                # Process possible Baybayin form
+                baybayin_form = None
+                romanized_form = None
+                
+                if "baybayin" in entry and entry["baybayin"]:
+                    baybayin_text = entry["baybayin"]
+                    if isinstance(baybayin_text, str) and baybayin_text.strip():
+                        baybayin_form = baybayin_text.strip()
+                        # Try to extract romanization if not provided
+                        if not romanized_form:
+                            romanized_form = get_romanized_text(baybayin_form)
+                
+                # Get or create the word entry
                 try:
-                    cur.execute(f"SAVEPOINT {savepoint_name}")
+                    word_id = get_or_create_word_id(
+                        cur, 
+                        word, 
+                        language_code=language_code, 
+                        has_baybayin=bool(baybayin_form),
+                        baybayin_form=baybayin_form,
+                        romanized_form=romanized_form,
+                        is_root=False,  # We'll determine this later based on affixation
+                        sources=standardized_source
+                    )
                     
-                    # Extract the word - handle both formats
-                    if isinstance(entry, dict) and "word" in entry:
-                        word = entry["word"]
-                        formatted_word = word
-                    elif isinstance(entry, dict) and "headWord" in entry:
-                        word = entry["headWord"]
-                        formatted_word = word
-                    else:
-                        logger.warning(f"Entry #{entry_index} is missing 'word' or 'headWord' field, skipping")
-                        stats["skipped_entries"] += 1
-                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue
-                    
-                    # Check if word is valid
-                    if not word or not isinstance(word, str):
-                        logger.warning(f"Invalid word in entry #{entry_index}, skipping")
-                        stats["skipped_entries"] += 1
-                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue
-                    
-                    # Standardize the word
-                    language_code = entry.get("language_code", "tl")
-                    if not language_code:
-                        language_code = "tl"  # Default to Tagalog
-                    
-                    # Process possible Baybayin form
-                    baybayin_form = None
-                    romanized_form = None
-                    
-                    if "baybayin" in entry and entry["baybayin"]:
-                        baybayin_text = entry["baybayin"]
-                        if isinstance(baybayin_text, str) and baybayin_text.strip():
-                            baybayin_form = baybayin_text.strip()
-                            # Try to extract romanization if not provided
-                            if not romanized_form:
-                                romanized_form = get_romanized_text(baybayin_form)
-                    
-                    # Prepare word metadata
-                    word_metadata = {}
-                    
-                    # Add entry-specific metadata
-                    if isinstance(entry, dict):
-                        # Include dictionary source
-                        word_metadata["source"] = source_identifier
-                        
-                        # Add domain/register information if available
-                        if "register" in entry:
-                            word_metadata["register"] = entry["register"]
-                        if "domain" in entry:
-                            word_metadata["domain"] = entry["domain"]
-                            
-                        # Add any other useful metadata
-                        for meta_key in ["notes", "usage", "origin", "dialect"]:
-                            if meta_key in entry:
-                                word_metadata[meta_key] = entry[meta_key]
-                    
-                    # Convert metadata to JSON
-                    word_metadata_json = json.dumps(word_metadata) if word_metadata else None
-                    
-                    # Get or create the word entry
-                    try:
-                        word_id = get_or_create_word_id(
-                            cur, 
-                            word, 
-                            language_code=language_code, 
-                            has_baybayin=bool(baybayin_form),
-                            baybayin_form=baybayin_form,
-                            romanized_form=romanized_form,
-                            source_identifier=source_identifier,
-                            word_metadata=word_metadata_json
-                        )
-                        
-                        if not word_id or word_id <= 0:
-                            logger.error(f"Failed to get or create word ID for '{formatted_word}'")
-                            cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                            stats["error_entries"] += 1
-                            pbar.update(1)
-                            continue
-                    except Exception as word_error:
-                        logger.error(f"Error creating word entry for '{formatted_word}': {str(word_error)}")
+                    if not word_id or word_id <= 0:
+                        logger.error(f"Failed to get or create word ID for '{formatted_word}'")
                         cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
                         stats["error_entries"] += 1
-                        error_types[str(word_error)] = error_types.get(str(word_error), 0) + 1
-                        pbar.update(1)
                         continue
-                        
-                    # Process etymology information
-                    if "etymology" in entry and entry["etymology"]:
-                        etymology_text = entry["etymology"]
-                        if isinstance(etymology_text, str) and etymology_text.strip():
-                            try:
-                                components = extract_etymology_components(etymology_text)
-                                
-                                # Extract language codes from etymology if possible
-                                language_codes = None
-                                if "from" in etymology_text.lower():
-                                    # Extract languages mentioned in etymology
-                                    language_patterns = [
-                                        r'from\s+(.*?)\s+', 
-                                        r'borrowed\s+from\s+(.*?)\s+',
-                                        r'derived\s+from\s+(.*?)\s+'
-                                    ]
-                                    
-                                    for pattern in language_patterns:
-                                        matches = re.findall(pattern, etymology_text, re.IGNORECASE)
-                                        if matches:
-                                            language_codes = ", ".join(matches)
-                                            break
-                                
-                                insert_etymology(
-                                    cur, 
-                                    word_id, 
-                                    etymology_text, 
-                                    normalized_components=json.dumps(components) if components else None,
-                                    language_codes=language_codes,
-                                    sources=source_identifier
-                                )
-                            except Exception as ety_error:
-                                logger.warning(f"Error processing etymology for '{formatted_word}': {str(ety_error)}")
-                    
-                    # Process definitions by part of speech
-                    if "entries" in entry and isinstance(entry["entries"], list):
-                        for pos_entry in entry["entries"]:
-                            if not isinstance(pos_entry, dict):
-                                continue
-                                
-                            # Standardize the part of speech
-                            raw_pos = pos_entry.get("partOfSpeech", "")
-                            pos = standardize_entry_pos(raw_pos)
+                except Exception as word_error:
+                    logger.error(f"Error creating word entry for '{formatted_word}': {str(word_error)}")
+                    cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
+                    stats["error_entries"] += 1
+                    error_types[str(word_error)] = error_types.get(str(word_error), 0) + 1
+                    continue
+                # Process etymology information
+                if "etymology" in entry and entry["etymology"]:
+                    etymology_text = entry["etymology"]
+                    if isinstance(etymology_text, str) and etymology_text.strip():
+                        try:
+                            components = extract_etymology_components(etymology_text)
+                            insert_etymology(
+                                cur, 
+                                word_id, 
+                                etymology_text, 
+                                normalized_components=json.dumps(components) if components else None,
+                                sources=standardized_source
+                            )
+                        except Exception as ety_error:
+                            logger.warning(f"Error processing etymology for '{formatted_word}': {str(ety_error)}")
+                
+                # Process definitions by part of speech
+                if "entries" in entry and isinstance(entry["entries"], list):
+                    for pos_entry in entry["entries"]:
+                        if not isinstance(pos_entry, dict):
+                            continue
                             
-                            # Process definitions
-                            if "definitions" in pos_entry and isinstance(pos_entry["definitions"], list):
-                                for def_item in pos_entry["definitions"]:
-                                    if isinstance(def_item, str):
-                                        # Simple string definition
-                                        definition_text = def_item.strip()
-                                        if definition_text:
-                                            try:
-                                                insert_definition(
-                                                    cur, 
-                                                    word_id, 
-                                                    definition_text, 
-                                                    part_of_speech=pos,
-                                                    source_identifier=source_identifier
-                                                )
-                                                stats["definitions_added"] += 1
-                                            except Exception as def_error:
-                                                logger.warning(f"Error inserting definition for '{formatted_word}': {str(def_error)}")
-                                                error_types[str(def_error)] = error_types.get(str(def_error), 0) + 1
-                                                
-                                    elif isinstance(def_item, dict):
-                                        # Complex definition with examples, synonyms, etc.
-                                        definition_text = def_item.get("definition", "").strip()
-                                        if not definition_text:
-                                            continue
-                                            
-                                        # Extract examples and structure as objects
-                                        examples_json = None
-                                        
-                                        # Handle examples that could be in different formats
-                                        examples = def_item.get("examples", [])
-                                        if examples:
-                                            # Normalize examples to structured objects
-                                            normalized_examples = []
-                                            
-                                            if isinstance(examples, list):
-                                                for ex_idx, ex in enumerate(examples):
-                                                    if isinstance(ex, str):
-                                                        normalized_examples.append({
-                                                            "text": ex,
-                                                            "source": source_identifier,
-                                                            "index": ex_idx
-                                                        })
-                                                    elif isinstance(ex, dict) and "text" in ex:
-                                                        ex_obj = {
-                                                            "text": ex["text"],
-                                                            "source": source_identifier,
-                                                            "index": ex_idx
-                                                        }
-                                                        # Add translation if available
-                                                        if "translation" in ex:
-                                                            ex_obj["translation"] = ex["translation"]
-                                                        normalized_examples.append(ex_obj)
-                                            elif isinstance(examples, dict):
-                                                # Dictionary format example
-                                                for ex_idx, (ex_key, ex_val) in enumerate(examples.items()):
-                                                    if isinstance(ex_val, str):
-                                                        normalized_examples.append({
-                                                            "text": ex_val,
-                                                            "key": ex_key,
-                                                            "source": source_identifier,
-                                                            "index": ex_idx
-                                                        })
-                                                    elif isinstance(ex_val, dict) and "text" in ex_val:
-                                                        ex_obj = {
-                                                            "text": ex_val["text"],
-                                                            "key": ex_key,
-                                                            "source": source_identifier,
-                                                            "index": ex_idx
-                                                        }
-                                                        # Add translation if available
-                                                        if "translation" in ex_val:
-                                                            ex_obj["translation"] = ex_val["translation"]
-                                                        normalized_examples.append(ex_obj)
-                                            
-                                            if normalized_examples:
-                                                examples_json = json.dumps(normalized_examples)
-                                                stats["examples_added"] += len(normalized_examples)
-                                        
-                                        # Prepare definition metadata
-                                        def_metadata = {
-                                            "source": source_identifier,
-                                            "from_kwf": True,
-                                            "part_of_speech": pos
-                                        }
-                                        
-                                        # Add usage notes if available
-                                        usage_notes = def_item.get("notes", "")
-                                        if not usage_notes and "usage" in def_item:
-                                            usage_notes = def_item["usage"]
-                                        
-                                        # Add domain/register if available
-                                        if "domain" in def_item:
-                                            def_metadata["domain"] = def_item["domain"]
-                                        if "register" in def_item:
-                                            def_metadata["register"] = def_item["register"]
-                                        
-                                        # Add the definition with its examples
+                        # Standardize the part of speech
+                        raw_pos = pos_entry.get("partOfSpeech", "")
+                        pos = standardize_entry_pos(raw_pos)
+                        
+                        # Process definitions
+                        if "definitions" in pos_entry and isinstance(pos_entry["definitions"], list):
+                            for def_item in pos_entry["definitions"]:
+                                if isinstance(def_item, str):
+                                    # Simple string definition
+                                    definition_text = def_item.strip()
+                                    if definition_text:
                                         try:
-                                            definition_id = insert_definition(
+                                            insert_definition(
                                                 cur, 
                                                 word_id, 
                                                 definition_text, 
                                                 part_of_speech=pos,
-                                                examples=examples_json,
-                                                usage_notes=usage_notes,
-                                                source_identifier=source_identifier,
-                                                metadata=json.dumps(def_metadata)
+                                                sources=standardized_source
                                             )
                                             stats["definitions_added"] += 1
-                                            
-                                            # Process synonyms if present
-                                            if "synonyms" in def_item and definition_id:
-                                                synonyms = def_item["synonyms"]
-                                                if isinstance(synonyms, list):
-                                                    for syn_idx, syn in enumerate(synonyms):
-                                                        syn_word = syn
-                                                        if isinstance(syn, dict) and "word" in syn:
-                                                            syn_word = syn["word"]
-                                                        
-                                                        if isinstance(syn_word, str) and syn_word.strip():
-                                                            try:
-                                                                # Create synonym with same source
-                                                                syn_id = get_or_create_word_id(
-                                                                    cur, 
-                                                                    syn_word, 
-                                                                    language_code=language_code,
-                                                                    source_identifier=source_identifier
-                                                                )
-                                                                
-                                                                # Add relation metadata
-                                                                syn_metadata = {
-                                                                    "source": source_identifier,
-                                                                    "confidence": 90,  # High confidence for explicit synonyms
-                                                                    "definition_id": definition_id,
-                                                                    "index": syn_idx
-                                                                }
-                                                                
-                                                                insert_relation(
-                                                                    cur, 
-                                                                    word_id, 
-                                                                    syn_id, 
-                                                                    RelationshipType.SYNONYM, 
-                                                                    source_identifier=source_identifier,
-                                                                    metadata=syn_metadata
-                                                                )
-                                                                stats["synonyms_added"] += 1
-                                                            except Exception as syn_error:
-                                                                logger.warning(f"Error processing synonym '{syn_word}' for '{formatted_word}': {str(syn_error)}")
-                                                
-                                            # Process antonyms if present
-                                            if "antonyms" in def_item and definition_id:
-                                                antonyms = def_item["antonyms"]
-                                                if isinstance(antonyms, list):
-                                                    for ant_idx, ant in enumerate(antonyms):
-                                                        ant_word = ant
-                                                        if isinstance(ant, dict) and "word" in ant:
-                                                            ant_word = ant["word"]
-                                                        
-                                                        if isinstance(ant_word, str) and ant_word.strip():
-                                                            try:
-                                                                # Create antonym with same source
-                                                                ant_id = get_or_create_word_id(
-                                                                    cur, 
-                                                                    ant_word, 
-                                                                    language_code=language_code,
-                                                                    source_identifier=source_identifier
-                                                                )
-                                                                
-                                                                # Add relation metadata
-                                                                ant_metadata = {
-                                                                    "source": source_identifier,
-                                                                    "confidence": 90,  # High confidence for explicit antonyms
-                                                                    "definition_id": definition_id,
-                                                                    "index": ant_idx
-                                                                }
-                                                                
-                                                                insert_relation(
-                                                                    cur, 
-                                                                    word_id, 
-                                                                    ant_id, 
-                                                                    RelationshipType.ANTONYM, 
-                                                                    source_identifier=source_identifier,
-                                                                    metadata=ant_metadata
-                                                                )
-                                                                stats["antonyms_added"] += 1
-                                                            except Exception as ant_error:
-                                                                logger.warning(f"Error processing antonym '{ant_word}' for '{formatted_word}': {str(ant_error)}")
-                                                                
-                                            # Process cross-references if present
-                                            if "see_also" in def_item and definition_id:
-                                                see_also_refs = def_item["see_also"]
-                                                if isinstance(see_also_refs, list):
-                                                    for ref_idx, ref in enumerate(see_also_refs):
-                                                        ref_word = ref
-                                                        if isinstance(ref, dict) and "word" in ref:
-                                                            ref_word = ref["word"]
-                                                        
-                                                        if isinstance(ref_word, str) and ref_word.strip():
-                                                            try:
-                                                                # Create reference with same source
-                                                                ref_id = get_or_create_word_id(
-                                                                    cur, 
-                                                                    ref_word, 
-                                                                    language_code=language_code,
-                                                                    source_identifier=source_identifier
-                                                                )
-                                                                
-                                                                # Add relation metadata
-                                                                ref_metadata = {
-                                                                    "source": source_identifier,
-                                                                    "confidence": 80,  # Good confidence for cross-references
-                                                                    "definition_id": definition_id,
-                                                                    "index": ref_idx
-                                                                }
-                                                                
-                                                                insert_relation(
-                                                                    cur, 
-                                                                    word_id, 
-                                                                    ref_id, 
-                                                                    RelationshipType.SEE_ALSO, 
-                                                                    source_identifier=source_identifier,
-                                                                    metadata=ref_metadata
-                                                                )
-                                                                stats["refs_added"] += 1
-                                                            except Exception as ref_error:
-                                                                logger.warning(f"Error processing cross-reference '{ref_word}' for '{formatted_word}': {str(ref_error)}")
                                         except Exception as def_error:
-                                            logger.warning(f"Error inserting complex definition for '{formatted_word}': {str(def_error)}")
+                                            logger.warning(f"Error inserting definition for '{formatted_word}': {str(def_error)}")
                                             error_types[str(def_error)] = error_types.get(str(def_error), 0) + 1
                                             
-                    # Process related terms with enhanced metadata
-                    if 'related' in entry and isinstance(entry['related'], dict):
-                        logger.debug(f"Processing related terms for '{formatted_word}'")
-                        
-                        for rel_type, rel_items in entry['related'].items():
-                            # Skip processing examples directly as relations - they are handled earlier
-                            if rel_type.lower() == "examples":
-                                continue
-                            
-                            # Map custom relation types to standard ones
-                            if rel_type.lower() in RELATION_TYPE_MAPPING:
-                                mapped_type = RELATION_TYPE_MAPPING[rel_type.lower()]
-                                if mapped_type is None:
-                                    # Skip this relation type as it's explicitly marked for exclusion
-                                    continue
-                                else:
-                                    relationship_type = mapped_type
-                            else:
-                                # Use normalize_relation_type as a fallback
-                                try:
-                                    relationship_type, is_bidirectional, inverse_type = normalize_relation_type(rel_type)
-                                except Exception as e:
-                                    logger.warning(f"Error normalizing relation type '{rel_type}': {str(e)}")
-                                    relationship_type = "related"  # Safe fallback
-                                
-                            if not isinstance(rel_items, list):
-                                logger.warning(f"Skipping invalid related items for '{formatted_word}': not a list")
-                                continue
-                            
-                            for rel_idx, rel_item in enumerate(rel_items):
-                                related_term = ""
-                                rel_metadata = {}
-                                
-                                if isinstance(rel_item, dict) and 'value' in rel_item:
-                                    related_term = rel_item['value']
-                                    # Extract any additional metadata
-                                    for meta_key in rel_item:
-                                        if meta_key != 'value':
-                                            rel_metadata[meta_key] = rel_item[meta_key]
-                                elif isinstance(rel_item, str):
-                                    related_term = rel_item
+                                elif isinstance(def_item, dict):
+                                    # Complex definition with examples, synonyms, etc.
+                                    definition_text = def_item.get("definition", "").strip()
+                                    if not definition_text:
+                                        continue
+                                        
+                                    # Extract examples and add as JSON
+                                    examples_json = None
                                     
-                                if related_term and len(related_term) <= 255:
+                                    # Handle examples that could be in different formats
+                                    examples = def_item.get("examples", [])
+                                    if examples:
+                                        # Normalize examples to list of strings
+                                        normalized_examples = []
+                                        
+                                        if isinstance(examples, list):
+                                            for ex in examples:
+                                                if isinstance(ex, str):
+                                                    normalized_examples.append(ex)
+                                                elif isinstance(ex, dict) and "text" in ex:
+                                                    normalized_examples.append(ex["text"])
+                                        elif isinstance(examples, dict):
+                                            # Dictionary format example
+                                            for ex_key, ex_val in examples.items():
+                                                if isinstance(ex_val, str):
+                                                    normalized_examples.append(ex_val)
+                                                elif isinstance(ex_val, dict) and "text" in ex_val:
+                                                    normalized_examples.append(ex_val["text"])
+                                        
+                                        if normalized_examples:
+                                            examples_json = json.dumps(normalized_examples)
+                                            stats["examples_added"] += len(normalized_examples)
+                                    
+                                    # Add the definition with its examples
                                     try:
-                                        # Create related term with consistent source tracking
-                                        related_id = get_or_create_word_id(
-                                            cur, 
-                                            related_term, 
-                                            language_code=language_code,
-                                            source_identifier=source_identifier
-                                        )
-                                        
-                                        # Add standard metadata
-                                        rel_metadata.update({
-                                            "source": source_identifier,
-                                            "original_type": rel_type,
-                                            "index": rel_idx,
-                                            "confidence": 85  # Good confidence for KWF relations
-                                        })
-                                        
-                                        # Insert the relation with metadata
-                                        insert_relation(
+                                        definition_id = insert_definition(
                                             cur, 
                                             word_id, 
-                                            related_id, 
-                                            relationship_type,
-                                            source_identifier=source_identifier,
-                                            metadata=rel_metadata
+                                            definition_text, 
+                                            part_of_speech=pos,
+                                            examples=examples_json,
+                                            sources=standardized_source
                                         )
-                                        stats["relations_added"] += 1
+                                        stats["definitions_added"] += 1
                                         
-                                    except Exception as e:
-                                        logger.error(f"Error processing related term '{related_term}' for '{formatted_word}': {str(e)}")
-                                        error_types[str(e)] = error_types.get(str(e), 0) + 1
+                                        # Process synonyms if present
+                                        if "synonyms" in def_item and definition_id:
+                                            synonyms = def_item["synonyms"]
+                                            if isinstance(synonyms, list):
+                                                for syn in synonyms:
+                                                    syn_word = syn
+                                                    if isinstance(syn, dict) and "word" in syn:
+                                                        syn_word = syn["word"]
+                                                    
+                                                    if isinstance(syn_word, str) and syn_word.strip():
+                                                        try:
+                                                            syn_id = get_or_create_word_id(cur, syn_word, language_code=language_code)
+                                                            insert_relation(
+                                                                cur, 
+                                                                word_id, 
+                                                                syn_id, 
+                                                                RelationshipType.SYNONYM, 
+                                                                standardized_source
+                                                            )
+                                                            stats["synonyms_added"] += 1
+                                                        except Exception as syn_error:
+                                                            logger.warning(f"Error processing synonym '{syn_word}' for '{formatted_word}': {str(syn_error)}")
+                                            
+                                        # Process antonyms if present
+                                        if "antonyms" in def_item and definition_id:
+                                            antonyms = def_item["antonyms"]
+                                            if isinstance(antonyms, list):
+                                                for ant in antonyms:
+                                                    ant_word = ant
+                                                    if isinstance(ant, dict) and "word" in ant:
+                                                        ant_word = ant["word"]
+                                                    
+                                                    if isinstance(ant_word, str) and ant_word.strip():
+                                                        try:
+                                                            ant_id = get_or_create_word_id(cur, ant_word, language_code=language_code)
+                                                            insert_relation(
+                                                                cur, 
+                                                                word_id, 
+                                                                ant_id, 
+                                                                RelationshipType.ANTONYM, 
+                                                                standardized_source
+                                                            )
+                                                            stats["antonyms_added"] += 1
+                                                        except Exception as ant_error:
+                                                            logger.warning(f"Error processing antonym '{ant_word}' for '{formatted_word}': {str(ant_error)}")
+                                                            
+                                        # Process cross-references if present
+                                        if "see_also" in def_item and definition_id:
+                                            see_also_refs = def_item["see_also"]
+                                            if isinstance(see_also_refs, list):
+                                                for ref in see_also_refs:
+                                                    ref_word = ref
+                                                    if isinstance(ref, dict) and "word" in ref:
+                                                        ref_word = ref["word"]
+                                                    
+                                                    if isinstance(ref_word, str) and ref_word.strip():
+                                                        try:
+                                                            ref_id = get_or_create_word_id(cur, ref_word, language_code=language_code)
+                                                            insert_relation(
+                                                                cur, 
+                                                                word_id, 
+                                                                ref_id, 
+                                                                RelationshipType.SEE_ALSO, 
+                                                                standardized_source
+                                                            )
+                                                            stats["refs_added"] += 1
+                                                        except Exception as ref_error:
+                                                            logger.warning(f"Error processing cross-reference '{ref_word}' for '{formatted_word}': {str(ref_error)}")
+                                    except Exception as def_error:
+                                        logger.warning(f"Error inserting complex definition for '{formatted_word}': {str(def_error)}")
+                                        error_types[str(def_error)] = error_types.get(str(def_error), 0) + 1
+                                        
+                # Process related terms
+                if 'related' in entry and isinstance(entry['related'], dict):
+                    logger.debug(f"Processing related terms for '{formatted_word}'")
                     
-                    # If everything went well, commit this entry
-                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                    stats["processed_entries"] += 1
-                    
-                    # Commit periodically to avoid transaction getting too large
-                    if stats["processed_entries"] > 0 and stats["processed_entries"] % 500 == 0:
-                        conn.commit()
-                        logger.info(f"Processed {stats['processed_entries']} entries, committed batch")
-                    
-                except psycopg2.Error as db_error:
-                    # Handle specific database errors
-                    error_msg = str(db_error)
-                    if "value too long for type character varying" in error_msg:
-                        logger.error(f"Database field limit exceeded for '{formatted_word}': {error_msg}")
-                    elif "column \"link_type\" of relation \"definition_links\" does not exist" in error_msg:
-                        # This error happens when trying to use a table that doesn't exist
-                        logger.error(f"Table structure error: {error_msg}")
-                    else:
-                        logger.error(f"Database error processing entry '{formatted_word}': {error_msg}")
+                    for rel_type, rel_items in entry['related'].items():
+                        # Skip processing examples directly as relations - they are handled earlier
+                        if rel_type.lower() == "examples":
+                            continue
                         
-                    error_types[error_msg] = error_types.get(error_msg, 0) + 1
-                    stats["error_entries"] += 1
-                    
-                    # Make sure to roll back this entry's savepoint
-                    try:
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    except Exception as rollback_error:
-                        logger.error(f"Failed to roll back to savepoint: {rollback_error}")
-                        # If the savepoint rollback fails, try a full rollback
-                        try:
-                            conn.rollback()
-                            logger.warning("Performed full transaction rollback")
-                        except Exception as conn_error:
-                            logger.error(f"Failed to roll back transaction: {str(conn_error)}")
+                        # Map custom relation types to standard ones
+                        if rel_type.lower() in RELATION_TYPE_MAPPING:
+                            mapped_type = RELATION_TYPE_MAPPING[rel_type.lower()]
+                            if mapped_type is None:
+                                # Skip this relation type as it's explicitly marked for exclusion
+                                continue
+                            else:
+                                relationship_type = mapped_type
+                        else:
+                            # Use normalize_relation_type as a fallback
+                            try:
+                                relationship_type, is_bidirectional, inverse_type = normalize_relation_type(rel_type)
+                            except Exception as e:
+                                logger.warning(f"Error normalizing relation type '{rel_type}': {str(e)}")
+                                relationship_type = "related"  # Safe fallback
+                            
+                        if not isinstance(rel_items, list):
+                            logger.warning(f"Skipping invalid related items for '{formatted_word}': not a list")
+                            continue
                         
-                except Exception as e:
-                    error_msg = str(e)
-                    logger.error(f"Unexpected error processing entry '{formatted_word}': {error_msg}")
-                    error_types[error_msg] = error_types.get(error_msg, 0) + 1
-                    stats["error_entries"] += 1
-                    
-                    # Make sure to roll back this entry's savepoint
-                    try:
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    except Exception as rollback_error:
-                        logger.error(f"Failed to roll back to savepoint: {rollback_error}")
-                        # If the savepoint rollback fails, try a full rollback
-                        try:
-                            conn.rollback()
-                            logger.warning("Performed full transaction rollback")
-                        except Exception as conn_error:
-                            logger.error(f"Failed to roll back transaction: {str(conn_error)}")
+                        for rel_item in rel_items:
+                            related_term = ""
+                            
+                            if isinstance(rel_item, dict) and 'value' in rel_item:
+                                related_term = rel_item['value']
+                            elif isinstance(rel_item, str):
+                                related_term = rel_item
+                                
+                            if related_term and len(related_term) <= 255:
+                                try:
+                                    # Check if the related term exists or can be created
+                                    related_id = get_or_create_word_id(cur, related_term, language_code='tl')
+                                    
+                                    # Verify both word IDs exist in database before creating relation
+                                    cur.execute("""
+                                        SELECT 
+                                            EXISTS(SELECT 1 FROM words WHERE id = %s),
+                                            EXISTS(SELECT 1 FROM words WHERE id = %s)
+                                    """, (word_id, related_id))
+                                    word_exists, related_exists = cur.fetchone()
+                                    
+                                    if word_exists and related_exists:
+                                        # Insert relation using string type to avoid the tuple error
+                                        try:
+                                            insert_relation(
+                                                cur, 
+                                                word_id, 
+                                                related_id, 
+                                                relationship_type,  # Use string instead of Enum
+                                                sources=standardized_source
+                                            )
+                                            stats["relations_added"] += 1
+                                        except Exception as rel_error:
+                                            logger.error(f"Error inserting relation for '{formatted_word}' with type '{relationship_type}': {str(rel_error)}")
+                                            # Try a more direct approach if the previous method failed
+                                            try:
+                                                # Manually verify the relation type is valid
+                                                cur.execute("""
+                                                    INSERT INTO relations (
+                                                        from_word_id, to_word_id, relation_type, sources, created_at, updated_at
+                                                    ) VALUES (%s, %s, %s, %s, NOW(), NOW())
+                                                """, (word_id, related_id, relationship_type, standardized_source))
+                                                stats["relations_added"] += 1
+                                            except Exception as direct_error:
+                                                logger.error(f"Direct relation insertion failed: {str(direct_error)}")
+                                                error_types[str(direct_error)] = error_types.get(str(direct_error), 0) + 1
+                                    else:
+                                        logger.warning(
+                                            f"Cannot create relation: " +
+                                            f"{'From' if not word_exists else 'To'} word does not exist"
+                                        )
+                                except Exception as e:
+                                    logger.error(f"Error processing related term '{related_term}' for '{formatted_word}': {str(e)}")
+                                    error_types[str(e)] = error_types.get(str(e), 0) + 1
                 
-                finally:
-                    pbar.update(1)
+                # If everything went well, commit this entry
+                cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+                stats["processed_entries"] += 1
+                
+                # Commit periodically to avoid transaction getting too large
+                if stats["processed_entries"] > 0 and stats["processed_entries"] % 500 == 0:
+                    conn.commit()
+                    logger.info(f"Processed {stats['processed_entries']} entries, committed batch")
+                
+            except psycopg2.Error as db_error:
+                # Handle specific database errors
+                error_msg = str(db_error)
+                if "value too long for type character varying" in error_msg:
+                    logger.error(f"Database field limit exceeded for '{formatted_word}': {error_msg}")
+                elif "column \"link_type\" of relation \"definition_links\" does not exist" in error_msg:
+                    # This error happens when trying to use a table that doesn't exist
+                    logger.error(f"Table structure error: {error_msg}")
+                else:
+                    logger.error(f"Database error processing entry '{formatted_word}': {error_msg}")
+                    
+                error_types[error_msg] = error_types.get(error_msg, 0) + 1
+                stats["error_entries"] += 1
+                
+                # Make sure to roll back this entry's savepoint
+                try:
+                    cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
+                except Exception as rollback_error:
+                    logger.error(f"Failed to roll back to savepoint: {rollback_error}")
+                    # If the savepoint rollback fails, try a full rollback
+                    try:
+                        conn.rollback()
+                        logger.warning("Performed full transaction rollback")
+                    except Exception as conn_error:
+                        logger.error(f"Failed to roll back transaction: {str(conn_error)}")
+                    
+            except Exception as e:
+                error_msg = str(e)
+                logger.error(f"Unexpected error processing entry '{formatted_word}': {error_msg}")
+                error_types[error_msg] = error_types.get(error_msg, 0) + 1
+                stats["error_entries"] += 1
+                
+                # Make sure to roll back this entry's savepoint
+                try:
+                    cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
+                except Exception as rollback_error:
+                    logger.error(f"Failed to roll back to savepoint: {rollback_error}")
+                    # If the savepoint rollback fails, try a full rollback
+                    try:
+                        conn.rollback()
+                        logger.warning("Performed full transaction rollback")
+                    except Exception as conn_error:
+                        logger.error(f"Failed to roll back transaction: {str(conn_error)}")
         
         # Final commit
         try:
@@ -4157,913 +3586,561 @@ def process_kwf_dictionary(cur, filename: str):
 @with_transaction(commit=True)
 def process_tagalog_words(cur, filename: str):
     """
-    Process tagalog-words.json with enhanced source tracking and metadata handling.
-    
-    Args:
-        cur: Database cursor
-        filename: Path to the tagalog-words.json file
-        
-    Returns:
-        None
+    Process tagalog-words.json with the enhanced structure:
+    {
+        "word1": {
+            "word": "word1",
+            "pronunciation": "...",
+            "alternate_pronunciation": "...",
+            "part_of_speech": [["pos1"], ["pos2"]],
+            "domains": ["domain1", "domain2"],
+            "etymology": {
+                "raw": "[ Lang ]",
+                "languages": ["Lang"],
+                "full_language_names": ["Language"],
+                "other_terms": [],
+                "terms": []
+            },
+            "derivative": "derivative1, derivative2",
+            "senses": [
+                {
+                    "counter": "1",
+                    "definition": "definition text",
+                    "example": {
+                        "raw": "example text",
+                        "examples": ["example1", "example2"]
+                    },
+                    "synonyms": ["SYN1", "SYN2"],
+                    "references": ["REF1", "REF2"],
+                    "variants": ["var1", "var2"],
+                    "etymology": {...},
+                    "part_of_speech": ["pos"],
+                    "affix_forms": ["form1", "form2"],
+                    "affix_types": ["type1", "type2"]
+                }
+            ]
+        },
+        "word2": { ... }
+    }
     """
-    # Standardize source identifier consistently
-    raw_source_identifier = os.path.basename(filename)
-    source_identifier = SourceStandardization.standardize_sources(raw_source_identifier)
-    
-    # Make sure we have a valid source identifier
-    if not source_identifier:
-        source_identifier = "diksiyonaryo.ph"  # Default fallback for this format
-    
     logger.info(f"Processing Tagalog words from: {filename}")
-    logger.info(f"Using standardized source identifier: '{source_identifier}'")
-    
-    language_code = 'tl'  # Tagalog words are in Tagalog
+    source = SourceStandardization.standardize_sources('tagalog-words.json')
+    language_code = 'tl'
     romanizer = BaybayinRomanizer()
 
-    # Statistics tracking
-    stats = {
-        "total_entries": 0,
-        "processed_entries": 0,
-        "skipped_entries": 0,
-        "error_entries": 0,
-        "definitions_added": 0,
-        "relations_added": 0,
-        "synonyms_added": 0,
-        "references_added": 0,
-        "variants_added": 0,
-        "etymologies_processed": 0,
-        "baybayin_added": 0,
-        "source_updates": 0
-    }
-
     try:
-        # Load and parse the data file
         with open(filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
             
-        # Create source metadata
-        source_metadata = {
-            "name": "diksiyonaryo.ph",
-            "file": raw_source_identifier,
-            "type": "tagalog_words",
-            "processed_timestamp": datetime.now().isoformat()
-        }
+        # Track statistics
+        total_entries = len(data)
+        processed_entries = 0
+        skipped_entries = 0
+        definitions_added = 0
+        relations_added = 0
+        synonyms_added = 0
+        references_added = 0
+        variants_added = 0
+        etymologies_processed = 0
+        errors = 0
         
-        # Convert to JSON string for storage
-        source_metadata_json = json.dumps(source_metadata)
+        logger.info(f"Found {total_entries} entries to process")
         
-        # Initialize statistics
-        stats["total_entries"] = len(data)
-        logger.info(f"Found {stats['total_entries']} entries to process")
-        
-        # Process each word entry with progress bar
-        with tqdm(total=stats["total_entries"], desc=f"Processing {source_identifier}", unit="word") as pbar:
-            for lemma, entry_data in data.items():
-                # Create savepoint for this entry
-                savepoint_name = f"tagalog_word_{hash(lemma)}"
-                try:
-                    cur.execute(f"SAVEPOINT {savepoint_name}")
+        # Process each word entry
+        for lemma, entry_data in tqdm(data.items(), desc="Processing Tagalog words"):
+            # Use an inner transaction for each entry
+            try:
+                # Ensure the entry has the basic required fields
+                if not entry_data or not isinstance(entry_data, dict):
+                    logger.warning(f"Skipping invalid entry for '{lemma}': not a dictionary")
+                    skipped_entries += 1
+                    continue
+                
+                # Create or get word ID
+                word_id = get_or_create_word_id(cur, lemma, language_code=language_code)
+                
+                # Extract tags and domains
+                tags = []
+                
+                # Add domains as tags if present
+                if 'domains' in entry_data and entry_data['domains']:
+                    tags.extend(entry_data['domains'])
+                
+                # Update word with tags if present
+                if tags:
+                    cur.execute("""
+                        UPDATE words 
+                        SET tags = %s
+                        WHERE id = %s
+                    """, (", ".join(tags), word_id))
+                
+                # Add pronunciation data if available
+                pronunciation_data = {}
+                if 'pronunciation' in entry_data and entry_data['pronunciation']:
+                    pronunciation_data['primary'] = entry_data['pronunciation']
+                if 'alternate_pronunciation' in entry_data and entry_data['alternate_pronunciation']:
+                    pronunciation_data['alternate'] = entry_data['alternate_pronunciation']
+                
+                if pronunciation_data:
+                    cur.execute("""
+                        UPDATE words
+                        SET pronunciation_data = %s
+                        WHERE id = %s
+                    """, (json.dumps(pronunciation_data), word_id))
+                
+                # Process derivative information
+                if 'derivative' in entry_data and entry_data['derivative']:
+                    derivative_text = entry_data['derivative']
+                    # Store as metadata
+                    cur.execute("""
+                        UPDATE words
+                        SET word_metadata = jsonb_set(
+                            COALESCE(word_metadata, '{}'::jsonb),
+                            '{derivative}',
+                            %s::jsonb
+                        )
+                        WHERE id = %s
+                    """, (json.dumps(derivative_text), word_id))
                     
-                    # Ensure the entry has the basic required fields
-                    if not entry_data or not isinstance(entry_data, dict):
-                        logger.warning(f"Skipping invalid entry for '{lemma}': not a dictionary")
-                        stats["skipped_entries"] += 1
-                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue
-                    
-                    # Prepare word metadata
-                    word_metadata = {
-                        "source": source_identifier,
-                        "processed_timestamp": datetime.now().isoformat()
-                    }
-                    
-                    # Add domain information if available
-                    if 'domains' in entry_data and entry_data['domains']:
-                        word_metadata["domains"] = entry_data['domains']
-                    
-                    # Add part of speech info if available at word level
-                    if 'part_of_speech' in entry_data and entry_data['part_of_speech']:
-                        word_metadata["part_of_speech"] = entry_data['part_of_speech']
-                    
-                    # Extract tags and domains
-                    tags = []
-                    
-                    # Add domains as tags if present
-                    if 'domains' in entry_data and entry_data['domains']:
-                        tags.extend(entry_data['domains'])
-                    
-                    # Add tag string to metadata if present
-                    if tags:
-                        word_metadata["tags"] = tags
-                    
-                    # Add pronunciation data if available
-                    if 'pronunciation' in entry_data and entry_data['pronunciation']:
-                        word_metadata["pronunciation"] = {
-                            'primary': entry_data['pronunciation']
-                        }
-                        if 'alternate_pronunciation' in entry_data and entry_data['alternate_pronunciation']:
-                            word_metadata["pronunciation"]["alternate"] = entry_data['alternate_pronunciation']
-                    
-                    # Process derivative information
-                    if 'derivative' in entry_data and entry_data['derivative']:
-                        word_metadata["derivative"] = entry_data['derivative']
-                    
-                    # Convert metadata to JSON
-                    word_metadata_json = json.dumps(word_metadata)
-                    
-                    # Create or get word ID with enhanced metadata
-                    word_id = get_or_create_word_id(
-                        cur, 
-                        lemma, 
-                        language_code=language_code,
-                        source_identifier=source_identifier,
-                        word_metadata=word_metadata_json,
-                        tags=", ".join(tags) if tags else None
-                    )
-                    
-                    if not word_id:
-                        logger.error(f"Failed to create or get word ID for '{lemma}'")
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                        stats["error_entries"] += 1
-                        pbar.update(1)
-                        continue
-                    
-                    # Process pronunciation data directly
-                    pronunciation_data = {}
-                    if 'pronunciation' in entry_data and entry_data['pronunciation']:
-                        pronunciation_data['primary'] = entry_data['pronunciation']
-                        
-                        # Create structured pronunciation object
-                        pron_obj = {
-                            "value": entry_data['pronunciation'],
-                            "type": "ipa",  # Assuming IPA format
-                            "metadata": {
-                                "source": source_identifier
-                            }
-                        }
-                        
-                        # Insert pronunciation
-                        insert_pronunciation(cur, word_id, pron_obj, source_identifier)
-                        
-                    if 'alternate_pronunciation' in entry_data and entry_data['alternate_pronunciation']:
-                        pronunciation_data['alternate'] = entry_data['alternate_pronunciation']
-                        
-                        # Create structured alternate pronunciation object
-                        alt_pron_obj = {
-                            "value": entry_data['alternate_pronunciation'],
-                            "type": "ipa",  # Assuming IPA format
-                            "metadata": {
-                                "source": source_identifier,
-                                "is_alternate": True
-                            }
-                        }
-                        
-                        # Insert alternate pronunciation
-                        insert_pronunciation(cur, word_id, alt_pron_obj, source_identifier)
-                    
-                    # Process derivative information if available
-                    if 'derivative' in entry_data and entry_data['derivative']:
-                        derivative_text = entry_data['derivative']
-                        
-                        # Process derivative forms if they exist
-                        derivative_forms = derivative_text.split(',')
-                        for form_idx, form in enumerate(derivative_forms):
-                            form = form.strip()
-                            if form:
-                                # Create metadata for the derivative
-                                derivative_metadata = {
-                                    "source": source_identifier,
-                                    "derived_from": lemma,
-                                    "index": form_idx
-                                }
-                                
-                                # Determine relationship type
-                                rel_type = "derived"
-                                if " " in form:  # If form has type information
-                                    form_parts = form.split(' ')
-                                    if len(form_parts) > 1:
-                                        rel_type = form_parts[0]
-                                        form = ' '.join(form_parts[1:])
-                                        derivative_metadata["relationship_type"] = rel_type
-                                
+                    # Process derivative forms if they exist
+                    derivative_forms = derivative_text.split(',')
+                    for form in derivative_forms:
+                        form = form.strip()
+                        if form:
+                            # Check if it's a structured form with type
+                            form_parts = form.split(' ')
+                            if len(form_parts) > 1:
                                 try:
-                                    # Create the derivative word with metadata
-                                    derivative_id = get_or_create_word_id(
-                                        cur, 
-                                        form, 
-                                        language_code=language_code,
-                                        source_identifier=source_identifier,
-                                        word_metadata=json.dumps(derivative_metadata)
-                                    )
-                                    
-                                    # Create relation with metadata
-                                    rel_metadata = {
-                                        "source": source_identifier,
-                                        "derivative_text": derivative_text,
-                                        "index": form_idx,
-                                        "confidence": 85
-                                    }
-                                    
-                                    insert_relation(
-                                        cur, 
-                                        word_id, 
-                                        derivative_id, 
-                                        rel_type,
-                                        source_identifier=source_identifier,
-                                        metadata=rel_metadata
-                                    )
-                                    stats["relations_added"] += 1
+                                    derivative_id = get_or_create_word_id(cur, form, language_code=language_code)
+                                    insert_relation(cur, word_id, derivative_id, 'derived', sources=source)
+                                    relations_added += 1  # Increment relations counter
                                 except Exception as e:
                                     logger.error(f"Error processing derivative '{form}' for word '{lemma}': {str(e)}")
+                                    # Handle any transaction errors
+                                    try:
+                                        cur.connection.rollback()
+                                    except Exception as rollback_error:
+                                        logger.error(f"Error during rollback for derivative: {rollback_error}")
+                
+                # Process etymology at word level
+                if 'etymology' in entry_data and entry_data['etymology'] and isinstance(entry_data['etymology'], dict):
+                    etymology_data = entry_data['etymology']
+                    etymology_text = etymology_data.get('raw', '')
                     
-                    # Process etymology with enhanced metadata
-                    if 'etymology' in entry_data and entry_data['etymology'] and isinstance(entry_data['etymology'], dict):
-                        etymology_data = entry_data['etymology']
-                        etymology_text = etymology_data.get('raw', '')
-                        
-                        # Extract structured etymology data with source
-                        etymology_structure = {
-                            'source': source_identifier,
-                            'languages': etymology_data.get('languages', []),
-                            'full_language_names': etymology_data.get('full_language_names', []),
-                            'other_terms': etymology_data.get('other_terms', []),
-                            'terms': etymology_data.get('terms', [])
-                        }
-                        
-                        if etymology_text:
+                    # Extract structured etymology data
+                    etymology_structure = {
+                        'languages': etymology_data.get('languages', []),
+                        'full_language_names': etymology_data.get('full_language_names', []),
+                        'other_terms': etymology_data.get('other_terms', []),
+                        'terms': etymology_data.get('terms', [])
+                    }
+                    
+                    if etymology_text:
+                        try:
+                            language_codes = ", ".join(etymology_data.get('languages', []))
+                            insert_etymology(
+                                cur, 
+                                word_id, 
+                                etymology_text, 
+                                etymology_structure=json.dumps(etymology_structure),
+                                language_codes=language_codes,
+                                sources=source
+                            )
+                            etymologies_processed += 1
+                        except Exception as e:
+                            logger.error(f"Error processing etymology for word '{lemma}': {str(e)}")
+                            # Handle any transaction errors
                             try:
-                                language_codes = ", ".join(etymology_data.get('languages', []))
-                                insert_etymology(
+                                cur.connection.rollback()
+                            except Exception as rollback_error:
+                                logger.error(f"Error during rollback for etymology: {rollback_error}")
+                
+                # Process senses (definitions)
+                if 'senses' in entry_data and entry_data['senses']:
+                    for sense in entry_data['senses']:
+                        if not isinstance(sense, dict) or 'definition' not in sense:
+                            continue
+                        
+                        definition_text = sense.get('definition', '').strip()
+                        if not definition_text:
+                            continue
+                        
+                        # Add counter information if present
+                        counter = sense.get('counter', '')
+                        if counter:
+                            definition_text = f"[{counter}] {definition_text}"
+                        
+                        # Extract part of speech for this specific sense
+                        pos = ''
+                        if 'part_of_speech' in sense and sense['part_of_speech']:
+                            pos = ", ".join(sense['part_of_speech'])
+                        # Fall back to entry-level part of speech if not defined at sense level
+                        elif 'part_of_speech' in entry_data:
+                            pos_list = entry_data['part_of_speech']
+                            if pos_list and isinstance(pos_list, list):
+                                # Flatten potentially nested arrays
+                                flat_pos = []
+                                for pos_item in pos_list:
+                                    if isinstance(pos_item, list):
+                                        flat_pos.extend(pos_item)
+                                    else:
+                                        flat_pos.append(pos_item)
+                                pos = ", ".join(flat_pos)
+                        
+                        # Extract examples if present
+                        examples = []
+                        example_data = sense.get('example', {})
+                        if isinstance(example_data, dict):
+                            # Try to get pre-parsed examples
+                            if 'examples' in example_data and example_data['examples']:
+                                examples.extend(example_data['examples'])
+                            # If no pre-parsed examples, use the raw text
+                            elif 'raw' in example_data and example_data['raw']:
+                                examples.append(example_data['raw'])
+                        
+                        # Combine examples into a single string
+                        examples_text = "; ".join(examples) if examples else None
+                        
+                        # Extract usage notes if present
+                        usage_notes = None
+                        if 'usage_notes' in sense and sense['usage_notes']:
+                            usage_notes = sense['usage_notes']
+                        
+                        # Extract category if present
+                        category = None
+                        if 'category' in sense and sense['category']:
+                            category = sense['category']
+                        
+                        # Get additional tags specific to this sense
+                        sense_tags = []
+                        if 'tags' in sense and sense['tags']:
+                            sense_tags.extend(sense['tags'])
+                        
+                        # Add synonyms as tags
+                        synonyms = sense.get('synonyms', [])
+                        if synonyms:
+                            sense_tags.append(f"synonyms:{','.join(synonyms)}")
+                        
+                        # Add variants as tags
+                        variants = sense.get('variants', [])
+                        if variants:
+                            sense_tags.append(f"variants:{','.join(variants)}")
+                        
+                        # Add references as tags
+                        references = sense.get('references', [])
+                        if references:
+                            sense_tags.append(f"references:{','.join(references)}")
+                        
+                        # Create the final tags string
+                        tags_str = ", ".join(sense_tags) if sense_tags else None
+                        
+                        # Insert the definition
+                        try:
+                            definition_id = insert_definition(
+                                cur,
+                                word_id,
+                                definition_text,
+                                part_of_speech=pos,
+                                examples=examples_text,
+                                usage_notes=usage_notes,
+                                category=category,
+                                tags=tags_str,
+                                sources=source
+                            )
+                            
+                            if definition_id:
+                                definitions_added += 1
+                        except Exception as e:
+                            logger.error(f"Error inserting definition for word '{lemma}': {str(e)}")
+                            # Handle any transaction errors
+                            try:
+                                cur.connection.rollback()
+                            except Exception as rollback_error:
+                                logger.error(f"Error during rollback for definition: {rollback_error}")
+                            continue  # Skip the rest of this definition processing
+                        
+                        # Process synonyms as relationships
+                        for synonym in synonyms:
+                            try:
+                                synonym_id = get_or_create_word_id(cur, synonym, language_code=language_code)
+                                if synonym_id != word_id:  # Avoid self-relationships
+                                    insert_relation(
+                                        cur,
+                                        word_id,
+                                        synonym_id,
+                                        'synonym',
+                                        sources=source
+                                    )
+                                    synonyms_added += 1
+                                    relations_added += 1  # Increment general relations counter
+                                else:
+                                    logger.warning(f"Skipping self-relationship for word ID {word_id}")
+                            except Exception as e:
+                                logger.error(f"Error processing synonym '{synonym}' for word '{lemma}': {str(e)}")
+                                # Handle any transaction errors
+                                try:
+                                    cur.connection.rollback()
+                                except Exception as rollback_error:
+                                    logger.error(f"Error during rollback for synonym: {rollback_error}")
+                        
+                        # Process variants as relationships
+                        for variant in variants:
+                            try:
+                                variant_id = get_or_create_word_id(cur, variant, language_code=language_code)
+                                if variant_id != word_id:  # Avoid self-relationships
+                                    insert_relation(
+                                        cur,
+                                        word_id,
+                                        variant_id,
+                                        'variant',
+                                        sources=source
+                                    )
+                                    variants_added += 1
+                                    relations_added += 1  # Increment general relations counter
+                                else:
+                                    logger.warning(f"Skipping self-relationship for word ID {word_id}")
+                            except Exception as e:
+                                logger.error(f"Error processing variant '{variant}' for word '{lemma}': {str(e)}")
+                                # Handle any transaction errors
+                                try:
+                                    cur.connection.rollback()
+                                except Exception as rollback_error:
+                                    logger.error(f"Error during rollback for variant: {rollback_error}")
+                        
+                        # Process references as see-also relationships
+                        for reference in references:
+                            try:
+                                reference_id = get_or_create_word_id(cur, reference, language_code=language_code)
+                                if reference_id != word_id:  # Avoid self-relationships
+                                    insert_relation(
+                                        cur,
+                                        word_id,
+                                        reference_id,
+                                        'see_also',
+                                        sources=source
+                                    )
+                                    references_added += 1
+                                    relations_added += 1  # Increment general relations counter
+                                else:
+                                    logger.warning(f"Skipping self-relationship for word ID {word_id}")
+                            except Exception as e:
+                                logger.error(f"Error processing reference '{reference}' for word '{lemma}': {str(e)}")
+                                # Handle any transaction errors
+                                try:
+                                    cur.connection.rollback()
+                                except Exception as rollback_error:
+                                    logger.error(f"Error during rollback for reference: {rollback_error}")
+                
+                # Process baybayin forms
+                if 'baybayin' in entry_data and entry_data['baybayin']:
+                    baybayin_text = entry_data['baybayin']
+                    clean_baybayin = ''.join(c for c in baybayin_text if romanizer.is_baybayin(c))
+                    
+                    if clean_baybayin:
+                        try:
+                            romanized = romanizer.romanize(clean_baybayin)
+                            
+                            # Update the word with baybayin data
+                            cur.execute("""
+                                UPDATE words
+                                SET has_baybayin = true,
+                                    baybayin_form = %s,
+                                    romanized_form = %s
+                                WHERE id = %s
+                            """, (clean_baybayin, romanized, word_id))
+                        except Exception as e:
+                            logger.error(f"Error processing baybayin for word '{lemma}': {str(e)}")
+                            # Handle any transaction errors
+                            try:
+                                cur.connection.rollback()
+                            except Exception as rollback_error:
+                                logger.error(f"Error during rollback for baybayin: {rollback_error}")
+                
+                # Process affix information
+                if 'affix_forms' in entry_data and entry_data['affix_forms'] and 'affix_types' in entry_data and entry_data['affix_types']:
+                    affix_forms = entry_data['affix_forms']
+                    affix_types = entry_data['affix_types']
+                    
+                    # Process each affix form
+                    for i, form in enumerate(affix_forms):
+                        clean_form = form.strip()
+                        if clean_form:
+                            # Get the affix type if available
+                            affix_type = affix_types[i] if i < len(affix_types) else "unknown"
+                            
+                            try:
+                                # Create the affixed word
+                                affixed_id = get_or_create_word_id(cur, clean_form, language_code=language_code)
+                                
+                                # Create affixation relationship
+                                insert_affixation(
+                                    cur,
+                                    root_id=word_id,
+                                    affixed_id=affixed_id,
+                                    affix_type=affix_type,
+                                    sources=source
+                                )
+                                
+                                # Also create a relation
+                                # Define metadata for the relationship
+                                metadata = {"affix_type": affix_type}
+                                insert_relation(
                                     cur, 
                                     word_id, 
-                                    etymology_text, 
-                                    etymology_structure=json.dumps(etymology_structure),
-                                    language_codes=language_codes,
-                                    sources=source_identifier
+                                    affixed_id, 
+                                    'derived', 
+                                    sources=source,
+                                    metadata=metadata
                                 )
-                                stats["etymologies_processed"] += 1
+                                relations_added += 1  # Increment general relations counter
                             except Exception as e:
-                                logger.error(f"Error processing etymology for word '{lemma}': {str(e)}")
-                    
-                    # Process senses (definitions) with enhanced metadata
-                    if 'senses' in entry_data and entry_data['senses']:
-                        for sense_idx, sense in enumerate(entry_data['senses']):
-                            if not isinstance(sense, dict) or 'definition' not in sense:
-                                continue
-                            
-                            definition_text = sense.get('definition', '').strip()
-                            if not definition_text:
-                                continue
-                            
-                            # Add counter information if present
-                            counter = sense.get('counter', '')
-                            if counter:
-                                definition_text = f"[{counter}] {definition_text}"
-                            
-                            # Extract part of speech for this specific sense
-                            pos = ''
-                            if 'part_of_speech' in sense and sense['part_of_speech']:
-                                pos = ", ".join(sense['part_of_speech'])
-                            # Fall back to entry-level part of speech if not defined at sense level
-                            elif 'part_of_speech' in entry_data:
-                                pos_list = entry_data['part_of_speech']
-                                if pos_list and isinstance(pos_list, list):
-                                    # Flatten potentially nested arrays
-                                    flat_pos = []
-                                    for pos_item in pos_list:
-                                        if isinstance(pos_item, list):
-                                            flat_pos.extend(pos_item)
-                                        else:
-                                            flat_pos.append(pos_item)
-                                    pos = ", ".join(flat_pos)
-                            
-                            # Extract examples with enhanced metadata
-                            examples = []
-                            example_data = sense.get('example', {})
-                            if isinstance(example_data, dict):
-                                # Try to get pre-parsed examples
-                                if 'examples' in example_data and example_data['examples']:
-                                    for ex_idx, ex in enumerate(example_data['examples']):
-                                        examples.append({
-                                            "text": ex,
-                                            "source": source_identifier,
-                                            "index": ex_idx
-                                        })
-                                # If no pre-parsed examples, use the raw text
-                                elif 'raw' in example_data and example_data['raw']:
-                                    examples.append({
-                                        "text": example_data['raw'],
-                                        "source": source_identifier,
-                                        "raw": True
-                                    })
-                            
-                            # Create definition metadata
-                            def_metadata = {
-                                "source": source_identifier,
-                                "sense_index": sense_idx,
-                                "counter": counter if counter else None
-                            }
-                            
-                            # Add category if present
-                            if 'category' in sense and sense['category']:
-                                def_metadata["category"] = sense['category']
-                            
-                            # Add usage notes if present
-                            if 'usage_notes' in sense and sense['usage_notes']:
-                                def_metadata["usage_notes"] = sense['usage_notes']
-                            
-                            # Add sense-specific tags
-                            sense_tags = []
-                            if 'tags' in sense and sense['tags']:
-                                sense_tags.extend(sense['tags'])
-                                def_metadata["tags"] = sense['tags']
-                            
-                            # Create the final tags string
-                            tags_str = ", ".join(sense_tags) if sense_tags else None
-                            
-                            # Insert the definition with enhanced metadata
-                            try:
-                                definition_id = insert_definition(
-                                    cur,
-                                    word_id,
-                                    definition_text,
-                                    part_of_speech=pos,
-                                    examples=json.dumps(examples) if examples else None,
-                                    usage_notes=sense.get('usage_notes'),
-                                    tags=tags_str,
-                                    source_identifier=source_identifier,
-                                    metadata=json.dumps(def_metadata)
-                                )
-                                
-                                if definition_id:
-                                    stats["definitions_added"] += 1
-                                    
-                                    # Process synonyms with enhanced metadata
-                                    synonyms = sense.get('synonyms', [])
-                                    for syn_idx, synonym in enumerate(synonyms):
-                                        try:
-                                            # Create metadata for synonym relationship
-                                            syn_metadata = {
-                                                "source": source_identifier,
-                                                "definition_id": definition_id,
-                                                "index": syn_idx,
-                                                "confidence": 90  # High confidence for explicit synonyms
-                                            }
-                                            
-                                            # Create the synonym word
-                                            synonym_id = get_or_create_word_id(
-                                                cur, 
-                                                synonym, 
-                                                language_code=language_code,
-                                                source_identifier=source_identifier
-                                            )
-                                            
-                                            if synonym_id != word_id:  # Avoid self-relationships
-                                                insert_relation(
-                                                    cur,
-                                                    word_id,
-                                                    synonym_id,
-                                                    'synonym',
-                                                    source_identifier=source_identifier,
-                                                    metadata=syn_metadata
-                                                )
-                                                stats["synonyms_added"] += 1
-                                                stats["relations_added"] += 1
-                                        except Exception as e:
-                                            logger.error(f"Error processing synonym '{synonym}' for word '{lemma}': {str(e)}")
-                                    
-                                    # Process variants with enhanced metadata
-                                    variants = sense.get('variants', [])
-                                    for var_idx, variant in enumerate(variants):
-                                        try:
-                                            # Create metadata for variant relationship
-                                            var_metadata = {
-                                                "source": source_identifier,
-                                                "definition_id": definition_id,
-                                                "index": var_idx,
-                                                "confidence": 85
-                                            }
-                                            
-                                            # Create the variant word
-                                            variant_id = get_or_create_word_id(
-                                                cur, 
-                                                variant, 
-                                                language_code=language_code,
-                                                source_identifier=source_identifier
-                                            )
-                                            
-                                            if variant_id != word_id:  # Avoid self-relationships
-                                                insert_relation(
-                                                    cur,
-                                                    word_id,
-                                                    variant_id,
-                                                    'variant',
-                                                    source_identifier=source_identifier,
-                                                    metadata=var_metadata
-                                                )
-                                                stats["variants_added"] += 1
-                                                stats["relations_added"] += 1
-                                        except Exception as e:
-                                            logger.error(f"Error processing variant '{variant}' for word '{lemma}': {str(e)}")
-                                    
-                                    # Process references with enhanced metadata
-                                    references = sense.get('references', [])
-                                    for ref_idx, reference in enumerate(references):
-                                        try:
-                                            # Create metadata for reference relationship
-                                            ref_metadata = {
-                                                "source": source_identifier,
-                                                "definition_id": definition_id,
-                                                "index": ref_idx,
-                                                "confidence": 80
-                                            }
-                                            
-                                            # Create the reference word
-                                            reference_id = get_or_create_word_id(
-                                                cur, 
-                                                reference, 
-                                                language_code=language_code,
-                                                source_identifier=source_identifier
-                                            )
-                                            
-                                            if reference_id != word_id:  # Avoid self-relationships
-                                                insert_relation(
-                                                    cur,
-                                                    word_id,
-                                                    reference_id,
-                                                    'see_also',
-                                                    source_identifier=source_identifier,
-                                                    metadata=ref_metadata
-                                                )
-                                                stats["references_added"] += 1
-                                                stats["relations_added"] += 1
-                                        except Exception as e:
-                                            logger.error(f"Error processing reference '{reference}' for word '{lemma}': {str(e)}")
-                            except Exception as e:
-                                logger.error(f"Error inserting definition for word '{lemma}': {str(e)}")
-                                continue
-                                    
-                    # Process baybayin forms with metadata
-                    if 'baybayin' in entry_data and entry_data['baybayin']:
-                        baybayin_text = entry_data['baybayin']
-                        clean_baybayin = ''.join(c for c in baybayin_text if romanizer.is_baybayin(c))
-                        
-                        if clean_baybayin:
-                            try:
-                                romanized = romanizer.romanize(clean_baybayin)
-                                
-                                # Update the word with baybayin data and source metadata
-                                cur.execute("""
-                                    UPDATE words
-                                    SET has_baybayin = true,
-                                        baybayin_form = %s,
-                                        romanized_form = %s,
-                                        word_metadata = jsonb_set(
-                                            COALESCE(word_metadata, '{}'::jsonb),
-                                            '{baybayin_source}',
-                                            %s::jsonb
-                                        )
-                                    WHERE id = %s
-                                """, (
-                                    clean_baybayin, 
-                                    romanized, 
-                                    json.dumps(source_identifier),
-                                    word_id
-                                ))
-                                stats["baybayin_added"] += 1
-                            except Exception as e:
-                                logger.error(f"Error processing baybayin for word '{lemma}': {str(e)}")
-                    
-                    # Process affix information with enhanced metadata
-                    if 'affix_forms' in entry_data and entry_data['affix_forms'] and 'affix_types' in entry_data and entry_data['affix_types']:
-                        affix_forms = entry_data['affix_forms']
-                        affix_types = entry_data['affix_types']
-                        
-                        # Process each affix form
-                        for i, form in enumerate(affix_forms):
-                            clean_form = form.strip()
-                            if clean_form:
-                                # Get the affix type if available
-                                affix_type = affix_types[i] if i < len(affix_types) else "unknown"
-                                
+                                logger.error(f"Error processing affix form '{clean_form}' for word '{lemma}': {str(e)}")
+                                # Handle any transaction errors
                                 try:
-                                    # Create metadata for affixed word
-                                    affixed_metadata = {
-                                        "source": source_identifier,
-                                        "base_word": lemma,
-                                        "affix_type": affix_type,
-                                        "index": i
-                                    }
-                                    
-                                    # Create the affixed word with metadata
-                                    affixed_id = get_or_create_word_id(
-                                        cur, 
-                                        clean_form, 
-                                        language_code=language_code,
-                                        source_identifier=source_identifier,
-                                        word_metadata=json.dumps(affixed_metadata)
-                                    )
-                                    
-                                    # Create affixation relationship
-                                    insert_affixation(
-                                        cur,
-                                        root_id=word_id,
-                                        affixed_id=affixed_id,
-                                        affix_type=affix_type,
-                                        source_identifier=source_identifier
-                                    )
-                                    
-                                    # Also create a relation with metadata
-                                    rel_metadata = {
-                                        "source": source_identifier,
-                                        "affix_type": affix_type,
-                                        "index": i,
-                                        "confidence": 90  # High confidence for explicit affixation
-                                    }
-                                    
-                                    insert_relation(
-                                        cur, 
-                                        word_id, 
-                                        affixed_id, 
-                                        'derived', 
-                                        source_identifier=source_identifier,
-                                        metadata=rel_metadata
-                                    )
-                                    stats["relations_added"] += 1
-                                except Exception as e:
-                                    logger.error(f"Error processing affix form '{clean_form}' for word '{lemma}': {str(e)}")
+                                    cur.connection.rollback()
+                                except Exception as rollback_error:
+                                    logger.error(f"Error during rollback for affix form: {rollback_error}")
+                
+                processed_entries += 1
+                if processed_entries % 1000 == 0:
+                    logger.info(f"Processed {processed_entries}/{total_entries} entries")
                     
-                    stats["processed_entries"] += 1
-                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                except Exception as e:
-                    stats["error_entries"] += 1
-                    logger.error(f"Error processing entry '{lemma}': {str(e)}")
-                    # Roll back to savepoint
-                    try:
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    except Exception as rollback_error:
-                        logger.error(f"Failed to roll back to savepoint for entry '{lemma}': {rollback_error}")
-                        # If the savepoint rollback fails, try a full rollback
-                        try:
-                            cur.connection.rollback()
-                            logger.warning("Performed full transaction rollback")
-                        except Exception as conn_error:
-                            logger.error(f"Failed to roll back transaction: {str(conn_error)}")
-                finally:
-                    pbar.update(1)
-                    # Commit periodically to avoid large transactions
-                    if stats["processed_entries"] % 500 == 0:
-                        try:
-                            cur.connection.commit()
-                            logger.info(f"Committed after processing {stats['processed_entries']} entries")
-                        except Exception as commit_error:
-                            logger.error(f"Error during periodic commit: {str(commit_error)}")
-        
-        # Log detailed statistics
+            except Exception as e:
+                errors += 1
+                logger.error(f"Error processing entry '{lemma}': {str(e)}")
+                # Don't continue with an aborted transaction
+                try:
+                    # Explicitly roll back the transaction to ensure it's not in aborted state
+                    cur.connection.rollback()
+                    logger.info(f"Successfully rolled back transaction for entry '{lemma}'")
+                except Exception as rollback_error:
+                    logger.error(f"Failed to roll back transaction for entry '{lemma}': {rollback_error}")
+                
+        # Log statistics
         logger.info(f"Tagalog words processing complete:")
-        logger.info(f"  Total entries: {stats['total_entries']}")
-        logger.info(f"  Processed: {stats['processed_entries']}")
-        logger.info(f"  Skipped: {stats['skipped_entries']}")
-        logger.info(f"  Errors: {stats['error_entries']}")
-        logger.info(f"  Definitions added: {stats['definitions_added']}")
-        logger.info(f"  Synonyms added: {stats['synonyms_added']}")
-        logger.info(f"  References added: {stats['references_added']}")
-        logger.info(f"  Variants added: {stats['variants_added']}")
-        logger.info(f"  Relations added: {stats['relations_added']}")
-        logger.info(f"  Etymologies processed: {stats['etymologies_processed']}")
-        logger.info(f"  Baybayin forms added: {stats['baybayin_added']}")
+        logger.info(f"  Total entries: {total_entries}")
+        logger.info(f"  Processed: {processed_entries}")
+        logger.info(f"  Skipped: {skipped_entries}")
+        logger.info(f"  Errors: {errors}")
+        logger.info(f"  Definitions added: {definitions_added}")
+        logger.info(f"  Synonyms added: {synonyms_added}")
+        logger.info(f"  References added: {references_added}")
+        logger.info(f"  Variants added: {variants_added}")
+        logger.info(f"  Relations added: {relations_added}")
+        logger.info(f"  Etymologies processed: {etymologies_processed}")
         
     except Exception as e:
         logger.error(f"Error processing Tagalog words file: {str(e)}")
-        # Ensure we roll back the overall transaction
+        # Ensure we roll back the overall transaction too
         try:
             cur.connection.rollback()
         except Exception as rollback_error:
             logger.error(f"Failed to roll back main transaction: {rollback_error}")
         raise
-    
-@with_transaction(commit=False)  # Manage transactions manually
+
+@with_transaction(commit=True)
 def process_root_words_cleaned(cur, filename: str):
-    """
-    Process root words data from a cleaned JSON file with improved source tracking.
+    """Process root words data from a cleaned JSON file."""
     
-    Args:
-        cur: Database cursor
-        filename: Path to the JSON file with root word data
-        
-    Returns:
-        None
-    """
-    # Standardize source identifier using the helper class
-    raw_source_identifier = os.path.basename(filename)
-    source_identifier = SourceStandardization.standardize_sources(raw_source_identifier)
+    with open(filename, 'r', encoding='utf-8') as f:
+        data = json.load(f)
     
-    # Make sure we have a valid source identifier
-    if not source_identifier:
-        source_identifier = "tagalog.com"  # Default fallback for root words
+    processed = 0
+    skipped = 0
+    errors = 0
+    source = SourceStandardization.standardize_sources(os.path.basename(filename))
+    total = len(data)
     
-    logger.info(f"Processing Root Words Cleaned: {filename}")
-    logger.info(f"Using standardized source identifier: '{source_identifier}'")
-    
-    language_code = 'tl'  # Root words are in Tagalog
-    conn = cur.connection  # Get connection for manual commit/rollback
-
-    # Statistics tracking
-    stats = {
-        "total_entries": 0,
-        "processed_roots": 0,
-        "processed_derived": 0,
-        "skipped_entries": 0,
-        "error_entries": 0,
-        "definitions_added": 0,
-        "relations_added": 0,
-        "affixations_added": 0
-    }
-
-    try:
-        # Load the JSON data
+    # Use a transaction per word to avoid aborting the entire process
+    for root_word, associated_words in tqdm(data.items(), desc="Processing root words"):
+        # Use a separate transaction for each root word
         try:
-            with open(filename, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-        except FileNotFoundError:
-            logger.error(f"File not found: {filename}")
-            return
-        except json.JSONDecodeError as e:
-            logger.error(f"Invalid JSON in file {filename}: {e}")
-            return
-        except Exception as e:
-            logger.error(f"Failed to read or parse {filename}: {e}", exc_info=True)
-            return
-
-        # Validate data format
-        if not isinstance(data, dict):
-            logger.error(f"Expected a dictionary format for {filename}, got {type(data)}. Skipping.")
-            return
-
-        # Create source metadata
-        source_metadata = {
-            "name": "tagalog.com",
-            "file": raw_source_identifier,
-            "type": "root_words",
-            "processed_timestamp": datetime.now().isoformat()
-        }
-        
-        # Convert to JSON string for storage
-        source_metadata_json = json.dumps(source_metadata)
-
-        total_entries = len(data)
-        stats["total_entries"] = total_entries
-        logger.info(f"Found {total_entries} root word entries to process in {source_identifier}")
-
-        # Process all entries with progress bar
-        with tqdm(total=total_entries, desc=f"Processing {source_identifier}", unit="root") as pbar:
-            for entry_index, (root_word, associated_words) in enumerate(data.items()):
-                savepoint_name = f"root_entry_{entry_index}"
-                try:
-                    cur.execute(f"SAVEPOINT {savepoint_name}")
-
-                    # Validate root word
-                    root_word = root_word.strip()
-                    if not root_word:
-                        stats["skipped_entries"] += 1
-                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue
-
-                    # Validate associated words format
-                    if not isinstance(associated_words, dict):
-                        logger.warning(f"Skipping root '{root_word}' (entry #{entry_index}) due to invalid associated words format (expected dict, got {type(associated_words)}).")
-                        stats["skipped_entries"] += 1
-                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue
-
-                    # Prepare root word metadata
-                    root_metadata = {
-                        "source": source_identifier,
-                        "is_root": True,
-                        "derived_words_count": len(associated_words) - (1 if root_word in associated_words else 0)
-                    }
-                    
-                    # Convert metadata to JSON
-                    root_metadata_json = json.dumps(root_metadata)
-
-                    # Create the root word with enhanced metadata
-                    root_id = get_or_create_word_id(
-                        cur,
-                        root_word,
-                        language_code=language_code,
-                        source_identifier=source_identifier,
-                        word_metadata=root_metadata_json
-                    )
-
-                    if root_id is None:
-                        stats["error_entries"] += 1
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue  # Skip processing derived if root failed
-
-                    # Process associated words (derived forms)
-                    for assoc_word, word_data in associated_words.items():
-                        assoc_word = assoc_word.strip()
-                        if not assoc_word or not isinstance(word_data, dict):
-                            continue  # Skip empty or invalid derived word entries
-
-                        # Don't process the root word itself within the derived loop
-                        if assoc_word == root_word:
-                            continue
-
-                        # Extract definition and word type (POS)
-                        definition = word_data.get('definition', '').strip()
-                        word_type = word_data.get('type', '').strip()  # This seems to be POS
-
-                        # Clean the definition
-                        if definition.endswith('...'):
-                            definition = definition[:-3].strip()
-
-                        # Determine affix type from the word comparison
-                        affix_type = 'derived'  # Default
-                        if len(assoc_word) > len(root_word):
-                            # Try to determine if it's a prefix, suffix, or infix
-                            if assoc_word.startswith(root_word):
-                                affix_type = 'suffix'
-                            elif assoc_word.endswith(root_word):
-                                affix_type = 'prefix'
-                            elif root_word in assoc_word:
-                                affix_type = 'infix'
-                            # Could be circumfix if both prefix and suffix
-                            if assoc_word.startswith('ka') and assoc_word.endswith('an'):
-                                affix_type = 'circumfix'
-                                
-                        # Prepare derived word metadata
-                        derived_metadata = {
-                            "source": source_identifier,
-                            "derived_from": root_word,
-                            "root_id": root_id,
-                            "affix_type": affix_type
-                        }
-                        
-                        # Add word type if available
-                        if word_type:
-                            derived_metadata["word_type"] = word_type
-                            
-                        # Convert metadata to JSON
-                        derived_metadata_json = json.dumps(derived_metadata)
-
-                        # Get/Create the derived word entry
-                        derived_id = get_or_create_word_id(
-                            cur, 
-                            assoc_word,
-                            language_code=language_code,
-                            source_identifier=source_identifier,
-                            root_word_id=root_id,
-                            word_metadata=derived_metadata_json
+            # Skip empty root word
+            if not root_word:
+                skipped += 1
+                continue
+            
+            # Get the root word ID
+            root_id = get_or_create_word_id(cur, root_word, 'tl')
+            
+            # Process associated words (which are the nested dictionaries)
+            for assoc_word, word_data in associated_words.items():
+                if not assoc_word or assoc_word == root_word:
+                    continue
+                
+                # Create the associated word
+                word_type = word_data.get('type', '')
+                definition = word_data.get('definition', '')
+                
+                # Remove the ellipsis from the end of the definition
+                if definition and definition.endswith('...'):
+                    definition = definition[:-3]
+                
+                standardized_pos = standardize_entry_pos(word_type)
+                
+                # Create the word entry
+                derived_id = get_or_create_word_id(cur, assoc_word, 'tl', root_word_id=root_id)
+                
+                # Add definition if available
+                if definition:
+                    try:
+                        insert_definition(
+                            cur, derived_id, definition, part_of_speech=standardized_pos,
+                            sources=source
                         )
-
-                        if derived_id is None:
-                            continue  # Skip this derived word if creation failed
-
-                        # Add definition if available with metadata
-                        if definition:
-                            # Create definition metadata
-                            def_metadata = {
-                                "source": source_identifier,
-                                "root_word": root_word,
-                                "derived_word": assoc_word,
-                                "affix_type": affix_type
-                            }
-                            
-                            definition_id = insert_definition(
-                                cur,
-                                derived_id,
-                                definition,
-                                source_identifier=source_identifier,
-                                part_of_speech=word_type,
-                                metadata=json.dumps(def_metadata)
-                            )
-                            if definition_id:
-                                stats["definitions_added"] += 1
-
-                        # Add DERIVED_FROM relation with metadata
-                        derived_rel_metadata = {
-                            "source": source_identifier,
-                            "affix_type": affix_type,
-                            "confidence": 95  # High confidence for these relations
-                        }
-                        
-                        if insert_relation(
-                            cur,
-                            from_word_id=derived_id,
-                            to_word_id=root_id,
-                            relation_type=RelationshipType.DERIVED_FROM,
-                            source_identifier=source_identifier,
-                            metadata=derived_rel_metadata
-                        ):
-                            stats["relations_added"] += 1
-
-                        # Add ROOT_OF relation with metadata
-                        root_rel_metadata = {
-                            "source": source_identifier,
-                            "affix_type": affix_type,
-                            "confidence": 95  # High confidence for these relations
-                        }
-                        
-                        if insert_relation(
-                            cur,
-                            from_word_id=root_id,
-                            to_word_id=derived_id,
-                            relation_type=RelationshipType.ROOT_OF,
-                            source_identifier=source_identifier,
-                            metadata=root_rel_metadata
-                        ):
-                            stats["relations_added"] += 1
-
-                        # Add affixation record with enhanced data
-                        if insert_affixation(
-                            cur,
-                            root_id=root_id,
-                            affixed_id=derived_id,
-                            affix_type=affix_type,
-                            source_identifier=source_identifier
-                        ):
-                            stats["affixations_added"] += 1
-
-                        stats["processed_derived"] += 1
-
-                    # Process the root word's own definition if present
-                    if root_word in associated_words and isinstance(associated_words[root_word], dict):
-                        root_data = associated_words[root_word]
-                        root_definition = root_data.get('definition', '').strip()
-                        root_pos = root_data.get('type', '').strip()  # POS
-
-                        # Clean the root definition
-                        if root_definition.endswith('...'):
-                            root_definition = root_definition[:-3].strip()
-
-                        if root_definition:
-                            # Create root definition metadata
-                            root_def_metadata = {
-                                "source": source_identifier,
-                                "is_root": True,
-                                "root_word": root_word
-                            }
-                            
-                            if insert_definition(
-                                cur,
-                                root_id,
-                                root_definition,
-                                source_identifier=source_identifier,
-                                part_of_speech=root_pos,
-                                metadata=json.dumps(root_def_metadata)
-                            ):
-                                stats["definitions_added"] += 1
-
-                    stats["processed_roots"] += 1
-                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")  # Commit this entry's changes
-
-                except psycopg2.Error as db_err:
-                    logger.error(f"Database error processing root entry #{entry_index} ('{root_word}') in {source_identifier}: {db_err}", exc_info=True)
-                    stats["error_entries"] += 1
+                    except Exception as def_error:
+                        logger.error(f"Error adding definition for {assoc_word}: {str(def_error)}")
+                        # Continue processing other words even if this definition fails
+                
+                # Add the relationship if it's not the root word itself
+                if assoc_word != root_word:
                     try:
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    except psycopg2.Error as rb_err:
-                        logger.error(f"Failed to rollback savepoint {savepoint_name}: {rb_err}. Attempting full transaction rollback.")
-                        conn.rollback()
-                except Exception as e:
-                    logger.error(f"Unexpected error processing root entry #{entry_index} ('{root_word}') in {source_identifier}: {e}", exc_info=True)
-                    stats["error_entries"] += 1
+                        insert_relation(
+                            cur, derived_id, root_id, RelationshipType.DERIVED_FROM, source
+                        )
+                    except Exception as rel_error:
+                        logger.error(f"Error adding relation for {assoc_word}: {str(rel_error)}")
+                        # Continue processing other words even if this relation fails
+            
+            # Also add the root word's own definition if it exists in the associated words
+            if root_word in associated_words:
+                root_data = associated_words[root_word]
+                root_type = root_data.get('type', '')
+                root_definition = root_data.get('definition', '')
+                
+                # Remove the ellipsis from the end of the root definition
+                if root_definition and root_definition.endswith('...'):
+                    root_definition = root_definition[:-3]
+                
+                standardized_pos = standardize_entry_pos(root_type)
+                
+                if root_definition:
                     try:
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    except psycopg2.Error as rb_err:
-                        logger.error(f"Failed to rollback savepoint {savepoint_name}: {rb_err}. Attempting full transaction rollback.")
-                        conn.rollback()
-                finally:
-                    pbar.update(1)
-                    # Commit periodically to avoid large transactions
-                    if (stats["processed_roots"] + stats["skipped_entries"] + stats["error_entries"]) % 500 == 0:
-                        logger.debug(f"Committing transaction after {stats['processed_roots'] + stats['skipped_entries'] + stats['error_entries']} root entries processed for {source_identifier}.")
-                        conn.commit()
-
-        # Final commit
-        conn.commit()
-        
-        # Log detailed statistics
-        logger.info(f"Finished processing {source_identifier}:")
-        logger.info(f"  Processed Roots: {stats['processed_roots']}")
-        logger.info(f"  Processed Derived Words: {stats['processed_derived']}")
-        logger.info(f"  Skipped Entries: {stats['skipped_entries']}")
-        logger.info(f"  Error Entries: {stats['error_entries']}")
-        logger.info(f"  Definitions Added: {stats['definitions_added']}")
-        logger.info(f"  Relations Added: {stats['relations_added']}")
-        logger.info(f"  Affixations Added: {stats['affixations_added']}")
-
-    except Exception as e:
-        logger.error(f"An unexpected error occurred while processing {filename}: {e}", exc_info=True)
-        try:
-            conn.rollback()  # Rollback on major file processing error
-        except Exception as rb_final_err:
-            logger.error(f"Failed to perform final rollback for {filename}: {rb_final_err}")
+                        insert_definition(
+                            cur, root_id, root_definition, part_of_speech=standardized_pos,
+                            sources=source
+                        )
+                    except Exception as root_def_error:
+                        logger.error(f"Error adding root definition for {root_word}: {str(root_def_error)}")
+                        # Continue even if the root definition fails
+            
+            processed += 1
+            
+            if processed % 100 == 0:
+                logger.info(f"Processed {processed}/{total} root word entries")
+                
+        except Exception as e:
+            errors += 1
+            logger.error(f"Error processing root word {root_word}: {str(e)}")
+            # Explicitly roll back the transaction for this word to ensure we can continue with others
+            try:
+                if hasattr(cur, 'connection') and hasattr(cur.connection, 'rollback'):
+                    cur.connection.rollback()
+            except Exception as rollback_error:
+                logger.error(f"Failed to roll back transaction: {str(rollback_error)}")
+    
+    logger.info(f"Root words processing complete: {processed} processed, {skipped} skipped, {errors} errors")
+    return processed, skipped, errors
 
 def extract_language_codes(etymology: str) -> list:
     """Extract ISO 639-1 language codes from etymology string."""
@@ -7282,327 +6359,164 @@ def get_language_code(language: str) -> str:
         safe_code = 'unk'  # Unknown language
     return safe_code
 
-@with_transaction(commit=False)  # Manage transactions manually
+@with_transaction(commit=True)
 def process_marayum_json(cur, filename: str) -> Tuple[int, int]:
-    """
-    Process a Marayum dictionary JSON file.
-    
-    Args:
-        cur: Database cursor
-        filename: Path to the JSON file to process
-        
-    Returns:
-        Tuple[int, int]: (processed_entries, error_entries)
-    """
-    # Standardize source identifier consistently
-    raw_source_identifier = os.path.basename(filename)
-    source_identifier = SourceStandardization.standardize_sources(raw_source_identifier)
-    
-    # Ensure we have a valid source identifier
-    if not source_identifier:
-        source_identifier = raw_source_identifier
-        
+    """Process a Marayum dictionary JSON file. Returns (processed_entries, error_entries)."""
     logger.info(f"Processing Marayum dictionary file: {filename}")
-    logger.info(f"Using standardized source identifier: '{source_identifier}'")
     
-    conn = cur.connection  # Get connection for manual commit/rollback
-
     stats = {
-        "total_entries": 0, "processed_entries": 0, "skipped_entries": 0, "error_entries": 0,
-        "definitions_added": 0, "pronunciations_added": 0, "examples_added": 0, "relations_added": 0,
-        "credits_added": 0, "source_updates": 0
+        "total_entries": 0,
+        "processed_entries": 0,
+        "skipped_entries": 0,
+        "error_entries": 0,
+        "definitions_added": 0,
+        "pronunciations_added": 0,
+        "examples_added": 0,
+        "relations_added": 0
     }
-
+    
     try:
-        # Normalize path and read file
+        # Normalize path
         filename = os.path.normpath(filename)
-        try:
-            with open(filename, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-        except FileNotFoundError:
-            logger.error(f"File not found: {filename}")
-            return 0, 1  # Indicate error
-        except json.JSONDecodeError as e:
-            logger.error(f"Invalid JSON in file {filename}: {e}")
-            return 0, 1  # Indicate error
-        except Exception as e:
-            logger.error(f"Failed to read or parse {filename}: {e}", exc_info=True)
-            return 0, 1  # Indicate error
-
-        # Validate dictionary structure
+        logger.debug(f"Normalized path: {filename}")
+        
+        with open(filename, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            logger.debug(f"Successfully loaded JSON from {filename}")
+            
         if not isinstance(data, dict) or 'dictionary_info' not in data or 'words' not in data:
-            logger.error(f"Invalid dictionary format in {filename}. Missing 'dictionary_info' or 'words' key.")
-            return 0, 1  # Indicate error
-
-        # Extract dictionary info and language code
-        dict_info = data.get('dictionary_info', {})
-        base_language = dict_info.get('base_language', '').strip()
-        language_code = get_language_code(base_language)  # Assumes get_language_code helper exists
-
-        # Add dictionary metadata to source info
-        source_metadata = {
-            "dictionary_name": dict_info.get('name', 'Unknown'),
-            "base_language": base_language,
-            "language_code": language_code,
-            "version": dict_info.get('version', 'Unknown'),
-            "processed_date": datetime.now().isoformat()
-        }
+            logger.error(f"Invalid dictionary format in {filename}")
+            return 0, 1
+            
+        # Get dictionary info
+        dict_info = data['dictionary_info']
+        base_language = dict_info.get('base_language', '')
+        language_code = get_language_code(base_language)
         
-        # Convert to JSON string for source info
-        source_metadata_json = json.dumps(source_metadata)
-
+        logger.debug(f"Base language: {base_language}, Language code: {language_code}")
+        
         if not language_code:
-            logger.error(f"Could not determine language code for base language '{base_language}' in {filename}. Skipping.")
-            return 0, 1  # Indicate error
-
-        logger.info(f"Processing Marayum {base_language} dictionary (Code: {language_code}) from {source_identifier}")
-
-        words = data.get('words', [])
-        if not isinstance(words, list):
-            logger.error(f"Expected 'words' key to contain a list in {filename}, got {type(words)}. Skipping.")
-            return 0, 1  # Indicate error
-
-        stats["total_entries"] = len(words)
-        if stats["total_entries"] == 0:
-            logger.warning(f"No words found in {filename}.")
-            return 0, 0  # No entries, no errors
-
-        # Process each entry with progress bar
-        with tqdm(total=stats["total_entries"], desc=f"Processing {os.path.basename(filename)}", unit="entry") as pbar:
-            for entry_index, entry in enumerate(words):
-                savepoint_name = f"marayum_entry_{entry_index}"
-                try:
-                    cur.execute(f"SAVEPOINT {savepoint_name}")
-
-                    # Validate entry format
-                    if not isinstance(entry, dict):
-                        logger.warning(f"Skipping invalid entry format (entry #{entry_index}) in {source_identifier}: not a dict.")
-                        stats["skipped_entries"] += 1
-                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue
-
-                    # Extract and validate word
-                    word = entry.get('word', '').strip()
-                    if not word:
-                        logger.warning(f"Skipping entry #{entry_index} with empty word in {source_identifier}.")
-                        stats["skipped_entries"] += 1
-                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue
-
-                    # Prepare word entry metadata
-                    word_metadata = {}
-                    
-                    # Add dictionary source info
-                    if dict_info.get('name'):
-                        word_metadata['dictionary_name'] = dict_info.get('name')
-                    if dict_info.get('version'):
-                        word_metadata['dictionary_version'] = dict_info.get('version')
-                    
-                    # Add entry-specific metadata
-                    if entry.get('is_core'):
-                        word_metadata['is_core'] = True
-                    if entry.get('frequency'):
-                        word_metadata['frequency'] = entry.get('frequency')
-                    if entry.get('origin'):
-                        word_metadata['origin'] = entry.get('origin')
-                    
-                    # Convert metadata to JSON if not empty
-                    word_metadata_json = json.dumps(word_metadata) if word_metadata else None
-
-                    # Create/get word ID with enhanced source information
-                    word_id = get_or_create_word_id(
-                        cur, 
-                        word, 
-                        language_code=language_code,
-                        source_identifier=source_identifier,
-                        word_metadata=word_metadata_json
-                    )
-
-                    if word_id is None:
-                        stats["error_entries"] += 1
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                        pbar.update(1)
-                        continue
-
-                    # Process pronunciation with enhanced handling
-                    pronunciation = entry.get('pronunciation', '')
-                    if pronunciation:
-                        # Create a structured pronunciation object
-                        pron_data = {
-                            'value': pronunciation,
-                            'type': 'ipa',  # Assume IPA for Marayum
-                            'source': source_identifier,
-                            'metadata': {'from_marayum': True}
-                        }
-                        
-                        if insert_pronunciation(cur, word_id, pron_data, source_identifier):
-                            stats["pronunciations_added"] += 1
-
-                    # Process credits with source tracking
-                    credits_text = entry.get('credits', '')
-                    if credits_text:
-                        # Create a structured credit object
-                        credit_data = {
-                            'text': standardize_credits(credits_text),
-                            'source': source_identifier
-                        }
-                        
-                        if insert_credit(cur, word_id, credit_data, source_identifier):
-                            stats["credits_added"] += 1
-
-                    # Process definitions and examples with enhanced metadata
-                    pos_raw = entry.get('pos', '')
-                    pos = standardize_pos(pos_raw)
-
-                    definitions = entry.get('definitions', [])
-                    if isinstance(definitions, list):
-                        for def_index, def_item in enumerate(definitions):
-                            if not isinstance(def_item, dict):
-                                continue
-
-                            definition_text = def_item.get('definition', '').strip()
-                            if not definition_text:
-                                continue
-
-                            # Process examples with enhanced metadata
-                            examples_list = []
-                            raw_examples = def_item.get('examples', [])
-                            
-                            if isinstance(raw_examples, list):
-                                for ex_index, ex in enumerate(raw_examples):
-                                    if isinstance(ex, dict):
-                                        examples_list.append({
-                                            'text': ex.get('text', ''),
-                                            'translation': ex.get('translation', ''),
-                                            'source': source_identifier,
-                                            'index': ex_index
-                                        })
-                                    elif isinstance(ex, str):
-                                        examples_list.append({
-                                            'text': ex,
-                                            'source': source_identifier,
-                                            'index': ex_index
-                                        })
-                            
-                            examples_str = json.dumps(examples_list) if examples_list else None
-
-                            # Add definition metadata
-                            def_metadata = {
-                                'source': source_identifier,
-                                'dictionary': dict_info.get('name', 'Marayum'),
-                                'index': def_index
-                            }
-                            
-                            # Add usage info if available
-                            if def_item.get('usage'):
-                                def_metadata['usage'] = def_item.get('usage')
-                                
-                            # Add notes if available
-                            usage_notes = def_item.get('notes', '')
-                            
-                            def_id = insert_definition(
-                                cur, 
-                                word_id, 
-                                definition_text,
-                                source_identifier=source_identifier,
-                                part_of_speech=pos,
-                                examples=examples_str,
-                                usage_notes=usage_notes,
-                                category=def_item.get('domain'),
-                                tags=json.dumps(def_item.get('tags', [])),
-                                metadata=json.dumps(def_metadata)
-                            )
-
-                            if def_id:
-                                stats["definitions_added"] += 1
-                                stats["examples_added"] += len(examples_list)
-
-                    # Process see_also references with structured relation metadata
-                    see_also_list = entry.get('see_also', [])
-                    if isinstance(see_also_list, list):
-                        related_lemmas = process_see_also(see_also_list, language_code)
-                        for related_lemma in related_lemmas:
-                            related_lemma = related_lemma.strip()
-                            if related_lemma and related_lemma != word:
-                                try:
-                                    # Create related word with same source
-                                    related_word_id = get_or_create_word_id(
-                                        cur, 
-                                        related_lemma, 
-                                        language_code=language_code,
-                                        source_identifier=source_identifier
-                                    )
-                                    
-                                    if related_word_id:
-                                        # Add relation with metadata
-                                        rel_metadata = {
-                                            'source': source_identifier,
-                                            'relation_source': 'see_also',
-                                            'confidence': 80,  # Reasonable confidence for explicit see_also
-                                            'dictionary': dict_info.get('name', 'Marayum')
-                                        }
-                                        
-                                        if insert_relation(
-                                            cur, 
-                                            word_id, 
-                                            related_word_id, 
-                                            "see_also", 
-                                            source_identifier,
-                                            metadata=rel_metadata
-                                        ):
-                                            stats["relations_added"] += 1
-                                except Exception as rel_error:
-                                    logger.warning(f"Error processing relation for '{word}' -> '{related_lemma}': {rel_error}")
-
-                    stats["processed_entries"] += 1
-                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-
-                except psycopg2.Error as db_err:
-                    logger.error(f"Database error processing entry #{entry_index} ('{word}') in {source_identifier}: {db_err}", exc_info=True)
-                    stats["error_entries"] += 1
-                    try:
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    except psycopg2.Error as rb_err:
-                        logger.error(f"Failed to rollback savepoint {savepoint_name}: {rb_err}. Attempting full transaction rollback.")
-                        conn.rollback()
-                except Exception as e:
-                    logger.error(f"Unexpected error processing entry #{entry_index} ('{word}') in {source_identifier}: {e}", exc_info=True)
-                    stats["error_entries"] += 1
-                    try:
-                        cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    except psycopg2.Error as rb_err:
-                        logger.error(f"Failed to rollback savepoint {savepoint_name}: {rb_err}. Attempting full transaction rollback.")
-                        conn.rollback()
-                finally:
-                    pbar.update(1)
-                    # Commit periodically to avoid large transactions
-                    if (stats["processed_entries"] + stats["skipped_entries"] + stats["error_entries"]) % 500 == 0:
-                        logger.debug(f"Committing transaction after {stats['processed_entries'] + stats['skipped_entries'] + stats['error_entries']} entries processed for {source_identifier}.")
-                        conn.commit()
-
-        # Final commit
-        conn.commit()
-        logger.info(f"Finished processing {source_identifier}. Processed: {stats['processed_entries']}, Skipped: {stats['skipped_entries']}, Errors: {stats['error_entries']}")
+            logger.error(f"Could not determine language code for {base_language} in {filename}")
+            return 0, 1
+            
+        logger.info(f"Processing {base_language} dictionary (code: {language_code})")
         
-        # Log more detailed stats
-        detailed_stats = f"Added: {stats['definitions_added']} definitions, {stats['examples_added']} examples, " \
-                          f"{stats['relations_added']} relations, {stats['pronunciations_added']} pronunciations, " \
-                          f"{stats['credits_added']} credits"
-        logger.info(detailed_stats)
-
+        words = data.get('words', [])
+        if not words:
+            logger.warning(f"No words found in {filename}")
+            return 0, 0
+            
+        stats["total_entries"] = len(words)
+        source = os.path.basename(filename)
+        
+        # Process each word
+        for entry in words:
+            try:
+                word = entry.get('word', '').strip()
+                if not word:
+                    stats["skipped_entries"] += 1
+                    continue
+                
+                logger.debug(f"Processing word: {word}")
+                
+                # Create or get word entry
+                word_id = get_or_create_word_id(
+                    cur,
+                    word,
+                    language_code=language_code,
+                    is_core=entry.get('is_core', False)
+                )
+                
+                if not word_id:
+                    logger.warning(f"Failed to create/get word ID for '{word}'")
+                    stats["skipped_entries"] += 1
+                    continue
+                    
+                logger.debug(f"Word ID for '{word}': {word_id}")
+                
+                # Process pronunciation
+                pronunciation = standardize_pronunciation(entry.get('pronunciation', ''))
+                if pronunciation:
+                    if insert_pronunciation(cur, word_id, {
+                        'ipa': pronunciation,
+                        'sources': source
+                    }):
+                        stats["pronunciations_added"] += 1
+                
+                # Process credits
+                credits = standardize_credits(entry.get('credits', ''))
+                if credits:
+                    insert_credit(cur, word_id, {
+                        'text': credits,
+                        'sources': source
+                    })
+                
+                # Process definitions and examples
+                pos = standardize_pos(entry.get('pos', ''))
+                definitions = entry.get('definitions', [])
+                
+                for def_item in definitions:
+                    if not isinstance(def_item, dict):
+                        continue
+                        
+                    definition_text = def_item.get('definition', '').strip()
+                    if not definition_text:
+                        continue
+                    
+                    examples = process_examples(def_item.get('examples', []))
+                    
+                    def_id = insert_definition(
+                        cur,
+                        word_id,
+                        definition_text,
+                        part_of_speech=pos,
+                        examples=json.dumps(examples) if examples else None,
+                        sources=source
+                    )
+                    
+                    if def_id:
+                        stats["definitions_added"] += 1
+                        stats["examples_added"] += len(examples)
+                        logger.debug(f"Added definition ID {def_id} for word '{word}'")
+                    else:
+                        logger.warning(f"Failed to insert definition for word '{word}'")
+                
+                # Process see also references
+                see_also_refs = process_see_also(entry.get('see_also', []), language_code)
+                if see_also_refs:
+                    relations_dict = {'see_also': see_also_refs}
+                    try:
+                        process_relations(cur, word_id, relations_dict, language_code, source)
+                        stats["relations_added"] += len(see_also_refs)
+                    except Exception as e:
+                        logger.warning(f"Error processing relations for '{word}': {str(e)}")
+                
+                stats["processed_entries"] += 1
+                logger.debug(f"Successfully processed word '{word}'")
+                
+                # Commit after each word to ensure data is saved
+                cur.connection.commit()
+                
+            except Exception as e:
+                logger.error(f"Error processing entry {word}: {str(e)}")
+                stats["error_entries"] += 1
+                continue
+        
+        logger.info(f"Processed {filename}:")
+        logger.info(f"  Entries processed: {stats['processed_entries']}")
+        logger.info(f"  Definitions added: {stats['definitions_added']}")
+        logger.info(f"  Pronunciations added: {stats['pronunciations_added']}")
+        logger.info(f"  Examples added: {stats['examples_added']}")
+        logger.info(f"  Relations added: {stats['relations_added']}")
+        logger.info(f"  Entries skipped: {stats['skipped_entries']}")
+        logger.info(f"  Errors: {stats['error_entries']}")
+        
         return stats["processed_entries"], stats["error_entries"]
-
+        
     except Exception as e:
-        logger.error(f"An unexpected error occurred while processing {filename}: {e}", exc_info=True)
-        try:
-            conn.rollback()  # Rollback on major file processing error
-        except Exception as rb_final_err:
-            logger.error(f"Failed to perform final rollback for {filename}: {rb_final_err}")
-        # Indicate failure by returning 0 processed, 1 error
-        return 0, (stats["error_entries"] + 1) if stats["total_entries"] > 0 else 1
-
+        logger.error(f"Error processing file {filename}: {str(e)}")
+        return 0, 1
+    
 @with_transaction(commit=True)
 def process_marayum_directory(cur, directory_path: str) -> None:
     """Process all Project Marayum dictionary files in the specified directory."""

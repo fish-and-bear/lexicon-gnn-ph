@@ -217,13 +217,13 @@ const WordExplorer: React.FC = () => {
       }
       
       const searchOptions: SearchOptions = { 
-        page: 1, 
-        per_page: 20, 
-        exclude_baybayin: true,
-        language: 'tl',
-        mode: 'all',
-        sort: 'relevance',
-        order: 'desc'
+          page: 1, 
+          per_page: 20, 
+          exclude_baybayin: true,
+          language: 'tl', 
+          mode: 'all', 
+          sort: 'relevance',
+          order: 'desc'
         };
       const searchResults = await searchWords(normalizedInput, searchOptions);
       
@@ -285,7 +285,7 @@ const WordExplorer: React.FC = () => {
       } else {
         setError(`No results found for "${wordToSearch}"`);
         setSelectedWordInfo(null);
-      setWordNetwork(null);
+        setWordNetwork(null);
       }
     } catch (err: any) {
       console.error("Error during search:", err);
@@ -313,10 +313,10 @@ const WordExplorer: React.FC = () => {
   const debouncedSearch = useCallback(
     debounce(async (query: string) => {
       if (query.length < 2) { // Only search if query is long enough
-            setSearchResults([]);
-            setShowSuggestions(false);
-                return;
-              }
+        setSearchResults([]);
+        setShowSuggestions(false);
+        return;
+      }
       setIsLoading(true); // Indicate loading for suggestions
       try {
         const searchOptions: SearchOptions = { page: 1, per_page: 10, language: 'tl', mode: 'all' };
@@ -325,14 +325,14 @@ const WordExplorer: React.FC = () => {
           const suggestions = results.words.map(word => ({ id: word.id, word: word.lemma })); // Map to simple {id, word}
           setSearchResults(suggestions);
           setShowSuggestions(suggestions.length > 0);
-          }
-        } catch (error) {
-        console.error("Error fetching search suggestions:", error);
-          setSearchResults([]);
-          setShowSuggestions(false);
-        } finally {
-          setIsLoading(false);
         }
+      } catch (error) {
+        console.error("Error fetching search suggestions:", error);
+        setSearchResults([]);
+        setShowSuggestions(false);
+      } finally {
+        setIsLoading(false);
+      }
     }, 300), // Debounce time
     [] // No dependencies needed for debounced function itself
   );
@@ -829,29 +829,30 @@ const WordExplorer: React.FC = () => {
     try {
       console.log('Fetching random word');
       
-      // Get random word (already returns comprehensive data)
+      // Get random word
       const randomWordData = await getRandomWord();
       console.log('Random word data:', randomWordData);
       
-      // Use the data directly from getRandomWord
+      // The random word API might not return fully normalized data, so fetch the detailed word info
       if (randomWordData && randomWordData.lemma) {
-        // Use randomWordData instead of wordData
-        setSelectedWordInfo(randomWordData);
-        setMainWord(randomWordData.lemma);
+        const wordData = await fetchWordDetails(randomWordData.lemma);
         
-        // Fetch word network and etymology tree using the random word's lemma/id
-        const networkData = await fetchWordNetworkData(randomWordData.lemma, depth, breadth);
+        setSelectedWordInfo(wordData);
+        setMainWord(wordData.lemma);
+        
+        // Fetch word network and etymology tree
+        const networkData = await fetchWordNetworkData(wordData.lemma, depth, breadth);
         console.log('Word network for random word:', networkData);
         
         setWordNetwork(networkData);
-        setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), randomWordData.lemma]);
+        setWordHistory(prevHistory => [...prevHistory.slice(0, currentHistoryIndex + 1), wordData.lemma]);
         setCurrentHistoryIndex(prevIndex => prevIndex + 1);
-        setInputValue(randomWordData.lemma);
+        setInputValue(wordData.lemma);
         
-        // Fetch etymology tree using the random word's ID
-        fetchEtymologyTree(randomWordData.id);
+        // Fetch etymology tree
+        fetchEtymologyTree(wordData.id);
       } else {
-        throw new Error("Could not fetch random word or lemma missing."); // Added lemma check message
+        throw new Error("Could not fetch random word.");
       }
     } catch (error) {
       console.error("Error fetching random word:", error);
@@ -1325,8 +1326,8 @@ const WordExplorer: React.FC = () => {
         <div ref={detailsContainerRef} className="details-container">
           {isLoading && <div className="loading-spinner">Loading Details...</div>} 
           {!isLoading && selectedWordInfo && (
-            <WordDetails 
-              wordInfo={selectedWordInfo} 
+            <WordDetails
+              wordInfo={selectedWordInfo}
               etymologyTree={etymologyTree}
               isLoadingEtymology={isLoadingEtymology}
               etymologyError={etymologyError}

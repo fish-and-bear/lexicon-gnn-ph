@@ -462,7 +462,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
      if (!wordInfo?.credits || wordInfo.credits.length === 0) {
        return <Alert severity="info" sx={{ m: 2 }}>No source information available.</Alert>;
      }
-      return (
+     return (
        <List dense sx={{ py: 1 }}>
          {wordInfo.credits.map((credit, index) => (
            <ListItem key={credit.id || index} sx={{ py: 1 }}>
@@ -536,7 +536,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                 </Tabs>
             );
 
-  return (
+            return (
     <Paper elevation={2} square sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper', overflow: 'hidden' }}>
 
       {/* Conditional Layout based on screen size */}

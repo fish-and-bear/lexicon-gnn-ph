@@ -217,13 +217,13 @@ const WordExplorer: React.FC = () => {
       }
       
       const searchOptions: SearchOptions = { 
-        page: 1, 
-        per_page: 20, 
-        exclude_baybayin: true,
-        language: 'tl',
-        mode: 'all',
-        sort: 'relevance',
-        order: 'desc'
+          page: 1, 
+          per_page: 20, 
+          exclude_baybayin: true,
+          language: 'tl', 
+          mode: 'all', 
+          sort: 'relevance',
+          order: 'desc'
         };
       const searchResults = await searchWords(normalizedInput, searchOptions);
       
@@ -285,7 +285,7 @@ const WordExplorer: React.FC = () => {
       } else {
         setError(`No results found for "${wordToSearch}"`);
         setSelectedWordInfo(null);
-      setWordNetwork(null);
+        setWordNetwork(null);
       }
     } catch (err: any) {
       console.error("Error during search:", err);
@@ -313,10 +313,10 @@ const WordExplorer: React.FC = () => {
   const debouncedSearch = useCallback(
     debounce(async (query: string) => {
       if (query.length < 2) { // Only search if query is long enough
-            setSearchResults([]);
-            setShowSuggestions(false);
-                return;
-              }
+        setSearchResults([]);
+        setShowSuggestions(false);
+        return;
+      }
       setIsLoading(true); // Indicate loading for suggestions
       try {
         const searchOptions: SearchOptions = { page: 1, per_page: 10, language: 'tl', mode: 'all' };
@@ -325,14 +325,14 @@ const WordExplorer: React.FC = () => {
           const suggestions = results.words.map(word => ({ id: word.id, word: word.lemma })); // Map to simple {id, word}
           setSearchResults(suggestions);
           setShowSuggestions(suggestions.length > 0);
-          }
-        } catch (error) {
-        console.error("Error fetching search suggestions:", error);
-          setSearchResults([]);
-          setShowSuggestions(false);
-        } finally {
-          setIsLoading(false);
         }
+      } catch (error) {
+        console.error("Error fetching search suggestions:", error);
+        setSearchResults([]);
+        setShowSuggestions(false);
+      } finally {
+        setIsLoading(false);
+      }
     }, 300), // Debounce time
     [] // No dependencies needed for debounced function itself
   );
@@ -1325,8 +1325,8 @@ const WordExplorer: React.FC = () => {
         <div ref={detailsContainerRef} className="details-container">
           {isLoading && <div className="loading-spinner">Loading Details...</div>} 
           {!isLoading && selectedWordInfo && (
-            <WordDetails 
-              wordInfo={selectedWordInfo} 
+            <WordDetails
+              wordInfo={selectedWordInfo}
               etymologyTree={etymologyTree}
               isLoadingEtymology={isLoadingEtymology}
               etymologyError={etymologyError}

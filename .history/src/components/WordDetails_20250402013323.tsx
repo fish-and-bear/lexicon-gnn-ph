@@ -190,8 +190,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   // --- Rendering Sections ---
 
   const renderHeader = () => {
-    const ipaPronunciation = wordInfo.pronunciations?.find(p => p.type === 'IPA');
-    const hasAudio = wordInfo.pronunciations?.some(p => p.type === 'audio' && p.value);
+    const ipaPronunciation = wordInfo.pronunciations?.find(p => p.notation === 'IPA');
+    const hasAudio = wordInfo.pronunciations?.some(p => p.audio_url);
     const tags = wordInfo.tags ? wordInfo.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [];
 
     const headerBgColor = isDarkMode
@@ -286,18 +286,18 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
             <ListItem alignItems="flex-start" sx={{ flexDirection: 'column', gap: 0.5, pb: theme.spacing(1.5), pt: theme.spacing(1.5) }}>
               <ListItemText
                 primaryTypographyProps={{ variant: 'body1', fontWeight: 500 }}
-                primary={def.text}
+                primary={def.definition}
               />
-              {def.examples && def.examples.length > 0 && (
+              {def.example && (
                 <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', pl: theme.spacing(0.5) }}>
-                  Example: "{def.examples[0]}"
+                  Example: "{def.example}"
                 </Typography>
               )}
               {def.part_of_speech && (
-                 <Chip label={def.part_of_speech?.name_en ?? 'Unknown POS'} size="small" variant="outlined" sx={{ mt: 1 }}/>
+                 <Chip label={def.part_of_speech} size="small" variant="outlined" sx={{ mt: 1 }}/>
               )}
             </ListItem>
-            {index < wordInfo.definitions!.length - 1 && <Divider component="li" />}
+            {index < wordInfo.definitions.length - 1 && <Divider component="li" />}
           </React.Fragment>
         ))}
       </List>
@@ -462,7 +462,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
      if (!wordInfo?.credits || wordInfo.credits.length === 0) {
        return <Alert severity="info" sx={{ m: 2 }}>No source information available.</Alert>;
      }
-      return (
+     return (
        <List dense sx={{ py: 1 }}>
          {wordInfo.credits.map((credit, index) => (
            <ListItem key={credit.id || index} sx={{ py: 1 }}>
@@ -536,7 +536,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                 </Tabs>
             );
 
-  return (
+            return (
     <Paper elevation={2} square sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper', overflow: 'hidden' }}>
 
       {/* Conditional Layout based on screen size */}
