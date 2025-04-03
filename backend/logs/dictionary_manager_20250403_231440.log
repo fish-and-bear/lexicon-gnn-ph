@@ -1,0 +1,783 @@
+2025-04-03 23:14:40,627 - INFO - Starting table creation/update process.
+2025-04-03 23:14:41,024 - INFO - Tables created or updated successfully.
+2025-04-03 23:14:41,032 - INFO - Processing Marayum dictionaries from directory: ..\data\marayum_dictionaries
+2025-04-03 23:14:41,036 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\onhan-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,038 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\onhan-english_processed.json
+2025-04-03 23:14:41,038 - INFO - Determined language code 'onx' for ..\data\marayum_dictionaries\onhan-english_processed.json from base language 'Onhan'.
+2025-04-03 23:14:41,240 - INFO - Finished processing ..\data\marayum_dictionaries\onhan-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,241 - WARNING - No entries processed from onhan-english_processed.json
+2025-04-03 23:14:41,242 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\waray-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,243 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\waray-english_processed.json
+2025-04-03 23:14:41,244 - INFO - Determined language code 'war' for ..\data\marayum_dictionaries\waray-english_processed.json from base language 'Waray'.
+2025-04-03 23:14:41,251 - INFO - Finished processing ..\data\marayum_dictionaries\waray-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,252 - WARNING - No entries processed from waray-english_processed.json
+2025-04-03 23:14:41,252 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ibanag-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,253 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ibanag-english_processed.json
+2025-04-03 23:14:41,253 - INFO - Determined language code 'ibg' for ..\data\marayum_dictionaries\ibanag-english_processed.json from base language 'Ibanag'.
+2025-04-03 23:14:41,259 - INFO - Finished processing ..\data\marayum_dictionaries\ibanag-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,259 - WARNING - No entries processed from ibanag-english_processed.json
+2025-04-03 23:14:41,260 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\iranon-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,260 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\iranon-english_processed.json
+2025-04-03 23:14:41,260 - INFO - Determined language code 'iro' for ..\data\marayum_dictionaries\iranon-english_processed.json from base language 'Iranon'.
+2025-04-03 23:14:41,265 - INFO - Finished processing ..\data\marayum_dictionaries\iranon-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,266 - WARNING - No entries processed from iranon-english_processed.json
+2025-04-03 23:14:41,266 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\itawis-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,267 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\itawis-english_processed.json
+2025-04-03 23:14:41,267 - INFO - Determined language code 'itv' for ..\data\marayum_dictionaries\itawis-english_processed.json from base language 'Itawis'.
+2025-04-03 23:14:41,273 - INFO - Finished processing ..\data\marayum_dictionaries\itawis-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,273 - WARNING - No entries processed from itawis-english_processed.json
+2025-04-03 23:14:41,274 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ivatan-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,275 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ivatan-english_processed.json
+2025-04-03 23:14:41,275 - INFO - Determined language code 'ivv' for ..\data\marayum_dictionaries\ivatan-english_processed.json from base language 'Ivatan'.
+2025-04-03 23:14:41,280 - INFO - Finished processing ..\data\marayum_dictionaries\ivatan-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,281 - WARNING - No entries processed from ivatan-english_processed.json
+2025-04-03 23:14:41,281 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\manide-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,282 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\manide-english_processed.json
+2025-04-03 23:14:41,283 - INFO - Determined language code 'abd' for ..\data\marayum_dictionaries\manide-english_processed.json from base language 'Manide'.
+2025-04-03 23:14:41,287 - INFO - Finished processing ..\data\marayum_dictionaries\manide-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,288 - WARNING - No entries processed from manide-english_processed.json
+2025-04-03 23:14:41,288 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\gaddang-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,289 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\gaddang-english_processed.json
+2025-04-03 23:14:41,290 - INFO - Determined language code 'gad' for ..\data\marayum_dictionaries\gaddang-english_processed.json from base language 'Gaddang'.
+2025-04-03 23:14:41,295 - INFO - Finished processing ..\data\marayum_dictionaries\gaddang-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,295 - WARNING - No entries processed from gaddang-english_processed.json
+2025-04-03 23:14:41,296 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cuyonon-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,297 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\cuyonon-english_processed.json
+2025-04-03 23:14:41,297 - INFO - Determined language code 'cyo' for ..\data\marayum_dictionaries\cuyonon-english_processed.json from base language 'Cuyonon'.
+2025-04-03 23:14:41,302 - INFO - Finished processing ..\data\marayum_dictionaries\cuyonon-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,303 - WARNING - No entries processed from cuyonon-english_processed.json
+2025-04-03 23:14:41,303 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ilocano-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,304 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ilocano-english_processed.json
+2025-04-03 23:14:41,305 - INFO - Determined language code 'ilo' for ..\data\marayum_dictionaries\ilocano-english_processed.json from base language 'Ilocano'.
+2025-04-03 23:14:41,310 - INFO - Finished processing ..\data\marayum_dictionaries\ilocano-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,311 - WARNING - No entries processed from ilocano-english_processed.json
+2025-04-03 23:14:41,311 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\pangasinan-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,312 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\pangasinan-english_processed.json
+2025-04-03 23:14:41,312 - INFO - Determined language code 'pag' for ..\data\marayum_dictionaries\pangasinan-english_processed.json from base language 'Pangasinan'.
+2025-04-03 23:14:41,318 - INFO - Finished processing ..\data\marayum_dictionaries\pangasinan-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,318 - WARNING - No entries processed from pangasinan-english_processed.json
+2025-04-03 23:14:41,319 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-albay-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,320 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-albay-english_processed.json
+2025-04-03 23:14:41,320 - WARNING - No language code mapping found for: bikol-albay
+2025-04-03 23:14:41,321 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-albay-english_processed.json from base language 'Bikol-Albay'.
+2025-04-03 23:14:41,328 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-albay-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,329 - WARNING - No entries processed from bikol-albay-english_processed.json
+2025-04-03 23:14:41,330 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-libon-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,331 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-libon-english_processed.json
+2025-04-03 23:14:41,331 - WARNING - No language code mapping found for: bikol-libon
+2025-04-03 23:14:41,332 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-libon-english_processed.json from base language 'Bikol-Libon'.
+2025-04-03 23:14:41,336 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-libon-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,337 - WARNING - No entries processed from bikol-libon-english_processed.json
+2025-04-03 23:14:41,338 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\kapampangan-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,340 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\kapampangan-english_processed.json
+2025-04-03 23:14:41,340 - INFO - Determined language code 'pam' for ..\data\marayum_dictionaries\kapampangan-english_processed.json from base language 'Kapampangan'.
+2025-04-03 23:14:41,345 - INFO - Finished processing ..\data\marayum_dictionaries\kapampangan-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,346 - WARNING - No entries processed from kapampangan-english_processed.json
+2025-04-03 23:14:41,346 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-miraya-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,347 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-miraya-english_processed.json
+2025-04-03 23:14:41,348 - WARNING - No language code mapping found for: bikol-miraya
+2025-04-03 23:14:41,348 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-miraya-english_processed.json from base language 'Bikol-Miraya'.
+2025-04-03 23:14:41,353 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-miraya-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,354 - WARNING - No entries processed from bikol-miraya-english_processed.json
+2025-04-03 23:14:41,354 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\maguindanaon-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,357 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\maguindanaon-english_processed.json
+2025-04-03 23:14:41,357 - INFO - Determined language code 'mdh' for ..\data\marayum_dictionaries\maguindanaon-english_processed.json from base language 'Maguindanaon'.
+2025-04-03 23:14:41,363 - INFO - Finished processing ..\data\marayum_dictionaries\maguindanaon-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,364 - WARNING - No entries processed from maguindanaon-english_processed.json
+2025-04-03 23:14:41,364 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-partido-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,365 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-partido-english_processed.json
+2025-04-03 23:14:41,366 - WARNING - No language code mapping found for: bikol-partido
+2025-04-03 23:14:41,366 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-partido-english_processed.json from base language 'Bikol-Partido'.
+2025-04-03 23:14:41,371 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-partido-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,372 - WARNING - No entries processed from bikol-partido-english_processed.json
+2025-04-03 23:14:41,373 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,373 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json
+2025-04-03 23:14:41,374 - WARNING - No language code mapping found for: isneg yapayao
+2025-04-03 23:14:41,374 - INFO - Determined language code 'isn' for ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json from base language 'Isneg Yapayao'.
+2025-04-03 23:14:41,379 - INFO - Finished processing ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,379 - WARNING - No entries processed from isneg-yapayao-english_processed.json
+2025-04-03 23:14:41,380 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,381 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json
+2025-04-03 23:14:41,381 - WARNING - No language code mapping found for: bikol-rinconada
+2025-04-03 23:14:41,382 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json from base language 'Bikol-Rinconada'.
+2025-04-03 23:14:41,387 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,387 - WARNING - No entries processed from bikol-rinconada-english_processed.json
+2025-04-03 23:14:41,388 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,389 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json
+2025-04-03 23:14:41,390 - WARNING - No language code mapping found for: blaan-koronadal
+2025-04-03 23:14:41,390 - INFO - Determined language code 'bla' for ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json from base language 'Blaan-Koronadal'.
+2025-04-03 23:14:41,396 - INFO - Finished processing ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,397 - WARNING - No entries processed from blaan-koronadal-english_processed.json
+2025-04-03 23:14:41,397 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,399 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json
+2025-04-03 23:14:41,399 - WARNING - No language code mapping found for: blaan-sarangani
+2025-04-03 23:14:41,400 - INFO - Determined language code 'bla' for ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json from base language 'Blaan-Sarangani'.
+2025-04-03 23:14:41,407 - INFO - Finished processing ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,408 - WARNING - No entries processed from blaan-sarangani-english_processed.json
+2025-04-03 23:14:41,409 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,410 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json
+2025-04-03 23:14:41,410 - WARNING - No language code mapping found for: bikol-west albay
+2025-04-03 23:14:41,410 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json from base language 'Bikol-West Albay'.
+2025-04-03 23:14:41,416 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,416 - WARNING - No entries processed from bikol-west-albay-english_processed.json
+2025-04-03 23:14:41,417 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,418 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json
+2025-04-03 23:14:41,418 - INFO - Determined language code 'mbt' for ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json from base language 'Manobo (Erumanen)'.
+2025-04-03 23:14:41,425 - INFO - Finished processing ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,425 - WARNING - No entries processed from manobo-erumanen-english_processed.json
+2025-04-03 23:14:41,426 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,427 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json
+2025-04-03 23:14:41,428 - INFO - Determined language code 'ceb' for ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json from base language 'Cebuano (Cotabato)'.
+2025-04-03 23:14:41,434 - INFO - Finished processing ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,435 - WARNING - No entries processed from cebuano-cotabato-english_processed.json
+2025-04-03 23:14:41,435 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,436 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json
+2025-04-03 23:14:41,437 - INFO - Determined language code 'tgl' for ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json from base language 'Tagalog (Marinduque)'.
+2025-04-03 23:14:41,442 - INFO - Finished processing ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,442 - WARNING - No entries processed from tagalog-marinduque-english_processed.json
+2025-04-03 23:14:41,443 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,444 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json
+2025-04-03 23:14:41,444 - INFO - Determined language code 'hil' for ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json from base language 'Hiligaynon (Cotabato)'.
+2025-04-03 23:14:41,449 - INFO - Finished processing ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,450 - WARNING - No entries processed from hiligaynon-cotabato-english_processed.json
+2025-04-03 23:14:41,450 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,451 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json
+2025-04-03 23:14:41,452 - WARNING - No language code mapping found for: ifugao tuwali (ihapo)
+2025-04-03 23:14:41,452 - INFO - Determined language code 'ifu' for ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json from base language 'Ifugao Tuwali (Ihapo)'.
+2025-04-03 23:14:41,459 - INFO - Finished processing ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,459 - WARNING - No entries processed from ifugao-tuwali-ihapo-english_processed.json
+2025-04-03 23:14:41,460 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,460 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json
+2025-04-03 23:14:41,461 - WARNING - No language code mapping found for: bikol-northern catanduanes
+2025-04-03 23:14:41,461 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json from base language 'Bikol-Northern Catanduanes'.
+2025-04-03 23:14:41,468 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,469 - WARNING - No entries processed from bikol-northern-catanduanes-english_processed.json
+2025-04-03 23:14:41,469 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,470 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json
+2025-04-03 23:14:41,470 - WARNING - No language code mapping found for: bikol-southern catanduanes
+2025-04-03 23:14:41,471 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json from base language 'Bikol-Southern Catanduanes'.
+2025-04-03 23:14:41,475 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 0
+2025-04-03 23:14:41,476 - WARNING - No entries processed from bikol-southern-catanduanes-english_processed.json
+2025-04-03 23:14:41,476 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\chavacano-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,477 - INFO - Found 1 word entries in ..\data\marayum_dictionaries\chavacano-english_processed.json
+2025-04-03 23:14:41,478 - INFO - Determined language code 'cbk' for ..\data\marayum_dictionaries\chavacano-english_processed.json from base language 'Chavacano'.
+2025-04-03 23:14:41,482 - ERROR - Error processing entry #0 ('comida') in ..\data\marayum_dictionaries\chavacano-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,499 - INFO - Finished processing ..\data\marayum_dictionaries\chavacano-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 1
+2025-04-03 23:14:41,499 - WARNING - Error summary for ..\data\marayum_dictionaries\chavacano-english_processed.json: {'EntryProcessingError: NameError': 1}
+2025-04-03 23:14:41,500 - WARNING - No entries processed from chavacano-english_processed.json
+2025-04-03 23:14:41,501 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\masbatenyo-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,502 - INFO - Found 3 word entries in ..\data\marayum_dictionaries\masbatenyo-english_processed.json
+2025-04-03 23:14:41,502 - INFO - Determined language code 'msb' for ..\data\marayum_dictionaries\masbatenyo-english_processed.json from base language 'Masbatenyo'.
+2025-04-03 23:14:41,506 - ERROR - Error processing entry #0 ('abaga') in ..\data\marayum_dictionaries\masbatenyo-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,514 - ERROR - Error processing entry #1 ('gipad') in ..\data\marayum_dictionaries\masbatenyo-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,522 - ERROR - Error processing entry #2 ('piko') in ..\data\marayum_dictionaries\masbatenyo-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,538 - INFO - Finished processing ..\data\marayum_dictionaries\masbatenyo-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 3
+2025-04-03 23:14:41,538 - WARNING - Error summary for ..\data\marayum_dictionaries\masbatenyo-english_processed.json: {'EntryProcessingError: NameError': 3}
+2025-04-03 23:14:41,539 - WARNING - No entries processed from masbatenyo-english_processed.json
+2025-04-03 23:14:41,540 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-central-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,541 - INFO - Found 4 word entries in ..\data\marayum_dictionaries\bikol-central-english_processed.json
+2025-04-03 23:14:41,542 - WARNING - No language code mapping found for: bikol-central
+2025-04-03 23:14:41,542 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-central-english_processed.json from base language 'Bikol-Central'.
+2025-04-03 23:14:41,547 - ERROR - Error processing entry #0 ('giráray') in ..\data\marayum_dictionaries\bikol-central-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,555 - ERROR - Error processing entry #1 ('kudál') in ..\data\marayum_dictionaries\bikol-central-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,568 - ERROR - Error processing entry #2 ('palás') in ..\data\marayum_dictionaries\bikol-central-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,578 - ERROR - Error processing entry #3 ('pamálit') in ..\data\marayum_dictionaries\bikol-central-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,591 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-central-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 4
+2025-04-03 23:14:41,591 - WARNING - Error summary for ..\data\marayum_dictionaries\bikol-central-english_processed.json: {'EntryProcessingError: NameError': 4}
+2025-04-03 23:14:41,592 - WARNING - No entries processed from bikol-central-english_processed.json
+2025-04-03 23:14:41,593 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\aklanon-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,594 - INFO - Found 7 word entries in ..\data\marayum_dictionaries\aklanon-english_processed.json
+2025-04-03 23:14:41,594 - INFO - Determined language code 'akl' for ..\data\marayum_dictionaries\aklanon-english_processed.json from base language 'Aklanon'.
+2025-04-03 23:14:41,598 - ERROR - Error processing entry #0 ('apa') in ..\data\marayum_dictionaries\aklanon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,611 - ERROR - Error processing entry #1 ('baeatian') in ..\data\marayum_dictionaries\aklanon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,618 - ERROR - Error processing entry #2 ('bulag') in ..\data\marayum_dictionaries\aklanon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,627 - ERROR - Error processing entry #3 ('bungoe') in ..\data\marayum_dictionaries\aklanon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,635 - ERROR - Error processing entry #4 ('kindat') in ..\data\marayum_dictionaries\aklanon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,645 - ERROR - Error processing entry #5 ('matimsog') in ..\data\marayum_dictionaries\aklanon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,656 - ERROR - Error processing entry #6 ('pana') in ..\data\marayum_dictionaries\aklanon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,669 - INFO - Finished processing ..\data\marayum_dictionaries\aklanon-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 7
+2025-04-03 23:14:41,669 - WARNING - Error summary for ..\data\marayum_dictionaries\aklanon-english_processed.json: {'EntryProcessingError: NameError': 7}
+2025-04-03 23:14:41,670 - WARNING - No entries processed from aklanon-english_processed.json
+2025-04-03 23:14:41,671 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\surigaonon-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,672 - INFO - Found 18 word entries in ..\data\marayum_dictionaries\surigaonon-english_processed.json
+2025-04-03 23:14:41,673 - INFO - Determined language code 'sgd' for ..\data\marayum_dictionaries\surigaonon-english_processed.json from base language 'Surigaonon'.
+2025-04-03 23:14:41,676 - ERROR - Error processing entry #0 ('aban') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,687 - ERROR - Error processing entry #1 ('adlip') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,695 - ERROR - Error processing entry #2 ('agtang') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,704 - ERROR - Error processing entry #3 ('alibuybuy') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,712 - ERROR - Error processing entry #4 ('aling') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,726 - ERROR - Error processing entry #5 ('ambaw') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,735 - ERROR - Error processing entry #6 ('apiki') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,744 - ERROR - Error processing entry #7 ('ayum-um') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,752 - ERROR - Error processing entry #8 ('badjhu') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,761 - ERROR - Error processing entry #9 ('bagyay') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,770 - ERROR - Error processing entry #10 ('bala') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,781 - ERROR - Error processing entry #11 ('bang-ug') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,792 - ERROR - Error processing entry #12 ('baung') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,801 - ERROR - Error processing entry #13 ('bija') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,810 - ERROR - Error processing entry #14 ('biliting') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,819 - ERROR - Error processing entry #15 ('buwahan') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,828 - ERROR - Error processing entry #16 ('buyubud') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,842 - ERROR - Error processing entry #17 ('buyus') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,861 - INFO - Finished processing ..\data\marayum_dictionaries\surigaonon-english_processed.json. Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Skipped: 0, Errors: 18
+2025-04-03 23:14:41,861 - WARNING - Error summary for ..\data\marayum_dictionaries\surigaonon-english_processed.json: {'EntryProcessingError: NameError': 18}
+2025-04-03 23:14:41,862 - WARNING - No entries processed from surigaonon-english_processed.json
+2025-04-03 23:14:41,862 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-boienen-english_processed.json with source: Project Marayum
+2025-04-03 23:14:41,865 - INFO - Found 88 word entries in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json
+2025-04-03 23:14:41,866 - WARNING - No language code mapping found for: bikol-boie&#x27;nen
+2025-04-03 23:14:41,866 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-boienen-english_processed.json from base language 'Bikol-Boie&#x27;nen'.
+2025-04-03 23:14:41,872 - ERROR - Error processing entry #0 ('agran') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,881 - ERROR - Error processing entry #1 ('alangaang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,891 - ERROR - Error processing entry #2 ('arasa-as') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,902 - ERROR - Error processing entry #3 ('atep') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,911 - ERROR - Error processing entry #4 ('axad') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,921 - ERROR - Error processing entry #5 ('balde'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,931 - ERROR - Error processing entry #6 ('bangbangan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,940 - ERROR - Error processing entry #7 ('banggeraan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,949 - ERROR - Error processing entry #8 ('banig') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,958 - ERROR - Error processing entry #9 ('baxey') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,968 - ERROR - Error processing entry #10 ('be-ew') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,981 - ERROR - Error processing entry #11 ('begkes1') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:41,990 - ERROR - Error processing entry #12 ('begkes2') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,000 - ERROR - Error processing entry #13 ('bexa'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,011 - ERROR - Error processing entry #14 ('biga'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,020 - ERROR - Error processing entry #15 ('boie'nen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,030 - ERROR - Error processing entry #16 ('Boie'nen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,039 - ERROR - Error processing entry #17 ('boko-boko') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,049 - ERROR - Error processing entry #18 ('bolong') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,058 - ERROR - Error processing entry #19 ('dake-xe'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,068 - ERROR - Error processing entry #20 ('e-ket') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,077 - ERROR - Error processing entry #21 ('elka') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,090 - ERROR - Error processing entry #22 ('ewrasa') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,100 - ERROR - Error processing entry #23 ('e-xa'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,110 - ERROR - Error processing entry #24 ('ex-ex') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,123 - ERROR - Error processing entry #25 ('gasa'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,132 - ERROR - Error processing entry #26 ('gere'gede'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,142 - ERROR - Error processing entry #27 ('gobing') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,151 - ERROR - Error processing entry #28 ('inang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,161 - ERROR - Error processing entry #29 ('kabeg') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,171 - ERROR - Error processing entry #30 ('kabelbegan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,181 - ERROR - Error processing entry #31 ('ka-esad') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,191 - ERROR - Error processing entry #32 ('kakabgan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,204 - ERROR - Error processing entry #33 ('kambang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,214 - ERROR - Error processing entry #34 ('kaponawan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,224 - ERROR - Error processing entry #35 ('karaba') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,236 - ERROR - Error processing entry #36 ('katabang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,246 - ERROR - Error processing entry #37 ('katig') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,256 - ERROR - Error processing entry #38 ('kilot') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,266 - ERROR - Error processing entry #39 ('kinatigan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,275 - ERROR - Error processing entry #40 ('koyomad') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,285 - ERROR - Error processing entry #41 ('kwintas') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,294 - ERROR - Error processing entry #42 ('lagwerta') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,306 - ERROR - Error processing entry #43 ('lapok') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,315 - ERROR - Error processing entry #44 ('lawed') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,325 - ERROR - Error processing entry #45 ('lemay') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,334 - ERROR - Error processing entry #46 ('lobid') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,343 - ERROR - Error processing entry #47 ('lokaba') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,355 - ERROR - Error processing entry #48 ('lo-og') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,364 - ERROR - Error processing entry #49 ('mare'gen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,373 - ERROR - Error processing entry #50 ('meya') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,383 - ERROR - Error processing entry #51 ('meya-meya') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,392 - ERROR - Error processing entry #52 ('moara') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,401 - ERROR - Error processing entry #53 ('nameme'yan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,413 - ERROR - Error processing entry #54 ('ngi'ngi'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,423 - ERROR - Error processing entry #55 ('opaw') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,433 - ERROR - Error processing entry #56 ('oripen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,443 - ERROR - Error processing entry #57 ('owonan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,453 - ERROR - Error processing entry #58 ('pana'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,464 - ERROR - Error processing entry #59 ('paso'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,473 - ERROR - Error processing entry #60 ('pinaowonan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,482 - ERROR - Error processing entry #61 ('pingig') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,491 - ERROR - Error processing entry #62 ('pinto'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,501 - ERROR - Error processing entry #63 ('pinto'an') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined
+2025-04-03 23:14:42,511 - ERROR - Error processing entry #64 ('pokot') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: name 'format_credits' is not defined
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8782, in process_marayum_json
+    word_metadata["credits_formatted"] = format_credits(credits_raw)
+                                         ^^^^^^^^^^^^^^
+NameError: name 'format_credits' is not defined

@@ -1,0 +1,125 @@
+2025-04-03 22:01:52,489 - INFO - Starting table creation/update process.
+2025-04-03 22:01:53,091 - INFO - Tables created or updated successfully.
+2025-04-03 22:01:53,124 - INFO - Processing Marayum dictionaries from directory: ..\data\marayum_dictionaries
+2025-04-03 22:01:53,130 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\onhan-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,132 - ERROR - Marayum file ..\data\marayum_dictionaries\onhan-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,140 - WARNING - No entries processed from onhan-english_processed.json
+2025-04-03 22:01:53,148 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\waray-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,153 - ERROR - Marayum file ..\data\marayum_dictionaries\waray-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,157 - WARNING - No entries processed from waray-english_processed.json
+2025-04-03 22:01:53,161 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ibanag-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,165 - ERROR - Marayum file ..\data\marayum_dictionaries\ibanag-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,166 - WARNING - No entries processed from ibanag-english_processed.json
+2025-04-03 22:01:53,167 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\iranon-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,168 - ERROR - Marayum file ..\data\marayum_dictionaries\iranon-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,168 - WARNING - No entries processed from iranon-english_processed.json
+2025-04-03 22:01:53,169 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\itawis-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,170 - ERROR - Marayum file ..\data\marayum_dictionaries\itawis-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,172 - WARNING - No entries processed from itawis-english_processed.json
+2025-04-03 22:01:53,185 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ivatan-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,187 - ERROR - Marayum file ..\data\marayum_dictionaries\ivatan-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,188 - WARNING - No entries processed from ivatan-english_processed.json
+2025-04-03 22:01:53,190 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\manide-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,194 - ERROR - Marayum file ..\data\marayum_dictionaries\manide-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,194 - WARNING - No entries processed from manide-english_processed.json
+2025-04-03 22:01:53,195 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\gaddang-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,201 - ERROR - Marayum file ..\data\marayum_dictionaries\gaddang-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,202 - WARNING - No entries processed from gaddang-english_processed.json
+2025-04-03 22:01:53,205 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cuyonon-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,207 - ERROR - Marayum file ..\data\marayum_dictionaries\cuyonon-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,207 - WARNING - No entries processed from cuyonon-english_processed.json
+2025-04-03 22:01:53,208 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ilocano-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,210 - ERROR - Marayum file ..\data\marayum_dictionaries\ilocano-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,210 - WARNING - No entries processed from ilocano-english_processed.json
+2025-04-03 22:01:53,211 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\pangasinan-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,214 - ERROR - Marayum file ..\data\marayum_dictionaries\pangasinan-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,215 - WARNING - No entries processed from pangasinan-english_processed.json
+2025-04-03 22:01:53,216 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-albay-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,217 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-albay-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,218 - WARNING - No entries processed from bikol-albay-english_processed.json
+2025-04-03 22:01:53,223 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-libon-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,225 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-libon-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,225 - WARNING - No entries processed from bikol-libon-english_processed.json
+2025-04-03 22:01:53,226 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\kapampangan-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,227 - ERROR - Marayum file ..\data\marayum_dictionaries\kapampangan-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,228 - WARNING - No entries processed from kapampangan-english_processed.json
+2025-04-03 22:01:53,229 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-miraya-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,231 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-miraya-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,232 - WARNING - No entries processed from bikol-miraya-english_processed.json
+2025-04-03 22:01:53,234 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\maguindanaon-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,235 - ERROR - Marayum file ..\data\marayum_dictionaries\maguindanaon-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,236 - WARNING - No entries processed from maguindanaon-english_processed.json
+2025-04-03 22:01:53,236 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-partido-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,238 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-partido-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,238 - WARNING - No entries processed from bikol-partido-english_processed.json
+2025-04-03 22:01:53,239 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,240 - ERROR - Marayum file ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,240 - WARNING - No entries processed from isneg-yapayao-english_processed.json
+2025-04-03 22:01:53,241 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,242 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,243 - WARNING - No entries processed from bikol-rinconada-english_processed.json
+2025-04-03 22:01:53,244 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,245 - ERROR - Marayum file ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,245 - WARNING - No entries processed from blaan-koronadal-english_processed.json
+2025-04-03 22:01:53,246 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,247 - ERROR - Marayum file ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,247 - WARNING - No entries processed from blaan-sarangani-english_processed.json
+2025-04-03 22:01:53,249 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,252 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,252 - WARNING - No entries processed from bikol-west-albay-english_processed.json
+2025-04-03 22:01:53,253 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,255 - ERROR - Marayum file ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,255 - WARNING - No entries processed from manobo-erumanen-english_processed.json
+2025-04-03 22:01:53,256 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,258 - ERROR - Marayum file ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,259 - WARNING - No entries processed from cebuano-cotabato-english_processed.json
+2025-04-03 22:01:53,260 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,261 - ERROR - Marayum file ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,267 - WARNING - No entries processed from tagalog-marinduque-english_processed.json
+2025-04-03 22:01:53,268 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,270 - ERROR - Marayum file ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,272 - WARNING - No entries processed from hiligaynon-cotabato-english_processed.json
+2025-04-03 22:01:53,274 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,276 - ERROR - Marayum file ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,277 - WARNING - No entries processed from ifugao-tuwali-ihapo-english_processed.json
+2025-04-03 22:01:53,278 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,281 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,284 - WARNING - No entries processed from bikol-northern-catanduanes-english_processed.json
+2025-04-03 22:01:53,290 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,293 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,294 - WARNING - No entries processed from bikol-southern-catanduanes-english_processed.json
+2025-04-03 22:01:53,296 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\chavacano-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,304 - ERROR - Marayum file ..\data\marayum_dictionaries\chavacano-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,313 - WARNING - No entries processed from chavacano-english_processed.json
+2025-04-03 22:01:53,320 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\masbatenyo-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,322 - ERROR - Marayum file ..\data\marayum_dictionaries\masbatenyo-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,326 - WARNING - No entries processed from masbatenyo-english_processed.json
+2025-04-03 22:01:53,328 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-central-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,335 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-central-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,336 - WARNING - No entries processed from bikol-central-english_processed.json
+2025-04-03 22:01:53,338 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\aklanon-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,340 - ERROR - Marayum file ..\data\marayum_dictionaries\aklanon-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,341 - WARNING - No entries processed from aklanon-english_processed.json
+2025-04-03 22:01:53,345 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\surigaonon-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,382 - ERROR - Marayum file ..\data\marayum_dictionaries\surigaonon-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,385 - WARNING - No entries processed from surigaonon-english_processed.json
+2025-04-03 22:01:53,388 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-boienen-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,430 - ERROR - Marayum file ..\data\marayum_dictionaries\bikol-boienen-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,434 - WARNING - No entries processed from bikol-boienen-english_processed.json
+2025-04-03 22:01:53,445 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\asi-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,496 - ERROR - Marayum file ..\data\marayum_dictionaries\asi-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,501 - WARNING - No entries processed from asi-english_processed.json
+2025-04-03 22:01:53,505 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\hiligaynon-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,577 - ERROR - Marayum file ..\data\marayum_dictionaries\hiligaynon-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,579 - WARNING - No entries processed from hiligaynon-english_processed.json
+2025-04-03 22:01:53,581 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cebuano-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,645 - ERROR - Marayum file ..\data\marayum_dictionaries\cebuano-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,647 - WARNING - No entries processed from cebuano-english_processed.json
+2025-04-03 22:01:53,648 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\kinaray-a-english_processed.json with source: Project Marayum
+2025-04-03 22:01:53,707 - ERROR - Marayum file ..\data\marayum_dictionaries\kinaray-a-english_processed.json does not contain a list of entries.
+2025-04-03 22:01:53,709 - WARNING - No entries processed from kinaray-a-english_processed.json
+2025-04-03 22:01:53,709 - INFO - Completed processing Marayum dictionaries:
+2025-04-03 22:01:53,710 - INFO -   Files processed: 0
+2025-04-03 22:01:53,710 - INFO -   Files skipped: 39
+2025-04-03 22:01:53,711 - INFO -   Total entries processed: 0
+2025-04-03 22:01:53,712 - INFO -   Total errors encountered: 39

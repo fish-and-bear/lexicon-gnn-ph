@@ -8647,658 +8647,403 @@ def get_language_code(language: str) -> str:
     return safe_code
 
 
-# Make sure these imports are present at the top of your file
-import json
-import os
-import logging
-import psycopg2
-from psycopg2.extras import Json # Ensure Json is imported
-from typing import Optional, Tuple, Dict, Union, List # Ensure needed types are imported
-from tqdm import tqdm
-from .db_utils import with_transaction # Assuming db_utils is in the same directory or adjust path
-from .utils import standardize_source_identifier, get_language_code # Assuming utils is in the same directory or adjust path
-# --- Add other necessary imports like RelationshipType ---
-from enum import Enum # Example if RelationshipType is an Enum
-
-# --- Define RelationshipType if not imported ---
-# Example:
-class RelationshipType(Enum):
-    SYNONYM = "synonym"
-    ANTONYM = "antonym"
-    HYPERNYM = "hypernym"
-    HYPONYM = "hyponym"
-    ETYMOLOGY = "etymology"
-    DERIVED = "derived"
-    RELATED = "related"
-    SEE_ALSO = "see_also"
-    FORM = "form"
-    TRANSLATION = "translation"
-# --- Define helper functions if not imported ---
-# Dummy placeholders - ensure these are correctly defined/imported in your actual code
-def process_examples(examples_raw: List) -> List[Dict]:
-    processed = []
-    if isinstance(examples_raw, list):
-        for ex in examples_raw:
-            if isinstance(ex, str) and ex.strip():
-                processed.append({"text": ex.strip()})
-            elif isinstance(ex, dict) and ex.get("text", "").strip():
-                 processed.append({"text": ex["text"].strip()}) # Add other fields if needed
-    return processed
-
-def process_see_also(see_also_raw: List, lang_code: str) -> List[str]:
-    processed = []
-    if isinstance(see_also_raw, list):
-        for item in see_also_raw:
-            if isinstance(item, str) and item.strip():
-                processed.append(item.strip())
-            # Add handling for dict if needed, e.g., item.get('word')
-    return processed
-
-# Add insert_definition, insert_pronunciation, insert_etymology, insert_relation, get_or_create_word_id, insert_credit
-# if they are not already defined or imported correctly earlier in the file.
-# Example structure (ensure these match your actual functions):
-
-# Assume get_or_create_word_id is defined elsewhere and imported
-
-@with_transaction(commit=True) # Or False depending on your design
-def insert_definition(cur, word_id, definition_text, source_identifier, definition_order, examples=None, metadata=None) -> Optional[int]:
-    # Dummy implementation - replace with your actual logic
-    try:
-        cur.execute("INSERT INTO definitions (word_id, definition, source, definition_order, examples, metadata) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
-                    (word_id, definition_text, source_identifier, definition_order, examples, metadata))
-        def_id = cur.fetchone()[0]
-        logger.debug(f"Inserted definition ID {def_id} for word {word_id}")
-        return def_id
-    except Exception as e:
-        logger.error(f"Dummy insert_definition failed: {e}")
-        return None
-
-@with_transaction(commit=True) # Or False
-def insert_pronunciation(cur, word_id, pron_obj, source_identifier) -> Optional[int]:
-     # Dummy implementation
-    try:
-        ipa = pron_obj.get("value")
-        pron_type = pron_obj.get("type", "ipa")
-        metadata = {k: v for k, v in pron_obj.items() if k not in ["value", "type"]}
-        cur.execute("INSERT INTO pronunciations (word_id, ipa, source, type, metadata) VALUES (%s, %s, %s, %s, %s) RETURNING id",
-                    (word_id, ipa, source_identifier, pron_type, Json(metadata) if metadata else None))
-        pron_id = cur.fetchone()[0]
-        logger.debug(f"Inserted pronunciation ID {pron_id} for word {word_id}")
-        return pron_id
-    except Exception as e:
-        logger.error(f"Dummy insert_pronunciation failed: {e}")
-        return None
-
-@with_transaction(commit=True) # Or False
-def insert_etymology(cur, word_id, etymology_text, source_identifier) -> Optional[int]:
-    # Dummy implementation
-    try:
-        cur.execute("INSERT INTO etymologies (word_id, etymology, source) VALUES (%s, %s, %s) RETURNING id",
-                    (word_id, etymology_text, source_identifier))
-        ety_id = cur.fetchone()[0]
-        logger.debug(f"Inserted etymology ID {ety_id} for word {word_id}")
-        return ety_id
-    except Exception as e:
-        logger.error(f"Dummy insert_etymology failed: {e}")
-        return None
-
-@with_transaction(commit=True) # Or False
-def insert_relation(cur, word_id1, word_id2, relationship_type, source_identifier) -> Optional[int]:
-    # Dummy implementation
-    try:
-        cur.execute("INSERT INTO relationships (word1_id, word2_id, type, source) VALUES (%s, %s, %s, %s) ON CONFLICT DO NOTHING RETURNING id",
-                    (word_id1, word_id2, relationship_type.value, source_identifier))
-        result = cur.fetchone()
-        rel_id = result[0] if result else None
-        if rel_id:
-             logger.debug(f"Inserted relation ID {rel_id} ({relationship_type.name}) for words {word_id1}, {word_id2}")
-        return rel_id
-    except Exception as e:
-        logger.error(f"Dummy insert_relation failed: {e}")
-        return None
-
-# --- Ensure insert_credit definition from your code is present here ---
-# The one provided in the context starts @ line 1386
-@with_transaction(commit=True)
-def insert_credit(
-    cur, word_id: int, credit_data: Union[str, Dict], source_identifier: str
-) -> Optional[int]:
-    """
-    Insert credit data for a word. Handles string or dictionary input.
-    Uses ON CONFLICT to update existing credits based on (word_id, credit),
-    applying a 'last write wins' strategy for the 'sources' field.
-
-    Args:
-        cur: Database cursor.
-        word_id: ID of the word.
-        credit_data: Credit string or dictionary (e.g., {'text': 'Source Name'}).
-                     If dict, the 'text' key is used.
-        source_identifier: Identifier for the data source (e.g., filename). MANDATORY.
-
-    Returns:
-        The ID of the inserted/updated credit record, or None if failed.
-    """
-    if not source_identifier:
-        logger.error(
-            f"CRITICAL: Skipping credit insert for word ID {word_id}: Missing MANDATORY source identifier."
-        )
-        return None
-
-    credit_text = None
-    try:
-        # Extract credit text
-        if isinstance(credit_data, dict):
-            # Prioritize 'text' key if dict is provided
-            credit_text = (
-                credit_data.get("text", "").strip()
-                if isinstance(credit_data.get("text"), str)
-                else None
-            )
-        elif isinstance(credit_data, str):
-            credit_text = credit_data.strip()
-        else:
-            logger.warning(
-                f"Invalid credit_data type for word ID {word_id} (source '{source_identifier}'): {type(credit_data)}. Skipping."
-            )
-            return None
-
-        if not credit_text:
-            logger.warning(
-                f"Empty credit text for word ID {word_id} (source '{source_identifier}'). Skipping."
-            )
-            return None
-
-        # Prepare parameters
-        params = {
-            "word_id": word_id,
-            "credit": credit_text,
-            "sources": source_identifier,  # Use mandatory source_identifier directly
-        }
-
-        # Insert or update credit
-        cur.execute(
-            """
-            INSERT INTO credits (word_id, credit, sources)
-            VALUES (%(word_id)s, %(credit)s, %(sources)s)
-            ON CONFLICT (word_id, credit) -- Conflict on word and exact credit text
-            DO UPDATE SET
-                -- Overwrite sources: Last write wins for this credit record
-                sources = EXCLUDED.sources,
-                updated_at = CURRENT_TIMESTAMP
-            RETURNING id
-        """,
-            params,
-        )
-        credit_id = cur.fetchone()[0]
-        logger.debug(
-            f"Inserted/Updated credit (ID: {credit_id}) for word ID {word_id} from source '{source_identifier}'. Credit: '{credit_text}'"
-        )
-        return credit_id
-
-    except psycopg2.Error as e:
-        logger.error(
-            f"Database error inserting credit for word ID {word_id} from '{source_identifier}': {e.pgcode} {e.pgerror}",
-            exc_info=True,
-        )
-        return None
-    except Exception as e:
-        logger.error(
-            f"Unexpected error inserting credit for word ID {word_id} from '{source_identifier}': {e}",
-            exc_info=True,
-        )
-        return None
-# --- End insert_credit definition ---
-
-
-logger = logging.getLogger(__name__) # Make sure logger is defined
-
-@with_transaction(commit=False) # Manage commit manually within the function
-def process_marayum_json(cur, filename: str, source_identifier: Optional[str] = None) -> Tuple[int, int]:
-    """Processes a single Marayum JSON dictionary file."""
-    # Determine the effective source identifier
-    if source_identifier:
-        effective_source_identifier = source_identifier
-    else:
-        # Fallback to standardizing from filename if not provided
-        effective_source_identifier = standardize_source_identifier(
+# Replace the existing process_marayum_json function (starts around line 6704)
+@with_transaction(commit=False)  # Manage transactions manually within the loop
+def process_marayum_json(
+    cur, filename: str, source_identifier: Optional[str] = None
+) -> Tuple[int, int]:
+    """Process a single Marayum JSON file, ensuring source propagation."""
+    # Use the standardized source from the original function logic
+    # source_identifier = SourceStandardization.standardize_sources(os.path.basename(filename))
+    # --- Determine Source Identifier ---
+    effective_source_identifier = source_identifier  # Use passed identifier if provided
+    if not effective_source_identifier:
+        # Fallback: Calculate from filename if not passed explicitly
+        effective_source_identifier = SourceStandardization.standardize_sources(
             os.path.basename(filename)
         )
+        logger.warning(
+            f"No source_identifier passed to process_marayum_json for {filename}, calculated '{effective_source_identifier}' as fallback."
+        )
+
+    # Log using the determined identifier
     logger.info(
         f"Processing Marayum file: {filename} with source: {effective_source_identifier}"
-    )
+    )  # <-- Use effective_source_identifier
 
-    conn = cur.connection
+    processed_count = 0
+    error_count = 0
+    skipped_count = 0
+    definitions_added = 0  # Add counter for definitions
+    relations_added = 0  # Add counter for relations
+    pronunciations_added = 0  # Add counter for pronunciations
+    etymologies_added = 0  # Add counter for etymologies
+    entries_in_file = 0
+    conn = cur.connection  # Get connection for manual commit/rollback
 
     try:
-        with open(filename, 'r', encoding='utf-8') as f:
+        with open(filename, "r", encoding="utf-8") as f:
             data = json.load(f)
     except (IOError, json.JSONDecodeError) as e:
         logger.error(f"Error reading or parsing Marayum file {filename}: {e}")
-        return 0, 1 # Indicate 0 processed, 1 issue (file error)
+        return 0, 1  # Return 0 processed, 1 error (representing the file)
     except Exception as e:
-        logger.error(f"Unexpected error reading Marayum file {filename}: {e}", exc_info=True)
-        return 0, 1 # Indicate 0 processed, 1 issue (file error)
+        logger.error(
+            f"Unexpected error reading Marayum file {filename}: {e}", exc_info=True
+        )
+        return 0, 1
 
-    # --- Adjust for Dictionary Structure ---
-    if not isinstance(data, dict): # Expect a dictionary now
-        logger.error(f"Marayum file {filename} does not contain a top-level dictionary.")
-        return 0, 1 # Indicate 0 processed, 1 issue (format error)
+    if not isinstance(data, list):
+        logger.error(f"Marayum file {filename} does not contain a list of entries.")
+        return 0, 1
 
-    # Extract the list of word entries from the 'words' key
-    word_entries_list = data.get("words", [])
-    if not isinstance(word_entries_list, list):
-         logger.error(f"Marayum file {filename} dictionary does not contain a 'words' list.")
-         return 0, 1 # Indicate 0 processed, 1 issue (format error)
-    # --- End Adjustment ---
+    entries_in_file = len(data)
+    logger.info(f"Found {entries_in_file} entries in {filename}")
 
-    entries_in_file = len(word_entries_list) # Get length from the 'words' list
-    if entries_in_file == 0:
-         logger.info(f"Found 0 word entries in {filename}. Skipping file.")
-         # No commit needed, just return
-         return 0, 0 # 0 processed, 0 issues
+    # Assuming get_language_mapping() is defined elsewhere and returns a dict
+    # language_mapping = get_language_mapping() # Load this once if needed by get_language_code
 
-    logger.info(f"Found {entries_in_file} word entries in {filename}")
-
-    # --- Determine Language Code for the entire file ---
-    dict_info = data.get("dictionary_info", {})
-    base_language_name = dict_info.get("base_language", "")
-    language_code = "unk" # Default before mapping attempt
-    if base_language_name:
-        # Normalize the language name slightly before lookup (lowercase, strip)
-        normalized_lang_name = base_language_name.lower().strip()
-        language_code = get_language_code(normalized_lang_name) # Use helper function
-        # get_language_code logs warning if mapping fails and returns a safe code ('unk' or derived)
-        if not language_code: # Should not happen if get_language_code is robust, but check anyway
-             logger.warning(f"get_language_code returned empty for '{base_language_name}' (normalized: '{normalized_lang_name}') in {filename}. Defaulting to 'unk'.")
-             language_code = "unk"
-        elif language_code != "unk": # Only log success if a specific code was found
-             logger.info(f"Determined language code '{language_code}' for {filename} from base language '{base_language_name}'.")
-        # If language_code is 'unk' after the call, the warning was logged inside get_language_code
-    else:
-        logger.warning(f"No 'base_language' found in dictionary_info for {filename}. Defaulting language code to 'unk'.")
-        language_code = "unk" # Explicitly set default
-
-    # If language code is still 'unk', consider if processing should stop or continue
-    # For now, we proceed, but 'unk' will be used for word entries.
-    # --- End Language Code Determination ---
-
-
-    # Initialize counters for this file's processing run
-    stats = {
-        "processed": 0,
-        "definitions": 0,
-        "relations": 0,
-        "pronunciations": 0,
-        "etymologies": 0,
-        "credits": 0, # Added counter for credits
-        "skipped": 0,
-        "errors": 0,
-    }
-    error_types = {} # Dictionary to track types of errors encountered
-
-    # Iterate over the extracted list of word entries
-    with tqdm(total=entries_in_file, desc=f"Processing {effective_source_identifier}", unit="entry", leave=False) as pbar:
-        for entry_index, entry in enumerate(word_entries_list): # <-- Iterate over word_entries_list
-            # Create a unique savepoint name for each entry
-            # Using hash is okay, but ensure it doesn't collide easily; index helps uniqueness
-            savepoint_name = f"marayum_{entry_index}_{abs(hash(str(entry)) % 1000000)}" # Limit hash part length
-
-            lemma = "" # Initialize lemma outside try block for use in error logging if needed
-            word_id = None # Initialize word_id
-
+    with tqdm(
+        total=entries_in_file,
+        desc=f"Processing {effective_source_identifier}",
+        unit="entry",
+    ) as pbar:  # <-- Use effective_source_identifier
+        for entry_index, entry in enumerate(data):
+            # --- Savepoint ---
+            # Marayum uses entry_index, which is safe
+            savepoint_name = f"marayum_entry_{entry_index}"
             try:
                 cur.execute(f"SAVEPOINT {savepoint_name}")
+            except Exception as e:
+                logger.error(
+                    f"Failed to create savepoint {savepoint_name} for Marayum entry index {entry_index}: {e}. Skipping."
+                )
+                error_count += 1
+                pbar.update(1)
+                continue  # Skip this entry
 
+            try:
                 if not isinstance(entry, dict):
-                    logger.warning(f"Skipping non-dictionary item at index {entry_index} in {filename}")
-                    stats["skipped"] += 1
-                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}") # Release savepoint for skipped item
-                    pbar.update(1)
-                    continue
-
-                lemma = entry.get("word", "").strip()
-                if not lemma:
-                    logger.warning(f"Skipping entry at index {entry_index} due to missing or empty 'word' field in {filename}")
-                    stats["skipped"] += 1
-                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}") # Release savepoint for skipped item
-                    pbar.update(1)
-                    continue
-
-                # --- Language code determined before the loop, use the 'language_code' variable ---
-
-                # --- Extract Basic Metadata (excluding complex/separately handled fields) ---
-                word_metadata = {}
-                for key, value in entry.items():
-                    # Exclude fields processed separately or too complex/large
-                    if key not in ["word", "definitions", "pronunciation", "etymology", "see_also", "examples", "id", "language_code", "credits"]: # Exclude credits now
-                        # Basic check for simple types
-                        if isinstance(value, (str, int, float, bool)) or value is None:
-                             # Limit string length
-                             if isinstance(value, str) and len(value) > 500:
-                                 word_metadata[key] = value[:500] + "...(truncated)"
-                             else:
-                                 word_metadata[key] = value
-                        elif isinstance(value, list) and all(isinstance(i, (str, int, float, bool)) for i in value):
-                            # Include simple lists, limit size
-                             try:
-                                json_str = json.dumps(value)
-                                if len(json_str) < 500:
-                                     word_metadata[key] = value
-                                else:
-                                    logger.debug(f"Skipping large list metadata field '{key}' for word '{lemma}'")
-                             except TypeError:
-                                logger.debug(f"Skipping non-serializable list metadata field '{key}' for word '{lemma}'")
-                        # Optionally handle simple dicts here too if needed, with size/complexity checks
-
-                # --- Get or Create Word ---
-                try:
-                     # Pass the language_code determined for the file
-                     word_id = get_or_create_word_id(
-                        cur,
-                        lemma,
-                        language_code=language_code, # Use file-level language code
-                        source_identifier=effective_source_identifier,
-                        word_metadata=Json(word_metadata) if word_metadata else None
+                    logger.warning(
+                        f"Skipping invalid entry at index {entry_index} in {filename} (not a dict)"
                     )
-                     if not word_id:
-                         # This case should ideally be handled within get_or_create_word_id by raising an error
-                         raise ValueError(f"get_or_create_word_id returned None unexpectedly for lemma '{lemma}'")
-                     # Use debug level for successful creation log
-                     logger.debug(f"Word '{lemma}' ({language_code}) created/found (ID: {word_id}) from source '{effective_source_identifier}'.")
+                    skipped_count += 1
+                    cur.execute(
+                        f"RELEASE SAVEPOINT {savepoint_name}"
+                    )  # Release if skipping early
+                    pbar.update(1)
+                    continue
 
-                except Exception as word_err:
-                     logger.error(f"CRITICAL: Failed to get/create word ID for lemma '{lemma}' (Index: {entry_index}) in {filename}: {word_err}")
-                     stats["errors"] += 1
-                     error_key = f"WordCreationError: {type(word_err).__name__}"
-                     error_types[error_key] = error_types.get(error_key, 0) + 1
-                     cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}") # Rollback this entry
-                     pbar.update(1)
-                     continue # Skip to next entry - cannot proceed without word_id
+                headword = entry.get("headword", "").strip()
+                language_name = entry.get(
+                    "language", "Unknown"
+                )  # Keep original language name
+                language_code = get_language_code(language_name)  # Use helper
 
+                if not headword:
+                    logger.warning(
+                        f"Skipping entry at index {entry_index} in {filename} (no headword)"
+                    )
+                    skipped_count += 1
+                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+                    pbar.update(1)
+                    continue
 
-                # --- Process Credits using insert_credit (AFTER word_id is obtained) ---
-                credits_raw = entry.get("credits")
-                if credits_raw:
-                    # insert_credit handles string or dict and logs internally
-                    credit_inserted_id = insert_credit(cur, word_id, credits_raw, effective_source_identifier)
-                    if credit_inserted_id:
-                        stats["credits"] += 1
-                    else:
-                        # Log failure here as well, as insert_credit might only log warning/error
-                        logger.warning(f"Failed to insert credit for word ID {word_id} ('{lemma}') from source '{effective_source_identifier}'. Raw data: {credits_raw}")
-                        # Optionally count credit failures if needed:
-                        # stats["credit_errors"] = stats.get("credit_errors", 0) + 1
-                        error_key = f"CreditInsertFailure"
-                        error_types[error_key] = error_types.get(error_key, 0) + 1
+                # --- Word Creation ---
+                # Preserve original metadata logic
+                word_metadata = {
+                    "marayum_source": effective_source_identifier,
+                    "language_name": language_name,
+                    "processed_timestamp": datetime.now().isoformat(),
+                }  # <-- Use effective_source_identifier
+                try:
+                    word_id = get_or_create_word_id(
+                        cur,
+                        headword,
+                        language_code=language_code,
+                        source_identifier=effective_source_identifier,  # <-- Use effective_source_identifier
+                        word_metadata=json.dumps(word_metadata),
+                    )
+                except TypeError as te:
+                    logger.warning(
+                        f"TypeError calling get_or_create_word_id for '{headword}', possibly due to word_metadata. Retrying without it. Error: {te}"
+                    )
+                    word_id = get_or_create_word_id(
+                        cur,
+                        headword,
+                        language_code=language_code,
+                        source_identifier=effective_source_identifier,  # <-- Use effective_source_identifier
+                    )
 
+                if not word_id:
+                    raise ValueError(
+                        f"Failed to get/create word ID for '{headword}' ({language_code}) from {effective_source_identifier}"
+                    )  # <-- Use effective_source_identifier
 
-                # --- Process Definitions and Examples ---
-                definitions = entry.get("definitions", [])
-                if isinstance(definitions, list):
-                     for def_idx, def_item in enumerate(definitions):
-                         if not isinstance(def_item, dict) or "definition" not in def_item:
-                             logger.debug(f"Skipping invalid definition item at index {def_idx} for word '{lemma}' (ID: {word_id})")
-                             continue
+                # --- Process Pronunciations ---
+                pronunciations = entry.get("pronunciations")
+                if isinstance(pronunciations, list):
+                    for pron in pronunciations:
+                        if isinstance(pron, str) and pron.strip():
+                            try:
+                                pron_id = insert_pronunciation(
+                                    cur,
+                                    word_id,
+                                    pron.strip(),
+                                    source_identifier=effective_source_identifier,
+                                )  # <-- Use effective_source_identifier
+                                if pron_id:
+                                    pronunciations_added += 1
+                            except Exception as e:
+                                logger.warning(
+                                    f"Failed pronunciation insert '{pron}' for '{headword}' from {effective_source_identifier}: {e}"
+                                )  # <-- Use effective_source_identifier
 
-                         definition_text = def_item.get("definition", "")
-                         # Allow definition text to be None or empty string initially
-                         # .strip() might fail if it's not a string
-                         if isinstance(definition_text, str):
-                              definition_text = definition_text.strip()
-                         elif definition_text is None:
-                              definition_text = "" # Handle None case explicitly
-                         else:
-                              logger.warning(f"Non-string definition text found for word '{lemma}' (ID: {word_id}), Def {def_idx+1}: {type(definition_text)}. Skipping definition.")
-                              continue # Skip this definition if type is wrong
-
-                         if not definition_text:
-                             logger.debug(f"Skipping empty definition for word '{lemma}' (ID: {word_id}), Def {def_idx+1}")
-                             continue
-
-                         # Prepare definition metadata
-                         def_metadata = {}
-                         for meta_key, meta_val in def_item.items():
-                            if meta_key not in ["definition", "examples", "definition_id"]: # Exclude example, def, id
-                                # Add similar type/size checks as for word_metadata if needed
-                                if isinstance(meta_val, (str, int, float, bool)) or meta_val is None:
-                                    if isinstance(meta_val, str) and len(meta_val) > 200: # Limit size
-                                        def_metadata[meta_key] = meta_val[:200] + "..."
-                                    else:
-                                        def_metadata[meta_key] = meta_val
-                                # Add list/dict handling if necessary
-
-                         # Process examples associated with this definition
-                         examples_processed = []
-                         examples_raw = def_item.get("examples", [])
-                         if isinstance(examples_raw, list):
-                             examples_processed = process_examples(examples_raw) # Use helper
-
-                         # Insert definition
-                         try:
-                             # Use provided ID or index as fallback order
-                             def_order = def_item.get("definition_id", def_idx + 1)
-                             def_id = insert_definition(
-                                cur,
-                                word_id,
-                                definition_text,
-                                source_identifier=effective_source_identifier,
-                                definition_order=def_order,
-                                examples=Json(examples_processed) if examples_processed else None,
-                                metadata=Json(def_metadata) if def_metadata else None
-                             )
-                             if def_id:
-                                stats["definitions"] += 1
-                             else: # insert_definition returned None or raised error handled internally
-                                logger.warning(f"insert_definition failed for '{lemma}' (ID: {word_id}), Def {def_idx+1}. Check internal logs.")
-                                error_key = f"DefinitionInsertFailure"
-                                error_types[error_key] = error_types.get(error_key, 0) + 1
-
-                         except Exception as def_err:
-                             # Catch errors not handled inside insert_definition
-                             logger.error(f"Error during definition insertion for '{lemma}' (ID: {word_id}), Def {def_idx+1}: {def_err}", exc_info=True)
-                             error_key = f"DefinitionInsertError: {type(def_err).__name__}"
-                             error_types[error_key] = error_types.get(error_key, 0) + 1
-                             # Continue processing other parts of the entry, but log the error
-
-                # --- Process Pronunciation (if available) ---
-                pronunciation = entry.get("pronunciation")
-                if pronunciation:
-                    # Marayum pronunciation is often just a string, format it
-                    pron_obj = {}
-                    if isinstance(pronunciation, str) and pronunciation.strip():
-                        pron_obj = {"value": pronunciation.strip(), "type": "ipa"} # Assume IPA if not empty
-                    elif isinstance(pronunciation, dict):
-                        pron_obj = pronunciation # Use as is if already a dict
-                    else:
-                        logger.debug(f"Skipping invalid pronunciation data type for '{lemma}' (ID: {word_id}): {type(pronunciation)}")
-
-                    if pron_obj and pron_obj.get("value"): # Ensure value exists
-                        try:
-                            pron_inserted_id = insert_pronunciation(cur, word_id, pron_obj, effective_source_identifier)
-                            if pron_inserted_id:
-                                stats["pronunciations"] += 1
-                            else:
-                                logger.warning(f"insert_pronunciation failed for '{lemma}' (ID: {word_id}). Check internal logs.")
-                                error_key = f"PronunciationInsertFailure"
-                                error_types[error_key] = error_types.get(error_key, 0) + 1
-                        except Exception as pron_err:
-                            logger.error(f"Error during pronunciation insertion for '{lemma}' (ID: {word_id}): {pron_err}", exc_info=True)
-                            error_key = f"PronunciationInsertError: {type(pron_err).__name__}"
-                            error_types[error_key] = error_types.get(error_key, 0) + 1
-
-                # --- Process Etymology (if available) ---
-                etymology = entry.get("etymology")
-                if etymology and isinstance(etymology, str) and etymology.strip():
+                # --- Process Etymology ---
+                etymology_text_raw = entry.get("etymology")
+                if isinstance(etymology_text_raw, str) and etymology_text_raw.strip():
+                    etymology_text = etymology_text_raw.strip()
                     try:
-                        ety_id = insert_etymology(cur, word_id, etymology, effective_source_identifier)
+                        ety_id = insert_etymology(
+                            cur,
+                            word_id,
+                            etymology_text,
+                            source_identifier=effective_source_identifier,
+                        )  # <-- Use effective_source_identifier
                         if ety_id:
-                            stats["etymologies"] += 1
-                        else:
-                            logger.warning(f"insert_etymology failed for '{lemma}' (ID: {word_id}). Check internal logs.")
-                            error_key = f"EtymologyInsertFailure"
-                            error_types[error_key] = error_types.get(error_key, 0) + 1
-                    except Exception as ety_err:
-                        logger.error(f"Error during etymology insertion for '{lemma}' (ID: {word_id}): {ety_err}", exc_info=True)
-                        error_key = f"EtymologyInsertError: {type(ety_err).__name__}"
-                        error_types[error_key] = error_types.get(error_key, 0) + 1
+                            etymologies_added += 1
+                    except Exception as e:
+                        logger.warning(
+                            f"Failed etymology insert for '{headword}' from {effective_source_identifier}: {e}"
+                        )  # <-- Use effective_source_identifier
 
-                # --- Process See Also (as Relations) ---
-                see_also = entry.get("see_also", [])
-                if isinstance(see_also, list):
-                     # Assuming process_see_also returns list of related word strings
-                     see_also_words = process_see_also(see_also, language_code)
-                     for related_word_str in see_also_words:
-                         if related_word_str.lower() != lemma.lower(): # Avoid self-relation (case-insensitive)
-                             related_word_id = None
-                             try:
-                                 # Get ID for the related word, creating if necessary
-                                 related_word_id = get_or_create_word_id(
-                                     cur,
-                                     related_word_str,
-                                     language_code=language_code, # Use same language code
-                                     source_identifier=effective_source_identifier # Attribute creation to this source if new
-                                 )
-                                 if related_word_id and related_word_id != word_id: # Check IDs aren't same
-                                     rel_id = insert_relation(
-                                         cur,
-                                         word_id,
-                                         related_word_id,
-                                         RelationshipType.SEE_ALSO,
-                                         source_identifier=effective_source_identifier
-                                     )
-                                     if rel_id:
-                                         stats["relations"] += 1
-                                         # Optionally insert bidirectional relation
-                                         # insert_relation(cur, related_word_id, word_id, RelationshipType.SEE_ALSO, effective_source_identifier)
-                                     else:
-                                         # Log if insert_relation fails (might be due to constraint/conflict handled internally)
-                                         logger.debug(f"Failed to insert SEE_ALSO relation {word_id} -> {related_word_id}. Might already exist.")
-                                         # error_key = f"SeeAlsoRelationInsertFailure" # Only if failure is unexpected
-                                         # error_types[error_key] = error_types.get(error_key, 0) + 1
+                # --- Process Senses ---
+                senses = entry.get("senses")
+                if isinstance(senses, list):
+                    for sense_idx, sense in enumerate(senses):
+                        if not isinstance(sense, dict):
+                            continue
+                        definition = sense.get("definition", "").strip()
+                        pos = sense.get(
+                            "partOfSpeech", ""
+                        )  # Marayum uses 'partOfSpeech'
+                        examples_raw = sense.get("examples", [])
 
-                             except Exception as rel_err:
-                                 logger.error(f"Error processing 'see_also' relation for '{lemma}' -> '{related_word_str}': {rel_err}", exc_info=True)
-                                 error_key = f"SeeAlsoRelationError: {type(rel_err).__name__}"
-                                 error_types[error_key] = error_types.get(error_key, 0) + 1
+                        if definition:
+                            # Process examples into JSON list of strings/dicts
+                            examples_list = []
+                            if isinstance(examples_raw, list):
+                                examples_list = [
+                                    ex.strip()
+                                    for ex in examples_raw
+                                    if isinstance(ex, str) and ex.strip()
+                                ]
+                                # If Marayum examples are dicts, adapt here:
+                                # examples_list = [{"text": ex.get("text"), ...} for ex in examples_raw if isinstance(ex, dict)]
 
-                # --- Finish Entry Processing ---
-                # If we reach here, the main parts were processed (or errors handled non-critically)
+                            # Convert examples list to JSON string or None
+                            examples_json = None
+                            if examples_list:
+                                try:
+                                    examples_json = json.dumps(examples_list)
+                                except TypeError:
+                                    logger.warning(
+                                        f"Could not serialize examples for sense in '{headword}': {examples_list}"
+                                    )
+
+                            # Get standardized POS ID using the original POS string
+                            # Use standardize_entry_pos helper if defined and needed
+                            std_pos = standardize_entry_pos(pos) if pos else None
+                            standardized_pos_id = get_standardized_pos_id(cur, std_pos)
+
+                            try:
+                                definition_id = insert_definition(
+                                    cur,
+                                    word_id,
+                                    definition,
+                                    source_identifier=effective_source_identifier,  # <-- Use effective_source_identifier
+                                    part_of_speech=standardized_pos_id,
+                                    original_pos=pos,
+                                    examples=examples_json,
+                                )
+                                if definition_id:
+                                    definitions_added += 1
+                                    # Process sense-level relations if Marayum format includes them
+                                    sense_relation_map = {
+                                        "synonyms": RelationshipType.SYNONYM,
+                                        "antonyms": RelationshipType.ANTONYM,
+                                        # Add other sense relations if needed
+                                    }
+                                    for (
+                                        sense_rel_key,
+                                        sense_rel_type,
+                                    ) in sense_relation_map.items():
+                                        if sense_rel_key in sense and isinstance(
+                                            sense[sense_rel_key], list
+                                        ):
+                                            for sense_rel_word in sense[sense_rel_key]:
+                                                if (
+                                                    isinstance(sense_rel_word, str)
+                                                    and sense_rel_word.strip()
+                                                ):
+                                                    sense_rel_word_clean = (
+                                                        sense_rel_word.strip()
+                                                    )
+                                                    if sense_rel_word_clean != headword:
+                                                        try:
+                                                            sense_rel_id = get_or_create_word_id(
+                                                                cur,
+                                                                sense_rel_word_clean,
+                                                                language_code,
+                                                                source_identifier=effective_source_identifier,
+                                                            )  # <-- Use effective_source_identifier
+                                                            if sense_rel_id:
+                                                                sense_rel_metadata = {
+                                                                    "source": effective_source_identifier,
+                                                                    "definition_id": definition_id,
+                                                                    "confidence": 70,
+                                                                }  # <-- Use effective_source_identifier
+                                                                rel_rec_id = insert_relation(
+                                                                    cur,
+                                                                    word_id,
+                                                                    sense_rel_id,
+                                                                    sense_rel_type,
+                                                                    source_identifier=effective_source_identifier,  # <-- Use effective_source_identifier
+                                                                    metadata=sense_rel_metadata,
+                                                                )
+                                                                if rel_rec_id:
+                                                                    relations_added += 1
+                                                                # Handle bidirectional for sense relations if needed
+                                                                # if sense_rel_type.bidirectional:
+                                                                #    insert_relation(cur, sense_rel_id, word_id, sense_rel_type, source_identifier=source_identifier, metadata=sense_rel_metadata)
+
+                                                        except Exception as rel_e:
+                                                            logger.warning(
+                                                                f"Error adding sense {sense_rel_key} '{sense_rel_word_clean}' for '{headword}' from {effective_source_identifier}: {rel_e}"
+                                                            )  # <-- Use effective_source_identifier
+
+                            except psycopg2.errors.UniqueViolation:
+                                logger.debug(
+                                    f"Marayum def exists for '{headword}', sense idx {sense_idx}: {definition[:30]}..."
+                                )
+                            except Exception as def_e:
+                                logger.error(
+                                    f"Failed def insert for '{headword}', sense idx {sense_idx}: {definition[:30]}... : {def_e}",
+                                    exc_info=False,
+                                )  # Keep log cleaner
+
+                # --- Process Top-Level Relations ---
+                # Using the structure from the provided snippet
+                top_level_relation_map = {
+                    "synonyms": RelationshipType.SYNONYM,
+                    "antonyms": RelationshipType.ANTONYM,
+                    "relatedWords": RelationshipType.RELATED,  # Assuming 'relatedWords' maps to RELATED
+                    # Add 'hypernyms', 'hyponyms' etc. if Marayum provides them
+                }
+                for rel_key, rel_type_enum in top_level_relation_map.items():
+                    related_words_list = entry.get(rel_key)
+                    if isinstance(related_words_list, list):
+                        for related_word_str in related_words_list:
+                            if (
+                                isinstance(related_word_str, str)
+                                and related_word_str.strip()
+                            ):
+                                related_word_clean = related_word_str.strip()
+                                if (
+                                    related_word_clean != headword
+                                ):  # Avoid self-relation
+                                    try:
+                                        related_id = get_or_create_word_id(
+                                            cur,
+                                            related_word_clean,
+                                            language_code,
+                                            source_identifier=effective_source_identifier,
+                                        )  # <-- Use effective_source_identifier
+                                        if related_id:
+                                            top_rel_metadata = {
+                                                "source": effective_source_identifier,
+                                                "confidence": 70,
+                                            }  # <-- Use effective_source_identifier
+                                            top_rel_rec_id = insert_relation(
+                                                cur,
+                                                word_id,
+                                                related_id,
+                                                rel_type_enum,
+                                                source_identifier=effective_source_identifier,  # <-- Use effective_source_identifier
+                                                metadata=top_rel_metadata,
+                                            )
+                                            if top_rel_rec_id:
+                                                relations_added += 1
+                                            # Handle bidirectional for top-level relations
+                                            # if rel_type_enum.bidirectional:
+                                            #    insert_relation(cur, related_id, word_id, rel_type_enum, source_identifier=source_identifier, metadata=top_rel_metadata)
+
+                                    except Exception as top_rel_e:
+                                        logger.warning(
+                                            f"Error adding top-level {rel_key} '{related_word_clean}' for '{headword}' from {effective_source_identifier}: {top_rel_e}"
+                                        )  # <-- Use effective_source_identifier
+
+                # --- Finish Entry ---
+                processed_count += 1
                 cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                stats["processed"] += 1
-
-                # Commit periodically within the file processing loop
-                # Check if connection is still active before committing
-                if not conn.closed and stats["processed"] % 500 == 0:
-                    try:
-                        conn.commit()
-                        logger.info(f"Committed batch after {stats['processed']} entries processed for {filename}")
-                    except (psycopg2.InterfaceError, psycopg2.OperationalError) as conn_err:
-                         logger.error(f"Connection error during batch commit for {filename} at entry {entry_index}: {conn_err}. Attempting to reconnect/rollback is complex here. Stopping file processing.", exc_info=True)
-                         # Mark remaining as errors and stop processing this file
-                         remaining_entries = entries_in_file - entry_index - 1
-                         stats["errors"] += remaining_entries
-                         error_types["BatchCommitConnectionError"] = error_types.get("BatchCommitConnectionError", 0) + 1
-                         pbar.update(remaining_entries) # Update progress bar fully
-                         # Need to return immediately as connection state is uncertain
-                         total_issues = stats["skipped"] + stats["errors"]
-                         return stats["processed"], total_issues # Return counts so far
-
-                    except Exception as batch_commit_err:
-                         logger.error(f"Error committing batch for {filename} at entry {entry_index}: {batch_commit_err}. Rolling back current transaction...", exc_info=True)
-                         try:
-                             conn.rollback()
-                             logger.info("Transaction rolled back after batch commit error.")
-                         except Exception as rb_err:
-                             logger.critical(f"CRITICAL: Failed to rollback after batch commit error for {filename}: {rb_err}. Stopping file processing.", exc_info=True)
-                             remaining_entries = entries_in_file - entry_index - 1
-                             stats["errors"] += remaining_entries
-                             error_types["BatchCommitRollbackError"] = error_types.get("BatchCommitRollbackError", 0) + 1
-                             pbar.update(remaining_entries)
-                             total_issues = stats["skipped"] + stats["errors"]
-                             return stats["processed"], total_issues # Return counts so far
-
-                         # After rollback, the loop continues with the next entry in a fresh transaction state
-                         error_types["BatchCommitError"] = error_types.get("BatchCommitError", 0) + 1
 
             except Exception as entry_err:
-                # General catch-all for unexpected errors during the processing of a single entry
-                # Errors related to specific parts (word, def, pron, etc.) should be caught closer to the source
-                logger.error(f"UNEXPECTED error processing entry #{entry_index} ('{lemma or 'unknown'}') in {filename}: {entry_err}", exc_info=True)
-                stats["errors"] += 1
-                error_key = f"UnexpectedEntryError: {type(entry_err).__name__}"
-                error_types[error_key] = error_types.get(error_key, 0) + 1
+                logger.error(
+                    f"Error processing Marayum entry index {entry_index} ('{entry.get('headword', 'N/A')}') in {filename}: {entry_err}",
+                    exc_info=False,
+                )  # Keep log cleaner
+                error_count += 1
                 try:
-                     # Rollback the specific entry that failed
-                     cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
+                    # Rollback to the savepoint for this specific entry
+                    cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
                 except Exception as rb_err:
-                     logger.critical(f"CRITICAL: Failed to rollback to savepoint {savepoint_name} after entry error in {filename}: {rb_err}. Attempting full transaction rollback.", exc_info=True)
-                     try:
-                         if not conn.closed:
-                             conn.rollback()
-                             logger.info("Full transaction rolled back due to savepoint rollback failure.")
-                         else:
-                             logger.warning("Connection was already closed before full rollback attempt.")
-                     except Exception as full_rb_err:
-                         logger.critical(f"CRITICAL: Failed even full transaction rollback for {filename}: {full_rb_err}. Stopping file processing.", exc_info=True)
-
-                     # Since rollback state is uncertain, stop processing this file.
-                     remaining_entries = entries_in_file - entry_index - 1
-                     stats["errors"] += remaining_entries # Mark remaining as issues
-                     error_types["CriticalRollbackFailure"] = error_types.get("CriticalRollbackFailure", 0) + 1
-                     pbar.update(remaining_entries) # Update progress bar fully
-                     total_issues = stats["skipped"] + stats["errors"]
-                     return stats["processed"], total_issues # Exit function
-
+                    logger.critical(
+                        f"CRITICAL: Failed to rollback savepoint {savepoint_name} for {filename}: {rb_err}. Attempting full transaction rollback."
+                    )
+                    conn.rollback()  # Rollback the whole transaction for safety
+                    logger.warning(
+                        "Performed full transaction rollback due to savepoint rollback failure."
+                    )
+                    # Consider re-raising the error to stop processing if this happens
+                    # raise entry_err from rb_err
             finally:
-                 # Ensure the progress bar is always updated, even if an error occurred
-                 pbar.update(1)
+                pbar.update(1)  # Update progress bar regardless of success or failure
 
-
-    # --- Final Commit for the file ---
-    final_commit_success = False
-    if not conn.closed:
-        try:
-            conn.commit()
-            final_commit_success = True
-            logger.info(f"Finished processing {filename}. Final commit successful.")
-            logger.info(f"Stats for {filename}: Processed: {stats['processed']}, Definitions: {stats['definitions']}, Relations: {stats['relations']}, Pronunciations: {stats['pronunciations']}, Etymologies: {stats['etymologies']}, Credits: {stats['credits']}, Skipped: {stats['skipped']}, Errors: {stats['errors']}")
-            if error_types:
-                logger.warning(f"Error summary for {filename}: {error_types}")
-        except (psycopg2.InterfaceError, psycopg2.OperationalError) as conn_err:
-             logger.error(f"Connection error during final commit for {filename}: {conn_err}. Changes might be lost.", exc_info=True)
-             stats["errors"] += 1 # Count final commit failure as an error
-             error_types["FinalCommitConnectionError"] = error_types.get("FinalCommitConnectionError", 0) + 1
-        except Exception as final_commit_err:
-            logger.error(f"Error during final commit for {filename}: {final_commit_err}. Rolling back changes...", exc_info=True)
-            stats["errors"] += 1 # Count final commit failure as an error
-            error_types["FinalCommitError"] = error_types.get("FinalCommitError", 0) + 1
-            try:
-                if not conn.closed:
+            # --- Periodic Commit (Optional but recommended for large files) ---
+            entries_processed_so_far = processed_count + error_count + skipped_count
+            if (
+                entries_processed_so_far > 0 and entries_processed_so_far % 500 == 0
+            ):  # Commit every 500 entries
+                try:
+                    conn.commit()
+                    logger.debug(
+                        f"Committed progress for {filename} at entry {entry_index}"
+                    )
+                except Exception as commit_err:
+                    logger.error(
+                        f"Error committing progress for {filename} at entry {entry_index}: {commit_err}. Rolling back..."
+                    )
                     conn.rollback()
-                    logger.info("Transaction rolled back after final commit error.")
-            except Exception as rb_err:
-                logger.error(f"Failed to rollback after final commit error for {filename}: {rb_err}", exc_info=True)
+                    # Log the error but continue processing remaining entries if possible
+                    # The uncommitted batch will be retried or lost depending on subsequent commits/errors
 
-    else: # Connection was closed before final commit attempt
-        logger.error(f"Connection was closed before final commit for {filename}. Some data might be lost.")
-        stats["errors"] += 1 # Count as an error state
-        error_types["ConnectionClosedBeforeFinalCommit"] = error_types.get("ConnectionClosedBeforeFinalCommit", 0) + 1
+    # Final commit for the file
+    try:
+        conn.commit()
+        logger.info(
+            f"Finished processing {filename}. Processed: {processed_count}, Definitions: {definitions_added}, Relations: {relations_added}, Pronunciations: {pronunciations_added}, Etymologies: {etymologies_added}, Skipped: {skipped_count}, Errors: {error_count}"
+        )
+    except Exception as final_commit_err:
+        logger.error(
+            f"Error during final commit for {filename}: {final_commit_err}. Rolling back any remaining changes..."
+        )
+        conn.rollback()
+        error_count += 1  # Mark an error for the file due to final commit failure
 
+    # Return counts: (successful, total issues)
+    total_issues = error_count + skipped_count
+    return processed_count, total_issues
 
-    # Aggregate total issues from errors and skips
-    total_issues = stats["skipped"] + stats["errors"]
-
-    # Add a warning if no entries were successfully processed despite the file having entries
-    if entries_in_file > 0 and stats["processed"] == 0:
-        logger.warning(f"No entries were successfully processed from {filename}, although {entries_in_file} were found. Issues encountered: {total_issues}")
-
-
-    return stats["processed"], total_issues
-
-# Note: Ensure all helper functions (get_or_create_word_id, insert_definition, etc.)
-# and imports (Json, RelationshipType, etc.) are correctly defined and available.
-# This version assumes `insert_credit` handles its own commit/rollback logic as needed
-# and correctly logs its own errors, but adds extra logging/counting in this function for robustness.
 
 @with_transaction(commit=True)
 def process_marayum_directory(cur, directory_path: str) -> None:
