@@ -1,0 +1,1509 @@
+2025-04-04 14:13:39,432 - INFO - Starting table creation/update process.
+2025-04-04 14:13:42,146 - INFO - Tables created or updated successfully.
+2025-04-04 14:13:42,153 - INFO - Starting processing for Philippine Slang and Gay Dictionary from ..\data\gay-slang.json
+2025-04-04 14:13:42,153 - INFO - Processing Gay Slang file: ..\data\gay-slang.json
+2025-04-04 14:13:42,153 - INFO - Using standardized source identifier: 'Philippine Slang and Gay Dictionary (2023)'
+2025-04-04 14:13:42,187 - INFO - Found 2365 entries in ..\data\gay-slang.json
+2025-04-04 14:13:42,242 - INFO - Word '1-0-0' (tl) created (ID: 1) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,267 - INFO - Word 'patay' (tl) created (ID: 2) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,275 - INFO - Word '1-2-3' (tl) created (ID: 3) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,282 - INFO - Word 'lokohin' (tl) created (ID: 4) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,285 - INFO - Word 'mandaya' (tl) created (ID: 5) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,288 - INFO - Word 'takbuhan' (tl) created (ID: 6) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,290 - INFO - Word '1-4-3' (tl) created (ID: 7) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,296 - INFO - Word 'mahal kita' (tl) created (ID: 8) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,298 - INFO - Word 'iniibig kita' (tl) created (ID: 9) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,300 - INFO - Word '10,000 years' (tl) created (ID: 10) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,302 - INFO - Word '48 years' (tl) created (ID: 11) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,304 - INFO - Word '50 golden years' (tl) created (ID: 12) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,306 - INFO - Word '150 leaves notebook' (tl) created (ID: 13) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,308 - INFO - Word 'malaking ari' (tl) created (ID: 14) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,309 - INFO - Word 'matabang ari' (tl) created (ID: 15) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,311 - INFO - Word '15-30' (tl) created (ID: 16) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,313 - INFO - Word 'bayarin' (tl) created (ID: 17) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,314 - INFO - Word 'due date' (tl) created (ID: 18) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,315 - INFO - Word '22o' (tl) created (ID: 19) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,317 - INFO - Word 'totoo' (tl) created (ID: 20) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,319 - INFO - Word 'tunay' (tl) created (ID: 21) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,320 - INFO - Word '2day' (tl) created (ID: 22) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,323 - INFO - Word 'ngayong araw' (tl) created (ID: 23) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,324 - INFO - Word '2m' (tl) created (ID: 24) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,326 - INFO - Word '2mro' (tl) created (ID: 25) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,328 - INFO - Word 'bukas' (tl) created (ID: 26) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,329 - INFO - Word '2nyt' (tl) created (ID: 27) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,331 - INFO - Word 'ngayong gabi' (tl) created (ID: 28) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,334 - INFO - Word '2-time' (tl) created (ID: 29) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,336 - INFO - Word 'two-time' (tl) created (ID: 30) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,337 - INFO - Word 'mangalunya' (tl) created (ID: 31) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,338 - INFO - Word 'mambabae' (tl) created (ID: 32) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,340 - INFO - Word 'manlalaki' (tl) created (ID: 33) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,342 - INFO - Word '2wa' (tl) created (ID: 34) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,345 - INFO - Word 'tuwa' (tl) created (ID: 35) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,348 - INFO - Word 'kasiyahan' (tl) created (ID: 36) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,349 - INFO - Word 'galak' (tl) created (ID: 37) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,350 - INFO - Word '420' (tl) created (ID: 38) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,352 - INFO - Word 'marijuana' (tl) created (ID: 39) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,354 - INFO - Word 'weed' (tl) created (ID: 40) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,355 - INFO - Word 'pot' (tl) created (ID: 41) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,356 - INFO - Word 'chongki' (tl) created (ID: 42) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,361 - INFO - Word '5-aray-aray' (tl) created (ID: 43) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,365 - INFO - Word 'limandaang piso' (tl) created (ID: 44) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,366 - INFO - Word 'limang daan' (tl) created (ID: 45) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,369 - INFO - Word '5-6' (tl) created (ID: 46) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,373 - INFO - Word 'five-six' (tl) created (ID: 47) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,375 - INFO - Word 'usury' (tl) created (ID: 48) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,382 - INFO - Word '69' (tl) created (ID: 49) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,385 - INFO - Word 'sixty-nine' (tl) created (ID: 50) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,387 - INFO - Word '7-11' (tl) created (ID: 51) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,389 - INFO - Word 'seven-eleven' (tl) created (ID: 52) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,390 - INFO - Word 'sugalan' (tl) created (ID: 53) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,392 - INFO - Word 'pasugalan' (tl) created (ID: 54) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,393 - INFO - Word 'casino' (tl) created (ID: 55) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,395 - INFO - Word '88' (tl) created (ID: 56) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,397 - INFO - Word 'eighty-eight' (tl) created (ID: 57) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,398 - INFO - Word 'aders' (tl) created (ID: 58) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,400 - INFO - Word 'others' (tl) created (ID: 59) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,402 - INFO - Word 'iba' (tl) created (ID: 60) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,403 - INFO - Word 'tagalabas' (tl) created (ID: 61) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,405 - INFO - Word 'adidas' (tl) created (ID: 62) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,406 - INFO - Word 'paa ng manok' (tl) created (ID: 63) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,409 - INFO - Word 'sapatos na goma' (tl) created (ID: 64) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,411 - INFO - Word 'sneakers' (tl) created (ID: 65) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,412 - INFO - Word 'adik' (tl) created (ID: 66) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,415 - INFO - Word 'addict' (tl) created (ID: 67) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,416 - INFO - Word 'sugapa' (tl) created (ID: 68) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,417 - INFO - Word 'lulong' (tl) created (ID: 69) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,419 - INFO - Word 'maloko' (tl) created (ID: 70) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,421 - INFO - Word 'adiktus' (tl) created (ID: 71) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,425 - INFO - Word 'adjas' (tl) created (ID: 72) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,428 - INFO - Word 'adjust' (tl) created (ID: 73) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,429 - INFO - Word 'masanay' (tl) created (ID: 74) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,431 - INFO - Word 'umakma' (tl) created (ID: 75) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,432 - INFO - Word 'makibagay' (tl) created (ID: 76) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,435 - INFO - Word 'adre' (tl) created (ID: 77) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,437 - INFO - Word 'pare' (tl) created (ID: 78) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,438 - INFO - Word 'kumpare' (tl) created (ID: 79) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,441 - INFO - Word 'kaibigan' (tl) created (ID: 80) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,443 - INFO - Word 'utol' (tl) created (ID: 81) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,445 - INFO - Word 'bro' (tl) created (ID: 82) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,447 - INFO - Word 'afam' (tl) created (ID: 83) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,449 - INFO - Word 'dayuhan' (tl) created (ID: 84) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,450 - INFO - Word 'banyaga' (tl) created (ID: 85) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,451 - INFO - Word 'foreigner' (tl) created (ID: 86) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,453 - INFO - Word 'afraidie aguilar' (tl) created (ID: 87) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,455 - INFO - Word 'takot' (tl) created (ID: 88) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,456 - INFO - Word 'natatakot' (tl) created (ID: 89) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,458 - INFO - Word 'aga mulach' (tl) created (ID: 90) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,459 - INFO - Word 'maaga' (tl) created (ID: 91) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,461 - INFO - Word 'agag' (tl) created (ID: 92) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,462 - INFO - Word 'gaga' (tl) created (ID: 93) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,465 - INFO - Word 'tanga' (tl) created (ID: 94) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,466 - INFO - Word 'gunggong' (tl) created (ID: 95) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,467 - INFO - Word 'boba' (tl) created (ID: 96) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,469 - INFO - Word 'agapito flores' (tl) created (ID: 97) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,471 - INFO - Word 'maagap' (tl) created (ID: 98) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,473 - INFO - Word 'agihap' (tl) created (ID: 99) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,474 - INFO - Word 'libag' (tl) created (ID: 100) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,475 - INFO - Word 'dumi' (tl) created (ID: 101) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,477 - INFO - Word 'agit' (tl) created (ID: 102) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,480 - INFO - Word 'agitated' (tl) created (ID: 103) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,481 - INFO - Word 'balisa' (tl) created (ID: 104) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,482 - INFO - Word 'hindi mapakali' (tl) created (ID: 105) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,483 - INFO - Word 'inis' (tl) created (ID: 106) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,484 - INFO - Word 'yamot' (tl) created (ID: 107) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,485 - INFO - Word 'aglet' (tl) created (ID: 108) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,487 - INFO - Word 'dulo ng sintas' (tl) created (ID: 109) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,489 - INFO - Word 'aglipay' (tl) created (ID: 110) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,491 - INFO - Word 'agora' (tl) created (ID: 111) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,492 - INFO - Word 'alis' (tl) created (ID: 112) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,494 - INFO - Word 'lakad' (tl) created (ID: 113) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,495 - INFO - Word 'layas' (tl) created (ID: 114) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,496 - INFO - Word 'go' (tl) created (ID: 115) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,497 - INFO - Word 'agua de pataranta' (tl) created (ID: 116) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,499 - INFO - Word 'alak' (tl) created (ID: 117) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,500 - INFO - Word 'booze' (tl) created (ID: 118) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,501 - INFO - Word 'ahem' (tl) created (ID: 119) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,507 - INFO - Word 'ai-ai delas alas' (tl) created (ID: 120) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,509 - INFO - Word 'aida' (tl) created (ID: 121) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,510 - INFO - Word 'aida borda' (tl) created (ID: 122) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,511 - INFO - Word 'aida gonzales' (tl) created (ID: 123) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,513 - INFO - Word 'AIDS' (tl) created (ID: 124) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,514 - INFO - Word 'aiko' (tl) created (ID: 125) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,516 - INFO - Word 'ayaw ko' (tl) created (ID: 126) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,517 - INFO - Word 'ayoko' (tl) created (ID: 127) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,519 - INFO - Word 'airport' (tl) created (ID: 128) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,521 - INFO - Word 'malapad na noo' (tl) created (ID: 129) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,522 - INFO - Word 'malaking noo' (tl) created (ID: 130) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,523 - INFO - Word 'aiza seguerra' (tl) created (ID: 131) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,524 - INFO - Word 'icing sa cake' (tl) created (ID: 132) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,526 - INFO - Word 'ajejeje' (tl) created (ID: 133) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,528 - INFO - Word 'tawang pakyut' (tl) created (ID: 134) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,529 - INFO - Word 'akembang' (tl) created (ID: 135) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,530 - ERROR - Standard POS code 'expr' (derived from 'phrase') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:42,530 - ERROR - Standard POS code 'expr' (derived from 'phrase') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:42,531 - INFO - Word 'akella' (tl) created (ID: 136) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,532 - INFO - Word 'akis' (tl) created (ID: 137) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,533 - INFO - Word 'akochi' (tl) created (ID: 138) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,535 - INFO - Word 'ako' (tl) created (ID: 139) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,540 - INFO - Word 'aketch' (tl) created (ID: 140) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,540 - ERROR - Standard POS code 'expr' (derived from 'phrase') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:42,541 - ERROR - Standard POS code 'expr' (derived from 'phrase') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:42,544 - INFO - Word 'akinse't katapusan' (tl) created (ID: 141) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,546 - INFO - Word 'sahod' (tl) created (ID: 142) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,547 - INFO - Word 'sweldo' (tl) created (ID: 143) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,548 - INFO - Word 'payday' (tl) created (ID: 144) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,550 - INFO - Word 'akira meimei' (tl) created (ID: 145) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,550 - ERROR - Standard POS code 'lig' (derived from 'ligature') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:42,551 - ERROR - Standard POS code 'lig' (derived from 'ligature') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:42,554 - INFO - Word 'akyat-bahay' (tl) created (ID: 146) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,556 - INFO - Word 'magnanakaw' (tl) created (ID: 147) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,557 - INFO - Word 'mandarambong' (tl) created (ID: 148) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,558 - INFO - Word 'burglar' (tl) created (ID: 149) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,559 - INFO - Word 'ala' (tl) created (ID: 150) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,561 - INFO - Word 'wala' (tl) created (ID: 151) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,562 - INFO - Word 'alafer' (tl) created (ID: 152) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,563 - INFO - Word 'walang pera' (tl) created (ID: 153) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,564 - INFO - Word 'gipit' (tl) created (ID: 154) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,565 - INFO - Word 'butas ang bulsa' (tl) created (ID: 155) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,566 - INFO - Word 'alahey' (tl) created (ID: 156) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,568 - INFO - Word 'alahas' (tl) created (ID: 157) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,570 - INFO - Word 'alakan' (tl) created (ID: 158) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,572 - INFO - Word 'inuman' (tl) created (ID: 159) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,573 - INFO - Word 'tagayan' (tl) created (ID: 160) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,574 - INFO - Word 'alana' (tl) created (ID: 161) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,575 - INFO - Word 'wala na' (tl) created (ID: 162) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,577 - INFO - Word 'alanganin' (tl) created (ID: 163) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,578 - INFO - Word 'malambot (fig.)' (tl) created (ID: 164) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,579 - INFO - Word 'hindi tiyak' (tl) created (ID: 165) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,581 - INFO - Word 'alaska' (tl) created (ID: 166) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,582 - INFO - Word 'inisin' (tl) created (ID: 167) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,583 - INFO - Word 'asarin' (tl) created (ID: 168) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,584 - INFO - Word 'kantiyawan' (tl) created (ID: 169) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,585 - INFO - Word 'buyangin' (tl) created (ID: 170) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,586 - INFO - Word 'alaskador' (tl) created (ID: 171) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,589 - INFO - Word 'mapang-asar' (tl) created (ID: 172) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,590 - INFO - Word 'mang-iinis' (tl) created (ID: 173) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,591 - INFO - Word 'mambubuwisit' (tl) created (ID: 174) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,592 - INFO - Word 'alat' (tl) created (ID: 175) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,594 - INFO - Word 'pulis' (tl) created (ID: 176) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,594 - INFO - Word 'parak' (tl) created (ID: 177) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,595 - INFO - Word 'lespu' (tl) created (ID: 178) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,597 - INFO - Word 'malas' (tl) created (ID: 179) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,598 - INFO - Word 'buwisit' (tl) created (ID: 180) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,599 - INFO - Word 'kamalasan' (tl) created (ID: 181) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,600 - INFO - Word 'alaws' (tl) created (ID: 182) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,605 - INFO - Word 'aleli' (tl) created (ID: 183) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,606 - INFO - Word 'guwardiya' (tl) created (ID: 184) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,607 - INFO - Word 'bodyguard' (tl) created (ID: 185) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,608 - INFO - Word 'bantay' (tl) created (ID: 186) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,609 - INFO - Word 'sekkyu' (tl) created (ID: 187) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,610 - INFO - Word 'alembong' (tl) created (ID: 188) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,612 - INFO - Word 'malandi' (tl) created (ID: 189) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,613 - INFO - Word 'makiri' (tl) created (ID: 190) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,614 - INFO - Word 'hitad' (tl) created (ID: 191) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,615 - INFO - Word 'haliparot' (tl) created (ID: 192) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,616 - INFO - Word 'alicia mayer' (tl) created (ID: 193) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,617 - INFO - Word 'alis na tayo' (tl) created (ID: 194) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,619 - INFO - Word 'tara na' (tl) created (ID: 195) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,620 - INFO - Word 'let's go' (tl) created (ID: 196) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,621 - INFO - Word 'align' (tl) created (ID: 197) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,623 - INFO - Word 'sang-ayon' (tl) created (ID: 198) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,623 - INFO - Word 'kaisa' (tl) created (ID: 199) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,624 - INFO - Word 'tugma' (tl) created (ID: 200) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,625 - INFO - Word 'aling biyaning' (tl) created (ID: 201) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,627 - INFO - Word 'tomboy' (tl) created (ID: 202) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,628 - INFO - Word 'tibo' (tl) created (ID: 203) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,629 - INFO - Word 'binalaki' (tl) created (ID: 204) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,630 - INFO - Word 'aling metring' (tl) created (ID: 205) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,631 - INFO - Word 'metro (ng taksi)' (tl) created (ID: 206) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,632 - INFO - Word 'taximeter' (tl) created (ID: 207) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,633 - INFO - Word 'aliping sagigilid' (tl) created (ID: 208) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,634 - INFO - Word 'alipin' (tl) created (ID: 209) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,636 - INFO - Word 'busabos' (tl) created (ID: 210) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,637 - INFO - Word 'alipores' (tl) created (ID: 211) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,638 - INFO - Word 'alila' (tl) created (ID: 212) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,639 - INFO - Word 'utusan' (tl) created (ID: 213) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,640 - INFO - Word 'tagasunod' (tl) created (ID: 214) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,641 - INFO - Word 'galamay' (tl) created (ID: 215) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,642 - INFO - Word 'minion' (tl) created (ID: 216) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,645 - INFO - Word 'alitaptap' (tl) created (ID: 217) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,647 - INFO - Word 'top (sexual role)' (tl) created (ID: 218) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,648 - INFO - Word 'alma moreno' (tl) created (ID: 219) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,649 - INFO - Word 'almoranas' (tl) created (ID: 220) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,651 - INFO - Word 'alona alegre' (tl) created (ID: 221) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,652 - INFO - Word 'nag-iisa' (tl) created (ID: 222) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,654 - INFO - Word 'solo' (tl) created (ID: 223) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,655 - INFO - Word 'alone' (tl) created (ID: 224) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,656 - INFO - Word 'alpombra' (tl) created (ID: 225) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,657 - INFO - Word 'tsinelas' (tl) created (ID: 226) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,658 - INFO - Word 'amang' (tl) created (ID: 227) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,659 - INFO - Word 'ames' (tl) created (ID: 228) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,660 - INFO - Word 'amoxicillin' (tl) created (ID: 229) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,661 - INFO - Word 'amsterdam' (tl) created (ID: 230) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,663 - INFO - Word 'oo' (tl) created (ID: 231) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,664 - INFO - Word 'yes' (tl) created (ID: 232) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,665 - INFO - Word 'amen' (tl) created (ID: 233) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,667 - INFO - Word 'amats' (tl) created (ID: 234) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,668 - INFO - Word 'tama' (tl) created (ID: 235) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,669 - INFO - Word 'high' (tl) created (ID: 236) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,671 - INFO - Word 'lasing' (tl) created (ID: 237) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,671 - INFO - Word 'bangag' (tl) created (ID: 238) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,672 - INFO - Word 'ambon' (tl) created (ID: 239) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,674 - INFO - Word 'balato' (tl) created (ID: 240) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,675 - INFO - Word 'bahagi' (tl) created (ID: 241) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,676 - INFO - Word 'share' (tl) created (ID: 242) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,677 - INFO - Word 'amboy' (tl) created (ID: 243) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,679 - INFO - Word 'Amerikano' (tl) created (ID: 244) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,680 - INFO - Word 'Tisoy' (tl) created (ID: 245) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,681 - INFO - Word 'among tunay' (tl) created (ID: 246) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,682 - INFO - Word 'totoong amo' (tl) created (ID: 247) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,683 - INFO - Word 'boss' (tl) created (ID: 248) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,684 - INFO - Word 'amoydragon' (tl) created (ID: 249) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,686 - INFO - Word 'mabaho' (tl) created (ID: 250) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,687 - INFO - Word 'mabantot' (tl) created (ID: 251) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,688 - INFO - Word 'maantot' (tl) created (ID: 252) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,689 - INFO - Word 'mapanghi' (tl) created (ID: 253) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,690 - INFO - Word 'amuyong' (tl) created (ID: 254) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,691 - INFO - Word 'buntot' (tl) created (ID: 255) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,694 - INFO - Word 'anaconda' (tl) created (ID: 256) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,696 - INFO - Word 'taksil' (tl) created (ID: 257) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,698 - INFO - Word 'traydor' (tl) created (ID: 258) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,699 - INFO - Word 'ahas (fig.)' (tl) created (ID: 259) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,701 - INFO - Word 'anak ng pating' (tl) created (ID: 260) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,703 - INFO - Word 'lintik' (tl) created (ID: 261) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,704 - INFO - Word 'peste' (tl) created (ID: 262) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,706 - INFO - Word 'bwisit (expression)' (tl) created (ID: 263) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,708 - INFO - Word 'anak-araw' (tl) created (ID: 264) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,709 - INFO - Word 'albino' (tl) created (ID: 265) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,711 - INFO - Word 'mestiso/mestisa' (tl) created (ID: 266) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,712 - INFO - Word 'maputi' (tl) created (ID: 267) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,714 - INFO - Word 'anchuwanga' (tl) created (ID: 268) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,716 - INFO - Word 'pangit' (tl) created (ID: 269) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,717 - INFO - Word 'chaka' (tl) created (ID: 270) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,718 - INFO - Word 'hindi maganda' (tl) created (ID: 271) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,720 - INFO - Word 'anda' (tl) created (ID: 272) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,721 - INFO - Word 'andaki' (tl) created (ID: 273) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,724 - INFO - Word 'andaluchi' (tl) created (ID: 274) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,725 - INFO - Word 'pera' (tl) created (ID: 275) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,726 - INFO - Word 'datung' (tl) created (ID: 276) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,727 - INFO - Word 'kuwarta' (tl) created (ID: 277) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,728 - INFO - Word 'salapi' (tl) created (ID: 278) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,732 - INFO - Word 'ander' (tl) created (ID: 279) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,734 - INFO - Word 'takot sa asawa' (tl) created (ID: 280) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,735 - INFO - Word 'ander de saya' (tl) created (ID: 281) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,736 - INFO - Word 'sunud-sunuran' (tl) created (ID: 282) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,737 - INFO - Word 'andonchi' (tl) created (ID: 283) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,739 - INFO - Word 'nandoon' (tl) created (ID: 284) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,740 - INFO - Word 'naroon' (tl) created (ID: 285) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,741 - INFO - Word 'andres' (tl) created (ID: 286) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,743 - INFO - Word 'andres de saya' (tl) created (ID: 287) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,747 - INFO - Word 'andres bonifacio' (tl) created (ID: 288) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,749 - INFO - Word 'buni' (tl) created (ID: 289) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,750 - INFO - Word 'andy lau' (tl) created (ID: 290) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,752 - INFO - Word 'lawlaw' (tl) created (ID: 291) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,753 - INFO - Word 'luwag' (tl) created (ID: 292) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,754 - INFO - Word 'maluwag' (tl) created (ID: 293) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,755 - INFO - Word 'anes' (tl) created (ID: 294) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,756 - INFO - Word 'ano' (tl) created (ID: 295) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,758 - INFO - Word 'bagay' (tl) created (ID: 296) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,759 - INFO - Word 'ang haba ng hair' (tl) created (ID: 297) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,761 - INFO - Word 'maganda' (tl) created (ID: 298) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,762 - INFO - Word 'lapitin' (tl) created (ID: 299) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,763 - INFO - Word 'swerte sa pag-ibig' (tl) created (ID: 300) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,765 - INFO - Word 'angat pinoy' (tl) created (ID: 301) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,767 - INFO - Word 'bobo' (tl) created (ID: 302) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,769 - INFO - Word 'mangmang' (tl) created (ID: 303) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,770 - INFO - Word 'ignorante' (tl) created (ID: 304) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,772 - INFO - Word 'angelica panganiban' (tl) created (ID: 305) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,773 - INFO - Word 'kuwadrado ang mukha' (tl) created (ID: 306) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,774 - INFO - Word 'angelita' (tl) created (ID: 307) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,776 - INFO - Word 'anghit' (tl) created (ID: 308) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,778 - INFO - Word 'putok' (tl) created (ID: 309) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,779 - INFO - Word 'angelu' (tl) created (ID: 310) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,781 - INFO - Word 'angelu de leon' (tl) created (ID: 311) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,782 - INFO - Word 'andalucia' (tl) created (ID: 312) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,782 - INFO - Word 'kayamanan' (tl) created (ID: 313) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,783 - INFO - Word 'okani' (tl) created (ID: 314) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,786 - INFO - Word 'atik' (tl) created (ID: 315) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,787 - INFO - Word 'anjugels' (tl) created (ID: 316) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,791 - INFO - Word 'angge' (tl) created (ID: 317) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,795 - INFO - Word 'anik' (tl) created (ID: 318) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,797 - INFO - Word 'anils tits' (tl) created (ID: 319) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,798 - INFO - Word 'anistesia' (tl) created (ID: 320) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,802 - INFO - Word 'kung ano-ano' (tl) created (ID: 321) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,803 - INFO - Word 'aning' (tl) created (ID: 322) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,805 - INFO - Word 'praning' (tl) created (ID: 323) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,806 - INFO - Word 'baliw' (tl) created (ID: 324) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,808 - INFO - Word 'loko' (tl) created (ID: 325) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,809 - INFO - Word 'sira-ulo' (tl) created (ID: 326) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,812 - INFO - Word 'anita linda' (tl) created (ID: 327) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,814 - INFO - Word 'martir' (tl) created (ID: 328) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,816 - INFO - Word 'nagdudusa' (tl) created (ID: 329) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,817 - INFO - Word 'matandang dalaga' (tl) created (ID: 330) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,820 - INFO - Word 'ajus' (tl) created (ID: 331) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,830 - INFO - Word 'ano fa flu' (tl) created (ID: 332) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,832 - INFO - Word 'oo nga' (tl) created (ID: 333) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,834 - INFO - Word 'syempre' (tl) created (ID: 334) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,835 - INFO - Word 'di nga ba?' (tl) created (ID: 335) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,838 - INFO - Word 'anoplok' (tl) created (ID: 336) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,839 - INFO - Word 'anufafluks' (tl) created (ID: 337) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,840 - INFO - Word 'ano pa' (tl) created (ID: 338) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,841 - INFO - Word 'ano pa?' (tl) created (ID: 339) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,842 - INFO - Word 'ano'ng kasunod?' (tl) created (ID: 340) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,842 - INFO - Word 'so what?' (tl) created (ID: 341) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,844 - INFO - Word 'anong say mo' (tl) created (ID: 342) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,846 - INFO - Word 'anong masasabi mo?' (tl) created (ID: 343) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,848 - INFO - Word 'anong opinyon mo?' (tl) created (ID: 344) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,849 - INFO - Word 'ansiya' (tl) created (ID: 345) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,852 - INFO - Word 'anxious' (tl) created (ID: 346) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,855 - INFO - Word 'antibiotic' (tl) created (ID: 347) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,857 - INFO - Word 'homophobe' (tl) created (ID: 348) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,858 - INFO - Word 'galit sa bakla' (tl) created (ID: 349) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,859 - INFO - Word 'antips' (tl) created (ID: 350) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,861 - INFO - Word 'antipatika' (tl) created (ID: 351) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,863 - INFO - Word 'antipatiko' (tl) created (ID: 352) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,864 - INFO - Word 'antipatika/ko' (tl) created (ID: 353) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,865 - INFO - Word 'suplada/do' (tl) created (ID: 354) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,867 - INFO - Word 'antokyo japan' (tl) created (ID: 355) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,869 - INFO - Word 'inaantok' (tl) created (ID: 356) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,870 - INFO - Word 'antok' (tl) created (ID: 357) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,872 - INFO - Word 'anu fa ni ruffa' (tl) created (ID: 358) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,874 - INFO - Word 'ano pa nga ba?' (tl) created (ID: 359) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,874 - INFO - Word 'di ba?' (tl) created (ID: 360) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,876 - INFO - Word 'anxia' (tl) created (ID: 361) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,881 - INFO - Word 'palaisip' (tl) created (ID: 362) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,882 - INFO - Word 'any monument' (tl) created (ID: 363) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,884 - INFO - Word 'anumang oras' (tl) created (ID: 364) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,885 - INFO - Word 'kahit anong sandali' (tl) created (ID: 365) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,886 - INFO - Word 'any moment now' (tl) created (ID: 366) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,887 - INFO - Word 'anyare' (tl) created (ID: 367) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,889 - INFO - Word 'anong nangyari?' (tl) created (ID: 368) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,890 - INFO - Word 'apir' (tl) created (ID: 369) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,893 - INFO - Word 'high five' (tl) created (ID: 370) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,895 - INFO - Word 'yes!' (tl) created (ID: 371) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,897 - INFO - Word 'bakla' (tl) created (ID: 372) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,898 - INFO - Word 'beki' (tl) created (ID: 373) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,899 - INFO - Word 'homosekswal' (tl) created (ID: 374) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,901 - INFO - Word 'dumating' (tl) created (ID: 375) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,903 - INFO - Word 'sumipot' (tl) created (ID: 376) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,904 - INFO - Word 'magpakita' (tl) created (ID: 377) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,906 - INFO - Word 'apiranda' (tl) created (ID: 378) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,908 - INFO - Word 'pagdating' (tl) created (ID: 379) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,909 - INFO - Word 'pagsipot' (tl) created (ID: 380) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,910 - INFO - Word 'arrival' (tl) created (ID: 381) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,912 - INFO - Word 'apolinario mabini' (tl) created (ID: 382) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,914 - INFO - Word 'pilay' (tl) created (ID: 383) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,915 - INFO - Word 'lumpo' (tl) created (ID: 384) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,918 - INFO - Word 'aprub' (tl) created (ID: 385) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,920 - INFO - Word 'approve' (tl) created (ID: 386) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,922 - INFO - Word 'payag' (tl) created (ID: 387) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,923 - INFO - Word 'okey' (tl) created (ID: 388) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,925 - INFO - Word 'aq' (tl) created (ID: 389) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,926 - ERROR - Standard POS code 'expr' (derived from 'phrase') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:42,927 - ERROR - Standard POS code 'expr' (derived from 'phrase') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:42,928 - INFO - Word 'aquoh' (tl) created (ID: 390) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,929 - INFO - Word 'aqoh' (tl) created (ID: 391) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,932 - INFO - Word 'ar-ar herrera' (tl) created (ID: 392) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,933 - INFO - Word 'maarte' (tl) created (ID: 393) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,935 - INFO - Word 'nag-iinarte' (tl) created (ID: 394) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,936 - INFO - Word 'arayb' (tl) created (ID: 395) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,938 - INFO - Word 'dating' (tl) created (ID: 396) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,939 - INFO - Word 'presensya' (tl) created (ID: 397) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,941 - INFO - Word 'impact' (tl) created (ID: 398) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,942 - INFO - Word 'impression' (tl) created (ID: 399) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,943 - INFO - Word 'arbor' (tl) created (ID: 400) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,946 - INFO - Word 'hingin' (tl) created (ID: 401) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,947 - INFO - Word 'humingi' (tl) created (ID: 402) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,949 - INFO - Word 'nakawin' (tl) created (ID: 403) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,950 - INFO - Word 'umitin' (tl) created (ID: 404) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,951 - INFO - Word 'magnakaw' (tl) created (ID: 405) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,953 - INFO - Word 'aretha franklin' (tl) created (ID: 406) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,957 - INFO - Word 'armiger' (tl) created (ID: 407) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,960 - INFO - Word 'sikyu' (tl) created (ID: 408) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,962 - INFO - Word 'articles' (tl) created (ID: 409) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,964 - INFO - Word 'OA' (tl) created (ID: 410) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,965 - INFO - Word 'overacting' (tl) created (ID: 411) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,971 - INFO - Word 'as-long-as-sleeve' (tl) created (ID: 412) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,973 - INFO - Word 'long-sleeved' (tl) created (ID: 413) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,974 - INFO - Word 'mahaba ang manggas' (tl) created (ID: 414) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,975 - INFO - Word 'asa to death' (tl) created (ID: 415) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,977 - INFO - Word 'asang-asa' (tl) created (ID: 416) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,979 - INFO - Word 'umaasang lubos' (tl) created (ID: 417) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,981 - INFO - Word 'ASAP' (tl) created (ID: 418) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,983 - INFO - Word 'agad-agad' (tl) created (ID: 419) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,984 - INFO - Word 'sa lalong madaling panahon' (tl) created (ID: 420) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,986 - INFO - Word 'ashame ang beauty' (tl) created (ID: 421) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,987 - INFO - Word 'napahiya' (tl) created (ID: 422) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,988 - INFO - Word 'nahihiya' (tl) created (ID: 423) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,989 - INFO - Word 'askad' (tl) created (ID: 424) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,991 - INFO - Word 'ngetpa' (tl) created (ID: 425) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,997 - INFO - Word 'askal' (tl) created (ID: 426) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:42,999 - INFO - Word 'asong kalye' (tl) created (ID: 427) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,000 - INFO - Word 'asong pagala-gala' (tl) created (ID: 428) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,002 - INFO - Word 'asogue' (tl) created (ID: 429) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,004 - INFO - Word 'buhok sa kilikili' (tl) created (ID: 430) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,005 - INFO - Word 'asosasyon' (tl) created (ID: 431) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,007 - INFO - Word 'barkada' (tl) created (ID: 432) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,009 - INFO - Word 'grupo' (tl) created (ID: 433) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,010 - INFO - Word 'samahan' (tl) created (ID: 434) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,012 - INFO - Word 'assuming' (tl) created (ID: 435) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,014 - INFO - Word 'nag-aakala' (tl) created (ID: 436) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,015 - INFO - Word 'nagpapalagay' (tl) created (ID: 437) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,016 - INFO - Word 'mapagpalagay' (tl) created (ID: 438) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,017 - INFO - Word 'assumptionista' (tl) created (ID: 439) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,018 - INFO - Word 'asyumero' (tl) created (ID: 440) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,020 - INFO - Word 'asyumera' (tl) created (ID: 441) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,022 - INFO - Word 'asyumero/a' (tl) created (ID: 442) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,024 - INFO - Word 'mapag-akala' (tl) created (ID: 443) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,026 - INFO - Word 'asthma' (tl) created (ID: 444) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,028 - INFO - Word 'ask my wife' (tl) created (ID: 445) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,030 - INFO - Word 'astig' (tl) created (ID: 446) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,034 - INFO - Word 'tigas' (tl) created (ID: 447) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,035 - INFO - Word 'matigas' (tl) created (ID: 448) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,036 - INFO - Word 'tigasin' (tl) created (ID: 449) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,038 - INFO - Word 'maton' (tl) created (ID: 450) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,039 - INFO - Word 'cool' (tl) created (ID: 451) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,040 - INFO - Word 'angas' (tl) created (ID: 452) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,047 - INFO - Word 'asucara de papÃ¡' (tl) created (ID: 453) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,049 - INFO - Word 'sugar daddy' (tl) created (ID: 454) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,052 - INFO - Word 'asukalera de mamÃ¡' (tl) created (ID: 455) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,054 - INFO - Word 'azucalera de mamÃ¡' (tl) created (ID: 456) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,056 - INFO - Word 'sugar mommy' (tl) created (ID: 457) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,058 - INFO - Word 'asungot' (tl) created (ID: 458) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,060 - INFO - Word 'epal' (tl) created (ID: 459) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,063 - INFO - Word 'istorbo' (tl) created (ID: 460) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,064 - INFO - Word 'nakakainis' (tl) created (ID: 461) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,066 - INFO - Word 'asusena' (tl) created (ID: 462) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,068 - INFO - Word 'azucena' (tl) created (ID: 463) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,069 - INFO - Word 'aso na sena' (tl) created (ID: 464) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,070 - INFO - Word 'karne ng aso' (tl) created (ID: 465) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,072 - INFO - Word 'pulutan (aso)' (tl) created (ID: 466) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,073 - INFO - Word 'atak' (tl) created (ID: 467) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,075 - INFO - Word 'attack' (tl) created (ID: 468) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,076 - INFO - Word 'sugod' (tl) created (ID: 469) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,077 - INFO - Word 'lusob' (tl) created (ID: 470) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,078 - INFO - Word 'pumunta' (tl) created (ID: 471) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,079 - INFO - Word 'umatake' (tl) created (ID: 472) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,082 - INFO - Word 'ataluk' (tl) created (ID: 473) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,083 - INFO - Word 'gulpihin' (tl) created (ID: 474) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,085 - INFO - Word 'bugbugin' (tl) created (ID: 475) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,087 - INFO - Word 'saktan' (tl) created (ID: 476) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,092 - INFO - Word 'gulpi' (tl) created (ID: 477) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,094 - INFO - Word 'bugbog' (tl) created (ID: 478) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,095 - INFO - Word 'pananakit' (tl) created (ID: 479) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,096 - INFO - Word 'atat na atat' (tl) created (ID: 480) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,099 - INFO - Word 'sabik na sabik' (tl) created (ID: 481) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,100 - INFO - Word 'gigil' (tl) created (ID: 482) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,101 - INFO - Word 'nagmamadali' (tl) created (ID: 483) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,104 - INFO - Word 'apurado' (tl) created (ID: 484) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,105 - INFO - Word 'atchay' (tl) created (ID: 485) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,108 - INFO - Word 'katulong' (tl) created (ID: 486) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,110 - INFO - Word 'maid' (tl) created (ID: 487) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,111 - INFO - Word 'muchacha' (tl) created (ID: 488) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,114 - INFO - Word 'ate vangie' (tl) created (ID: 489) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,116 - INFO - Word 'Ativan' (tl) created (ID: 490) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,117 - INFO - Word 'atiban' (tl) created (ID: 491) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,119 - INFO - Word 'pampatulog' (tl) created (ID: 492) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,120 - INFO - Word 'ate vi' (tl) created (ID: 493) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,122 - INFO - Word 'Viagra' (tl) created (ID: 494) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,124 - INFO - Word 'atribida' (tl) created (ID: 495) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,126 - INFO - Word 'pakialamera' (tl) created (ID: 496) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,127 - INFO - Word 'ateng' (tl) created (ID: 497) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,129 - INFO - Word 'Ate' (tl) created (ID: 498) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,131 - INFO - Word 'manang' (tl) created (ID: 499) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,134 - INFO - Word 'mandurukot' (tl) created (ID: 500) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,136 - INFO - Word 'kawatan' (tl) created (ID: 501) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,151 - INFO - Word 'atits' (tl) created (ID: 502) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,154 - INFO - Word 'Tito' (tl) created (ID: 503) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,155 - INFO - Word 'Tiyo' (tl) created (ID: 504) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,157 - INFO - Word 'ATM' (tl) created (ID: 505) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,159 - INFO - Word 'sugar daddy (gay context)' (tl) created (ID: 506) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,161 - INFO - Word 'benefactor' (tl) created (ID: 507) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,163 - INFO - Word 'sponsor' (tl) created (ID: 508) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,164 - INFO - Word 'ATW' (tl) created (ID: 509) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,167 - INFO - Word 'hubo't hubad' (tl) created (ID: 510) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,168 - INFO - Word 'walang saplot' (tl) created (ID: 511) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,169 - INFO - Word 'all the way' (tl) created (ID: 512) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,171 - INFO - Word 'autistic' (tl) created (ID: 513) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,173 - INFO - Word 'walang pakialam' (tl) created (ID: 514) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,174 - INFO - Word 'may sariling mundo' (tl) created (ID: 515) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,175 - INFO - Word 'avalour' (tl) created (ID: 516) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,177 - INFO - Word 'abnormal' (tl) created (ID: 517) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,182 - INFO - Word 'avats' (tl) created (ID: 518) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,186 - INFO - Word 'awanti' (tl) created (ID: 519) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,191 - INFO - Word 'award' (tl) created (ID: 520) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,194 - INFO - Word 'mapagtiis' (tl) created (ID: 521) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,195 - INFO - Word 'sobrang responsable' (tl) created (ID: 522) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,197 - INFO - Word 'salo lahat' (tl) created (ID: 523) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,199 - INFO - Word 'award-giving body' (tl) created (ID: 524) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,202 - INFO - Word 'gay basher' (tl) created (ID: 525) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,203 - INFO - Word 'nambubugbog' (tl) created (ID: 526) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,204 - INFO - Word 'award-winning' (tl) created (ID: 527) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,206 - INFO - Word 'napagalitan' (tl) created (ID: 528) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,207 - INFO - Word 'pinagsabihan' (tl) created (ID: 529) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,208 - INFO - Word 'nasermonan' (tl) created (ID: 530) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,209 - INFO - Word 'nabulyawan' (tl) created (ID: 531) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,210 - INFO - Word 'aw-aw' (tl) created (ID: 532) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,219 - INFO - Word 'awit' (tl) created (ID: 533) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,221 - INFO - Word 'kanta' (tl) created (ID: 534) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,222 - INFO - Word 'umamin' (tl) created (ID: 535) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,224 - INFO - Word 'magtapat' (tl) created (ID: 536) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,225 - INFO - Word 'kumanta (fig.)' (tl) created (ID: 537) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,226 - INFO - Word 'awra-awra' (tl) created (ID: 538) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,228 - INFO - Word 'aura' (tl) created (ID: 539) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,233 - INFO - Word 'impresyon' (tl) created (ID: 540) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,235 - INFO - Word 'rumampa' (tl) created (ID: 541) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,236 - INFO - Word 'pumorma' (tl) created (ID: 542) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,237 - INFO - Word 'magproyekto' (tl) created (ID: 543) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,238 - INFO - Word 'magmaganda' (tl) created (ID: 544) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,240 - INFO - Word 'ayoko ng lumbay' (tl) created (ID: 545) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,242 - INFO - Word 'impotent' (tl) created (ID: 546) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,244 - INFO - Word 'mahina ang tuhod (fig.)' (tl) created (ID: 547) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,246 - INFO - Word 'b.y.' (tl) created (ID: 548) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,247 - INFO - Word 'guwapo' (tl) created (ID: 549) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,248 - INFO - Word 'pogi' (tl) created (ID: 550) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,249 - INFO - Word 'makisig' (tl) created (ID: 551) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,251 - INFO - Word 'baba2' (tl) created (ID: 552) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,253 - INFO - Word 'baba' (tl) created (ID: 553) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,254 - INFO - Word 'bumaba' (tl) created (ID: 554) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,255 - INFO - Word 'babaeng bakla' (tl) created (ID: 555) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,258 - INFO - Word 'beki (kung babae)' (tl) created (ID: 556) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,259 - INFO - Word 'babaeng may lawit' (tl) created (ID: 557) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,263 - INFO - Word 'babaeng tuyot' (tl) created (ID: 558) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,265 - INFO - Word 'payat' (tl) created (ID: 559) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,266 - INFO - Word 'sexually inactive' (tl) created (ID: 560) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,267 - INFO - Word 'babagwa' (tl) created (ID: 561) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,269 - INFO - Word 'magpanggap (na babae)' (tl) created (ID: 562) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,271 - INFO - Word 'mang-akit' (tl) created (ID: 563) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,272 - INFO - Word 'babalu' (tl) created (ID: 564) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,274 - INFO - Word 'mahaba ang baba' (tl) created (ID: 565) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,276 - INFO - Word 'babay' (tl) created (ID: 566) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,278 - INFO - Word 'bye-bye' (tl) created (ID: 567) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,279 - INFO - Word 'babayu' (tl) created (ID: 568) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,280 - INFO - Word 'baboo' (tl) created (ID: 569) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,281 - INFO - Word 'paalam' (tl) created (ID: 570) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,282 - INFO - Word 'bye' (tl) created (ID: 571) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,292 - INFO - Word 'babu' (tl) created (ID: 572) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,294 - INFO - Word 'babufichi' (tl) created (ID: 573) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,299 - INFO - Word 'backdoor' (tl) created (ID: 574) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,301 - INFO - Word 'patago' (tl) created (ID: 575) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,302 - INFO - Word 'palihim' (tl) created (ID: 576) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,303 - INFO - Word 'sekreto' (tl) created (ID: 577) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,305 - INFO - Word 'puwit' (tl) created (ID: 578) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,306 - INFO - Word 'tumbong' (tl) created (ID: 579) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,307 - INFO - Word 'butt' (tl) created (ID: 580) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,308 - INFO - Word 'backlash' (tl) created (ID: 581) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,310 - INFO - Word 'baklush' (tl) created (ID: 582) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,313 - INFO - Word 'bading' (tl) created (ID: 583) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,316 - INFO - Word 'backstreet boy' (tl) created (ID: 584) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,318 - INFO - Word 'lalaki sa likod' (tl) created (ID: 585) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,319 - INFO - Word 'pogi sa likod' (tl) created (ID: 586) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,320 - INFO - Word 'badaf' (tl) created (ID: 587) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,322 - INFO - Word 'binabae' (tl) created (ID: 588) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,323 - INFO - Word 'malambot' (tl) created (ID: 589) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,324 - INFO - Word 'effeminate' (tl) created (ID: 590) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,326 - INFO - Word 'badap' (tl) created (ID: 591) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,327 - INFO - Word 'badapsing' (tl) created (ID: 592) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,328 - INFO - Word 'badapsku' (tl) created (ID: 593) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,329 - INFO - Word 'badash' (tl) created (ID: 594) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,334 - INFO - Word 'badessa' (tl) created (ID: 595) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,336 - INFO - Word 'badesa' (tl) created (ID: 596) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,338 - INFO - Word 'maarteng bakla' (tl) created (ID: 597) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,339 - INFO - Word 'baklang prinsesa' (tl) created (ID: 598) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,340 - INFO - Word 'badet' (tl) created (ID: 599) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,341 - INFO - Word 'baklang kadete' (tl) created (ID: 600) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,343 - INFO - Word 'badinglets' (tl) created (ID: 601) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,345 - INFO - Word 'batang bakla' (tl) created (ID: 602) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,346 - INFO - Word 'baklita' (tl) created (ID: 603) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,347 - INFO - Word 'bad shot' (tl) created (ID: 604) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,349 - INFO - Word 'napasama' (tl) created (ID: 605) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,350 - INFO - Word 'napahamak' (tl) created (ID: 606) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,352 - INFO - Word 'nalagot' (tl) created (ID: 607) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,353 - INFO - Word 'bad impression' (tl) created (ID: 608) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,354 - INFO - Word 'badtrip' (tl) created (ID: 609) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,357 - INFO - Word 'asar' (tl) created (ID: 610) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,359 - INFO - Word 'baduy' (tl) created (ID: 611) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,361 - INFO - Word 'korni' (tl) created (ID: 612) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,363 - INFO - Word 'hindi uso' (tl) created (ID: 613) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,364 - INFO - Word 'walang class' (tl) created (ID: 614) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,365 - INFO - Word 'jologs' (tl) created (ID: 615) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,366 - INFO - Word 'bae' (tl) created (ID: 616) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,368 - INFO - Word 'jowa' (tl) created (ID: 617) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,369 - INFO - Word 'syota' (tl) created (ID: 618) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,371 - INFO - Word 'kasintahan' (tl) created (ID: 619) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,372 - INFO - Word 'irog' (tl) created (ID: 620) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,374 - INFO - Word 'mahal' (tl) created (ID: 621) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,375 - INFO - Word 'babe' (tl) created (ID: 622) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,377 - INFO - Word 'bagelya' (tl) created (ID: 623) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,379 - INFO - Word 'bag' (tl) created (ID: 624) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,383 - INFO - Word 'baget' (tl) created (ID: 625) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,384 - ERROR - Standard POS code 'lig' (derived from 'ligature') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:43,385 - ERROR - Standard POS code 'lig' (derived from 'ligature') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:43,387 - INFO - Word 'bakit' (tl) created (ID: 626) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,390 - INFO - Word 'bagets' (tl) created (ID: 627) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,391 - INFO - Word 'tinedyer' (tl) created (ID: 628) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,392 - INFO - Word 'kabataan' (tl) created (ID: 629) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,394 - INFO - Word 'binatilyo/dalagita' (tl) created (ID: 630) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,395 - INFO - Word 'bagito' (tl) created (ID: 631) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,397 - INFO - Word 'bago' (tl) created (ID: 632) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,398 - INFO - Word 'walang karanasan' (tl) created (ID: 633) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,399 - INFO - Word 'newbie' (tl) created (ID: 634) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,403 - INFO - Word 'bagong-buhay' (tl) created (ID: 635) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,405 - INFO - Word 'pagpapalit-kasarian' (tl) created (ID: 636) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,407 - INFO - Word 'sex change' (tl) created (ID: 637) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,408 - INFO - Word 'bagong salta' (tl) created (ID: 638) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,410 - INFO - Word 'bagong lipat' (tl) created (ID: 639) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,411 - INFO - Word 'baguhan' (tl) created (ID: 640) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,413 - INFO - Word 'dayo' (tl) created (ID: 641) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,414 - INFO - Word 'bagoong' (tl) created (ID: 642) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,416 - INFO - Word 'matatanda' (tl) created (ID: 643) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,417 - INFO - Word 'gurang' (tl) created (ID: 644) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,418 - INFO - Word 'bagtit' (tl) created (ID: 645) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,423 - INFO - Word 'bagyo' (tl) created (ID: 646) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,425 - INFO - Word 'unos' (tl) created (ID: 647) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,426 - INFO - Word 'sigwa' (tl) created (ID: 648) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,427 - INFO - Word 'typhoon' (tl) created (ID: 649) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,430 - INFO - Word 'mahangin' (tl) created (ID: 650) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,431 - INFO - Word 'mayabang' (tl) created (ID: 651) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,433 - INFO - Word 'hambog' (tl) created (ID: 652) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,434 - INFO - Word 'mapagmataas' (tl) created (ID: 653) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,435 - INFO - Word 'bahag ang buntot' (tl) created (ID: 654) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,437 - INFO - Word 'duwag' (tl) created (ID: 655) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,439 - INFO - Word 'matatakutin' (tl) created (ID: 656) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,440 - INFO - Word 'walang bayag (vulgar)' (tl) created (ID: 657) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,441 - INFO - Word 'Bahamas' (tl) created (ID: 658) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,442 - INFO - Word 'baha' (tl) created (ID: 659) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,444 - INFO - Word 'Bahasa Indonesia' (tl) created (ID: 660) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,445 - INFO - Word 'Bahavia' (tl) created (ID: 661) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,449 - INFO - Word 'malalim na baha' (tl) created (ID: 662) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,454 - INFO - Word 'bahaw' (tl) created (ID: 663) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,456 - INFO - Word 'kaning-lamig' (tl) created (ID: 664) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,458 - INFO - Word 'bahey' (tl) created (ID: 665) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,461 - INFO - Word 'haba' (tl) created (ID: 666) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,462 - INFO - Word 'mahaba' (tl) created (ID: 667) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,465 - INFO - Word 'bajingelya' (tl) created (ID: 668) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,471 - INFO - Word 'durugista' (tl) created (ID: 669) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,472 - INFO - Word 'bakal' (tl) created (ID: 670) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,474 - INFO - Word 'baril' (tl) created (ID: 671) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,476 - INFO - Word 'boga' (tl) created (ID: 672) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,477 - INFO - Word 'armas' (tl) created (ID: 673) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,479 - INFO - Word 'bakal boy' (tl) created (ID: 674) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,481 - INFO - Word 'call boy' (tl) created (ID: 675) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,482 - INFO - Word 'lalaking pokpok' (tl) created (ID: 676) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,483 - INFO - Word 'hosto' (tl) created (ID: 677) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,488 - INFO - Word 'bakti' (tl) created (ID: 678) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,489 - INFO - Word 'bakat' (tl) created (ID: 679) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,491 - INFO - Word 'kita ang panloob' (tl) created (ID: 680) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,492 - INFO - Word 'VPL' (tl) created (ID: 681) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,499 - INFO - Word 'bakokang' (tl) created (ID: 682) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,501 - INFO - Word 'malaking peklat' (tl) created (ID: 683) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,502 - INFO - Word 'keloid' (tl) created (ID: 684) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,505 - INFO - Word 'baktol' (tl) created (ID: 685) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,507 - INFO - Word 'matinding anghit' (tl) created (ID: 686) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,509 - INFO - Word 'putok (level 3)' (tl) created (ID: 687) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,510 - INFO - Word 'baktung' (tl) created (ID: 688) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,512 - INFO - Word 'bakat utong' (tl) created (ID: 689) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,514 - INFO - Word 'bakat ang utong' (tl) created (ID: 690) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,516 - INFO - Word 'bakya' (tl) created (ID: 691) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,518 - INFO - Word 'tsinelas na kahoy' (tl) created (ID: 692) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,522 - INFO - Word 'mababang uri' (tl) created (ID: 693) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,526 - INFO - Word 'balahura' (tl) created (ID: 694) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,528 - INFO - Word 'balajura' (tl) created (ID: 695) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,530 - INFO - Word 'bastos' (tl) created (ID: 696) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,531 - INFO - Word 'walang modo' (tl) created (ID: 697) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,532 - INFO - Word 'magaspang ang ugali' (tl) created (ID: 698) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,534 - INFO - Word 'baboy (fig.)' (tl) created (ID: 699) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,535 - INFO - Word 'balaj' (tl) created (ID: 700) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,537 - INFO - Word 'balarge' (tl) created (ID: 701) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,541 - INFO - Word 'balalaika' (tl) created (ID: 702) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,545 - INFO - Word 'syoki' (tl) created (ID: 703) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,551 - INFO - Word 'balat-kalabaw' (tl) created (ID: 704) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,553 - INFO - Word 'manhid' (tl) created (ID: 705) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,555 - INFO - Word 'makapal ang mukha' (tl) created (ID: 706) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,556 - INFO - Word 'walang pakiramdam' (tl) created (ID: 707) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,557 - INFO - Word 'balay' (tl) created (ID: 708) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,559 - INFO - Word 'balaychina' (tl) created (ID: 709) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,560 - INFO - Word 'balaysu' (tl) created (ID: 710) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,561 - INFO - Word 'balaytrax' (tl) created (ID: 711) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,563 - INFO - Word 'bahay' (tl) created (ID: 712) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,564 - INFO - Word 'tahanan' (tl) created (ID: 713) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,566 - INFO - Word 'tirahan' (tl) created (ID: 714) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,568 - INFO - Word 'balaylu' (tl) created (ID: 715) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,570 - INFO - Word 'lullaby' (tl) created (ID: 716) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,572 - INFO - Word 'oyayi' (tl) created (ID: 717) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,573 - INFO - Word 'hele' (tl) created (ID: 718) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,576 - INFO - Word 'balbonik' (tl) created (ID: 719) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,579 - INFO - Word 'balbon' (tl) created (ID: 720) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,580 - INFO - Word 'mabalahibo' (tl) created (ID: 721) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,584 - INFO - Word 'balimbing' (tl) created (ID: 722) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,587 - INFO - Word 'star fruit' (tl) created (ID: 723) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,590 - INFO - Word 'lipat-partido' (tl) created (ID: 724) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,592 - INFO - Word 'oportunista' (tl) created (ID: 725) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,593 - INFO - Word 'turncoat' (tl) created (ID: 726) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,594 - INFO - Word 'baliwag' (tl) created (ID: 727) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,601 - INFO - Word 'balswals' (tl) created (ID: 728) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,603 - INFO - Word 'balewala' (tl) created (ID: 729) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,606 - INFO - Word 'hindi pinapansin' (tl) created (ID: 730) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,607 - INFO - Word 'ignored' (tl) created (ID: 731) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,608 - INFO - Word 'baltik' (tl) created (ID: 732) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,610 - INFO - Word 'may toyo' (tl) created (ID: 733) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,612 - INFO - Word 'sumpungin' (tl) created (ID: 734) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,613 - INFO - Word 'iritable' (tl) created (ID: 735) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,614 - INFO - Word 'masungit' (tl) created (ID: 736) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,618 - INFO - Word 'patalim' (tl) created (ID: 737) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,620 - INFO - Word 'balur' (tl) created (ID: 738) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,622 - INFO - Word 'balurva' (tl) created (ID: 739) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,629 - INFO - Word 'balyena' (tl) created (ID: 740) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,632 - INFO - Word 'mataba' (tl) created (ID: 741) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,634 - INFO - Word 'tabachoy' (tl) created (ID: 742) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,636 - INFO - Word 'lumba-lumba (fig.)' (tl) created (ID: 743) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,637 - INFO - Word 'banaue' (tl) created (ID: 744) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,639 - INFO - Word 'kanin' (tl) created (ID: 745) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,640 - INFO - Word 'bandying' (tl) created (ID: 746) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,641 - INFO - Word 'relaks' (tl) created (ID: 747) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,642 - INFO - Word 'hindi seryoso' (tl) created (ID: 748) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,644 - INFO - Word 'palaro-laro' (tl) created (ID: 749) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,648 - INFO - Word 'hindi magseryoso' (tl) created (ID: 750) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,649 - INFO - Word 'maglaro-laro' (tl) created (ID: 751) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,651 - INFO - Word 'magrelaks' (tl) created (ID: 752) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,655 - INFO - Word 'lutang' (tl) created (ID: 753) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,657 - INFO - Word 'wala sa sarili' (tl) created (ID: 754) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,658 - INFO - Word 'tulala' (tl) created (ID: 755) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,659 - INFO - Word 'bangi' (tl) created (ID: 756) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,661 - INFO - Word 'spaced out' (tl) created (ID: 757) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,665 - INFO - Word 'bangenge' (tl) created (ID: 758) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,668 - INFO - Word 'sabog' (tl) created (ID: 759) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,671 - INFO - Word 'may tama' (tl) created (ID: 760) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,674 - INFO - Word 'bangkatars' (tl) created (ID: 761) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,681 - INFO - Word 'bangko' (tl) created (ID: 762) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,682 - INFO - Word 'upuan' (tl) created (ID: 763) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,685 - INFO - Word 'nasa bench' (tl) created (ID: 764) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,686 - INFO - Word 'hindi naglaro' (tl) created (ID: 765) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,688 - INFO - Word 'reserba' (tl) created (ID: 766) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,689 - INFO - Word 'bangus' (tl) created (ID: 767) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,691 - INFO - Word 'maputi ang mukha (bakla)' (tl) created (ID: 768) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,692 - INFO - Word 'makapal ang pulbos' (tl) created (ID: 769) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,693 - INFO - Word 'banig ng karamdaman' (tl) created (ID: 770) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,695 - INFO - Word 'nakaratay' (tl) created (ID: 771) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,696 - INFO - Word 'bedridden' (tl) created (ID: 772) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,697 - INFO - Word 'may malubhang sakit' (tl) created (ID: 773) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,699 - INFO - Word 'bano' (tl) created (ID: 774) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,702 - INFO - Word 'mahina ang ulo' (tl) created (ID: 775) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,703 - INFO - Word 'mapurol' (tl) created (ID: 776) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,705 - INFO - Word 'bansot' (tl) created (ID: 777) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,707 - INFO - Word 'pandak' (tl) created (ID: 778) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,708 - INFO - Word 'maliit' (tl) created (ID: 779) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,709 - INFO - Word 'unano' (tl) created (ID: 780) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,710 - INFO - Word 'bapor' (tl) created (ID: 781) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,713 - INFO - Word 'malaking sapatos' (tl) created (ID: 782) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,716 - INFO - Word 'barako' (tl) created (ID: 783) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,721 - INFO - Word 'matapang na kape' (tl) created (ID: 784) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,722 - INFO - Word 'kapeng barako' (tl) created (ID: 785) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,726 - INFO - Word 'tunay na lalaki' (tl) created (ID: 786) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,728 - INFO - Word 'matikas' (tl) created (ID: 787) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,729 - INFO - Word 'macho' (tl) created (ID: 788) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,731 - INFO - Word 'magaling sa kama' (tl) created (ID: 789) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,733 - INFO - Word 'barakuda' (tl) created (ID: 790) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,735 - INFO - Word 'pangit na bakla' (tl) created (ID: 791) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,737 - INFO - Word 'malanding bakla' (tl) created (ID: 792) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,738 - INFO - Word 'desperado' (tl) created (ID: 793) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,740 - INFO - Word 'barbero' (tl) created (ID: 794) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,741 - INFO - Word 'manggugupit' (tl) created (ID: 795) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,745 - INFO - Word 'sinungaling' (tl) created (ID: 796) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,746 - INFO - Word 'bolero' (tl) created (ID: 797) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,747 - INFO - Word 'mapagkuwento (ng hindi totoo)' (tl) created (ID: 798) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,749 - INFO - Word 'Barclay' (tl) created (ID: 799) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,751 - INFO - Word 'Barkli' (tl) created (ID: 800) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,753 - INFO - Word 'Baclaran' (tl) created (ID: 801) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,755 - INFO - Word 'barda' (tl) created (ID: 802) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,757 - INFO - Word 'bad trip' (tl) created (ID: 803) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,758 - INFO - Word 'bernadet' (tl) created (ID: 804) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,762 - INFO - Word 'bardagol' (tl) created (ID: 805) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,764 - INFO - Word 'isip-bata' (tl) created (ID: 806) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,765 - INFO - Word 'pabaya' (tl) created (ID: 807) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,767 - INFO - Word 'malaking tao (parang bata)' (tl) created (ID: 808) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,768 - INFO - Word 'barnakol' (tl) created (ID: 809) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,770 - INFO - Word 'libag sa batok' (tl) created (ID: 810) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,771 - INFO - Word 'barok' (tl) created (ID: 811) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,773 - INFO - Word 'bulol' (tl) created (ID: 812) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,774 - INFO - Word 'hindi malinaw magsalita' (tl) created (ID: 813) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,775 - INFO - Word 'bartolina' (tl) created (ID: 814) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,777 - INFO - Word 'kulungan' (tl) created (ID: 815) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,778 - INFO - Word 'selda' (tl) created (ID: 816) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,780 - INFO - Word 'piitan' (tl) created (ID: 817) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,782 - INFO - Word 'bilangguan' (tl) created (ID: 818) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,784 - INFO - Word 'grounded' (tl) created (ID: 819) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,785 - INFO - Word 'hindi pinapalabas' (tl) created (ID: 820) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,787 - INFO - Word 'barurot' (tl) created (ID: 821) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,788 - INFO - Word 'pagtatalik' (tl) created (ID: 822) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,789 - INFO - Word 'sex' (tl) created (ID: 823) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,790 - INFO - Word 'kantutan (vulgar)' (tl) created (ID: 824) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,791 - INFO - Word 'baryables' (tl) created (ID: 825) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,793 - INFO - Word 'barya' (tl) created (ID: 826) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,794 - INFO - Word 'sensilyo' (tl) created (ID: 827) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,797 - INFO - Word 'basa ang papel' (tl) created (ID: 828) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,799 - INFO - Word 'sira ang pangalan' (tl) created (ID: 829) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,801 - INFO - Word 'masamang reputasyon' (tl) created (ID: 830) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,802 - INFO - Word 'disgrasyado' (tl) created (ID: 831) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,803 - INFO - Word 'basag' (tl) created (ID: 832) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,806 - INFO - Word 'lango' (tl) created (ID: 833) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,810 - INFO - Word 'durog' (tl) created (ID: 834) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,811 - INFO - Word 'wasak' (tl) created (ID: 835) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,814 - INFO - Word 'hindi na birhen' (tl) created (ID: 836) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,815 - INFO - Word 'gamit na (derogatory)' (tl) created (ID: 837) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,816 - INFO - Word 'basag ang pula' (tl) created (ID: 838) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,822 - INFO - Word 'sira ang ulo' (tl) created (ID: 839) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,823 - INFO - Word 'may sayad' (tl) created (ID: 840) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,824 - INFO - Word 'basi' (tl) created (ID: 841) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,826 - INFO - Word 'barbecue at sinangag' (tl) created (ID: 842) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,829 - INFO - Word 'alak sa tubo' (tl) created (ID: 843) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,830 - INFO - Word 'basket' (tl) created (ID: 844) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,832 - INFO - Word 'basketball' (tl) created (ID: 845) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,833 - INFO - Word 'maglaro ng basketball' (tl) created (ID: 846) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,837 - INFO - Word 'ari (ng lalaki)' (tl) created (ID: 847) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,838 - INFO - Word 'uten' (tl) created (ID: 848) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,840 - INFO - Word 'titi' (tl) created (ID: 849) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,841 - INFO - Word 'burat' (tl) created (ID: 850) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,842 - INFO - Word 'basted' (tl) created (ID: 851) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,844 - INFO - Word 'tinanggihan' (tl) created (ID: 852) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,846 - INFO - Word 'rejected' (tl) created (ID: 853) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,847 - INFO - Word 'nabigo' (tl) created (ID: 854) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,850 - INFO - Word 'basyo' (tl) created (ID: 855) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,853 - INFO - Word 'simot' (tl) created (ID: 856) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,855 - INFO - Word 'broke' (tl) created (ID: 857) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,858 - INFO - Word 'busted' (tl) created (ID: 858) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,859 - INFO - Word 'nahuli' (tl) created (ID: 859) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,860 - INFO - Word 'nadakip' (tl) created (ID: 860) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,864 - INFO - Word 'huli' (tl) created (ID: 861) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,865 - INFO - Word 'dakip' (tl) created (ID: 862) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,866 - INFO - Word 'arestado' (tl) created (ID: 863) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,867 - INFO - Word 'hinuli' (tl) created (ID: 864) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,869 - INFO - Word 'dinakip' (tl) created (ID: 865) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,878 - INFO - Word 'batak' (tl) created (ID: 866) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,880 - INFO - Word 'gumamit ng droga' (tl) created (ID: 867) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,881 - INFO - Word 'humithit' (tl) created (ID: 868) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,882 - INFO - Word 'suminghot' (tl) created (ID: 869) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,884 - INFO - Word 'batis' (tl) created (ID: 870) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,886 - INFO - Word 'banyo' (tl) created (ID: 871) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,888 - INFO - Word 'CR' (tl) created (ID: 872) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,890 - INFO - Word 'kubeta' (tl) created (ID: 873) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,891 - INFO - Word 'palikuran' (tl) created (ID: 874) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,894 - INFO - Word 'batsi' (tl) created (ID: 875) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,896 - INFO - Word 'umalis' (tl) created (ID: 876) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,898 - INFO - Word 'lumisan' (tl) created (ID: 877) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,899 - INFO - Word 'tumakas' (tl) created (ID: 878) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,900 - INFO - Word 'pumuga' (tl) created (ID: 879) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,901 - INFO - Word 'bato' (tl) created (ID: 880) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,903 - INFO - Word 'shabu' (tl) created (ID: 881) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,904 - INFO - Word 'methamphetamine' (tl) created (ID: 882) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,912 - INFO - Word 'pusong-bato' (tl) created (ID: 883) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,914 - INFO - Word 'maramot' (tl) created (ID: 884) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,916 - INFO - Word 'madamot' (tl) created (ID: 885) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,917 - INFO - Word 'makasarili' (tl) created (ID: 886) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,918 - INFO - Word 'bato-bato' (tl) created (ID: 887) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,921 - INFO - Word 'maskulado' (tl) created (ID: 888) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,923 - INFO - Word 'matipuno' (tl) created (ID: 889) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,924 - INFO - Word 'malaki ang katawan' (tl) created (ID: 890) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,925 - INFO - Word 'batsoy' (tl) created (ID: 891) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,927 - INFO - Word 'batchoy' (tl) created (ID: 892) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,930 - INFO - Word 'taba' (tl) created (ID: 893) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,932 - INFO - Word 'chubby' (tl) created (ID: 894) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,935 - INFO - Word 'La Paz batchoy' (tl) created (ID: 895) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,937 - INFO - Word 'batuytuy' (tl) created (ID: 896) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,938 - INFO - Word 'ari (ng bata)' (tl) created (ID: 897) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,939 - INFO - Word 'titi (ng bata)' (tl) created (ID: 898) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,940 - INFO - Word 'bavarian' (tl) created (ID: 899) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,946 - INFO - Word 'goodbye' (tl) created (ID: 900) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,948 - INFO - Word 'baw' (tl) created (ID: 901) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,950 - INFO - Word 'sumang-ayon' (tl) created (ID: 902) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,952 - INFO - Word 'pumayag' (tl) created (ID: 903) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,953 - INFO - Word 'umoo' (tl) created (ID: 904) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,954 - INFO - Word 'bumigay' (tl) created (ID: 905) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,955 - INFO - Word 'baw ka lang' (tl) created (ID: 906) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,957 - INFO - Word 'umoo ka na lang' (tl) created (ID: 907) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,958 - INFO - Word 'sang-ayon ka na lang' (tl) created (ID: 908) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,960 - INFO - Word 'bay' (tl) created (ID: 909) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,968 - INFO - Word 'katulong (lalaki)' (tl) created (ID: 910) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,969 - INFO - Word 'alila (lalaki)' (tl) created (ID: 911) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,971 - INFO - Word 'boy' (tl) created (ID: 912) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,972 - INFO - Word 'bayagra' (tl) created (ID: 913) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,977 - INFO - Word 'bayawak' (tl) created (ID: 914) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,979 - INFO - Word 'bisexual' (tl) created (ID: 915) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,981 - INFO - Word 'bayek' (tl) created (ID: 916) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,983 - INFO - Word 'jakol' (tl) created (ID: 917) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,984 - INFO - Word 'salsal' (tl) created (ID: 918) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,986 - INFO - Word 'magsalsal' (tl) created (ID: 919) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,987 - INFO - Word 'magjakol' (tl) created (ID: 920) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,989 - INFO - Word 'bayot' (tl) created (ID: 921) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:43,995 - INFO - Word 'bayogenic' (tl) created (ID: 922) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,004 - INFO - Word 'bayasbas' (tl) created (ID: 923) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,007 - INFO - Word 'masahista' (tl) created (ID: 924) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,009 - INFO - Word 'bea alonzo' (tl) created (ID: 925) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,011 - INFO - Word 'patahimikin' (tl) created (ID: 926) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,012 - INFO - Word 'suwayin' (tl) created (ID: 927) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,013 - INFO - Word 'sawayin' (tl) created (ID: 928) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,016 - INFO - Word 'tumahimik ka' (tl) created (ID: 929) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,017 - INFO - Word 'manahimik' (tl) created (ID: 930) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,018 - INFO - Word 'shut up' (tl) created (ID: 931) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,020 - INFO - Word 'beauty card' (tl) created (ID: 932) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,022 - INFO - Word 'pogi points' (tl) created (ID: 933) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,023 - INFO - Word 'advantage' (tl) created (ID: 934) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,024 - INFO - Word 'plus points' (tl) created (ID: 935) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,025 - INFO - Word 'pabango (fig.)' (tl) created (ID: 936) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,026 - INFO - Word 'bebang' (tl) created (ID: 937) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,031 - INFO - Word 'tsimay' (tl) created (ID: 938) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,034 - INFO - Word 'bebot' (tl) created (ID: 939) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,036 - INFO - Word 'bebong' (tl) created (ID: 940) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,038 - INFO - Word 'babae' (tl) created (ID: 941) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,040 - INFO - Word 'chick' (tl) created (ID: 942) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,041 - INFO - Word 'chika' (tl) created (ID: 943) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,042 - INFO - Word 'girl' (tl) created (ID: 944) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,044 - INFO - Word 'becky' (tl) created (ID: 945) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,051 - INFO - Word 'begtu' (tl) created (ID: 946) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,053 - INFO - Word 'tubig' (tl) created (ID: 947) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,057 - INFO - Word 'beh y' (tl) created (ID: 948) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,062 - INFO - Word 'beha' (tl) created (ID: 949) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,063 - INFO - Word 'Intsik (babae)' (tl) created (ID: 950) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,065 - INFO - Word 'Tsina' (tl) created (ID: 951) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,067 - INFO - Word 'beho' (tl) created (ID: 952) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,070 - INFO - Word 'chekwa' (tl) created (ID: 953) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,071 - INFO - Word 'Intsik (lalaki)' (tl) created (ID: 954) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,073 - INFO - Word 'Tsino' (tl) created (ID: 955) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,075 - INFO - Word 'bente-nuebe' (tl) created (ID: 956) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,078 - INFO - Word 'balisong' (tl) created (ID: 957) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,079 - INFO - Word 'kutsilyo' (tl) created (ID: 958) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,081 - INFO - Word 'panaksak' (tl) created (ID: 959) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,082 - INFO - Word 'beke nemen' (tl) created (ID: 960) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,084 - INFO - Word 'baka naman' (tl) created (ID: 961) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,087 - INFO - Word 'pa-share naman' (tl) created (ID: 962) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,088 - INFO - Word 'pa-ambon' (tl) created (ID: 963) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,089 - INFO - Word 'bekikang' (tl) created (ID: 964) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,091 - INFO - Word 'bakekang' (tl) created (ID: 965) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,094 - INFO - Word 'chakang beki' (tl) created (ID: 966) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,096 - INFO - Word 'bekimon' (tl) created (ID: 967) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,098 - INFO - Word 'gay lingo (Filipino)' (tl) created (ID: 968) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,099 - INFO - Word 'swardspeak' (tl) created (ID: 969) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,100 - INFO - Word 'beklaruch' (tl) created (ID: 970) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,103 - INFO - Word 'mataray' (tl) created (ID: 971) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,106 - INFO - Word 'maldita/to' (tl) created (ID: 972) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,108 - INFO - Word 'bella aurora' (tl) created (ID: 973) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,113 - INFO - Word 'B.O.' (tl) created (ID: 974) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,115 - INFO - Word 'belyas' (tl) created (ID: 975) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,116 - INFO - Word 'hostess' (tl) created (ID: 976) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,118 - INFO - Word 'GRO' (tl) created (ID: 977) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,120 - INFO - Word 'benaki todits' (tl) created (ID: 978) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,123 - INFO - Word 'halika rito' (tl) created (ID: 979) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,124 - INFO - Word 'punta ka rito' (tl) created (ID: 980) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,125 - INFO - Word 'come here' (tl) created (ID: 981) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,126 - INFO - Word 'bengka' (tl) created (ID: 982) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,128 - INFO - Word 'shhh' (tl) created (ID: 983) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,129 - INFO - Word 'tumahimik' (tl) created (ID: 984) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,131 - INFO - Word 'berang' (tl) created (ID: 985) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,133 - INFO - Word 'uminom (alak)' (tl) created (ID: 986) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,134 - INFO - Word 'mag-inom' (tl) created (ID: 987) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,135 - INFO - Word 'tagay' (tl) created (ID: 988) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,136 - INFO - Word 'berks' (tl) created (ID: 989) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,139 - INFO - Word 'tropa' (tl) created (ID: 990) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,148 - INFO - Word 'beso-beso' (tl) created (ID: 991) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,150 - INFO - Word 'halik sa pisngi' (tl) created (ID: 992) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,152 - INFO - Word 'bet' (tl) created (ID: 993) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,154 - INFO - Word 'betsung' (tl) created (ID: 994) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,155 - INFO - Word 'gusto' (tl) created (ID: 995) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,156 - INFO - Word 'like' (tl) created (ID: 996) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,158 - INFO - Word 'type' (tl) created (ID: 997) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,160 - INFO - Word 'kursunada' (tl) created (ID: 998) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,164 - INFO - Word 'betamax' (tl) created (ID: 999) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,165 - INFO - Word 'inihaw na dugo' (tl) created (ID: 1000) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,167 - INFO - Word 'beth loggins' (tl) created (ID: 1001) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,169 - INFO - Word 'itlog' (tl) created (ID: 1002) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,171 - INFO - Word 'bethlehem' (tl) created (ID: 1003) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,175 - INFO - Word 'bayag' (tl) created (ID: 1004) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,176 - INFO - Word 'betlog' (tl) created (ID: 1005) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,179 - INFO - Word 'yagbols' (tl) created (ID: 1006) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,182 - INFO - Word 'itlog (fig.)' (tl) created (ID: 1007) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,196 - INFO - Word 'betka' (tl) created (ID: 1008) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,198 - INFO - Word 'kabit' (tl) created (ID: 1009) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,201 - INFO - Word 'kerida' (tl) created (ID: 1010) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,203 - INFO - Word 'kulasisi' (tl) created (ID: 1011) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,205 - INFO - Word 'kalunya' (tl) created (ID: 1012) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,206 - INFO - Word 'mistress' (tl) created (ID: 1013) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,214 - INFO - Word 'betsive' (tl) created (ID: 1014) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,223 - INFO - Word 'beykini' (tl) created (ID: 1015) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,226 - INFO - Word 'bikini' (tl) created (ID: 1016) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,227 - INFO - Word 'maluwag na bikini' (tl) created (ID: 1017) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,229 - INFO - Word 'bf' (tl) created (ID: 1018) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,232 - INFO - Word 'boyfriend' (tl) created (ID: 1019) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,237 - INFO - Word 'bi' (tl) created (ID: 1020) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,242 - INFO - Word 'biancacheng' (tl) created (ID: 1021) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,246 - INFO - Word 'dyosa' (tl) created (ID: 1022) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,247 - INFO - Word 'big beef' (tl) created (ID: 1023) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,250 - INFO - Word 'amo' (tl) created (ID: 1024) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,255 - INFO - Word 'big boss' (tl) created (ID: 1025) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,257 - INFO - Word 'misis (ng boss)' (tl) created (ID: 1026) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,258 - INFO - Word 'kumander (fig.)' (tl) created (ID: 1027) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,260 - INFO - Word 'big mouth' (tl) created (ID: 1028) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,265 - INFO - Word 'palalo' (tl) created (ID: 1029) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,266 - INFO - Word 'big shot' (tl) created (ID: 1030) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,268 - INFO - Word 'importanteng tao' (tl) created (ID: 1031) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,269 - INFO - Word 'makapangyarihan' (tl) created (ID: 1032) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,271 - INFO - Word 'mayaman' (tl) created (ID: 1033) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,272 - INFO - Word 'VIP' (tl) created (ID: 1034) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,274 - INFO - Word 'big time' (tl) created (ID: 1035) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,277 - INFO - Word 'sobrang yaman' (tl) created (ID: 1036) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,279 - INFO - Word 'mariwasa' (tl) created (ID: 1037) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,282 - INFO - Word 'bigalore' (tl) created (ID: 1038) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,284 - INFO - Word 'malaki' (tl) created (ID: 1039) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,286 - INFO - Word 'malawak' (tl) created (ID: 1040) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,287 - INFO - Word 'malapad' (tl) created (ID: 1041) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,289 - INFO - Word 'bigats' (tl) created (ID: 1042) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,291 - INFO - Word 'malibog (na matanda)' (tl) created (ID: 1043) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,292 - INFO - Word 'manyakis (na matanda)' (tl) created (ID: 1044) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,294 - INFO - Word 'biglang-liko' (tl) created (ID: 1045) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,297 - INFO - Word 'malapit nang mamatay' (tl) created (ID: 1046) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,298 - INFO - Word 'may taning na' (tl) created (ID: 1047) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,300 - INFO - Word 'bilang na ang araw' (tl) created (ID: 1048) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,302 - INFO - Word 'bilangga' (tl) created (ID: 1049) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,305 - INFO - Word 'bill' (tl) created (ID: 1050) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,307 - INFO - Word 'kuwenta' (tl) created (ID: 1051) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,309 - INFO - Word 'bilat' (tl) created (ID: 1052) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,312 - INFO - Word 'bilatchina' (tl) created (ID: 1053) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,313 - INFO - Word 'regine bilatchez' (tl) created (ID: 1054) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,315 - INFO - Word 'puki' (tl) created (ID: 1055) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,316 - INFO - Word 'kiki' (tl) created (ID: 1056) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,317 - INFO - Word 'pekpek' (tl) created (ID: 1057) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,321 - INFO - Word 'ari (ng babae)' (tl) created (ID: 1058) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,323 - INFO - Word 'bilib na bilib' (tl) created (ID: 1059) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,325 - INFO - Word 'hangang-hanga' (tl) created (ID: 1060) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,326 - INFO - Word 'impressed na impressed' (tl) created (ID: 1061) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,329 - INFO - Word 'bill clinton' (tl) created (ID: 1062) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,336 - INFO - Word 'billabong' (tl) created (ID: 1063) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,344 - INFO - Word 'pambayad' (tl) created (ID: 1064) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,348 - INFO - Word 'bilmoko' (tl) created (ID: 1065) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,350 - INFO - Word 'mahilig magpabili' (tl) created (ID: 1066) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,353 - INFO - Word 'ibili mo ako' (tl) created (ID: 1067) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,357 - INFO - Word 'kilos-babae' (tl) created (ID: 1068) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,359 - INFO - Word 'binangaw sa takilya' (tl) created (ID: 1069) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,362 - INFO - Word 'nalugi' (tl) created (ID: 1070) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,363 - INFO - Word 'bagsak (sa takilya)' (tl) created (ID: 1071) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,364 - INFO - Word 'flop' (tl) created (ID: 1072) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,365 - INFO - Word 'binatilyo' (tl) created (ID: 1073) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,367 - INFO - Word 'tinedyer (lalaki)' (tl) created (ID: 1074) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,370 - INFO - Word 'adolescent (lalaki)' (tl) created (ID: 1075) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,372 - INFO - Word 'binggaka' (tl) created (ID: 1076) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,374 - INFO - Word 'hindi!' (tl) created (ID: 1077) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,375 - INFO - Word 'tutol!' (tl) created (ID: 1078) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,376 - INFO - Word 'ayaw!' (tl) created (ID: 1079) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,378 - INFO - Word 'binuksan ang dibdib' (tl) created (ID: 1080) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,380 - INFO - Word 'nagtapat' (tl) created (ID: 1081) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,381 - INFO - Word 'nagpahayag ng damdamin' (tl) created (ID: 1082) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,383 - INFO - Word 'naglabas ng saloobin' (tl) created (ID: 1083) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,384 - INFO - Word 'binyag' (tl) created (ID: 1084) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,386 - INFO - Word 'tuli' (tl) created (ID: 1085) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,390 - INFO - Word 'biogesic' (tl) created (ID: 1086) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,392 - INFO - Word 'biology' (tl) created (ID: 1087) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,398 - INFO - Word 'mag-isa' (tl) created (ID: 1088) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,399 - INFO - Word 'BIR' (tl) created (ID: 1089) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,401 - INFO - Word 'menopause (approx.)' (tl) created (ID: 1090) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,402 - INFO - Word 'walang regla' (tl) created (ID: 1091) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,404 - INFO - Word 'birjin' (tl) created (ID: 1092) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,406 - INFO - Word 'beer at gin mix' (tl) created (ID: 1093) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,407 - INFO - Word 'birjin coke' (tl) created (ID: 1094) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,409 - INFO - Word 'beer, gin, at Coke mix' (tl) created (ID: 1095) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,411 - INFO - Word 'birjin rum' (tl) created (ID: 1096) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,413 - INFO - Word 'beer, gin, at rum mix' (tl) created (ID: 1097) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,415 - INFO - Word 'bisayote' (tl) created (ID: 1098) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,416 - INFO - Word 'Bisaya' (tl) created (ID: 1099) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,419 - INFO - Word 'Bisdak' (tl) created (ID: 1100) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,420 - INFO - Word 'bisboy' (tl) created (ID: 1101) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,422 - INFO - Word 'Bisaya (lalaki)' (tl) created (ID: 1102) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,424 - INFO - Word 'lalaking Bisaya' (tl) created (ID: 1103) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,425 - INFO - Word 'Bisayong lalaki' (tl) created (ID: 1104) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,427 - INFO - Word 'bisÃ³r' (tl) created (ID: 1105) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,429 - INFO - Word 'supervisor' (tl) created (ID: 1106) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,433 - INFO - Word 'tagapamahala' (tl) created (ID: 1107) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,435 - INFO - Word 'bistado' (tl) created (ID: 1108) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,439 - INFO - Word 'nabisto' (tl) created (ID: 1109) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,441 - INFO - Word 'caught' (tl) created (ID: 1110) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,444 - INFO - Word 'lantad' (tl) created (ID: 1111) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,446 - INFO - Word 'exposed' (tl) created (ID: 1112) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,449 - INFO - Word 'biyakan' (tl) created (ID: 1113) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,455 - INFO - Word 'biyondila' (tl) created (ID: 1114) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,457 - INFO - Word 'kandila' (tl) created (ID: 1115) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,459 - INFO - Word 'blaha' (tl) created (ID: 1116) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,461 - INFO - Word 'bahala na' (tl) created (ID: 1117) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,463 - INFO - Word 'blanca' (tl) created (ID: 1118) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,470 - INFO - Word 'Blendr' (tl) created (ID: 1119) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,472 - INFO - Word 'dating app' (tl) created (ID: 1120) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,473 - INFO - Word 'blow job' (tl) created (ID: 1121) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,475 - INFO - Word 'oral sex' (tl) created (ID: 1122) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,476 - INFO - Word 'tsupa' (tl) created (ID: 1123) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,477 - INFO - Word 'BJ' (tl) created (ID: 1124) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,480 - INFO - Word 'suntok' (tl) created (ID: 1125) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,482 - INFO - Word 'upakan' (tl) created (ID: 1126) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,484 - INFO - Word 'blue seal' (tl) created (ID: 1127) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,485 - INFO - Word 'imported na sigarilyo' (tl) created (ID: 1128) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,487 - INFO - Word 'bobella' (tl) created (ID: 1129) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,489 - INFO - Word 'bobelya' (tl) created (ID: 1130) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,491 - INFO - Word 'bobita' (tl) created (ID: 1131) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,492 - INFO - Word 'bobo/a' (tl) created (ID: 1132) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,498 - INFO - Word 'bobita jones' (tl) created (ID: 1133) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,500 - INFO - Word 'bobita salonga' (tl) created (ID: 1134) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,507 - INFO - Word 'bobita tralala chisbumba' (tl) created (ID: 1135) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,510 - INFO - Word 'tanga-tanga' (tl) created (ID: 1136) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,512 - INFO - Word 'gunggong (babae)' (tl) created (ID: 1137) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,513 - INFO - Word 'bobits' (tl) created (ID: 1138) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,516 - INFO - Word 'magandang babae' (tl) created (ID: 1139) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,521 - INFO - Word 'yosi' (tl) created (ID: 1140) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,522 - INFO - Word 'sigarilyo' (tl) created (ID: 1141) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,530 - INFO - Word 'bogchi' (tl) created (ID: 1142) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,532 - INFO - Word 'chibog' (tl) created (ID: 1143) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,533 - INFO - Word 'kain' (tl) created (ID: 1144) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,535 - INFO - Word 'kumain' (tl) created (ID: 1145) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,536 - INFO - Word 'lumamon' (tl) created (ID: 1146) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,538 - INFO - Word 'bogerns' (tl) created (ID: 1147) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,540 - INFO - Word 'ungas' (tl) created (ID: 1148) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,541 - INFO - Word 'ugok' (tl) created (ID: 1149) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,543 - INFO - Word 'gago' (tl) created (ID: 1150) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,548 - INFO - Word 'bogli' (tl) created (ID: 1151) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,551 - INFO - Word 'libog' (tl) created (ID: 1152) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,553 - INFO - Word 'bogs' (tl) created (ID: 1153) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,555 - INFO - Word 'bok' (tl) created (ID: 1154) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,563 - INFO - Word 'bohemyo' (tl) created (ID: 1155) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,565 - INFO - Word 'palikero' (tl) created (ID: 1156) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,566 - INFO - Word 'mambobola' (tl) created (ID: 1157) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,568 - INFO - Word 'mabulaklak ang dila' (tl) created (ID: 1158) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,569 - INFO - Word 'sweet talker' (tl) created (ID: 1159) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,580 - INFO - Word 'boka' (tl) created (ID: 1160) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,581 - INFO - Word 'maingay' (tl) created (ID: 1161) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,583 - INFO - Word 'madaldal' (tl) created (ID: 1162) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,585 - INFO - Word 'bÃ³kal' (tl) created (ID: 1163) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,587 - INFO - Word 'kalbo' (tl) created (ID: 1164) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,588 - INFO - Word 'panot' (tl) created (ID: 1165) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,591 - INFO - Word 'bokot' (tl) created (ID: 1166) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,596 - INFO - Word 'bokya' (tl) created (ID: 1167) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,597 - INFO - Word 'zero' (tl) created (ID: 1168) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,600 - INFO - Word 'sibat' (tl) created (ID: 1169) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,602 - INFO - Word 'bigo' (tl) created (ID: 1170) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,603 - INFO - Word 'bola' (tl) created (ID: 1171) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,608 - INFO - Word 'kasinungalingan' (tl) created (ID: 1172) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,609 - INFO - Word 'panloloko' (tl) created (ID: 1173) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,611 - INFO - Word 'biro' (tl) created (ID: 1174) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,615 - INFO - Word 'bilugan' (tl) created (ID: 1175) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,617 - INFO - Word 'bold' (tl) created (ID: 1176) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,621 - INFO - Word 'malaswa' (tl) created (ID: 1177) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,623 - INFO - Word 'bulgar' (tl) created (ID: 1178) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,624 - INFO - Word 'hubaran' (tl) created (ID: 1179) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,625 - INFO - Word 'X-rated' (tl) created (ID: 1180) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,630 - INFO - Word 'manloloko' (tl) created (ID: 1181) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,633 - INFO - Word 'bolivia' (tl) created (ID: 1182) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,636 - INFO - Word 'buhok sa ari' (tl) created (ID: 1183) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,638 - INFO - Word 'bulbol' (tl) created (ID: 1184) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,639 - INFO - Word 'boljak' (tl) created (ID: 1185) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,642 - INFO - Word 'kojak' (tl) created (ID: 1186) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,647 - INFO - Word 'pagalitan' (tl) created (ID: 1187) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,649 - INFO - Word 'sermonan' (tl) created (ID: 1188) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,650 - INFO - Word 'kagalitan' (tl) created (ID: 1189) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,651 - INFO - Word 'bulyawan' (tl) created (ID: 1190) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,652 - INFO - Word 'bologsing' (tl) created (ID: 1191) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,655 - INFO - Word 'borlog' (tl) created (ID: 1192) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,656 - INFO - Word 'tulog' (tl) created (ID: 1193) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,657 - INFO - Word 'matulog' (tl) created (ID: 1194) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,659 - INFO - Word 'magpahinga' (tl) created (ID: 1195) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,661 - INFO - Word 'bolony' (tl) created (ID: 1196) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,663 - INFO - Word 'baloney' (tl) created (ID: 1197) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,665 - INFO - Word 'kalokohan' (tl) created (ID: 1198) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,666 - INFO - Word 'walang kuwenta' (tl) created (ID: 1199) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,668 - INFO - Word 'nonsense' (tl) created (ID: 1200) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,670 - INFO - Word 'bomba' (tl) created (ID: 1201) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,673 - INFO - Word 'X-rated film' (tl) created (ID: 1202) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,674 - INFO - Word 'porno' (tl) created (ID: 1203) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,675 - INFO - Word 'bold film' (tl) created (ID: 1204) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,676 - INFO - Word 'bombay' (tl) created (ID: 1205) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,678 - INFO - Word 'Indiano/a' (tl) created (ID: 1206) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,680 - INFO - Word 'Indian' (tl) created (ID: 1207) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,682 - INFO - Word 'nagpapautang (5-6)' (tl) created (ID: 1208) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,684 - INFO - Word 'usurero' (tl) created (ID: 1209) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,685 - INFO - Word 'bombilita' (tl) created (ID: 1210) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,691 - INFO - Word 'bombo' (tl) created (ID: 1211) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,693 - INFO - Word 'buntis' (tl) created (ID: 1212) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,695 - INFO - Word 'nagdadalang-tao' (tl) created (ID: 1213) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,697 - INFO - Word 'bona' (tl) created (ID: 1214) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,699 - INFO - Word 'martir (sa pag-ibig)' (tl) created (ID: 1215) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,701 - INFO - Word 'bonak' (tl) created (ID: 1216) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,707 - INFO - Word 'borbz' (tl) created (ID: 1217) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,711 - INFO - Word 'lesbiyana' (tl) created (ID: 1218) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,717 - INFO - Word 'bonamil' (tl) created (ID: 1219) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,724 - INFO - Word 'mahilig magpa-oral sex' (tl) created (ID: 1220) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,726 - INFO - Word 'bonamin' (tl) created (ID: 1221) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,729 - INFO - Word 'anal sex' (tl) created (ID: 1222) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,731 - INFO - Word 'bondying' (tl) created (ID: 1223) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,734 - INFO - Word 'parang bata' (tl) created (ID: 1224) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,738 - INFO - Word 'bongga' (tl) created (ID: 1225) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,741 - INFO - Word 'glamorosa' (tl) created (ID: 1226) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,744 - INFO - Word 'kaakit-akit' (tl) created (ID: 1227) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,746 - INFO - Word 'magara' (tl) created (ID: 1228) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,747 - INFO - Word 'fabulous' (tl) created (ID: 1229) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,750 - INFO - Word 'maluho' (tl) created (ID: 1230) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,752 - INFO - Word 'magastos' (tl) created (ID: 1231) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,753 - INFO - Word 'garbo' (tl) created (ID: 1232) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,754 - INFO - Word 'pusturyosa' (tl) created (ID: 1233) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,755 - INFO - Word 'extravagant' (tl) created (ID: 1234) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,757 - INFO - Word 'bonggacious' (tl) created (ID: 1235) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,759 - INFO - Word 'bonggang-bongga' (tl) created (ID: 1236) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,762 - INFO - Word 'sobrang bongga' (tl) created (ID: 1237) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,763 - INFO - Word 'ubod ng gara' (tl) created (ID: 1238) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,765 - INFO - Word 'bongkang' (tl) created (ID: 1239) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,767 - INFO - Word 'tsupain' (tl) created (ID: 1240) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,769 - INFO - Word 'mag-oral sex' (tl) created (ID: 1241) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,770 - INFO - Word 'boni avenue' (tl) created (ID: 1242) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,775 - INFO - Word 'ringworm' (tl) created (ID: 1243) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,776 - INFO - Word 'bonita rose' (tl) created (ID: 1244) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,779 - INFO - Word 'mahilig magpa-oral sex (bata)' (tl) created (ID: 1245) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,781 - INFO - Word 'bonsay' (tl) created (ID: 1246) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,789 - INFO - Word 'booba' (tl) created (ID: 1247) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,791 - INFO - Word 'malaki ang dibdib (pero tanga)' (tl) created (ID: 1248) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,792 - INFO - Word 'booger' (tl) created (ID: 1249) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,794 - INFO - Word 'boogerlai' (tl) created (ID: 1250) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,796 - INFO - Word 'boogerlai tea' (tl) created (ID: 1251) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,797 - INFO - Word 'kulangot' (tl) created (ID: 1252) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,799 - INFO - Word 'loser' (tl) created (ID: 1253) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,801 - INFO - Word 'talunan' (tl) created (ID: 1254) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,804 - INFO - Word 'boogie wonderland' (tl) created (ID: 1255) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,806 - INFO - Word 'bugaw' (tl) created (ID: 1256) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,811 - INFO - Word 'booking' (tl) created (ID: 1257) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,814 - INFO - Word 'date (for sex)' (tl) created (ID: 1258) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,815 - INFO - Word 'eyeball (for sex)' (tl) created (ID: 1259) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,816 - INFO - Word 'meetup (for sex)' (tl) created (ID: 1260) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,817 - INFO - Word 'boom panes' (tl) created (ID: 1261) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,820 - INFO - Word 'sablay' (tl) created (ID: 1262) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,821 - INFO - Word 'waley' (tl) created (ID: 1263) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,825 - INFO - Word 'bopbop' (tl) created (ID: 1264) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,827 - INFO - Word 'soft drink' (tl) created (ID: 1265) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,828 - INFO - Word 'soda' (tl) created (ID: 1266) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,830 - INFO - Word 'bopol' (tl) created (ID: 1267) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,844 - INFO - Word 'borlogan' (tl) created (ID: 1268) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,849 - INFO - Word 'umidlip' (tl) created (ID: 1269) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,853 - INFO - Word 'borgy manotok' (tl) created (ID: 1270) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,856 - INFO - Word 'mataghiyawat' (tl) created (ID: 1271) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,857 - INFO - Word 'pimply' (tl) created (ID: 1272) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,859 - INFO - Word 'bortasaur' (tl) created (ID: 1273) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,862 - INFO - Word 'malaki ang ari' (tl) created (ID: 1274) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,864 - INFO - Word 'malaki ang titi/burat' (tl) created (ID: 1275) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,873 - INFO - Word 'bosyo' (tl) created (ID: 1276) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,876 - INFO - Word 'siga (sa kulungan)' (tl) created (ID: 1277) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,877 - INFO - Word 'lider (sa kulungan)' (tl) created (ID: 1278) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,879 - INFO - Word 'botswana' (tl) created (ID: 1279) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,880 - INFO - Word 'bota' (tl) created (ID: 1280) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,882 - INFO - Word 'bottom' (tl) created (ID: 1281) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,883 - INFO - Word 'nasa ilalim (sa sex)' (tl) created (ID: 1282) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,885 - INFO - Word 'receptive partner' (tl) created (ID: 1283) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,887 - INFO - Word 'bottomesa' (tl) created (ID: 1284) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,889 - INFO - Word 'laging bottom' (tl) created (ID: 1285) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,891 - INFO - Word 'bouncy' (tl) created (ID: 1286) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,893 - INFO - Word 'amoy-pawis' (tl) created (ID: 1287) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,894 - INFO - Word 'maasim (fig.)' (tl) created (ID: 1288) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,896 - INFO - Word 'boundary' (tl) created (ID: 1289) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,898 - INFO - Word 'arkila (sa pasada)' (tl) created (ID: 1290) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,899 - INFO - Word 'bayad sa operator' (tl) created (ID: 1291) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,901 - INFO - Word 'boya bulka' (tl) created (ID: 1292) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,906 - INFO - Word 'baklang kalbo' (tl) created (ID: 1293) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,908 - INFO - Word 'panot na bakla' (tl) created (ID: 1294) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,910 - INFO - Word 'boyband' (tl) created (ID: 1295) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,915 - INFO - Word 'matabang lalaki' (tl) created (ID: 1296) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,918 - INFO - Word 'boylet' (tl) created (ID: 1297) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,923 - INFO - Word 'boyfriend (casual)' (tl) created (ID: 1298) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,924 - INFO - Word 'jowa (casual)' (tl) created (ID: 1299) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,926 - INFO - Word 'fling' (tl) created (ID: 1300) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,929 - INFO - Word 'bracelet' (tl) created (ID: 1301) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,930 - INFO - Word 'posas' (tl) created (ID: 1302) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,932 - INFO - Word 'brad' (tl) created (ID: 1303) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,934 - INFO - Word 'brodar' (tl) created (ID: 1304) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,936 - INFO - Word 'brother' (tl) created (ID: 1305) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,939 - INFO - Word 'kapatid (lalaki)' (tl) created (ID: 1306) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,950 - INFO - Word 'brb' (tl) created (ID: 1307) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,955 - INFO - Word 'babalik agad' (tl) created (ID: 1308) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,958 - INFO - Word 'bread' (tl) created (ID: 1309) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:44,990 - INFO - Word 'brenda' (tl) created (ID: 1310) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,002 - INFO - Word 'brip' (tl) created (ID: 1311) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,008 - INFO - Word 'briefs' (tl) created (ID: 1312) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,012 - INFO - Word 'karsonsilyo' (tl) created (ID: 1313) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,039 - INFO - Word 'brusko' (tl) created (ID: 1314) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,043 - INFO - Word 'matapang' (tl) created (ID: 1315) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,047 - INFO - Word 'magaspang (kumilos)' (tl) created (ID: 1316) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,049 - INFO - Word 'brutal' (tl) created (ID: 1317) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,052 - INFO - Word 'mabagsik' (tl) created (ID: 1318) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,054 - INFO - Word 'malupit' (tl) created (ID: 1319) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,056 - INFO - Word 'walang awa' (tl) created (ID: 1320) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,059 - INFO - Word 'masaklap' (tl) created (ID: 1321) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,062 - INFO - Word 'brotsa' (tl) created (ID: 1322) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,065 - INFO - Word 'sumipsip (sa ari)' (tl) created (ID: 1323) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,067 - INFO - Word 'magsagawa ng cunnilingus' (tl) created (ID: 1324) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,073 - INFO - Word 'brocha' (tl) created (ID: 1325) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,075 - INFO - Word 'brush' (tl) created (ID: 1326) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,079 - INFO - Word 'sepilyo' (tl) created (ID: 1327) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,083 - INFO - Word 'buang' (tl) created (ID: 1328) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,088 - INFO - Word 'buwang' (tl) created (ID: 1329) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,098 - INFO - Word 'hibang' (tl) created (ID: 1330) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,100 - INFO - Word 'bubang' (tl) created (ID: 1331) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,104 - INFO - Word 'dibdib' (tl) created (ID: 1332) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,106 - INFO - Word 'suso' (tl) created (ID: 1333) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,108 - INFO - Word 'boobs' (tl) created (ID: 1334) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,110 - INFO - Word 'bubbles' (tl) created (ID: 1335) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,113 - INFO - Word 'dumaldal' (tl) created (ID: 1336) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,115 - INFO - Word 'mag-ingay' (tl) created (ID: 1337) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,117 - INFO - Word 'magbunganga' (tl) created (ID: 1338) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,119 - INFO - Word 'bubistri of culture' (tl) created (ID: 1339) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,137 - INFO - Word 'bubog' (tl) created (ID: 1340) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,152 - INFO - Word 'bubwit' (tl) created (ID: 1341) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,157 - INFO - Word 'walang laban' (tl) created (ID: 1342) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,160 - INFO - Word 'kaawa-awa' (tl) created (ID: 1343) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,165 - INFO - Word 'espiya' (tl) created (ID: 1344) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,167 - INFO - Word 'tiktik' (tl) created (ID: 1345) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,170 - INFO - Word 'impormante' (tl) created (ID: 1346) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,172 - INFO - Word 'chuchu (slang)' (tl) created (ID: 1347) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,174 - INFO - Word 'buddha' (tl) created (ID: 1348) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,178 - INFO - Word 'nymphomaniac' (tl) created (ID: 1349) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,180 - INFO - Word 'malibog (babae)' (tl) created (ID: 1350) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,182 - INFO - Word 'budjae' (tl) created (ID: 1351) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,185 - INFO - Word 'budget' (tl) created (ID: 1352) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,187 - INFO - Word 'badyet' (tl) created (ID: 1353) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,192 - INFO - Word 'pondo' (tl) created (ID: 1354) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,194 - INFO - Word 'gastusin' (tl) created (ID: 1355) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,197 - INFO - Word 'laang-gugulin' (tl) created (ID: 1356) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,199 - INFO - Word 'budol' (tl) created (ID: 1357) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,202 - INFO - Word 'manloko' (tl) created (ID: 1358) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,206 - INFO - Word 'mang-scam' (tl) created (ID: 1359) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,207 - INFO - Word 'manuba' (tl) created (ID: 1360) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,209 - INFO - Word 'bufra' (tl) created (ID: 1361) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,222 - INFO - Word 'bugaloo' (tl) created (ID: 1362) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,226 - INFO - Word 'pimp' (tl) created (ID: 1363) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,233 - INFO - Word 'tagapamahala ng prosti' (tl) created (ID: 1364) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,235 - INFO - Word 'bugoy' (tl) created (ID: 1365) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,238 - INFO - Word 'madaya' (tl) created (ID: 1366) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,240 - INFO - Word 'tuso' (tl) created (ID: 1367) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,242 - INFO - Word 'mapanlamang' (tl) created (ID: 1368) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,244 - INFO - Word 'bultchuwa' (tl) created (ID: 1369) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,246 - ERROR - Failed processing entry #463 ('bultchuwa') in ..\data\gay-slang.json: 'NoneType' object has no attribute 'strip'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6302, in process_gay_slang_json
+    example_text = ex_item.get("example", "").strip()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'strip'
+2025-04-04 14:13:45,250 - INFO - Rolled back changes for failed entry 'bultchuwa' (Index: 463).
+2025-04-04 14:13:45,253 - INFO - Word 'bukas-kotse' (tl) created (ID: 1370) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,256 - INFO - Word 'magnanakaw (ng kotse)' (tl) created (ID: 1371) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,259 - INFO - Word 'carnapper' (tl) created (ID: 1372) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,261 - INFO - Word 'bukbok' (tl) created (ID: 1373) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,265 - INFO - Word 'taghiyawat' (tl) created (ID: 1374) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,267 - INFO - Word 'acne' (tl) created (ID: 1375) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,271 - INFO - Word 'pimples' (tl) created (ID: 1376) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,274 - INFO - Word 'laos' (tl) created (ID: 1377) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,276 - INFO - Word 'lipas na' (tl) created (ID: 1378) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,278 - INFO - Word 'hindi na sikat' (tl) created (ID: 1379) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,281 - INFO - Word 'has-been' (tl) created (ID: 1380) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,286 - INFO - Word 'bukelya' (tl) created (ID: 1381) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,289 - INFO - Word 'buking' (tl) created (ID: 1382) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,315 - INFO - Word 'bulag makeup' (tl) created (ID: 1383) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,318 - INFO - Word 'ganda lang sa dilim' (tl) created (ID: 1384) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,320 - INFO - Word 'bulakbol' (tl) created (ID: 1385) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,323 - INFO - Word 'palaboy' (tl) created (ID: 1386) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,325 - INFO - Word 'lakwatsero' (tl) created (ID: 1387) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,330 - INFO - Word 'maglayas' (tl) created (ID: 1388) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,331 - INFO - Word 'maglibot' (tl) created (ID: 1389) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,333 - INFO - Word 'mag-istambay' (tl) created (ID: 1390) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,334 - INFO - Word 'lumiban' (tl) created (ID: 1391) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,336 - INFO - Word 'bulate' (tl) created (ID: 1392) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,338 - INFO - Word 'nakatagong bakla' (tl) created (ID: 1393) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,340 - INFO - Word 'silahis' (tl) created (ID: 1394) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,343 - INFO - Word 'bulatlat' (tl) created (ID: 1395) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,345 - INFO - Word 'halungkatin' (tl) created (ID: 1396) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,347 - INFO - Word 'siyasatin' (tl) created (ID: 1397) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,348 - INFO - Word 'busisiin' (tl) created (ID: 1398) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,350 - INFO - Word 'halkutin' (tl) created (ID: 1399) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,353 - INFO - Word 'isiwalat' (tl) created (ID: 1400) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,354 - INFO - Word 'ilantad' (tl) created (ID: 1401) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,356 - INFO - Word 'ibunyag' (tl) created (ID: 1402) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,357 - INFO - Word 'ipaalam' (tl) created (ID: 1403) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,361 - INFO - Word 'walang preno (magsalita)' (tl) created (ID: 1404) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,364 - INFO - Word 'bultokachi' (tl) created (ID: 1405) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,366 - INFO - Word 'talsik ng tubig (sa inidoro)' (tl) created (ID: 1406) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,368 - INFO - Word 'bumangga sa pader' (tl) created (ID: 1407) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,371 - INFO - Word 'kinalaban ang makapangyarihan' (tl) created (ID: 1408) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,373 - INFO - Word 'sumuway sa may awtoridad' (tl) created (ID: 1409) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,374 - INFO - Word 'bumburembei' (tl) created (ID: 1410) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,378 - INFO - Word 'puno ng taghiyawat' (tl) created (ID: 1411) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,382 - INFO - Word 'bumper' (tl) created (ID: 1412) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,383 - INFO - Word 'bamper' (tl) created (ID: 1413) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,393 - INFO - Word 'bundat' (tl) created (ID: 1414) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,396 - INFO - Word 'busog na busog' (tl) created (ID: 1415) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,398 - INFO - Word 'malaki ang tiyan' (tl) created (ID: 1416) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,400 - INFO - Word 'bunga ng pag-ibig' (tl) created (ID: 1417) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,402 - INFO - Word 'anak' (tl) created (ID: 1418) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,404 - INFO - Word 'supling' (tl) created (ID: 1419) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,406 - INFO - Word 'love child' (tl) created (ID: 1420) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,407 - INFO - Word 'buraot' (tl) created (ID: 1421) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,416 - INFO - Word 'mainis' (tl) created (ID: 1422) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,418 - INFO - Word 'mairita' (tl) created (ID: 1423) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,419 - INFO - Word 'mabuwisit' (tl) created (ID: 1424) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,421 - INFO - Word 'magalit' (tl) created (ID: 1425) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,424 - INFO - Word 'tarugo' (tl) created (ID: 1426) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,427 - INFO - Word 'ari' (tl) created (ID: 1427) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,436 - INFO - Word 'buriring' (tl) created (ID: 1428) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,442 - INFO - Word 'burkloget' (tl) created (ID: 1429) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,446 - INFO - Word 'burklug' (tl) created (ID: 1430) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,449 - INFO - Word 'batang closeted gay' (tl) created (ID: 1431) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,451 - INFO - Word 'badinglets (closeted)' (tl) created (ID: 1432) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,453 - INFO - Word 'burklograng' (tl) created (ID: 1433) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,459 - INFO - Word 'matandang closeted gay' (tl) created (ID: 1434) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,464 - INFO - Word 'closeted' (tl) created (ID: 1435) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,466 - INFO - Word 'closeted gay' (tl) created (ID: 1436) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,468 - INFO - Word 'hindi pa out' (tl) created (ID: 1437) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,469 - INFO - Word 'nasa closet pa' (tl) created (ID: 1438) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,471 - INFO - Word 'burlis' (tl) created (ID: 1439) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,474 - INFO - Word 'burles' (tl) created (ID: 1440) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,475 - INFO - Word 'burlesque' (tl) created (ID: 1441) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,477 - INFO - Word 'nakahubad (bahagya)' (tl) created (ID: 1442) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,479 - INFO - Word 'sexy manamit' (tl) created (ID: 1443) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,481 - INFO - Word 'revealing' (tl) created (ID: 1444) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,482 - INFO - Word 'burlog' (tl) created (ID: 1445) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,491 - INFO - Word 'burloloy' (tl) created (ID: 1446) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,493 - INFO - Word 'palamuti' (tl) created (ID: 1447) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,495 - INFO - Word 'dekorasyon' (tl) created (ID: 1448) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,497 - INFO - Word 'adornment' (tl) created (ID: 1449) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,498 - INFO - Word 'accessory' (tl) created (ID: 1450) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,501 - INFO - Word 'burnik' (tl) created (ID: 1451) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,503 - INFO - Word 'buhok sa puwit' (tl) created (ID: 1452) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,505 - INFO - Word 'busko' (tl) created (ID: 1453) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,507 - INFO - Word 'graduate ng Don Bosco' (tl) created (ID: 1454) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,512 - INFO - Word 'pangit ang makeup' (tl) created (ID: 1455) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,514 - INFO - Word 'sablay ang makeup' (tl) created (ID: 1456) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,516 - INFO - Word 'butÃ¡' (tl) created (ID: 1457) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,523 - INFO - Word 'sero' (tl) created (ID: 1458) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,528 - INFO - Word 'butanding' (tl) created (ID: 1459) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,532 - INFO - Word 'whale shark (literal)' (tl) created (ID: 1460) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,534 - INFO - Word 'mayamang bakla' (tl) created (ID: 1461) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,536 - INFO - Word 'butingting' (tl) created (ID: 1462) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,538 - INFO - Word 'kalikutin' (tl) created (ID: 1463) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,540 - INFO - Word 'himayin' (tl) created (ID: 1464) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,542 - INFO - Word 'galawin' (tl) created (ID: 1465) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,544 - INFO - Word 'buwa' (tl) created (ID: 1466) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,550 - INFO - Word 'buwaya' (tl) created (ID: 1467) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,552 - INFO - Word 'crocodile' (tl) created (ID: 1468) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,556 - INFO - Word 'sakim' (tl) created (ID: 1469) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,559 - INFO - Word 'mapagsamantala' (tl) created (ID: 1470) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,561 - INFO - Word 'korap' (tl) created (ID: 1471) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,563 - INFO - Word 'nangongotong' (tl) created (ID: 1472) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,565 - INFO - Word 'buwisita' (tl) created (ID: 1473) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,567 - INFO - Word 'bisita' (tl) created (ID: 1474) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,569 - INFO - Word 'nakakainis na bisita' (tl) created (ID: 1475) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,572 - INFO - Word 'istorbong bisita' (tl) created (ID: 1476) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,574 - INFO - Word 'buyoy' (tl) created (ID: 1477) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,580 - INFO - Word 'may diperensya sa pagsasalita' (tl) created (ID: 1478) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,582 - INFO - Word 'byola' (tl) created (ID: 1479) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,592 - INFO - Word 'byorkit' (tl) created (ID: 1480) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,594 - ERROR - Standard POS code 'lig' (derived from 'ligature') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:45,595 - ERROR - Standard POS code 'lig' (derived from 'ligature') not found in parts_of_speech table. Falling back to fetching 'unc' ID.
+2025-04-04 14:13:45,601 - INFO - Word 'byukon' (tl) created (ID: 1481) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,604 - INFO - Word 'beauty contest' (tl) created (ID: 1482) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,606 - INFO - Word 'beauty pageant' (tl) created (ID: 1483) from source 'Philippine Slang and Gay Dictionary (2023)'.
+2025-04-04 14:13:45,610 - WARNING - Error closing connection: set_session cannot be used inside a transaction

@@ -1,0 +1,609 @@
+2025-04-04 12:04:33,910 - INFO - Starting table creation/update process.
+2025-04-04 12:04:34,404 - INFO - Tables created or updated successfully.
+2025-04-04 12:04:34,412 - INFO - Starting processing for KWF Dictionary from ..\data\kwf_dictionary.json
+2025-04-04 12:04:34,412 - INFO - Processing KWF Dictionary: ..\data\kwf_dictionary.json
+2025-04-04 12:04:34,413 - INFO - Using standardized source identifier: 'KWF Diksiyonaryo ng Wikang Filipino'
+2025-04-04 12:04:35,942 - INFO - Found 51237 entries in dictionary format in ..\data\kwf_dictionary.json
+2025-04-04 12:04:36,018 - INFO - Word ''t' (tl) created (ID: 1) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,038 - INFO - Word '-an' (tl) created (ID: 2) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,045 - INFO - Word '-in' (tl) created (ID: 3) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,057 - INFO - Word '-ísta' (tl) created (ID: 4) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,060 - INFO - Word '-ng' (tl) created (ID: 5) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,066 - INFO - Word 'A!' (tl) created (ID: 6) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,069 - INFO - Word 'A.D.' (tl) created (ID: 7) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,072 - INFO - Word 'Anno Domini' (tl) created (ID: 8) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,084 - INFO - Word 'Aa' (tl) created (ID: 9) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,089 - INFO - Word 'Adbiyénto' (tl) created (ID: 10) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,092 - INFO - Word 'Adyós!' (tl) created (ID: 11) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,095 - INFO - Word 'PAÁLAM' (tl) created (ID: 12) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,101 - INFO - Word 'Aeta' (tl) created (ID: 13) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,104 - INFO - Word 'AGTÁ' (tl) created (ID: 14) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,113 - INFO - Word 'Africa' (tl) created (ID: 15) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,117 - INFO - Word 'Agnus Dei' (tl) created (ID: 16) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,120 - INFO - Word 'Aglípay' (tl) created (ID: 17) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,130 - INFO - Word 'Agtâ Dumágat Casigúran' (tl) created (ID: 18) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,134 - INFO - Word 'Agtâ Dumágat Umíray' (tl) created (ID: 19) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,138 - INFO - Word 'Agtâ Irayá' (tl) created (ID: 20) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,143 - INFO - Word 'Agtâ Irigá' (tl) created (ID: 21) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,147 - INFO - Word 'Agtâ Isaróg' (tl) created (ID: 22) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,150 - INFO - Word 'Agtâ Isirígan' (tl) created (ID: 23) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,155 - INFO - Word 'Aklán' (tl) created (ID: 24) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,159 - INFO - Word 'Aklánon' (tl) created (ID: 25) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,162 - INFO - Word 'Allah' (tl) created (ID: 26) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,166 - INFO - Word 'Albáy' (tl) created (ID: 27) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,171 - INFO - Word 'Arabia' (tl) created (ID: 28) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,174 - INFO - Word 'Asyáno' (tl) created (ID: 29) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,178 - INFO - Word 'ASYÁTIKÓ' (tl) created (ID: 30) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,183 - INFO - Word 'Asyátik' (tl) created (ID: 31) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,194 - INFO - Word 'Atlántikó' (tl) created (ID: 32) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,197 - INFO - Word 'Australia' (tl) created (ID: 33) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,200 - INFO - Word 'Ay!' (tl) created (ID: 34) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,203 - INFO - Word 'Abaknón' (tl) created (ID: 35) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,206 - INFO - Word 'Abríl' (tl) created (ID: 36) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,212 - INFO - Word 'Abá Ginoóng María' (tl) created (ID: 37) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,215 - INFO - Word 'Abérno' (tl) created (ID: 38) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,218 - INFO - Word 'Abúlog' (tl) created (ID: 39) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,222 - INFO - Word 'Adilús!' (tl) created (ID: 40) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,225 - INFO - Word 'Adán' (tl) created (ID: 41) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,229 - INFO - Word 'Adónis' (tl) created (ID: 42) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,233 - INFO - Word 'Agutaynë́n' (tl) created (ID: 43) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,237 - INFO - Word 'Agósto' (tl) created (ID: 44) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,240 - INFO - Word 'Agúsan del Norte' (tl) created (ID: 45) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,243 - INFO - Word 'Agúsan del Sur' (tl) created (ID: 46) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,245 - INFO - Word 'Ahá!' (tl) created (ID: 47) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,248 - INFO - Word 'Alahóy!' (tl) created (ID: 48) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,251 - INFO - Word 'Alangán Mangyán' (tl) created (ID: 49) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,255 - INFO - Word 'Alelúya!' (tl) created (ID: 50) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,259 - INFO - Word 'HALLELUJAH!' (tl) created (ID: 51) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,264 - INFO - Word 'Alemán' (tl) created (ID: 52) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,267 - INFO - Word 'German' (tl) created (ID: 53) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,270 - INFO - Word 'Alemánya' (tl) created (ID: 54) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,273 - INFO - Word 'Germany' (tl) created (ID: 55) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,277 - INFO - Word 'Alá!' (tl) created (ID: 56) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,280 - INFO - Word 'Aláska' (tl) created (ID: 57) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,284 - INFO - Word 'Alís!' (tl) created (ID: 58) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,287 - INFO - Word 'Amerikanísmo' (tl) created (ID: 59) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,291 - INFO - Word 'Amerikáno' (tl) created (ID: 60) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,295 - INFO - Word 'Amá Námin' (tl) created (ID: 61) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,298 - INFO - Word 'Amériká' (tl) created (ID: 62) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,301 - INFO - Word 'Estádos Unídos' (tl) created (ID: 63) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,306 - INFO - Word 'Anunsiyasyón' (tl) created (ID: 64) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,313 - INFO - Word 'Anó!' (tl) created (ID: 65) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,317 - INFO - Word 'Apólo' (tl) created (ID: 66) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,320 - INFO - Word 'Ariwánas' (tl) created (ID: 67) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,323 - INFO - Word 'Ariyá!' (tl) created (ID: 68) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,326 - INFO - Word 'Arábe' (tl) created (ID: 69) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,329 - INFO - Word 'ARÁBO' (tl) created (ID: 70) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,333 - INFO - Word 'ÁRAB' (tl) created (ID: 71) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,342 - INFO - Word 'Arabic' (tl) created (ID: 72) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,345 - INFO - Word 'Arábikó' (tl) created (ID: 73) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,353 - INFO - Word 'Arúy!' (tl) created (ID: 74) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,356 - INFO - Word 'Aráy!' (tl) created (ID: 75) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,359 - INFO - Word 'Asensiyón' (tl) created (ID: 76) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,362 - INFO - Word 'Asunsiyón' (tl) created (ID: 77) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,365 - INFO - Word 'Asús!' (tl) created (ID: 78) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,370 - INFO - Word 'Atí-atíhan' (tl) created (ID: 79) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,375 - INFO - Word 'Ayán!' (tl) created (ID: 80) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,378 - INFO - Word 'B.C.' (tl) created (ID: 81) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,382 - INFO - Word 'Ba!' (tl) created (ID: 82) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,384 - INFO - Word 'Abá!' (tl) created (ID: 83) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,388 - INFO - Word 'Bang!' (tl) created (ID: 84) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,391 - INFO - Word 'Bastá!' (tl) created (ID: 85) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,394 - INFO - Word 'Batangas' (tl) created (ID: 86) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,397 - INFO - Word 'BATÁNGAN' (tl) created (ID: 87) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,402 - INFO - Word 'Bathalà' (tl) created (ID: 88) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,406 - INFO - Word 'Babúyan' (tl) created (ID: 89) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,409 - INFO - Word 'Bagumbáyan' (tl) created (ID: 90) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,413 - INFO - Word 'Bagóbo' (tl) created (ID: 91) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,415 - INFO - Word 'Bagóbo Kláta' (tl) created (ID: 92) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,417 - INFO - Word 'Bahása Sug' (tl) created (ID: 93) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,420 - INFO - Word 'Balagtás' (tl) created (ID: 94) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,422 - INFO - Word 'Balangáw' (tl) created (ID: 95) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,425 - INFO - Word 'Balarâ' (tl) created (ID: 96) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,428 - INFO - Word 'Balintawák' (tl) created (ID: 97) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,430 - INFO - Word 'Banál na Santatló' (tl) created (ID: 98) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,432 - INFO - Word 'SANTÍSIMÁ TRINIDÁD' (tl) created (ID: 99) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,436 - INFO - Word 'Bataán' (tl) created (ID: 100) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,439 - INFO - Word 'Batikáno' (tl) created (ID: 101) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,441 - INFO - Word 'Vatican' (tl) created (ID: 102) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,445 - INFO - Word 'Bb' (tl) created (ID: 103) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,449 - INFO - Word 'Bb.' (tl) created (ID: 104) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,451 - INFO - Word 'Benguet' (tl) created (ID: 105) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,455 - INFO - Word 'Belén' (tl) created (ID: 106) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,457 - INFO - Word 'Big Dipper' (tl) created (ID: 107) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,460 - INFO - Word 'Daóng-Daúngan' (tl) created (ID: 108) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,462 - INFO - Word 'Binaták' (tl) created (ID: 109) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,464 - INFO - Word 'Biniráyan' (tl) created (ID: 110) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,466 - INFO - Word 'Binúkid' (tl) created (ID: 111) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,469 - INFO - Word 'Biríngan' (tl) created (ID: 112) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,472 - INFO - Word 'Biyénbenída!' (tl) created (ID: 113) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,475 - INFO - Word 'Biyérnes' (tl) created (ID: 114) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,477 - INFO - Word 'Bláan' (tl) created (ID: 115) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,482 - INFO - Word 'Bombay' (tl) created (ID: 116) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,486 - INFO - Word 'Bon voyage!' (tl) created (ID: 117) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,491 - INFO - Word 'Bohól' (tl) created (ID: 118) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,494 - INFO - Word 'Bolináw' (tl) created (ID: 119) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,497 - INFO - Word 'Boînën' (tl) created (ID: 120) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,500 - INFO - Word 'Britain' (tl) created (ID: 121) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,503 - INFO - Word 'Great Britain' (tl) created (ID: 122) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,505 - INFO - Word 'United Kingdom' (tl) created (ID: 123) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,508 - INFO - Word 'Bugkalút' (tl) created (ID: 124) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,511 - INFO - Word 'Bureau of Quarantine' (tl) created (ID: 125) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,513 - INFO - Word 'Káwanihán ng Kuwáranténa' (tl) created (ID: 126) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,528 - INFO - Word 'Butwánon' (tl) created (ID: 127) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,531 - INFO - Word 'Bukidnón' (tl) created (ID: 128) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,537 - INFO - Word 'Bulacan' (tl) created (ID: 129) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,545 - INFO - Word 'Bulíng-Bulíng' (tl) created (ID: 130) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,550 - INFO - Word 'Butúan' (tl) created (ID: 131) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,555 - INFO - Word 'Bábay!' (tl) created (ID: 132) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,559 - INFO - Word 'Bángon Mangyán' (tl) created (ID: 133) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,593 - INFO - Word 'Bégnas de Sasáad' (tl) created (ID: 134) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,612 - INFO - Word 'Bégnas de Yábyan' (tl) created (ID: 135) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,621 - INFO - Word 'Bégnas dei Tángeb di Babáye' (tl) created (ID: 136) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,643 - INFO - Word 'Bégnas di Dóok' (tl) created (ID: 137) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,647 - INFO - Word 'Bíbliyá' (tl) created (ID: 138) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,656 - INFO - Word 'Bírheng María' (tl) created (ID: 139) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,662 - INFO - Word 'Bíkol' (tl) created (ID: 140) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,666 - INFO - Word 'Búhid Mangyán' (tl) created (ID: 141) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,670 - INFO - Word 'CD' (tl) created (ID: 142) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,677 - INFO - Word 'disk' (tl) created (ID: 143) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,681 - INFO - Word 'COD' (tl) created (ID: 144) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,684 - INFO - Word 'CR' (tl) created (ID: 145) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,687 - INFO - Word 'palikúran' (tl) created (ID: 146) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,691 - INFO - Word 'CV' (tl) created (ID: 147) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,694 - INFO - Word 'curriculum vitae' (tl) created (ID: 148) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,697 - INFO - Word 'Camiguin' (tl) created (ID: 149) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,699 - INFO - Word 'Camp Crame' (tl) created (ID: 150) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,702 - INFO - Word 'Capiz' (tl) created (ID: 151) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,706 - INFO - Word 'Catholicism' (tl) created (ID: 152) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,709 - INFO - Word 'Katolisísmo' (tl) created (ID: 153) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,712 - INFO - Word 'Cc' (tl) created (ID: 154) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,720 - INFO - Word 'Charíng!' (tl) created (ID: 155) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,723 - INFO - Word 'Charót!' (tl) created (ID: 156) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,732 - INFO - Word 'Chinese' (tl) created (ID: 157) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,735 - INFO - Word 'Tsíno' (tl) created (ID: 158) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,738 - INFO - Word 'Christmas' (tl) created (ID: 159) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,740 - INFO - Word 'Paskó' (tl) created (ID: 160) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,743 - INFO - Word 'Congrats!' (tl) created (ID: 161) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,745 - INFO - Word 'ENHORABUENA!' (tl) created (ID: 162) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,750 - INFO - Word 'Cordillera' (tl) created (ID: 163) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,753 - INFO - Word 'Dalî!' (tl) created (ID: 164) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,756 - INFO - Word 'Dapítan' (tl) created (ID: 165) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,758 - INFO - Word 'Darángën' (tl) created (ID: 166) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,767 - INFO - Word 'Dd' (tl) created (ID: 167) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,772 - INFO - Word 'Department of Health (DOH)' (tl) created (ID: 168) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,775 - INFO - Word 'Kágawarán ng Kalusúgan' (tl) created (ID: 169) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,779 - INFO - Word 'Dekálogó' (tl) created (ID: 170) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,781 - INFO - Word 'Sampúng Útos' (tl) created (ID: 171) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,784 - INFO - Word 'Disyémbre' (tl) created (ID: 172) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,787 - INFO - Word 'Dinágyang' (tl) created (ID: 173) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,791 - INFO - Word 'Diyaskí!' (tl) created (ID: 174) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,794 - INFO - Word 'Diyáblo!' (tl) created (ID: 175) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,797 - INFO - Word 'Diyós' (tl) created (ID: 176) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,800 - INFO - Word 'MANLILIKHÂ' (tl) created (ID: 177) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,803 - INFO - Word 'MAYKAPÁL' (tl) created (ID: 178) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,809 - INFO - Word 'Don' (tl) created (ID: 179) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,812 - INFO - Word 'GAT' (tl) created (ID: 180) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,816 - INFO - Word 'Doppler radar' (tl) created (ID: 181) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,820 - INFO - Word 'Dolorósa' (tl) created (ID: 182) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,823 - INFO - Word 'Mádre Dolorósa' (tl) created (ID: 183) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,825 - INFO - Word 'Domínggo' (tl) created (ID: 184) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,829 - INFO - Word 'Linggó' (tl) created (ID: 185) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,833 - INFO - Word 'Domínikó' (tl) created (ID: 186) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,835 - INFO - Word 'Dumágat' (tl) created (ID: 187) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,838 - INFO - Word 'Dágit' (tl) created (ID: 188) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,840 - INFO - Word 'Dónya' (tl) created (ID: 189) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,843 - INFO - Word 'SENYÓRA' (tl) created (ID: 190) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,846 - INFO - Word 'EDSA' (tl) created (ID: 191) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,848 - INFO - Word 'Epifanio de los Santos Avenue' (tl) created (ID: 192) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,851 - INFO - Word 'Ee' (tl) created (ID: 193) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,854 - INFO - Word 'Egypt' (tl) created (ID: 194) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,857 - INFO - Word 'EHÍPTO' (tl) created (ID: 195) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,863 - INFO - Word 'El Niño' (tl) created (ID: 196) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,867 - INFO - Word 'English' (tl) created (ID: 197) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,871 - INFO - Word 'Inglés' (tl) created (ID: 198) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,886 - INFO - Word 'Espanyól' (tl) created (ID: 199) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,889 - INFO - Word 'KASTILÀ' (tl) created (ID: 200) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,895 - INFO - Word 'Espanyóla' (tl) created (ID: 201) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,899 - INFO - Word 'Espánya' (tl) created (ID: 202) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,904 - INFO - Word 'Estiyágansánto!' (tl) created (ID: 203) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,910 - INFO - Word 'UNITED STATES' (tl) created (ID: 204) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,917 - INFO - Word 'Eukaristíya' (tl) created (ID: 205) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,922 - INFO - Word 'óstiyá' (tl) created (ID: 206) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,929 - INFO - Word 'Eureka!' (tl) created (ID: 207) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,942 - INFO - Word 'Europe' (tl) created (ID: 208) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,946 - INFO - Word 'EURÓPA' (tl) created (ID: 209) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,965 - INFO - Word 'Eve' (tl) created (ID: 210) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,971 - INFO - Word 'Éba' (tl) created (ID: 211) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,979 - INFO - Word 'Ebanghélyo' (tl) created (ID: 212) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,992 - INFO - Word 'Edén' (tl) created (ID: 213) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:36,997 - INFO - Word 'PARAÍSO' (tl) created (ID: 214) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,011 - INFO - Word 'Ehém!' (tl) created (ID: 215) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,032 - INFO - Word 'Enéro' (tl) created (ID: 216) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,042 - INFO - Word 'Facebook' (tl) created (ID: 217) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,057 - INFO - Word 'Fahrenheit' (tl) created (ID: 218) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,068 - INFO - Word 'Ferdinand Magellan' (tl) created (ID: 219) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,076 - INFO - Word 'Ff' (tl) created (ID: 220) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,083 - INFO - Word 'Filipino Sign Language' (tl) created (ID: 221) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,087 - INFO - Word 'Filipíno' (tl) created (ID: 222) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,095 - INFO - Word 'Finallíg' (tl) created (ID: 223) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,099 - INFO - Word 'Finontók' (tl) created (ID: 224) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,104 - INFO - Word 'Florante at Laura' (tl) created (ID: 225) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,111 - INFO - Word 'Flóres de Máyo' (tl) created (ID: 226) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,120 - INFO - Word 'Friendster' (tl) created (ID: 227) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,128 - INFO - Word 'Fágad' (tl) created (ID: 228) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,140 - INFO - Word 'Game!' (tl) created (ID: 229) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,195 - INFO - Word 'Gg' (tl) created (ID: 230) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,202 - INFO - Word 'Gitnáng Luzón' (tl) created (ID: 231) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,211 - INFO - Word 'Gitnáng Silángan' (tl) created (ID: 232) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,219 - INFO - Word 'Glórya Pátri' (tl) created (ID: 233) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,226 - INFO - Word 'Luwalhatì sa Amá' (tl) created (ID: 234) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,233 - INFO - Word 'Gmail' (tl) created (ID: 235) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,240 - INFO - Word 'Google' (tl) created (ID: 236) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,248 - INFO - Word 'Gran Británya' (tl) created (ID: 237) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,291 - INFO - Word 'Greece' (tl) created (ID: 238) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,299 - INFO - Word 'GRÉSYA' (tl) created (ID: 239) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,309 - INFO - Word 'Greek' (tl) created (ID: 240) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,315 - INFO - Word 'Griyégo' (tl) created (ID: 241) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,337 - INFO - Word 'Grecia' (tl) created (ID: 242) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,345 - INFO - Word 'Gubatnón Mangyan' (tl) created (ID: 243) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,358 - INFO - Word 'Gáddang' (tl) created (ID: 244) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,365 - INFO - Word 'Ha!' (tl) created (ID: 245) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,381 - INFO - Word 'Hamtikánon' (tl) created (ID: 246) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,388 - INFO - Word 'Halá!' (tl) created (ID: 247) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,395 - INFO - Word 'Halína!' (tl) created (ID: 248) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,401 - INFO - Word 'Haló!' (tl) created (ID: 249) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,405 - INFO - Word 'Hello' (tl) created (ID: 250) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,410 - INFO - Word 'Hanunoó' (tl) created (ID: 251) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,418 - INFO - Word 'Hanunoó Mangyan' (tl) created (ID: 252) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,424 - INFO - Word 'Haponés' (tl) created (ID: 253) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,429 - INFO - Word 'Japanese' (tl) created (ID: 254) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,436 - INFO - Word 'Hapón' (tl) created (ID: 255) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,442 - INFO - Word 'Japán' (tl) created (ID: 256) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,451 - INFO - Word 'Hari Ráya Puása' (tl) created (ID: 257) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,456 - INFO - Word 'Hayán!' (tl) created (ID: 258) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,465 - INFO - Word 'Hebrew' (tl) created (ID: 259) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,477 - INFO - Word 'Hello!' (tl) created (ID: 260) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,488 - INFO - Word 'ÓLA!' (tl) created (ID: 261) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,500 - INFO - Word 'Heswíta' (tl) created (ID: 262) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,506 - INFO - Word 'Hh' (tl) created (ID: 263) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,512 - INFO - Word 'Hindót!' (tl) created (ID: 264) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,517 - INFO - Word 'Hibók-hibók' (tl) created (ID: 265) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,523 - INFO - Word 'Higaúnon' (tl) created (ID: 266) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,528 - INFO - Word 'Hikán!' (tl) created (ID: 267) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,532 - INFO - Word 'Ikán!' (tl) created (ID: 268) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,538 - INFO - Word 'Hiligaynón' (tl) created (ID: 269) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,544 - INFO - Word 'Ho!' (tl) created (ID: 270) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,550 - INFO - Word 'Hudyó' (tl) created (ID: 271) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,557 - INFO - Word 'Hukbalaháp' (tl) created (ID: 272) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,566 - INFO - Word 'Hudaísmo' (tl) created (ID: 273) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,571 - INFO - Word 'Huwébes' (tl) created (ID: 274) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,575 - INFO - Word 'Huwébes Sánto' (tl) created (ID: 275) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,583 - INFO - Word 'Hátang Kayê' (tl) created (ID: 276) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,588 - INFO - Word 'Háyo!' (tl) created (ID: 277) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,594 - INFO - Word 'Hílat!' (tl) created (ID: 278) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,597 - INFO - Word 'Bélat!' (tl) created (ID: 279) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,601 - INFO - Word 'Húlyo' (tl) created (ID: 280) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,607 - INFO - Word 'Húnyo' (tl) created (ID: 281) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,611 - INFO - Word 'Húdas' (tl) created (ID: 282) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,615 - INFO - Word 'ID card' (tl) created (ID: 283) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,617 - INFO - Word 'identification card' (tl) created (ID: 284) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,621 - INFO - Word 'Ii' (tl) created (ID: 285) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,628 - INFO - Word 'Ilocos' (tl) created (ID: 286) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,633 - INFO - Word 'Indio' (tl) created (ID: 287) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,648 - INFO - Word 'Intertropical Convergence Zone' (tl) created (ID: 288) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,654 - INFO - Word 'Intsík' (tl) created (ID: 289) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,663 - INFO - Word 'Islám' (tl) created (ID: 290) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,669 - INFO - Word 'Isnë́g' (tl) created (ID: 291) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,677 - INFO - Word 'Israelíta' (tl) created (ID: 292) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,685 - INFO - Word 'Italian' (tl) created (ID: 293) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,693 - INFO - Word 'Italy' (tl) created (ID: 294) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,698 - INFO - Word 'Itnë́g' (tl) created (ID: 295) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,709 - INFO - Word 'Ibalóy' (tl) created (ID: 296) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,716 - INFO - Word 'Ibanág' (tl) created (ID: 297) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,723 - INFO - Word 'Ifugáw' (tl) created (ID: 298) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,731 - INFO - Word 'Igorót' (tl) created (ID: 299) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,737 - INFO - Word 'Ilokáno' (tl) created (ID: 300) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,745 - INFO - Word 'Ilongót' (tl) created (ID: 301) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,751 - INFO - Word 'Ilónggo' (tl) created (ID: 302) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,758 - INFO - Word 'Inabaknón' (tl) created (ID: 303) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,763 - INFO - Word 'Inatá' (tl) created (ID: 304) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,769 - INFO - Word 'Inéte' (tl) created (ID: 305) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,775 - INFO - Word 'Iní' (tl) created (ID: 306) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,780 - INFO - Word 'Irayá Mangyán' (tl) created (ID: 307) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,791 - INFO - Word 'Irungdúngan' (tl) created (ID: 308) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,797 - INFO - Word 'Irán' (tl) created (ID: 309) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,801 - INFO - Word 'Iránun' (tl) created (ID: 310) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,806 - INFO - Word 'Iráya' (tl) created (ID: 311) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,811 - INFO - Word 'Isadánga' (tl) created (ID: 312) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,816 - INFO - Word 'Isaróg' (tl) created (ID: 313) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,819 - INFO - Word 'Isináy' (tl) created (ID: 314) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,824 - INFO - Word 'Itáwit' (tl) created (ID: 315) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,828 - INFO - Word 'Itím' (tl) created (ID: 316) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,832 - INFO - Word 'NÉGRO' (tl) created (ID: 317) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,837 - INFO - Word 'Ivatán' (tl) created (ID: 318) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,842 - INFO - Word 'Jacob' (tl) created (ID: 319) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,848 - INFO - Word 'NIHONGO' (tl) created (ID: 320) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,853 - INFO - Word 'NIPÓNGGO' (tl) created (ID: 321) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,871 - INFO - Word 'Jesus' (tl) created (ID: 322) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,874 - INFO - Word 'Hesús' (tl) created (ID: 323) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,878 - INFO - Word 'Jj' (tl) created (ID: 324) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,883 - INFO - Word 'Jose Rizal' (tl) created (ID: 325) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,890 - INFO - Word 'Juvéntas' (tl) created (ID: 326) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,895 - INFO - Word 'Jáma Mapún' (tl) created (ID: 327) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,900 - INFO - Word 'Júpitér' (tl) created (ID: 328) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,905 - INFO - Word 'KKB' (tl) created (ID: 329) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,910 - INFO - Word 'KSP' (tl) created (ID: 330) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,915 - INFO - Word 'Ka' (tl) created (ID: 331) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,920 - INFO - Word 'Kalinga' (tl) created (ID: 332) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,927 - INFO - Word 'Kalbáryo' (tl) created (ID: 333) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,932 - INFO - Word 'Kankanáëy' (tl) created (ID: 334) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,943 - INFO - Word 'Kabaliánon' (tl) created (ID: 335) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,947 - INFO - Word 'Kabugwasón' (tl) created (ID: 336) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,952 - INFO - Word 'Kabulówan' (tl) created (ID: 337) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,955 - INFO - Word 'Kagayánën' (tl) created (ID: 338) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,960 - INFO - Word 'Kalakháng Maynilà' (tl) created (ID: 339) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,964 - INFO - Word 'Kalamyánën' (tl) created (ID: 340) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,969 - INFO - Word 'Kalagán' (tl) created (ID: 341) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,974 - INFO - Word 'Kalangúya' (tl) created (ID: 342) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,979 - INFO - Word 'Kalibúgan' (tl) created (ID: 343) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,982 - INFO - Word 'Kalíngga' (tl) created (ID: 344) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,990 - INFO - Word 'Kamayú' (tl) created (ID: 345) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:37,996 - INFO - Word 'Kanô' (tl) created (ID: 346) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,001 - INFO - Word 'Kapampángan' (tl) created (ID: 347) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,005 - INFO - Word 'Kapulungán ng mga Kinatawán' (tl) created (ID: 348) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,009 - INFO - Word 'KONGRÉSO' (tl) created (ID: 349) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,013 - INFO - Word 'KÁMARÁ DE REPRESENTÁNTES' (tl) created (ID: 350) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,018 - INFO - Word 'Kapulényo' (tl) created (ID: 351) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,024 - INFO - Word 'Karoláno' (tl) created (ID: 352) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,027 - INFO - Word 'Karámba!' (tl) created (ID: 353) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,031 - INFO - Word 'Karáw' (tl) created (ID: 354) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,036 - INFO - Word 'Karáy-a' (tl) created (ID: 355) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,039 - INFO - Word 'Kasiguránin' (tl) created (ID: 356) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,044 - INFO - Word 'Katagalúgan' (tl) created (ID: 357) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,049 - INFO - Word 'Katipunéro' (tl) created (ID: 358) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,054 - INFO - Word 'Katipúnan' (tl) created (ID: 359) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,066 - INFO - Word 'Katóliko' (tl) created (ID: 360) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,072 - INFO - Word 'Katólikó Románo' (tl) created (ID: 361) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,080 - INFO - Word 'Kayákas Boholáno' (tl) created (ID: 362) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,084 - INFO - Word 'Kinamayú' (tl) created (ID: 363) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,092 - INFO - Word 'Kinamigíng' (tl) created (ID: 364) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,097 - INFO - Word 'Kinaról-an' (tl) created (ID: 365) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,102 - INFO - Word 'Kiniráy-a' (tl) created (ID: 366) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,106 - INFO - Word 'Kk' (tl) created (ID: 367) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,111 - INFO - Word 'Kláta' (tl) created (ID: 368) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,116 - INFO - Word 'Korea' (tl) created (ID: 369) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,121 - INFO - Word 'Korean' (tl) created (ID: 370) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,125 - INFO - Word 'Koreáno' (tl) created (ID: 371) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,131 - INFO - Word 'Kolibúgan' (tl) created (ID: 372) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,146 - INFO - Word 'Korán' (tl) created (ID: 373) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,150 - INFO - Word 'Qur'an' (tl) created (ID: 374) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,156 - INFO - Word 'Kristiyanísmo' (tl) created (ID: 375) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,160 - INFO - Word 'Kristiyáno' (tl) created (ID: 376) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,165 - INFO - Word 'Krísmas' (tl) created (ID: 377) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,170 - INFO - Word 'Kuwarésma' (tl) created (ID: 378) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,174 - INFO - Word 'Kuyunón' (tl) created (ID: 379) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,181 - INFO - Word 'DEPARTMENT OF HEALTH' (tl) created (ID: 380) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,203 - INFO - Word 'LRT' (tl) created (ID: 381) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,207 - INFO - Word 'La' (tl) created (ID: 382) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,211 - INFO - Word 'La Niña' (tl) created (ID: 383) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,217 - INFO - Word 'La!' (tl) created (ID: 384) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,223 - INFO - Word 'Lam-áng' (tl) created (ID: 385) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,235 - INFO - Word 'Linggó de Rámos' (tl) created (ID: 386) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,239 - INFO - Word 'Linggó ng Palaspás' (tl) created (ID: 387) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,248 - INFO - Word 'Ll' (tl) created (ID: 388) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,257 - INFO - Word 'Low Pressure Area' (tl) created (ID: 389) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,262 - INFO - Word 'Lucifer' (tl) created (ID: 390) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,270 - INFO - Word 'Lunéta' (tl) created (ID: 391) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,275 - INFO - Word 'Lupà' (tl) created (ID: 392) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,279 - INFO - Word 'daigdíg' (tl) created (ID: 393) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,295 - INFO - Word 'Luzón' (tl) created (ID: 394) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,300 - INFO - Word 'Létse!' (tl) created (ID: 395) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,310 - INFO - Word 'Líbra' (tl) created (ID: 396) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,317 - INFO - Word 'Lúnes' (tl) created (ID: 397) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,321 - INFO - Word 'Mactan' (tl) created (ID: 398) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,326 - INFO - Word 'Madhî' (tl) created (ID: 399) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,332 - INFO - Word 'Mafia' (tl) created (ID: 400) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,337 - INFO - Word 'Mam' (tl) created (ID: 401) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,342 - INFO - Word 'Mamanwá' (tl) created (ID: 402) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,346 - INFO - Word 'Manchu' (tl) created (ID: 403) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,351 - INFO - Word 'Mangyán' (tl) created (ID: 404) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,355 - INFO - Word 'Mandayá' (tl) created (ID: 405) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,360 - INFO - Word 'Mansáka' (tl) created (ID: 406) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,364 - INFO - Word 'Martial Law' (tl) created (ID: 407) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,372 - INFO - Word 'Martés' (tl) created (ID: 408) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,377 - INFO - Word 'Masjid Al Aqsa' (tl) created (ID: 409) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,381 - INFO - Word 'Masbatényo' (tl) created (ID: 410) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,387 - INFO - Word 'Maulid un-Nabi' (tl) created (ID: 411) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,397 - INFO - Word 'Maynilà' (tl) created (ID: 412) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,401 - INFO - Word 'Mabúhay!' (tl) created (ID: 413) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,409 - INFO - Word 'Magahát' (tl) created (ID: 414) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,415 - INFO - Word 'Magindanáwon' (tl) created (ID: 415) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,420 - INFO - Word 'Maguindanaó' (tl) created (ID: 416) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,427 - INFO - Word 'Mahál na Áraw' (tl) created (ID: 417) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,431 - INFO - Word 'SEMÁNA SÁNTA' (tl) created (ID: 418) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,438 - INFO - Word 'Makíling' (tl) created (ID: 419) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,445 - INFO - Word 'Malaynón' (tl) created (ID: 420) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,449 - INFO - Word 'Malawég' (tl) created (ID: 421) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,454 - INFO - Word 'Manidé' (tl) created (ID: 422) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,458 - INFO - Word 'Manilényo' (tl) created (ID: 423) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,462 - INFO - Word 'Manóbo' (tl) created (ID: 424) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,465 - INFO - Word 'Manóbo Agúsan' (tl) created (ID: 425) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,471 - INFO - Word 'Manóbo Arománën' (tl) created (ID: 426) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,475 - INFO - Word 'Manóbo Dibabawón' (tl) created (ID: 427) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,479 - INFO - Word 'Manóbo Dulángan' (tl) created (ID: 428) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,482 - INFO - Word 'Manóbo Ilyánen' (tl) created (ID: 429) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,486 - INFO - Word 'Manóbo Kalamansíg' (tl) created (ID: 430) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,491 - INFO - Word 'Manóbo Kinamigín' (tl) created (ID: 431) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,495 - INFO - Word 'Manóbo Matigsálug' (tl) created (ID: 432) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,499 - INFO - Word 'Manóbo Saranggáni' (tl) created (ID: 433) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,503 - INFO - Word 'Manóbo Áta' (tl) created (ID: 434) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,510 - INFO - Word 'Mayón' (tl) created (ID: 435) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,514 - INFO - Word 'Mecca' (tl) created (ID: 436) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,517 - INFO - Word 'Mesopotamia' (tl) created (ID: 437) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,521 - INFO - Word 'Messiah' (tl) created (ID: 438) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,524 - INFO - Word 'Mesíyas' (tl) created (ID: 439) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,527 - INFO - Word 'Messianic' (tl) created (ID: 440) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,530 - INFO - Word 'Mediteráneó' (tl) created (ID: 441) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,534 - INFO - Word 'Menuvú' (tl) created (ID: 442) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,541 - INFO - Word 'MANUNUBÓS' (tl) created (ID: 443) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,549 - INFO - Word 'Metodistá' (tl) created (ID: 444) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,552 - INFO - Word 'Mindanao' (tl) created (ID: 445) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,555 - INFO - Word 'Mindóro' (tl) created (ID: 446) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,559 - INFO - Word 'Mikádo' (tl) created (ID: 447) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,562 - INFO - Word 'Miyerkolés de Senísa' (tl) created (ID: 448) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,566 - INFO - Word 'Miyérkolés' (tl) created (ID: 449) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,569 - INFO - Word 'Mm' (tl) created (ID: 450) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,573 - INFO - Word 'Moises' (tl) created (ID: 451) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,578 - INFO - Word 'Molbóg' (tl) created (ID: 452) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,582 - INFO - Word 'Muslím' (tl) created (ID: 453) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,586 - INFO - Word 'Mágna Kárta' (tl) created (ID: 454) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,590 - INFO - Word 'Márso' (tl) created (ID: 455) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,593 - INFO - Word 'Márte' (tl) created (ID: 456) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,603 - INFO - Word 'Máyo' (tl) created (ID: 457) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,610 - INFO - Word 'Mënuvú Úbo' (tl) created (ID: 458) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,613 - INFO - Word 'Mëranáw' (tl) created (ID: 459) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,618 - INFO - Word 'Mísa de Agináldo' (tl) created (ID: 460) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,621 - INFO - Word 'Móro' (tl) created (ID: 461) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,625 - INFO - Word 'N95-respirator' (tl) created (ID: 462) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,628 - INFO - Word 'Nazi' (tl) created (ID: 463) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,632 - INFO - Word 'Nakú!' (tl) created (ID: 464) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,635 - INFO - Word 'Negríto' (tl) created (ID: 465) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,639 - INFO - Word 'Ng' (tl) created (ID: 466) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,646 - INFO - Word 'Nn' (tl) created (ID: 467) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,650 - INFO - Word 'Nobyémbre' (tl) created (ID: 468) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,653 - INFO - Word 'Noche Buena' (tl) created (ID: 469) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,657 - INFO - Word 'Noe' (tl) created (ID: 470) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,659 - INFO - Word 'Noli Me Tangere' (tl) created (ID: 471) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,666 - INFO - Word 'O!' (tl) created (ID: 472) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,670 - INFO - Word 'OFW' (tl) created (ID: 473) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,674 - INFO - Word 'Occidental Mindoro' (tl) created (ID: 474) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,680 - INFO - Word 'Oktúbre' (tl) created (ID: 475) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,685 - INFO - Word 'Onhán' (tl) created (ID: 476) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,692 - INFO - Word 'Oo' (tl) created (ID: 477) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,698 - INFO - Word 'Oriental Mindoro' (tl) created (ID: 478) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,704 - INFO - Word 'Oy!' (tl) created (ID: 479) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,709 - INFO - Word 'Hoy!' (tl) created (ID: 480) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,718 - INFO - Word 'Olimpiyáda' (tl) created (ID: 481) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,722 - INFO - Word 'Olímpiks' (tl) created (ID: 482) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,737 - INFO - Word 'P' (tl) created (ID: 483) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,743 - INFO - Word 'PAR' (tl) created (ID: 484) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,747 - INFO - Word 'Panggasinán' (tl) created (ID: 485) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,754 - INFO - Word 'Pandaigdígang Organisasyón sa Kalusúgan' (tl) created (ID: 486) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,778 - INFO - Word 'Pasyón' (tl) created (ID: 487) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,783 - INFO - Word 'Pahiyás' (tl) created (ID: 488) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,789 - INFO - Word 'Pahánan Ágta' (tl) created (ID: 489) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,797 - INFO - Word 'Palestína' (tl) created (ID: 490) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,804 - INFO - Word 'Paláw-an' (tl) created (ID: 491) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,812 - INFO - Word 'Paláwan' (tl) created (ID: 492) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,817 - INFO - Word 'Paláyan' (tl) created (ID: 493) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,823 - INFO - Word 'Panginoón' (tl) created (ID: 494) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,827 - INFO - Word 'POÓN' (tl) created (ID: 495) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,834 - INFO - Word 'Pariyán!' (tl) created (ID: 496) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,839 - INFO - Word 'Paránan' (tl) created (ID: 497) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,845 - INFO - Word 'Paríto!' (tl) created (ID: 498) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,850 - INFO - Word 'PARÍNI!' (tl) created (ID: 499) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,858 - INFO - Word 'Pasípikó' (tl) created (ID: 500) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,863 - INFO - Word 'Paálam!' (tl) created (ID: 501) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,871 - INFO - Word 'Pebréro' (tl) created (ID: 502) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,878 - INFO - Word 'Pentecost' (tl) created (ID: 503) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,882 - INFO - Word 'Person Under Investigation (PUI)' (tl) created (ID: 504) from source 'KWF Diksiyonaryo ng Wikang Filipino'.
+2025-04-04 12:04:38,890 - INFO - Completed processing KWF Dictionary: ..\data\kwf_dictionary.json
+2025-04-04 12:04:38,891 - ERROR - Error processing source 'KWF Dictionary' from ..\data\kwf_dictionary.json: Object of type set is not JSON serializable
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4407, in process_kwf_dictionary
+    word_id = get_or_create_word_id(
+        cur,
+    ...<7 lines>...
+        # Add lemma=word if formatted_word might differ significantly
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 560, in wrapper
+    result = func(cur, *args, **kwargs)
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3415, in get_or_create_word_id
+    cur.execute(
+    ~~~~~~~~~~~^
+        """
+        ^^^
+    ...<3 lines>...
+        (normalized, language_code),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\encodings\utf_8.py", line 15, in decode
+    def decode(input, errors='strict'):
+    
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9362, in migrate_data
+    source["handler"](cur, filepath)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 560, in wrapper
+    result = func(cur, *args, **kwargs)
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4928, in process_kwf_dictionary
+    logger.info(f"Statistics: {json.dumps(stats, indent=2)}")
+                               ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type set is not JSON serializable
+2025-04-04 12:04:38,909 - ERROR - Error during migration: Object of type set is not JSON serializable
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4407, in process_kwf_dictionary
+    word_id = get_or_create_word_id(
+        cur,
+    ...<7 lines>...
+        # Add lemma=word if formatted_word might differ significantly
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 560, in wrapper
+    result = func(cur, *args, **kwargs)
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3415, in get_or_create_word_id
+    cur.execute(
+    ~~~~~~~~~~~^
+        """
+        ^^^
+    ...<3 lines>...
+        (normalized, language_code),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Python313\Lib\encodings\utf_8.py", line 15, in decode
+    def decode(input, errors='strict'):
+    
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9369, in migrate_data
+    raise handler_error
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9362, in migrate_data
+    source["handler"](cur, filepath)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 560, in wrapper
+    result = func(cur, *args, **kwargs)
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4928, in process_kwf_dictionary
+    logger.info(f"Statistics: {json.dumps(stats, indent=2)}")
+                               ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type set is not JSON serializable
+2025-04-04 12:04:38,916 - INFO - Rolling back transaction due to error.
+2025-04-04 12:04:39,021 - INFO - Database connection closed.

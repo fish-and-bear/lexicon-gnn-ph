@@ -1,0 +1,37 @@
+2025-04-04 16:11:06,365 - INFO - Starting lookup for word: 'sino'
+2025-04-04 16:11:06,415 - INFO - pg_trgm extension installed: True
+2025-04-04 16:11:06,416 - INFO - Executing exact match query for 'sino'
+2025-04-04 16:11:06,657 - INFO - Found 2 exact matches
+2025-04-04 16:11:06,658 - INFO - Processing result 1/2
+2025-04-04 16:11:06,658 - INFO - Word ID: 46754
+2025-04-04 16:11:06,659 - INFO - Lemma: SINÔ
+2025-04-04 16:11:06,659 - INFO - Language code: tl
+2025-04-04 16:11:06,664 - INFO - Querying pronunciations for word_id 46754
+2025-04-04 16:11:06,666 - INFO - Found 2 pronunciations
+2025-04-04 16:11:06,669 - INFO - Querying etymologies for word_id 46754
+2025-04-04 16:11:06,675 - INFO - Found 1 etymologies
+2025-04-04 16:11:06,678 - INFO - Querying definitions for word_id 46754
+2025-04-04 16:11:06,689 - INFO - Found 6 definitions
+2025-04-04 16:11:06,691 - INFO - Processing definition 1/6
+2025-04-04 16:11:06,693 - INFO - Processing definition 2/6
+2025-04-04 16:11:06,694 - INFO - Processing definition 3/6
+2025-04-04 16:11:06,697 - INFO - Processing definition 4/6
+2025-04-04 16:11:06,698 - INFO - Processing definition 5/6
+2025-04-04 16:11:06,699 - INFO - Processing definition 6/6
+2025-04-04 16:11:06,700 - INFO - Querying relations for word_id 46754
+2025-04-04 16:11:06,714 - INFO - Found 21 relations
+2025-04-04 16:11:06,730 - INFO - Processing result 2/2
+2025-04-04 16:11:06,731 - INFO - Word ID: 171179
+2025-04-04 16:11:06,731 - INFO - Lemma: sino
+2025-04-04 16:11:06,731 - INFO - Language code: ceb
+2025-04-04 16:11:06,733 - INFO - Querying pronunciations for word_id 171179
+2025-04-04 16:11:06,734 - INFO - Found 0 pronunciations
+2025-04-04 16:11:06,734 - INFO - Querying etymologies for word_id 171179
+2025-04-04 16:11:06,736 - INFO - Found 0 etymologies
+2025-04-04 16:11:06,737 - INFO - Querying definitions for word_id 171179
+2025-04-04 16:11:06,739 - INFO - Found 1 definitions
+2025-04-04 16:11:06,740 - INFO - Processing definition 1/1
+2025-04-04 16:11:06,741 - INFO - Querying relations for word_id 171179
+2025-04-04 16:11:06,744 - INFO - Found 0 relations
+2025-04-04 16:11:06,744 - INFO - No relations found for word ID 171179
+2025-04-04 16:11:06,745 - INFO - Database connection closed

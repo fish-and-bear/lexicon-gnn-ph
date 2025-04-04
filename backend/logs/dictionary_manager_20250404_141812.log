@@ -1,0 +1,18 @@
+2025-04-04 14:18:12,534 - INFO - Starting table creation/update process.
+2025-04-04 14:18:12,911 - INFO - Tables created or updated successfully.
+2025-04-04 14:18:12,916 - INFO - Starting processing for Tagalog Words from ..\data\tagalog-words.json
+2025-04-04 14:18:12,916 - INFO - Processing Tagalog words from: ..\data\tagalog-words.json
+2025-04-04 14:18:12,916 - INFO - Using standardized source identifier: 'diksiyonaryo.ph'
+2025-04-04 14:18:13,525 - INFO - Finished processing diksiyonaryo.ph
+2025-04-04 14:18:13,525 - INFO -   Total entries in file: 0
+2025-04-04 14:18:13,527 - INFO -   Processed successfully: 0
+2025-04-04 14:18:13,527 - INFO -   Skipped (invalid/empty): 0
+2025-04-04 14:18:13,527 - INFO -   Errors during processing: 0
+2025-04-04 14:18:13,527 - INFO -   Definitions added/updated: 0
+2025-04-04 14:18:13,527 - INFO -   Pronunciations added/updated: 0
+2025-04-04 14:18:13,527 - INFO -   Etymologies added/updated: 0
+2025-04-04 14:18:13,528 - INFO -   Total relations added/updated: 0
+2025-04-04 14:18:13,528 - INFO -     (Deriv: 0, Syn: 0, Var: 0, Ref: 0)
+2025-04-04 14:18:13,528 - INFO -   Baybayin forms added/updated: 0
+2025-04-04 14:18:13,528 - INFO -   Affixations added/updated: 0
+2025-04-04 14:18:13,531 - INFO - Database connection closed.

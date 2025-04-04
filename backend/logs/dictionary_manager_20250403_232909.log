@@ -1,0 +1,2325 @@
+2025-04-03 23:29:10,077 - INFO - Starting table creation/update process.
+2025-04-03 23:29:10,803 - INFO - Tables created or updated successfully.
+2025-04-03 23:29:10,815 - INFO - Processing Marayum dictionaries from directory: ..\data\marayum_dictionaries
+2025-04-03 23:29:10,829 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\onhan-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,831 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\onhan-english_processed.json. Skipping file.
+2025-04-03 23:29:10,832 - WARNING - No entries processed from onhan-english_processed.json
+2025-04-03 23:29:10,833 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\waray-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,835 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\waray-english_processed.json. Skipping file.
+2025-04-03 23:29:10,836 - WARNING - No entries processed from waray-english_processed.json
+2025-04-03 23:29:10,837 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ibanag-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,838 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ibanag-english_processed.json. Skipping file.
+2025-04-03 23:29:10,839 - WARNING - No entries processed from ibanag-english_processed.json
+2025-04-03 23:29:10,840 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\iranon-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,841 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\iranon-english_processed.json. Skipping file.
+2025-04-03 23:29:10,842 - WARNING - No entries processed from iranon-english_processed.json
+2025-04-03 23:29:10,843 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\itawis-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,845 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\itawis-english_processed.json. Skipping file.
+2025-04-03 23:29:10,846 - WARNING - No entries processed from itawis-english_processed.json
+2025-04-03 23:29:10,847 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ivatan-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,848 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ivatan-english_processed.json. Skipping file.
+2025-04-03 23:29:10,849 - WARNING - No entries processed from ivatan-english_processed.json
+2025-04-03 23:29:10,850 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\manide-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,852 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\manide-english_processed.json. Skipping file.
+2025-04-03 23:29:10,853 - WARNING - No entries processed from manide-english_processed.json
+2025-04-03 23:29:10,855 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\gaddang-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,856 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\gaddang-english_processed.json. Skipping file.
+2025-04-03 23:29:10,857 - WARNING - No entries processed from gaddang-english_processed.json
+2025-04-03 23:29:10,858 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cuyonon-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,859 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\cuyonon-english_processed.json. Skipping file.
+2025-04-03 23:29:10,860 - WARNING - No entries processed from cuyonon-english_processed.json
+2025-04-03 23:29:10,861 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ilocano-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,863 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ilocano-english_processed.json. Skipping file.
+2025-04-03 23:29:10,863 - WARNING - No entries processed from ilocano-english_processed.json
+2025-04-03 23:29:10,865 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\pangasinan-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,866 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\pangasinan-english_processed.json. Skipping file.
+2025-04-03 23:29:10,867 - WARNING - No entries processed from pangasinan-english_processed.json
+2025-04-03 23:29:10,868 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-albay-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,869 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-albay-english_processed.json. Skipping file.
+2025-04-03 23:29:10,870 - WARNING - No entries processed from bikol-albay-english_processed.json
+2025-04-03 23:29:10,871 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-libon-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,873 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-libon-english_processed.json. Skipping file.
+2025-04-03 23:29:10,873 - WARNING - No entries processed from bikol-libon-english_processed.json
+2025-04-03 23:29:10,875 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\kapampangan-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,876 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\kapampangan-english_processed.json. Skipping file.
+2025-04-03 23:29:10,877 - WARNING - No entries processed from kapampangan-english_processed.json
+2025-04-03 23:29:10,878 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-miraya-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,879 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-miraya-english_processed.json. Skipping file.
+2025-04-03 23:29:10,880 - WARNING - No entries processed from bikol-miraya-english_processed.json
+2025-04-03 23:29:10,881 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\maguindanaon-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,882 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\maguindanaon-english_processed.json. Skipping file.
+2025-04-03 23:29:10,883 - WARNING - No entries processed from maguindanaon-english_processed.json
+2025-04-03 23:29:10,884 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-partido-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,885 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-partido-english_processed.json. Skipping file.
+2025-04-03 23:29:10,886 - WARNING - No entries processed from bikol-partido-english_processed.json
+2025-04-03 23:29:10,887 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,889 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json. Skipping file.
+2025-04-03 23:29:10,890 - WARNING - No entries processed from isneg-yapayao-english_processed.json
+2025-04-03 23:29:10,891 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,893 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json. Skipping file.
+2025-04-03 23:29:10,895 - WARNING - No entries processed from bikol-rinconada-english_processed.json
+2025-04-03 23:29:10,896 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,898 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json. Skipping file.
+2025-04-03 23:29:10,899 - WARNING - No entries processed from blaan-koronadal-english_processed.json
+2025-04-03 23:29:10,900 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,901 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json. Skipping file.
+2025-04-03 23:29:10,902 - WARNING - No entries processed from blaan-sarangani-english_processed.json
+2025-04-03 23:29:10,903 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,905 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json. Skipping file.
+2025-04-03 23:29:10,905 - WARNING - No entries processed from bikol-west-albay-english_processed.json
+2025-04-03 23:29:10,906 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,908 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json. Skipping file.
+2025-04-03 23:29:10,909 - WARNING - No entries processed from manobo-erumanen-english_processed.json
+2025-04-03 23:29:10,910 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,911 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json. Skipping file.
+2025-04-03 23:29:10,912 - WARNING - No entries processed from cebuano-cotabato-english_processed.json
+2025-04-03 23:29:10,913 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,915 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json. Skipping file.
+2025-04-03 23:29:10,915 - WARNING - No entries processed from tagalog-marinduque-english_processed.json
+2025-04-03 23:29:10,916 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,918 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json. Skipping file.
+2025-04-03 23:29:10,919 - WARNING - No entries processed from hiligaynon-cotabato-english_processed.json
+2025-04-03 23:29:10,924 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,926 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json. Skipping file.
+2025-04-03 23:29:10,927 - WARNING - No entries processed from ifugao-tuwali-ihapo-english_processed.json
+2025-04-03 23:29:10,928 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,930 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json. Skipping file.
+2025-04-03 23:29:10,930 - WARNING - No entries processed from bikol-northern-catanduanes-english_processed.json
+2025-04-03 23:29:10,932 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,934 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json. Skipping file.
+2025-04-03 23:29:10,934 - WARNING - No entries processed from bikol-southern-catanduanes-english_processed.json
+2025-04-03 23:29:10,936 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\chavacano-english_processed.json with source: Project Marayum
+2025-04-03 23:29:10,938 - INFO - Found 1 word entries in ..\data\marayum_dictionaries\chavacano-english_processed.json
+2025-04-03 23:29:10,939 - INFO - Determined language code 'cbk' for ..\data\marayum_dictionaries\chavacano-english_processed.json from base language 'Chavacano'.
+2025-04-03 23:29:11,064 - INFO - Word 'comida' (cbk) created (ID: 1) from source 'Project Marayum'.
+2025-04-03 23:29:11,081 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,083 - WARNING - insert_definition failed for 'comida' (ID: 1), Def 1. Check internal logs.
+2025-04-03 23:29:11,087 - ERROR - UNEXPECTED error processing entry #0 ('comida') in ..\data\marayum_dictionaries\chavacano-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,108 - INFO - Finished processing ..\data\marayum_dictionaries\chavacano-english_processed.json. Final commit successful.
+2025-04-03 23:29:11,109 - INFO - Stats for ..\data\marayum_dictionaries\chavacano-english_processed.json: Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 1, Skipped: 0, Errors: 1
+2025-04-03 23:29:11,110 - WARNING - Error summary for ..\data\marayum_dictionaries\chavacano-english_processed.json: {'DefinitionInsertFailure': 1, 'UnexpectedEntryError: InFailedSqlTransaction': 1}
+2025-04-03 23:29:11,111 - WARNING - No entries were successfully processed from ..\data\marayum_dictionaries\chavacano-english_processed.json, although 1 were found. Issues encountered: 1
+2025-04-03 23:29:11,116 - WARNING - No entries processed from chavacano-english_processed.json
+2025-04-03 23:29:11,118 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\masbatenyo-english_processed.json with source: Project Marayum
+2025-04-03 23:29:11,120 - INFO - Found 3 word entries in ..\data\marayum_dictionaries\masbatenyo-english_processed.json
+2025-04-03 23:29:11,121 - INFO - Determined language code 'msb' for ..\data\marayum_dictionaries\masbatenyo-english_processed.json from base language 'Masbatenyo'.
+2025-04-03 23:29:11,137 - INFO - Word 'abaga' (msb) created (ID: 2) from source 'Project Marayum'.
+2025-04-03 23:29:11,141 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,142 - WARNING - insert_definition failed for 'abaga' (ID: 2), Def 1. Check internal logs.
+2025-04-03 23:29:11,144 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,145 - WARNING - insert_pronunciation failed for 'abaga' (ID: 2). Check internal logs.
+2025-04-03 23:29:11,148 - ERROR - UNEXPECTED error processing entry #0 ('abaga') in ..\data\marayum_dictionaries\masbatenyo-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,159 - INFO - Word 'gipad' (msb) created (ID: 3) from source 'Project Marayum'.
+2025-04-03 23:29:11,162 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,163 - WARNING - insert_definition failed for 'gipad' (ID: 3), Def 1. Check internal logs.
+2025-04-03 23:29:11,165 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,166 - WARNING - insert_pronunciation failed for 'gipad' (ID: 3). Check internal logs.
+2025-04-03 23:29:11,169 - ERROR - UNEXPECTED error processing entry #1 ('gipad') in ..\data\marayum_dictionaries\masbatenyo-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,176 - INFO - Word 'piko' (msb) created (ID: 4) from source 'Project Marayum'.
+2025-04-03 23:29:11,180 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,182 - WARNING - insert_definition failed for 'piko' (ID: 4), Def 1. Check internal logs.
+2025-04-03 23:29:11,184 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,184 - WARNING - insert_pronunciation failed for 'piko' (ID: 4). Check internal logs.
+2025-04-03 23:29:11,186 - ERROR - UNEXPECTED error processing entry #2 ('piko') in ..\data\marayum_dictionaries\masbatenyo-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,196 - INFO - Finished processing ..\data\marayum_dictionaries\masbatenyo-english_processed.json. Final commit successful.
+2025-04-03 23:29:11,197 - INFO - Stats for ..\data\marayum_dictionaries\masbatenyo-english_processed.json: Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 3, Skipped: 0, Errors: 3
+2025-04-03 23:29:11,198 - WARNING - Error summary for ..\data\marayum_dictionaries\masbatenyo-english_processed.json: {'DefinitionInsertFailure': 3, 'PronunciationInsertFailure': 3, 'UnexpectedEntryError: InFailedSqlTransaction': 3}
+2025-04-03 23:29:11,200 - WARNING - No entries were successfully processed from ..\data\marayum_dictionaries\masbatenyo-english_processed.json, although 3 were found. Issues encountered: 3
+2025-04-03 23:29:11,201 - WARNING - No entries processed from masbatenyo-english_processed.json
+2025-04-03 23:29:11,202 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-central-english_processed.json with source: Project Marayum
+2025-04-03 23:29:11,205 - INFO - Found 4 word entries in ..\data\marayum_dictionaries\bikol-central-english_processed.json
+2025-04-03 23:29:11,206 - WARNING - No language code mapping found for: bikol-central
+2025-04-03 23:29:11,208 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-central-english_processed.json from base language 'Bikol-Central'.
+2025-04-03 23:29:11,232 - INFO - Word 'giráray' (bik) created (ID: 5) from source 'Project Marayum'.
+2025-04-03 23:29:11,236 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,237 - WARNING - insert_definition failed for 'giráray' (ID: 5), Def 1. Check internal logs.
+2025-04-03 23:29:11,240 - ERROR - UNEXPECTED error processing entry #0 ('giráray') in ..\data\marayum_dictionaries\bikol-central-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,248 - INFO - Word 'kudál' (bik) created (ID: 6) from source 'Project Marayum'.
+2025-04-03 23:29:11,253 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,255 - WARNING - insert_definition failed for 'kudál' (ID: 6), Def 1. Check internal logs.
+2025-04-03 23:29:11,257 - ERROR - UNEXPECTED error processing entry #1 ('kudál') in ..\data\marayum_dictionaries\bikol-central-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,281 - INFO - Word 'palás' (bik) created (ID: 7) from source 'Project Marayum'.
+2025-04-03 23:29:11,291 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,293 - WARNING - insert_definition failed for 'palás' (ID: 7), Def 1. Check internal logs.
+2025-04-03 23:29:11,296 - ERROR - UNEXPECTED error processing entry #2 ('palás') in ..\data\marayum_dictionaries\bikol-central-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,304 - INFO - Word 'pamálit' (bik) created (ID: 8) from source 'Project Marayum'.
+2025-04-03 23:29:11,309 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,310 - WARNING - insert_definition failed for 'pamálit' (ID: 8), Def 1. Check internal logs.
+2025-04-03 23:29:11,312 - ERROR - UNEXPECTED error processing entry #3 ('pamálit') in ..\data\marayum_dictionaries\bikol-central-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,322 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-central-english_processed.json. Final commit successful.
+2025-04-03 23:29:11,323 - INFO - Stats for ..\data\marayum_dictionaries\bikol-central-english_processed.json: Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 4, Skipped: 0, Errors: 4
+2025-04-03 23:29:11,324 - WARNING - Error summary for ..\data\marayum_dictionaries\bikol-central-english_processed.json: {'DefinitionInsertFailure': 4, 'UnexpectedEntryError: InFailedSqlTransaction': 4}
+2025-04-03 23:29:11,325 - WARNING - No entries were successfully processed from ..\data\marayum_dictionaries\bikol-central-english_processed.json, although 4 were found. Issues encountered: 4
+2025-04-03 23:29:11,326 - WARNING - No entries processed from bikol-central-english_processed.json
+2025-04-03 23:29:11,328 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\aklanon-english_processed.json with source: Project Marayum
+2025-04-03 23:29:11,330 - INFO - Found 7 word entries in ..\data\marayum_dictionaries\aklanon-english_processed.json
+2025-04-03 23:29:11,331 - INFO - Determined language code 'akl' for ..\data\marayum_dictionaries\aklanon-english_processed.json from base language 'Aklanon'.
+2025-04-03 23:29:11,345 - INFO - Word 'apa' (akl) created (ID: 9) from source 'Project Marayum'.
+2025-04-03 23:29:11,349 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,350 - WARNING - insert_definition failed for 'apa' (ID: 9), Def 1. Check internal logs.
+2025-04-03 23:29:11,352 - ERROR - UNEXPECTED error processing entry #0 ('apa') in ..\data\marayum_dictionaries\aklanon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,359 - INFO - Word 'baeatian' (akl) created (ID: 10) from source 'Project Marayum'.
+2025-04-03 23:29:11,362 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,363 - WARNING - insert_definition failed for 'baeatian' (ID: 10), Def 1. Check internal logs.
+2025-04-03 23:29:11,365 - ERROR - UNEXPECTED error processing entry #1 ('baeatian') in ..\data\marayum_dictionaries\aklanon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,371 - INFO - Word 'bulag' (akl) created (ID: 11) from source 'Project Marayum'.
+2025-04-03 23:29:11,375 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,376 - WARNING - insert_definition failed for 'bulag' (ID: 11), Def 1. Check internal logs.
+2025-04-03 23:29:11,377 - ERROR - UNEXPECTED error processing entry #2 ('bulag') in ..\data\marayum_dictionaries\aklanon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,387 - INFO - Word 'bungoe' (akl) created (ID: 12) from source 'Project Marayum'.
+2025-04-03 23:29:11,391 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,392 - WARNING - insert_definition failed for 'bungoe' (ID: 12), Def 1. Check internal logs.
+2025-04-03 23:29:11,393 - ERROR - UNEXPECTED error processing entry #3 ('bungoe') in ..\data\marayum_dictionaries\aklanon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,402 - INFO - Word 'kindat' (akl) created (ID: 13) from source 'Project Marayum'.
+2025-04-03 23:29:11,405 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,406 - WARNING - insert_definition failed for 'kindat' (ID: 13), Def 1. Check internal logs.
+2025-04-03 23:29:11,408 - ERROR - UNEXPECTED error processing entry #4 ('kindat') in ..\data\marayum_dictionaries\aklanon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,416 - INFO - Word 'matimsog' (akl) created (ID: 14) from source 'Project Marayum'.
+2025-04-03 23:29:11,419 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,420 - WARNING - insert_definition failed for 'matimsog' (ID: 14), Def 1. Check internal logs.
+2025-04-03 23:29:11,422 - ERROR - UNEXPECTED error processing entry #5 ('matimsog') in ..\data\marayum_dictionaries\aklanon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,428 - INFO - Word 'pana' (akl) created (ID: 15) from source 'Project Marayum'.
+2025-04-03 23:29:11,431 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,432 - WARNING - insert_definition failed for 'pana' (ID: 15), Def 1. Check internal logs.
+2025-04-03 23:29:11,434 - ERROR - UNEXPECTED error processing entry #6 ('pana') in ..\data\marayum_dictionaries\aklanon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,442 - INFO - Finished processing ..\data\marayum_dictionaries\aklanon-english_processed.json. Final commit successful.
+2025-04-03 23:29:11,444 - INFO - Stats for ..\data\marayum_dictionaries\aklanon-english_processed.json: Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 7, Skipped: 0, Errors: 7
+2025-04-03 23:29:11,445 - WARNING - Error summary for ..\data\marayum_dictionaries\aklanon-english_processed.json: {'DefinitionInsertFailure': 7, 'UnexpectedEntryError: InFailedSqlTransaction': 7}
+2025-04-03 23:29:11,446 - WARNING - No entries were successfully processed from ..\data\marayum_dictionaries\aklanon-english_processed.json, although 7 were found. Issues encountered: 7
+2025-04-03 23:29:11,447 - WARNING - No entries processed from aklanon-english_processed.json
+2025-04-03 23:29:11,448 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\surigaonon-english_processed.json with source: Project Marayum
+2025-04-03 23:29:11,451 - INFO - Found 18 word entries in ..\data\marayum_dictionaries\surigaonon-english_processed.json
+2025-04-03 23:29:11,452 - INFO - Determined language code 'sgd' for ..\data\marayum_dictionaries\surigaonon-english_processed.json from base language 'Surigaonon'.
+2025-04-03 23:29:11,462 - INFO - Word 'aban' (sgd) created (ID: 16) from source 'Project Marayum'.
+2025-04-03 23:29:11,465 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,466 - WARNING - insert_definition failed for 'aban' (ID: 16), Def 1. Check internal logs.
+2025-04-03 23:29:11,468 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,468 - WARNING - insert_pronunciation failed for 'aban' (ID: 16). Check internal logs.
+2025-04-03 23:29:11,470 - ERROR - UNEXPECTED error processing entry #0 ('aban') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,476 - INFO - Word 'adlip' (sgd) created (ID: 17) from source 'Project Marayum'.
+2025-04-03 23:29:11,479 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,480 - WARNING - insert_definition failed for 'adlip' (ID: 17), Def 1. Check internal logs.
+2025-04-03 23:29:11,482 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,483 - WARNING - insert_pronunciation failed for 'adlip' (ID: 17). Check internal logs.
+2025-04-03 23:29:11,484 - ERROR - UNEXPECTED error processing entry #1 ('adlip') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,494 - INFO - Word 'agtang' (sgd) created (ID: 18) from source 'Project Marayum'.
+2025-04-03 23:29:11,497 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,498 - WARNING - insert_definition failed for 'agtang' (ID: 18), Def 1. Check internal logs.
+2025-04-03 23:29:11,500 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,501 - WARNING - insert_pronunciation failed for 'agtang' (ID: 18). Check internal logs.
+2025-04-03 23:29:11,502 - ERROR - UNEXPECTED error processing entry #2 ('agtang') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,510 - INFO - Word 'alibuybuy' (sgd) created (ID: 19) from source 'Project Marayum'.
+2025-04-03 23:29:11,514 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,515 - WARNING - insert_definition failed for 'alibuybuy' (ID: 19), Def 1. Check internal logs.
+2025-04-03 23:29:11,517 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,518 - WARNING - insert_pronunciation failed for 'alibuybuy' (ID: 19). Check internal logs.
+2025-04-03 23:29:11,520 - ERROR - UNEXPECTED error processing entry #3 ('alibuybuy') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,528 - INFO - Word 'aling' (sgd) created (ID: 20) from source 'Project Marayum'.
+2025-04-03 23:29:11,531 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,531 - WARNING - insert_definition failed for 'aling' (ID: 20), Def 1. Check internal logs.
+2025-04-03 23:29:11,533 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,535 - WARNING - insert_pronunciation failed for 'aling' (ID: 20). Check internal logs.
+2025-04-03 23:29:11,537 - ERROR - UNEXPECTED error processing entry #4 ('aling') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,544 - INFO - Word 'ambaw' (sgd) created (ID: 21) from source 'Project Marayum'.
+2025-04-03 23:29:11,548 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,549 - WARNING - insert_definition failed for 'ambaw' (ID: 21), Def 1. Check internal logs.
+2025-04-03 23:29:11,550 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,551 - WARNING - insert_pronunciation failed for 'ambaw' (ID: 21). Check internal logs.
+2025-04-03 23:29:11,553 - ERROR - UNEXPECTED error processing entry #5 ('ambaw') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,560 - INFO - Word 'apiki' (sgd) created (ID: 22) from source 'Project Marayum'.
+2025-04-03 23:29:11,564 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,565 - WARNING - insert_definition failed for 'apiki' (ID: 22), Def 1. Check internal logs.
+2025-04-03 23:29:11,567 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,568 - WARNING - insert_pronunciation failed for 'apiki' (ID: 22). Check internal logs.
+2025-04-03 23:29:11,570 - ERROR - UNEXPECTED error processing entry #6 ('apiki') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,584 - INFO - Word 'ayum-um' (sgd) created (ID: 23) from source 'Project Marayum'.
+2025-04-03 23:29:11,588 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,589 - WARNING - insert_definition failed for 'ayum-um' (ID: 23), Def 1. Check internal logs.
+2025-04-03 23:29:11,591 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,592 - WARNING - insert_pronunciation failed for 'ayum-um' (ID: 23). Check internal logs.
+2025-04-03 23:29:11,593 - ERROR - UNEXPECTED error processing entry #7 ('ayum-um') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,607 - INFO - Word 'badjhu' (sgd) created (ID: 24) from source 'Project Marayum'.
+2025-04-03 23:29:11,610 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,612 - WARNING - insert_definition failed for 'badjhu' (ID: 24), Def 1. Check internal logs.
+2025-04-03 23:29:11,614 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,615 - WARNING - insert_pronunciation failed for 'badjhu' (ID: 24). Check internal logs.
+2025-04-03 23:29:11,617 - ERROR - UNEXPECTED error processing entry #8 ('badjhu') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,623 - INFO - Word 'bagyay' (sgd) created (ID: 25) from source 'Project Marayum'.
+2025-04-03 23:29:11,627 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,628 - WARNING - insert_definition failed for 'bagyay' (ID: 25), Def 1. Check internal logs.
+2025-04-03 23:29:11,631 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,632 - WARNING - insert_pronunciation failed for 'bagyay' (ID: 25). Check internal logs.
+2025-04-03 23:29:11,634 - ERROR - UNEXPECTED error processing entry #9 ('bagyay') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,641 - INFO - Word 'bala' (sgd) created (ID: 26) from source 'Project Marayum'.
+2025-04-03 23:29:11,645 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,646 - WARNING - insert_definition failed for 'bala' (ID: 26), Def 1. Check internal logs.
+2025-04-03 23:29:11,648 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,649 - WARNING - insert_pronunciation failed for 'bala' (ID: 26). Check internal logs.
+2025-04-03 23:29:11,651 - ERROR - UNEXPECTED error processing entry #10 ('bala') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,657 - INFO - Word 'bang-ug' (sgd) created (ID: 27) from source 'Project Marayum'.
+2025-04-03 23:29:11,660 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,661 - WARNING - insert_definition failed for 'bang-ug' (ID: 27), Def 1. Check internal logs.
+2025-04-03 23:29:11,663 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,664 - WARNING - insert_pronunciation failed for 'bang-ug' (ID: 27). Check internal logs.
+2025-04-03 23:29:11,666 - ERROR - UNEXPECTED error processing entry #11 ('bang-ug') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,673 - INFO - Word 'baung' (sgd) created (ID: 28) from source 'Project Marayum'.
+2025-04-03 23:29:11,676 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,677 - WARNING - insert_definition failed for 'baung' (ID: 28), Def 1. Check internal logs.
+2025-04-03 23:29:11,679 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,680 - WARNING - insert_pronunciation failed for 'baung' (ID: 28). Check internal logs.
+2025-04-03 23:29:11,681 - ERROR - UNEXPECTED error processing entry #12 ('baung') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,686 - INFO - Word 'bija' (sgd) created (ID: 29) from source 'Project Marayum'.
+2025-04-03 23:29:11,689 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,690 - WARNING - insert_definition failed for 'bija' (ID: 29), Def 1. Check internal logs.
+2025-04-03 23:29:11,691 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,692 - WARNING - insert_pronunciation failed for 'bija' (ID: 29). Check internal logs.
+2025-04-03 23:29:11,693 - ERROR - UNEXPECTED error processing entry #13 ('bija') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,708 - INFO - Word 'biliting' (sgd) created (ID: 30) from source 'Project Marayum'.
+2025-04-03 23:29:11,712 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,713 - WARNING - insert_definition failed for 'biliting' (ID: 30), Def 1. Check internal logs.
+2025-04-03 23:29:11,715 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,716 - WARNING - insert_pronunciation failed for 'biliting' (ID: 30). Check internal logs.
+2025-04-03 23:29:11,718 - ERROR - UNEXPECTED error processing entry #14 ('biliting') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,724 - INFO - Word 'buwahan' (sgd) created (ID: 31) from source 'Project Marayum'.
+2025-04-03 23:29:11,728 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,729 - WARNING - insert_definition failed for 'buwahan' (ID: 31), Def 1. Check internal logs.
+2025-04-03 23:29:11,731 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,732 - WARNING - insert_pronunciation failed for 'buwahan' (ID: 31). Check internal logs.
+2025-04-03 23:29:11,735 - ERROR - UNEXPECTED error processing entry #15 ('buwahan') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,742 - INFO - Word 'buyubud' (sgd) created (ID: 32) from source 'Project Marayum'.
+2025-04-03 23:29:11,745 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,747 - WARNING - insert_definition failed for 'buyubud' (ID: 32), Def 1. Check internal logs.
+2025-04-03 23:29:11,749 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,750 - WARNING - insert_pronunciation failed for 'buyubud' (ID: 32). Check internal logs.
+2025-04-03 23:29:11,752 - ERROR - UNEXPECTED error processing entry #16 ('buyubud') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,759 - INFO - Word 'buyus' (sgd) created (ID: 33) from source 'Project Marayum'.
+2025-04-03 23:29:11,762 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,763 - WARNING - insert_definition failed for 'buyus' (ID: 33), Def 1. Check internal logs.
+2025-04-03 23:29:11,764 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,765 - WARNING - insert_pronunciation failed for 'buyus' (ID: 33). Check internal logs.
+2025-04-03 23:29:11,766 - ERROR - UNEXPECTED error processing entry #17 ('buyus') in ..\data\marayum_dictionaries\surigaonon-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,773 - INFO - Finished processing ..\data\marayum_dictionaries\surigaonon-english_processed.json. Final commit successful.
+2025-04-03 23:29:11,775 - INFO - Stats for ..\data\marayum_dictionaries\surigaonon-english_processed.json: Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 18, Skipped: 0, Errors: 18
+2025-04-03 23:29:11,776 - WARNING - Error summary for ..\data\marayum_dictionaries\surigaonon-english_processed.json: {'DefinitionInsertFailure': 18, 'PronunciationInsertFailure': 18, 'UnexpectedEntryError: InFailedSqlTransaction': 18}
+2025-04-03 23:29:11,778 - WARNING - No entries were successfully processed from ..\data\marayum_dictionaries\surigaonon-english_processed.json, although 18 were found. Issues encountered: 18
+2025-04-03 23:29:11,779 - WARNING - No entries processed from surigaonon-english_processed.json
+2025-04-03 23:29:11,780 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-boienen-english_processed.json with source: Project Marayum
+2025-04-03 23:29:11,786 - INFO - Found 88 word entries in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json
+2025-04-03 23:29:11,787 - WARNING - No language code mapping found for: bikol-boie&#x27;nen
+2025-04-03 23:29:11,789 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-boienen-english_processed.json from base language 'Bikol-Boie&#x27;nen'.
+2025-04-03 23:29:11,803 - INFO - Word 'agran' (bik) created (ID: 34) from source 'Project Marayum'.
+2025-04-03 23:29:11,806 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,808 - WARNING - insert_definition failed for 'agran' (ID: 34), Def 1. Check internal logs.
+2025-04-03 23:29:11,809 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,810 - WARNING - insert_pronunciation failed for 'agran' (ID: 34). Check internal logs.
+2025-04-03 23:29:11,811 - ERROR - UNEXPECTED error processing entry #0 ('agran') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,821 - INFO - Word 'alangaang' (bik) created (ID: 35) from source 'Project Marayum'.
+2025-04-03 23:29:11,824 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,824 - WARNING - insert_definition failed for 'alangaang' (ID: 35), Def 1. Check internal logs.
+2025-04-03 23:29:11,826 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,827 - WARNING - insert_pronunciation failed for 'alangaang' (ID: 35). Check internal logs.
+2025-04-03 23:29:11,828 - ERROR - UNEXPECTED error processing entry #1 ('alangaang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,834 - INFO - Word 'arasa-as' (bik) created (ID: 36) from source 'Project Marayum'.
+2025-04-03 23:29:11,836 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,837 - WARNING - insert_definition failed for 'arasa-as' (ID: 36), Def 1. Check internal logs.
+2025-04-03 23:29:11,838 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,839 - WARNING - insert_pronunciation failed for 'arasa-as' (ID: 36). Check internal logs.
+2025-04-03 23:29:11,840 - ERROR - UNEXPECTED error processing entry #2 ('arasa-as') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,846 - INFO - Word 'atep' (bik) created (ID: 37) from source 'Project Marayum'.
+2025-04-03 23:29:11,849 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,850 - WARNING - insert_definition failed for 'atep' (ID: 37), Def 1. Check internal logs.
+2025-04-03 23:29:11,851 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,852 - WARNING - insert_pronunciation failed for 'atep' (ID: 37). Check internal logs.
+2025-04-03 23:29:11,853 - ERROR - UNEXPECTED error processing entry #3 ('atep') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,859 - INFO - Word 'axad' (bik) created (ID: 38) from source 'Project Marayum'.
+2025-04-03 23:29:11,863 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,864 - WARNING - insert_definition failed for 'axad' (ID: 38), Def 1. Check internal logs.
+2025-04-03 23:29:11,865 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,866 - WARNING - insert_pronunciation failed for 'axad' (ID: 38). Check internal logs.
+2025-04-03 23:29:11,868 - ERROR - UNEXPECTED error processing entry #4 ('axad') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,874 - INFO - Word 'balde'' (bik) created (ID: 39) from source 'Project Marayum'.
+2025-04-03 23:29:11,878 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,879 - WARNING - insert_definition failed for 'balde'' (ID: 39), Def 1. Check internal logs.
+2025-04-03 23:29:11,881 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,882 - WARNING - insert_pronunciation failed for 'balde'' (ID: 39). Check internal logs.
+2025-04-03 23:29:11,884 - ERROR - UNEXPECTED error processing entry #5 ('balde'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,891 - INFO - Word 'bangbangan' (bik) created (ID: 40) from source 'Project Marayum'.
+2025-04-03 23:29:11,894 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,895 - WARNING - insert_definition failed for 'bangbangan' (ID: 40), Def 1. Check internal logs.
+2025-04-03 23:29:11,897 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,898 - WARNING - insert_pronunciation failed for 'bangbangan' (ID: 40). Check internal logs.
+2025-04-03 23:29:11,900 - ERROR - UNEXPECTED error processing entry #6 ('bangbangan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,912 - INFO - Word 'banggeraan' (bik) created (ID: 41) from source 'Project Marayum'.
+2025-04-03 23:29:11,915 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,916 - WARNING - insert_definition failed for 'banggeraan' (ID: 41), Def 1. Check internal logs.
+2025-04-03 23:29:11,918 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,919 - WARNING - insert_pronunciation failed for 'banggeraan' (ID: 41). Check internal logs.
+2025-04-03 23:29:11,925 - ERROR - UNEXPECTED error processing entry #7 ('banggeraan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,933 - INFO - Word 'banig' (bik) created (ID: 42) from source 'Project Marayum'.
+2025-04-03 23:29:11,937 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,939 - WARNING - insert_definition failed for 'banig' (ID: 42), Def 1. Check internal logs.
+2025-04-03 23:29:11,940 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,941 - WARNING - insert_pronunciation failed for 'banig' (ID: 42). Check internal logs.
+2025-04-03 23:29:11,943 - ERROR - UNEXPECTED error processing entry #8 ('banig') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,950 - INFO - Word 'baxey' (bik) created (ID: 43) from source 'Project Marayum'.
+2025-04-03 23:29:11,954 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,955 - WARNING - insert_definition failed for 'baxey' (ID: 43), Def 1. Check internal logs.
+2025-04-03 23:29:11,957 - ERROR - UNEXPECTED error processing entry #9 ('baxey') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,964 - INFO - Word 'be-ew' (bik) created (ID: 44) from source 'Project Marayum'.
+2025-04-03 23:29:11,968 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,969 - WARNING - insert_definition failed for 'be-ew' (ID: 44), Def 1. Check internal logs.
+2025-04-03 23:29:11,971 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,972 - WARNING - insert_pronunciation failed for 'be-ew' (ID: 44). Check internal logs.
+2025-04-03 23:29:11,974 - ERROR - UNEXPECTED error processing entry #10 ('be-ew') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,982 - INFO - Word 'begkes1' (bik) created (ID: 45) from source 'Project Marayum'.
+2025-04-03 23:29:11,985 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:11,986 - WARNING - insert_definition failed for 'begkes1' (ID: 45), Def 1. Check internal logs.
+2025-04-03 23:29:11,988 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,989 - WARNING - insert_pronunciation failed for 'begkes1' (ID: 45). Check internal logs.
+2025-04-03 23:29:11,991 - ERROR - UNEXPECTED error processing entry #11 ('begkes1') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:11,998 - INFO - Word 'begkes2' (bik) created (ID: 46) from source 'Project Marayum'.
+2025-04-03 23:29:12,002 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,003 - WARNING - insert_definition failed for 'begkes2' (ID: 46), Def 1. Check internal logs.
+2025-04-03 23:29:12,005 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,006 - WARNING - insert_pronunciation failed for 'begkes2' (ID: 46). Check internal logs.
+2025-04-03 23:29:12,007 - ERROR - UNEXPECTED error processing entry #12 ('begkes2') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,015 - INFO - Word 'bexa'' (bik) created (ID: 47) from source 'Project Marayum'.
+2025-04-03 23:29:12,018 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,020 - WARNING - insert_definition failed for 'bexa'' (ID: 47), Def 1. Check internal logs.
+2025-04-03 23:29:12,022 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,023 - WARNING - insert_pronunciation failed for 'bexa'' (ID: 47). Check internal logs.
+2025-04-03 23:29:12,025 - ERROR - UNEXPECTED error processing entry #13 ('bexa'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,041 - INFO - Word 'biga'' (bik) created (ID: 48) from source 'Project Marayum'.
+2025-04-03 23:29:12,044 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,045 - WARNING - insert_definition failed for 'biga'' (ID: 48), Def 1. Check internal logs.
+2025-04-03 23:29:12,048 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,049 - WARNING - insert_pronunciation failed for 'biga'' (ID: 48). Check internal logs.
+2025-04-03 23:29:12,051 - ERROR - UNEXPECTED error processing entry #14 ('biga'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,058 - INFO - Word 'boie'nen' (bik) created (ID: 49) from source 'Project Marayum'.
+2025-04-03 23:29:12,062 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,063 - WARNING - insert_definition failed for 'boie'nen' (ID: 49), Def 1. Check internal logs.
+2025-04-03 23:29:12,065 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,066 - WARNING - insert_pronunciation failed for 'boie'nen' (ID: 49). Check internal logs.
+2025-04-03 23:29:12,067 - ERROR - UNEXPECTED error processing entry #15 ('boie'nen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,073 - INFO - Word 'Boie'nen' (bik) created (ID: 50) from source 'Project Marayum'.
+2025-04-03 23:29:12,076 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,077 - WARNING - insert_definition failed for 'Boie'nen' (ID: 50), Def 1. Check internal logs.
+2025-04-03 23:29:12,079 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,080 - WARNING - insert_pronunciation failed for 'Boie'nen' (ID: 50). Check internal logs.
+2025-04-03 23:29:12,082 - ERROR - UNEXPECTED error processing entry #16 ('Boie'nen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,089 - INFO - Word 'boko-boko' (bik) created (ID: 51) from source 'Project Marayum'.
+2025-04-03 23:29:12,093 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,095 - WARNING - insert_definition failed for 'boko-boko' (ID: 51), Def 1. Check internal logs.
+2025-04-03 23:29:12,097 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,098 - WARNING - insert_pronunciation failed for 'boko-boko' (ID: 51). Check internal logs.
+2025-04-03 23:29:12,100 - ERROR - UNEXPECTED error processing entry #17 ('boko-boko') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,107 - INFO - Word 'bolong' (bik) created (ID: 52) from source 'Project Marayum'.
+2025-04-03 23:29:12,114 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,115 - WARNING - insert_definition failed for 'bolong' (ID: 52), Def 1. Check internal logs.
+2025-04-03 23:29:12,117 - ERROR - UNEXPECTED error processing entry #18 ('bolong') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,124 - INFO - Word 'dake-xe'' (bik) created (ID: 53) from source 'Project Marayum'.
+2025-04-03 23:29:12,127 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,128 - WARNING - insert_definition failed for 'dake-xe'' (ID: 53), Def 1. Check internal logs.
+2025-04-03 23:29:12,130 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,131 - WARNING - insert_pronunciation failed for 'dake-xe'' (ID: 53). Check internal logs.
+2025-04-03 23:29:12,133 - ERROR - UNEXPECTED error processing entry #19 ('dake-xe'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,140 - INFO - Word 'e-ket' (bik) created (ID: 54) from source 'Project Marayum'.
+2025-04-03 23:29:12,148 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,149 - WARNING - insert_definition failed for 'e-ket' (ID: 54), Def 1. Check internal logs.
+2025-04-03 23:29:12,151 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,153 - WARNING - insert_pronunciation failed for 'e-ket' (ID: 54). Check internal logs.
+2025-04-03 23:29:12,154 - ERROR - UNEXPECTED error processing entry #20 ('e-ket') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,169 - INFO - Word 'elka' (bik) created (ID: 55) from source 'Project Marayum'.
+2025-04-03 23:29:12,173 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,174 - WARNING - insert_definition failed for 'elka' (ID: 55), Def 1. Check internal logs.
+2025-04-03 23:29:12,176 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,177 - WARNING - insert_pronunciation failed for 'elka' (ID: 55). Check internal logs.
+2025-04-03 23:29:12,179 - ERROR - UNEXPECTED error processing entry #21 ('elka') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,190 - INFO - Word 'ewrasa' (bik) created (ID: 56) from source 'Project Marayum'.
+2025-04-03 23:29:12,194 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,195 - WARNING - insert_definition failed for 'ewrasa' (ID: 56), Def 1. Check internal logs.
+2025-04-03 23:29:12,197 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,198 - WARNING - insert_pronunciation failed for 'ewrasa' (ID: 56). Check internal logs.
+2025-04-03 23:29:12,199 - ERROR - UNEXPECTED error processing entry #22 ('ewrasa') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,206 - INFO - Word 'e-xa'' (bik) created (ID: 57) from source 'Project Marayum'.
+2025-04-03 23:29:12,209 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,210 - WARNING - insert_definition failed for 'e-xa'' (ID: 57), Def 1. Check internal logs.
+2025-04-03 23:29:12,212 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,213 - WARNING - insert_pronunciation failed for 'e-xa'' (ID: 57). Check internal logs.
+2025-04-03 23:29:12,215 - ERROR - UNEXPECTED error processing entry #23 ('e-xa'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,223 - INFO - Word 'ex-ex' (bik) created (ID: 58) from source 'Project Marayum'.
+2025-04-03 23:29:12,227 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,228 - WARNING - insert_definition failed for 'ex-ex' (ID: 58), Def 1. Check internal logs.
+2025-04-03 23:29:12,230 - ERROR - UNEXPECTED error processing entry #24 ('ex-ex') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,238 - INFO - Word 'gasa'' (bik) created (ID: 59) from source 'Project Marayum'.
+2025-04-03 23:29:12,243 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,244 - WARNING - insert_definition failed for 'gasa'' (ID: 59), Def 1. Check internal logs.
+2025-04-03 23:29:12,247 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,252 - WARNING - insert_pronunciation failed for 'gasa'' (ID: 59). Check internal logs.
+2025-04-03 23:29:12,255 - ERROR - UNEXPECTED error processing entry #25 ('gasa'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,262 - INFO - Word 'gere'gede'' (bik) created (ID: 60) from source 'Project Marayum'.
+2025-04-03 23:29:12,266 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,267 - WARNING - insert_definition failed for 'gere'gede'' (ID: 60), Def 1. Check internal logs.
+2025-04-03 23:29:12,269 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,270 - WARNING - insert_pronunciation failed for 'gere'gede'' (ID: 60). Check internal logs.
+2025-04-03 23:29:12,272 - ERROR - UNEXPECTED error processing entry #26 ('gere'gede'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,286 - INFO - Word 'gobing' (bik) created (ID: 61) from source 'Project Marayum'.
+2025-04-03 23:29:12,290 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,291 - WARNING - insert_definition failed for 'gobing' (ID: 61), Def 1. Check internal logs.
+2025-04-03 23:29:12,292 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,293 - WARNING - insert_pronunciation failed for 'gobing' (ID: 61). Check internal logs.
+2025-04-03 23:29:12,295 - ERROR - UNEXPECTED error processing entry #27 ('gobing') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,303 - INFO - Word 'inang' (bik) created (ID: 62) from source 'Project Marayum'.
+2025-04-03 23:29:12,307 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,308 - WARNING - insert_definition failed for 'inang' (ID: 62), Def 1. Check internal logs.
+2025-04-03 23:29:12,310 - ERROR - UNEXPECTED error processing entry #28 ('inang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,317 - INFO - Word 'kabeg' (bik) created (ID: 63) from source 'Project Marayum'.
+2025-04-03 23:29:12,320 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,323 - WARNING - insert_definition failed for 'kabeg' (ID: 63), Def 1. Check internal logs.
+2025-04-03 23:29:12,326 - ERROR - UNEXPECTED error processing entry #29 ('kabeg') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,334 - INFO - Word 'kabelbegan' (bik) created (ID: 64) from source 'Project Marayum'.
+2025-04-03 23:29:12,339 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,345 - WARNING - insert_definition failed for 'kabelbegan' (ID: 64), Def 1. Check internal logs.
+2025-04-03 23:29:12,350 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,351 - WARNING - insert_pronunciation failed for 'kabelbegan' (ID: 64). Check internal logs.
+2025-04-03 23:29:12,353 - ERROR - UNEXPECTED error processing entry #30 ('kabelbegan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,374 - INFO - Word 'ka-esad' (bik) created (ID: 65) from source 'Project Marayum'.
+2025-04-03 23:29:12,381 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,384 - WARNING - insert_definition failed for 'ka-esad' (ID: 65), Def 1. Check internal logs.
+2025-04-03 23:29:12,394 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,396 - WARNING - insert_pronunciation failed for 'ka-esad' (ID: 65). Check internal logs.
+2025-04-03 23:29:12,401 - ERROR - UNEXPECTED error processing entry #31 ('ka-esad') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,415 - INFO - Word 'kakabgan' (bik) created (ID: 66) from source 'Project Marayum'.
+2025-04-03 23:29:12,421 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,427 - WARNING - insert_definition failed for 'kakabgan' (ID: 66), Def 1. Check internal logs.
+2025-04-03 23:29:12,436 - ERROR - UNEXPECTED error processing entry #32 ('kakabgan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,477 - INFO - Word 'kambang' (bik) created (ID: 67) from source 'Project Marayum'.
+2025-04-03 23:29:12,505 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,510 - WARNING - insert_definition failed for 'kambang' (ID: 67), Def 1. Check internal logs.
+2025-04-03 23:29:12,520 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,525 - WARNING - insert_pronunciation failed for 'kambang' (ID: 67). Check internal logs.
+2025-04-03 23:29:12,528 - ERROR - UNEXPECTED error processing entry #33 ('kambang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,555 - INFO - Word 'kaponawan' (bik) created (ID: 68) from source 'Project Marayum'.
+2025-04-03 23:29:12,573 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,586 - WARNING - insert_definition failed for 'kaponawan' (ID: 68), Def 1. Check internal logs.
+2025-04-03 23:29:12,593 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,595 - WARNING - insert_pronunciation failed for 'kaponawan' (ID: 68). Check internal logs.
+2025-04-03 23:29:12,597 - ERROR - UNEXPECTED error processing entry #34 ('kaponawan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,613 - INFO - Word 'karaba' (bik) created (ID: 69) from source 'Project Marayum'.
+2025-04-03 23:29:12,619 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,621 - WARNING - insert_definition failed for 'karaba' (ID: 69), Def 1. Check internal logs.
+2025-04-03 23:29:12,626 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,628 - WARNING - insert_pronunciation failed for 'karaba' (ID: 69). Check internal logs.
+2025-04-03 23:29:12,632 - ERROR - UNEXPECTED error processing entry #35 ('karaba') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,642 - INFO - Word 'katabang' (bik) created (ID: 70) from source 'Project Marayum'.
+2025-04-03 23:29:12,647 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,649 - WARNING - insert_definition failed for 'katabang' (ID: 70), Def 1. Check internal logs.
+2025-04-03 23:29:12,652 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,653 - WARNING - insert_pronunciation failed for 'katabang' (ID: 70). Check internal logs.
+2025-04-03 23:29:12,659 - ERROR - UNEXPECTED error processing entry #36 ('katabang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,670 - INFO - Word 'katig' (bik) created (ID: 71) from source 'Project Marayum'.
+2025-04-03 23:29:12,678 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,682 - WARNING - insert_definition failed for 'katig' (ID: 71), Def 1. Check internal logs.
+2025-04-03 23:29:12,685 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,687 - WARNING - insert_pronunciation failed for 'katig' (ID: 71). Check internal logs.
+2025-04-03 23:29:12,691 - ERROR - UNEXPECTED error processing entry #37 ('katig') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,714 - INFO - Word 'kilot' (bik) created (ID: 72) from source 'Project Marayum'.
+2025-04-03 23:29:12,725 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,727 - WARNING - insert_definition failed for 'kilot' (ID: 72), Def 1. Check internal logs.
+2025-04-03 23:29:12,730 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,731 - WARNING - insert_pronunciation failed for 'kilot' (ID: 72). Check internal logs.
+2025-04-03 23:29:12,735 - ERROR - UNEXPECTED error processing entry #38 ('kilot') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,744 - INFO - Word 'kinatigan' (bik) created (ID: 73) from source 'Project Marayum'.
+2025-04-03 23:29:12,752 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,754 - WARNING - insert_definition failed for 'kinatigan' (ID: 73), Def 1. Check internal logs.
+2025-04-03 23:29:12,759 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,761 - WARNING - insert_pronunciation failed for 'kinatigan' (ID: 73). Check internal logs.
+2025-04-03 23:29:12,765 - ERROR - UNEXPECTED error processing entry #39 ('kinatigan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,778 - INFO - Word 'koyomad' (bik) created (ID: 74) from source 'Project Marayum'.
+2025-04-03 23:29:12,783 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,784 - WARNING - insert_definition failed for 'koyomad' (ID: 74), Def 1. Check internal logs.
+2025-04-03 23:29:12,787 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,788 - WARNING - insert_pronunciation failed for 'koyomad' (ID: 74). Check internal logs.
+2025-04-03 23:29:12,791 - ERROR - UNEXPECTED error processing entry #40 ('koyomad') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,803 - INFO - Word 'kwintas' (bik) created (ID: 75) from source 'Project Marayum'.
+2025-04-03 23:29:12,809 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,811 - WARNING - insert_definition failed for 'kwintas' (ID: 75), Def 1. Check internal logs.
+2025-04-03 23:29:12,815 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,817 - WARNING - insert_pronunciation failed for 'kwintas' (ID: 75). Check internal logs.
+2025-04-03 23:29:12,820 - ERROR - UNEXPECTED error processing entry #41 ('kwintas') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,848 - INFO - Word 'lagwerta' (bik) created (ID: 76) from source 'Project Marayum'.
+2025-04-03 23:29:12,854 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,859 - WARNING - insert_definition failed for 'lagwerta' (ID: 76), Def 1. Check internal logs.
+2025-04-03 23:29:12,863 - ERROR - UNEXPECTED error processing entry #42 ('lagwerta') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,874 - INFO - Word 'lapok' (bik) created (ID: 77) from source 'Project Marayum'.
+2025-04-03 23:29:12,881 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,883 - WARNING - insert_definition failed for 'lapok' (ID: 77), Def 1. Check internal logs.
+2025-04-03 23:29:12,886 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,887 - WARNING - insert_pronunciation failed for 'lapok' (ID: 77). Check internal logs.
+2025-04-03 23:29:12,890 - ERROR - UNEXPECTED error processing entry #43 ('lapok') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,900 - INFO - Word 'lawed' (bik) created (ID: 78) from source 'Project Marayum'.
+2025-04-03 23:29:12,905 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,907 - WARNING - insert_definition failed for 'lawed' (ID: 78), Def 1. Check internal logs.
+2025-04-03 23:29:12,911 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,912 - WARNING - insert_pronunciation failed for 'lawed' (ID: 78). Check internal logs.
+2025-04-03 23:29:12,915 - ERROR - UNEXPECTED error processing entry #44 ('lawed') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,926 - INFO - Word 'lemay' (bik) created (ID: 79) from source 'Project Marayum'.
+2025-04-03 23:29:12,930 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,935 - WARNING - insert_definition failed for 'lemay' (ID: 79), Def 1. Check internal logs.
+2025-04-03 23:29:12,939 - ERROR - UNEXPECTED error processing entry #45 ('lemay') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:12,957 - INFO - Word 'lobid' (bik) created (ID: 80) from source 'Project Marayum'.
+2025-04-03 23:29:12,962 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:12,987 - WARNING - insert_definition failed for 'lobid' (ID: 80), Def 1. Check internal logs.
+2025-04-03 23:29:13,002 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,017 - WARNING - insert_pronunciation failed for 'lobid' (ID: 80). Check internal logs.
+2025-04-03 23:29:13,086 - ERROR - UNEXPECTED error processing entry #46 ('lobid') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,105 - INFO - Word 'lokaba' (bik) created (ID: 81) from source 'Project Marayum'.
+2025-04-03 23:29:13,111 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,114 - WARNING - insert_definition failed for 'lokaba' (ID: 81), Def 1. Check internal logs.
+2025-04-03 23:29:13,129 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,134 - WARNING - insert_pronunciation failed for 'lokaba' (ID: 81). Check internal logs.
+2025-04-03 23:29:13,140 - ERROR - UNEXPECTED error processing entry #47 ('lokaba') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,154 - INFO - Word 'lo-og' (bik) created (ID: 82) from source 'Project Marayum'.
+2025-04-03 23:29:13,162 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,171 - WARNING - insert_definition failed for 'lo-og' (ID: 82), Def 1. Check internal logs.
+2025-04-03 23:29:13,173 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,177 - WARNING - insert_pronunciation failed for 'lo-og' (ID: 82). Check internal logs.
+2025-04-03 23:29:13,179 - ERROR - UNEXPECTED error processing entry #48 ('lo-og') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,188 - INFO - Word 'mare'gen' (bik) created (ID: 83) from source 'Project Marayum'.
+2025-04-03 23:29:13,192 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,193 - WARNING - insert_definition failed for 'mare'gen' (ID: 83), Def 1. Check internal logs.
+2025-04-03 23:29:13,195 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,195 - WARNING - insert_pronunciation failed for 'mare'gen' (ID: 83). Check internal logs.
+2025-04-03 23:29:13,201 - ERROR - UNEXPECTED error processing entry #49 ('mare'gen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,226 - INFO - Word 'meya' (bik) created (ID: 84) from source 'Project Marayum'.
+2025-04-03 23:29:13,233 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,239 - WARNING - insert_definition failed for 'meya' (ID: 84), Def 1. Check internal logs.
+2025-04-03 23:29:13,243 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,244 - WARNING - insert_pronunciation failed for 'meya' (ID: 84). Check internal logs.
+2025-04-03 23:29:13,246 - ERROR - UNEXPECTED error processing entry #50 ('meya') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,254 - INFO - Word 'meya-meya' (bik) created (ID: 85) from source 'Project Marayum'.
+2025-04-03 23:29:13,258 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,259 - WARNING - insert_definition failed for 'meya-meya' (ID: 85), Def 1. Check internal logs.
+2025-04-03 23:29:13,261 - ERROR - UNEXPECTED error processing entry #51 ('meya-meya') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,268 - INFO - Word 'moara' (bik) created (ID: 86) from source 'Project Marayum'.
+2025-04-03 23:29:13,271 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,272 - WARNING - insert_definition failed for 'moara' (ID: 86), Def 1. Check internal logs.
+2025-04-03 23:29:13,274 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,274 - WARNING - insert_pronunciation failed for 'moara' (ID: 86). Check internal logs.
+2025-04-03 23:29:13,276 - ERROR - UNEXPECTED error processing entry #52 ('moara') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,281 - INFO - Word 'nameme'yan' (bik) created (ID: 87) from source 'Project Marayum'.
+2025-04-03 23:29:13,284 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,285 - WARNING - insert_definition failed for 'nameme'yan' (ID: 87), Def 1. Check internal logs.
+2025-04-03 23:29:13,286 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,287 - WARNING - insert_pronunciation failed for 'nameme'yan' (ID: 87). Check internal logs.
+2025-04-03 23:29:13,288 - ERROR - UNEXPECTED error processing entry #53 ('nameme'yan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,294 - INFO - Word 'ngi'ngi'' (bik) created (ID: 88) from source 'Project Marayum'.
+2025-04-03 23:29:13,296 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,297 - WARNING - insert_definition failed for 'ngi'ngi'' (ID: 88), Def 1. Check internal logs.
+2025-04-03 23:29:13,299 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,299 - WARNING - insert_pronunciation failed for 'ngi'ngi'' (ID: 88). Check internal logs.
+2025-04-03 23:29:13,300 - ERROR - UNEXPECTED error processing entry #54 ('ngi'ngi'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,314 - INFO - Word 'opaw' (bik) created (ID: 89) from source 'Project Marayum'.
+2025-04-03 23:29:13,317 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,318 - WARNING - insert_definition failed for 'opaw' (ID: 89), Def 1. Check internal logs.
+2025-04-03 23:29:13,319 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,320 - WARNING - insert_pronunciation failed for 'opaw' (ID: 89). Check internal logs.
+2025-04-03 23:29:13,321 - ERROR - UNEXPECTED error processing entry #55 ('opaw') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,327 - INFO - Word 'oripen' (bik) created (ID: 90) from source 'Project Marayum'.
+2025-04-03 23:29:13,330 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,330 - WARNING - insert_definition failed for 'oripen' (ID: 90), Def 1. Check internal logs.
+2025-04-03 23:29:13,332 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,333 - WARNING - insert_pronunciation failed for 'oripen' (ID: 90). Check internal logs.
+2025-04-03 23:29:13,334 - ERROR - UNEXPECTED error processing entry #56 ('oripen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,341 - INFO - Word 'owonan' (bik) created (ID: 91) from source 'Project Marayum'.
+2025-04-03 23:29:13,343 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,344 - WARNING - insert_definition failed for 'owonan' (ID: 91), Def 1. Check internal logs.
+2025-04-03 23:29:13,346 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,346 - WARNING - insert_pronunciation failed for 'owonan' (ID: 91). Check internal logs.
+2025-04-03 23:29:13,348 - ERROR - UNEXPECTED error processing entry #57 ('owonan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,354 - INFO - Word 'pana'' (bik) created (ID: 92) from source 'Project Marayum'.
+2025-04-03 23:29:13,357 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,357 - WARNING - insert_definition failed for 'pana'' (ID: 92), Def 1. Check internal logs.
+2025-04-03 23:29:13,359 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,360 - WARNING - insert_pronunciation failed for 'pana'' (ID: 92). Check internal logs.
+2025-04-03 23:29:13,361 - ERROR - UNEXPECTED error processing entry #58 ('pana'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,367 - INFO - Word 'paso'' (bik) created (ID: 93) from source 'Project Marayum'.
+2025-04-03 23:29:13,369 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,370 - WARNING - insert_definition failed for 'paso'' (ID: 93), Def 1. Check internal logs.
+2025-04-03 23:29:13,371 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,372 - WARNING - insert_pronunciation failed for 'paso'' (ID: 93). Check internal logs.
+2025-04-03 23:29:13,374 - ERROR - UNEXPECTED error processing entry #59 ('paso'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,380 - INFO - Word 'pinaowonan' (bik) created (ID: 94) from source 'Project Marayum'.
+2025-04-03 23:29:13,383 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,384 - WARNING - insert_definition failed for 'pinaowonan' (ID: 94), Def 1. Check internal logs.
+2025-04-03 23:29:13,386 - ERROR - UNEXPECTED error processing entry #60 ('pinaowonan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,392 - INFO - Word 'pingig' (bik) created (ID: 95) from source 'Project Marayum'.
+2025-04-03 23:29:13,395 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,396 - WARNING - insert_definition failed for 'pingig' (ID: 95), Def 1. Check internal logs.
+2025-04-03 23:29:13,397 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,398 - WARNING - insert_pronunciation failed for 'pingig' (ID: 95). Check internal logs.
+2025-04-03 23:29:13,400 - ERROR - UNEXPECTED error processing entry #61 ('pingig') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,406 - INFO - Word 'pinto'' (bik) created (ID: 96) from source 'Project Marayum'.
+2025-04-03 23:29:13,409 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,410 - WARNING - insert_definition failed for 'pinto'' (ID: 96), Def 1. Check internal logs.
+2025-04-03 23:29:13,411 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,412 - WARNING - insert_pronunciation failed for 'pinto'' (ID: 96). Check internal logs.
+2025-04-03 23:29:13,416 - ERROR - UNEXPECTED error processing entry #62 ('pinto'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,427 - INFO - Word 'pinto'an' (bik) created (ID: 97) from source 'Project Marayum'.
+2025-04-03 23:29:13,430 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,431 - WARNING - insert_definition failed for 'pinto'an' (ID: 97), Def 1. Check internal logs.
+2025-04-03 23:29:13,433 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,434 - WARNING - insert_pronunciation failed for 'pinto'an' (ID: 97). Check internal logs.
+2025-04-03 23:29:13,435 - ERROR - UNEXPECTED error processing entry #63 ('pinto'an') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,440 - INFO - Word 'pokot' (bik) created (ID: 98) from source 'Project Marayum'.
+2025-04-03 23:29:13,443 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,444 - WARNING - insert_definition failed for 'pokot' (ID: 98), Def 1. Check internal logs.
+2025-04-03 23:29:13,446 - ERROR - UNEXPECTED error processing entry #64 ('pokot') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,452 - INFO - Word 'ponaw' (bik) created (ID: 99) from source 'Project Marayum'.
+2025-04-03 23:29:13,455 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,456 - WARNING - insert_definition failed for 'ponaw' (ID: 99), Def 1. Check internal logs.
+2025-04-03 23:29:13,457 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,458 - WARNING - insert_pronunciation failed for 'ponaw' (ID: 99). Check internal logs.
+2025-04-03 23:29:13,459 - ERROR - UNEXPECTED error processing entry #65 ('ponaw') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,465 - INFO - Word 'porao' (bik) created (ID: 100) from source 'Project Marayum'.
+2025-04-03 23:29:13,467 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,468 - WARNING - insert_definition failed for 'porao' (ID: 100), Def 1. Check internal logs.
+2025-04-03 23:29:13,469 - ERROR - UNEXPECTED error processing entry #66 ('porao') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,474 - INFO - Word 'potnay' (bik) created (ID: 101) from source 'Project Marayum'.
+2025-04-03 23:29:13,476 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,477 - WARNING - insert_definition failed for 'potnay' (ID: 101), Def 1. Check internal logs.
+2025-04-03 23:29:13,478 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,479 - WARNING - insert_pronunciation failed for 'potnay' (ID: 101). Check internal logs.
+2025-04-03 23:29:13,480 - ERROR - UNEXPECTED error processing entry #67 ('potnay') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,484 - INFO - Word 'potnayen' (bik) created (ID: 102) from source 'Project Marayum'.
+2025-04-03 23:29:13,487 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,487 - WARNING - insert_definition failed for 'potnayen' (ID: 102), Def 1. Check internal logs.
+2025-04-03 23:29:13,488 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,489 - WARNING - insert_pronunciation failed for 'potnayen' (ID: 102). Check internal logs.
+2025-04-03 23:29:13,490 - ERROR - UNEXPECTED error processing entry #68 ('potnayen') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,495 - INFO - Word 'ragom' (bik) created (ID: 103) from source 'Project Marayum'.
+2025-04-03 23:29:13,498 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,498 - WARNING - insert_definition failed for 'ragom' (ID: 103), Def 1. Check internal logs.
+2025-04-03 23:29:13,500 - ERROR - UNEXPECTED error processing entry #69 ('ragom') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,505 - INFO - Word 'rapog' (bik) created (ID: 104) from source 'Project Marayum'.
+2025-04-03 23:29:13,508 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,509 - WARNING - insert_definition failed for 'rapog' (ID: 104), Def 1. Check internal logs.
+2025-04-03 23:29:13,510 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,511 - WARNING - insert_pronunciation failed for 'rapog' (ID: 104). Check internal logs.
+2025-04-03 23:29:13,512 - ERROR - UNEXPECTED error processing entry #70 ('rapog') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,517 - INFO - Word 'retrato' (bik) created (ID: 105) from source 'Project Marayum'.
+2025-04-03 23:29:13,519 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,520 - WARNING - insert_definition failed for 'retrato' (ID: 105), Def 1. Check internal logs.
+2025-04-03 23:29:13,522 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,522 - WARNING - insert_pronunciation failed for 'retrato' (ID: 105). Check internal logs.
+2025-04-03 23:29:13,526 - ERROR - UNEXPECTED error processing entry #71 ('retrato') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,534 - INFO - Word 'roeda' (bik) created (ID: 106) from source 'Project Marayum'.
+2025-04-03 23:29:13,537 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,538 - WARNING - insert_definition failed for 'roeda' (ID: 106), Def 1. Check internal logs.
+2025-04-03 23:29:13,539 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,540 - WARNING - insert_pronunciation failed for 'roeda' (ID: 106). Check internal logs.
+2025-04-03 23:29:13,541 - ERROR - UNEXPECTED error processing entry #72 ('roeda') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,547 - INFO - Word 'ro'ro'' (bik) created (ID: 107) from source 'Project Marayum'.
+2025-04-03 23:29:13,549 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,550 - WARNING - insert_definition failed for 'ro'ro'' (ID: 107), Def 1. Check internal logs.
+2025-04-03 23:29:13,551 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,552 - WARNING - insert_pronunciation failed for 'ro'ro'' (ID: 107). Check internal logs.
+2025-04-03 23:29:13,553 - ERROR - UNEXPECTED error processing entry #73 ('ro'ro'') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,558 - INFO - Word 'sagwan' (bik) created (ID: 108) from source 'Project Marayum'.
+2025-04-03 23:29:13,561 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,562 - WARNING - insert_definition failed for 'sagwan' (ID: 108), Def 1. Check internal logs.
+2025-04-03 23:29:13,563 - ERROR - UNEXPECTED error processing entry #74 ('sagwan') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,569 - INFO - Word 'samingkil' (bik) created (ID: 109) from source 'Project Marayum'.
+2025-04-03 23:29:13,571 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,572 - WARNING - insert_definition failed for 'samingkil' (ID: 109), Def 1. Check internal logs.
+2025-04-03 23:29:13,573 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,574 - WARNING - insert_pronunciation failed for 'samingkil' (ID: 109). Check internal logs.
+2025-04-03 23:29:13,576 - ERROR - UNEXPECTED error processing entry #75 ('samingkil') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,581 - INFO - Word 'sexed' (bik) created (ID: 110) from source 'Project Marayum'.
+2025-04-03 23:29:13,584 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,585 - WARNING - insert_definition failed for 'sexed' (ID: 110), Def 1. Check internal logs.
+2025-04-03 23:29:13,586 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,586 - WARNING - insert_pronunciation failed for 'sexed' (ID: 110). Check internal logs.
+2025-04-03 23:29:13,588 - ERROR - UNEXPECTED error processing entry #76 ('sexed') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,593 - INFO - Word 'sintoron' (bik) created (ID: 111) from source 'Project Marayum'.
+2025-04-03 23:29:13,595 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,596 - WARNING - insert_definition failed for 'sintoron' (ID: 111), Def 1. Check internal logs.
+2025-04-03 23:29:13,597 - ERROR - UNEXPECTED error processing entry #77 ('sintoron') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,603 - INFO - Word 'sirob' (bik) created (ID: 112) from source 'Project Marayum'.
+2025-04-03 23:29:13,606 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,607 - WARNING - insert_definition failed for 'sirob' (ID: 112), Def 1. Check internal logs.
+2025-04-03 23:29:13,608 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,609 - WARNING - insert_pronunciation failed for 'sirob' (ID: 112). Check internal logs.
+2025-04-03 23:29:13,610 - ERROR - UNEXPECTED error processing entry #78 ('sirob') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,616 - INFO - Word 'songo' (bik) created (ID: 113) from source 'Project Marayum'.
+2025-04-03 23:29:13,619 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,619 - WARNING - insert_definition failed for 'songo' (ID: 113), Def 1. Check internal logs.
+2025-04-03 23:29:13,621 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,622 - WARNING - insert_pronunciation failed for 'songo' (ID: 113). Check internal logs.
+2025-04-03 23:29:13,623 - ERROR - UNEXPECTED error processing entry #79 ('songo') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,629 - INFO - Word 'sorang' (bik) created (ID: 114) from source 'Project Marayum'.
+2025-04-03 23:29:13,634 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,635 - WARNING - insert_definition failed for 'sorang' (ID: 114), Def 1. Check internal logs.
+2025-04-03 23:29:13,636 - ERROR - UNEXPECTED error processing entry #80 ('sorang') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,647 - INFO - Word 'sowong' (bik) created (ID: 115) from source 'Project Marayum'.
+2025-04-03 23:29:13,650 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,650 - WARNING - insert_definition failed for 'sowong' (ID: 115), Def 1. Check internal logs.
+2025-04-03 23:29:13,652 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,653 - WARNING - insert_pronunciation failed for 'sowong' (ID: 115). Check internal logs.
+2025-04-03 23:29:13,654 - ERROR - UNEXPECTED error processing entry #81 ('sowong') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,660 - INFO - Word 'takyag' (bik) created (ID: 116) from source 'Project Marayum'.
+2025-04-03 23:29:13,662 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,663 - WARNING - insert_definition failed for 'takyag' (ID: 116), Def 1. Check internal logs.
+2025-04-03 23:29:13,664 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,665 - WARNING - insert_pronunciation failed for 'takyag' (ID: 116). Check internal logs.
+2025-04-03 23:29:13,666 - ERROR - UNEXPECTED error processing entry #82 ('takyag') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,671 - INFO - Word 'tambal' (bik) created (ID: 117) from source 'Project Marayum'.
+2025-04-03 23:29:13,673 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,674 - WARNING - insert_definition failed for 'tambal' (ID: 117), Def 1. Check internal logs.
+2025-04-03 23:29:13,675 - ERROR - UNEXPECTED error processing entry #83 ('tambal') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,680 - INFO - Word 'tambobong' (bik) created (ID: 118) from source 'Project Marayum'.
+2025-04-03 23:29:13,682 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,682 - WARNING - insert_definition failed for 'tambobong' (ID: 118), Def 1. Check internal logs.
+2025-04-03 23:29:13,683 - ERROR - UNEXPECTED error processing entry #84 ('tambobong') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,688 - INFO - Word 'tarem' (bik) created (ID: 119) from source 'Project Marayum'.
+2025-04-03 23:29:13,691 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,691 - WARNING - insert_definition failed for 'tarem' (ID: 119), Def 1. Check internal logs.
+2025-04-03 23:29:13,693 - ERROR - UNEXPECTED error processing entry #85 ('tarem') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,697 - INFO - Word 'to'wang1' (bik) created (ID: 120) from source 'Project Marayum'.
+2025-04-03 23:29:13,700 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,700 - WARNING - insert_definition failed for 'to'wang1' (ID: 120), Def 1. Check internal logs.
+2025-04-03 23:29:13,701 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,702 - WARNING - insert_pronunciation failed for 'to'wang1' (ID: 120). Check internal logs.
+2025-04-03 23:29:13,703 - ERROR - UNEXPECTED error processing entry #86 ('to'wang1') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,708 - INFO - Word 'to'wang2' (bik) created (ID: 121) from source 'Project Marayum'.
+2025-04-03 23:29:13,710 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,711 - WARNING - insert_definition failed for 'to'wang2' (ID: 121), Def 1. Check internal logs.
+2025-04-03 23:29:13,712 - ERROR - Dummy insert_pronunciation failed: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,713 - WARNING - insert_pronunciation failed for 'to'wang2' (ID: 121). Check internal logs.
+2025-04-03 23:29:13,714 - ERROR - UNEXPECTED error processing entry #87 ('to'wang2') in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,720 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-boienen-english_processed.json. Final commit successful.
+2025-04-03 23:29:13,721 - INFO - Stats for ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: Processed: 0, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 88, Skipped: 0, Errors: 88
+2025-04-03 23:29:13,721 - WARNING - Error summary for ..\data\marayum_dictionaries\bikol-boienen-english_processed.json: {'DefinitionInsertFailure': 88, 'PronunciationInsertFailure': 69, 'UnexpectedEntryError: InFailedSqlTransaction': 88}
+2025-04-03 23:29:13,722 - WARNING - No entries were successfully processed from ..\data\marayum_dictionaries\bikol-boienen-english_processed.json, although 88 were found. Issues encountered: 88
+2025-04-03 23:29:13,722 - WARNING - No entries processed from bikol-boienen-english_processed.json
+2025-04-03 23:29:13,723 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\asi-english_processed.json with source: Project Marayum
+2025-04-03 23:29:13,749 - INFO - Found 513 word entries in ..\data\marayum_dictionaries\asi-english_processed.json
+2025-04-03 23:29:13,750 - INFO - Determined language code 'asz' for ..\data\marayum_dictionaries\asi-english_processed.json from base language 'Asi'.
+2025-04-03 23:29:13,760 - INFO - Word 'abaga' (asz) created (ID: 122) from source 'Project Marayum'.
+2025-04-03 23:29:13,763 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,764 - WARNING - insert_definition failed for 'abaga' (ID: 122), Def 1. Check internal logs.
+2025-04-03 23:29:13,765 - ERROR - UNEXPECTED error processing entry #0 ('abaga') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,771 - INFO - Word 'abo' (asz) created (ID: 123) from source 'Project Marayum'.
+2025-04-03 23:29:13,774 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,775 - WARNING - insert_definition failed for 'abo' (ID: 123), Def 1. Check internal logs.
+2025-04-03 23:29:13,777 - ERROR - UNEXPECTED error processing entry #1 ('abo') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,782 - INFO - Word 'abor-abor' (asz) created (ID: 124) from source 'Project Marayum'.
+2025-04-03 23:29:13,784 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,785 - WARNING - insert_definition failed for 'abor-abor' (ID: 124), Def 1. Check internal logs.
+2025-04-03 23:29:13,787 - ERROR - UNEXPECTED error processing entry #2 ('abor-abor') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,792 - INFO - Word 'abót' (asz) created (ID: 125) from source 'Project Marayum'.
+2025-04-03 23:29:13,795 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,796 - WARNING - insert_definition failed for 'abót' (ID: 125), Def 1. Check internal logs.
+2025-04-03 23:29:13,797 - ERROR - UNEXPECTED error processing entry #3 ('abót') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,802 - INFO - Word 'àbot' (asz) created (ID: 126) from source 'Project Marayum'.
+2025-04-03 23:29:13,805 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,806 - WARNING - insert_definition failed for 'àbot' (ID: 126), Def 1. Check internal logs.
+2025-04-03 23:29:13,808 - ERROR - UNEXPECTED error processing entry #4 ('àbot') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,813 - INFO - Word 'adlaw1' (asz) created (ID: 127) from source 'Project Marayum'.
+2025-04-03 23:29:13,816 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,817 - WARNING - insert_definition failed for 'adlaw1' (ID: 127), Def 1. Check internal logs.
+2025-04-03 23:29:13,818 - ERROR - UNEXPECTED error processing entry #5 ('adlaw1') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,824 - INFO - Word 'adlaw2' (asz) created (ID: 128) from source 'Project Marayum'.
+2025-04-03 23:29:13,827 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,827 - WARNING - insert_definition failed for 'adlaw2' (ID: 128), Def 1. Check internal logs.
+2025-04-03 23:29:13,829 - ERROR - UNEXPECTED error processing entry #6 ('adlaw2') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,834 - INFO - Word 'ado' (asz) created (ID: 129) from source 'Project Marayum'.
+2025-04-03 23:29:13,837 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,838 - WARNING - insert_definition failed for 'ado' (ID: 129), Def 1. Check internal logs.
+2025-04-03 23:29:13,839 - ERROR - UNEXPECTED error processing entry #7 ('ado') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,844 - INFO - Word 'ag' (asz) created (ID: 130) from source 'Project Marayum'.
+2025-04-03 23:29:13,847 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,847 - WARNING - insert_definition failed for 'ag' (ID: 130), Def 1. Check internal logs.
+2025-04-03 23:29:13,849 - ERROR - UNEXPECTED error processing entry #8 ('ag') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,855 - INFO - Word 'aga' (asz) created (ID: 131) from source 'Project Marayum'.
+2025-04-03 23:29:13,858 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,858 - WARNING - insert_definition failed for 'aga' (ID: 131), Def 1. Check internal logs.
+2025-04-03 23:29:13,860 - ERROR - UNEXPECTED error processing entry #9 ('aga') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,870 - INFO - Word 'akó' (asz) created (ID: 132) from source 'Project Marayum'.
+2025-04-03 23:29:13,873 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,874 - WARNING - insert_definition failed for 'akó' (ID: 132), Def 1. Check internal logs.
+2025-04-03 23:29:13,875 - ERROR - UNEXPECTED error processing entry #10 ('akó') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,880 - INFO - Word 'alimpuyo' (asz) created (ID: 133) from source 'Project Marayum'.
+2025-04-03 23:29:13,882 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,883 - WARNING - insert_definition failed for 'alimpuyo' (ID: 133), Def 1. Check internal logs.
+2025-04-03 23:29:13,885 - ERROR - UNEXPECTED error processing entry #11 ('alimpuyo') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,889 - INFO - Word 'ambò' (asz) created (ID: 134) from source 'Project Marayum'.
+2025-04-03 23:29:13,891 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,892 - WARNING - insert_definition failed for 'ambò' (ID: 134), Def 1. Check internal logs.
+2025-04-03 23:29:13,894 - ERROR - UNEXPECTED error processing entry #12 ('ambò') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,898 - INFO - Word 'amihan' (asz) created (ID: 135) from source 'Project Marayum'.
+2025-04-03 23:29:13,902 - INFO - Word 'anak' (asz) created (ID: 136) from source 'Project Marayum'.
+2025-04-03 23:29:13,904 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,905 - WARNING - insert_definition failed for 'anak' (ID: 136), Def 1. Check internal logs.
+2025-04-03 23:29:13,906 - ERROR - UNEXPECTED error processing entry #14 ('anak') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,911 - INFO - Word 'anak nak kayaki' (asz) created (ID: 137) from source 'Project Marayum'.
+2025-04-03 23:29:13,914 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,914 - WARNING - insert_definition failed for 'anak nak kayaki' (ID: 137), Def 1. Check internal logs.
+2025-04-03 23:29:13,916 - ERROR - UNEXPECTED error processing entry #15 ('anak nak kayaki') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,920 - INFO - Word 'anay' (asz) created (ID: 138) from source 'Project Marayum'.
+2025-04-03 23:29:13,923 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,923 - WARNING - insert_definition failed for 'anay' (ID: 138), Def 1. Check internal logs.
+2025-04-03 23:29:13,925 - ERROR - UNEXPECTED error processing entry #16 ('anay') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,931 - INFO - Word 'anino' (asz) created (ID: 139) from source 'Project Marayum'.
+2025-04-03 23:29:13,934 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,935 - WARNING - insert_definition failed for 'anino' (ID: 139), Def 1. Check internal logs.
+2025-04-03 23:29:13,937 - ERROR - UNEXPECTED error processing entry #17 ('anino') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,942 - INFO - Word 'anit1' (asz) created (ID: 140) from source 'Project Marayum'.
+2025-04-03 23:29:13,945 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,946 - WARNING - insert_definition failed for 'anit1' (ID: 140), Def 1. Check internal logs.
+2025-04-03 23:29:13,948 - ERROR - UNEXPECTED error processing entry #18 ('anit1') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,954 - INFO - Word 'anit2' (asz) created (ID: 141) from source 'Project Marayum'.
+2025-04-03 23:29:13,956 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,957 - WARNING - insert_definition failed for 'anit2' (ID: 141), Def 1. Check internal logs.
+2025-04-03 23:29:13,959 - ERROR - UNEXPECTED error processing entry #19 ('anit2') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,964 - INFO - Word 'an-om' (asz) created (ID: 142) from source 'Project Marayum'.
+2025-04-03 23:29:13,968 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,968 - WARNING - insert_definition failed for 'an-om' (ID: 142), Def 1. Check internal logs.
+2025-04-03 23:29:13,970 - ERROR - UNEXPECTED error processing entry #20 ('an-om') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,984 - INFO - Word 'antos' (asz) created (ID: 143) from source 'Project Marayum'.
+2025-04-03 23:29:13,986 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,987 - WARNING - insert_definition failed for 'antos' (ID: 143), Def 1. Check internal logs.
+2025-04-03 23:29:13,989 - ERROR - UNEXPECTED error processing entry #21 ('antos') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:13,994 - INFO - Word 'ap-at' (asz) created (ID: 144) from source 'Project Marayum'.
+2025-04-03 23:29:13,996 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:13,997 - WARNING - insert_definition failed for 'ap-at' (ID: 144), Def 1. Check internal logs.
+2025-04-03 23:29:13,998 - ERROR - UNEXPECTED error processing entry #22 ('ap-at') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:14,003 - INFO - Word 'apila' (asz) created (ID: 145) from source 'Project Marayum'.
+2025-04-03 23:29:14,005 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:14,006 - WARNING - insert_definition failed for 'apila' (ID: 145), Def 1. Check internal logs.
+2025-04-03 23:29:14,008 - ERROR - UNEXPECTED error processing entry #23 ('apila') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:14,012 - INFO - Word 'apro' (asz) created (ID: 146) from source 'Project Marayum'.
+2025-04-03 23:29:14,015 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:14,016 - WARNING - insert_definition failed for 'apro' (ID: 146), Def 1. Check internal logs.
+2025-04-03 23:29:14,017 - ERROR - UNEXPECTED error processing entry #24 ('apro') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:14,024 - INFO - Word 'asawa' (asz) created (ID: 147) from source 'Project Marayum'.
+2025-04-03 23:29:14,027 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:14,028 - WARNING - insert_definition failed for 'asawa' (ID: 147), Def 1. Check internal logs.
+2025-04-03 23:29:14,030 - ERROR - UNEXPECTED error processing entry #25 ('asawa') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-03 23:29:14,035 - INFO - Word 'asawa nak kabade' (asz) created (ID: 148) from source 'Project Marayum'.
+2025-04-03 23:29:14,038 - ERROR - Dummy insert_definition failed: column "definition" of relation "definitions" does not exist
+LINE 1: INSERT INTO definitions (word_id, definition, source, defini...
+                                          ^
+
+2025-04-03 23:29:14,039 - WARNING - insert_definition failed for 'asawa nak kabade' (ID: 148), Def 1. Check internal logs.
+2025-04-03 23:29:14,041 - ERROR - UNEXPECTED error processing entry #26 ('asawa nak kabade') in ..\data\marayum_dictionaries\asi-english_processed.json: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 9184, in process_marayum_json
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+

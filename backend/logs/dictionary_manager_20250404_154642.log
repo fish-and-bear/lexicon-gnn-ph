@@ -1,0 +1,24 @@
+2025-04-04 15:46:42,115 - INFO - Starting lookup for word: 'rebound'
+2025-04-04 15:46:42,143 - INFO - pg_trgm extension installed: True
+2025-04-04 15:46:42,144 - INFO - Executing exact match query for 'rebound'
+2025-04-04 15:46:42,300 - INFO - Found 1 exact matches
+2025-04-04 15:46:42,300 - INFO - Processing result 1/1
+2025-04-04 15:46:42,301 - INFO - Word ID: 57284
+2025-04-04 15:46:42,301 - INFO - Lemma: rebound
+2025-04-04 15:46:42,302 - INFO - Language code: tl
+2025-04-04 15:46:42,305 - INFO - Querying pronunciations for word_id 57284
+2025-04-04 15:46:42,308 - INFO - Found 2 pronunciations
+2025-04-04 15:46:42,310 - INFO - Querying etymologies for word_id 57284
+2025-04-04 15:46:42,314 - INFO - Found 1 etymologies
+2025-04-04 15:46:42,316 - INFO - Querying definitions for word_id 57284
+2025-04-04 15:46:42,320 - INFO - Found 6 definitions
+2025-04-04 15:46:42,321 - INFO - Processing definition 1/6
+2025-04-04 15:46:42,322 - INFO - Processing definition 2/6
+2025-04-04 15:46:42,323 - INFO - Processing definition 3/6
+2025-04-04 15:46:42,323 - INFO - Processing definition 4/6
+2025-04-04 15:46:42,324 - INFO - Processing definition 5/6
+2025-04-04 15:46:42,325 - INFO - Processing definition 6/6
+2025-04-04 15:46:42,325 - INFO - Querying relations for word_id 57284
+2025-04-04 15:46:42,328 - INFO - Found 0 relations
+2025-04-04 15:46:42,328 - INFO - No relations found for word ID 57284
+2025-04-04 15:46:42,329 - INFO - Database connection closed

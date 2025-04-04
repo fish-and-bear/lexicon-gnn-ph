@@ -1,0 +1,1276 @@
+2025-04-03 23:35:42,878 - INFO - Starting table creation/update process.
+2025-04-03 23:35:43,570 - INFO - Tables created or updated successfully.
+2025-04-03 23:35:43,580 - INFO - Processing Marayum dictionaries from directory: ..\data\marayum_dictionaries
+2025-04-03 23:35:43,586 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\onhan-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,588 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\onhan-english_processed.json. Skipping file.
+2025-04-03 23:35:43,589 - WARNING - No entries processed from onhan-english_processed.json
+2025-04-03 23:35:43,591 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\waray-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,593 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\waray-english_processed.json. Skipping file.
+2025-04-03 23:35:43,593 - WARNING - No entries processed from waray-english_processed.json
+2025-04-03 23:35:43,594 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ibanag-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,596 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ibanag-english_processed.json. Skipping file.
+2025-04-03 23:35:43,596 - WARNING - No entries processed from ibanag-english_processed.json
+2025-04-03 23:35:43,597 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\iranon-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,598 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\iranon-english_processed.json. Skipping file.
+2025-04-03 23:35:43,599 - WARNING - No entries processed from iranon-english_processed.json
+2025-04-03 23:35:43,599 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\itawis-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,602 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\itawis-english_processed.json. Skipping file.
+2025-04-03 23:35:43,603 - WARNING - No entries processed from itawis-english_processed.json
+2025-04-03 23:35:43,604 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ivatan-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,605 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ivatan-english_processed.json. Skipping file.
+2025-04-03 23:35:43,606 - WARNING - No entries processed from ivatan-english_processed.json
+2025-04-03 23:35:43,607 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\manide-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,608 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\manide-english_processed.json. Skipping file.
+2025-04-03 23:35:43,609 - WARNING - No entries processed from manide-english_processed.json
+2025-04-03 23:35:43,610 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\gaddang-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,612 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\gaddang-english_processed.json. Skipping file.
+2025-04-03 23:35:43,612 - WARNING - No entries processed from gaddang-english_processed.json
+2025-04-03 23:35:43,613 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cuyonon-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,614 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\cuyonon-english_processed.json. Skipping file.
+2025-04-03 23:35:43,615 - WARNING - No entries processed from cuyonon-english_processed.json
+2025-04-03 23:35:43,615 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ilocano-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,616 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ilocano-english_processed.json. Skipping file.
+2025-04-03 23:35:43,617 - WARNING - No entries processed from ilocano-english_processed.json
+2025-04-03 23:35:43,618 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\pangasinan-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,619 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\pangasinan-english_processed.json. Skipping file.
+2025-04-03 23:35:43,620 - WARNING - No entries processed from pangasinan-english_processed.json
+2025-04-03 23:35:43,621 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-albay-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,622 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-albay-english_processed.json. Skipping file.
+2025-04-03 23:35:43,622 - WARNING - No entries processed from bikol-albay-english_processed.json
+2025-04-03 23:35:43,623 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-libon-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,625 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-libon-english_processed.json. Skipping file.
+2025-04-03 23:35:43,625 - WARNING - No entries processed from bikol-libon-english_processed.json
+2025-04-03 23:35:43,626 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\kapampangan-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,627 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\kapampangan-english_processed.json. Skipping file.
+2025-04-03 23:35:43,628 - WARNING - No entries processed from kapampangan-english_processed.json
+2025-04-03 23:35:43,629 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-miraya-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,630 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-miraya-english_processed.json. Skipping file.
+2025-04-03 23:35:43,631 - WARNING - No entries processed from bikol-miraya-english_processed.json
+2025-04-03 23:35:43,632 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\maguindanaon-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,633 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\maguindanaon-english_processed.json. Skipping file.
+2025-04-03 23:35:43,634 - WARNING - No entries processed from maguindanaon-english_processed.json
+2025-04-03 23:35:43,635 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-partido-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,636 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-partido-english_processed.json. Skipping file.
+2025-04-03 23:35:43,637 - WARNING - No entries processed from bikol-partido-english_processed.json
+2025-04-03 23:35:43,637 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,638 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\isneg-yapayao-english_processed.json. Skipping file.
+2025-04-03 23:35:43,639 - WARNING - No entries processed from isneg-yapayao-english_processed.json
+2025-04-03 23:35:43,640 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,641 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-rinconada-english_processed.json. Skipping file.
+2025-04-03 23:35:43,642 - WARNING - No entries processed from bikol-rinconada-english_processed.json
+2025-04-03 23:35:43,642 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,643 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\blaan-koronadal-english_processed.json. Skipping file.
+2025-04-03 23:35:43,644 - WARNING - No entries processed from blaan-koronadal-english_processed.json
+2025-04-03 23:35:43,644 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,645 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\blaan-sarangani-english_processed.json. Skipping file.
+2025-04-03 23:35:43,646 - WARNING - No entries processed from blaan-sarangani-english_processed.json
+2025-04-03 23:35:43,647 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,648 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-west-albay-english_processed.json. Skipping file.
+2025-04-03 23:35:43,648 - WARNING - No entries processed from bikol-west-albay-english_processed.json
+2025-04-03 23:35:43,649 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,650 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\manobo-erumanen-english_processed.json. Skipping file.
+2025-04-03 23:35:43,651 - WARNING - No entries processed from manobo-erumanen-english_processed.json
+2025-04-03 23:35:43,652 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,653 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\cebuano-cotabato-english_processed.json. Skipping file.
+2025-04-03 23:35:43,653 - WARNING - No entries processed from cebuano-cotabato-english_processed.json
+2025-04-03 23:35:43,654 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,655 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\tagalog-marinduque-english_processed.json. Skipping file.
+2025-04-03 23:35:43,655 - WARNING - No entries processed from tagalog-marinduque-english_processed.json
+2025-04-03 23:35:43,656 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,657 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\hiligaynon-cotabato-english_processed.json. Skipping file.
+2025-04-03 23:35:43,658 - WARNING - No entries processed from hiligaynon-cotabato-english_processed.json
+2025-04-03 23:35:43,659 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,660 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\ifugao-tuwali-ihapo-english_processed.json. Skipping file.
+2025-04-03 23:35:43,661 - WARNING - No entries processed from ifugao-tuwali-ihapo-english_processed.json
+2025-04-03 23:35:43,661 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,662 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-northern-catanduanes-english_processed.json. Skipping file.
+2025-04-03 23:35:43,662 - WARNING - No entries processed from bikol-northern-catanduanes-english_processed.json
+2025-04-03 23:35:43,663 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,664 - INFO - Found 0 word entries in ..\data\marayum_dictionaries\bikol-southern-catanduanes-english_processed.json. Skipping file.
+2025-04-03 23:35:43,664 - WARNING - No entries processed from bikol-southern-catanduanes-english_processed.json
+2025-04-03 23:35:43,665 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\chavacano-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,667 - INFO - Found 1 word entries in ..\data\marayum_dictionaries\chavacano-english_processed.json
+2025-04-03 23:35:43,668 - INFO - Determined language code 'cbk' for ..\data\marayum_dictionaries\chavacano-english_processed.json from base language 'Chavacano'.
+2025-04-03 23:35:43,746 - INFO - Word 'comida' (cbk) created (ID: 1) from source 'Project Marayum'.
+2025-04-03 23:35:43,755 - ERROR - Error during definition insertion for 'comida' (ID: 1), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,766 - INFO - Finished processing ..\data\marayum_dictionaries\chavacano-english_processed.json. Final commit successful.
+2025-04-03 23:35:43,767 - INFO - Stats for ..\data\marayum_dictionaries\chavacano-english_processed.json: Processed: 1, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 1, Skipped: 0, Errors: 0
+2025-04-03 23:35:43,768 - WARNING - Error summary for ..\data\marayum_dictionaries\chavacano-english_processed.json: {'DefinitionInsertError: TypeError': 1}
+2025-04-03 23:35:43,769 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\masbatenyo-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,771 - INFO - Found 3 word entries in ..\data\marayum_dictionaries\masbatenyo-english_processed.json
+2025-04-03 23:35:43,771 - INFO - Determined language code 'msb' for ..\data\marayum_dictionaries\masbatenyo-english_processed.json from base language 'Masbatenyo'.
+2025-04-03 23:35:43,781 - INFO - Word 'abaga' (msb) created (ID: 2) from source 'Project Marayum'.
+2025-04-03 23:35:43,782 - ERROR - Error during definition insertion for 'abaga' (ID: 2), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,796 - INFO - Word 'gipad' (msb) created (ID: 3) from source 'Project Marayum'.
+2025-04-03 23:35:43,797 - ERROR - Error during definition insertion for 'gipad' (ID: 3), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,803 - INFO - Word 'piko' (msb) created (ID: 4) from source 'Project Marayum'.
+2025-04-03 23:35:43,805 - ERROR - Error during definition insertion for 'piko' (ID: 4), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,811 - INFO - Finished processing ..\data\marayum_dictionaries\masbatenyo-english_processed.json. Final commit successful.
+2025-04-03 23:35:43,811 - INFO - Stats for ..\data\marayum_dictionaries\masbatenyo-english_processed.json: Processed: 3, Definitions: 0, Relations: 0, Pronunciations: 3, Etymologies: 0, Credits: 3, Skipped: 0, Errors: 0
+2025-04-03 23:35:43,812 - WARNING - Error summary for ..\data\marayum_dictionaries\masbatenyo-english_processed.json: {'DefinitionInsertError: TypeError': 3}
+2025-04-03 23:35:43,813 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-central-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,814 - INFO - Found 4 word entries in ..\data\marayum_dictionaries\bikol-central-english_processed.json
+2025-04-03 23:35:43,815 - WARNING - No language code mapping found for: bikol-central
+2025-04-03 23:35:43,816 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-central-english_processed.json from base language 'Bikol-Central'.
+2025-04-03 23:35:43,830 - INFO - Word 'giráray' (bik) created (ID: 5) from source 'Project Marayum'.
+2025-04-03 23:35:43,832 - ERROR - Error during definition insertion for 'giráray' (ID: 5), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,836 - INFO - Word 'kudál' (bik) created (ID: 6) from source 'Project Marayum'.
+2025-04-03 23:35:43,839 - ERROR - Error during definition insertion for 'kudál' (ID: 6), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,844 - INFO - Word 'palás' (bik) created (ID: 7) from source 'Project Marayum'.
+2025-04-03 23:35:43,845 - ERROR - Error during definition insertion for 'palás' (ID: 7), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,850 - INFO - Word 'pamálit' (bik) created (ID: 8) from source 'Project Marayum'.
+2025-04-03 23:35:43,851 - ERROR - Error during definition insertion for 'pamálit' (ID: 8), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,858 - INFO - Finished processing ..\data\marayum_dictionaries\bikol-central-english_processed.json. Final commit successful.
+2025-04-03 23:35:43,859 - INFO - Stats for ..\data\marayum_dictionaries\bikol-central-english_processed.json: Processed: 4, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 4, Skipped: 0, Errors: 0
+2025-04-03 23:35:43,859 - WARNING - Error summary for ..\data\marayum_dictionaries\bikol-central-english_processed.json: {'DefinitionInsertError: TypeError': 4}
+2025-04-03 23:35:43,860 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\aklanon-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,862 - INFO - Found 7 word entries in ..\data\marayum_dictionaries\aklanon-english_processed.json
+2025-04-03 23:35:43,862 - INFO - Determined language code 'akl' for ..\data\marayum_dictionaries\aklanon-english_processed.json from base language 'Aklanon'.
+2025-04-03 23:35:43,872 - INFO - Word 'apa' (akl) created (ID: 9) from source 'Project Marayum'.
+2025-04-03 23:35:43,874 - ERROR - Error during definition insertion for 'apa' (ID: 9), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,880 - INFO - Word 'baeatian' (akl) created (ID: 10) from source 'Project Marayum'.
+2025-04-03 23:35:43,882 - ERROR - Error during definition insertion for 'baeatian' (ID: 10), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,887 - INFO - Word 'bulag' (akl) created (ID: 11) from source 'Project Marayum'.
+2025-04-03 23:35:43,889 - ERROR - Error during definition insertion for 'bulag' (ID: 11), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,894 - INFO - Word 'bungoe' (akl) created (ID: 12) from source 'Project Marayum'.
+2025-04-03 23:35:43,896 - ERROR - Error during definition insertion for 'bungoe' (ID: 12), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,903 - INFO - Word 'kindat' (akl) created (ID: 13) from source 'Project Marayum'.
+2025-04-03 23:35:43,905 - ERROR - Error during definition insertion for 'kindat' (ID: 13), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,910 - INFO - Word 'matimsog' (akl) created (ID: 14) from source 'Project Marayum'.
+2025-04-03 23:35:43,912 - ERROR - Error during definition insertion for 'matimsog' (ID: 14), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,918 - INFO - Word 'pana' (akl) created (ID: 15) from source 'Project Marayum'.
+2025-04-03 23:35:43,920 - ERROR - Error during definition insertion for 'pana' (ID: 15), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,927 - INFO - Finished processing ..\data\marayum_dictionaries\aklanon-english_processed.json. Final commit successful.
+2025-04-03 23:35:43,928 - INFO - Stats for ..\data\marayum_dictionaries\aklanon-english_processed.json: Processed: 7, Definitions: 0, Relations: 0, Pronunciations: 0, Etymologies: 0, Credits: 7, Skipped: 0, Errors: 0
+2025-04-03 23:35:43,928 - WARNING - Error summary for ..\data\marayum_dictionaries\aklanon-english_processed.json: {'DefinitionInsertError: TypeError': 7}
+2025-04-03 23:35:43,929 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\surigaonon-english_processed.json with source: Project Marayum
+2025-04-03 23:35:43,932 - INFO - Found 18 word entries in ..\data\marayum_dictionaries\surigaonon-english_processed.json
+2025-04-03 23:35:43,932 - INFO - Determined language code 'sgd' for ..\data\marayum_dictionaries\surigaonon-english_processed.json from base language 'Surigaonon'.
+2025-04-03 23:35:43,943 - INFO - Word 'aban' (sgd) created (ID: 16) from source 'Project Marayum'.
+2025-04-03 23:35:43,945 - ERROR - Error during definition insertion for 'aban' (ID: 16), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,952 - INFO - Word 'adlip' (sgd) created (ID: 17) from source 'Project Marayum'.
+2025-04-03 23:35:43,954 - ERROR - Error during definition insertion for 'adlip' (ID: 17), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,962 - INFO - Word 'agtang' (sgd) created (ID: 18) from source 'Project Marayum'.
+2025-04-03 23:35:43,964 - ERROR - Error during definition insertion for 'agtang' (ID: 18), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,971 - INFO - Word 'alibuybuy' (sgd) created (ID: 19) from source 'Project Marayum'.
+2025-04-03 23:35:43,972 - ERROR - Error during definition insertion for 'alibuybuy' (ID: 19), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,978 - INFO - Word 'aling' (sgd) created (ID: 20) from source 'Project Marayum'.
+2025-04-03 23:35:43,980 - ERROR - Error during definition insertion for 'aling' (ID: 20), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,987 - INFO - Word 'ambaw' (sgd) created (ID: 21) from source 'Project Marayum'.
+2025-04-03 23:35:43,988 - ERROR - Error during definition insertion for 'ambaw' (ID: 21), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:43,995 - INFO - Word 'apiki' (sgd) created (ID: 22) from source 'Project Marayum'.
+2025-04-03 23:35:43,997 - ERROR - Error during definition insertion for 'apiki' (ID: 22), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,002 - INFO - Word 'ayum-um' (sgd) created (ID: 23) from source 'Project Marayum'.
+2025-04-03 23:35:44,004 - ERROR - Error during definition insertion for 'ayum-um' (ID: 23), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,015 - INFO - Word 'badjhu' (sgd) created (ID: 24) from source 'Project Marayum'.
+2025-04-03 23:35:44,017 - ERROR - Error during definition insertion for 'badjhu' (ID: 24), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,025 - INFO - Word 'bagyay' (sgd) created (ID: 25) from source 'Project Marayum'.
+2025-04-03 23:35:44,027 - ERROR - Error during definition insertion for 'bagyay' (ID: 25), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,032 - INFO - Word 'bala' (sgd) created (ID: 26) from source 'Project Marayum'.
+2025-04-03 23:35:44,034 - ERROR - Error during definition insertion for 'bala' (ID: 26), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,041 - INFO - Word 'bang-ug' (sgd) created (ID: 27) from source 'Project Marayum'.
+2025-04-03 23:35:44,043 - ERROR - Error during definition insertion for 'bang-ug' (ID: 27), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,055 - INFO - Word 'baung' (sgd) created (ID: 28) from source 'Project Marayum'.
+2025-04-03 23:35:44,058 - ERROR - Error during definition insertion for 'baung' (ID: 28), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,065 - INFO - Word 'bija' (sgd) created (ID: 29) from source 'Project Marayum'.
+2025-04-03 23:35:44,067 - ERROR - Error during definition insertion for 'bija' (ID: 29), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,074 - INFO - Word 'biliting' (sgd) created (ID: 30) from source 'Project Marayum'.
+2025-04-03 23:35:44,076 - ERROR - Error during definition insertion for 'biliting' (ID: 30), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,083 - INFO - Word 'buwahan' (sgd) created (ID: 31) from source 'Project Marayum'.
+2025-04-03 23:35:44,085 - ERROR - Error during definition insertion for 'buwahan' (ID: 31), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,092 - INFO - Word 'buyubud' (sgd) created (ID: 32) from source 'Project Marayum'.
+2025-04-03 23:35:44,094 - ERROR - Error during definition insertion for 'buyubud' (ID: 32), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,101 - INFO - Word 'buyus' (sgd) created (ID: 33) from source 'Project Marayum'.
+2025-04-03 23:35:44,103 - ERROR - Error during definition insertion for 'buyus' (ID: 33), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,111 - INFO - Finished processing ..\data\marayum_dictionaries\surigaonon-english_processed.json. Final commit successful.
+2025-04-03 23:35:44,112 - INFO - Stats for ..\data\marayum_dictionaries\surigaonon-english_processed.json: Processed: 18, Definitions: 0, Relations: 0, Pronunciations: 18, Etymologies: 0, Credits: 18, Skipped: 0, Errors: 0
+2025-04-03 23:35:44,116 - WARNING - Error summary for ..\data\marayum_dictionaries\surigaonon-english_processed.json: {'DefinitionInsertError: TypeError': 18}
+2025-04-03 23:35:44,117 - INFO - Processing Marayum file: ..\data\marayum_dictionaries\bikol-boienen-english_processed.json with source: Project Marayum
+2025-04-03 23:35:44,123 - INFO - Found 88 word entries in ..\data\marayum_dictionaries\bikol-boienen-english_processed.json
+2025-04-03 23:35:44,125 - WARNING - No language code mapping found for: bikol-boie&#x27;nen
+2025-04-03 23:35:44,125 - INFO - Determined language code 'bik' for ..\data\marayum_dictionaries\bikol-boienen-english_processed.json from base language 'Bikol-Boie&#x27;nen'.
+2025-04-03 23:35:44,142 - INFO - Word 'agran' (bik) created (ID: 34) from source 'Project Marayum'.
+2025-04-03 23:35:44,145 - ERROR - Error during definition insertion for 'agran' (ID: 34), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,155 - INFO - Word 'alangaang' (bik) created (ID: 35) from source 'Project Marayum'.
+2025-04-03 23:35:44,157 - ERROR - Error during definition insertion for 'alangaang' (ID: 35), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,165 - INFO - Word 'arasa-as' (bik) created (ID: 36) from source 'Project Marayum'.
+2025-04-03 23:35:44,188 - INFO - Word 'ewrasa' (bik) created (ID: 37) from source 'Project Marayum'.
+2025-04-03 23:35:44,197 - ERROR - Error during definition insertion for 'arasa-as' (ID: 36), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,209 - INFO - Word 'atep' (bik) created (ID: 38) from source 'Project Marayum'.
+2025-04-03 23:35:44,212 - ERROR - Error during definition insertion for 'atep' (ID: 38), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,220 - INFO - Word 'axad' (bik) created (ID: 39) from source 'Project Marayum'.
+2025-04-03 23:35:44,225 - ERROR - Error during definition insertion for 'axad' (ID: 39), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,234 - INFO - Word 'balde'' (bik) created (ID: 40) from source 'Project Marayum'.
+2025-04-03 23:35:44,237 - ERROR - Error during definition insertion for 'balde'' (ID: 40), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,245 - INFO - Word 'gasa'' (bik) created (ID: 41) from source 'Project Marayum'.
+2025-04-03 23:35:44,257 - INFO - Word 'bangbangan' (bik) created (ID: 42) from source 'Project Marayum'.
+2025-04-03 23:35:44,260 - ERROR - Error during definition insertion for 'bangbangan' (ID: 42), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,267 - INFO - Word 'rapog' (bik) created (ID: 43) from source 'Project Marayum'.
+2025-04-03 23:35:44,273 - INFO - Word 'songo' (bik) created (ID: 44) from source 'Project Marayum'.
+2025-04-03 23:35:44,279 - INFO - Word 'banggeraan' (bik) created (ID: 45) from source 'Project Marayum'.
+2025-04-03 23:35:44,281 - ERROR - Error during definition insertion for 'banggeraan' (ID: 45), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,288 - INFO - Word 'banig' (bik) created (ID: 46) from source 'Project Marayum'.
+2025-04-03 23:35:44,290 - ERROR - Error during definition insertion for 'banig' (ID: 46), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,298 - INFO - Word 'baxey' (bik) created (ID: 47) from source 'Project Marayum'.
+2025-04-03 23:35:44,300 - ERROR - Error during definition insertion for 'baxey' (ID: 47), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,313 - INFO - Word 'be-ew' (bik) created (ID: 48) from source 'Project Marayum'.
+2025-04-03 23:35:44,315 - ERROR - Error during definition insertion for 'be-ew' (ID: 48), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,321 - INFO - Word 'boko-boko' (bik) created (ID: 49) from source 'Project Marayum'.
+2025-04-03 23:35:44,326 - INFO - Word 'begkes1' (bik) created (ID: 50) from source 'Project Marayum'.
+2025-04-03 23:35:44,328 - ERROR - Error during definition insertion for 'begkes1' (ID: 50), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,337 - INFO - Word 'begkes2' (bik) created (ID: 51) from source 'Project Marayum'.
+2025-04-03 23:35:44,339 - ERROR - Error during definition insertion for 'begkes2' (ID: 51), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,344 - INFO - Word 'begkes' (bik) created (ID: 52) from source 'Project Marayum'.
+2025-04-03 23:35:44,350 - INFO - Word 'bexa'' (bik) created (ID: 53) from source 'Project Marayum'.
+2025-04-03 23:35:44,352 - ERROR - Error during definition insertion for 'bexa'' (ID: 53), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,361 - INFO - Word 'biga'' (bik) created (ID: 54) from source 'Project Marayum'.
+2025-04-03 23:35:44,363 - ERROR - Error during definition insertion for 'biga'' (ID: 54), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,369 - INFO - Word 'potnay' (bik) created (ID: 55) from source 'Project Marayum'.
+2025-04-03 23:35:44,375 - INFO - Word 'potnayen' (bik) created (ID: 56) from source 'Project Marayum'.
+2025-04-03 23:35:44,380 - INFO - Word 'boie'nen' (bik) created (ID: 57) from source 'Project Marayum'.
+2025-04-03 23:35:44,382 - ERROR - Error during definition insertion for 'boie'nen' (ID: 57), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,388 - ERROR - Error during definition insertion for 'Boie'nen' (ID: 57), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,395 - ERROR - Error during definition insertion for 'boko-boko' (ID: 49), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,403 - INFO - Word 'bolong' (bik) created (ID: 58) from source 'Project Marayum'.
+2025-04-03 23:35:44,406 - ERROR - Error during definition insertion for 'bolong' (ID: 58), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,412 - INFO - Word 'dake-xe'' (bik) created (ID: 59) from source 'Project Marayum'.
+2025-04-03 23:35:44,414 - ERROR - Error during definition insertion for 'dake-xe'' (ID: 59), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,421 - INFO - Word 'e-ket' (bik) created (ID: 60) from source 'Project Marayum'.
+2025-04-03 23:35:44,423 - ERROR - Error during definition insertion for 'e-ket' (ID: 60), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,429 - INFO - Word 'pokot' (bik) created (ID: 61) from source 'Project Marayum'.
+2025-04-03 23:35:44,435 - INFO - Word 'elka' (bik) created (ID: 62) from source 'Project Marayum'.
+2025-04-03 23:35:44,437 - ERROR - Error during definition insertion for 'elka' (ID: 62), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,447 - ERROR - Error during definition insertion for 'ewrasa' (ID: 37), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,462 - INFO - Word 'e-xa'' (bik) created (ID: 63) from source 'Project Marayum'.
+2025-04-03 23:35:44,463 - ERROR - Error during definition insertion for 'e-xa'' (ID: 63), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,470 - INFO - Word 'ex-ex' (bik) created (ID: 64) from source 'Project Marayum'.
+2025-04-03 23:35:44,471 - ERROR - Error during definition insertion for 'ex-ex' (ID: 64), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,477 - ERROR - Error during definition insertion for 'gasa'' (ID: 41), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,485 - INFO - Word 'gere'gede'' (bik) created (ID: 65) from source 'Project Marayum'.
+2025-04-03 23:35:44,487 - ERROR - Error during definition insertion for 'gere'gede'' (ID: 65), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,494 - INFO - Word 'gobing' (bik) created (ID: 66) from source 'Project Marayum'.
+2025-04-03 23:35:44,496 - ERROR - Error during definition insertion for 'gobing' (ID: 66), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,502 - INFO - Word 'porao' (bik) created (ID: 67) from source 'Project Marayum'.
+2025-04-03 23:35:44,507 - INFO - Word 'inang' (bik) created (ID: 68) from source 'Project Marayum'.
+2025-04-03 23:35:44,509 - ERROR - Error during definition insertion for 'inang' (ID: 68), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,514 - INFO - Word 'kabeg' (bik) created (ID: 69) from source 'Project Marayum'.
+2025-04-03 23:35:44,516 - ERROR - Error during definition insertion for 'kabeg' (ID: 69), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,521 - INFO - Word 'kakabgan' (bik) created (ID: 70) from source 'Project Marayum'.
+2025-04-03 23:35:44,525 - INFO - Word 'kabelbegan' (bik) created (ID: 71) from source 'Project Marayum'.
+2025-04-03 23:35:44,527 - ERROR - Error during definition insertion for 'kabelbegan' (ID: 71), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,535 - INFO - Word 'ka-esad' (bik) created (ID: 72) from source 'Project Marayum'.
+2025-04-03 23:35:44,537 - ERROR - Error during definition insertion for 'ka-esad' (ID: 72), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,543 - INFO - Word 'sexed' (bik) created (ID: 73) from source 'Project Marayum'.
+2025-04-03 23:35:44,548 - ERROR - Error during definition insertion for 'kakabgan' (ID: 70), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,569 - INFO - Word 'kambang' (bik) created (ID: 74) from source 'Project Marayum'.
+2025-04-03 23:35:44,571 - ERROR - Error during definition insertion for 'kambang' (ID: 74), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,578 - INFO - Word 'kilot' (bik) created (ID: 75) from source 'Project Marayum'.
+2025-04-03 23:35:44,586 - INFO - Word 'kaponawan' (bik) created (ID: 76) from source 'Project Marayum'.
+2025-04-03 23:35:44,588 - ERROR - Error during definition insertion for 'kaponawan' (ID: 76), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,595 - INFO - Word 'ponaw' (bik) created (ID: 77) from source 'Project Marayum'.
+2025-04-03 23:35:44,603 - INFO - Word 'karaba' (bik) created (ID: 78) from source 'Project Marayum'.
+2025-04-03 23:35:44,605 - ERROR - Error during definition insertion for 'karaba' (ID: 78), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,613 - INFO - Word 'katabang' (bik) created (ID: 79) from source 'Project Marayum'.
+2025-04-03 23:35:44,615 - ERROR - Error during definition insertion for 'katabang' (ID: 79), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,623 - INFO - Word 'katig' (bik) created (ID: 80) from source 'Project Marayum'.
+2025-04-03 23:35:44,625 - ERROR - Error during definition insertion for 'katig' (ID: 80), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,633 - ERROR - Error during definition insertion for 'kilot' (ID: 75), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,643 - INFO - Word 'kinatigan' (bik) created (ID: 81) from source 'Project Marayum'.
+2025-04-03 23:35:44,645 - ERROR - Error during definition insertion for 'kinatigan' (ID: 81), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,659 - INFO - Word 'koyomad' (bik) created (ID: 82) from source 'Project Marayum'.
+2025-04-03 23:35:44,662 - ERROR - Error during definition insertion for 'koyomad' (ID: 82), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,670 - INFO - Word 'kwintas' (bik) created (ID: 83) from source 'Project Marayum'.
+2025-04-03 23:35:44,672 - ERROR - Error during definition insertion for 'kwintas' (ID: 83), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,684 - INFO - Word 'lagwerta' (bik) created (ID: 84) from source 'Project Marayum'.
+2025-04-03 23:35:44,686 - ERROR - Error during definition insertion for 'lagwerta' (ID: 84), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,693 - INFO - Word 'lapok' (bik) created (ID: 85) from source 'Project Marayum'.
+2025-04-03 23:35:44,696 - ERROR - Error during definition insertion for 'lapok' (ID: 85), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,704 - INFO - Word 'lawed' (bik) created (ID: 86) from source 'Project Marayum'.
+2025-04-03 23:35:44,706 - ERROR - Error during definition insertion for 'lawed' (ID: 86), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,714 - INFO - Word 'sowong' (bik) created (ID: 87) from source 'Project Marayum'.
+2025-04-03 23:35:44,719 - INFO - Word 'lemay' (bik) created (ID: 88) from source 'Project Marayum'.
+2025-04-03 23:35:44,722 - ERROR - Error during definition insertion for 'lemay' (ID: 88), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,729 - INFO - Word 'lobid' (bik) created (ID: 89) from source 'Project Marayum'.
+2025-04-03 23:35:44,731 - ERROR - Error during definition insertion for 'lobid' (ID: 89), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,738 - INFO - Word 'lokaba' (bik) created (ID: 90) from source 'Project Marayum'.
+2025-04-03 23:35:44,740 - ERROR - Error during definition insertion for 'lokaba' (ID: 90), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,750 - INFO - Word 'lo-og' (bik) created (ID: 91) from source 'Project Marayum'.
+2025-04-03 23:35:44,752 - ERROR - Error during definition insertion for 'lo-og' (ID: 91), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,758 - INFO - Word 'to'wang' (bik) created (ID: 92) from source 'Project Marayum'.
+2025-04-03 23:35:44,763 - INFO - Word 'mare'gen' (bik) created (ID: 93) from source 'Project Marayum'.
+2025-04-03 23:35:44,764 - ERROR - Error during definition insertion for 'mare'gen' (ID: 93), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,774 - INFO - Word 'meya' (bik) created (ID: 94) from source 'Project Marayum'.
+2025-04-03 23:35:44,776 - ERROR - Error during definition insertion for 'meya' (ID: 94), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,784 - INFO - Word 'meya-meya' (bik) created (ID: 95) from source 'Project Marayum'.
+2025-04-03 23:35:44,788 - INFO - Word 'nameme'yan' (bik) created (ID: 96) from source 'Project Marayum'.
+2025-04-03 23:35:44,797 - ERROR - Error during definition insertion for 'meya-meya' (ID: 95), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,812 - INFO - Word 'moara' (bik) created (ID: 97) from source 'Project Marayum'.
+2025-04-03 23:35:44,813 - ERROR - Error during definition insertion for 'moara' (ID: 97), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,820 - ERROR - Error during definition insertion for 'nameme'yan' (ID: 96), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,832 - INFO - Word 'ngi'ngi'' (bik) created (ID: 98) from source 'Project Marayum'.
+2025-04-03 23:35:44,834 - ERROR - Error during definition insertion for 'ngi'ngi'' (ID: 98), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,842 - INFO - Word 'opaw' (bik) created (ID: 99) from source 'Project Marayum'.
+2025-04-03 23:35:44,844 - ERROR - Error during definition insertion for 'opaw' (ID: 99), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,852 - INFO - Word 'oripen' (bik) created (ID: 100) from source 'Project Marayum'.
+2025-04-03 23:35:44,854 - ERROR - Error during definition insertion for 'oripen' (ID: 100), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,865 - INFO - Word 'owonan' (bik) created (ID: 101) from source 'Project Marayum'.
+2025-04-03 23:35:44,866 - ERROR - Error during definition insertion for 'owonan' (ID: 101), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,872 - INFO - Word 'pinaowonan' (bik) created (ID: 102) from source 'Project Marayum'.
+2025-04-03 23:35:44,879 - INFO - Word 'pana'' (bik) created (ID: 103) from source 'Project Marayum'.
+2025-04-03 23:35:44,881 - ERROR - Error during definition insertion for 'pana'' (ID: 103), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,888 - INFO - Word 'paso'' (bik) created (ID: 104) from source 'Project Marayum'.
+2025-04-03 23:35:44,890 - ERROR - Error during definition insertion for 'paso'' (ID: 104), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,897 - INFO - Word 'sirob' (bik) created (ID: 105) from source 'Project Marayum'.
+2025-04-03 23:35:44,907 - ERROR - Error during definition insertion for 'pinaowonan' (ID: 102), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
+2025-04-03 23:35:44,917 - INFO - Word 'pingig' (bik) created (ID: 106) from source 'Project Marayum'.
+2025-04-03 23:35:44,919 - ERROR - Error during definition insertion for 'pingig' (ID: 106), Def 1: insert_definition() got an unexpected keyword argument 'metadata'
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8886, in process_marayum_json
+    def_id = insert_definition(
+       cur,
+    ...<5 lines>...
+       metadata=Json(def_metadata) if def_metadata else None
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 559, in wrapper
+    result = func(cur, *args, **kwargs)
+TypeError: insert_definition() got an unexpected keyword argument 'metadata'
