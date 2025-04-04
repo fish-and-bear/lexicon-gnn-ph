@@ -515,7 +515,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                      }
                   }}
                   sx={isWideScreen ? {
-                      borderRight: 1, borderColor: 'divider', minWidth: 240,
+                      borderRight: 1, borderColor: 'divider', minWidth: 180,
                       bgcolor: 'background.paper', pt: theme.spacing(1),
                       '& .MuiTab-root': { alignItems: 'flex-start', textAlign: 'left', minHeight: 48, textTransform: 'none', fontWeight: 500, pt: theme.spacing(1.5), pb: theme.spacing(1.5), pl: theme.spacing(2.5) },
                        // Use primary color for selected vertical tab text to match indicator

@@ -99,7 +99,7 @@ main {
 }
 
 .graph-container {
-  flex: 2;
+  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
