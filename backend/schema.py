@@ -18,7 +18,7 @@ from models import (
     WordForm as WordFormModel,
     WordTemplate as WordTemplateModel
 )
-from database import db_session, cached, invalidate_cache, get_cache_stats
+from backend.database import db_session, cached, invalidate_cache, get_cache_stats
 from dictionary_manager import RelationshipType, RelationshipCategory
 import json
 from typing import List, Dict, Any, Optional

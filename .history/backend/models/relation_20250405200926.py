@@ -1,0 +1,121 @@
+"""
+Relation model definition.
+"""
+
+from backend.database import db
+from datetime import datetime
+from sqlalchemy.orm import validates
+from .base_model import BaseModel
+from .mixins.basic_columns import BasicColumnsMixin
+import json
+from enum import Enum
+from sqlalchemy.dialects.postgresql import JSONB
+
+class RelationType(Enum):
+    """Enumeration of valid relation types."""
+    SYNONYM = 'synonym'
+    ANTONYM = 'antonym'
+    HYPERNYM = 'hypernym'
+    HYPONYM = 'hyponym'
+    MERONYM = 'meronym'
+    HOLONYM = 'holonym'
+    DERIVED = 'derived'
+    ROOT = 'root'
+    VARIANT = 'variant'
+    RELATED = 'related'
+
+class Relation(BaseModel, BasicColumnsMixin):
+    """Model for relationships between words (synonyms, antonyms, etc.)."""
+    __tablename__ = 'relations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    from_word_id = db.Column(db.Integer, db.ForeignKey('words.id', ondelete='CASCADE'), nullable=False, index=True)
+    to_word_id = db.Column(db.Integer, db.ForeignKey('words.id', ondelete='CASCADE'), nullable=False, index=True)
+    relation_type = db.Column(db.String(50), nullable=False, index=True)
+    sources = db.Column(db.Text)
+    
+    # Relationships
+    source_word = db.relationship('Word', foreign_keys=[from_word_id], back_populates='outgoing_relations', lazy='selectin')
+    target_word = db.relationship('Word', foreign_keys=[to_word_id], back_populates='incoming_relations', lazy='selectin')
+    
+    __table_args__ = (
+        db.UniqueConstraint('from_word_id', 'to_word_id', 'relation_type', name='relations_unique'),
+        db.Index('idx_relations_from', 'from_word_id'),
+        db.Index('idx_relations_to', 'to_word_id'),
+        db.Index('idx_relations_type', 'relation_type')
+    )
+    
+    @validates('relation_type')
+    def validate_relation_type(self, key, value):
+        """Validate relation type."""
+        if not value:
+            raise ValueError("Relation type cannot be empty")
+        if not isinstance(value, str):
+            raise ValueError("Relation type must be a string")
+        value = value.strip().lower()
+        if len(value) > 50:
+            raise ValueError("Relation type cannot exceed 50 characters")
+        try:
+            RelationType(value)
+        except ValueError:
+            raise ValueError(f"Invalid relation type. Must be one of: {', '.join(t.value for t in RelationType)}")
+        return value
+    
+    def __init__(self, **kwargs):
+        metadata = kwargs.pop('metadata', None)
+        if metadata is not None:
+            # Do nothing with metadata as the column is removed
+            pass
+        super().__init__(**kwargs)
+    
+    def __repr__(self) -> str:
+        return f'<Relation {self.id}: {self.source_word.lemma} -> {self.target_word.lemma} ({self.relation_type})>'
+    
+    def to_dict(self):
+        """Convert relation to dictionary."""
+        return {
+            'id': self.id,
+            'relation_type': self.relation_type,
+            'from_word_id': self.from_word_id,
+            'to_word_id': self.to_word_id,
+            'sources': self.sources,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
+    
+    @classmethod
+    def get_by_words(cls, from_word_id: int, to_word_id: int) -> list:
+        """Get all relations between two words."""
+        return cls.query.filter_by(
+            from_word_id=from_word_id,
+            to_word_id=to_word_id
+        ).all()
+    
+    @classmethod
+    def get_by_type(cls, relation_type: str) -> list:
+        """Get all relations of a specific type."""
+        return cls.query.filter_by(
+            relation_type=relation_type.strip().lower()
+        ).all()
+    
+    def get_inverse_type(self) -> str:
+        """Get the inverse relation type."""
+        inverse_map = {
+            RelationType.HYPERNYM.value: RelationType.HYPONYM.value,
+            RelationType.HYPONYM.value: RelationType.HYPERNYM.value,
+            RelationType.MERONYM.value: RelationType.HOLONYM.value,
+            RelationType.HOLONYM.value: RelationType.MERONYM.value,
+            RelationType.DERIVED.value: RelationType.ROOT.value,
+            RelationType.ROOT.value: RelationType.DERIVED.value
+        }
+        return inverse_map.get(self.relation_type, self.relation_type)
+    
+    def create_inverse(self) -> 'Relation':
+        """Create an inverse relation."""
+        return Relation(
+            from_word_id=self.to_word_id,
+            to_word_id=self.from_word_id,
+            relation_type=self.get_inverse_type(),
+            sources=self.sources
+            # Removed metadata
+        ) 

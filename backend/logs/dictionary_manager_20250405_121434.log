@@ -1,0 +1,31 @@
+2025-04-05 12:14:34,252 - INFO - Starting lookup for word: 'harot'
+2025-04-05 12:14:34,346 - INFO - pg_trgm extension installed: True
+2025-04-05 12:14:34,347 - INFO - Executing exact match query for 'harot'
+2025-04-05 12:14:35,153 - INFO - Found 1 exact matches
+2025-04-05 12:14:35,153 - INFO - Processing result 1/1
+2025-04-05 12:14:35,154 - INFO - Word ID: 38587
+2025-04-05 12:14:35,154 - INFO - Lemma: harot
+2025-04-05 12:14:35,155 - INFO - Language code: tl
+2025-04-05 12:14:35,161 - INFO - Querying pronunciations for word_id 38587
+2025-04-05 12:14:35,162 - INFO - Found 4 pronunciations
+2025-04-05 12:14:35,164 - WARNING - Error parsing pronunciation sources: Expecting value: line 1 column 1 (char 0)
+2025-04-05 12:14:35,165 - WARNING - Error parsing pronunciation sources: Expecting value: line 1 column 1 (char 0)
+2025-04-05 12:14:35,166 - WARNING - Error parsing pronunciation sources: Expecting value: line 1 column 1 (char 0)
+2025-04-05 12:14:35,167 - WARNING - Error parsing pronunciation sources: Expecting value: line 1 column 1 (char 0)
+2025-04-05 12:14:35,167 - INFO - Querying etymologies for word_id 38587
+2025-04-05 12:14:35,174 - INFO - Found 0 etymologies
+2025-04-05 12:14:35,174 - INFO - Querying definitions for word_id 38587
+2025-04-05 12:14:35,182 - INFO - Found 10 definitions
+2025-04-05 12:14:35,184 - INFO - Processing definition 1/10
+2025-04-05 12:14:35,185 - INFO - Processing definition 2/10
+2025-04-05 12:14:35,186 - INFO - Processing definition 3/10
+2025-04-05 12:14:35,187 - INFO - Processing definition 4/10
+2025-04-05 12:14:35,189 - INFO - Processing definition 5/10
+2025-04-05 12:14:35,189 - INFO - Processing definition 6/10
+2025-04-05 12:14:35,190 - INFO - Processing definition 7/10
+2025-04-05 12:14:35,191 - INFO - Processing definition 8/10
+2025-04-05 12:14:35,191 - INFO - Processing definition 9/10
+2025-04-05 12:14:35,192 - INFO - Processing definition 10/10
+2025-04-05 12:14:35,192 - INFO - Querying relations for word_id 38587
+2025-04-05 12:14:35,201 - INFO - Found 27 relations
+2025-04-05 12:14:35,214 - INFO - Database connection closed

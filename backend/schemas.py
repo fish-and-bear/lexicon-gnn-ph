@@ -1,0 +1,339 @@
+"""
+Marshmallow schemas for API serialization with enhanced validation and performance.
+"""
+
+from marshmallow import Schema, fields, pre_dump, post_dump, validates, ValidationError
+from marshmallow.validate import Length, Range, OneOf
+import datetime
+from typing import Dict, Any, List, Optional, Union
+import json
+
+class MetadataField(fields.Dict):
+    """Custom field for handling JSONB metadata fields."""
+    def _serialize(self, value, attr, obj, **kwargs):
+        if value is None:
+            return {}
+        return super()._serialize(value, attr, obj, **kwargs)
+        
+    def _deserialize(self, value, attr, data, **kwargs):
+        if value is None:
+            return {}
+        if isinstance(value, str):
+            try:
+                value = json.loads(value)
+            except json.JSONDecodeError:
+                raise ValidationError("Invalid JSON format for metadata")
+        return super()._deserialize(value, attr, data, **kwargs)
+
+class DefinitionLinkSchema(Schema):
+    """Schema for definition links."""
+    id = fields.Integer(dump_only=True)
+    definition_id = fields.Integer(required=True)
+    link_type = fields.String(required=True)
+    target_url = fields.String(required=True)
+    display_text = fields.String()
+    is_external = fields.Boolean(dump_default=False)
+    tags = MetadataField(dump_default={})
+    link_metadata = MetadataField(dump_default={})
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+
+class DefinitionCategorySchema(Schema):
+    """Schema for definition categories."""
+    id = fields.Integer(dump_only=True)
+    definition_id = fields.Integer(required=True)
+    category_name = fields.String(required=True)
+    description = fields.String()
+    tags = MetadataField(dump_default={})
+    category_metadata = MetadataField(dump_default={})
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+
+class DefinitionSchema(Schema):
+    """Schema for word definitions."""
+    id = fields.Integer(dump_only=True)
+    word_id = fields.Integer(dump_only=True)
+    definition_text = fields.String(required=True, validate=Length(min=1))
+    original_pos = fields.String(validate=Length(min=1, max=100))
+    standardized_pos_id = fields.Integer()
+    standardized_pos = fields.Nested("PartOfSpeechSchema", dump_only=True)
+    notes = fields.String()
+    examples = fields.List(fields.Dict(), dump_default=[])
+    usage_notes = fields.String()
+    cultural_notes = fields.String()
+    etymology_notes = fields.String()
+    scientific_name = fields.String()
+    verified = fields.Boolean(dump_default=False)
+    verification_notes = fields.String()
+    tags = MetadataField(dump_default={})
+    metadata = MetadataField(dump_default={})
+    popularity_score = fields.Float(dump_default=0.0)
+    links = fields.List(fields.Nested(DefinitionLinkSchema), dump_default=[])
+    categories = fields.List(fields.Nested(DefinitionCategorySchema), dump_default=[])
+    
+    # Track timestamps
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    
+    @post_dump(pass_many=True)
+    def format_standardized_pos(self, data, many, **kwargs):
+        """Format the standardized part of speech into a string representation."""
+        if many:
+            for item in data:
+                if item.get('standardized_pos'):
+                    pos = item['standardized_pos']
+                    item['standardized_pos_code'] = pos.get('code')
+                    item['standardized_pos_name'] = pos.get('name')
+        else:
+            if data.get('standardized_pos'):
+                pos = data['standardized_pos']
+                data['standardized_pos_code'] = pos.get('code')
+                data['standardized_pos_name'] = pos.get('name')
+        return data
+
+class PartOfSpeechSchema(Schema):
+    """Schema for parts of speech."""
+    id = fields.Integer(dump_only=True)
+    code = fields.String(required=True, validate=Length(min=1, max=10))
+    name = fields.String(required=True, validate=Length(min=1, max=100))
+    description = fields.String()
+
+class PronunciationSchema(Schema):
+    """Schema for pronunciations."""
+    id = fields.Integer(dump_only=True)
+    word_id = fields.Integer(dump_only=True)
+    type = fields.String(required=True, validate=Length(min=1, max=50))
+    value = fields.String(required=True) 
+    tags = MetadataField(dump_default={})
+    pronunciation_metadata = MetadataField(dump_default={})
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+
+class RelationSchema(Schema):
+    """Schema for relations."""
+    id = fields.Integer(dump_only=True)
+    from_word_id = fields.Integer(required=True)
+    to_word_id = fields.Integer(required=True)
+    relation_type = fields.String(required=True)
+    sources = fields.List(fields.String(), dump_default=[])
+    metadata = MetadataField(dump_default={})
+    source_word = fields.Nested("WordSimpleSchema", dump_only=True)
+    target_word = fields.Nested("WordSimpleSchema", dump_only=True)
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    
+    @pre_dump
+    def process_sources(self, data, **kwargs):
+        """Convert sources from string to list if needed."""
+        if hasattr(data, 'sources') and isinstance(data.sources, str):
+            data._sources_list = data.sources.split(', ') if data.sources else []
+        return data
+    
+    @post_dump
+    def format_sources(self, data, **kwargs):
+        """Ensure sources is a list in output."""
+        if isinstance(data.get('sources'), str):
+            data['sources'] = data['sources'].split(', ') if data['sources'] else []
+        return data
+
+class AffixationSchema(Schema):
+    """Schema for affixations."""
+    id = fields.Integer(dump_only=True)
+    root_word_id = fields.Integer(required=True)
+    affixed_word_id = fields.Integer(required=True)
+    affix_type = fields.String(required=True)
+    sources = fields.List(fields.String(), dump_default=[])
+    metadata = MetadataField(dump_default={})
+    root_word = fields.Nested("WordSimpleSchema", dump_only=True)
+    affixed_word = fields.Nested("WordSimpleSchema", dump_only=True)
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    
+    @pre_dump
+    def process_sources(self, data, **kwargs):
+        """Convert sources from string to list if needed."""
+        if hasattr(data, 'sources') and isinstance(data.sources, str):
+            data._sources_list = data.sources.split(', ') if data.sources else []
+        return data
+    
+    @post_dump
+    def format_sources(self, data, **kwargs):
+        """Ensure sources is a list in output."""
+        if isinstance(data.get('sources'), str):
+            data['sources'] = data['sources'].split(', ') if data['sources'] else []
+        return data
+
+class EtymologySchema(Schema):
+    """Schema for etymologies."""
+    id = fields.Integer(dump_only=True)
+    word_id = fields.Integer(required=True)
+    etymology_text = fields.String(required=True)
+    normalized_components = fields.String()
+    etymology_structure = fields.String()
+    language_codes = fields.List(fields.String(), dump_default=[])
+    sources = fields.List(fields.String(), dump_default=[])
+    metadata = MetadataField(dump_default={})
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    
+    @pre_dump
+    def process_fields(self, data, **kwargs):
+        """Preprocess language_codes and sources from strings to lists."""
+        if hasattr(data, 'language_codes') and isinstance(data.language_codes, str):
+            data._language_codes_list = data.language_codes.split(',') if data.language_codes else []
+            
+        if hasattr(data, 'sources') and isinstance(data.sources, str):
+            data._sources_list = data.sources.split(', ') if data.sources else []
+        return data
+    
+    @post_dump
+    def format_fields(self, data, **kwargs):
+        """Ensure fields are properly formatted in output."""
+        # Format language_codes as a list
+        if isinstance(data.get('language_codes'), str):
+            data['language_codes'] = data['language_codes'].split(',') if data['language_codes'] else []
+            
+        # Format sources as a list
+        if isinstance(data.get('sources'), str):
+            data['sources'] = data['sources'].split(', ') if data['sources'] else []
+            
+        return data
+
+class CreditSchema(Schema):
+    """Schema for credits."""
+    id = fields.Integer(dump_only=True)
+    word_id = fields.Integer(required=True)
+    credit = fields.String(required=True)
+    sources = fields.List(fields.String(), dump_default=[])
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    
+    @pre_dump
+    def process_sources(self, data, **kwargs):
+        """Convert sources from string to list if needed."""
+        if hasattr(data, 'sources') and isinstance(data.sources, str):
+            data._sources_list = data.sources.split(', ') if data.sources else []
+        return data
+    
+    @post_dump
+    def format_sources(self, data, **kwargs):
+        """Ensure sources is a list in output."""
+        if isinstance(data.get('sources'), str):
+            data['sources'] = data['sources'].split(', ') if data['sources'] else []
+        return data
+
+class DefinitionRelationSchema(Schema):
+    """Schema for definition relations."""
+    id = fields.Integer(dump_only=True)
+    definition_id = fields.Integer(required=True)
+    word_id = fields.Integer(required=True)
+    relation_type = fields.String(required=True)
+    notes = fields.String()
+    metadata = MetadataField(dump_default={})
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    
+    # Relationships
+    definition = fields.Nested("DefinitionSchema", dump_only=True)
+    word = fields.Nested("WordSimpleSchema", dump_only=True)
+
+class WordFormSchema(Schema):
+    """Schema for word forms."""
+    id = fields.Integer(dump_only=True)
+    word_id = fields.Integer(required=True)
+    form_type = fields.String(required=True)
+    form_value = fields.String(required=True)
+    notes = fields.String()
+    metadata = MetadataField(dump_default={})
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+
+class WordTemplateSchema(Schema):
+    """Schema for word templates."""
+    id = fields.Integer(dump_only=True)
+    word_id = fields.Integer(required=True)
+    template_type = fields.String(required=True)
+    template_pattern = fields.String(required=True)
+    notes = fields.String()
+    examples = fields.List(fields.Dict(), dump_default=[])
+    metadata = MetadataField(dump_default={})
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+
+class WordSimpleSchema(Schema):
+    """Simple schema for word references."""
+    id = fields.Integer(dump_only=True)
+    lemma = fields.String(required=True)
+    normalized_lemma = fields.String(dump_only=True)
+    language_code = fields.String(dump_default='tl')
+    has_baybayin = fields.Boolean(dump_default=False)
+    baybayin_form = fields.String()
+    romanized_form = fields.String(dump_only=True)
+    root_word_id = fields.Integer()
+    is_root = fields.Boolean(dump_only=True)
+    
+    @post_dump
+    def add_is_root(self, data, **kwargs):
+        """Add is_root for convenience."""
+        if 'root_word_id' in data:
+            data['is_root'] = data['root_word_id'] is None
+        return data
+
+class WordSchema(Schema):
+    """Schema for word serialization."""
+    id = fields.Integer(dump_only=True)
+    lemma = fields.String(required=True, validate=Length(min=1))
+    normalized_lemma = fields.String(dump_only=True)
+    language_code = fields.String(dump_default='tl', validate=Length(min=2, max=20))
+    has_baybayin = fields.Boolean(dump_default=False)
+    baybayin_form = fields.String()
+    romanized_form = fields.String(dump_only=True)
+    root_word_id = fields.Integer()
+    is_root = fields.Boolean(dump_only=True)
+    verified = fields.Boolean(dump_default=False)
+    verification_date = fields.DateTime()
+    verification_notes = fields.String()
+    completeness_score = fields.Float(dump_default=0.0, validate=Range(min=0.0, max=1.0))
+    pronunciation_data = MetadataField(dump_default={})
+    
+    definitions = fields.List(fields.Nested(DefinitionSchema), dump_default=[])
+    pronunciations = fields.List(fields.Nested(PronunciationSchema), dump_default=[])
+    etymologies = fields.List(fields.Nested(EtymologySchema), dump_default=[])
+    credits = fields.List(fields.Nested(CreditSchema), dump_default=[])
+    
+    # Relations and affixations
+    outgoing_relations = fields.List(fields.Nested(RelationSchema), dump_default=[])
+    incoming_relations = fields.List(fields.Nested(RelationSchema), dump_default=[])
+    root_affixations = fields.List(fields.Nested(AffixationSchema), dump_default=[])
+    affixed_affixations = fields.List(fields.Nested(AffixationSchema), dump_default=[])
+    
+    # Root word and derived words
+    root_word = fields.Nested(WordSimpleSchema, dump_only=True)
+    derived_words = fields.List(fields.Nested(WordSimpleSchema), dump_default=[])
+    
+    # Word forms, templates, and definition relations
+    forms = fields.List(fields.Nested(WordFormSchema), dump_default=[])
+    templates = fields.List(fields.Nested(WordTemplateSchema), dump_default=[])
+    definition_relations = fields.List(fields.Nested(DefinitionRelationSchema), dump_default=[])
+    related_definitions = fields.List(fields.Nested(DefinitionRelationSchema), dump_default=[])
+    
+    # Track timestamps
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    
+    @post_dump
+    def process_relations(self, data, **kwargs):
+        """Add a combined relations array for convenience."""
+        outgoing = data.get('outgoing_relations', [])
+        incoming = data.get('incoming_relations', [])
+        data['relations'] = outgoing + incoming
+        
+        # Add affixations combined array
+        root_affixations = data.get('root_affixations', [])
+        affixed_affixations = data.get('affixed_affixations', [])
+        data['affixations'] = root_affixations + affixed_affixations
+        
+        # Add derived property
+        data['is_root'] = data.get('root_word_id') is None
+        
+        return data 

@@ -1,0 +1,146 @@
+2025-04-04 20:56:55,314 - INFO - Starting table creation/update process.
+2025-04-04 20:56:55,666 - INFO - Tables created or updated successfully.
+2025-04-04 20:56:55,672 - INFO - Starting processing for Tagalog Words from ..\data\tagalog-words.json
+2025-04-04 20:56:55,672 - INFO - Processing Tagalog words from: ..\data\tagalog-words.json
+2025-04-04 20:56:55,672 - INFO - Using standardized source identifier: 'diksiyonaryo.ph'
+2025-04-04 20:56:56,619 - INFO - Found 65336 entries to process
+2025-04-04 20:56:59,014 - WARNING - Skipping self-relation for word ID 899, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:56:59,224 - WARNING - Skipping self-relation for word ID 995, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:56:59,225 - WARNING - Skipping self-relation for word ID 995, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:02,933 - WARNING - Skipping self-relation for word ID 2904, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:15,402 - WARNING - Skipping self-relation for word ID 5997, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:17,965 - WARNING - Skipping self-relation for word ID 6928, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:26,204 - WARNING - Skipping self-relation for word ID 9315, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:26,213 - WARNING - Skipping self-relation for word ID 9315, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:26,226 - WARNING - Skipping self-relation for word ID 9315, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:26,236 - WARNING - Skipping self-relation for word ID 9315, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:26,264 - WARNING - Skipping self-relation for word ID 9347, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:26,280 - WARNING - Skipping self-relation for word ID 9347, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:27,114 - WARNING - Skipping self-relation for word ID 9644, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:30,902 - WARNING - Skipping self-relation for word ID 10572, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:30,907 - WARNING - Skipping self-relation for word ID 10572, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:30,912 - WARNING - Skipping self-relation for word ID 10572, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:30,916 - WARNING - Skipping self-relation for word ID 10572, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:35,842 - WARNING - Skipping self-relation for word ID 11470, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:36,230 - WARNING - Skipping self-relation for word ID 11663, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:36,657 - WARNING - Skipping self-relation for word ID 11815, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:37,795 - WARNING - Skipping self-relation for word ID 12177, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:39,169 - WARNING - Skipping self-relation for word ID 12639, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:39,806 - WARNING - Skipping self-relation for word ID 12870, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:40,651 - WARNING - Skipping self-relation for word ID 13167, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,485 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,488 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,491 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,493 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,496 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,499 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,502 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,504 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:42,506 - WARNING - Skipping self-relation for word ID 13765, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:43,769 - WARNING - Skipping self-relation for word ID 14202, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:47,257 - WARNING - Skipping self-relation for word ID 15317, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:49,282 - WARNING - Skipping self-relation for word ID 15961, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:50,332 - WARNING - Skipping self-relation for word ID 16387, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:50,974 - WARNING - Skipping self-relation for word ID 16649, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:51,884 - WARNING - Skipping self-relation for word ID 16913, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:52,049 - WARNING - Skipping self-relation for word ID 16981, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:54,690 - WARNING - Skipping self-relation for word ID 17803, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:57:57,473 - WARNING - Skipping self-relation for word ID 7520, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:02,919 - WARNING - Skipping self-relation for word ID 15693, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:02,925 - WARNING - Skipping self-relation for word ID 15693, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:03,159 - WARNING - Skipping self-relation for word ID 19786, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:13,363 - WARNING - Skipping self-relation for word ID 22733, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:13,365 - WARNING - Skipping self-relation for word ID 22733, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:15,301 - WARNING - Skipping self-relation for word ID 23450, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:17,408 - WARNING - Skipping self-relation for word ID 20152, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:18,107 - WARNING - Skipping self-relation for word ID 24375, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:18,111 - WARNING - Skipping self-relation for word ID 24375, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:26,363 - WARNING - Skipping self-relation for word ID 26252, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:26,421 - WARNING - Skipping self-relation for word ID 13616, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:33,623 - WARNING - Skipping self-relation for word ID 27909, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:34,666 - WARNING - Skipping self-relation for word ID 23859, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:36,268 - WARNING - Skipping self-relation for word ID 28849, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:38,008 - WARNING - Skipping self-relation for word ID 29412, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:57,595 - WARNING - Skipping self-relation for word ID 33951, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:57,597 - WARNING - Skipping self-relation for word ID 33951, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:58,244 - WARNING - Skipping self-relation for word ID 34184, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:58,471 - WARNING - Skipping self-relation for word ID 34264, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:58,474 - WARNING - Skipping self-relation for word ID 34264, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:58,697 - WARNING - Skipping self-relation for word ID 34354, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:58,823 - WARNING - Skipping self-relation for word ID 34401, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:58,832 - WARNING - Skipping self-relation for word ID 34401, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:58:58,839 - WARNING - Skipping self-relation for word ID 34401, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:01,398 - WARNING - Skipping self-relation for word ID 35253, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:05,228 - WARNING - Skipping self-relation for word ID 36753, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:10,365 - WARNING - Skipping self-relation for word ID 38530, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:10,382 - WARNING - Skipping self-relation for word ID 38530, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:10,386 - WARNING - Skipping self-relation for word ID 38530, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:19,040 - WARNING - Skipping self-relation for word ID 41308, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:22,685 - WARNING - Skipping self-relation for word ID 42168, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:25,063 - WARNING - Skipping self-relation for word ID 43022, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:25,067 - WARNING - Skipping self-relation for word ID 43022, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:25,071 - WARNING - Skipping self-relation for word ID 43022, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:27,924 - WARNING - Skipping self-relation for word ID 44155, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:31,456 - WARNING - Skipping self-relation for word ID 44992, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:31,459 - WARNING - Skipping self-relation for word ID 44992, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:31,749 - WARNING - Skipping self-relation for word ID 45060, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:31,753 - WARNING - Skipping self-relation for word ID 45060, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:31,848 - WARNING - Skipping self-relation for word ID 45085, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:31,851 - WARNING - Skipping self-relation for word ID 45085, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:37,996 - WARNING - Skipping self-relation for word ID 47153, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:43,438 - WARNING - Skipping self-relation for word ID 48940, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:43,970 - WARNING - Skipping self-relation for word ID 49193, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:50,613 - WARNING - Skipping self-relation for word ID 51339, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 20:59:51,851 - WARNING - Skipping self-relation for word ID 51800, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:00,721 - WARNING - Skipping self-relation for word ID 54165, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:01,689 - WARNING - Skipping self-relation for word ID 54481, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:19,983 - WARNING - Skipping self-relation for word ID 58383, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:22,068 - WARNING - Skipping self-relation for word ID 59065, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:22,511 - WARNING - Skipping self-relation for word ID 59222, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:22,932 - WARNING - Skipping self-relation for word ID 59360, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:23,081 - WARNING - Skipping self-relation for word ID 55265, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:23,336 - WARNING - Skipping self-relation for word ID 59461, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:23,393 - WARNING - Skipping self-relation for word ID 59474, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:23,920 - WARNING - Skipping self-relation for word ID 11969, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:24,676 - WARNING - Skipping self-relation for word ID 21143, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:24,807 - WARNING - Skipping self-relation for word ID 59916, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:25,256 - WARNING - Skipping self-relation for word ID 60053, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:25,950 - WARNING - Skipping self-relation for word ID 60257, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:25,956 - WARNING - Skipping self-relation for word ID 60257, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:26,037 - WARNING - Skipping self-relation for word ID 60282, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:46,576 - WARNING - Skipping self-relation for word ID 64492, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:52,079 - WARNING - Skipping self-relation for word ID 43355, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:57,283 - WARNING - Skipping self-relation for word ID 67835, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:00:57,928 - WARNING - Skipping self-relation for word ID 68064, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:01:09,646 - WARNING - Skipping self-relation for word ID 71278, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:01:11,778 - WARNING - Skipping self-relation for word ID 71933, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:01:13,833 - WARNING - Skipping self-relation for word ID 72487, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:01:37,595 - WARNING - Skipping self-relation for word ID 78962, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:01:39,953 - WARNING - Skipping self-relation for word ID 7477, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:00,234 - WARNING - Skipping self-relation for word ID 85648, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:09,019 - WARNING - Skipping self-relation for word ID 88476, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:11,141 - WARNING - Skipping self-relation for word ID 89130, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:11,147 - WARNING - Skipping self-relation for word ID 89130, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:18,124 - WARNING - Skipping self-relation for word ID 90978, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:32,134 - WARNING - Skipping self-relation for word ID 82873, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:32,298 - WARNING - Skipping self-relation for word ID 67161, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:32,580 - WARNING - Skipping self-relation for word ID 94139, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:32,702 - WARNING - Skipping self-relation for word ID 79119, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:34,948 - WARNING - Skipping self-relation for word ID 95024, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:34,955 - WARNING - Skipping self-relation for word ID 95024, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:34,962 - WARNING - Skipping self-relation for word ID 95024, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:43,005 - WARNING - Skipping self-relation for word ID 97816, type 'synonym', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:49,847 - WARNING - Skipping self-relation for word ID 74491, type 'variant', source 'diksiyonaryo.ph'.
+2025-04-04 21:02:59,885 - INFO - Finished processing diksiyonaryo.ph
+2025-04-04 21:02:59,886 - INFO -   Total entries in file: 65336
+2025-04-04 21:02:59,886 - INFO -   Processed successfully: 55476
+2025-04-04 21:02:59,887 - INFO -   Skipped (invalid/empty): 0
+2025-04-04 21:02:59,887 - INFO -   Errors during processing: 0
+2025-04-04 21:02:59,887 - INFO -   Definitions added/updated: 78766
+2025-04-04 21:02:59,888 - INFO -   Pronunciations added/updated: 68647
+2025-04-04 21:02:59,888 - INFO -   Etymologies added/updated: 49017
+2025-04-04 21:02:59,889 - INFO -   Total relations added/updated: 45810
+2025-04-04 21:02:59,889 - INFO -     (Deriv: 4049, Syn: 35314, Var: 1827, Ref: 4620)
+2025-04-04 21:02:59,890 - INFO -   Baybayin forms added/updated: 0
+2025-04-04 21:02:59,890 - INFO -   Affixations added/updated: 0
+2025-04-04 21:02:59,925 - WARNING - Error closing connection: set_session cannot be used inside a transaction

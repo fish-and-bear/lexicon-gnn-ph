@@ -1,6 +1,6 @@
 import re
 from models import Word
-from database import db_session
+from backend.database import db_session
 
 # List of language codes to ignore (case-sensitive)
 IGNORE_CODES = ('Esp', 'Ing', 'Tag', 'Hil', 'Seb', 'War', 'Kap', 'Bik')

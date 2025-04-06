@@ -1,0 +1,14 @@
+2025-04-04 18:59:53,111 - INFO - Starting table creation/update process.
+2025-04-04 18:59:53,691 - INFO - Tables created or updated successfully.
+2025-04-04 18:59:53,697 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-04 18:59:53,697 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-04 18:59:53,982 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-04 18:59:53,998 - INFO - Successfully checked/committed schema changes for Kaikki processing.
+2025-04-04 18:59:53,998 - INFO - Successfully processed source: Kaikki.org (Tagalog)
+2025-04-04 18:59:53,999 - INFO - Starting processing for Kaikki.org (Cebuano) from ..\data\kaikki-ceb.jsonl
+2025-04-04 18:59:53,999 - INFO - Processing Kaikki dictionary: ..\data\kaikki-ceb.jsonl with source ID: 'kaikki.org (Cebuano)'
+2025-04-04 18:59:54,084 - INFO - Found 17909 entries to process in ..\data\kaikki-ceb.jsonl
+2025-04-04 18:59:54,099 - INFO - Successfully checked/committed schema changes for Kaikki processing.
+2025-04-04 18:59:54,100 - INFO - Successfully processed source: Kaikki.org (Cebuano)
+2025-04-04 18:59:54,103 - INFO - All sources processed successfully. Committing transaction...
+2025-04-04 18:59:54,105 - INFO - Database connection closed.

@@ -3,7 +3,7 @@ Index manager for database optimization.
 """
 
 from sqlalchemy import event, DDL
-from database import db
+from backend.database import db
 import logging
 
 logger = logging.getLogger(__name__)

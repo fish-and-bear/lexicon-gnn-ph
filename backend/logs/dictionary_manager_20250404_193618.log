@@ -1,0 +1,286 @@
+2025-04-04 19:36:19,050 - INFO - Starting table creation/update process.
+2025-04-04 19:36:20,577 - INFO - Tables created or updated successfully.
+2025-04-04 19:36:20,584 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-04 19:36:20,585 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-04 19:36:20,716 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-04 19:36:20,717 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-04 19:36:21,145 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'abdominal' (tl) from source 'kaikki.org (Tagalog)': 23514 ERROR:  new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (74, abdominal, abdominal, f, ᜀᜊ᜔ᜇᜓᜋᜒᜈᜎ᜔, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, a7105cfddc6544c1c095e32d9ca3fd0c, null, null, f, f, f, 'abdominal':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:21,147 - ERROR - Parameters (types shown for complex data): {'lemma': 'abdominal', 'normalized': 'abdominal', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': 'a7105cfddc6544c1c095e32d9ca3fd0c'}
+2025-04-04 19:36:21,148 - ERROR - Error processing related relation for word ID 112 to 'abdominal': Failed to get/create word ID for 'abdominal' from source 'kaikki.org (Tagalog)': new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (74, abdominal, abdominal, f, ᜀᜊ᜔ᜇᜓᜋᜒᜈᜎ᜔, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, a7105cfddc6544c1c095e32d9ca3fd0c, null, null, f, f, f, 'abdominal':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:21,149 - ERROR - Unhandled error in main loop at line 14: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8292, in process_kaikki_jsonl
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,943 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'F' (tl) from source 'kaikki.org (Tagalog)': 23514 ERROR:  new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (383, F, f, f, ᜁᜉ᜔, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, f9fe6f9a58fba68b8ced3d17db8612e3, null, null, f, f, f, 'f':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:21,943 - ERROR - Parameters (types shown for complex data): {'lemma': 'F', 'normalized': 'f', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': 'f9fe6f9a58fba68b8ced3d17db8612e3'}
+2025-04-04 19:36:21,944 - ERROR - Error processing form relationship for word ID 383 to form 'F': Failed to get/create word ID for 'F' from source 'kaikki.org (Tagalog)': new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (383, F, f, f, ᜁᜉ᜔, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, f9fe6f9a58fba68b8ced3d17db8612e3, null, null, f, f, f, 'f':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:21,945 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'ᜁᜉ᜔' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,945 - ERROR - Parameters (types shown for complex data): {'lemma': 'ᜁᜉ᜔', 'normalized': '', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '4ce3c28c9b8a8a76992cbb8bd9300c9c'}
+2025-04-04 19:36:21,946 - ERROR - Error processing form relationship for word ID 383 to form 'ᜁᜉ᜔': Failed to get/create word ID for 'ᜁᜉ᜔' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,947 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'es' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,947 - ERROR - Parameters (types shown for complex data): {'lemma': 'es', 'normalized': 'es', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '43292d9a5bac2264141737ed9abc76a2'}
+2025-04-04 19:36:21,947 - WARNING - Error creating etymology relation from template for word ID 383: Failed to get/create word ID for 'es' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,948 - ERROR - Database error inserting etymology for word ID 383 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4083, in insert_etymology
+    cur.execute(
+    ~~~~~~~~~~~^
+        """
+        ^^^
+    ...<17 lines>...
+        params,
+        ^^^^^^^
+    )
+    ^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,950 - ERROR - Error inserting/updating template 'tl-letter' for word ID 383: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,950 - ERROR - Error fetching POS ID for code 'unc' (from 'unc'): current transaction is aborted, commands ignored until end of transaction block
+. Returning 'unc'.
+2025-04-04 19:36:21,951 - ERROR - Database error inserting definition for word ID 383 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,951 - WARNING - Failed inserting definition for word ID 383, sense 0: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,951 - INFO - No definitions successfully inserted/processed for word 'f' (ID: 383). Senses might be empty or all failed individually.
+2025-04-04 19:36:21,951 - ERROR - Unhandled error in main loop at line 35: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8292, in process_kaikki_jsonl
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,962 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'F' (tl) from source 'kaikki.org (Tagalog)': 23514 ERROR:  new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (385, F, f, f, ᜁᜉᜒ, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, f9fe6f9a58fba68b8ced3d17db8612e3, null, null, f, f, f, 'f':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:21,963 - ERROR - Parameters (types shown for complex data): {'lemma': 'F', 'normalized': 'f', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': 'f9fe6f9a58fba68b8ced3d17db8612e3'}
+2025-04-04 19:36:21,963 - ERROR - Error processing form relationship for word ID 385 to form 'F': Failed to get/create word ID for 'F' from source 'kaikki.org (Tagalog)': new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (385, F, f, f, ᜁᜉᜒ, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, f9fe6f9a58fba68b8ced3d17db8612e3, null, null, f, f, f, 'f':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:21,964 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'ᜁᜉᜒ' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,965 - ERROR - Parameters (types shown for complex data): {'lemma': 'ᜁᜉᜒ', 'normalized': '', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '9dee8563ddb8928dafb466a22a9397ec'}
+2025-04-04 19:36:21,965 - ERROR - Error processing form relationship for word ID 385 to form 'ᜁᜉᜒ': Failed to get/create word ID for 'ᜁᜉᜒ' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,966 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'es' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,967 - ERROR - Parameters (types shown for complex data): {'lemma': 'es', 'normalized': 'es', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '43292d9a5bac2264141737ed9abc76a2'}
+2025-04-04 19:36:21,967 - WARNING - Error creating etymology relation from template for word ID 385: Failed to get/create word ID for 'es' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,967 - ERROR - Database error inserting etymology for word ID 385 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4083, in insert_etymology
+    cur.execute(
+    ~~~~~~~~~~~^
+        """
+        ^^^
+    ...<17 lines>...
+        params,
+        ^^^^^^^
+    )
+    ^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,969 - ERROR - Error inserting/updating template 'tl-letter' for word ID 385: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,969 - ERROR - Error fetching POS ID for code 'unc' (from 'unc'): current transaction is aborted, commands ignored until end of transaction block
+. Returning 'unc'.
+2025-04-04 19:36:21,970 - ERROR - Database error inserting definition for word ID 385 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,970 - WARNING - Failed inserting definition for word ID 385, sense 0: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:21,970 - INFO - No definitions successfully inserted/processed for word 'f' (ID: 385). Senses might be empty or all failed individually.
+2025-04-04 19:36:21,971 - ERROR - Unhandled error in main loop at line 36: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8292, in process_kaikki_jsonl
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,075 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'Y' (tl) from source 'kaikki.org (Tagalog)': 23514 ERROR:  new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (420, Y, y, f, ᜏᜌ᜔, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, 4fda4fc3793d61c7591de4f5ed914e4d, null, null, f, f, f, 'y':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:22,075 - ERROR - Parameters (types shown for complex data): {'lemma': 'Y', 'normalized': 'y', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '4fda4fc3793d61c7591de4f5ed914e4d'}
+2025-04-04 19:36:22,076 - ERROR - Error processing form relationship for word ID 420 to form 'Y': Failed to get/create word ID for 'Y' from source 'kaikki.org (Tagalog)': new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (420, Y, y, f, ᜏᜌ᜔, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, 4fda4fc3793d61c7591de4f5ed914e4d, null, null, f, f, f, 'y':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:22,076 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'ᜏᜌ᜔' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,077 - ERROR - Parameters (types shown for complex data): {'lemma': 'ᜏᜌ᜔', 'normalized': '', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '3e0dcc2bd580b9467c9515aa208efb5d'}
+2025-04-04 19:36:22,077 - ERROR - Error processing form relationship for word ID 420 to form 'ᜏᜌ᜔': Failed to get/create word ID for 'ᜏᜌ᜔' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,078 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'es' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,078 - ERROR - Parameters (types shown for complex data): {'lemma': 'es', 'normalized': 'es', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '43292d9a5bac2264141737ed9abc76a2'}
+2025-04-04 19:36:22,079 - WARNING - Error creating etymology relation from template for word ID 420: Failed to get/create word ID for 'es' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,080 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'en' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,080 - ERROR - Parameters (types shown for complex data): {'lemma': 'en', 'normalized': 'en', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '82f853385d320b6e9f97ecad9a96b6dc'}
+2025-04-04 19:36:22,080 - WARNING - Error creating etymology relation from template for word ID 420: Failed to get/create word ID for 'en' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,082 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'es' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,082 - ERROR - Parameters (types shown for complex data): {'lemma': 'es', 'normalized': 'es', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '43292d9a5bac2264141737ed9abc76a2'}
+2025-04-04 19:36:22,082 - WARNING - Error creating etymology relation from template for word ID 420: Failed to get/create word ID for 'es' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,083 - ERROR - Database error inserting etymology for word ID 420 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4083, in insert_etymology
+    cur.execute(
+    ~~~~~~~~~~~^
+        """
+        ^^^
+    ...<17 lines>...
+        params,
+        ^^^^^^^
+    )
+    ^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,084 - ERROR - Error inserting/updating template 'tl-letter' for word ID 420: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,085 - ERROR - Error fetching POS ID for code 'unc' (from 'unc'): current transaction is aborted, commands ignored until end of transaction block
+. Returning 'unc'.
+2025-04-04 19:36:22,085 - ERROR - Database error inserting definition for word ID 420 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,085 - WARNING - Failed inserting definition for word ID 420, sense 0: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,085 - INFO - No definitions successfully inserted/processed for word 'y' (ID: 420). Senses might be empty or all failed individually.
+2025-04-04 19:36:22,086 - ERROR - Unhandled error in main loop at line 46: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8292, in process_kaikki_jsonl
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,093 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'Y' (tl) from source 'kaikki.org (Tagalog)': 23514 ERROR:  new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (422, Y, y, f, ᜌ, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, 4fda4fc3793d61c7591de4f5ed914e4d, null, null, f, f, f, 'y':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:22,093 - ERROR - Parameters (types shown for complex data): {'lemma': 'Y', 'normalized': 'y', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '4fda4fc3793d61c7591de4f5ed914e4d'}
+2025-04-04 19:36:22,094 - ERROR - Error processing form relationship for word ID 422 to form 'Y': Failed to get/create word ID for 'Y' from source 'kaikki.org (Tagalog)': new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (422, Y, y, f, ᜌ, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, 4fda4fc3793d61c7591de4f5ed914e4d, null, null, f, f, f, 'y':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:22,094 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'ᜌ' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,094 - ERROR - Parameters (types shown for complex data): {'lemma': 'ᜌ', 'normalized': '', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '9f8d85b23669926b4f97abac47006294'}
+2025-04-04 19:36:22,095 - ERROR - Error processing form relationship for word ID 422 to form 'ᜌ': Failed to get/create word ID for 'ᜌ' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,096 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'es' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,096 - ERROR - Parameters (types shown for complex data): {'lemma': 'es', 'normalized': 'es', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '43292d9a5bac2264141737ed9abc76a2'}
+2025-04-04 19:36:22,096 - WARNING - Error creating etymology relation from template for word ID 422: Failed to get/create word ID for 'es' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,097 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'en' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,097 - ERROR - Parameters (types shown for complex data): {'lemma': 'en', 'normalized': 'en', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '82f853385d320b6e9f97ecad9a96b6dc'}
+2025-04-04 19:36:22,097 - WARNING - Error creating etymology relation from template for word ID 422: Failed to get/create word ID for 'en' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,098 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'es' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,098 - ERROR - Parameters (types shown for complex data): {'lemma': 'es', 'normalized': 'es', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '43292d9a5bac2264141737ed9abc76a2'}
+2025-04-04 19:36:22,099 - WARNING - Error creating etymology relation from template for word ID 422: Failed to get/create word ID for 'es' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,099 - ERROR - Database error inserting etymology for word ID 422 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4083, in insert_etymology
+    cur.execute(
+    ~~~~~~~~~~~^
+        """
+        ^^^
+    ...<17 lines>...
+        params,
+        ^^^^^^^
+    )
+    ^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,100 - ERROR - Error inserting/updating template 'tl-letter' for word ID 422: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,101 - ERROR - Error fetching POS ID for code 'unc' (from 'unc'): current transaction is aborted, commands ignored until end of transaction block
+. Returning 'unc'.
+2025-04-04 19:36:22,101 - ERROR - Database error inserting definition for word ID 422 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,101 - WARNING - Failed inserting definition for word ID 422, sense 0: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,101 - INFO - No definitions successfully inserted/processed for word 'y' (ID: 422). Senses might be empty or all failed individually.
+2025-04-04 19:36:22,102 - ERROR - Unhandled error in main loop at line 47: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8292, in process_kaikki_jsonl
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,110 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'Y' (tl) from source 'kaikki.org (Tagalog)': 23514 ERROR:  new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (424, Y, y, f, ᜌᜒ, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, 4fda4fc3793d61c7591de4f5ed914e4d, null, null, f, f, f, 'y':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:22,111 - ERROR - Parameters (types shown for complex data): {'lemma': 'Y', 'normalized': 'y', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '4fda4fc3793d61c7591de4f5ed914e4d'}
+2025-04-04 19:36:22,111 - ERROR - Error processing form relationship for word ID 424 to form 'Y': Failed to get/create word ID for 'Y' from source 'kaikki.org (Tagalog)': new row for relation "words" violates check constraint "baybayin_form_check"
+DETAIL:  Failing row contains (424, Y, y, f, ᜌᜒ, null, tl, null, null, null, null, null, {"files": ["kaikki.org (Tagalog)"], "last_updated": {"kaikki.org..., {"source_file": "kaikki.jsonl"}, 4fda4fc3793d61c7591de4f5ed914e4d, null, null, f, f, f, 'y':1,2, 2025-04-04 19:36:20.743551+08, 2025-04-04 19:36:20.743551+08).
+
+2025-04-04 19:36:22,112 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'ᜌᜒ' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,113 - ERROR - Parameters (types shown for complex data): {'lemma': 'ᜌᜒ', 'normalized': '', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': 'ea093c7536bdc904ca49bd7225db2f51'}
+2025-04-04 19:36:22,115 - ERROR - Error processing form relationship for word ID 424 to form 'ᜌᜒ': Failed to get/create word ID for 'ᜌᜒ' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,116 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'es' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,117 - ERROR - Parameters (types shown for complex data): {'lemma': 'es', 'normalized': 'es', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '43292d9a5bac2264141737ed9abc76a2'}
+2025-04-04 19:36:22,117 - WARNING - Error creating etymology relation from template for word ID 424: Failed to get/create word ID for 'es' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,118 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'en' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,118 - ERROR - Parameters (types shown for complex data): {'lemma': 'en', 'normalized': 'en', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '82f853385d320b6e9f97ecad9a96b6dc'}
+2025-04-04 19:36:22,119 - WARNING - Error creating etymology relation from template for word ID 424: Failed to get/create word ID for 'en' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,120 - ERROR - Database error in get_or_create_word_id (UPSERT) for 'es' (tl) from source 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,120 - ERROR - Parameters (types shown for complex data): {'lemma': 'es', 'normalized': 'es', 'language_code': 'tl', 'has_baybayin': False, 'baybayin_form': None, 'romanized_form': None, 'root_word_id': None, 'preferred_spelling': None, 'tags': None, 'source_info': 'Json', 'idioms': None, 'pronunciation_data': None, 'word_metadata': None, 'badlit_form': None, 'hyphenation': None, 'is_proper_noun': False, 'is_abbreviation': False, 'is_initialism': False, 'data_hash': '43292d9a5bac2264141737ed9abc76a2'}
+2025-04-04 19:36:22,120 - WARNING - Error creating etymology relation from template for word ID 424: Failed to get/create word ID for 'es' from source 'kaikki.org (Tagalog)': current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,121 - ERROR - Database error inserting etymology for word ID 424 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 4083, in insert_etymology
+    cur.execute(
+    ~~~~~~~~~~~^
+        """
+        ^^^
+    ...<17 lines>...
+        params,
+        ^^^^^^^
+    )
+    ^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,123 - ERROR - Error inserting/updating template 'tl-letter' for word ID 424: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,124 - ERROR - Error fetching POS ID for code 'unc' (from 'unc'): current transaction is aborted, commands ignored until end of transaction block
+. Returning 'unc'.
+2025-04-04 19:36:22,124 - ERROR - Database error inserting definition for word ID 424 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,124 - WARNING - Failed inserting definition for word ID 424, sense 0: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:22,125 - INFO - No definitions successfully inserted/processed for word 'y' (ID: 424). Senses might be empty or all failed individually.
+2025-04-04 19:36:22,125 - ERROR - Unhandled error in main loop at line 48: current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 8292, in process_kaikki_jsonl
+    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-04 19:36:23,098 - WARNING - Error closing connection: set_session cannot be used inside a transaction

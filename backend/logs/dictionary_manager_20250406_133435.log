@@ -1,0 +1,3342 @@
+2025-04-06 13:34:35,420 - INFO - Starting lookup for word: 'bebe'
+2025-04-06 13:34:35,473 - INFO - pg_trgm extension installed: True
+2025-04-06 13:34:35,473 - INFO - Executing exact match query for 'bebe'
+2025-04-06 13:34:35,782 - INFO - Found 0 exact matches
+2025-04-06 13:34:35,783 - INFO - No exact matches, trying fuzzy search for 'bebe'
+2025-04-06 13:34:35,916 - ERROR - Error in fuzzy search query: stack depth limit exceeded
+HINT:  Increase the configuration parameter "max_stack_depth" (currently 2048kB), after ensuring the platform's stack depth limit is adequate.
+CONTEXT:  SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+
+2025-04-06 13:34:35,922 - ERROR - Falling back to ILIKE search due to error
+2025-04-06 13:34:35,926 - ERROR - Traceback: Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 11105, in lookup_word
+    cur.execute(fuzzy_query, (args.word, args.word))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.StatementTooComplex: stack depth limit exceeded
+HINT:  Increase the configuration parameter "max_stack_depth" (currently 2048kB), after ensuring the platform's stack depth limit is adequate.
+CONTEXT:  SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+SQL expression "similarity($1, $2)"
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+PL/pgSQL function similarity(text,text) line 3 at RETURN
+
+
+2025-04-06 13:34:35,930 - INFO - Trying ILIKE search for 'bebe'
+2025-04-06 13:34:35,931 - ERROR - Error in ILIKE search: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-06 13:34:35,932 - ERROR - Traceback: Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 11140, in lookup_word
+    cur.execute(ilike_query, (f"%{args.word}%", f"%{args.word}%"))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+
+2025-04-06 13:34:35,937 - INFO - Database connection closed

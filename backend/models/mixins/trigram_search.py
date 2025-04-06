@@ -5,7 +5,7 @@ Trigram search mixin for models.
 from sqlalchemy import func, text, Float
 from typing import List, Tuple, Optional
 from sqlalchemy.sql.expression import cast
-from database import db
+from backend.database import db
 
 class TrigramSearchMixin:
     """Mixin to add trigram-based search capabilities to models."""

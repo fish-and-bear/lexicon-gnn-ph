@@ -1,0 +1,20 @@
+2025-04-04 18:00:13,025 - INFO - Starting lookup for word: 'sino'
+2025-04-04 18:00:13,138 - INFO - pg_trgm extension installed: True
+2025-04-04 18:00:13,138 - INFO - Executing exact match query for 'sino'
+2025-04-04 18:00:13,207 - INFO - Found 1 exact matches
+2025-04-04 18:00:13,208 - INFO - Processing result 1/1
+2025-04-04 18:00:13,208 - INFO - Word ID: 25204
+2025-04-04 18:00:13,209 - INFO - Lemma: síno
+2025-04-04 18:00:13,209 - INFO - Language code: tl
+2025-04-04 18:00:13,216 - INFO - Querying pronunciations for word_id 25204
+2025-04-04 18:00:13,218 - INFO - Found 0 pronunciations
+2025-04-04 18:00:13,218 - INFO - Querying etymologies for word_id 25204
+2025-04-04 18:00:13,223 - INFO - Found 0 etymologies
+2025-04-04 18:00:13,224 - INFO - Querying definitions for word_id 25204
+2025-04-04 18:00:13,238 - INFO - Found 2 definitions
+2025-04-04 18:00:13,239 - INFO - Processing definition 1/2
+2025-04-04 18:00:13,243 - INFO - Processing definition 2/2
+2025-04-04 18:00:13,244 - INFO - Querying relations for word_id 25204
+2025-04-04 18:00:13,253 - INFO - Found 0 relations
+2025-04-04 18:00:13,253 - INFO - No relations found for word ID 25204
+2025-04-04 18:00:13,255 - INFO - Database connection closed
