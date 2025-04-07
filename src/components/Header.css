@@ -1,0 +1,59 @@
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+}
+
+.dark .header-content {
+  background-color: var(--header-color);
+  color: var(--primary-color);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.random-button, .theme-toggle, .api-test-button {
+  color: var(--button-text-color);
+  transition: all 0.3s ease;
+}
+
+.random-button:hover, 
+.theme-toggle:hover,
+.api-test-button:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .header-buttons {
+    margin-top: 0.5rem;
+  }
+} 
