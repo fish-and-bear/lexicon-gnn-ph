@@ -19,7 +19,6 @@ export function useWordSearch(initialQuery: string = '') {
     ['wordSearch', query, page],
     async () => {
       const apiResult = await searchWords(query, {
-        q: query,
         page,
         per_page: perPage,
         exclude_baybayin: true,

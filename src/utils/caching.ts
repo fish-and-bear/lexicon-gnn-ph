@@ -1,4 +1,4 @@
-import { WordNetworkResponse, WordInfo, Statistics, PartOfSpeech, EtymologyTree, SearchResult } from "../types";
+import { WordNetwork, WordInfo, Statistics, PartOfSpeech, EtymologyTree, SearchResult } from "../types";
 
 const CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes
 const MAX_CACHE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -12,7 +12,7 @@ interface CacheItem<T> {
   size: number;
 }
 
-export type CacheableData = WordInfo | WordNetworkResponse | Statistics | SearchResult | EtymologyTree | PartOfSpeech[];
+export type CacheableData = WordInfo | WordNetwork | Statistics | SearchResult | EtymologyTree | PartOfSpeech[];
 
 interface CacheStats {
   totalItems: number;
@@ -88,7 +88,7 @@ export function getCachedData<T extends CacheableData>(key: string): T | null {
   try {
     const { data, timestamp, type, size }: CacheItem<T> = JSON.parse(item);
     
-    if (Date.now() - timestamp > CACHE_EXPIRATION) {
+  if (Date.now() - timestamp > CACHE_EXPIRATION) {
       localStorage.removeItem(cacheKey);
       return null;
     }
@@ -103,8 +103,6 @@ export function getCachedData<T extends CacheableData>(key: string): T | null {
     } else if (isPartsOfSpeech(data) && type === 'PartOfSpeech[]') {
       return data as T;
     } else if (isEtymologyTree(data) && type === 'EtymologyTree') {
-      return data as T;
-    } else if (isSearchResult(data) && type === 'SearchResult') {
       return data as T;
     }
 
@@ -159,13 +157,13 @@ export function setCachedData<T extends CacheableData>(key: string, data: T): vo
 setInterval(clearOldCache, CACHE_CLEANUP_INTERVAL);
 
 // Type guards
-function isWordNetwork(data: any): data is WordNetworkResponse {
+function isWordNetwork(data: any): data is WordNetwork {
   return (
     data &&
     typeof data === 'object' &&
     'nodes' in data &&
-    'edges' in data &&
-    'stats' in data
+    'clusters' in data &&
+    'metadata' in data
   );
 }
 
@@ -174,7 +172,8 @@ function isWordInfo(data: any): data is WordInfo {
     data &&
     typeof data === 'object' &&
     'lemma' in data &&
-    'id' in data
+    'normalized_lemma' in data &&
+    'language_code' in data
   );
 }
 
@@ -182,18 +181,21 @@ function isStatistics(data: any): data is Statistics {
   return (
     data &&
     typeof data === 'object' &&
-    'total_words' in data
+    'words' in data &&
+    'definitions' in data &&
+    'relations' in data
   );
 }
 
 function isPartsOfSpeech(data: any): data is PartOfSpeech[] {
   return (
     Array.isArray(data) &&
-    data.length > 0 &&
     data.every(item => 
       item &&
       typeof item === 'object' &&
-      'code' in item
+      'code' in item &&
+      'name_en' in item &&
+      'name_tl' in item
     )
   );
 }
@@ -203,16 +205,10 @@ function isEtymologyTree(data: any): data is EtymologyTree {
     data &&
     typeof data === 'object' &&
     'word' in data &&
-    'etymology_tree' in data
-  );
-}
-
-function isSearchResult(data: any): data is SearchResult {
-  return (
-    data &&
-    typeof data === 'object' &&
-    'query' in data &&
-    (Array.isArray(data.results) || Array.isArray(data.words))
+    'normalized_lemma' in data &&
+    'components' in data &&
+    'component_words' in data &&
+    'metadata' in data
   );
 }
 
@@ -222,7 +218,6 @@ function getDataType(data: CacheableData): string | null {
   if (isStatistics(data)) return 'Statistics';
   if (isPartsOfSpeech(data)) return 'PartOfSpeech[]';
   if (isEtymologyTree(data)) return 'EtymologyTree';
-  if (isSearchResult(data)) return 'SearchResult';
   return null;
 }
 

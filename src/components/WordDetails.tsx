@@ -1,13 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import {
-  WordInfo,
-  Definition,
-  Affixation,
-  WordForm,
-  WordTemplate,
-  Relation,
-  BasicWord,
-} from '../types';
+import { WordInfo, RelatedWord, Definition } from '../types';
 // import { fetchWordNetwork } from '../api/wordApi';
 // import './WordDetails.css';
 // import './Tabs.css';
@@ -30,6 +22,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
@@ -51,42 +44,6 @@ interface WordDetailsProps {
   onEtymologyNodeClick: (node: any) => void;
 }
 
-// Helper function to safely parse JSON strings or comma-separated strings into arrays/objects
-// Handles null/undefined/empty strings gracefully.
-const safeParse = (input: string | Record<string, any> | null | undefined, returnType: 'array' | 'object' = 'array'): any[] | Record<string, any> => {
-  if (typeof input === 'object' && input !== null) {
-    // If it's already an object, return it directly if object is expected
-    // Ensure we return a copy for objects to avoid mutation issues if needed
-    return returnType === 'object' ? { ...input } : {};
-  }
-  if (!input || typeof input !== 'string') {
-    return returnType === 'array' ? [] : {};
-  }
-  try {
-    // First, try parsing as JSON
-    const parsed = JSON.parse(input);
-    if (returnType === 'array' && Array.isArray(parsed)) {
-      return parsed;
-    } else if (returnType === 'object' && typeof parsed === 'object' && !Array.isArray(parsed) && parsed !== null) {
-      return parsed;
-    } else if (returnType === 'array') {
-      // If JSON parse didn't yield an array, treat as single element array
-      return [parsed];
-    }
-    // If expected object but got array/primitive, return empty object
-    return {};
-
-  } catch (e) {
-    // If JSON parsing fails, assume comma-separated string for arrays
-    if (returnType === 'array') {
-        // Handle cases like just "tag1" without commas
-        return input.split(',').map(s => s.trim()).filter(Boolean);
-    }
-    // Cannot parse as object if not valid JSON
-    return {};
-  }
-};
-
 // Helper function to format relation type names
 function formatRelationType(type: string): string {
   return type
@@ -103,23 +60,24 @@ const graphColors = {
   antonym: "#f77f00",
   variant: "#f4a261",
   related: "#fcbf49",
+  // Add other colors from your WordGraph getNodeColor if needed
   associated: "#adb5bd",
   default: "#6c757d"
 };
 
 // Helper to determine if a background color is light or dark
-// const isColorLight = (hexColor: string): boolean => {
-//   try {
-//     const color = d3.color(hexColor);
-//     if (!color) return true; // Default to light if parsing fails
-//     const rgb = color.rgb();
-//     // Standard luminance calculation
-//     const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-//     return luminance > 0.5;
-//   } catch (e) {
-//     return true;
-//   }
-// };
+const isColorLight = (hexColor: string): boolean => {
+  try {
+    const color = d3.color(hexColor);
+    if (!color) return true; // Default to light if parsing fails
+    const rgb = color.rgb();
+    // Standard luminance calculation
+    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+    return luminance > 0.5;
+  } catch (e) {
+    return true;
+  }
+};
 
 // --- Styled Components ---
 // Simplified Accordion Styling
@@ -186,7 +144,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   // Effect to setup audio element
   useEffect(() => {
     setIsAudioPlaying(false); // Stop previous audio on word change
-    const audioPronunciation = wordInfo?.pronunciations?.find(p => p?.type === 'audio' && p?.value);
+    const audioPronunciation = wordInfo?.pronunciations?.find(p => p.type === 'audio' && p.value);
     let audio: HTMLAudioElement | null = null;
 
     if (audioPronunciation?.value) {
@@ -196,9 +154,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
           audio.addEventListener('ended', onEnded);
           setAudioElement(audio);
 
-          return () => {
+      return () => {
             if (audio) {
-              audio.pause();
+        audio.pause();
               audio.removeEventListener('ended', onEnded);
             }
           };
@@ -207,7 +165,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
           setAudioElement(null); // Ensure state is cleared on error
       }
     } else {
-      setAudioElement(null); // Clear if no audio pronunciation
+      setAudioElement(null); // Clear if no audio pron
     }
   }, [wordInfo]);
 
@@ -232,14 +190,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   // --- Rendering Sections ---
 
   const renderHeader = () => {
-    // Use the cleaned Pronunciation type from WordInfo
-    const ipaPronunciation = wordInfo.pronunciations?.find(p => p.type === 'ipa' || p.type === 'IPA');
-    const audioPronunciation = wordInfo.pronunciations?.find(p => p.type === 'audio' && p.value);
-    const hasAudio = !!audioPronunciation;
-    // Derive tagsArray from wordInfo.tags string
-    const tagsArray = wordInfo.tags && typeof wordInfo.tags === 'string' 
-                      ? wordInfo.tags.split(',').map(t => t.trim()).filter(Boolean)
-                      : [];
+    const ipaPronunciation = wordInfo.pronunciations?.find(p => p.type === 'IPA');
+    const hasAudio = wordInfo.pronunciations?.some(p => p.type === 'audio' && p.value);
+    const tags = wordInfo.tags ? wordInfo.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [];
 
     const headerBgColor = isDarkMode
       ? alpha(graphColors.main, 0.6)
@@ -255,15 +208,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
           <Typography variant="h3" component="h1" sx={{ fontWeight: 700, flexGrow: 1, lineHeight: 1.2 }}>
             {wordInfo.lemma}
           </Typography>
-          {/* Display language code if available */}
-          {wordInfo.language_code && (
-            <Chip
-               label={wordInfo.language_code}
-               size="small"
-               variant="outlined"
-               sx={{ ml: 2, mt: 0.5, color: alpha(headerTextColor, 0.8), borderColor: alpha(headerTextColor, 0.4) }}
-            />
-          )}
           {hasAudio && (
             <IconButton
               onClick={playAudio}
@@ -279,7 +223,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
         {/* Pronunciation (IPA) */}
         {ipaPronunciation && (
           <Typography variant="h6" sx={{ color: alpha(headerTextColor, 0.85), fontStyle: 'italic', mb: theme.spacing(1.5), pl: theme.spacing(0.5) }}>
-            /{ipaPronunciation.value}/ {/* Use value directly from Pronunciation type */}
+            /{ipaPronunciation.value}/
           </Typography>
         )}
 
@@ -305,10 +249,10 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
           </Box>
         )}
 
-        {/* Tags - Use tagsArray */}
-        {tagsArray.length > 0 && ( // Check the derived array
+        {/* Tags */}
+        {tags.length > 0 && (
           <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: theme.spacing(2) }}>
-            {tagsArray.map((tag) => ( // Map over the derived array
+            {tags.map((tag) => (
               <Chip
                 key={tag}
                 label={tag}
@@ -337,46 +281,25 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     return (
       // Use theme spacing
       <List disablePadding sx={{ pt: theme.spacing(1) }}>
-        {wordInfo.definitions.map((def: Definition, index: number) => {
-            // Examples are already string[] in the cleaned Definition type
-            const examples = def.examples;
-
-            return (
-              <React.Fragment key={def.id || index}>
-                <ListItem alignItems="flex-start" sx={{ flexDirection: 'column', gap: 0.5, pb: theme.spacing(1.5), pt: theme.spacing(1.5) }}>
-                  <ListItemText
-                    primaryTypographyProps={{ variant: 'body1', fontWeight: 500 }}
-                    primary={def.definition_text} // Use definition_text
-                  />
-                  {examples && examples.length > 0 && (
-                    <Box sx={{ pl: theme.spacing(1), mt: 0.5 }}>
-                      {examples.map((example, exIndex) => (
-                        <Typography 
-                          key={exIndex} 
-                          variant="body2" 
-                          color="text.secondary" 
-                          sx={{ fontStyle: 'italic', display: 'block', mb: exIndex < examples.length - 1 ? 0.5 : 0 }}
-                        >
-                          “{example}”
-                        </Typography>
-                      ))}
-                    </Box>
-                  )}
-                  {def.part_of_speech && (
-                     <Chip 
-                       label={typeof def.part_of_speech === 'object' && def.part_of_speech !== null && 'name_en' in def.part_of_speech 
-                              ? def.part_of_speech.name_en 
-                              : (typeof def.part_of_speech === 'string' ? def.part_of_speech : 'Unknown')} 
-                       size="small" 
-                       variant="outlined" 
-                       sx={{ mt: 1 }}
-                     />
-                  )}
-                </ListItem>
-                {index < wordInfo.definitions!.length - 1 && <Divider component="li" />}
-              </React.Fragment>
-            );
-        })}
+        {wordInfo.definitions.map((def: Definition, index: number) => (
+          <React.Fragment key={index}>
+            <ListItem alignItems="flex-start" sx={{ flexDirection: 'column', gap: 0.5, pb: theme.spacing(1.5), pt: theme.spacing(1.5) }}>
+              <ListItemText
+                primaryTypographyProps={{ variant: 'body1', fontWeight: 500 }}
+                primary={def.text}
+              />
+              {def.examples && def.examples.length > 0 && (
+                <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', pl: theme.spacing(0.5) }}>
+                  Example: "{def.examples[0]}"
+                </Typography>
+              )}
+              {def.part_of_speech && (
+                 <Chip label={def.part_of_speech?.name_en ?? 'Unknown POS'} size="small" variant="outlined" sx={{ mt: 1 }}/>
+              )}
+            </ListItem>
+            {index < wordInfo.definitions!.length - 1 && <Divider component="li" />}
+          </React.Fragment>
+        ))}
       </List>
     );
   };
@@ -422,9 +345,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                     <Typography variant="overline" display="block" sx={{ lineHeight: 1.5, mb: 0.5, color: 'text.secondary' }}>{formatRelationType(type)}</Typography>
                      {/* Use theme spacing for chip gap */}
                     <Stack direction="row" spacing={theme.spacing(1)} useFlexGap flexWrap="wrap">
-                      {grouped[type].map((relatedItem: Relation, index) => { // Use Relation type
-                        // Access nested source/target word correctly
-                        const relatedWord: BasicWord | undefined = direction === 'out' ? relatedItem.target_word : relatedItem.source_word;
+                      {grouped[type].map((relatedItem, index) => {
+                        const relatedWord: RelatedWord | undefined = direction === 'out' ? relatedItem.target_word : relatedItem.source_word;
                         return relatedWord?.lemma ? (
                           <Chip
                             key={`${type}-${index}-${relatedWord.id}`}
@@ -467,133 +389,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     );
   };
 
-  const renderAffixationsTab = () => {
-    const hasRootAffix = wordInfo.root_affixations && wordInfo.root_affixations.length > 0;
-    const hasAffixedAffix = wordInfo.affixed_affixations && wordInfo.affixed_affixations.length > 0;
-    const rootWord = wordInfo.root_word;
-
-    if (!hasRootAffix && !hasAffixedAffix && !rootWord) {
-      return <Alert severity="info">No affixation or root word information available.</Alert>;
-    }
-
-    const renderAffixGroup = (title: string, affixations: Affixation[] | null | undefined, direction: 'root' | 'affixed') => {
-      if (!affixations || affixations.length === 0) return null;
-
-      return (
-        <Box mb={3}>
-          <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 500 }}>{title}</Typography>
-          <List dense disablePadding>
-            {affixations.map((affix: Affixation, index: number) => {
-              const relatedWord = direction === 'root' ? affix.affixed_word : affix.root_word;
-              const affixType = affix.affix_type;
-              return (
-                <ListItem key={affix.id || index}>
-                  <ListItemText
-                    primary={relatedWord ? (
-                        <Link component="button" variant="body2" onClick={() => onWordLinkClick(relatedWord.lemma)} sx={{ mr: 1 }}>
-                            {relatedWord.lemma}
-                        </Link>
-                    ) : "Unknown Word"}
-                    secondary={`via ${affixType}`}
-                  />
-                </ListItem>
-              );
-            })}
-          </List>
-        </Box>
-      );
-    };
-
-    return (
-      <Box sx={{ p: theme.spacing(2) }}>
-        {rootWord && (
-           <Box mb={3}>
-             <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 500 }}>Root Word</Typography>
-             <Chip
-                key={rootWord.id}
-                label={rootWord.lemma}
-                onClick={() => onWordLinkClick(rootWord.lemma)}
-                clickable
-                size="small"
-                variant="outlined"
-                sx={{ cursor: 'pointer', '&:hover': { bgcolor: alpha(theme.palette.text.primary, 0.08) } }}
-              />
-           </Box>
-        )}
-        {renderAffixGroup("Derived from this word (as root)", wordInfo.root_affixations, 'root')}
-        {renderAffixGroup("Formed from affixation (as result)", wordInfo.affixed_affixations, 'affixed')}
-      </Box>
-    );
-  };
-
-  const renderWordFormsTab = () => {
-    if (!wordInfo.forms || !Array.isArray(wordInfo.forms) || wordInfo.forms.length === 0) {
-        return <Alert severity="info">No alternative forms available.</Alert>;
-    }
-    return (
-        <List dense sx={{ py: 1 }}>
-            {wordInfo.forms.map((form: WordForm, index: number) => {
-                // Handle case when form object might be missing some properties
-                if (!form) return null;
-                
-                // Safely parse the tags field which might be a JSON string or an object already
-                const tags = safeParse(form.tags, 'object') as Record<string, any>;
-                const formText = form.form || 'Unknown form';
-                
-                return (
-                    <ListItem key={form.id || `form-${index}`} sx={{ py: 1 }}>
-                        <ListItemText
-                            primary={formText}
-                            secondary={form.is_canonical ? 'Canonical' : form.is_primary ? 'Primary' : null}
-                        />
-                        {Object.entries(tags).length > 0 && (
-                            <Stack direction="row" spacing={0.5} ml={2} useFlexGap flexWrap="wrap">
-                                {Object.entries(tags).map(([key, value]) => (
-                                    <Chip key={key} label={`${key}: ${value}`} size="small" variant="outlined" />
-                                ))}
-                            </Stack>
-                        )}
-                    </ListItem>
-                );
-            })}
-        </List>
-    );
-  };
-
-  const renderWordTemplatesTab = () => {
-      if (!wordInfo.templates || !Array.isArray(wordInfo.templates) || wordInfo.templates.length === 0) {
-          return <Alert severity="info">No word templates available.</Alert>;
-      }
-      return (
-          <List dense sx={{ py: 1 }}>
-              {wordInfo.templates.map((template: WordTemplate, index: number) => {
-                  // Handle case when template object might be missing
-                  if (!template) return null;
-                  
-                  // Safely parse the args field
-                  const args = safeParse(template.args, 'object') as Record<string, any>;
-                  const templateName = template.template_name || 'Unknown template';
-                  
-                  return (
-                      <ListItem key={template.id || `template-${index}`} sx={{ py: 1 }}>
-                          <ListItemText
-                              primary={templateName}
-                              secondary={`Expansion: ${template.expansion || 'N/A'}`}
-                          />
-                          {Object.entries(args).length > 0 && (
-                             <Stack direction="row" spacing={0.5} ml={2} useFlexGap flexWrap="wrap">
-                                {Object.entries(args).map(([key, value]) => (
-                                    <Chip key={key} label={`${key}: ${value}`} size="small" variant="outlined" />
-                                ))}
-                             </Stack>
-                          )}
-                      </ListItem>
-                  );
-              })}
-          </List>
-      );
-  };
-
   const renderEtymologyTab = () => {
     if (isLoadingEtymology) {
       return <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}><CircularProgress /></Box>;
@@ -601,26 +396,17 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     if (etymologyError) {
       return <Alert severity="error" sx={{ m: 2 }}>{etymologyError}</Alert>;
     }
-    
-    // Define type structures for the etymology tree
+    // Check if etymologyTree exists and has nodes
+    if (!etymologyTree || !etymologyTree.nodes || etymologyTree.nodes.length === 0) {
+       return <Alert severity="info" sx={{ m: 2 }}>No etymology information available.</Alert>;
+    }
+
+    // Assume Etymology Tree structure based on usage
     type EtymologyNode = { id: number; label: string; language?: string; [key: string]: any };
     type EtymologyEdge = { source: number; target: number; [key: string]: any };
     type EtymologyTreeMap = { [id: number]: EtymologyNode };
-    
-    // Validate and handle the etymology tree data
-    const hasValidTree = etymologyTree && 
-                        Array.isArray(etymologyTree.nodes) && 
-                        etymologyTree.nodes.length > 0 &&
-                        Array.isArray(etymologyTree.edges);
-    
-    if (!hasValidTree) {
-      return <Alert severity="info" sx={{ m: 2 }}>No etymology information available.</Alert>;
-    }
-    
-    const nodes = etymologyTree.nodes as EtymologyNode[];
-    const edges = etymologyTree.edges as EtymologyEdge[];
 
-    // Basic List Rendering of Etymology Nodes
+    // Basic List Rendering of Etymology Nodes (Improved from JSON)
     const renderNode = (nodeId: number, nodes: EtymologyTreeMap, edges: EtymologyEdge[], level = 0): React.ReactNode => {
        const node = nodes[nodeId];
        if (!node) return null;
@@ -650,13 +436,13 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     };
 
     // Find the root node(s) - nodes that are not targets of any edge
-    const targetIds = new Set(edges.map((edge: EtymologyEdge) => edge.target));
-    const rootIds = nodes
-                    .filter((node: EtymologyNode) => !targetIds.has(node.id))
-                    .map((node: EtymologyNode) => node.id);
+    const targetIds = new Set(etymologyTree.edges.map((edge: EtymologyEdge) => edge.target));
+    const rootIds = etymologyTree.nodes
+                      .filter((node: EtymologyNode) => !targetIds.has(node.id))
+                      .map((node: EtymologyNode) => node.id);
 
     // Build a map for quick node lookup
-    const nodeMap = nodes.reduce((acc: EtymologyTreeMap, node: EtymologyNode) => {
+    const nodeMap = etymologyTree.nodes.reduce((acc: EtymologyTreeMap, node: EtymologyNode) => {
         acc[node.id] = node;
         return acc;
     }, {});
@@ -665,7 +451,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
       <Box sx={{ p: 0 }}>
           <List dense sx={{ pt: 1 }}>
              {rootIds.length > 0
-                ? rootIds.map((rootId: number) => renderNode(rootId, nodeMap, edges))
+                ? rootIds.map((rootId: number) => renderNode(rootId, nodeMap, etymologyTree.edges))
                 : <ListItem><Alert severity="warning" variant="outlined" sx={{ width: '100%' }}>Could not determine root etymology node.</Alert></ListItem> }
           </List>
       </Box>
@@ -705,9 +491,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                   <Box sx={{ p: theme.spacing(3) }}>
                       {activeTab === 'definitions' && renderDefinitionsTab()}
                       {activeTab === 'relations' && renderRelationsTab()}
-                      {activeTab === 'affixations' && renderAffixationsTab()}
-                      {activeTab === 'forms' && renderWordFormsTab()}
-                      {activeTab === 'templates' && renderWordTemplatesTab()}
                       {activeTab === 'etymology' && renderEtymologyTab()}
                       {activeTab === 'credits' && renderCreditsTab()}
                   </Box>
@@ -748,9 +531,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                 >
                   <Tab label="Definitions" value="definitions" />
                   <Tab label="Relations" value="relations" />
-                  <Tab label="Affixations" value="affixations" />
-                  <Tab label="Forms" value="forms" />
-                  <Tab label="Templates" value="templates" />
                   <Tab label="Etymology" value="etymology" />
                   <Tab label="Sources" value="credits" />
                 </Tabs>
