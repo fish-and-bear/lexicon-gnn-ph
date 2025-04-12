@@ -478,10 +478,28 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const setupNodeInteractions = useCallback((
       nodeSelection: d3.Selection<d3.BaseType, CustomNode, SVGGElement, unknown>
   ) => {
+      // Add double-click handler for navigation
+      nodeSelection.on("dblclick", (event, d) => {
+          event.preventDefault();
+          event.stopPropagation();
+          
+          // Navigation: Make this node the new main word
+          console.log(`Double-clicked word node: ${d.word}`);
+          
+          if (onNodeClick) {
+            // Always pass the word text directly to the click handler for navigation
+            console.log("Double-click - Making this the main word:", d.word);
+            onNodeClick(d.word);
+          }
+      });
+      
+      // Add single-click handler for highlighting
       nodeSelection
         .on("click", (event, d) => {
           event.stopPropagation();
           if (isDraggingRef.current) return;
+          
+          console.log(`Single-clicked word node: ${d.word} - Highlighting related nodes`);
           
           const connectedIds = new Set<string>([d.id]);
           const connectedLinkElements: SVGLineElement[] = [];
@@ -545,13 +563,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
             })
             .attr("stroke-opacity", 0.9)
             .attr("stroke-width", 2.5);
-
-           if (onNodeClick) {
-             // Always pass the word text directly to the click handler - it's more reliable
-             // We'll let the backend handle ID resolution
-             console.log("Clicking on word:", d.word);
-             onNodeClick(d.word);
-           }
         })
         .on("mouseover", (event, d) => {
             if (isDraggingRef.current) return;
@@ -599,37 +610,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
                  });
 
              // NO restoration of other opacities needed
-        })
-        .on("dblclick", (event, d_unknown) => {
-             event.preventDefault();
-             const d = d_unknown as CustomNode; // Cast early
-             d.pinned = !d.pinned;
-             d.fx = d.pinned ? d.x : null;
-             d.fy = d.pinned ? d.y : null;
-
-             // Select the circle and re-bind the typed data *before* the transition
-             const circleSelection = d3.select(event.currentTarget as Element)
-                                     .select<SVGCircleElement>('circle')
-                                     .data([d]); // Re-bind typed data
-
-             // Now apply transitions using the correctly typed selection
-             circleSelection.transition().duration(150)
-                 .attr("stroke-width", (n: CustomNode) => n.id === selectedNodeId ? 2.5 : (n.pinned ? 3 : 1.5))
-                 .attr("stroke-dasharray", (n: CustomNode) => n.pinned ? "5,3" : "none")
-                 .attr("stroke", (n: CustomNode) => {
-                     const baseColor = getNodeColor(n.group);
-                     let finalColor: string;
-                     if (n.pinned) {
-                         finalColor = baseColor;
-                     } else {
-                         if (n.id === selectedNodeId) {
-                             finalColor = d3.color(baseColor)?.brighter(0.8).formatHex() ?? baseColor ?? (theme === "dark" ? "#eee" : "#333");
-                         } else {
-                             finalColor = d3.color(baseColor)?.darker(0.8).formatHex() ?? baseColor ?? "#888";
-                         }
-                     }
-                     return finalColor;
-                 });
         });
   }, [selectedNodeId, onNodeClick, getNodeRadius, getNodeColor, theme, nodeMap]);
 

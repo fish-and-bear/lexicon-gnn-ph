@@ -541,14 +541,19 @@ const WordGraphComponent: React.FC<WordGraphProps> = ({
             x: event.pageX,
             y: event.pageY
           });
+          
+          // Do NOT call onNodeClick for single click
+          // This should only highlight related nodes, not navigate
+          console.log("Single click on node:", d.word, "with ID:", d.id, "- highlighting related nodes");
         }, 250); // Wait for 250ms to distinguish from double-click
       };
       
-      // Handle double-click (redirect to word)
+      // Handle double-click (make this node the new main word)
       const handleNodeDoubleClick = (event: MouseEvent, d: CustomNode) => {
         if (isDraggingRef.current) return;
-        console.log("Double-click on node:", d.word, "with ID:", d.id);
+        console.log("Double-click on node:", d.word, "with ID:", d.id, "- making it the new main word");
         
+        // Always use the onNodeClick callback for double-click to navigate
         // Check if ID is numeric before using it
         const isNumeric = !isNaN(parseInt(d.id, 10));
         if (isNumeric) {
