@@ -215,43 +215,106 @@ const WordExplorer: React.FC = () => {
     setIsLoading(true);
 
     try {
-      let wordData: WordInfo;
+      // Initialize wordData with a default empty structure
+      let wordData: WordInfo | null = null;
+      let fallbackToSearch = false;
 
       try {
         // First try getting the word details directly
         wordData = await fetchWordDetails(word);
       } catch (error: any) {
-        // If the word wasn't found, try to search for it as a fallback
+        // If there's any error fetching the word, try to search for it as a fallback
         console.warn(`Failed to fetch details for word '${word}', error:`, error.message);
+        fallbackToSearch = true;
         
+        // Expanded error conditions to be more inclusive
         if (error.message.includes('not found') || 
-            error.message.includes('Database error')) {
+            error.message.includes('Database error') ||
+            error.message.includes('dictionary update sequence') ||
+            error.message.includes('Server database error') ||
+            error.message.includes('unexpected error')) {
           console.log(`Falling back to search for word: ${word}`);
           
-          // Try to extract actual word text if this was an ID format
-          const searchText = word.startsWith('id:') ? 
-            `id:${word.substring(3)}` : // Keep the ID format
-            word; // Use the word directly
-          
-          const searchResults = await searchWords(searchText, {
-            page: 1,
-            per_page: 5,
-            mode: 'all', // Using 'all' which is a valid search mode
-            sort: 'relevance',
-            language: 'tl'
-          });
-          
-          if (searchResults.words && searchResults.words.length > 0) {
-            console.log(`Search successful, found ${searchResults.words.length} results`);
-            // Use the first search result
-            const firstResult = searchResults.words[0];
-            wordData = await fetchWordDetails(
-              firstResult.id.toString().startsWith('id:') ? 
-              firstResult.id.toString() : 
-              `id:${firstResult.id}`
-            );
+          // Extract search text from the word or ID
+          let searchText;
+          if (word.startsWith('id:')) {
+            // For ID format, we'll try to search by ID but also have a fallback
+            const wordId = word.substring(3);
+            // Try both searching with the ID and searching with 'id:' prefix removed
+            try {
+              const idSearchResults = await searchWords(`id:${wordId}`, {
+                page: 1,
+                per_page: 5,
+                mode: 'all',
+                sort: 'relevance'
+              });
+              
+              if (idSearchResults.words && idSearchResults.words.length > 0) {
+                console.log(`Search by ID successful, found ${idSearchResults.words.length} results`);
+                // Use the first search result
+                const firstResult = idSearchResults.words[0];
+                wordData = await fetchWordDetails(
+                  String(firstResult.id).startsWith('id:') ? 
+                  String(firstResult.id) : 
+                  `id:${firstResult.id}`
+                );
+                
+                // Successfully got data
+                fallbackToSearch = false; // No need to continue with search
+              }
+            } catch (idSearchError) {
+              console.warn(`ID-based search failed, trying word search:`, idSearchError);
+              // Fall through to regular search
+            }
+            
+            // If ID search failed or wasn't attempted, set searchText
+            if (fallbackToSearch) {
+              // If ID search failed, try to extract a searchable text 
+              // For now we'll just use the ID as is, but could implement smarter extraction
+              searchText = wordId;
+            }
           } else {
-            throw new Error(`Word '${word}' not found by search. Please try a different word.`);
+            // Regular word search
+            searchText = word;
+          }
+          
+          // Perform general search if we still need to
+          if (fallbackToSearch && searchText) {
+            const searchResults = await searchWords(searchText, {
+              page: 1,
+              per_page: 10,
+              mode: 'all',
+              sort: 'relevance',
+              language: ''  // Search in all languages
+            });
+            
+            if (searchResults.words && searchResults.words.length > 0) {
+              console.log(`Search successful, found ${searchResults.words.length} results`);
+              
+              // Show search results in UI
+              setSearchResults(searchResults.words);
+              
+              // Use the first search result
+              const firstResult = searchResults.words[0];
+              try {
+                wordData = await fetchWordDetails(
+                  String(firstResult.id).startsWith('id:') ? 
+                  String(firstResult.id) : 
+                  `id:${firstResult.id}`
+                );
+                fallbackToSearch = false; // Successfully got the data
+              } catch (detailError) {
+                console.error(`Failed to fetch details for search result:`, detailError);
+                
+                // If fetching details for first result also fails, 
+                // just display the search results and a helpful message
+                setError(`Could not load full details for "${searchText}". Please select one of the search results below.`);
+                setIsLoading(false);
+                return; // Exit function early, letting user select from search results
+              }
+            } else {
+              throw new Error(`Word '${searchText}' not found. Please try a different word.`);
+            }
           }
         } else {
           // Rethrow other errors
@@ -259,39 +322,42 @@ const WordExplorer: React.FC = () => {
         }
       }
 
-      // Successfully got the word data
-      console.log(`Word data retrieved successfully:`, wordData);
-      setSelectedWordInfo(wordData);
-      setIsLoading(false);
-      
-      // Update navigation/history
-      const wordId = wordData.id.toString();
-      if (!wordHistory.some(w => typeof w === 'object' && 'id' in w && w.id.toString() === wordId)) {
-        const newHistory = [{ id: wordData.id, text: wordData.lemma }, ...wordHistory].slice(0, 20);
-        setWordHistory(newHistory as any);
-      }
+      // Successfully got the word data (either directly or via search)
+      if (!fallbackToSearch && wordData) {
+        console.log(`Word data retrieved successfully:`, wordData);
+        setSelectedWordInfo(wordData);
+        setIsLoading(false);
+        
+        // Update navigation/history
+        const wordId = String(wordData.id);
+        if (!wordHistory.some(w => typeof w === 'object' && 'id' in w && String(w.id) === wordId)) {
+          const newHistory = [{ id: wordData.id, text: wordData.lemma }, ...wordHistory].slice(0, 20);
+          setWordHistory(newHistory as any);
+        }
 
-      // Update network data if necessary
-      const currentNetworkWordId = depth && breadth ? wordData.id : null;
-      if (wordData.id !== currentNetworkWordId) {
-        setDepth(2); // DEFAULT_NETWORK_DEPTH
-        setBreadth(10); // DEFAULT_NETWORK_BREADTH
-      }
+        // Update network data if necessary
+        const currentNetworkWordId = depth && breadth ? wordData.id : null;
+        if (wordData.id !== currentNetworkWordId) {
+          setDepth(2); // DEFAULT_NETWORK_DEPTH
+          setBreadth(10); // DEFAULT_NETWORK_BREADTH
+        }
 
-      // Fetch the etymology tree for the word in the background
-      try {
-        const etymologyId = wordData.id.toString().startsWith('id:') ? 
-          parseInt(wordData.id.toString().substring(3), 10) : 
-          wordData.id;
-        fetchEtymologyTree(etymologyId)
-          .then(tree => {
-            setEtymologyTree(tree);
-          })
-          .catch(err => {
-            console.error("Error fetching etymology tree:", err);
-          });
-      } catch (etymologyError) {
-        console.error("Error initiating etymology tree fetch:", etymologyError);
+        // Fetch the etymology tree for the word in the background
+        try {
+          const etymologyIdString = String(wordData.id);
+          const etymologyId = etymologyIdString.startsWith('id:') ? 
+            parseInt(etymologyIdString.substring(3), 10) : 
+            wordData.id;
+          fetchEtymologyTree(etymologyId)
+            .then(tree => {
+              setEtymologyTree(tree);
+            })
+            .catch(err => {
+              console.error("Error fetching etymology tree:", err);
+            });
+        } catch (etymologyError) {
+          console.error("Error initiating etymology tree fetch:", etymologyError);
+        }
       }
     } catch (error: any) {
       console.error(`Error in handleNodeClick for word '${word}':`, error);
@@ -306,11 +372,31 @@ const WordExplorer: React.FC = () => {
         setError(`Cannot connect to the backend server. Please check your connection or try again later.`);
       } else if (error.message.includes('Database error')) {
         setError(`Database error when retrieving the word '${word}'. Try searching for this word instead.`);
+      } else if (error.message.includes('dictionary update sequence') || error.message.includes('Server database error')) {
+        setError(`Database error when retrieving the word '${word}'. We've attempted to find similar words for you.`);
+        
+        // Auto-trigger a search in this case
+        try {
+          const searchText = word.startsWith('id:') ? word.substring(3) : word;
+          const searchResults = await searchWords(searchText, {
+            page: 1,
+            per_page: 10,
+            mode: 'all',
+            sort: 'relevance'
+          });
+          
+          if (searchResults.words && searchResults.words.length > 0) {
+            setSearchResults(searchResults.words);
+            setShowSuggestions(true);
+          }
+        } catch (searchError) {
+          console.error('Error during fallback search:', searchError);
+        }
       } else {
         setError(`Error retrieving word details: ${error.message}`);
       }
     }
-  }, [wordHistory, depth, breadth, setDepth, setBreadth]);
+  }, [wordHistory, depth, breadth, setDepth, setBreadth, fetchWordDetails, searchWords]);
 
   // Update the ref whenever handleNodeClick changes
   useEffect(() => {
