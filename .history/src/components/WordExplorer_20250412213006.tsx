@@ -379,15 +379,9 @@ const WordExplorer: React.FC = () => {
           
           // 4. Then load the network in parallel
           console.log(`[DEBUG] Fetching network for: ${wordData.lemma}`);
-          fetchWordNetworkData(wordData.lemma, depth, breadth)
-            .then(networkData => {
-              console.log(`[DEBUG] Network data received with ${networkData?.nodes?.length || 0} nodes`);
-              setWordNetwork(networkData);
-            })
-            .catch(networkErr => {
-              console.error(`[DEBUG] Error fetching network:`, networkErr);
-              // Don't fail the whole search if network fails
-            });
+          const networkData = await fetchWordNetworkData(wordData.lemma, depth, breadth);
+          console.log(`[DEBUG] Network data received with ${networkData?.nodes?.length || 0} nodes`);
+          setWordNetwork(networkData);
           
           // 5. Also try to fetch etymology tree if available
           try {
@@ -397,17 +391,10 @@ const WordExplorer: React.FC = () => {
             const etymologyId = etymologyIdString.startsWith('id:') 
               ? parseInt(etymologyIdString.substring(3), 10) 
               : wordData.id;
-            fetchEtymologyTree(etymologyId)
-              .then(tree => {
-                console.log(`[DEBUG] Etymology tree received`);
-                setEtymologyTree(tree);
-              })
-              .catch(etymErr => {
-                console.error(`[DEBUG] Error fetching etymology tree:`, etymErr);
-                // Don't fail the search if etymology fetch fails
-              });
+            await fetchEtymologyTree(etymologyId);
+            console.log(`[DEBUG] Etymology tree received`);
           } catch (etymErr) {
-            console.error(`[DEBUG] Error initiating etymology tree fetch:`, etymErr);
+            console.error(`[DEBUG] Error fetching etymology tree:`, etymErr);
             // Don't throw, we can continue without etymology
           }
           
@@ -417,13 +404,10 @@ const WordExplorer: React.FC = () => {
         } catch (dataError) {
           console.error(`[DEBUG] Error loading word data during search:`, dataError);
           let errorMessage = "Error loading word details";
-          
           if (dataError instanceof Error) {
             // Check for common error patterns and provide more helpful messages
             const msg = dataError.message;
-            if (msg.includes("dictionary update sequence")) {
-              errorMessage = "There was a database error on the server. Try a different search term or try again later.";
-            } else if (msg.includes("Database error")) {
+            if (msg.includes("Database error")) {
               errorMessage = "Database error occurred. The word exists but there was a problem retrieving its details.";
             } else if (msg.includes("not found")) {
               errorMessage = `Word "${query}" was found in search but its details could not be retrieved.`;
@@ -433,12 +417,8 @@ const WordExplorer: React.FC = () => {
               errorMessage = dataError.message;
             }
           }
-          
           console.error(`[DEBUG] Setting error:`, errorMessage);
           setError(errorMessage);
-          
-          // Even if detail fetching fails, still show search results
-          setSearchResults(result.words);
         }
       } else {
         // No results found
@@ -451,13 +431,10 @@ const WordExplorer: React.FC = () => {
       console.error(`[DEBUG] Search error:`, error);
       setSearchResults([]);
       let errorMessage = "An error occurred during search";
-      
       if (error instanceof Error) {
         // Check for common error patterns and provide more helpful messages
         const msg = error.message;
-        if (msg.includes("dictionary update sequence")) {
-          errorMessage = "There was a database error on the server. Try a different search term or try again later.";
-        } else if (msg.includes("Network Error") || msg.includes("Failed to fetch")) {
+        if (msg.includes("Network Error") || msg.includes("Failed to fetch")) {
           errorMessage = "Cannot connect to the backend server. Please ensure the backend server is running.";
         } else if (msg.includes("Circuit breaker")) {
           errorMessage = "Too many failed requests. Please wait a moment and try again.";
@@ -465,7 +442,6 @@ const WordExplorer: React.FC = () => {
           errorMessage = error.message;
         }
       }
-      
       console.error(`[DEBUG] Setting error message:`, errorMessage);
       setSearchError(errorMessage);
       setError(errorMessage);

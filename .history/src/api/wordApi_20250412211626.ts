@@ -781,7 +781,7 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
     isIdRequest = true;
   } else {
     // Normal word text request - use the original flow
-    const normalizedWord = word.toLowerCase();
+    const normalizedWord = word.toLowerCase().trim();
     const cacheKey = `cache:wordDetails:${normalizedWord}`;
 
     const cachedData = getCachedData(cacheKey);
@@ -827,7 +827,7 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
     
     // Only cache non-ID requests
     if (!isIdRequest) {
-      setCachedData(`cache:wordDetails:${word.toLowerCase()}`, response.data); // Cache the raw data
+      setCachedData(`cache:wordDetails:${word.toLowerCase().trim()}`, response.data); // Cache the raw data
     }
     
     return normalizedData;
@@ -852,12 +852,6 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
         throw new Error(`Database error when retrieving details for word '${word}'. Try searching for this word instead.`);
       }
       
-      // Handle dictionary update sequence error specifically
-      if (errorMessage.includes('dictionary update sequence element')) {
-        console.error('Dictionary update sequence error detected, this is a backend database issue');
-        throw new Error(`Server database error. Please try searching for this word instead of using direct lookup.`);
-      }
-      
       throw new Error(`Server error: ${errorMessage}`);
     }
     
@@ -872,16 +866,30 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
 // --- Search Functionality --- 
 
 export async function searchWords(query: string, options: SearchOptions): Promise<SearchResult> {
-  console.log(`[DEBUG] searchWords called with query: "${query}" and options:`, options);
+  // Sanitize the query to ensure it's safe for search
+  const sanitizedQuery = query.trim();
   
-  const cacheKey = `cache:search:${query}:${JSON.stringify(options)}`;
+  console.log(`[DEBUG] searchWords called with query: "${sanitizedQuery}" and options:`, options);
+  
+  if (!sanitizedQuery) {
+    console.warn("Empty search query, returning empty results");
+    return {
+      words: [],
+      page: options.page || 1,
+      perPage: options.per_page || 10,
+      total: 0,
+      query: sanitizedQuery
+    };
+  }
+  
+  const cacheKey = `cache:search:${sanitizedQuery}:${JSON.stringify(options)}`;
   const cachedData = getCachedData<SearchResult>(cacheKey);
 
   if (cachedData) {
-    console.log(`Cache hit for search: ${query}`);
+    console.log(`Cache hit for search: ${sanitizedQuery}`);
     return cachedData;
   }
-  console.log(`Cache miss for search: ${query}. Fetching from API...`);
+  console.log(`Cache miss for search: ${sanitizedQuery}. Fetching from API...`);
 
   if (!circuitBreaker.canMakeRequest()) {
     console.warn("Circuit breaker is open. Aborting API request for search.");
@@ -891,7 +899,7 @@ export async function searchWords(query: string, options: SearchOptions): Promis
   try {
     // Use snake_case for API parameters to match backend expectations
     const apiParams: Record<string, any> = {
-        q: encodeURIComponent(query), // Explicitly encode the query parameter
+        q: encodeURIComponent(sanitizedQuery), // Explicitly encode the query parameter
         limit: options.per_page || 20, // Default limit
         offset: options.page ? (options.page - 1) * (options.per_page || 20) : 0, 
     };
@@ -906,125 +914,65 @@ export async function searchWords(query: string, options: SearchOptions): Promis
     const searchUrl = `${CONFIG.baseURL}/search?q=${apiParams.q}&limit=${apiParams.limit}`;
     console.log(`Making search GET request to URL: ${searchUrl}`);
 
-    console.log(`[DEBUG] Making search API request with params:`, apiParams);
+    const response = await api.get('/search', { params: apiParams });
     
-    // Try with direct fetch first for improved reliability
-    let searchResult: SearchResult | null = null;
-    let fetchError: any = null;
-    
-    try {
-      console.log(`Trying direct fetch for search: ${query}`);
-      const directResponse = await fetch(`${CONFIG.baseURL}/search?q=${apiParams.q}&limit=${apiParams.limit}`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors'
-      });
-      
-      if (directResponse.ok) {
-        const data = await directResponse.json();
-        console.log(`Direct fetch successful:`, data);
+    if (!response.data || !response.data.results) {
+      console.error('Invalid search response:', response.data);
+      throw new Error('Invalid response format from search API');
+    }
+
+    // Map the response to our expected SearchResult format
+    const searchResult: SearchResult = {
+      words: response.data.results.map((result: any): SearchWordResult => {
+        // Ensure we have a valid ID format - prefer numeric IDs
+        let id = result.id;
+        if (typeof id === 'string' && id.startsWith('id:')) {
+          id = parseInt(id.substring(3), 10);
+        }
         
-        // Format the response like standard searchResult
-        searchResult = {
-          words: (data.results || []).map((result: any): SearchWordResult => ({
-            id: result.id,
-            lemma: result.lemma,
-            normalized_lemma: result.normalized_lemma,
-            language_code: result.language_code,
-            has_baybayin: result.has_baybayin,
-            baybayin_form: result.baybayin_form,
-            romanized_form: result.romanized_form,
-            definitions: []
-          })),
-          page: options.page || 1,
-          perPage: options.per_page || (data.results?.length || 0), 
-          total: data.count || 0,
-          query: query 
+        return {
+          id,
+          lemma: result.lemma || '',
+          normalized_lemma: result.normalized_lemma || result.lemma || '',
+          language_code: result.language_code || 'tl',
+          has_baybayin: result.has_baybayin || false,
+          baybayin_form: result.baybayin_form || null,
+          romanized_form: result.romanized_form || null,
+          definitions: result.definitions || []
         };
-      } else {
-        console.log(`Direct fetch failed with status: ${directResponse.status}`);
-        fetchError = new Error(`Failed direct fetch with status: ${directResponse.status}`);
-      }
-    } catch (error) {
-      console.error(`Error with direct fetch:`, error);
-      fetchError = error;
-    }
+      }),
+      page: options.page || 1,
+      perPage: options.per_page || (response.data.results?.length || 0),
+      total: response.data.count || 0,
+      query: sanitizedQuery
+    };
     
-    // If direct fetch succeeded, return the result
-    if (searchResult) {
-      setCachedData(cacheKey, searchResult);
-      return searchResult;
-    }
+    // Record success and cache the result
+    circuitBreaker.recordSuccess();
+    setCachedData(cacheKey, searchResult);
     
-    // If direct fetch failed, try with axios
-    try {
-      // Continue with normal axios request if direct fetch didn't succeed
-      const response = await api.get('/search', { params: apiParams });
-      console.log(`[DEBUG] Search API responded with status: ${response.status}`);
-      
-      if (response.status !== 200) {
-          throw new Error(`API returned status ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = response.data; // Assuming data = { total: number, words: RawWordSummary[] }
-      console.log(`[DEBUG] Search API raw response data:`, data);
-      
-      // Transform the response into SearchResult format
-      searchResult = {
-        words: (data.words || []).map((result: any): SearchWordResult => ({
-          id: result.id,
-          lemma: result.lemma,
-          normalized_lemma: result.normalized_lemma,
-          language_code: result.language_code,
-          has_baybayin: result.has_baybayin,
-          baybayin_form: result.baybayin_form,
-          romanized_form: result.romanized_form,
-          // Search results usually have simpler definition structures
-          definitions: (result.definitions || []).map((def: any) => ({ 
-              id: def.id || 0,
-              definition_text: def.definition_text || '',
-              part_of_speech: def.part_of_speech || null
-          }))
-        })),
-        page: options.page || 1,
-        perPage: options.per_page || (data.words?.length || 0), 
-        total: data.total || 0,
-        query: query 
-      };
-      
-      console.log(`[DEBUG] Transformed search result:`, searchResult);
-      setCachedData(cacheKey, searchResult);
-      return searchResult;
-      
-    } catch (axiosError) {
-      console.error(`[DEBUG] Axios search error:`, axiosError);
-      // If we have a fetchError from the direct fetch attempt, include it in the error message
-      if (fetchError) {
-        console.error(`[DEBUG] Both direct fetch and axios failed. Direct fetch error:`, fetchError);
-      }
-      throw axiosError;
-    }
-    
+    return searchResult;
   } catch (error) {
-    // Failure recorded by interceptor
-    console.error(`[DEBUG] Search error for query "${query}":`, error);
+    console.error('Error in searchWords:', error);
     
-    // Handle specific error cases
-    if (axios.isAxiosError(error) && error.response?.status === 500) {
-      const errorMessage = error.response.data?.error || 'Internal server error';
-      
-      // Handle dictionary update sequence error specifically
-      if (errorMessage.includes('dictionary update sequence element')) {
-        console.error('Dictionary update sequence error detected, this is a backend database issue');
-        throw new Error(`Server database error. Please try a different search query.`);
+    // Record failure for circuit breaker
+    circuitBreaker.recordFailure();
+    
+    if (error instanceof Error) {
+      if (error.message.includes('404')) {
+        return {
+          words: [],
+          page: options.page || 1,
+          perPage: options.per_page || 0,
+          total: 0,
+          query: sanitizedQuery
+        };
       }
+      
+      throw new Error(`Failed to search for words: ${error.message}`);
     }
     
-    await handleApiError(error, `searching words with query "${query}"`);
-    throw new Error('An unknown error occurred during search. Please try with a different query.');
+    throw new Error('An unexpected error occurred while searching for words');
   }
 }
 

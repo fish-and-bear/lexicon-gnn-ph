@@ -329,7 +329,6 @@ const WordExplorer: React.FC = () => {
     setIsLoadingSuggestions(true);
     setSearchError(null);
     setError(null); // Clear any previous errors
-    setIsLoading(true); // Start loading indicator immediately
 
     try {
       const searchOptions: SearchOptions = {
@@ -355,16 +354,15 @@ const WordExplorer: React.FC = () => {
         // Automatically load the first search result
         console.log(`[DEBUG] Loading details for first result: ${result.words[0].lemma} (ID: ${result.words[0].id})`);
         
+        setIsLoading(true); // Start loading
+        
         try {
           // 1. First get the word details directly
           const firstResult = result.words[0];
           console.log(`[DEBUG] Fetching details for word ID: ${firstResult.id}`);
           
-          // Make sure we're using the right ID format - don't add id: prefix if already has one
-          const idString = String(firstResult.id);
-          const wordId = idString.startsWith('id:') ? idString : `id:${idString}`;
-            
-          const wordData = await fetchWordDetails(wordId);
+          // Make sure we're using the right ID format
+          const wordData = await fetchWordDetails(firstResult.id.toString());
           console.log(`[DEBUG] Word details received:`, wordData);
           
           // 2. Update the word data immediately
@@ -379,35 +377,17 @@ const WordExplorer: React.FC = () => {
           
           // 4. Then load the network in parallel
           console.log(`[DEBUG] Fetching network for: ${wordData.lemma}`);
-          fetchWordNetworkData(wordData.lemma, depth, breadth)
-            .then(networkData => {
-              console.log(`[DEBUG] Network data received with ${networkData?.nodes?.length || 0} nodes`);
-              setWordNetwork(networkData);
-            })
-            .catch(networkErr => {
-              console.error(`[DEBUG] Error fetching network:`, networkErr);
-              // Don't fail the whole search if network fails
-            });
+          const networkData = await fetchWordNetworkData(wordData.lemma, depth, breadth);
+          console.log(`[DEBUG] Network data received with ${networkData?.nodes?.length || 0} nodes`);
+          setWordNetwork(networkData);
           
           // 5. Also try to fetch etymology tree if available
           try {
             console.log(`[DEBUG] Fetching etymology tree for ID: ${wordData.id}`);
-            // Convert ID to appropriate format for etymology tree fetch
-            const etymologyIdString = String(wordData.id);
-            const etymologyId = etymologyIdString.startsWith('id:') 
-              ? parseInt(etymologyIdString.substring(3), 10) 
-              : wordData.id;
-            fetchEtymologyTree(etymologyId)
-              .then(tree => {
-                console.log(`[DEBUG] Etymology tree received`);
-                setEtymologyTree(tree);
-              })
-              .catch(etymErr => {
-                console.error(`[DEBUG] Error fetching etymology tree:`, etymErr);
-                // Don't fail the search if etymology fetch fails
-              });
+            await fetchEtymologyTree(wordData.id);
+            console.log(`[DEBUG] Etymology tree received`);
           } catch (etymErr) {
-            console.error(`[DEBUG] Error initiating etymology tree fetch:`, etymErr);
+            console.error(`[DEBUG] Error fetching etymology tree:`, etymErr);
             // Don't throw, we can continue without etymology
           }
           
@@ -417,13 +397,10 @@ const WordExplorer: React.FC = () => {
         } catch (dataError) {
           console.error(`[DEBUG] Error loading word data during search:`, dataError);
           let errorMessage = "Error loading word details";
-          
           if (dataError instanceof Error) {
             // Check for common error patterns and provide more helpful messages
             const msg = dataError.message;
-            if (msg.includes("dictionary update sequence")) {
-              errorMessage = "There was a database error on the server. Try a different search term or try again later.";
-            } else if (msg.includes("Database error")) {
+            if (msg.includes("Database error")) {
               errorMessage = "Database error occurred. The word exists but there was a problem retrieving its details.";
             } else if (msg.includes("not found")) {
               errorMessage = `Word "${query}" was found in search but its details could not be retrieved.`;
@@ -433,12 +410,10 @@ const WordExplorer: React.FC = () => {
               errorMessage = dataError.message;
             }
           }
-          
           console.error(`[DEBUG] Setting error:`, errorMessage);
           setError(errorMessage);
-          
-          // Even if detail fetching fails, still show search results
-          setSearchResults(result.words);
+        } finally {
+          setIsLoading(false);
         }
       } else {
         // No results found
@@ -451,13 +426,10 @@ const WordExplorer: React.FC = () => {
       console.error(`[DEBUG] Search error:`, error);
       setSearchResults([]);
       let errorMessage = "An error occurred during search";
-      
       if (error instanceof Error) {
         // Check for common error patterns and provide more helpful messages
         const msg = error.message;
-        if (msg.includes("dictionary update sequence")) {
-          errorMessage = "There was a database error on the server. Try a different search term or try again later.";
-        } else if (msg.includes("Network Error") || msg.includes("Failed to fetch")) {
+        if (msg.includes("Network Error") || msg.includes("Failed to fetch")) {
           errorMessage = "Cannot connect to the backend server. Please ensure the backend server is running.";
         } else if (msg.includes("Circuit breaker")) {
           errorMessage = "Too many failed requests. Please wait a moment and try again.";
@@ -465,12 +437,10 @@ const WordExplorer: React.FC = () => {
           errorMessage = error.message;
         }
       }
-      
       console.error(`[DEBUG] Setting error message:`, errorMessage);
       setSearchError(errorMessage);
       setError(errorMessage);
     } finally {
-      setIsLoading(false);
       setIsLoadingSuggestions(false);
     }
   }, [fetchWordDetails, fetchWordNetworkData, fetchEtymologyTree, wordHistory, currentHistoryIndex, depth, breadth]);
@@ -1185,7 +1155,6 @@ const WordExplorer: React.FC = () => {
         console.log(`[DEBUG] Debounced search results:`, results);
         
         if (results && results.words && results.words.length > 0) {
-          // Display all results without filtering
           setSearchResults(results.words);
           setShowSuggestions(true);
           console.log(`[DEBUG] Found ${results.words.length} suggestions for "${query}"`);
@@ -1281,14 +1250,13 @@ const WordExplorer: React.FC = () => {
               const newValue = e.target.value;
               setInputValue(newValue);
               
-              // Use debounced search for suggestions
+              // Use debounced search for all words
               handleDebouncedSearch(newValue);
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
                 console.log(`[DEBUG] Enter key pressed for search: "${inputValue}"`);
-                // Execute search on Enter key press
                 handleSearch(inputValue);
               }
             }}
@@ -1309,13 +1277,7 @@ const WordExplorer: React.FC = () => {
                   key={result.id} 
                   onClick={() => {
                     // Use handleNodeClick with ID for more reliable handling
-                    const resultId = String(result.id);
-                    const wordId = resultId.startsWith('id:') ? resultId : `id:${resultId}`;
-                    handleNodeClick(wordId);
-                    // Also update the input value to show what was selected
-                    setInputValue(result.lemma);
-                    // Hide suggestions after selection
-                    setShowSuggestions(false);
+                    handleNodeClick(result.id.toString());
                   }}
                 >
                   <strong>{result.lemma}</strong>
