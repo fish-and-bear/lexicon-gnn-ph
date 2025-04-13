@@ -55,6 +55,11 @@ def extract_etymology_components(etymology_text: str) -> List[str]:
     if not etymology_text:
         return []
     
+    # Skip bracketed language codes like "[ Ing ]" or "[ Esp ]" as they're not actual components
+    if re.match(r'^\s*\[\s*(?:Ing|Esp|War|San|Arb|Ch|Jap|Mal|Tsino)\s*\]\s*$', etymology_text, re.IGNORECASE):
+        # Return empty list for these cases - they're language indicators, not components
+        return []
+    
     # Common patterns for component extraction
     patterns = [
         r'from\s+([^\s,;.]+)',

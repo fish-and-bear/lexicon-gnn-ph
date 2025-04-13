@@ -104,6 +104,8 @@ export interface Relation {
   sources?: string | string[]; // Can be string or array
   source_word?: BasicWord;
   target_word?: BasicWord;
+  // Allow string indexing for dynamic property access
+  [key: string]: any;
 }
 
 export interface CleanRelation extends Omit<Relation, 'sources'> {
