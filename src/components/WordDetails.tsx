@@ -312,12 +312,53 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
         return <Alert severity="info">No relations available for this word.</Alert>;
     }
 
+    // Debug relation data
+    console.log("Rendering relations tab with data:", {
+      incoming: wordInfo.incoming_relations,
+      outgoing: wordInfo.outgoing_relations
+    });
+
     const renderRelationGroup = (title: string, relations: WordInfo['outgoing_relations'] | WordInfo['incoming_relations'], direction: 'in' | 'out') => {
       if (!relations || relations.length === 0) return null;
 
+      // Check if relations have the expected structure
+      const hasValidStructure = relations.every(rel => {
+        const wordObj = direction === 'in' ? rel.source_word : rel.target_word;
+        
+        if (!wordObj) {
+          console.warn(`Relation missing ${direction === 'in' ? 'source' : 'target'} word:`, rel);
+          return false;
+        }
+        
+        if (!rel.relation_type) {
+          console.warn("Relation missing relation_type:", rel);
+          return false;
+        }
+        
+        return true;
+      });
+
+      if (!hasValidStructure) {
+        console.error(`Invalid ${direction === 'in' ? 'incoming' : 'outgoing'} relations structure`);
+        return (
+          <StyledAccordion defaultExpanded={false} disableGutters>
+            <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>{title}</Typography>
+              <Chip label={relations.length} size="small" sx={{ ml: 1.5 }}/>
+            </StyledAccordionSummary>
+            <StyledAccordionDetails>
+              <Alert severity="warning">
+                Relations data is incomplete or has an unexpected structure.
+              </Alert>
+            </StyledAccordionDetails>
+          </StyledAccordion>
+        );
+      }
+
       // Group relations by type
       const grouped = relations.reduce((acc, item) => {
-        const type = item.relation_type;
+        // Ensure relation_type exists and is a string
+        const type = item.relation_type || 'unknown';
         if (!acc[type]) acc[type] = [];
         acc[type].push(item);
         return acc;
@@ -346,8 +387,16 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                      {/* Use theme spacing for chip gap */}
                     <Stack direction="row" spacing={theme.spacing(1)} useFlexGap flexWrap="wrap">
                       {grouped[type].map((relatedItem, index) => {
+                        // Select the appropriate word object based on direction
                         const relatedWord: RelatedWord | undefined = direction === 'out' ? relatedItem.target_word : relatedItem.source_word;
-                        return relatedWord?.lemma ? (
+                        
+                        // Skip rendering if related word is undefined or missing lemma
+                        if (!relatedWord || !relatedWord.lemma) {
+                          console.warn(`Missing ${direction === 'out' ? 'target' : 'source'} word in relation:`, relatedItem);
+                          return null;
+                        }
+                        
+                        return (
                           <Chip
                             key={`${type}-${index}-${relatedWord.id}`}
                             label={relatedWord.lemma}
@@ -369,7 +418,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                             }}
                             title={`View ${relatedWord.lemma}`}
                           />
-                        ) : null;
+                        );
                       })}
                     </Stack>
                   </Box>
@@ -390,23 +439,142 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   };
 
   const renderEtymologyTab = () => {
+    // If the component is still loading the etymology data, show a spinner
     if (isLoadingEtymology) {
       return <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}><CircularProgress /></Box>;
     }
+    
+    // If there was an error loading the etymology tree, show the error
     if (etymologyError) {
       return <Alert severity="error" sx={{ m: 2 }}>{etymologyError}</Alert>;
     }
-    // Check if etymologyTree exists and has nodes
-    if (!etymologyTree || !etymologyTree.nodes || etymologyTree.nodes.length === 0) {
-       return <Alert severity="info" sx={{ m: 2 }}>No etymology information available.</Alert>;
+    
+    // First check if the word has self-contained etymology information
+    const hasWordEtymologies = wordInfo.etymologies && wordInfo.etymologies.length > 0;
+    const hasEtymologyTreeData = etymologyTree && etymologyTree.nodes && etymologyTree.nodes.length > 0;
+    
+    // Handle case where there's no etymology data from either source
+    if (!hasWordEtymologies && !hasEtymologyTreeData) {
+      return <Alert severity="info" sx={{ m: 2 }}>No etymology information available.</Alert>;
     }
-
-    // Assume Etymology Tree structure based on usage
+    
+    // If there's etymology data in the word itself, display it regardless of tree
+    if (hasWordEtymologies) {
+      console.log("Rendering etymology from word data:", wordInfo.etymologies);
+      
+      return (
+        <Box sx={{ p: 2 }}>
+          {/* Display direct etymology data from word */}
+          <List dense>
+            {wordInfo.etymologies!.map((etym, index) => (
+              <ListItem key={index} sx={{ 
+                display: 'block', 
+                py: 1.5,
+                borderBottom: index < wordInfo.etymologies!.length - 1 ? 
+                  `1px solid ${theme.palette.divider}` : 'none'
+              }}>
+                <ListItemText
+                  primary={
+                    <Typography variant="body1" sx={{ fontWeight: 500, mb: 0.5 }}>
+                      Etymology {index + 1}
+                    </Typography>
+                  }
+                  secondary={
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      {/* Main text */}
+                      <Typography variant="body2" component="div" sx={{ whiteSpace: 'pre-wrap' }}>
+                        {etym.text || etym.etymology_text}
+                      </Typography>
+                      
+                      {/* Languages */}
+                      {etym.languages && etym.languages.length > 0 && (
+                        <Box sx={{ mt: 1 }}>
+                          <Typography variant="caption" component="div" color="text.secondary" sx={{ mb: 0.5 }}>
+                            Languages:
+                          </Typography>
+                          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+                            {etym.languages.map((lang, i) => (
+                              <Chip 
+                                key={i}
+                                label={lang}
+                                size="small"
+                                variant="outlined"
+                                sx={{ 
+                                  fontSize: '0.75rem',
+                                  height: 24
+                                }}
+                              />
+                            ))}
+                          </Stack>
+                        </Box>
+                      )}
+                      
+                      {/* Components */}
+                      {etym.components && etym.components.length > 0 && (
+                        <Box sx={{ mt: 1 }}>
+                          <Typography variant="caption" component="div" color="text.secondary" sx={{ mb: 0.5 }}>
+                            Components:
+                          </Typography>
+                          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+                            {etym.components.map((comp, i) => (
+                              <Chip 
+                                key={i}
+                                label={comp}
+                                size="small"
+                                clickable
+                                onClick={() => onWordLinkClick(comp)}
+                                sx={{ 
+                                  fontSize: '0.75rem',
+                                  height: 24
+                                }}
+                              />
+                            ))}
+                          </Stack>
+                        </Box>
+                      )}
+                      
+                      {/* Sources */}
+                      {etym.sources && etym.sources.length > 0 && (
+                        <Typography variant="caption" component="div" color="text.secondary" sx={{ mt: 1 }}>
+                          Sources: {etym.sources.join(', ')}
+                        </Typography>
+                      )}
+                    </Box>
+                  }
+                />
+              </ListItem>
+            ))}
+          </List>
+          
+          {/* Show etymology tree data if available */}
+          {hasEtymologyTreeData && (
+            <Box sx={{ mt: 3, pt: 2, borderTop: `1px solid ${theme.palette.divider}` }}>
+              <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
+                Etymology Tree
+              </Typography>
+              {renderEtymologyTreeVisualization()}
+            </Box>
+          )}
+        </Box>
+      );
+    }
+    
+    // If only etymology tree data is available, render that
+    return (
+      <Box sx={{ p: 0 }}>
+        {renderEtymologyTreeVisualization()}
+      </Box>
+    );
+  };
+  
+  // Helper function to render the etymology tree visualization
+  const renderEtymologyTreeVisualization = () => {
+    // Assume Etymology Tree structure
     type EtymologyNode = { id: number; label: string; language?: string; [key: string]: any };
     type EtymologyEdge = { source: number; target: number; [key: string]: any };
     type EtymologyTreeMap = { [id: number]: EtymologyNode };
 
-    // Basic List Rendering of Etymology Nodes (Improved from JSON)
+    // Basic List Rendering of Etymology Nodes
     const renderNode = (nodeId: number, nodes: EtymologyTreeMap, edges: EtymologyEdge[], level = 0): React.ReactNode => {
        const node = nodes[nodeId];
        if (!node) return null;
@@ -419,7 +587,16 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
           <ListItem key={node.id} sx={{ pl: level * 2.5, display: 'block', py: 0.5, borderLeft: level > 0 ? `1px dashed ${theme.palette.divider}` : 'none', ml: level > 0 ? 0.5 : 0 }}> {/* Indentation based on level */}
              <ListItemText
                 primary={
-                    <Typography variant="body2" component="span" sx={{ fontWeight: level === 0 ? 600 : 400 }}>
+                    <Typography 
+                      variant="body2" 
+                      component="span" 
+                      sx={{ 
+                        fontWeight: level === 0 ? 600 : 400,
+                        cursor: 'pointer',
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                      onClick={() => onEtymologyNodeClick(node.id)}
+                    >
                         {node.label}
                     </Typography>
                 }
@@ -448,13 +625,11 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     }, {});
 
     return (
-      <Box sx={{ p: 0 }}>
-          <List dense sx={{ pt: 1 }}>
-             {rootIds.length > 0
-                ? rootIds.map((rootId: number) => renderNode(rootId, nodeMap, etymologyTree.edges))
-                : <ListItem><Alert severity="warning" variant="outlined" sx={{ width: '100%' }}>Could not determine root etymology node.</Alert></ListItem> }
-          </List>
-      </Box>
+      <List dense sx={{ pt: 1 }}>
+         {rootIds.length > 0
+            ? rootIds.map((rootId: number) => renderNode(rootId, nodeMap, etymologyTree.edges))
+            : <ListItem><Alert severity="warning" variant="outlined" sx={{ width: '100%' }}>Could not determine root etymology node.</Alert></ListItem> }
+      </List>
     );
   };
 

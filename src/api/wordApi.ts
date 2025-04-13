@@ -585,6 +585,9 @@ function normalizeWordData(rawData: any): WordInfo {
     throw new Error('Invalid API response: Missing essential word data or ID.');
   }
 
+  console.log("Normalizing word data:", JSON.stringify(wordData.id), wordData.lemma);
+
+  // Create base normalized word structure
   const normalizedWord: WordInfo = {
     id: wordData.id,
     lemma: wordData.lemma || '',
@@ -616,6 +619,7 @@ function normalizeWordData(rawData: any): WordInfo {
 
   // Normalize Definitions - Revert to ': any'
   if (wordData.definitions && Array.isArray(wordData.definitions)) {
+    console.log(`Processing ${wordData.definitions.length} definitions`);
     normalizedWord.definitions = wordData.definitions.map((def: any): Definition => ({ // Changed back to any
       // Raw fields needed by Omit base (RawDefinition)
       id: def.id,
@@ -638,10 +642,13 @@ function normalizeWordData(rawData: any): WordInfo {
       verified_by: def.verified_by,
       verified_at: def.verified_at,
     }));
+  } else {
+    console.warn("No definitions found in word data");
   }
 
   // Normalize Etymologies - Revert to ': any' and add cast
   if (wordData.etymologies && Array.isArray(wordData.etymologies)) {
+    console.log(`Processing ${wordData.etymologies.length} etymologies`);
     normalizedWord.etymologies = wordData.etymologies.map((etym: any): Etymology => ({ // Changed back to any
       // Raw fields needed by Omit base (RawEtymology)
       id: etym.id,
@@ -660,10 +667,13 @@ function normalizeWordData(rawData: any): WordInfo {
       verification_status: etym.verification_status,
       verification_notes: etym.verification_notes,
     }));
+  } else {
+    console.warn("No etymologies found in word data");
   }
 
   // Normalize Pronunciations - Revert to ': any'
   if (wordData.pronunciations && Array.isArray(wordData.pronunciations)) {
+    console.log(`Processing ${wordData.pronunciations.length} pronunciations`);
     normalizedWord.pronunciations = wordData.pronunciations.map((pron: any): Pronunciation => ({ // Changed back to any
       id: pron.id,
       type: pron.type || '',
@@ -673,20 +683,26 @@ function normalizeWordData(rawData: any): WordInfo {
       created_at: pron.created_at || null, // Reverted to null
       updated_at: pron.updated_at || null, // Reverted to null
     }));
+  } else {
+    console.warn("No pronunciations found in word data");
   }
 
   // Normalize Credits - Revert to ': any'
   if (wordData.credits && Array.isArray(wordData.credits)) {
+    console.log(`Processing ${wordData.credits.length} credits`);
     normalizedWord.credits = wordData.credits.map((cred: any): Credit => ({ // Changed back to any
       id: cred.id,
       credit: cred.credit || '',
       created_at: cred.created_at || null, // Reverted to null
       updated_at: cred.updated_at || null, // Reverted to null
     }));
+  } else {
+    console.warn("No credits found in word data");
   }
 
   // Normalize Root Word
   if (wordData.root_word && typeof wordData.root_word === 'object') {
+    console.log("Processing root word:", wordData.root_word.lemma);
     normalizedWord.root_word = {
       id: wordData.root_word.id,
       lemma: wordData.root_word.lemma || '',
@@ -699,6 +715,7 @@ function normalizeWordData(rawData: any): WordInfo {
 
   // Normalize Derived Words - Revert to ': any'
   if (wordData.derived_words && Array.isArray(wordData.derived_words)) {
+    console.log(`Processing ${wordData.derived_words.length} derived words`);
     normalizedWord.derived_words = wordData.derived_words.map((dw: any): RelatedWord => ({ // Changed back to any
       id: dw.id,
       lemma: dw.lemma || '',
@@ -707,45 +724,101 @@ function normalizeWordData(rawData: any): WordInfo {
       has_baybayin: dw.has_baybayin || false,
       baybayin_form: dw.baybayin_form || null,
     }));
+  } else {
+    console.warn("No derived words found in word data");
   }
 
   // Normalize Outgoing Relations - Revert to ': any'
   if (wordData.outgoing_relations && Array.isArray(wordData.outgoing_relations)) {
-    normalizedWord.outgoing_relations = wordData.outgoing_relations.map((rel: any): Relation => ({ // Changed back to any
+    console.log(`Processing ${wordData.outgoing_relations.length} outgoing relations`);
+    normalizedWord.outgoing_relations = wordData.outgoing_relations.map((rel: any): Relation => {
+        if (!rel.target_word) {
+          console.warn("Outgoing relation missing target word:", rel);
+        }
+        
         // Spread existing properties (assuming raw Relation matches cleaned enough)
-        ...rel, 
-        target_word: rel.target_word ? { ...rel.target_word } : undefined, 
-        source_word: rel.source_word ? { ...rel.source_word } : undefined, 
-    }));
+        return {
+          ...rel, 
+          target_word: rel.target_word ? { 
+            id: rel.target_word.id,
+            lemma: rel.target_word.lemma || '',
+            normalized_lemma: rel.target_word.normalized_lemma || null,
+            language_code: rel.target_word.language_code || null,
+            has_baybayin: rel.target_word.has_baybayin || false,
+            baybayin_form: rel.target_word.baybayin_form || null,
+          } : undefined, 
+          source_word: rel.source_word ? { 
+            id: rel.source_word.id,
+            lemma: rel.source_word.lemma || '',
+            normalized_lemma: rel.source_word.normalized_lemma || null,
+            language_code: rel.source_word.language_code || null,
+            has_baybayin: rel.source_word.has_baybayin || false,
+            baybayin_form: rel.source_word.baybayin_form || null,
+          } : undefined,
+        };
+    });
+  } else {
+    console.warn("No outgoing relations found in word data");
   }
 
   // Normalize Incoming Relations - Revert to ': any'
   if (wordData.incoming_relations && Array.isArray(wordData.incoming_relations)) {
-    normalizedWord.incoming_relations = wordData.incoming_relations.map((rel: any): Relation => ({ // Changed back to any
-        ...rel, 
-        target_word: rel.target_word ? { ...rel.target_word } : undefined, 
-        source_word: rel.source_word ? { ...rel.source_word } : undefined, 
-    }));
+    console.log(`Processing ${wordData.incoming_relations.length} incoming relations`);
+    normalizedWord.incoming_relations = wordData.incoming_relations.map((rel: any): Relation => {
+        if (!rel.source_word) {
+          console.warn("Incoming relation missing source word:", rel);
+        }
+        
+        // For incoming relations, make sure we handle the structure correctly
+        return {
+          ...rel, 
+          target_word: rel.target_word ? { 
+            id: rel.target_word.id,
+            lemma: rel.target_word.lemma || '',
+            normalized_lemma: rel.target_word.normalized_lemma || null,
+            language_code: rel.target_word.language_code || null,
+            has_baybayin: rel.target_word.has_baybayin || false,
+            baybayin_form: rel.target_word.baybayin_form || null,
+          } : undefined, 
+          source_word: rel.source_word ? { 
+            id: rel.source_word.id,
+            lemma: rel.source_word.lemma || '',
+            normalized_lemma: rel.source_word.normalized_lemma || null,
+            language_code: rel.source_word.language_code || null,
+            has_baybayin: rel.source_word.has_baybayin || false,
+            baybayin_form: rel.source_word.baybayin_form || null,
+          } : undefined,
+        };
+    });
+  } else {
+    console.warn("No incoming relations found in word data");
   }
 
   // Normalize Root Affixations - Revert to ': any'
   if (wordData.root_affixations && Array.isArray(wordData.root_affixations)) {
+    console.log(`Processing ${wordData.root_affixations.length} root affixations`);
     normalizedWord.root_affixations = wordData.root_affixations.map((aff: any): Affixation => ({ // Changed back to any
         ...aff,
         affixed_word: aff.affixed_word ? { ...aff.affixed_word } : undefined,
         root_word: aff.root_word ? { ...aff.root_word } : undefined,
     }));
+  } else {
+    console.warn("No root affixations found in word data");
   }
 
   // Normalize Affixed Affixations - Revert to ': any'
   if (wordData.affixed_affixations && Array.isArray(wordData.affixed_affixations)) {
+    console.log(`Processing ${wordData.affixed_affixations.length} affixed affixations`);
     normalizedWord.affixed_affixations = wordData.affixed_affixations.map((aff: any): Affixation => ({ // Changed back to any
       ...aff,
       affixed_word: aff.affixed_word ? { ...aff.affixed_word } : undefined,
       root_word: aff.root_word ? { ...aff.root_word } : undefined,
     }));
+  } else {
+    console.warn("No affixed affixations found in word data");
   }
 
+  console.log("Word data normalization complete");
   return normalizedWord;
 }
 
@@ -806,7 +879,17 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
 
   try {
     console.log(`Making API request to endpoint: ${endpoint}`);
-    const response = await api.get(endpoint);
+    // Add query parameters to include all related data
+    const response = await api.get(endpoint, {
+      params: {
+        include_relations: true,
+        include_etymologies: true,
+        include_root: true,
+        include_derived: true,
+        include_affixations: true,
+        include_definition_relations: true
+      }
+    });
 
     if (response.status !== 200) {
       throw new Error(`API returned status ${response.status}: ${response.statusText}`);
@@ -822,6 +905,19 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
       }
     }
 
+    console.log('Word details API response received:', response.data);
+    
+    // Check for expected relation data structures
+    if (!response.data.outgoing_relations) {
+      console.warn('Response missing outgoing_relations:', response.data);
+    }
+    if (!response.data.incoming_relations) {
+      console.warn('Response missing incoming_relations:', response.data);
+    }
+    if (!response.data.etymologies) {
+      console.warn('Response missing etymologies:', response.data);
+    }
+
     // NOTE: Success is recorded by the interceptor
     const normalizedData = normalizeWordData(response.data);
     
@@ -832,7 +928,10 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
     
     return normalizedData;
 
-  } catch (error: unknown) {
+  } catch (error) {
+    // Error handling logic
+    circuitBreaker.recordFailure();
+    
     // Create a custom error with more context for ID-based requests
     if (isIdRequest && axios.isAxiosError(error) && error.response?.status === 404) {
       console.error(`Word with ID '${word.startsWith('id:') ? word.substring(3) : word}' not found:`, error);
