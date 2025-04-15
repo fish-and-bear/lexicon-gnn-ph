@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Definition, WordInfo, RelatedWord, NetworkLink, NetworkNode, WordForm, WordTemplate, Idiom, Affixation, DefinitionCategory, DefinitionLink, DefinitionRelation } from '../types';
 // import { fetchWordNetwork } from '../api/wordApi';
 // import './WordDetails.css';
@@ -198,188 +198,108 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   const isWideScreen = useMediaQuery(theme.breakpoints.up('md')); // Use 'md' breakpoint for vertical tabs
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const [activeTab, setActiveTab] = useState<string>('definitions'); // Use string for tab value
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
+  const [activeTab, setActiveTab] = useState<string>('definitions');
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [isAudioPlaying, setIsAudioPlaying] = useState<boolean>(false);
+  const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Effect to setup audio element
-  useEffect(() => {
-    setIsAudioPlaying(false); // Stop previous audio on word change
-    const audioPronunciation = wordInfo?.pronunciations?.find(p => p.type === 'audio' && p.value);
-    let audio: HTMLAudioElement | null = null;
-
-    if (audioPronunciation?.value) {
-      try {
-          audio = new Audio(audioPronunciation.value);
-          const onEnded = () => setIsAudioPlaying(false);
-          audio.addEventListener('ended', onEnded);
-          setAudioElement(audio);
-
-      return () => {
-            if (audio) {
-        audio.pause();
-              audio.removeEventListener('ended', onEnded);
-            }
-          };
-      } catch (error) {
-          console.error("Error creating audio element:", error);
-          setAudioElement(null); // Ensure state is cleared on error
-      }
-    } else {
-      setAudioElement(null); // Clear if no audio pron
-    }
-  }, [wordInfo]);
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
-    setActiveTab(newValue);
+  const handleAudioPlay = (url: string) => { /* ... implementation ... */ };
+  const onEnded = () => {
+    setIsAudioPlaying(false);
+    setCurrentAudioUrl(null);
+  };
+  const handleAudioError = (e: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+    console.error("Audio playback error:", e);
+    setIsAudioPlaying(false);
+    setCurrentAudioUrl(null);
+    setAudioUrl(null); // Clear URL on error
+    // Optionally, show an error message to the user
   };
 
-  const playAudio = useCallback(() => {
-    if (!audioElement) return;
-    if (isAudioPlaying) {
-      audioElement.pause();
-      audioElement.currentTime = 0;
-      setIsAudioPlaying(false);
-    } else {
-      audioElement.play().then(() => setIsAudioPlaying(true)).catch(err => {
-        console.error("Audio play failed:", err);
-        setIsAudioPlaying(false); // Reset state on error
-      });
-    }
-  }, [audioElement, isAudioPlaying]);
+  useEffect(() => {
+    setActiveTab('definitions');
+    if (audioRef.current && isAudioPlaying) {
+     audioRef.current.pause();
+     setIsAudioPlaying(false);
+     setCurrentAudioUrl(null);
+   }
+  }, [wordInfo.id]);
+
+ const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+   setActiveTab(newValue);
+ };
 
   // --- Rendering Sections ---
 
+  // UPDATED renderHeader
   const renderHeader = () => {
-    const ipaPronunciation = wordInfo.pronunciations?.find(p => p.type === 'IPA');
-    const hasAudio = wordInfo.pronunciations?.some(p => p.type === 'audio' && p.value);
-    const tags = wordInfo.tags ? wordInfo.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [];
-
-    const headerBgColor = isDarkMode
-      ? alpha(graphColors.main, 0.6)
-      : alpha(graphColors.main, 0.1);
-    const effectiveHeaderBg = theme.palette.augmentColor({ color: { main: headerBgColor } });
-    const headerTextColor = effectiveHeaderBg.contrastText;
-
     return (
-      // Use theme spacing for padding
-      <Box sx={{ bgcolor: headerBgColor, color: headerTextColor, pt: theme.spacing(3), pb: theme.spacing(3), pl: theme.spacing(3), pr: theme.spacing(2) }}>
-        {/* Lemma and Audio Button */}
-        <Stack direction="row" spacing={1} alignItems="flex-start" sx={{ mb: theme.spacing(1.5) }}>
-          <Typography variant="h3" component="h1" sx={{ fontWeight: 700, flexGrow: 1, lineHeight: 1.2 }}>
+      <Box sx={{ p: theme.spacing(2, 2, 1.5, 2), borderBottom: `1px solid ${theme.palette.divider}` }}>
+        {/* Row 1: Lemma & Flags */}
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1} sx={{ mb: 0.5 }}>
+          <Typography variant="h5" component="h2" sx={{ fontWeight: 600, color: graphColors.main }}>
             {wordInfo.lemma}
           </Typography>
-          {hasAudio && (
-            <IconButton
-              onClick={playAudio}
-              size="medium"
-              title={isAudioPlaying ? "Stop Audio" : "Play Audio"}
-              sx={{ color: headerTextColor, mt: 0.5, '&:hover': { bgcolor: alpha(headerTextColor, 0.1) } }}
-            >
-              {isAudioPlaying ? <StopCircleIcon /> : <VolumeUpIcon />}
-            </IconButton>
-          )}
+          <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
+            {wordInfo.language_code && <Chip label={wordInfo.language_code.toUpperCase()} size="small" variant="outlined" sx={{ bgcolor: alpha(theme.palette.info.main, 0.1), color: theme.palette.info.dark, borderColor: alpha(theme.palette.info.main, 0.3) }} />}
+            {wordInfo.is_proper_noun && <Chip label="Proper Noun" size="small" variant="outlined" color="secondary" sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1) }} />}
+            {wordInfo.is_abbreviation && <Chip label="Abbr." size="small" variant="outlined" color="secondary" sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1) }} />}
+            {wordInfo.is_initialism && <Chip label="Initialism" size="small" variant="outlined" color="secondary" sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1) }} />}
+          </Stack>
         </Stack>
 
-        {/* Pronunciation (IPA) */}
-        {ipaPronunciation && (
-          <Typography variant="h6" sx={{ color: alpha(headerTextColor, 0.85), fontStyle: 'italic', mb: theme.spacing(1.5), pl: theme.spacing(0.5) }}>
-            /{ipaPronunciation.value}/
-          </Typography>
-        )}
-
-        {/* Baybayin */}
-        {wordInfo.has_baybayin && wordInfo.baybayin_form && (
-          <Box sx={{ my: theme.spacing(2) }}>
-            <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-              Baybayin Script
-            </Typography>
-            <Typography
-              variant="h4"
-              sx={{
-                fontFamily: 'Noto Sans Baybayin, sans-serif',
-                p: theme.spacing(1),
-                bgcolor: alpha(headerTextColor, 0.08),
-                borderRadius: 1,
-                display: 'inline-block',
-                lineHeight: 1,
-              }}
-            >
-              {wordInfo.baybayin_form}
-            </Typography>
-          </Box>
-        )}
-
-        {/* Additional info - romanized form, language */}
-        <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-          {wordInfo.language_code && (
-            <Box>
-              <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-                Language
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {wordInfo.language_code.toUpperCase()}
-              </Typography>
-            </Box>
-          )}
-          
-          {wordInfo.romanized_form && (
-            <Box>
-              <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-                Romanized Form
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {wordInfo.romanized_form}
-              </Typography>
-            </Box>
-          )}
-          
-          {wordInfo.created_at && (
-            <Box>
-              <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-                Added
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {new Date(wordInfo.created_at).toLocaleDateString()}
-              </Typography>
-            </Box>
-          )}
-        </Stack>
-
-        {/* Tags */}
-        {tags.length > 0 && (
-          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: theme.spacing(2) }}>
-            {tags.map((tag) => (
-              <Chip
-                key={tag}
-                label={tag}
-                size="small"
-                sx={{
-                  color: alpha(headerTextColor, 0.9),
-                  borderColor: alpha(headerTextColor, 0.5),
-                  bgcolor: 'transparent',
-                  '& .MuiChip-label': { fontWeight: 500 },
-                  height: 'auto', // Allow chip height to adjust
-                  padding: theme.spacing(0.25, 0.75)
-                }}
-                variant="outlined"
-              />
+        {/* Row 2: Pronunciations & Audio */}
+        {wordInfo.pronunciations && wordInfo.pronunciations.length > 0 && (
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1, flexWrap: 'wrap' }}>
+            {wordInfo.pronunciations.map((pron, index) => (
+              pron.type === 'audio' && pron.value ? (
+                <IconButton key={index} size="small" onClick={() => handleAudioPlay(pron.value)} disabled={isAudioPlaying && currentAudioUrl !== pron.value} title={isAudioPlaying && currentAudioUrl === pron.value ? "Stop" : "Play audio"}>
+                  {isAudioPlaying && currentAudioUrl === pron.value ? <StopCircleIcon /> : <VolumeUpIcon />}
+                </IconButton>
+              ) : (
+                 <Typography key={index} variant="body2" sx={{ color: 'text.secondary' }}>
+                  {pron.type === 'ipa' ? `/${pron.value}/` : `(${pron.type}) ${pron.value}`}
+                 </Typography>
+              )
             ))}
           </Stack>
         )}
+
+        {/* Row 3: Key Forms */}
+        <Stack direction="row" spacing={2} sx={{ mt: 1, color: 'text.secondary' }} flexWrap="wrap">
+          {wordInfo.romanized_form && <Typography variant="caption">Romanized: {wordInfo.romanized_form}</Typography>}
+          {wordInfo.baybayin_form && (
+            <Typography variant="caption" sx={{ fontFamily: '"Noto Sans Baybayin", "Noto Sans Buhid", sans-serif' }}>
+              Baybayin: {wordInfo.baybayin_form}
+            </Typography>
+          )}
+          {wordInfo.badlit_form && <Typography variant="caption">Badlit: {wordInfo.badlit_form}</Typography>}
+        </Stack>
+
+         {/* Row 4: Word Tags & Hyphenation (Optional) */}
+         {(wordInfo.tags || wordInfo.hyphenation) && (
+            <Stack direction="row" spacing={2} sx={{ mt: 0.5, color: 'text.secondary' }} flexWrap="wrap" alignItems="center">
+                {wordInfo.tags && (
+                  <Typography variant="caption">
+                    Tags: {wordInfo.tags}
+                  </Typography>
+                )}
+                {wordInfo.hyphenation && Object.keys(wordInfo.hyphenation).length > 0 && (
+                  <Typography variant="caption">
+                    Hyphenation: {JSON.stringify(wordInfo.hyphenation)}
+                  </Typography>
+                )}
+            </Stack>
+         )}
       </Box>
     );
   };
 
+  // UPDATED renderDefinitionsTab
   const renderDefinitionsTab = () => {
-    if (!wordInfo.definitions || wordInfo.definitions.length === 0) {
-      return <Alert severity="info">No definitions available for this word.</Alert>;
-    }
-
-    // Group definitions by part of speech
     const definitionsByPos: { [key: string]: Definition[] } = {};
-    
-    wordInfo.definitions.forEach((def: Definition) => {
+    (wordInfo.definitions || []).forEach((def: Definition) => {
       const posKey = def.part_of_speech?.name_en || 'Other';
       if (!definitionsByPos[posKey]) {
         definitionsByPos[posKey] = [];
@@ -387,15 +307,53 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
       definitionsByPos[posKey].push(def);
     });
 
+    const idioms = wordInfo.idioms ? (Array.isArray(wordInfo.idioms) ? wordInfo.idioms : Object.entries(wordInfo.idioms)) : [];
+
+    // Helper to render Idioms section
+    const renderIdioms = () => {
+      if (!idioms || idioms.length === 0) return null;
+      return (
+        <StyledAccordion defaultExpanded sx={{ mb: 2 }}>
+          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Idioms & Phrases</Typography>
+          </StyledAccordionSummary>
+          <StyledAccordionDetails>
+            <List disablePadding>
+              {idioms.map((idiom, index) => {
+                 const phrase = Array.isArray(idiom) ? idiom[0] : (idiom.phrase || idiom.text || 'Unknown Phrase');
+                 const meaning = Array.isArray(idiom) ? idiom[1] : (idiom.meaning || 'No meaning provided');
+                 const example = Array.isArray(idiom) ? null : idiom.example;
+                 const source = Array.isArray(idiom) ? null : idiom.source;
+                return (
+                  <ListItem key={index} sx={{ flexDirection: 'column', alignItems: 'flex-start', py: 1 }}>
+                    <ListItemText primary={phrase} secondary={meaning} primaryTypographyProps={{ fontWeight: 500 }} />
+                    {example && <Typography variant="caption" sx={{ fontStyle: 'italic', color: 'text.secondary', pl: 2 }}>e.g., {example}</Typography>}
+                    {source && <Typography variant="caption" sx={{ color: 'text.secondary', pl: 2 }}>Source: {source}</Typography>}
+                    {index < idioms.length - 1 && <Divider sx={{ width: '100%', my: 1 }} />}
+                  </ListItem>
+                );
+              })}
+            </List>
+          </StyledAccordionDetails>
+        </StyledAccordion>
+      );
+    };
+
     return (
       <Box sx={{ pt: theme.spacing(1) }}>
+        {renderIdioms()}
+
+        {Object.entries(definitionsByPos).length === 0 && idioms.length === 0 && (
+           <Alert severity="info">No definitions or idioms available.</Alert>
+        )}
+
         {Object.entries(definitionsByPos).map(([posName, defs]) => (
           <Box key={posName} sx={{ mb: theme.spacing(3) }}>
-            <Typography 
-              variant="subtitle1" 
-              component="h3" 
-              sx={{ 
-                color: graphColors.main, 
+            <Typography
+              variant="subtitle1"
+              component="h3"
+              sx={{
+                color: graphColors.main,
                 fontWeight: 600,
                 pb: theme.spacing(1),
                 borderBottom: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
@@ -404,36 +362,35 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
             >
               {posName}
             </Typography>
-            
+
             <List disablePadding>
               {defs.map((def: Definition, index: number) => (
-                <ListItem 
-                  key={def.id || index} 
-                  alignItems="flex-start" 
-                  sx={{ 
-                    flexDirection: 'column', 
-                    gap: 0.5, 
-                    py: theme.spacing(1.5) 
+                <ListItem
+                  key={def.id || index}
+                  alignItems="flex-start"
+                  sx={{
+                    flexDirection: 'column',
+                    gap: 0.5,
+                    py: theme.spacing(1.5),
+                    borderBottom: index < defs.length - 1 ? `1px dashed ${theme.palette.divider}` : 'none',
+                    '&:last-child': { borderBottom: 'none' }
                   }}
                 >
                   {/* Definition text */}
-              <ListItemText
-                    primaryTypographyProps={{ 
-                      variant: 'body1', 
-                      fontWeight: 500 
-                    }}
-                primary={def.text}
-              />
-                  
-                  {/* Examples with quote styling */}
-              {def.examples && def.examples.length > 0 && (
+                  <ListItemText
+                    primaryTypographyProps={{ variant: 'body1', fontWeight: 500 }}
+                    primary={def.text}
+                  />
+
+                  {/* Examples */}
+                  {def.examples && def.examples.length > 0 && (
                     <Box sx={{ pl: theme.spacing(2), mb: theme.spacing(1) }}>
                       {def.examples.map((example, exIndex) => (
-                        <Typography 
-                          key={exIndex} 
-                          variant="body2" 
-                          sx={{ 
-                            fontStyle: 'italic', 
+                        <Typography
+                          key={exIndex}
+                          variant="body2"
+                          sx={{
+                            fontStyle: 'italic',
                             color: 'text.secondary',
                             mb: exIndex < def.examples.length - 1 ? 0.5 : 0,
                             position: 'relative',
@@ -450,97 +407,94 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                           }}
                         >
                           {example}
-                </Typography>
-                      ))}
-                    </Box>
-                  )}
-                  
-                  {/* Usage notes if available */}
-                  {def.usage_notes && def.usage_notes.length > 0 && (
-                    <Box sx={{ pl: theme.spacing(1), mb: theme.spacing(1) }}>
-                      <Typography 
-                        variant="caption" 
-                        component="div" 
-                        sx={{ fontWeight: 500, mb: 0.5 }}
-                      >
-                        Usage Notes:
-                      </Typography>
-                      {def.usage_notes.map((note, noteIndex) => (
-                        <Typography 
-                          key={noteIndex} 
-                          variant="body2" 
-                          sx={{ color: 'text.secondary' }}
-                        >
-                          {note}
                         </Typography>
                       ))}
                     </Box>
                   )}
-                  
-                  {/* Sources as colorful chips */}
+
+                  {/* Usage notes */}
+                  {def.usage_notes && def.usage_notes.length > 0 && (
+                    <Box sx={{ pl: theme.spacing(1), mb: theme.spacing(1), mt: 1 }}>
+                      <Typography variant="caption" component="div" sx={{ fontWeight: 500, mb: 0.5 }}>Usage Notes:</Typography>
+                      {def.usage_notes.map((note, noteIndex) => (
+                        <Typography key={noteIndex} variant="body2" sx={{ color: 'text.secondary' }}>{note}</Typography>
+                      ))}
+                    </Box>
+                  )}
+
+                  {/* Definition Sub-Sections Container */}
+                  <Box sx={{ width: '100%', mt: 1.5, pl: 1 }}>
+                     {/* Definition Tags */}
+                     {def.tags && def.tags.length > 0 && (
+                       <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap" sx={{ mb: 1 }}>
+                         {def.tags.map((tag, tagIndex) => (
+                           <Chip key={tagIndex} label={tag} size="small"
+                             sx={{ fontSize: '0.7rem', height: 'auto', padding: theme.spacing(0.25, 0.5), bgcolor: alpha(theme.palette.info.main, 0.1), color: theme.palette.info.dark }} />
+                         ))}
+                       </Stack>
+                     )}
+
+                     {/* Categories */}
+                     {def.categories && def.categories.length > 0 && (
+                       <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap" sx={{ mb: 1 }}>
+                         <Typography variant="caption" sx={{ fontWeight: 500, alignSelf: 'center', mr: 0.5, color: 'text.secondary' }}>Categories:</Typography>
+                         {def.categories.map((cat, catIndex) => (
+                           <Chip key={cat.id || catIndex} label={cat.category_name} size="small" variant="outlined"
+                             sx={{ fontSize: '0.7rem', height: 'auto', padding: theme.spacing(0.25, 0.5), borderColor: alpha(theme.palette.secondary.main, 0.4), color: theme.palette.secondary.dark }} />
+                         ))}
+                       </Stack>
+                     )}
+
+                     {/* Definition Relations */}
+                     {def.definition_relations && def.definition_relations.length > 0 && (
+                        <Box sx={{ mb: 1 }}>
+                           <Typography variant="caption" sx={{ fontWeight: 500, color: 'text.secondary' }}>Related Concepts:</Typography>
+                           <List dense disablePadding sx={{ pl: 1 }}>
+                             {def.definition_relations.map((defRel, relIndex) => (
+                                 <ListItem key={defRel.id || relIndex} disableGutters sx={{ py: 0.25 }}>
+                                     <ListItemText
+                                         primary={`${formatRelationType(defRel.relation_type)}:`}
+                                         primaryTypographyProps={{ variant: 'caption', sx: { mr: 1, color: 'text.secondary' } }}
+                                         secondary={defRel.related_word?.lemma || 'Unknown word'}
+                                         secondaryTypographyProps={{ component: 'span', variant: 'caption', sx: { cursor: 'pointer', textDecoration: 'underline', color: theme.palette.primary.main }, onClick: () => defRel.related_word && onWordLinkClick(defRel.related_word.lemma) }}
+                                         sx={{ m: 0, display: 'flex', alignItems: 'center' }}
+                                     />
+                                 </ListItem>
+                             ))}
+                           </List>
+                       </Box>
+                     )}
+
+                     {/* Links */}
+                     {def.links && def.links.length > 0 && (
+                        <Box sx={{ mb: 1 }}>
+                           <Typography variant="caption" sx={{ fontWeight: 500, color: 'text.secondary' }}>Links:</Typography>
+                           <List dense disablePadding sx={{ pl: 1 }}>
+                             {def.links.map((link, linkIndex) => (
+                               <ListItem key={link.id || linkIndex} disableGutters sx={{ py: 0.25 }}>
+                                 <Link href={link.target_url} target="_blank" rel="noopener noreferrer" variant="caption" sx={{ mr: 1 }}>
+                                   {link.display_text || link.link_text || link.target_url}
+                                 </Link>
+                                 {link.is_external && <Chip label="Ext" size="small" sx={{ height: 'auto', fontSize: '0.6rem', p: '0 4px' }} />}
+                               </ListItem>
+                             ))}
+                           </List>
+                       </Box>
+                     )}
+                  </Box> { /* End Definition Sub-Sections Container */ }
+
+                  {/* Sources */}
                   {def.sources && def.sources.length > 0 && (
-                    <Stack 
-                      direction="row" 
-                      spacing={0.5} 
-                      useFlexGap 
-                      flexWrap="wrap" 
-                      sx={{ mt: theme.spacing(1) }}
-                    >
+                    <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap" sx={{ mt: 1.5 }}>
                       {def.sources.map((source, sourceIndex) => (
-                        <Chip
-                          key={sourceIndex}
-                          label={source}
-                          size="small"
-                          variant="outlined"
-                          sx={{
-                            fontSize: '0.7rem',
-                            height: 'auto',
-                            padding: theme.spacing(0.25, 0),
-                            borderColor: alpha(graphColors.related, 0.5),
-                            color: graphColors.related,
-                            bgcolor: alpha(graphColors.related, 0.05),
-                            '& .MuiChip-label': { 
-                              px: 1, 
-                              py: 0.25 
-                            }
-                          }}
-                        />
+                        <Chip key={sourceIndex} label={source} size="small" variant="outlined"
+                          sx={{ fontSize: '0.7rem', height: 'auto', padding: theme.spacing(0.25, 0.5), borderColor: alpha(graphColors.related, 0.5), color: graphColors.related, bgcolor: alpha(graphColors.related, 0.05) }} />
                       ))}
                     </Stack>
                   )}
-                  
-                  {/* Definition metadata/tags if available */}
-                  {def.tags && def.tags.length > 0 && (
-                    <Stack 
-                      direction="row" 
-                      spacing={0.5} 
-                      useFlexGap 
-                      flexWrap="wrap" 
-                      sx={{ mt: theme.spacing(0.5) }}
-                    >
-                      {def.tags.map((tag, tagIndex) => (
-                        <Chip
-                          key={tagIndex}
-                          label={tag}
-                          size="small"
-                          sx={{
-                            fontSize: '0.7rem',
-                            height: 'auto',
-                            padding: theme.spacing(0.25, 0),
-                            bgcolor: alpha(theme.palette.primary.main, 0.1),
-                            color: theme.palette.primary.main,
-                            '& .MuiChip-label': { 
-                              px: 0.75, 
-                              py: 0.2 
-                            }
-                          }}
-                        />
-                      ))}
-                    </Stack>
-              )}
-            </ListItem>
-        ))}
-      </List>
+                </ListItem>
+              ))}
+            </List>
           </Box>
         ))}
       </Box>
@@ -1100,64 +1054,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     );
   };
 
-  const renderFormsAndTemplatesTab = () => {
-    const forms = wordInfo.forms || [];
-    const templates = wordInfo.templates || [];
-
-    if (forms.length === 0 && templates.length === 0) {
-      return <Alert severity="info">No forms or templates available.</Alert>;
-    }
-
-    return (
-      <Box sx={{ pt: theme.spacing(1) }}>
-        {/* Forms Section */}
-        {forms.length > 0 && (
-          <StyledAccordion defaultExpanded sx={{ mb: 2 }}>
-            <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Forms (Inflections/Conjugations)</Typography>
-            </StyledAccordionSummary>
-            <StyledAccordionDetails>
-              <List dense disablePadding>
-                {forms.map((form: WordForm, index: number) => (
-                  <ListItem key={form.id || index} disableGutters sx={{ py: 0.25 }}>
-                    <ListItemText primary={form.form} />
-                    <Stack direction="row" spacing={0.5}>
-                       {form.is_canonical && <Chip label="Canonical" size="small" color="primary" variant="outlined" sx={{ height: 'auto', fontSize: '0.6rem' }} />}
-                       {form.is_primary && <Chip label="Primary" size="small" color="secondary" variant="outlined" sx={{ height: 'auto', fontSize: '0.6rem' }} />}
-                       {form.tags && Object.entries(form.tags).map(([key, value]) => (
-                          <Chip key={key} label={`${key}: ${value}`} size="small" sx={{ height: 'auto', fontSize: '0.6rem' }} />
-                       ))}
-                    </Stack>
-                  </ListItem>
-                ))}
-              </List>
-            </StyledAccordionDetails>
-          </StyledAccordion>
-        )}
-
-        {/* Templates Section */}
-        {templates.length > 0 && (
-          <StyledAccordion defaultExpanded>
-            <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Templates</Typography>
-            </StyledAccordionSummary>
-            <StyledAccordionDetails>
-              <List dense disablePadding>
-                {templates.map((template: WordTemplate, index: number) => (
-                  <ListItem key={template.id || index} disableGutters sx={{ py: 0.25, flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <ListItemText primary={template.template_name} />
-                    {template.expansion && <Typography variant="caption" sx={{ fontFamily: 'monospace', color: 'text.secondary' }}>Expansion: {template.expansion}</Typography>}
-                    {template.args && <Typography variant="caption" sx={{ color: 'text.secondary' }}>Args: {JSON.stringify(template.args)}</Typography>}
-                  </ListItem>
-                ))}
-              </List>
-            </StyledAccordionDetails>
-          </StyledAccordion>
-        )}
-      </Box>
-    );
-  };
-
   const renderEtymologyTab = () => {
     // If the component is still loading the etymology data, show a spinner
     if (isLoadingEtymology) {
@@ -1418,106 +1314,55 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     );
   };
 
-  const renderSourcesInfoTab = () => {
-     const credits = wordInfo.credits || [];
-     const sourceInfo = wordInfo.source_info || {};
-     const wordMetadata = wordInfo.word_metadata || {};
-     const completeness = wordInfo.data_completeness || {};
-
-     const hasCredits = credits.length > 0;
-     const hasSourceInfo = Object.keys(sourceInfo).length > 0;
-     const hasWordMeta = Object.keys(wordMetadata).length > 0;
-     const hasCompleteness = Object.keys(completeness).length > 0;
-     const hasEntryInfo = wordInfo.created_at || wordInfo.updated_at;
-
-     if (!hasCredits && !hasSourceInfo && !hasWordMeta && !hasCompleteness && !hasEntryInfo) {
-       return <Alert severity="info" sx={{ m: 2 }}>No source, metadata, or entry information available.</Alert>;
+  const renderCreditsTab = () => {
+     if (!wordInfo?.credits || wordInfo.credits.length === 0) {
+       return <Alert severity="info" sx={{ m: 2 }}>No source information available.</Alert>;
      }
-
-     // Helper to render JSON data nicely
-     const renderJsonData = (title: string, data: Record<string, any>) => {
-       if (Object.keys(data).length === 0) return null;
-       return (
-         <StyledAccordion sx={{ mt: 2 }}>
-           <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-             <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>{title}</Typography>
-           </StyledAccordionSummary>
-           <StyledAccordionDetails>
-             <Paper variant="outlined" sx={{ p: 1.5, bgcolor: alpha(theme.palette.grey[500], 0.05) }}>
-                <Typography component="pre" sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', fontSize: '0.8rem', fontFamily: 'monospace' }}>
-                  {JSON.stringify(data, null, 2)}
-                </Typography>
-             </Paper>
-           </StyledAccordionDetails>
-         </StyledAccordion>
-       );
-     };
-
-     return (
+     
+      return (
        <Box sx={{ p: theme.spacing(2) }}>
-         {/* Credits List */}
-         {hasCredits && (
-           <>
-             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.5 }}>Credits / Sources</Typography>
-             <List dense sx={{ mb: theme.spacing(2) }}>
-             {credits.map((credit, index) => (
-                 <ListItem
-                   key={credit.id || index}
-                   sx={{
-                     py: 1,
-                     borderBottom: index < credits.length - 1 ?
-                       `1px solid ${alpha(theme.palette.divider, 0.5)}` : 'none'
-                   }}
-                 >
-                 <ListItemText
-                     primary={<Typography variant="body1">{credit.credit}</Typography>}
-                 />
-               </ListItem>
-             ))}
-           </List>
-          </>
-         )}
-
-         {/* Source Info JSON */}
-         {renderJsonData('Source Info', sourceInfo)}
-
-         {/* Word Metadata JSON */}
-         {renderJsonData('Word Metadata', wordMetadata)}
-
-         {/* Completeness Info */}
-         {hasCompleteness && (
-            <Box sx={{ mt: 3 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Data Completeness</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 1 }}>
-                {Object.entries(completeness).map(([key, value]) => (
-                  <Chip
-                    key={key}
-                    label={key.replace(/_/g, ' ')}
-                    color={value ? "success" : "default"}
-                    variant={value ? "filled" : "outlined"}
-                    size="small"
-                    sx={{ justifyContent: 'flex-start' }}
-                  />
-                ))}
-              </Box>
-            </Box>
-         )}
-
-         {/* Entry Timestamps */}
-         {hasEntryInfo && (
-           <Box sx={{ mt: 3, pt: 2, borderTop: hasCredits || hasSourceInfo || hasWordMeta || hasCompleteness ? `1px solid ${theme.palette.divider}` : 'none' }}>
-             <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Entry Information</Typography>
+         <List dense sx={{ mb: theme.spacing(2) }}>
+         {wordInfo.credits.map((credit, index) => (
+             <ListItem 
+               key={credit.id || index} 
+               sx={{ 
+                 py: 1,
+                 borderBottom: index < wordInfo.credits!.length - 1 ? 
+                   `1px solid ${alpha(theme.palette.divider, 0.5)}` : 'none'
+               }}
+             >
+             <ListItemText
+                 primary={
+                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                     {credit.credit}
+                   </Typography>
+                 }
+             />
+           </ListItem>
+         ))}
+       </List>
+         
+         {/* Display additional metadata if available */}
+         {(wordInfo.created_at || wordInfo.updated_at) && (
+           <Box sx={{ mt: theme.spacing(3), pt: theme.spacing(2), borderTop: `1px solid ${theme.palette.divider}` }}>
+             <Typography variant="subtitle2" sx={{ mb: theme.spacing(1.5), fontWeight: 600 }}>
+               Entry Information
+             </Typography>
              <Stack spacing={1}>
                {wordInfo.created_at && (
                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                    <Typography variant="body2" color="text.secondary">Created:</Typography>
-                   <Typography variant="body2">{new Date(wordInfo.created_at).toLocaleString()}</Typography>
+                   <Typography variant="body2">
+                     {new Date(wordInfo.created_at).toLocaleString()}
+                   </Typography>
                  </Box>
                )}
                {wordInfo.updated_at && (
                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                    <Typography variant="body2" color="text.secondary">Last Updated:</Typography>
-                   <Typography variant="body2">{new Date(wordInfo.updated_at).toLocaleString()}</Typography>
+                   <Typography variant="body2">
+                     {new Date(wordInfo.updated_at).toLocaleString()}
+                   </Typography>
                  </Box>
                )}
              </Stack>
@@ -1543,7 +1388,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                       {activeTab === 'definitions' && renderDefinitionsTab()}
                       {activeTab === 'relations' && renderRelationsTab()}
                       {activeTab === 'etymology' && renderEtymologyTab()}
-                      {activeTab === 'sources-info' && renderSourcesInfoTab()}
+                      {activeTab === 'credits' && renderCreditsTab()}
                   </Box>
                </Box>
             );
@@ -1605,31 +1450,71 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                     value="relations" 
                   />
                   <Tab label="Etymology" value="etymology" />
-                  <Tab label="Sources" value="sources-info" />
+                  <Tab label="Sources" value="credits" />
                 </Tabs>
             );
 
   return (
-    <Paper elevation={2} square sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: 'background.paper', overflow: 'hidden' }}>
+    <Paper
+      elevation={2}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden',
+        bgcolor: isDarkMode ? alpha(theme.palette.background.paper, 0.85) : alpha(theme.palette.background.paper, 0.95),
+        backdropFilter: 'blur(8px)',
+        border: `1px solid ${theme.palette.divider}`,
+      }}
+    >
+      {renderHeader()}
 
-      {/* Conditional Layout based on screen size */}
-      {isWideScreen ? (
-          <>
-            {renderHeader()}
-            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
-               {tabs}
-               {tabContent}
-            </Box>
-          </>
-      ) : (
-          <>
-            {renderHeader()}
-            {tabs}
-            {tabContent}
-          </>
-      )}
-      {/* Add comment about resizing parent */}
-      {/* For resizable sidebar functionality, the parent component (e.g., WordExplorer) needs layout adjustments (e.g., using SplitPane) */}
+      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: isWideScreen ? 'row' : 'column', overflow: 'hidden' }}>
+        {/* Tabs - Vertical on wide screens, Horizontal on narrow */}
+        <Tabs
+          orientation={isWideScreen ? 'vertical' : 'horizontal'}
+          variant="scrollable"
+          value={activeTab}
+          onChange={handleTabChange}
+          aria-label="Word details sections" // Corrected aria-label
+          sx={{
+            borderRight: isWideScreen ? `1px solid ${theme.palette.divider}` : 'none',
+            borderBottom: !isWideScreen ? `1px solid ${theme.palette.divider}` : 'none',
+            flexShrink: 0,
+            '& .MuiTabs-indicator': {
+              backgroundColor: theme.palette.primary.main,
+            },
+             // Add consistent styling for tabs
+            '.MuiTab-root': {
+                minWidth: 90, // Adjust min width as needed
+                textTransform: 'none', // Prevent uppercase transformation
+                fontSize: '0.875rem',
+                padding: theme.spacing(1, 1.5),
+                minHeight: 48, // Standard tab height
+            },
+          }}
+        >
+          {/* UPDATED TAB STRUCTURE */}
+          <Tab label="Definitions" value="definitions" />
+          <Tab label="Relations & Affixes" value="relations-affixes" />
+          <Tab label="Forms & Templates" value="forms-templates" />
+          <Tab label="Etymology" value="etymology" />
+          <Tab label="Sources & Info" value="sources-info" />
+        </Tabs>
+
+        {/* Tab Content Area */}
+        <Box sx={{ flexGrow: 1, overflowY: 'auto', p: theme.spacing(2) }}>
+          {/* Update activeTab checks later when functions are renamed/added */}
+          {activeTab === 'definitions' && renderDefinitionsTab()}
+          {activeTab === 'relations-affixes' && renderRelationsTab()} {/* Needs update */}
+          {activeTab === 'forms-templates' && renderFormsAndTemplatesTab()} {/* Needs implementation */}
+          {activeTab === 'etymology' && renderEtymologyTab()}
+          {activeTab === 'sources-info' && renderCreditsTab()} {/* Needs renaming and update */}
+        </Box>
+      </Box>
+
+      {/* Audio element */}
+      {audioUrl && <audio ref={audioRef} src={audioUrl} onEnded={onEnded} onError={handleAudioError} />}
     </Paper>
   );
 });

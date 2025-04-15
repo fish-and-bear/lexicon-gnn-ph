@@ -3313,9 +3313,7 @@ def _fetch_word_details(word_id,
         sql_word = """
         SELECT id, lemma, normalized_lemma, language_code, has_baybayin, baybayin_form,
                root_word_id, preferred_spelling, tags, source_info, word_metadata,
-               data_hash, search_text,
-               -- Add missing fields --
-               idioms, romanized_form, badlit_form, hyphenation, is_proper_noun,
+               data_hash, search_text, badlit_form, hyphenation, is_proper_noun,
                is_abbreviation, is_initialism
         FROM words
         WHERE id = :id

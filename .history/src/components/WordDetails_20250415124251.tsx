@@ -251,122 +251,63 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   // --- Rendering Sections ---
 
   const renderHeader = () => {
-    const ipaPronunciation = wordInfo.pronunciations?.find(p => p.type === 'IPA');
-    const hasAudio = wordInfo.pronunciations?.some(p => p.type === 'audio' && p.value);
-    const tags = wordInfo.tags ? wordInfo.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [];
-
-    const headerBgColor = isDarkMode
-      ? alpha(graphColors.main, 0.6)
-      : alpha(graphColors.main, 0.1);
-    const effectiveHeaderBg = theme.palette.augmentColor({ color: { main: headerBgColor } });
-    const headerTextColor = effectiveHeaderBg.contrastText;
-
     return (
-      // Use theme spacing for padding
-      <Box sx={{ bgcolor: headerBgColor, color: headerTextColor, pt: theme.spacing(3), pb: theme.spacing(3), pl: theme.spacing(3), pr: theme.spacing(2) }}>
-        {/* Lemma and Audio Button */}
-        <Stack direction="row" spacing={1} alignItems="flex-start" sx={{ mb: theme.spacing(1.5) }}>
-          <Typography variant="h3" component="h1" sx={{ fontWeight: 700, flexGrow: 1, lineHeight: 1.2 }}>
+      <Box sx={{ p: theme.spacing(2, 2, 1, 2), borderBottom: `1px solid ${theme.palette.divider}` }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1} sx={{ mb: 0.5 }}>
+          <Typography variant="h5" component="h2" sx={{ fontWeight: 600, color: graphColors.main }}>
             {wordInfo.lemma}
           </Typography>
-          {hasAudio && (
-            <IconButton
-              onClick={playAudio}
-              size="medium"
-              title={isAudioPlaying ? "Stop Audio" : "Play Audio"}
-              sx={{ color: headerTextColor, mt: 0.5, '&:hover': { bgcolor: alpha(headerTextColor, 0.1) } }}
-            >
-              {isAudioPlaying ? <StopCircleIcon /> : <VolumeUpIcon />}
-            </IconButton>
-          )}
+          {/* Basic Flags */}
+          <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
+            {wordInfo.language_code && <Chip label={wordInfo.language_code.toUpperCase()} size="small" variant="outlined" sx={{ bgcolor: alpha(theme.palette.info.main, 0.1), color: theme.palette.info.dark, borderColor: alpha(theme.palette.info.main, 0.3) }} />}
+            {wordInfo.is_proper_noun && <Chip label="Proper Noun" size="small" variant="outlined" color="secondary" sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1) }} />}
+            {wordInfo.is_abbreviation && <Chip label="Abbr." size="small" variant="outlined" color="secondary" sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1) }} />}
+            {wordInfo.is_initialism && <Chip label="Initialism" size="small" variant="outlined" color="secondary" sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1) }} />}
+          </Stack>
         </Stack>
 
-        {/* Pronunciation (IPA) */}
-        {ipaPronunciation && (
-          <Typography variant="h6" sx={{ color: alpha(headerTextColor, 0.85), fontStyle: 'italic', mb: theme.spacing(1.5), pl: theme.spacing(0.5) }}>
-            /{ipaPronunciation.value}/
-          </Typography>
-        )}
-
-        {/* Baybayin */}
-        {wordInfo.has_baybayin && wordInfo.baybayin_form && (
-          <Box sx={{ my: theme.spacing(2) }}>
-            <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-              Baybayin Script
-            </Typography>
-            <Typography
-              variant="h4"
-              sx={{
-                fontFamily: 'Noto Sans Baybayin, sans-serif',
-                p: theme.spacing(1),
-                bgcolor: alpha(headerTextColor, 0.08),
-                borderRadius: 1,
-                display: 'inline-block',
-                lineHeight: 1,
-              }}
-            >
-              {wordInfo.baybayin_form}
-            </Typography>
-          </Box>
-        )}
-
-        {/* Additional info - romanized form, language */}
-        <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-          {wordInfo.language_code && (
-            <Box>
-              <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-                Language
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {wordInfo.language_code.toUpperCase()}
-              </Typography>
-            </Box>
-          )}
-          
-          {wordInfo.romanized_form && (
-            <Box>
-              <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-                Romanized Form
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {wordInfo.romanized_form}
-              </Typography>
-            </Box>
-          )}
-          
-          {wordInfo.created_at && (
-            <Box>
-              <Typography variant="caption" sx={{ color: alpha(headerTextColor, 0.75), display: 'block', mb: 0.5 }}>
-                Added
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                {new Date(wordInfo.created_at).toLocaleDateString()}
-              </Typography>
-            </Box>
-          )}
-        </Stack>
-
-        {/* Tags */}
-        {tags.length > 0 && (
-          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: theme.spacing(2) }}>
-            {tags.map((tag) => (
-              <Chip
-                key={tag}
-                label={tag}
-                size="small"
-                sx={{
-                  color: alpha(headerTextColor, 0.9),
-                  borderColor: alpha(headerTextColor, 0.5),
-                  bgcolor: 'transparent',
-                  '& .MuiChip-label': { fontWeight: 500 },
-                  height: 'auto', // Allow chip height to adjust
-                  padding: theme.spacing(0.25, 0.75)
-                }}
-                variant="outlined"
-              />
+        {/* Pronunciations */}
+        {wordInfo.pronunciations && wordInfo.pronunciations.length > 0 && (
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
+            {wordInfo.pronunciations.map((pron, index) => (
+              pron.type === 'audio' && pron.value ? (
+                <IconButton key={index} size="small" onClick={() => handleAudioPlay(pron.value)} disabled={isAudioPlaying}>
+                  {isAudioPlaying && currentAudioUrl === pron.value ? <StopCircleIcon /> : <VolumeUpIcon />}
+                </IconButton>
+              ) : (
+                 <Typography key={index} variant="body2" sx={{ color: 'text.secondary' }}>
+                  {pron.type === 'ipa' ? `/${pron.value}/` : `(${pron.type}) ${pron.value}`}
+                 </Typography>
+              )
             ))}
           </Stack>
         )}
+
+        {/* Other Metadata */}
+        <Stack direction="row" spacing={2} sx={{ mt: 1, color: 'text.secondary' }} flexWrap="wrap">
+          {wordInfo.romanized_form && <Typography variant="caption">Romanized: {wordInfo.romanized_form}</Typography>}
+          {wordInfo.baybayin_form && (
+            <Typography variant="caption" sx={{ fontFamily: '"Noto Sans Buhid", sans-serif' }}> {/* Example Baybayin Font */}
+              Baybayin: {wordInfo.baybayin_form}
+            </Typography>
+          )}
+          {wordInfo.badlit_form && <Typography variant="caption">Badlit: {wordInfo.badlit_form}</Typography>}
+        </Stack>
+
+         {/* ADDED: Word Tags */}
+         {wordInfo.tags && (
+           <Typography variant="caption" sx={{ color: 'text.secondary', mt: 0.5 }}>
+             Tags: {wordInfo.tags}
+           </Typography>
+         )}
+
+         {/* ADDED: Hyphenation */}
+         {wordInfo.hyphenation && Object.keys(wordInfo.hyphenation).length > 0 && (
+           <Typography variant="caption" sx={{ color: 'text.secondary', mt: 0.5 }}>
+             Hyphenation: {JSON.stringify(wordInfo.hyphenation)} {/* Simple stringify for now */}
+           </Typography>
+         )}
+
       </Box>
     );
   };
@@ -1100,6 +1041,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     );
   };
 
+  // ADDED: Tab for Forms & Templates
   const renderFormsAndTemplatesTab = () => {
     const forms = wordInfo.forms || [];
     const templates = wordInfo.templates || [];
@@ -1112,7 +1054,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
       <Box sx={{ pt: theme.spacing(1) }}>
         {/* Forms Section */}
         {forms.length > 0 && (
-          <StyledAccordion defaultExpanded sx={{ mb: 2 }}>
+          <StyledAccordion defaultExpanded>
             <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Forms (Inflections/Conjugations)</Typography>
             </StyledAccordionSummary>
@@ -1418,106 +1360,55 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     );
   };
 
-  const renderSourcesInfoTab = () => {
-     const credits = wordInfo.credits || [];
-     const sourceInfo = wordInfo.source_info || {};
-     const wordMetadata = wordInfo.word_metadata || {};
-     const completeness = wordInfo.data_completeness || {};
-
-     const hasCredits = credits.length > 0;
-     const hasSourceInfo = Object.keys(sourceInfo).length > 0;
-     const hasWordMeta = Object.keys(wordMetadata).length > 0;
-     const hasCompleteness = Object.keys(completeness).length > 0;
-     const hasEntryInfo = wordInfo.created_at || wordInfo.updated_at;
-
-     if (!hasCredits && !hasSourceInfo && !hasWordMeta && !hasCompleteness && !hasEntryInfo) {
-       return <Alert severity="info" sx={{ m: 2 }}>No source, metadata, or entry information available.</Alert>;
+  const renderCreditsTab = () => {
+     if (!wordInfo?.credits || wordInfo.credits.length === 0) {
+       return <Alert severity="info" sx={{ m: 2 }}>No source information available.</Alert>;
      }
-
-     // Helper to render JSON data nicely
-     const renderJsonData = (title: string, data: Record<string, any>) => {
-       if (Object.keys(data).length === 0) return null;
-       return (
-         <StyledAccordion sx={{ mt: 2 }}>
-           <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-             <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>{title}</Typography>
-           </StyledAccordionSummary>
-           <StyledAccordionDetails>
-             <Paper variant="outlined" sx={{ p: 1.5, bgcolor: alpha(theme.palette.grey[500], 0.05) }}>
-                <Typography component="pre" sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', fontSize: '0.8rem', fontFamily: 'monospace' }}>
-                  {JSON.stringify(data, null, 2)}
-                </Typography>
-             </Paper>
-           </StyledAccordionDetails>
-         </StyledAccordion>
-       );
-     };
-
-     return (
+     
+      return (
        <Box sx={{ p: theme.spacing(2) }}>
-         {/* Credits List */}
-         {hasCredits && (
-           <>
-             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.5 }}>Credits / Sources</Typography>
-             <List dense sx={{ mb: theme.spacing(2) }}>
-             {credits.map((credit, index) => (
-                 <ListItem
-                   key={credit.id || index}
-                   sx={{
-                     py: 1,
-                     borderBottom: index < credits.length - 1 ?
-                       `1px solid ${alpha(theme.palette.divider, 0.5)}` : 'none'
-                   }}
-                 >
-                 <ListItemText
-                     primary={<Typography variant="body1">{credit.credit}</Typography>}
-                 />
-               </ListItem>
-             ))}
-           </List>
-          </>
-         )}
-
-         {/* Source Info JSON */}
-         {renderJsonData('Source Info', sourceInfo)}
-
-         {/* Word Metadata JSON */}
-         {renderJsonData('Word Metadata', wordMetadata)}
-
-         {/* Completeness Info */}
-         {hasCompleteness && (
-            <Box sx={{ mt: 3 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Data Completeness</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 1 }}>
-                {Object.entries(completeness).map(([key, value]) => (
-                  <Chip
-                    key={key}
-                    label={key.replace(/_/g, ' ')}
-                    color={value ? "success" : "default"}
-                    variant={value ? "filled" : "outlined"}
-                    size="small"
-                    sx={{ justifyContent: 'flex-start' }}
-                  />
-                ))}
-              </Box>
-            </Box>
-         )}
-
-         {/* Entry Timestamps */}
-         {hasEntryInfo && (
-           <Box sx={{ mt: 3, pt: 2, borderTop: hasCredits || hasSourceInfo || hasWordMeta || hasCompleteness ? `1px solid ${theme.palette.divider}` : 'none' }}>
-             <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Entry Information</Typography>
+         <List dense sx={{ mb: theme.spacing(2) }}>
+         {wordInfo.credits.map((credit, index) => (
+             <ListItem 
+               key={credit.id || index} 
+               sx={{ 
+                 py: 1,
+                 borderBottom: index < wordInfo.credits!.length - 1 ? 
+                   `1px solid ${alpha(theme.palette.divider, 0.5)}` : 'none'
+               }}
+             >
+             <ListItemText
+                 primary={
+                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                     {credit.credit}
+                   </Typography>
+                 }
+             />
+           </ListItem>
+         ))}
+       </List>
+         
+         {/* Display additional metadata if available */}
+         {(wordInfo.created_at || wordInfo.updated_at) && (
+           <Box sx={{ mt: theme.spacing(3), pt: theme.spacing(2), borderTop: `1px solid ${theme.palette.divider}` }}>
+             <Typography variant="subtitle2" sx={{ mb: theme.spacing(1.5), fontWeight: 600 }}>
+               Entry Information
+             </Typography>
              <Stack spacing={1}>
                {wordInfo.created_at && (
                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                    <Typography variant="body2" color="text.secondary">Created:</Typography>
-                   <Typography variant="body2">{new Date(wordInfo.created_at).toLocaleString()}</Typography>
+                   <Typography variant="body2">
+                     {new Date(wordInfo.created_at).toLocaleString()}
+                   </Typography>
                  </Box>
                )}
                {wordInfo.updated_at && (
                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                    <Typography variant="body2" color="text.secondary">Last Updated:</Typography>
-                   <Typography variant="body2">{new Date(wordInfo.updated_at).toLocaleString()}</Typography>
+                   <Typography variant="body2">
+                     {new Date(wordInfo.updated_at).toLocaleString()}
+                   </Typography>
                  </Box>
                )}
              </Stack>
@@ -1542,8 +1433,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                   <Box sx={{ p: theme.spacing(3) }}>
                       {activeTab === 'definitions' && renderDefinitionsTab()}
                       {activeTab === 'relations' && renderRelationsTab()}
+                      {activeTab === 'forms-templates' && renderFormsAndTemplatesTab()}
                       {activeTab === 'etymology' && renderEtymologyTab()}
-                      {activeTab === 'sources-info' && renderSourcesInfoTab()}
+                      {activeTab === 'credits' && renderCreditsTab()}
                   </Box>
                </Box>
             );
@@ -1604,8 +1496,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                     } 
                     value="relations" 
                   />
+                  <Tab label="Forms & Templates" value="forms-templates" />
                   <Tab label="Etymology" value="etymology" />
-                  <Tab label="Sources" value="sources-info" />
+                  <Tab label="Credits" value="credits" />
                 </Tabs>
             );
 

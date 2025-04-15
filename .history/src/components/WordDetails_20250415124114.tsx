@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Definition, WordInfo, RelatedWord, NetworkLink, NetworkNode, WordForm, WordTemplate, Idiom, Affixation, DefinitionCategory, DefinitionLink, DefinitionRelation } from '../types';
+import { WordInfo, RelatedWord, Definition, NetworkLink, NetworkNode } from '../types';
 // import { fetchWordNetwork } from '../api/wordApi';
 // import './WordDetails.css';
 // import './Tabs.css';
@@ -1100,64 +1100,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     );
   };
 
-  const renderFormsAndTemplatesTab = () => {
-    const forms = wordInfo.forms || [];
-    const templates = wordInfo.templates || [];
-
-    if (forms.length === 0 && templates.length === 0) {
-      return <Alert severity="info">No forms or templates available.</Alert>;
-    }
-
-    return (
-      <Box sx={{ pt: theme.spacing(1) }}>
-        {/* Forms Section */}
-        {forms.length > 0 && (
-          <StyledAccordion defaultExpanded sx={{ mb: 2 }}>
-            <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Forms (Inflections/Conjugations)</Typography>
-            </StyledAccordionSummary>
-            <StyledAccordionDetails>
-              <List dense disablePadding>
-                {forms.map((form: WordForm, index: number) => (
-                  <ListItem key={form.id || index} disableGutters sx={{ py: 0.25 }}>
-                    <ListItemText primary={form.form} />
-                    <Stack direction="row" spacing={0.5}>
-                       {form.is_canonical && <Chip label="Canonical" size="small" color="primary" variant="outlined" sx={{ height: 'auto', fontSize: '0.6rem' }} />}
-                       {form.is_primary && <Chip label="Primary" size="small" color="secondary" variant="outlined" sx={{ height: 'auto', fontSize: '0.6rem' }} />}
-                       {form.tags && Object.entries(form.tags).map(([key, value]) => (
-                          <Chip key={key} label={`${key}: ${value}`} size="small" sx={{ height: 'auto', fontSize: '0.6rem' }} />
-                       ))}
-                    </Stack>
-                  </ListItem>
-                ))}
-              </List>
-            </StyledAccordionDetails>
-          </StyledAccordion>
-        )}
-
-        {/* Templates Section */}
-        {templates.length > 0 && (
-          <StyledAccordion defaultExpanded>
-            <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Templates</Typography>
-            </StyledAccordionSummary>
-            <StyledAccordionDetails>
-              <List dense disablePadding>
-                {templates.map((template: WordTemplate, index: number) => (
-                  <ListItem key={template.id || index} disableGutters sx={{ py: 0.25, flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <ListItemText primary={template.template_name} />
-                    {template.expansion && <Typography variant="caption" sx={{ fontFamily: 'monospace', color: 'text.secondary' }}>Expansion: {template.expansion}</Typography>}
-                    {template.args && <Typography variant="caption" sx={{ color: 'text.secondary' }}>Args: {JSON.stringify(template.args)}</Typography>}
-                  </ListItem>
-                ))}
-              </List>
-            </StyledAccordionDetails>
-          </StyledAccordion>
-        )}
-      </Box>
-    );
-  };
-
   const renderEtymologyTab = () => {
     // If the component is still loading the etymology data, show a spinner
     if (isLoadingEtymology) {
@@ -1418,106 +1360,55 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     );
   };
 
-  const renderSourcesInfoTab = () => {
-     const credits = wordInfo.credits || [];
-     const sourceInfo = wordInfo.source_info || {};
-     const wordMetadata = wordInfo.word_metadata || {};
-     const completeness = wordInfo.data_completeness || {};
-
-     const hasCredits = credits.length > 0;
-     const hasSourceInfo = Object.keys(sourceInfo).length > 0;
-     const hasWordMeta = Object.keys(wordMetadata).length > 0;
-     const hasCompleteness = Object.keys(completeness).length > 0;
-     const hasEntryInfo = wordInfo.created_at || wordInfo.updated_at;
-
-     if (!hasCredits && !hasSourceInfo && !hasWordMeta && !hasCompleteness && !hasEntryInfo) {
-       return <Alert severity="info" sx={{ m: 2 }}>No source, metadata, or entry information available.</Alert>;
+  const renderCreditsTab = () => {
+     if (!wordInfo?.credits || wordInfo.credits.length === 0) {
+       return <Alert severity="info" sx={{ m: 2 }}>No source information available.</Alert>;
      }
-
-     // Helper to render JSON data nicely
-     const renderJsonData = (title: string, data: Record<string, any>) => {
-       if (Object.keys(data).length === 0) return null;
-       return (
-         <StyledAccordion sx={{ mt: 2 }}>
-           <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-             <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>{title}</Typography>
-           </StyledAccordionSummary>
-           <StyledAccordionDetails>
-             <Paper variant="outlined" sx={{ p: 1.5, bgcolor: alpha(theme.palette.grey[500], 0.05) }}>
-                <Typography component="pre" sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', fontSize: '0.8rem', fontFamily: 'monospace' }}>
-                  {JSON.stringify(data, null, 2)}
-                </Typography>
-             </Paper>
-           </StyledAccordionDetails>
-         </StyledAccordion>
-       );
-     };
-
-     return (
+     
+      return (
        <Box sx={{ p: theme.spacing(2) }}>
-         {/* Credits List */}
-         {hasCredits && (
-           <>
-             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.5 }}>Credits / Sources</Typography>
-             <List dense sx={{ mb: theme.spacing(2) }}>
-             {credits.map((credit, index) => (
-                 <ListItem
-                   key={credit.id || index}
-                   sx={{
-                     py: 1,
-                     borderBottom: index < credits.length - 1 ?
-                       `1px solid ${alpha(theme.palette.divider, 0.5)}` : 'none'
-                   }}
-                 >
-                 <ListItemText
-                     primary={<Typography variant="body1">{credit.credit}</Typography>}
-                 />
-               </ListItem>
-             ))}
-           </List>
-          </>
-         )}
-
-         {/* Source Info JSON */}
-         {renderJsonData('Source Info', sourceInfo)}
-
-         {/* Word Metadata JSON */}
-         {renderJsonData('Word Metadata', wordMetadata)}
-
-         {/* Completeness Info */}
-         {hasCompleteness && (
-            <Box sx={{ mt: 3 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Data Completeness</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 1 }}>
-                {Object.entries(completeness).map(([key, value]) => (
-                  <Chip
-                    key={key}
-                    label={key.replace(/_/g, ' ')}
-                    color={value ? "success" : "default"}
-                    variant={value ? "filled" : "outlined"}
-                    size="small"
-                    sx={{ justifyContent: 'flex-start' }}
-                  />
-                ))}
-              </Box>
-            </Box>
-         )}
-
-         {/* Entry Timestamps */}
-         {hasEntryInfo && (
-           <Box sx={{ mt: 3, pt: 2, borderTop: hasCredits || hasSourceInfo || hasWordMeta || hasCompleteness ? `1px solid ${theme.palette.divider}` : 'none' }}>
-             <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Entry Information</Typography>
+         <List dense sx={{ mb: theme.spacing(2) }}>
+         {wordInfo.credits.map((credit, index) => (
+             <ListItem 
+               key={credit.id || index} 
+               sx={{ 
+                 py: 1,
+                 borderBottom: index < wordInfo.credits!.length - 1 ? 
+                   `1px solid ${alpha(theme.palette.divider, 0.5)}` : 'none'
+               }}
+             >
+             <ListItemText
+                 primary={
+                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                     {credit.credit}
+                   </Typography>
+                 }
+             />
+           </ListItem>
+         ))}
+       </List>
+         
+         {/* Display additional metadata if available */}
+         {(wordInfo.created_at || wordInfo.updated_at) && (
+           <Box sx={{ mt: theme.spacing(3), pt: theme.spacing(2), borderTop: `1px solid ${theme.palette.divider}` }}>
+             <Typography variant="subtitle2" sx={{ mb: theme.spacing(1.5), fontWeight: 600 }}>
+               Entry Information
+             </Typography>
              <Stack spacing={1}>
                {wordInfo.created_at && (
                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                    <Typography variant="body2" color="text.secondary">Created:</Typography>
-                   <Typography variant="body2">{new Date(wordInfo.created_at).toLocaleString()}</Typography>
+                   <Typography variant="body2">
+                     {new Date(wordInfo.created_at).toLocaleString()}
+                   </Typography>
                  </Box>
                )}
                {wordInfo.updated_at && (
                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                    <Typography variant="body2" color="text.secondary">Last Updated:</Typography>
-                   <Typography variant="body2">{new Date(wordInfo.updated_at).toLocaleString()}</Typography>
+                   <Typography variant="body2">
+                     {new Date(wordInfo.updated_at).toLocaleString()}
+                   </Typography>
                  </Box>
                )}
              </Stack>
@@ -1543,7 +1434,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                       {activeTab === 'definitions' && renderDefinitionsTab()}
                       {activeTab === 'relations' && renderRelationsTab()}
                       {activeTab === 'etymology' && renderEtymologyTab()}
-                      {activeTab === 'sources-info' && renderSourcesInfoTab()}
+                      {activeTab === 'credits' && renderCreditsTab()}
                   </Box>
                </Box>
             );
@@ -1605,7 +1496,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                     value="relations" 
                   />
                   <Tab label="Etymology" value="etymology" />
-                  <Tab label="Sources" value="sources-info" />
+                  <Tab label="Sources" value="credits" />
                 </Tabs>
             );
 

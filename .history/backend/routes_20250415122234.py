@@ -41,7 +41,6 @@ from backend.dictionary_manager import (
 from backend.utils.word_processing import normalize_word
 from backend.utils.rate_limiting import limiter
 from backend.utils.ip import get_remote_address
-from backend.schemas import WordSchema # Check if this covers needed schemas
 
 # Set up logging
 logger = structlog.get_logger(__name__)
@@ -3313,9 +3312,7 @@ def _fetch_word_details(word_id,
         sql_word = """
         SELECT id, lemma, normalized_lemma, language_code, has_baybayin, baybayin_form,
                root_word_id, preferred_spelling, tags, source_info, word_metadata,
-               data_hash, search_text,
-               -- Add missing fields --
-               idioms, romanized_form, badlit_form, hyphenation, is_proper_noun,
+               data_hash, search_text, badlit_form, hyphenation, is_proper_noun,
                is_abbreviation, is_initialism
         FROM words
         WHERE id = :id
@@ -3386,62 +3383,6 @@ def _fetch_word_details(word_id,
                         pos_data[p_row.id] = pos
                 # --- End POS pre-fetch ---
 
-                # --- Pre-fetch Definition related data ---
-                definition_ids = [d.id for d in defs_result if d.id]
-                categories_by_def_id = {}
-                links_by_def_id = {}
-                def_relations_by_def_id = {}
-
-                if definition_ids:
-                    # Categories (Assume always needed if definitions are included)
-                    try:
-                        sql_cats = """
-                        SELECT id, definition_id, category_name, description, category_kind, tags, category_metadata, parents
-                        FROM definition_categories WHERE definition_id = ANY(:ids)
-                        """
-                        cat_results = db.session.execute(text(sql_cats), {"ids": definition_ids}).fetchall()
-                        for c_row in cat_results:
-                            cat = DefinitionCategory()
-                            cat.id = c_row.id; cat.definition_id = c_row.definition_id; cat.category_name = c_row.category_name; cat.description = c_row.description; cat.category_kind = c_row.category_kind; cat.tags = c_row.tags; cat.category_metadata = c_row.category_metadata; cat.parents = c_row.parents
-                            if c_row.definition_id not in categories_by_def_id: categories_by_def_id[c_row.definition_id] = []
-                            categories_by_def_id[c_row.definition_id].append(cat)
-                    except Exception as e: logger.error(f"Error loading definition categories for word {word_id}: {e}", exc_info=False)
-
-                    # Links (Assume always needed if definitions are included)
-                    try:
-                        sql_links = """
-                        SELECT id, definition_id, link_text, target_url, display_text, is_external, tags, link_metadata
-                        FROM definition_links WHERE definition_id = ANY(:ids)
-                        """
-                        link_results = db.session.execute(text(sql_links), {"ids": definition_ids}).fetchall()
-                        for l_row in link_results:
-                            link = DefinitionLink()
-                            link.id = l_row.id; link.definition_id = l_row.definition_id; link.link_text = l_row.link_text; link.target_url = l_row.target_url; link.display_text = l_row.display_text; link.is_external = l_row.is_external; link.tags = l_row.tags; link.link_metadata = l_row.link_metadata
-                            if l_row.definition_id not in links_by_def_id: links_by_def_id[l_row.definition_id] = []
-                            links_by_def_id[l_row.definition_id].append(link)
-                    except Exception as e: logger.error(f"Error loading definition links for word {word_id}: {e}", exc_info=False)
-
-                    # Definition Relations (Only if requested)
-                    if include_definition_relations:
-                        try:
-                            sql_def_rels = """
-                            SELECT dr.id, dr.definition_id, dr.word_id as related_word_id, dr.relation_type, dr.relation_data,
-                                   w.lemma as related_word_lemma, w.language_code as related_word_language_code
-                            FROM definition_relations dr JOIN words w ON dr.word_id = w.id
-                            WHERE dr.definition_id = ANY(:ids)
-                            """
-                            def_rel_results = db.session.execute(text(sql_def_rels), {"ids": definition_ids}).fetchall()
-                            for dr_row in def_rel_results:
-                                def_rel = DefinitionRelation()
-                                def_rel.id = dr_row.id; def_rel.definition_id = dr_row.definition_id; def_rel.word_id = dr_row.related_word_id; def_rel.relation_type = dr_row.relation_type; def_rel.relation_data = dr_row.relation_data
-                                related_word = Word(); related_word.id = dr_row.related_word_id; related_word.lemma = dr_row.related_word_lemma; related_word.language_code = dr_row.related_word_language_code
-                                def_rel.related_word = related_word
-                                if dr_row.definition_id not in def_relations_by_def_id: def_relations_by_def_id[dr_row.definition_id] = []
-                                def_relations_by_def_id[dr_row.definition_id].append(def_rel)
-                        except Exception as e: logger.error(f"Error loading definition relations for word {word_id}: {e}", exc_info=False)
-                # --- End pre-fetch ---
-
-
                 for d in defs_result:
                     definition = Definition()
                     for key in d.keys():
@@ -3458,16 +3399,6 @@ def _fetch_word_details(word_id,
                     else:
                         definition.standardized_pos = None # Ensure attribute exists even if no POS found
                     # --- End POS attachment ---
-
-                    # --- Attach pre-fetched definition related data ---
-                    definition.categories = categories_by_def_id.get(definition.id, [])
-                    definition.links = links_by_def_id.get(definition.id, [])
-                    # Check flag before assigning definition relations
-                    if include_definition_relations:
-                         definition.definition_relations = def_relations_by_def_id.get(definition.id, [])
-                    else: # Ensure attribute exists even if not included
-                         definition.definition_relations = []
-                    # --- End definition related attachment ---
 
                     word.definitions.append(definition)
             except Exception as e:
@@ -3674,106 +3605,6 @@ def _fetch_word_details(word_id,
             except Exception as e:
                 logger.error(f"Error loading credits for word {word_id}: {e}", exc_info=False)
                 word.credits = []
-        else: word.credits = [] # Initialize if include_credits was false or loading failed
-
-        # Load affixations if requested
-        if include_affixations:
-            try:
-                # Root affixations (where this word is the root)
-                sql_root_affix = """
-                SELECT af.id, af.affix_type, af.sources,
-                       w.id as affixed_word_id, w.lemma as affixed_word_lemma, w.language_code as affixed_word_language_code
-                FROM affixations af
-                JOIN words w ON af.affixed_word_id = w.id
-                WHERE af.root_word_id = :word_id
-                """
-                root_affix_result = db.session.execute(text(sql_root_affix), {"word_id": word_id}).fetchall()
-                word.root_affixations = []
-                for r_row in root_affix_result:
-                    affix = Affixation()
-                    affix.id = r_row.id
-                    affix.affix_type = r_row.affix_type
-                    affix.sources = r_row.sources
-                    affix.root_word_id = word_id # Set the known root word ID
-
-                    affixed_word = Word()
-                    affixed_word.id = r_row.affixed_word_id
-                    affixed_word.lemma = r_row.affixed_word_lemma
-                    affixed_word.language_code = r_row.affixed_word_language_code
-                    affix.affixed_word = affixed_word
-                    word.root_affixations.append(affix)
-
-                # Affixed affixations (where this word is the result)
-                sql_affixed_affix = """
-                SELECT af.id, af.affix_type, af.sources,
-                       w.id as root_word_id_val, w.lemma as root_word_lemma, w.language_code as root_word_language_code
-                FROM affixations af
-                JOIN words w ON af.root_word_id = w.id
-                WHERE af.affixed_word_id = :word_id
-                """
-                affixed_affix_result = db.session.execute(text(sql_affixed_affix), {"word_id": word_id}).fetchall()
-                word.affixed_affixations = []
-                for a_row in affixed_affix_result:
-                    affix = Affixation()
-                    affix.id = a_row.id
-                    affix.affix_type = a_row.affix_type
-                    affix.sources = a_row.sources
-                    affix.affixed_word_id = word_id # Set the known affixed word ID
-
-                    root_word_affix = Word()
-                    root_word_affix.id = a_row.root_word_id_val
-                    root_word_affix.lemma = a_row.root_word_lemma
-                    root_word_affix.language_code = a_row.root_word_language_code
-                    affix.root_word = root_word_affix
-                    word.affixed_affixations.append(affix)
-
-            except Exception as e:
-                logger.error(f"Error loading affixations for word {word_id}: {e}", exc_info=False)
-                word.root_affixations = []
-                word.affixed_affixations = []
-        else:
-             word.root_affixations = []
-             word.affixed_affixations = []
-
-        # Load forms if requested
-        if include_forms:
-            try:
-                sql_forms = "SELECT id, form, tags, is_canonical, is_primary FROM word_forms WHERE word_id = :word_id"
-                form_result = db.session.execute(text(sql_forms), {"word_id": word_id}).fetchall()
-                word.forms = []
-                for f_row in form_result:
-                    form = WordForm()
-                    form.id = f_row.id
-                    form.form = f_row.form
-                    form.tags = f_row.tags
-                    form.is_canonical = f_row.is_canonical
-                    form.is_primary = f_row.is_primary
-                    form.word_id = word_id
-                    word.forms.append(form)
-            except Exception as e:
-                logger.error(f"Error loading forms for word {word_id}: {e}", exc_info=False)
-                word.forms = []
-        else: word.forms = []
-
-        # Load templates if requested
-        if include_templates:
-            try:
-                sql_templates = "SELECT id, template_name, args, expansion FROM word_templates WHERE word_id = :word_id"
-                template_result = db.session.execute(text(sql_templates), {"word_id": word_id}).fetchall()
-                word.templates = []
-                for t_row in template_result:
-                    template = WordTemplate()
-                    template.id = t_row.id
-                    template.template_name = t_row.template_name
-                    template.args = t_row.args
-                    template.expansion = t_row.expansion
-                    template.word_id = word_id
-                    word.templates.append(template)
-            except Exception as e:
-                logger.error(f"Error loading templates for word {word_id}: {e}", exc_info=False)
-                word.templates = []
-        else: word.templates = []
-
 
         # Initialize other relationships as empty lists if not included/loaded
         # Ensures attributes exist even if loading fails or is skipped
@@ -3781,11 +3612,11 @@ def _fetch_word_details(word_id,
         if not hasattr(word, 'affixed_affixations'): word.affixed_affixations = []
         if not hasattr(word, 'forms'): word.forms = []
         if not hasattr(word, 'templates'): word.templates = []
-        # Definition relations/categories/links are initialized within the definition loop
-        if not hasattr(word, 'credits'): word.credits = [] # Ensure credits is initialized
+        if not hasattr(word, 'definition_relations'): word.definition_relations = []
+        if not hasattr(word, 'related_definitions'): word.related_definitions = []
+        if not hasattr(word, 'credits'): word.credits = [] # Initialize if include_credits was false
 
-
-        # --- Add loading logic for Affixations, Forms, Templates if needed ---
+        # --- Add loading logic for Affixations, Forms, Templates if needed --- 
         # Remember to add try/except blocks if you implement them
 
         # Cache the result if we have a cache client
