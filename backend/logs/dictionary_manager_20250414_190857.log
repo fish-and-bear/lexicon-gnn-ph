@@ -1,0 +1,9 @@
+2025-04-14 19:08:57,585 - INFO - Starting table creation/update process.
+2025-04-14 19:08:58,023 - INFO - Tables created or updated successfully.
+2025-04-14 19:08:58,028 - INFO - Starting processing for Tagalog Words from ..\data\tagalog-words.json
+2025-04-14 19:08:58,028 - INFO - Processing Tagalog words file: ..\data\tagalog-words.json with entry-level transactions.
+2025-04-14 19:08:58,029 - INFO - Using standardized source identifier: 'diksiyonaryo.ph'
+2025-04-14 19:08:58,136 - INFO - Loading ..\data\tagalog-words.json using iterative parser ijson...
+2025-04-14 19:08:58,137 - INFO - Iterating through entries in ..\data\tagalog-words.json...
+2025-04-14 19:08:59,579 - INFO - Processed ~1000 entries...
+2025-04-14 19:09:00,324 - INFO - Database connection closed.

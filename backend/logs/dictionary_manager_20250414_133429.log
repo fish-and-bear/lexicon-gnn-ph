@@ -1,0 +1,3849 @@
+2025-04-14 13:34:29,909 - INFO - Starting table creation/update process.
+2025-04-14 13:34:30,264 - INFO - Tables created or updated successfully.
+2025-04-14 13:34:30,269 - INFO - Starting processing for Tagalog Words from ..\data\tagalog-words.json
+2025-04-14 13:34:30,270 - INFO - Processing Tagalog words file: ..\data\tagalog-words.json with entry-level transactions.
+2025-04-14 13:34:30,270 - INFO - Using standardized source identifier: 'diksiyonaryo.ph'
+2025-04-14 13:34:30,321 - WARNING - Schema Check: Table 'examples' is missing required columns: id, example, definition_id. Some features might not work.
+2025-04-14 13:34:30,325 - WARNING - Schema Check: Table 'word_tags' is missing required columns: id, source_identifier, word_id, tag. Some features might not work.
+2025-04-14 13:34:30,921 - INFO - Found 65336 word entries in ..\data\tagalog-words.json
+2025-04-14 13:34:30,932 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,933 - ERROR - FATAL: Unexpected error calling processing function for entry 0 ('-a'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,937 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,937 - ERROR - FATAL: Unexpected error calling processing function for entry 1 ('A'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,939 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,939 - ERROR - FATAL: Unexpected error calling processing function for entry 2 ('A!'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,940 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,941 - ERROR - FATAL: Unexpected error calling processing function for entry 3 ('Å'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,942 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,943 - ERROR - FATAL: Unexpected error calling processing function for entry 4 ('aà'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,944 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,945 - ERROR - FATAL: Unexpected error calling processing function for entry 5 ('aáb'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,946 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,946 - ERROR - FATAL: Unexpected error calling processing function for entry 6 ('aáda'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,947 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,947 - ERROR - FATAL: Unexpected error calling processing function for entry 7 ('aádto'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,949 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,949 - ERROR - FATAL: Unexpected error calling processing function for entry 8 ('aagáw'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,950 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,951 - ERROR - FATAL: Unexpected error calling processing function for entry 9 ('aák'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,952 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,953 - ERROR - FATAL: Unexpected error calling processing function for entry 10 ('aám'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,954 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,954 - ERROR - FATAL: Unexpected error calling processing function for entry 11 ('aánhi'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,955 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,955 - ERROR - FATAL: Unexpected error calling processing function for entry 12 ('aánhon'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,956 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,956 - ERROR - FATAL: Unexpected error calling processing function for entry 13 ('áap'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,957 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,958 - ERROR - FATAL: Unexpected error calling processing function for entry 14 ('aapúyan'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,959 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,960 - ERROR - FATAL: Unexpected error calling processing function for entry 15 ('Aaron'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,961 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,961 - ERROR - FATAL: Unexpected error calling processing function for entry 16 ('aáto-áto'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,962 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,963 - ERROR - FATAL: Unexpected error calling processing function for entry 17 ('AB'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,964 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,964 - ERROR - FATAL: Unexpected error calling processing function for entry 18 ('abá'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,966 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,966 - ERROR - FATAL: Unexpected error calling processing function for entry 19 ('Abá!'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,969 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,969 - ERROR - FATAL: Unexpected error calling processing function for entry 20 ('abâ'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,970 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,971 - ERROR - FATAL: Unexpected error calling processing function for entry 21 ('abaána'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,972 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,972 - ERROR - FATAL: Unexpected error calling processing function for entry 22 ('abáaw'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,973 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,973 - ERROR - FATAL: Unexpected error calling processing function for entry 23 ('áb-ab'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,974 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,975 - ERROR - FATAL: Unexpected error calling processing function for entry 24 ('ábab'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,976 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,977 - ERROR - FATAL: Unexpected error calling processing function for entry 25 ('abába'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,978 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,978 - ERROR - FATAL: Unexpected error calling processing function for entry 26 ('ababatiyáwan'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,979 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,979 - ERROR - FATAL: Unexpected error calling processing function for entry 27 ('abábaw'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,980 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,981 - ERROR - FATAL: Unexpected error calling processing function for entry 28 ('abábbaw'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,982 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,983 - ERROR - FATAL: Unexpected error calling processing function for entry 29 ('áb-abî-ik'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,984 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,985 - ERROR - FATAL: Unexpected error calling processing function for entry 30 ('abaciscus'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,986 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,986 - ERROR - FATAL: Unexpected error calling processing function for entry 31 ('abád'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,987 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,987 - ERROR - FATAL: Unexpected error calling processing function for entry 32 ('ábad'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,988 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,989 - ERROR - FATAL: Unexpected error calling processing function for entry 33 ('abáda'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,989 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,990 - ERROR - FATAL: Unexpected error calling processing function for entry 34 ('Abadáw!'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,991 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,991 - ERROR - FATAL: Unexpected error calling processing function for entry 35 ('Abaddon'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,992 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,992 - ERROR - FATAL: Unexpected error calling processing function for entry 36 ('Abadéha'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,993 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,993 - ERROR - FATAL: Unexpected error calling processing function for entry 37 ('abadíya'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,994 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,994 - ERROR - FATAL: Unexpected error calling processing function for entry 38 ('abadyáto'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,996 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,996 - ERROR - FATAL: Unexpected error calling processing function for entry 39 ('abáfiw'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,997 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,997 - ERROR - FATAL: Unexpected error calling processing function for entry 40 ('ábag'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,998 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:30,998 - ERROR - FATAL: Unexpected error calling processing function for entry 41 ('abagá'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,000 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,000 - ERROR - FATAL: Unexpected error calling processing function for entry 42 ('abága'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,001 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,002 - ERROR - FATAL: Unexpected error calling processing function for entry 43 ('abágat'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,003 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,003 - ERROR - FATAL: Unexpected error calling processing function for entry 44 ('abagbág'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,005 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,005 - ERROR - FATAL: Unexpected error calling processing function for entry 45 ('abághan'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,006 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,006 - ERROR - FATAL: Unexpected error calling processing function for entry 46 ('Abá Ginoóng María'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,007 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,008 - ERROR - FATAL: Unexpected error calling processing function for entry 47 ('ábak'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,009 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,009 - ERROR - FATAL: Unexpected error calling processing function for entry 48 ('abaká'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,010 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,011 - ERROR - FATAL: Unexpected error calling processing function for entry 49 ('Abaká'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,012 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,012 - ERROR - FATAL: Unexpected error calling processing function for entry 50 ('abák-abák'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,014 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,014 - ERROR - FATAL: Unexpected error calling processing function for entry 51 ('abakáda'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,015 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,015 - ERROR - FATAL: Unexpected error calling processing function for entry 52 ('ábakahán'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,016 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,017 - ERROR - FATAL: Unexpected error calling processing function for entry 53 ('Abáknon'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,018 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,018 - ERROR - FATAL: Unexpected error calling processing function for entry 54 ('ábakó'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,019 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,019 - ERROR - FATAL: Unexpected error calling processing function for entry 55 ('ábakús'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,020 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,020 - ERROR - FATAL: Unexpected error calling processing function for entry 56 ('ábal'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,021 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,022 - ERROR - FATAL: Unexpected error calling processing function for entry 57 ('abalá'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,022 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,023 - ERROR - FATAL: Unexpected error calling processing function for entry 58 ('abála'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,024 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,024 - ERROR - FATAL: Unexpected error calling processing function for entry 59 ('abalábal'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,025 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,025 - ERROR - FATAL: Unexpected error calling processing function for entry 60 ('ábal-ábal'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,028 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,028 - ERROR - FATAL: Unexpected error calling processing function for entry 61 ('abálayán'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,029 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,030 - ERROR - FATAL: Unexpected error calling processing function for entry 62 ('abálo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,031 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,031 - ERROR - FATAL: Unexpected error calling processing function for entry 63 ('abáloán'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,034 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,035 - ERROR - FATAL: Unexpected error calling processing function for entry 64 ('abalone'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,036 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,036 - ERROR - FATAL: Unexpected error calling processing function for entry 65 ('abalone mushroom'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,038 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,038 - ERROR - FATAL: Unexpected error calling processing function for entry 66 ('abalóryo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,039 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,040 - ERROR - FATAL: Unexpected error calling processing function for entry 67 ('Abá mo nganí!'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,041 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,041 - ERROR - FATAL: Unexpected error calling processing function for entry 68 ('ábamp'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,043 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,043 - ERROR - FATAL: Unexpected error calling processing function for entry 69 ('abampere'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,045 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,045 - ERROR - FATAL: Unexpected error calling processing function for entry 70 ('ában'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,046 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,047 - ERROR - FATAL: Unexpected error calling processing function for entry 71 ('abanderádo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,048 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,048 - ERROR - FATAL: Unexpected error calling processing function for entry 72 ('abándon'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,049 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,049 - ERROR - FATAL: Unexpected error calling processing function for entry 73 ('abandoná'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,051 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,051 - ERROR - FATAL: Unexpected error calling processing function for entry 74 ('abáng'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,052 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,052 - ERROR - FATAL: Unexpected error calling processing function for entry 75 ('ábang'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,053 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,054 - ERROR - FATAL: Unexpected error calling processing function for entry 76 ('ábang-ábang'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,055 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,055 - ERROR - FATAL: Unexpected error calling processing function for entry 77 ('ábángan'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,057 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,057 - ERROR - FATAL: Unexpected error calling processing function for entry 78 ('abanglës'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,058 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,059 - ERROR - FATAL: Unexpected error calling processing function for entry 79 ('abaníd'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,061 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,062 - ERROR - FATAL: Unexpected error calling processing function for entry 80 ('abaníko'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,063 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,063 - ERROR - FATAL: Unexpected error calling processing function for entry 81 ('abáno'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,064 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,065 - ERROR - FATAL: Unexpected error calling processing function for entry 82 ('abansádo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,066 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,066 - ERROR - FATAL: Unexpected error calling processing function for entry 83 ('abánse'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,068 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,068 - ERROR - FATAL: Unexpected error calling processing function for entry 84 ('abánte'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,069 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,070 - ERROR - FATAL: Unexpected error calling processing function for entry 85 ('abantéro'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,071 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,071 - ERROR - FATAL: Unexpected error calling processing function for entry 86 ('abánto'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,073 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,073 - ERROR - FATAL: Unexpected error calling processing function for entry 87 ('abár'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,074 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,074 - ERROR - FATAL: Unexpected error calling processing function for entry 88 ('ábar'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,076 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,076 - ERROR - FATAL: Unexpected error calling processing function for entry 89 ('abaráy'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,077 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,077 - ERROR - FATAL: Unexpected error calling processing function for entry 90 ('abarísya'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,079 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,079 - ERROR - FATAL: Unexpected error calling processing function for entry 91 ('abarisyósa'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,080 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,080 - ERROR - FATAL: Unexpected error calling processing function for entry 92 ('abarká'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,081 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,081 - ERROR - FATAL: Unexpected error calling processing function for entry 93 ('abáro'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,083 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,083 - ERROR - FATAL: Unexpected error calling processing function for entry 94 ('abintestáto'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,084 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,084 - ERROR - FATAL: Unexpected error calling processing function for entry 95 ('ab íntra'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,085 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,086 - ERROR - FATAL: Unexpected error calling processing function for entry 96 ('abinulók'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,087 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,087 - ERROR - FATAL: Unexpected error calling processing function for entry 97 ('abiogenesis'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,088 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,088 - ERROR - FATAL: Unexpected error calling processing function for entry 98 ('abiotrophy'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,090 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,090 - ERROR - FATAL: Unexpected error calling processing function for entry 99 ('abirritant'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,091 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,092 - ERROR - FATAL: Unexpected error calling processing function for entry 100 ('abisádo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,093 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,094 - ERROR - FATAL: Unexpected error calling processing function for entry 101 ('Abisinia'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,095 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,095 - ERROR - FATAL: Unexpected error calling processing function for entry 102 ('Abisinio'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,097 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,097 - ERROR - FATAL: Unexpected error calling processing function for entry 103 ('Abisínya'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,098 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,098 - ERROR - FATAL: Unexpected error calling processing function for entry 104 ('Abisínyo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,100 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,100 - ERROR - FATAL: Unexpected error calling processing function for entry 105 ('abismál'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,102 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,102 - ERROR - FATAL: Unexpected error calling processing function for entry 106 ('abísmo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,104 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,104 - ERROR - FATAL: Unexpected error calling processing function for entry 107 ('abíso'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,105 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,106 - ERROR - FATAL: Unexpected error calling processing function for entry 108 ('abít'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,108 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,108 - ERROR - FATAL: Unexpected error calling processing function for entry 109 ('ábit'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,110 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,110 - ERROR - FATAL: Unexpected error calling processing function for entry 110 ('ábitó'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,111 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,112 - ERROR - FATAL: Unexpected error calling processing function for entry 111 ('abitsuwélas'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,113 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,113 - ERROR - FATAL: Unexpected error calling processing function for entry 112 ('abítug'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,115 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,115 - ERROR - FATAL: Unexpected error calling processing function for entry 113 ('abíyo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,117 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,118 - ERROR - FATAL: Unexpected error calling processing function for entry 114 ('abkël'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,119 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,120 - ERROR - FATAL: Unexpected error calling processing function for entry 115 ('ábla'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,121 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,122 - ERROR - FATAL: Unexpected error calling processing function for entry 116 ('ablád'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,123 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,123 - ERROR - FATAL: Unexpected error calling processing function for entry 117 ('abláda'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,124 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,125 - ERROR - FATAL: Unexpected error calling processing function for entry 118 ('abládo'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,126 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,126 - ERROR - FATAL: Unexpected error calling processing function for entry 119 ('áblang'): Unexpected error: set_session cannot be used inside a transaction
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3097, in get_db_connection
+    conn.set_session(
+    ~~~~~~~~~~~~~~~~^
+        autocommit=True,
+        ^^^^^^^^^^^^^^^^
+        isolation_level=psycopg2.extensions.ISOLATION_LEVEL_READ_COMMITTED,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+psycopg2.ProgrammingError: set_session cannot be used inside a transaction
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6828, in process_tagalog_words
+    success = _process_single_tagalog_word_entry(
+        entry_data, # Remove cur argument
+    ...<9 lines>...
+        required_columns
+    )
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3193, in wrapper
+    with DBConnection() as cursor:
+         ~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3155, in __enter__
+    self.conn = get_db_connection()
+                ~~~~~~~~~~~~~~~~~^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 3127, in get_db_connection
+    raise DatabaseConnectionError(f"Unexpected error: {e}")
+DatabaseConnectionError: Unexpected error: set_session cannot be used inside a transaction
+2025-04-14 13:34:31,131 - INFO - Database connection closed.

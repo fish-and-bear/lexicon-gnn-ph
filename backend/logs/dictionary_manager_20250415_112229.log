@@ -1,0 +1,30 @@
+2025-04-15 11:22:29,979 - INFO - Starting table creation/update process.
+2025-04-15 11:22:30,770 - INFO - Tables created or updated successfully.
+2025-04-15 11:22:30,779 - INFO - Starting processing for Tagalog Words from ..\data\tagalog-words.json
+2025-04-15 11:22:30,780 - INFO - Processing Tagalog words file: <cursor object at 0x000001B85625A5E0; closed: 0> with batch commits (size=1000).
+2025-04-15 11:22:30,780 - ERROR - Error processing source 'Tagalog Words' from ..\data\tagalog-words.json: expected str, bytes or os.PathLike object, not cursor
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 10644, in migrate_data
+    source["handler"](cur, filepath)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6589, in process_tagalog_words
+    source_identifier = standardize_source_identifier(os.path.basename(filename))
+                                                      ~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<frozen ntpath>", line 256, in basename
+  File "<frozen ntpath>", line 227, in split
+TypeError: expected str, bytes or os.PathLike object, not cursor
+2025-04-15 11:22:30,789 - ERROR - Error during migration: expected str, bytes or os.PathLike object, not cursor
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 10650, in migrate_data
+    raise handler_error
+  File "C:\fil-relex\backend\dictionary_manager.py", line 10644, in migrate_data
+    source["handler"](cur, filepath)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6589, in process_tagalog_words
+    source_identifier = standardize_source_identifier(os.path.basename(filename))
+                                                      ~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<frozen ntpath>", line 256, in basename
+  File "<frozen ntpath>", line 227, in split
+TypeError: expected str, bytes or os.PathLike object, not cursor
+2025-04-15 11:22:30,792 - INFO - Rolling back transaction due to error.
+2025-04-15 11:22:30,793 - INFO - Database connection closed.

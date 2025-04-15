@@ -1,0 +1,1505 @@
+2025-04-13 20:26:34,274 - INFO - Starting table creation/update process.
+2025-04-13 20:26:34,753 - INFO - Tables created or updated successfully.
+2025-04-13 20:26:34,758 - INFO - Starting processing for Root Words from ..\data\root_words_with_associated_words_cleaned.json
+2025-04-13 20:26:34,758 - INFO - Processing Root Words (tagalog.com cleaned) file: ..\data\root_words_with_associated_words_cleaned.json
+2025-04-13 20:26:34,758 - INFO - Using standardized source identifier: 'tagalog.com'
+2025-04-13 20:26:34,779 - INFO - Found 2238 root word entries in dictionary format in ..\data\root_words_with_associated_words_cleaned.json
+2025-04-13 20:26:34,835 - WARNING - Skipping self-relation for word ID 6, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:34,845 - WARNING - Skipping self-relation for word ID 12, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:34,856 - WARNING - Skipping self-relation for word ID 22, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:34,894 - WARNING - Skipping self-relation for word ID 45, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:34,920 - WARNING - Skipping self-relation for word ID 59, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:34,935 - WARNING - Skipping self-relation for word ID 65, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:34,979 - WARNING - Skipping self-relation for word ID 84, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,017 - WARNING - Skipping self-relation for word ID 103, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,038 - WARNING - Skipping self-relation for word ID 114, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,105 - WARNING - Skipping self-relation for word ID 144, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,158 - WARNING - Skipping self-relation for word ID 169, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,236 - WARNING - Skipping self-relation for word ID 206, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,238 - WARNING - Skipping self-relation for word ID 206, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,255 - WARNING - Skipping self-relation for word ID 215, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,278 - WARNING - Skipping self-relation for word ID 223, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,339 - WARNING - Skipping self-relation for word ID 255, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,410 - WARNING - Skipping self-relation for word ID 292, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,420 - WARNING - Skipping self-relation for word ID 297, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,469 - WARNING - Skipping self-relation for word ID 324, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,491 - WARNING - Skipping self-relation for word ID 337, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,557 - WARNING - Skipping self-relation for word ID 374, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,614 - WARNING - Skipping self-relation for word ID 405, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,636 - WARNING - Skipping self-relation for word ID 416, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,692 - WARNING - Skipping self-relation for word ID 446, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,742 - WARNING - Skipping self-relation for word ID 474, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:35,847 - WARNING - Skipping self-relation for word ID 515, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,074 - WARNING - Skipping self-relation for word ID 600, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,091 - WARNING - Skipping self-relation for word ID 608, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,107 - WARNING - Skipping self-relation for word ID 614, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,173 - WARNING - Skipping self-relation for word ID 634, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,241 - WARNING - Skipping self-relation for word ID 666, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,266 - WARNING - Skipping self-relation for word ID 679, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,445 - WARNING - Skipping self-relation for word ID 783, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,493 - WARNING - Skipping self-relation for word ID 812, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,571 - WARNING - Skipping self-relation for word ID 857, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,617 - WARNING - Skipping self-relation for word ID 882, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,639 - WARNING - Skipping self-relation for word ID 889, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,834 - WARNING - Skipping self-relation for word ID 995, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,885 - WARNING - Skipping self-relation for word ID 1021, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,952 - WARNING - Skipping self-relation for word ID 1065, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:36,962 - WARNING - Skipping self-relation for word ID 1070, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,044 - WARNING - Skipping self-relation for word ID 1124, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,060 - WARNING - Skipping self-relation for word ID 1133, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,144 - WARNING - Skipping self-relation for word ID 1172, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,225 - WARNING - Skipping self-relation for word ID 1207, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,279 - WARNING - Skipping self-relation for word ID 1234, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,352 - WARNING - Skipping self-relation for word ID 1271, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,354 - WARNING - Skipping self-relation for word ID 1271, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,532 - WARNING - Skipping self-relation for word ID 1338, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,615 - WARNING - Skipping self-relation for word ID 1375, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,659 - WARNING - Skipping self-relation for word ID 1398, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,748 - WARNING - Skipping self-relation for word ID 1436, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,807 - WARNING - Skipping self-relation for word ID 1470, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,863 - WARNING - Skipping self-relation for word ID 1496, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,902 - WARNING - Skipping self-relation for word ID 1520, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,925 - WARNING - Skipping self-relation for word ID 1528, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:37,979 - WARNING - Skipping self-relation for word ID 1557, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,013 - WARNING - Skipping self-relation for word ID 1578, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,093 - WARNING - Skipping self-relation for word ID 1631, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,095 - WARNING - Skipping self-relation for word ID 1631, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,124 - WARNING - Skipping self-relation for word ID 1653, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,175 - WARNING - Skipping self-relation for word ID 1684, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,226 - WARNING - Skipping self-relation for word ID 1711, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,283 - WARNING - Skipping self-relation for word ID 1740, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,315 - WARNING - Skipping self-relation for word ID 1764, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,344 - WARNING - Skipping self-relation for word ID 1781, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,366 - WARNING - Skipping self-relation for word ID 1794, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,413 - WARNING - Skipping self-relation for word ID 1827, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,455 - WARNING - Skipping self-relation for word ID 1853, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,511 - WARNING - Skipping self-relation for word ID 1885, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,562 - WARNING - Skipping self-relation for word ID 1915, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,606 - WARNING - Skipping self-relation for word ID 1941, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,664 - WARNING - Skipping self-relation for word ID 1979, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,695 - WARNING - Skipping self-relation for word ID 1996, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,769 - WARNING - Skipping self-relation for word ID 2043, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,808 - WARNING - Skipping self-relation for word ID 2065, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,844 - WARNING - Skipping self-relation for word ID 2085, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,860 - WARNING - Skipping self-relation for word ID 2092, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,900 - WARNING - Skipping self-relation for word ID 2117, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,933 - WARNING - Skipping self-relation for word ID 2136, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:38,958 - WARNING - Skipping self-relation for word ID 2149, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,002 - WARNING - Skipping self-relation for word ID 2171, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,016 - WARNING - Skipping self-relation for word ID 2184, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,039 - WARNING - Skipping self-relation for word ID 2197, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,096 - WARNING - Skipping self-relation for word ID 2226, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,261 - WARNING - Skipping self-relation for word ID 2317, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,295 - INFO - Extracted parenthesized text from lemma: original='Santa (Sta.); Santo (Sto.)' → lemma='Santa ; Santo', note='Sta., Sto.'
+2025-04-13 20:26:39,302 - WARNING - Skipping self-relation for word ID 2338, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,329 - WARNING - Skipping self-relation for word ID 2346, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,525 - WARNING - Skipping self-relation for word ID 2455, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,552 - WARNING - Skipping self-relation for word ID 2467, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,669 - WARNING - Skipping self-relation for word ID 2506, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,704 - WARNING - Skipping self-relation for word ID 2523, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,762 - WARNING - Skipping self-relation for word ID 2543, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,806 - WARNING - Skipping self-relation for word ID 2561, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,837 - WARNING - Skipping self-relation for word ID 2561, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,855 - WARNING - Skipping self-relation for word ID 2579, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,870 - WARNING - Skipping self-relation for word ID 2583, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,901 - WARNING - Skipping self-relation for word ID 2595, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,912 - WARNING - Skipping self-relation for word ID 2600, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:39,974 - WARNING - Skipping self-relation for word ID 2627, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,012 - WARNING - Skipping self-relation for word ID 2640, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,094 - INFO - Extracted parenthesized text from lemma: original='pagsilang (ng -)' → lemma='pagsilang', note='ng -'
+2025-04-13 20:26:40,101 - WARNING - Skipping self-relation for word ID 2690, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,146 - WARNING - Skipping self-relation for word ID 2706, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,238 - WARNING - Skipping self-relation for word ID 2752, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,273 - WARNING - Skipping self-relation for word ID 2772, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,286 - WARNING - Skipping self-relation for word ID 2780, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,354 - WARNING - Skipping self-relation for word ID 2815, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,382 - WARNING - Skipping self-relation for word ID 2825, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,475 - WARNING - Skipping self-relation for word ID 2863, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,521 - WARNING - Skipping self-relation for word ID 2885, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,623 - WARNING - Skipping self-relation for word ID 2924, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,643 - WARNING - Skipping self-relation for word ID 2947, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,659 - WARNING - Skipping self-relation for word ID 2958, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,760 - WARNING - Skipping self-relation for word ID 3000, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,802 - WARNING - Skipping self-relation for word ID 3020, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,804 - WARNING - Skipping self-relation for word ID 3020, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,844 - WARNING - Skipping self-relation for word ID 3040, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,846 - WARNING - Skipping self-relation for word ID 3040, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,926 - WARNING - Skipping self-relation for word ID 3075, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,955 - WARNING - Skipping self-relation for word ID 3091, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,957 - WARNING - Skipping self-relation for word ID 3091, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:40,996 - WARNING - Skipping self-relation for word ID 3110, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,015 - WARNING - Skipping self-relation for word ID 3118, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,081 - WARNING - Skipping self-relation for word ID 3158, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,137 - WARNING - Skipping self-relation for word ID 3189, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,193 - WARNING - Skipping self-relation for word ID 3217, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,211 - WARNING - Skipping self-relation for word ID 3230, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,262 - WARNING - Skipping self-relation for word ID 3257, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,286 - WARNING - Skipping self-relation for word ID 3268, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,288 - WARNING - Skipping self-relation for word ID 3268, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,320 - WARNING - Skipping self-relation for word ID 3286, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,348 - WARNING - Skipping self-relation for word ID 3296, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,364 - WARNING - Skipping self-relation for word ID 3310, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,421 - WARNING - Skipping self-relation for word ID 3341, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,462 - WARNING - Skipping self-relation for word ID 3362, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,464 - WARNING - Skipping self-relation for word ID 3362, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,503 - WARNING - Skipping self-relation for word ID 3388, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,558 - WARNING - Skipping self-relation for word ID 3419, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,597 - WARNING - Skipping self-relation for word ID 3439, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,641 - WARNING - Skipping self-relation for word ID 3460, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,705 - WARNING - Skipping self-relation for word ID 3497, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,747 - WARNING - Skipping self-relation for word ID 3522, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,749 - WARNING - Skipping self-relation for word ID 3522, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,800 - WARNING - Skipping self-relation for word ID 3552, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,833 - WARNING - Skipping self-relation for word ID 3565, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,850 - WARNING - Skipping self-relation for word ID 3580, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,869 - WARNING - Skipping self-relation for word ID 3585, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:41,899 - WARNING - Skipping self-relation for word ID 3605, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,024 - WARNING - Skipping self-relation for word ID 3672, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,051 - WARNING - Skipping self-relation for word ID 3690, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,095 - WARNING - Skipping self-relation for word ID 3710, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,129 - WARNING - Skipping self-relation for word ID 3724, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,144 - WARNING - Skipping self-relation for word ID 3729, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,202 - WARNING - Skipping self-relation for word ID 3752, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,280 - WARNING - Skipping self-relation for word ID 3781, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,359 - WARNING - Skipping self-relation for word ID 3809, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,481 - WARNING - Skipping self-relation for word ID 3845, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,524 - WARNING - Skipping self-relation for word ID 3861, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,568 - WARNING - Skipping self-relation for word ID 3875, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,592 - WARNING - Skipping self-relation for word ID 3883, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,680 - WARNING - Skipping self-relation for word ID 3911, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,727 - WARNING - Skipping self-relation for word ID 3928, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,754 - WARNING - Skipping self-relation for word ID 3937, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,757 - WARNING - Skipping self-relation for word ID 3937, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,808 - WARNING - Skipping self-relation for word ID 3956, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,846 - WARNING - Skipping self-relation for word ID 3969, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:42,924 - WARNING - Skipping self-relation for word ID 3995, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,019 - WARNING - Skipping self-relation for word ID 4029, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,055 - WARNING - Skipping self-relation for word ID 4041, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,110 - WARNING - Skipping self-relation for word ID 4064, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,165 - WARNING - Skipping self-relation for word ID 4084, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,187 - WARNING - Skipping self-relation for word ID 4091, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,215 - WARNING - Skipping self-relation for word ID 4101, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,343 - WARNING - Skipping self-relation for word ID 4144, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,447 - WARNING - Skipping self-relation for word ID 4184, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,539 - WARNING - Skipping self-relation for word ID 4218, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,590 - WARNING - Skipping self-relation for word ID 4236, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,633 - WARNING - Skipping self-relation for word ID 4252, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,676 - WARNING - Skipping self-relation for word ID 4269, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,766 - WARNING - Skipping self-relation for word ID 4301, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,774 - WARNING - Skipping self-relation for word ID 4304, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,862 - WARNING - Skipping self-relation for word ID 4333, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:43,919 - WARNING - Skipping self-relation for word ID 4354, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,032 - WARNING - Skipping self-relation for word ID 4394, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,034 - WARNING - Skipping self-relation for word ID 4394, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,112 - WARNING - Skipping self-relation for word ID 4415, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,194 - WARNING - Skipping self-relation for word ID 4436, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,229 - WARNING - Skipping self-relation for word ID 4447, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,402 - WARNING - Skipping self-relation for word ID 4501, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,445 - WARNING - Skipping self-relation for word ID 4515, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,476 - WARNING - Skipping self-relation for word ID 4524, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,508 - WARNING - Skipping self-relation for word ID 4535, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,511 - WARNING - Skipping self-relation for word ID 4535, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,675 - WARNING - Skipping self-relation for word ID 4595, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,779 - WARNING - Skipping self-relation for word ID 4628, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,837 - WARNING - Skipping self-relation for word ID 4648, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,863 - WARNING - Skipping self-relation for word ID 4655, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,937 - WARNING - Skipping self-relation for word ID 4683, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:44,986 - WARNING - Skipping self-relation for word ID 4700, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,023 - WARNING - Skipping self-relation for word ID 4715, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,077 - WARNING - Skipping self-relation for word ID 4733, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,222 - WARNING - Skipping self-relation for word ID 4788, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,285 - WARNING - Skipping self-relation for word ID 4812, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,354 - INFO - Extracted parenthesized text from lemma: original='batong klastiko (mga -)' → lemma='batong klastiko', note='mga -'
+2025-04-13 20:26:45,397 - WARNING - Skipping self-relation for word ID 4849, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,467 - WARNING - Skipping self-relation for word ID 4872, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,506 - WARNING - Skipping self-relation for word ID 4889, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,584 - WARNING - Skipping self-relation for word ID 4921, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,638 - WARNING - Skipping self-relation for word ID 4937, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,683 - WARNING - Skipping self-relation for word ID 4953, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,726 - WARNING - Skipping self-relation for word ID 4964, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,932 - WARNING - Skipping self-relation for word ID 5023, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:45,997 - WARNING - Skipping self-relation for word ID 5037, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,037 - WARNING - Skipping self-relation for word ID 5052, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,072 - WARNING - Skipping self-relation for word ID 5061, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,277 - WARNING - Skipping self-relation for word ID 5125, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,293 - WARNING - Skipping self-relation for word ID 5134, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,297 - WARNING - Skipping self-relation for word ID 5134, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,301 - WARNING - Skipping self-relation for word ID 5134, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,348 - WARNING - Skipping self-relation for word ID 5149, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,396 - WARNING - Skipping self-relation for word ID 5160, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,437 - WARNING - Skipping self-relation for word ID 5175, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,473 - WARNING - Skipping self-relation for word ID 5186, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,476 - WARNING - Skipping self-relation for word ID 5186, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,523 - WARNING - Skipping self-relation for word ID 5205, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,564 - WARNING - Skipping self-relation for word ID 5219, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,605 - WARNING - Skipping self-relation for word ID 5233, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,622 - WARNING - Skipping self-relation for word ID 5240, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,674 - WARNING - Skipping self-relation for word ID 20, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,684 - WARNING - Skipping self-relation for word ID 5263, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,773 - WARNING - Skipping self-relation for word ID 5296, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,860 - WARNING - Skipping self-relation for word ID 5312, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,912 - WARNING - Skipping self-relation for word ID 5331, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:46,953 - WARNING - Skipping self-relation for word ID 5345, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,014 - WARNING - Skipping self-relation for word ID 5366, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,137 - WARNING - Skipping self-relation for word ID 5407, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,163 - WARNING - Skipping self-relation for word ID 5417, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,165 - WARNING - Skipping self-relation for word ID 5417, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,184 - WARNING - Skipping self-relation for word ID 5423, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,191 - WARNING - Skipping self-relation for word ID 5428, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,241 - WARNING - Skipping self-relation for word ID 5444, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,296 - WARNING - Skipping self-relation for word ID 5464, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,345 - WARNING - Skipping self-relation for word ID 5481, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,378 - WARNING - Skipping self-relation for word ID 5494, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,468 - WARNING - Skipping self-relation for word ID 5518, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,519 - WARNING - Skipping self-relation for word ID 5531, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,550 - WARNING - Skipping self-relation for word ID 5548, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,554 - WARNING - Skipping self-relation for word ID 5548, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,595 - WARNING - Skipping self-relation for word ID 5558, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,670 - WARNING - Skipping self-relation for word ID 5588, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,699 - WARNING - Skipping self-relation for word ID 5596, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,702 - WARNING - Skipping self-relation for word ID 5596, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,744 - WARNING - Skipping self-relation for word ID 5613, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,786 - WARNING - Skipping self-relation for word ID 5627, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,803 - WARNING - Skipping self-relation for word ID 5633, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,815 - WARNING - Skipping self-relation for word ID 5637, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,818 - WARNING - Skipping self-relation for word ID 5637, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,848 - WARNING - Skipping self-relation for word ID 5649, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,886 - WARNING - Skipping self-relation for word ID 5662, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,943 - WARNING - Skipping self-relation for word ID 5684, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:47,946 - WARNING - Skipping self-relation for word ID 5684, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,014 - WARNING - Skipping self-relation for word ID 5706, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,045 - WARNING - Skipping self-relation for word ID 5717, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,087 - WARNING - Skipping self-relation for word ID 5729, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,156 - WARNING - Skipping self-relation for word ID 5754, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,184 - WARNING - Skipping self-relation for word ID 5762, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,212 - WARNING - Skipping self-relation for word ID 5771, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,259 - WARNING - Skipping self-relation for word ID 5787, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,295 - WARNING - Skipping self-relation for word ID 5797, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,371 - WARNING - Skipping self-relation for word ID 5825, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,410 - WARNING - Skipping self-relation for word ID 5837, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,461 - WARNING - Skipping self-relation for word ID 5854, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,512 - WARNING - Skipping self-relation for word ID 5875, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,554 - WARNING - Skipping self-relation for word ID 5887, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,558 - WARNING - Skipping self-relation for word ID 5887, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,581 - WARNING - Skipping self-relation for word ID 5896, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,671 - WARNING - Skipping self-relation for word ID 5922, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,701 - WARNING - Skipping self-relation for word ID 5928, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,723 - WARNING - Skipping self-relation for word ID 5937, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,849 - WARNING - Skipping self-relation for word ID 5975, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,909 - WARNING - Skipping self-relation for word ID 5998, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:48,973 - WARNING - Skipping self-relation for word ID 6021, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,016 - WARNING - Skipping self-relation for word ID 6036, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,092 - WARNING - Skipping self-relation for word ID 6059, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,138 - WARNING - Skipping self-relation for word ID 6075, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,189 - WARNING - Skipping self-relation for word ID 6092, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,267 - WARNING - Skipping self-relation for word ID 6119, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,279 - WARNING - Skipping self-relation for word ID 6124, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,328 - WARNING - Skipping self-relation for word ID 6140, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,358 - WARNING - Skipping self-relation for word ID 6150, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,403 - WARNING - Skipping self-relation for word ID 6167, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,417 - WARNING - Skipping self-relation for word ID 6173, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,462 - WARNING - Skipping self-relation for word ID 6187, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,465 - WARNING - Skipping self-relation for word ID 6187, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,480 - WARNING - Skipping self-relation for word ID 6194, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,522 - WARNING - Skipping self-relation for word ID 6209, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,550 - WARNING - Skipping self-relation for word ID 6219, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,578 - WARNING - Skipping self-relation for word ID 37, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,603 - WARNING - Skipping self-relation for word ID 6233, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,605 - WARNING - Skipping self-relation for word ID 6233, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,710 - WARNING - Skipping self-relation for word ID 6276, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,713 - WARNING - Skipping self-relation for word ID 6276, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,722 - WARNING - Skipping self-relation for word ID 6276, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,770 - WARNING - Skipping self-relation for word ID 6299, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,837 - WARNING - Skipping self-relation for word ID 6322, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,862 - WARNING - Skipping self-relation for word ID 6331, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:49,891 - WARNING - Skipping self-relation for word ID 6342, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,026 - WARNING - Skipping self-relation for word ID 6385, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,061 - WARNING - Skipping self-relation for word ID 6392, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,104 - WARNING - Skipping self-relation for word ID 6406, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,137 - WARNING - Skipping self-relation for word ID 6416, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,174 - WARNING - Skipping self-relation for word ID 6427, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,214 - WARNING - Skipping self-relation for word ID 6439, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,248 - WARNING - Skipping self-relation for word ID 6452, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,272 - WARNING - Skipping self-relation for word ID 6458, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,310 - WARNING - Skipping self-relation for word ID 6472, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,407 - WARNING - Skipping self-relation for word ID 6503, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,468 - WARNING - Skipping self-relation for word ID 6522, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,509 - WARNING - Skipping self-relation for word ID 6537, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,629 - WARNING - Skipping self-relation for word ID 6578, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,654 - WARNING - Skipping self-relation for word ID 6586, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,675 - WARNING - Skipping self-relation for word ID 6592, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,755 - WARNING - Skipping self-relation for word ID 6618, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,882 - WARNING - Skipping self-relation for word ID 6662, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,926 - WARNING - Skipping self-relation for word ID 6675, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,937 - WARNING - Skipping self-relation for word ID 6681, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,956 - WARNING - Skipping self-relation for word ID 6688, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,973 - WARNING - Skipping self-relation for word ID 6694, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:50,999 - WARNING - Skipping self-relation for word ID 6700, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,048 - WARNING - Skipping self-relation for word ID 6717, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,068 - WARNING - Skipping self-relation for word ID 6722, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,119 - WARNING - Skipping self-relation for word ID 6742, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,127 - WARNING - Skipping self-relation for word ID 6745, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,180 - WARNING - Skipping self-relation for word ID 6763, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,286 - WARNING - Skipping self-relation for word ID 6799, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,336 - WARNING - Skipping self-relation for word ID 6815, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,355 - WARNING - Skipping self-relation for word ID 6820, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,461 - WARNING - Skipping self-relation for word ID 6853, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,527 - WARNING - Skipping self-relation for word ID 6868, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,607 - WARNING - Skipping self-relation for word ID 6887, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,657 - WARNING - Skipping self-relation for word ID 6903, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,774 - WARNING - Skipping self-relation for word ID 6935, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,847 - WARNING - Skipping self-relation for word ID 6953, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,887 - WARNING - Skipping self-relation for word ID 6968, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,923 - WARNING - Skipping self-relation for word ID 6975, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,942 - WARNING - Skipping self-relation for word ID 6980, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:51,962 - WARNING - Skipping self-relation for word ID 6987, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,023 - WARNING - Skipping self-relation for word ID 7002, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,104 - WARNING - Skipping self-relation for word ID 7028, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,125 - WARNING - Skipping self-relation for word ID 7033, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,150 - WARNING - Skipping self-relation for word ID 7038, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,191 - WARNING - Skipping self-relation for word ID 7052, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,206 - WARNING - Skipping self-relation for word ID 7057, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,267 - WARNING - Skipping self-relation for word ID 7062, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,286 - WARNING - Skipping self-relation for word ID 7081, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,313 - WARNING - Skipping self-relation for word ID 7089, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,465 - WARNING - Skipping self-relation for word ID 7126, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,492 - WARNING - Skipping self-relation for word ID 7136, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,544 - WARNING - Skipping self-relation for word ID 7149, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,577 - WARNING - Skipping self-relation for word ID 7149, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,673 - WARNING - Skipping self-relation for word ID 7183, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,723 - WARNING - Skipping self-relation for word ID 7195, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,747 - WARNING - Skipping self-relation for word ID 7206, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,851 - WARNING - Skipping self-relation for word ID 7242, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,910 - WARNING - Skipping self-relation for word ID 7251, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,926 - WARNING - Skipping self-relation for word ID 7266, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:52,992 - WARNING - Skipping self-relation for word ID 7284, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,025 - WARNING - Skipping self-relation for word ID 7296, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,085 - WARNING - Skipping self-relation for word ID 7318, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,129 - WARNING - Skipping self-relation for word ID 7333, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,167 - WARNING - Skipping self-relation for word ID 7348, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,206 - WARNING - Skipping self-relation for word ID 7362, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,236 - WARNING - Skipping self-relation for word ID 7372, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,253 - WARNING - Skipping self-relation for word ID 7377, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,294 - WARNING - Skipping self-relation for word ID 7393, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,311 - WARNING - Skipping self-relation for word ID 7397, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,333 - WARNING - Skipping self-relation for word ID 7405, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,376 - WARNING - Skipping self-relation for word ID 7418, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,405 - WARNING - Skipping self-relation for word ID 7430, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,478 - WARNING - Skipping self-relation for word ID 7454, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,520 - WARNING - Skipping self-relation for word ID 7466, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,564 - WARNING - Skipping self-relation for word ID 7482, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,598 - WARNING - Skipping self-relation for word ID 7493, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,718 - WARNING - Skipping self-relation for word ID 7540, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,722 - WARNING - Skipping self-relation for word ID 7540, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,763 - WARNING - Skipping self-relation for word ID 7553, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,812 - WARNING - Skipping self-relation for word ID 7568, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,851 - WARNING - Skipping self-relation for word ID 7582, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:53,954 - WARNING - Skipping self-relation for word ID 7614, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,000 - WARNING - Skipping self-relation for word ID 7630, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,003 - WARNING - Skipping self-relation for word ID 7630, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,069 - WARNING - Skipping self-relation for word ID 7655, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,094 - WARNING - Skipping self-relation for word ID 7663, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,114 - WARNING - Skipping self-relation for word ID 7673, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,181 - WARNING - Skipping self-relation for word ID 7700, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,218 - WARNING - Skipping self-relation for word ID 7715, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,242 - WARNING - Skipping self-relation for word ID 7725, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,256 - WARNING - Skipping self-relation for word ID 7731, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,284 - WARNING - Skipping self-relation for word ID 7741, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,300 - WARNING - Skipping self-relation for word ID 7747, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,335 - WARNING - Skipping self-relation for word ID 7759, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,355 - WARNING - Skipping self-relation for word ID 7765, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,411 - WARNING - Skipping self-relation for word ID 7781, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,441 - WARNING - Skipping self-relation for word ID 7799, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,529 - WARNING - Skipping self-relation for word ID 7830, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,566 - WARNING - Skipping self-relation for word ID 7842, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,620 - WARNING - Skipping self-relation for word ID 7862, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,691 - WARNING - Skipping self-relation for word ID 7886, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,726 - WARNING - Skipping self-relation for word ID 7897, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,759 - WARNING - Skipping self-relation for word ID 7907, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,808 - WARNING - Skipping self-relation for word ID 7922, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,832 - WARNING - Skipping self-relation for word ID 7931, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,877 - WARNING - Skipping self-relation for word ID 7944, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,921 - WARNING - Skipping self-relation for word ID 7962, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:54,957 - WARNING - Skipping self-relation for word ID 7972, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,009 - WARNING - Skipping self-relation for word ID 7988, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,041 - WARNING - Skipping self-relation for word ID 8000, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,063 - WARNING - Skipping self-relation for word ID 8006, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,188 - WARNING - Skipping self-relation for word ID 8047, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,200 - WARNING - Skipping self-relation for word ID 8052, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,296 - WARNING - Skipping self-relation for word ID 8083, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,312 - WARNING - Skipping self-relation for word ID 8091, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,368 - WARNING - Skipping self-relation for word ID 8111, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,411 - WARNING - Skipping self-relation for word ID 8127, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,482 - WARNING - Skipping self-relation for word ID 8144, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,491 - WARNING - Skipping self-relation for word ID 8158, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,565 - WARNING - Skipping self-relation for word ID 8184, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,597 - WARNING - Skipping self-relation for word ID 8194, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,643 - WARNING - Skipping self-relation for word ID 8212, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,671 - WARNING - Skipping self-relation for word ID 8222, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,707 - WARNING - Skipping self-relation for word ID 8233, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,746 - WARNING - Skipping self-relation for word ID 8243, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,776 - WARNING - Skipping self-relation for word ID 8260, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,813 - WARNING - Skipping self-relation for word ID 8275, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,847 - WARNING - Skipping self-relation for word ID 8287, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,938 - WARNING - Skipping self-relation for word ID 8319, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,954 - WARNING - Skipping self-relation for word ID 8325, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:55,996 - WARNING - Skipping self-relation for word ID 8339, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,031 - WARNING - Skipping self-relation for word ID 8354, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,043 - WARNING - Skipping self-relation for word ID 8359, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,061 - WARNING - Skipping self-relation for word ID 8365, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,077 - WARNING - Skipping self-relation for word ID 8371, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,104 - WARNING - Skipping self-relation for word ID 8378, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,139 - WARNING - Skipping self-relation for word ID 8391, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,190 - WARNING - Skipping self-relation for word ID 8406, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,225 - WARNING - Skipping self-relation for word ID 8416, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,334 - WARNING - Skipping self-relation for word ID 8451, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,439 - WARNING - Skipping self-relation for word ID 8482, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,450 - WARNING - Skipping self-relation for word ID 8490, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,499 - WARNING - Skipping self-relation for word ID 8506, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,567 - WARNING - Skipping self-relation for word ID 8532, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,590 - WARNING - Skipping self-relation for word ID 8540, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,620 - WARNING - Skipping self-relation for word ID 8549, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,647 - WARNING - Skipping self-relation for word ID 8557, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,664 - WARNING - Skipping self-relation for word ID 8565, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,699 - WARNING - Skipping self-relation for word ID 8581, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,757 - WARNING - Skipping self-relation for word ID 8597, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,768 - WARNING - Skipping self-relation for word ID 8602, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,823 - WARNING - Skipping self-relation for word ID 8624, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,842 - WARNING - Skipping self-relation for word ID 8631, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,870 - WARNING - Skipping self-relation for word ID 8641, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,896 - WARNING - Skipping self-relation for word ID 8651, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:56,923 - WARNING - Skipping self-relation for word ID 8659, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,001 - WARNING - Skipping self-relation for word ID 8687, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,023 - WARNING - Skipping self-relation for word ID 8699, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,098 - WARNING - Skipping self-relation for word ID 8727, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,125 - WARNING - Skipping self-relation for word ID 8737, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,156 - WARNING - Skipping self-relation for word ID 8747, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,165 - WARNING - Skipping self-relation for word ID 8751, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,214 - WARNING - Skipping self-relation for word ID 8768, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,237 - WARNING - Skipping self-relation for word ID 8778, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,276 - WARNING - Skipping self-relation for word ID 8788, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,294 - WARNING - Skipping self-relation for word ID 8797, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,349 - WARNING - Skipping self-relation for word ID 8820, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,384 - WARNING - Skipping self-relation for word ID 8829, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,419 - WARNING - Skipping self-relation for word ID 8839, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,438 - WARNING - Skipping self-relation for word ID 8846, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,458 - WARNING - Skipping self-relation for word ID 8850, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,485 - WARNING - Skipping self-relation for word ID 8860, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,514 - WARNING - Skipping self-relation for word ID 8866, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,552 - WARNING - Skipping self-relation for word ID 8880, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,588 - WARNING - Skipping self-relation for word ID 8892, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:57,621 - WARNING - Skipping self-relation for word ID 8903, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:58,959 - WARNING - Skipping self-relation for word ID 8922, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:59,881 - WARNING - Skipping self-relation for word ID 8939, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:59,916 - WARNING - Skipping self-relation for word ID 8949, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:59,943 - WARNING - Skipping self-relation for word ID 8957, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:26:59,987 - WARNING - Skipping self-relation for word ID 8970, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,102 - WARNING - Skipping self-relation for word ID 9004, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,148 - WARNING - Skipping self-relation for word ID 9020, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,239 - WARNING - Skipping self-relation for word ID 9050, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,280 - WARNING - Skipping self-relation for word ID 9063, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,339 - WARNING - Skipping self-relation for word ID 9082, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,356 - WARNING - Skipping self-relation for word ID 9088, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,388 - WARNING - Skipping self-relation for word ID 9099, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,438 - WARNING - Skipping self-relation for word ID 9114, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,460 - WARNING - Skipping self-relation for word ID 9126, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,490 - WARNING - Skipping self-relation for word ID 9136, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,526 - WARNING - Skipping self-relation for word ID 9147, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,588 - WARNING - Skipping self-relation for word ID 9171, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,620 - WARNING - Skipping self-relation for word ID 9182, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,654 - WARNING - Skipping self-relation for word ID 9195, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,674 - WARNING - Skipping self-relation for word ID 9204, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,698 - WARNING - Skipping self-relation for word ID 9212, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,733 - WARNING - Skipping self-relation for word ID 9225, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,756 - WARNING - Skipping self-relation for word ID 9230, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,769 - WARNING - Skipping self-relation for word ID 9237, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,807 - WARNING - Skipping self-relation for word ID 9248, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,836 - WARNING - Skipping self-relation for word ID 9260, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,853 - WARNING - Skipping self-relation for word ID 9265, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,905 - WARNING - Skipping self-relation for word ID 9283, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:00,953 - WARNING - Skipping self-relation for word ID 9297, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,013 - WARNING - Skipping self-relation for word ID 9319, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,037 - WARNING - Skipping self-relation for word ID 9326, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,078 - WARNING - Skipping self-relation for word ID 9340, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,145 - WARNING - Skipping self-relation for word ID 9359, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,162 - WARNING - Skipping self-relation for word ID 9367, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,189 - WARNING - Skipping self-relation for word ID 9376, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,230 - WARNING - Skipping self-relation for word ID 9387, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,264 - WARNING - Skipping self-relation for word ID 9400, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,283 - WARNING - Skipping self-relation for word ID 9407, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,348 - WARNING - Skipping self-relation for word ID 9422, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,429 - WARNING - Skipping self-relation for word ID 9458, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,474 - WARNING - Skipping self-relation for word ID 9475, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,490 - WARNING - Skipping self-relation for word ID 9480, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,563 - WARNING - Skipping self-relation for word ID 9505, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,598 - WARNING - Skipping self-relation for word ID 9517, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,635 - WARNING - Skipping self-relation for word ID 9530, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,656 - WARNING - Skipping self-relation for word ID 9538, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,672 - WARNING - Skipping self-relation for word ID 9543, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,694 - WARNING - Skipping self-relation for word ID 9548, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,723 - WARNING - Skipping self-relation for word ID 9562, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,755 - WARNING - Skipping self-relation for word ID 9574, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,795 - WARNING - Skipping self-relation for word ID 9587, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,837 - WARNING - Skipping self-relation for word ID 9597, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,853 - WARNING - Skipping self-relation for word ID 9606, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:01,877 - WARNING - Skipping self-relation for word ID 9612, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,010 - WARNING - Skipping self-relation for word ID 9658, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,079 - WARNING - Skipping self-relation for word ID 9683, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,113 - WARNING - Skipping self-relation for word ID 9695, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,124 - WARNING - Skipping self-relation for word ID 9700, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,188 - WARNING - Skipping self-relation for word ID 9722, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,286 - WARNING - Skipping self-relation for word ID 9758, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,336 - WARNING - Skipping self-relation for word ID 9769, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,356 - WARNING - Skipping self-relation for word ID 9777, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,374 - WARNING - Skipping self-relation for word ID 9782, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,400 - WARNING - Skipping self-relation for word ID 9787, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,451 - WARNING - Skipping self-relation for word ID 9800, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,474 - WARNING - Skipping self-relation for word ID 9810, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,507 - WARNING - Skipping self-relation for word ID 9824, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,545 - WARNING - Skipping self-relation for word ID 9836, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,567 - WARNING - Skipping self-relation for word ID 9842, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:02,962 - WARNING - Skipping self-relation for word ID 9855, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:03,817 - WARNING - Skipping self-relation for word ID 9869, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:04,397 - WARNING - Skipping self-relation for word ID 9879, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:05,499 - WARNING - Skipping self-relation for word ID 9890, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:06,822 - WARNING - Skipping self-relation for word ID 9904, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:10,578 - WARNING - Skipping self-relation for word ID 9918, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:12,044 - WARNING - Skipping self-relation for word ID 9924, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:13,902 - WARNING - Skipping self-relation for word ID 9932, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:13,916 - WARNING - Skipping self-relation for word ID 9935, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:13,938 - WARNING - Skipping self-relation for word ID 9943, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:13,941 - WARNING - Skipping self-relation for word ID 9943, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:13,947 - WARNING - Skipping self-relation for word ID 9943, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:13,960 - WARNING - Skipping self-relation for word ID 9953, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,019 - WARNING - Skipping self-relation for word ID 9978, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,029 - WARNING - Skipping self-relation for word ID 9982, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,064 - WARNING - Skipping self-relation for word ID 9993, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,079 - WARNING - Skipping self-relation for word ID 10001, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,102 - WARNING - Skipping self-relation for word ID 10009, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,125 - WARNING - Skipping self-relation for word ID 10019, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,128 - WARNING - Skipping self-relation for word ID 10019, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,201 - WARNING - Skipping self-relation for word ID 10040, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,222 - WARNING - Skipping self-relation for word ID 10050, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,271 - WARNING - Skipping self-relation for word ID 10063, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,291 - WARNING - Skipping self-relation for word ID 10070, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,361 - WARNING - Skipping self-relation for word ID 10091, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,385 - WARNING - Skipping self-relation for word ID 10100, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,411 - WARNING - Skipping self-relation for word ID 10106, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,459 - WARNING - Skipping self-relation for word ID 10121, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,496 - WARNING - Skipping self-relation for word ID 10136, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,521 - WARNING - Skipping self-relation for word ID 10144, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,527 - WARNING - Skipping self-relation for word ID 10144, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,546 - WARNING - Skipping self-relation for word ID 10153, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,587 - WARNING - Skipping self-relation for word ID 10167, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,658 - WARNING - Skipping self-relation for word ID 10193, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:14,686 - WARNING - Skipping self-relation for word ID 10202, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:15,796 - WARNING - Skipping self-relation for word ID 10231, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:15,883 - WARNING - Skipping self-relation for word ID 10240, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:15,920 - WARNING - Skipping self-relation for word ID 10253, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:15,960 - WARNING - Skipping self-relation for word ID 10266, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,035 - WARNING - Skipping self-relation for word ID 10292, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,047 - WARNING - Skipping self-relation for word ID 10295, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,061 - WARNING - Skipping self-relation for word ID 10300, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,083 - WARNING - Skipping self-relation for word ID 10308, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,111 - WARNING - Skipping self-relation for word ID 10318, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,123 - WARNING - Skipping self-relation for word ID 10322, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,180 - WARNING - Skipping self-relation for word ID 10341, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,299 - WARNING - Skipping self-relation for word ID 10385, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,308 - WARNING - Skipping self-relation for word ID 10388, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,333 - WARNING - Skipping self-relation for word ID 10397, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,351 - WARNING - Skipping self-relation for word ID 10403, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,358 - WARNING - Skipping self-relation for word ID 10406, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,434 - WARNING - Skipping self-relation for word ID 10430, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,445 - WARNING - Skipping self-relation for word ID 10438, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,468 - WARNING - Skipping self-relation for word ID 10445, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,486 - WARNING - Skipping self-relation for word ID 10450, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,502 - WARNING - Skipping self-relation for word ID 10454, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,555 - WARNING - Skipping self-relation for word ID 10476, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,597 - WARNING - Skipping self-relation for word ID 10485, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,635 - WARNING - Skipping self-relation for word ID 10498, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,676 - WARNING - Skipping self-relation for word ID 10514, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,720 - WARNING - Skipping self-relation for word ID 10527, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,829 - WARNING - Skipping self-relation for word ID 10561, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,899 - WARNING - Skipping self-relation for word ID 10585, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,961 - WARNING - Skipping self-relation for word ID 10607, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:16,979 - WARNING - Skipping self-relation for word ID 10614, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,032 - WARNING - Skipping self-relation for word ID 10638, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,066 - WARNING - Skipping self-relation for word ID 10650, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,085 - WARNING - Skipping self-relation for word ID 10658, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,116 - WARNING - Skipping self-relation for word ID 10668, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,192 - WARNING - Skipping self-relation for word ID 10692, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,224 - WARNING - Skipping self-relation for word ID 10705, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,316 - WARNING - Skipping self-relation for word ID 10732, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,367 - WARNING - Skipping self-relation for word ID 10749, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,388 - WARNING - Skipping self-relation for word ID 10755, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,436 - WARNING - Skipping self-relation for word ID 10771, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,493 - WARNING - Skipping self-relation for word ID 10789, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,518 - WARNING - Skipping self-relation for word ID 10795, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,543 - WARNING - Skipping self-relation for word ID 10803, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,563 - WARNING - Skipping self-relation for word ID 10809, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,608 - WARNING - Skipping self-relation for word ID 10821, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,679 - WARNING - Skipping self-relation for word ID 10837, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,786 - WARNING - Skipping self-relation for word ID 10864, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,827 - WARNING - Skipping self-relation for word ID 10871, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,860 - WARNING - Skipping self-relation for word ID 10878, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:17,944 - WARNING - Skipping self-relation for word ID 10900, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,030 - WARNING - Skipping self-relation for word ID 10916, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,108 - WARNING - Skipping self-relation for word ID 10930, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,185 - WARNING - Skipping self-relation for word ID 10945, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,239 - WARNING - Skipping self-relation for word ID 10954, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,264 - WARNING - Skipping self-relation for word ID 10957, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,329 - WARNING - Skipping self-relation for word ID 10967, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,406 - WARNING - Skipping self-relation for word ID 10978, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,512 - WARNING - Skipping self-relation for word ID 10990, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,545 - WARNING - Skipping self-relation for word ID 10998, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,628 - WARNING - Skipping self-relation for word ID 11010, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,684 - WARNING - Skipping self-relation for word ID 11018, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,766 - WARNING - Skipping self-relation for word ID 11027, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,820 - WARNING - Skipping self-relation for word ID 11033, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,832 - WARNING - Skipping self-relation for word ID 11036, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:18,925 - WARNING - Skipping self-relation for word ID 11044, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,055 - WARNING - Skipping self-relation for word ID 11057, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,071 - WARNING - Skipping self-relation for word ID 11059, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,108 - WARNING - Skipping self-relation for word ID 11063, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,257 - WARNING - Skipping self-relation for word ID 11075, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,396 - WARNING - Skipping self-relation for word ID 11089, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,590 - WARNING - Skipping self-relation for word ID 11105, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,685 - WARNING - Skipping self-relation for word ID 11118, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,766 - WARNING - Skipping self-relation for word ID 11127, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:19,987 - WARNING - Skipping self-relation for word ID 11152, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:20,050 - WARNING - Skipping self-relation for word ID 11159, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:20,361 - WARNING - Skipping self-relation for word ID 11202, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:20,411 - WARNING - Skipping self-relation for word ID 11209, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:20,486 - WARNING - Skipping self-relation for word ID 11218, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:20,638 - WARNING - Skipping self-relation for word ID 11238, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:20,841 - WARNING - Skipping self-relation for word ID 11258, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:20,938 - WARNING - Skipping self-relation for word ID 11271, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,078 - WARNING - Skipping self-relation for word ID 11284, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,112 - WARNING - Skipping self-relation for word ID 11289, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,236 - WARNING - Skipping self-relation for word ID 11304, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,348 - WARNING - Skipping self-relation for word ID 11317, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,423 - WARNING - Skipping self-relation for word ID 11328, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,475 - WARNING - Skipping self-relation for word ID 11333, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,525 - WARNING - Skipping self-relation for word ID 11340, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,598 - WARNING - Skipping self-relation for word ID 11347, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,671 - WARNING - Skipping self-relation for word ID 11355, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,730 - WARNING - Skipping self-relation for word ID 11361, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,853 - WARNING - Skipping self-relation for word ID 11374, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,914 - WARNING - Skipping self-relation for word ID 11384, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:21,984 - WARNING - Skipping self-relation for word ID 11393, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,129 - WARNING - Skipping self-relation for word ID 11413, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,250 - WARNING - Skipping self-relation for word ID 11428, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,287 - WARNING - Skipping self-relation for word ID 11433, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,325 - WARNING - Skipping self-relation for word ID 11437, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,378 - WARNING - Skipping self-relation for word ID 11445, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,491 - WARNING - Skipping self-relation for word ID 11456, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,548 - WARNING - Skipping self-relation for word ID 11469, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,597 - WARNING - Skipping self-relation for word ID 11477, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,637 - WARNING - Skipping self-relation for word ID 11483, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,677 - WARNING - Skipping self-relation for word ID 11488, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,785 - WARNING - Skipping self-relation for word ID 11502, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,862 - WARNING - Skipping self-relation for word ID 11510, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:22,986 - WARNING - Skipping self-relation for word ID 11522, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,042 - WARNING - Skipping self-relation for word ID 11527, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,122 - WARNING - Skipping self-relation for word ID 11535, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,179 - WARNING - Skipping self-relation for word ID 11540, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,373 - WARNING - Skipping self-relation for word ID 11556, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,548 - WARNING - Skipping self-relation for word ID 11573, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,624 - WARNING - Skipping self-relation for word ID 11581, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,751 - WARNING - Skipping self-relation for word ID 11593, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,809 - WARNING - Skipping self-relation for word ID 11600, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,877 - WARNING - Skipping self-relation for word ID 11607, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:23,918 - WARNING - Skipping self-relation for word ID 11612, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,126 - WARNING - Skipping self-relation for word ID 11637, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,196 - WARNING - Skipping self-relation for word ID 11647, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,237 - WARNING - Skipping self-relation for word ID 11653, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,315 - WARNING - Skipping self-relation for word ID 11663, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,381 - WARNING - Skipping self-relation for word ID 11669, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,459 - WARNING - Skipping self-relation for word ID 11688, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,496 - WARNING - Skipping self-relation for word ID 11693, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,561 - WARNING - Skipping self-relation for word ID 11704, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,807 - WARNING - Skipping self-relation for word ID 5410, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,824 - WARNING - Skipping self-relation for word ID 11744, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,845 - WARNING - Skipping self-relation for word ID 11747, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:24,904 - WARNING - Skipping self-relation for word ID 11755, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,060 - WARNING - Skipping self-relation for word ID 11774, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,121 - WARNING - Skipping self-relation for word ID 11784, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,140 - WARNING - Skipping self-relation for word ID 11787, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,227 - WARNING - Skipping self-relation for word ID 11794, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,325 - WARNING - Skipping self-relation for word ID 11808, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,357 - WARNING - Skipping self-relation for word ID 11815, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,424 - WARNING - Skipping self-relation for word ID 11823, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,709 - WARNING - Skipping self-relation for word ID 11863, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,771 - WARNING - Skipping self-relation for word ID 11873, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,845 - WARNING - Skipping self-relation for word ID 11882, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,887 - WARNING - Skipping self-relation for word ID 11889, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:25,922 - WARNING - Skipping self-relation for word ID 11896, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,048 - WARNING - Skipping self-relation for word ID 11913, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,104 - WARNING - Skipping self-relation for word ID 11918, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,137 - WARNING - Skipping self-relation for word ID 11926, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,306 - WARNING - Skipping self-relation for word ID 11946, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,400 - WARNING - Skipping self-relation for word ID 11955, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,550 - WARNING - Skipping self-relation for word ID 11963, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,574 - WARNING - Skipping self-relation for word ID 11967, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,705 - WARNING - Skipping self-relation for word ID 11976, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:26,875 - WARNING - Skipping self-relation for word ID 11988, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,022 - WARNING - Skipping self-relation for word ID 11999, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,098 - WARNING - Skipping self-relation for word ID 12006, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,129 - WARNING - Skipping self-relation for word ID 12010, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,316 - WARNING - Skipping self-relation for word ID 12029, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,399 - WARNING - Skipping self-relation for word ID 12038, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,488 - WARNING - Skipping self-relation for word ID 12050, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,659 - WARNING - Skipping self-relation for word ID 12074, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,697 - WARNING - Skipping self-relation for word ID 12080, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,782 - WARNING - Skipping self-relation for word ID 12092, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,852 - WARNING - Skipping self-relation for word ID 12102, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,878 - WARNING - Skipping self-relation for word ID 12109, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,911 - WARNING - Skipping self-relation for word ID 12114, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:27,980 - WARNING - Skipping self-relation for word ID 12135, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,039 - WARNING - Skipping self-relation for word ID 12151, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,086 - WARNING - Skipping self-relation for word ID 12161, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,097 - WARNING - Skipping self-relation for word ID 12166, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,125 - WARNING - Skipping self-relation for word ID 12173, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,172 - WARNING - Skipping self-relation for word ID 12185, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,185 - WARNING - Skipping self-relation for word ID 12192, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,233 - WARNING - Skipping self-relation for word ID 12208, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,250 - WARNING - Skipping self-relation for word ID 12215, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,278 - WARNING - Skipping self-relation for word ID 12222, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,284 - WARNING - Skipping self-relation for word ID 12228, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,299 - WARNING - Skipping self-relation for word ID 12233, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,340 - WARNING - Skipping self-relation for word ID 12245, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,383 - WARNING - Skipping self-relation for word ID 12258, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,438 - WARNING - Skipping self-relation for word ID 12272, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,518 - WARNING - Skipping self-relation for word ID 12303, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,531 - WARNING - Skipping self-relation for word ID 12308, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,557 - WARNING - Skipping self-relation for word ID 12316, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,566 - WARNING - Skipping self-relation for word ID 12321, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,583 - WARNING - Skipping self-relation for word ID 12327, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,587 - WARNING - Skipping self-relation for word ID 12327, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,614 - WARNING - Skipping self-relation for word ID 12336, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,652 - WARNING - Skipping self-relation for word ID 12348, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,678 - WARNING - Skipping self-relation for word ID 12358, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,693 - WARNING - Skipping self-relation for word ID 12364, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,748 - WARNING - Skipping self-relation for word ID 12386, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,792 - WARNING - Skipping self-relation for word ID 12399, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,803 - WARNING - Skipping self-relation for word ID 12405, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,810 - WARNING - Skipping self-relation for word ID 12409, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,858 - WARNING - Skipping self-relation for word ID 12427, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,919 - WARNING - Skipping self-relation for word ID 12450, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,940 - WARNING - Skipping self-relation for word ID 12457, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:28,971 - WARNING - Skipping self-relation for word ID 12468, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,043 - WARNING - Skipping self-relation for word ID 12494, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,057 - WARNING - Skipping self-relation for word ID 12499, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,061 - WARNING - Skipping self-relation for word ID 12499, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,167 - WARNING - Skipping self-relation for word ID 12536, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,173 - WARNING - Skipping self-relation for word ID 12536, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,185 - WARNING - Skipping self-relation for word ID 12542, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,220 - WARNING - Skipping self-relation for word ID 12552, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,238 - WARNING - Skipping self-relation for word ID 12559, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,295 - WARNING - Skipping self-relation for word ID 12577, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,318 - WARNING - Skipping self-relation for word ID 12587, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,378 - WARNING - Skipping self-relation for word ID 12607, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,435 - WARNING - Skipping self-relation for word ID 12623, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,461 - WARNING - Skipping self-relation for word ID 12633, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,481 - WARNING - Skipping self-relation for word ID 12642, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,500 - WARNING - Skipping self-relation for word ID 12647, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,521 - WARNING - Skipping self-relation for word ID 12657, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,551 - WARNING - Skipping self-relation for word ID 12666, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,576 - WARNING - Skipping self-relation for word ID 12677, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,676 - WARNING - Skipping self-relation for word ID 12710, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,696 - WARNING - Skipping self-relation for word ID 12715, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,756 - WARNING - Skipping self-relation for word ID 12736, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,938 - WARNING - Skipping self-relation for word ID 12801, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,943 - WARNING - Skipping self-relation for word ID 12804, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,949 - WARNING - Skipping self-relation for word ID 12807, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,961 - WARNING - Skipping self-relation for word ID 12812, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:29,996 - WARNING - Skipping self-relation for word ID 12826, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,022 - WARNING - Skipping self-relation for word ID 12835, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,047 - WARNING - Skipping self-relation for word ID 12845, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,068 - WARNING - Skipping self-relation for word ID 12853, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,078 - WARNING - Skipping self-relation for word ID 12860, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,125 - WARNING - Skipping self-relation for word ID 12878, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,159 - WARNING - Skipping self-relation for word ID 12891, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,195 - WARNING - Skipping self-relation for word ID 12904, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,208 - WARNING - Skipping self-relation for word ID 12912, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,235 - WARNING - Skipping self-relation for word ID 12925, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,243 - WARNING - Skipping self-relation for word ID 12929, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,265 - WARNING - Skipping self-relation for word ID 12933, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,318 - WARNING - Skipping self-relation for word ID 12959, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,355 - WARNING - Skipping self-relation for word ID 12971, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,399 - WARNING - Skipping self-relation for word ID 12989, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,420 - WARNING - Skipping self-relation for word ID 12996, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,426 - WARNING - Skipping self-relation for word ID 13003, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,455 - WARNING - Skipping self-relation for word ID 13009, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,475 - WARNING - Skipping self-relation for word ID 13020, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,500 - WARNING - Skipping self-relation for word ID 13031, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,510 - WARNING - Skipping self-relation for word ID 13036, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,523 - WARNING - Skipping self-relation for word ID 13040, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,547 - WARNING - Skipping self-relation for word ID 13050, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,571 - WARNING - Skipping self-relation for word ID 13058, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,596 - WARNING - Skipping self-relation for word ID 13072, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,615 - WARNING - Skipping self-relation for word ID 13079, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,664 - WARNING - Skipping self-relation for word ID 13097, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,677 - WARNING - Skipping self-relation for word ID 13101, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,700 - WARNING - Skipping self-relation for word ID 13109, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,723 - WARNING - Skipping self-relation for word ID 13116, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,745 - WARNING - Skipping self-relation for word ID 13122, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,761 - WARNING - Skipping self-relation for word ID 13129, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,805 - WARNING - Skipping self-relation for word ID 13145, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,857 - WARNING - Skipping self-relation for word ID 13157, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,873 - WARNING - Skipping self-relation for word ID 13162, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,894 - WARNING - Skipping self-relation for word ID 13167, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,969 - WARNING - Skipping self-relation for word ID 13195, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:30,986 - WARNING - Skipping self-relation for word ID 13201, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,005 - WARNING - Skipping self-relation for word ID 13207, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,024 - WARNING - Skipping self-relation for word ID 13213, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,074 - WARNING - Skipping self-relation for word ID 13233, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,085 - WARNING - Skipping self-relation for word ID 13238, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,118 - WARNING - Skipping self-relation for word ID 13251, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,139 - WARNING - Skipping self-relation for word ID 13259, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,154 - WARNING - Skipping self-relation for word ID 13266, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,166 - WARNING - Skipping self-relation for word ID 13271, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,185 - WARNING - Skipping self-relation for word ID 13278, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,202 - WARNING - Skipping self-relation for word ID 13283, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,223 - WARNING - Skipping self-relation for word ID 13291, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,245 - WARNING - Skipping self-relation for word ID 13297, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,307 - WARNING - Skipping self-relation for word ID 13320, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,321 - WARNING - Skipping self-relation for word ID 13330, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,340 - WARNING - Skipping self-relation for word ID 13336, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,410 - WARNING - Skipping self-relation for word ID 13368, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,426 - WARNING - Skipping self-relation for word ID 13374, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,442 - WARNING - Skipping self-relation for word ID 13379, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,468 - WARNING - Skipping self-relation for word ID 13385, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,480 - WARNING - Skipping self-relation for word ID 13393, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,523 - WARNING - Skipping self-relation for word ID 13408, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,590 - WARNING - Skipping self-relation for word ID 13434, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,596 - WARNING - Skipping self-relation for word ID 13434, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,669 - WARNING - Skipping self-relation for word ID 13462, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,701 - WARNING - Skipping self-relation for word ID 13473, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,726 - WARNING - Skipping self-relation for word ID 13479, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,735 - WARNING - Skipping self-relation for word ID 13484, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,783 - WARNING - Skipping self-relation for word ID 13500, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,797 - WARNING - Skipping self-relation for word ID 13505, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,813 - WARNING - Skipping self-relation for word ID 13512, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,823 - WARNING - Skipping self-relation for word ID 13515, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,844 - WARNING - Skipping self-relation for word ID 13523, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,888 - WARNING - Skipping self-relation for word ID 13539, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,902 - WARNING - Skipping self-relation for word ID 13544, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,915 - WARNING - Skipping self-relation for word ID 13548, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,926 - WARNING - Skipping self-relation for word ID 13554, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,949 - WARNING - Skipping self-relation for word ID 13563, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,952 - WARNING - Skipping self-relation for word ID 13563, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,962 - WARNING - Skipping self-relation for word ID 13568, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,978 - WARNING - Skipping self-relation for word ID 13573, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:31,996 - WARNING - Skipping self-relation for word ID 13578, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,014 - WARNING - Skipping self-relation for word ID 13585, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,080 - WARNING - Skipping self-relation for word ID 13610, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,112 - WARNING - Skipping self-relation for word ID 13618, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,118 - WARNING - Skipping self-relation for word ID 13625, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,136 - WARNING - Skipping self-relation for word ID 13633, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,163 - WARNING - Skipping self-relation for word ID 13642, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,178 - WARNING - Skipping self-relation for word ID 13650, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,195 - WARNING - Skipping self-relation for word ID 13655, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,254 - WARNING - Skipping self-relation for word ID 13672, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,275 - WARNING - Skipping self-relation for word ID 13677, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,307 - WARNING - Skipping self-relation for word ID 13690, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,355 - WARNING - Skipping self-relation for word ID 13707, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,381 - WARNING - Skipping self-relation for word ID 13716, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,410 - WARNING - Skipping self-relation for word ID 13730, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,428 - WARNING - Skipping self-relation for word ID 13737, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,451 - WARNING - Skipping self-relation for word ID 13745, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,489 - WARNING - Skipping self-relation for word ID 13757, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,505 - WARNING - Skipping self-relation for word ID 13763, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,518 - WARNING - Skipping self-relation for word ID 13770, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,541 - WARNING - Skipping self-relation for word ID 13781, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,557 - WARNING - Skipping self-relation for word ID 13787, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,609 - WARNING - Skipping self-relation for word ID 13808, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,639 - WARNING - Skipping self-relation for word ID 13818, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,654 - WARNING - Skipping self-relation for word ID 13822, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,689 - WARNING - Skipping self-relation for word ID 13833, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,724 - WARNING - Skipping self-relation for word ID 13844, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,751 - WARNING - Skipping self-relation for word ID 13856, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,785 - WARNING - Skipping self-relation for word ID 13864, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,794 - WARNING - Skipping self-relation for word ID 13870, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,817 - WARNING - Skipping self-relation for word ID 13878, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,844 - WARNING - Skipping self-relation for word ID 13890, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,933 - WARNING - Skipping self-relation for word ID 13921, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,936 - WARNING - Skipping self-relation for word ID 13926, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,952 - WARNING - Skipping self-relation for word ID 13929, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:32,974 - WARNING - Skipping self-relation for word ID 13942, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,000 - WARNING - Skipping self-relation for word ID 13950, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,016 - WARNING - Skipping self-relation for word ID 13958, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,023 - WARNING - Skipping self-relation for word ID 13964, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,044 - WARNING - Skipping self-relation for word ID 13972, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,057 - WARNING - Skipping self-relation for word ID 13979, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,085 - WARNING - Skipping self-relation for word ID 13990, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,092 - WARNING - Skipping self-relation for word ID 13995, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,099 - WARNING - Skipping self-relation for word ID 13999, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,124 - WARNING - Skipping self-relation for word ID 14008, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,140 - WARNING - Skipping self-relation for word ID 14013, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,148 - WARNING - Skipping self-relation for word ID 14022, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,163 - WARNING - Skipping self-relation for word ID 14029, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,181 - WARNING - Skipping self-relation for word ID 14036, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,201 - WARNING - Skipping self-relation for word ID 14045, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,211 - WARNING - Skipping self-relation for word ID 14051, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,227 - WARNING - Skipping self-relation for word ID 14056, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,241 - WARNING - Skipping self-relation for word ID 14064, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,260 - WARNING - Skipping self-relation for word ID 14073, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,311 - WARNING - Skipping self-relation for word ID 14096, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,324 - WARNING - Skipping self-relation for word ID 14102, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,340 - WARNING - Skipping self-relation for word ID 14109, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,354 - WARNING - Skipping self-relation for word ID 14115, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,363 - WARNING - Skipping self-relation for word ID 14120, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,440 - WARNING - Skipping self-relation for word ID 14155, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,450 - WARNING - Skipping self-relation for word ID 14161, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,462 - WARNING - Skipping self-relation for word ID 14167, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,479 - WARNING - Skipping self-relation for word ID 14176, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,491 - WARNING - Skipping self-relation for word ID 14181, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,531 - WARNING - Skipping self-relation for word ID 14197, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,574 - WARNING - Skipping self-relation for word ID 14220, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,588 - WARNING - Skipping self-relation for word ID 14224, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,630 - WARNING - Skipping self-relation for word ID 14247, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,646 - WARNING - Skipping self-relation for word ID 14252, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,657 - WARNING - Skipping self-relation for word ID 14260, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,722 - WARNING - Skipping self-relation for word ID 14290, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,744 - WARNING - Skipping self-relation for word ID 14298, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,752 - WARNING - Skipping self-relation for word ID 14303, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,794 - WARNING - Skipping self-relation for word ID 14323, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,806 - WARNING - Skipping self-relation for word ID 14328, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,836 - WARNING - Skipping self-relation for word ID 14342, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,852 - WARNING - Skipping self-relation for word ID 14348, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,866 - WARNING - Skipping self-relation for word ID 14353, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,871 - WARNING - Skipping self-relation for word ID 14360, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,893 - WARNING - Skipping self-relation for word ID 14370, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,917 - WARNING - Skipping self-relation for word ID 14383, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,963 - WARNING - Skipping self-relation for word ID 14401, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:33,973 - WARNING - Skipping self-relation for word ID 14406, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,000 - WARNING - Skipping self-relation for word ID 14415, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,014 - WARNING - Skipping self-relation for word ID 14423, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,046 - WARNING - Skipping self-relation for word ID 14436, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,075 - WARNING - Skipping self-relation for word ID 14448, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,086 - WARNING - Skipping self-relation for word ID 14452, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,107 - WARNING - Skipping self-relation for word ID 14460, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,139 - WARNING - Skipping self-relation for word ID 14478, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,196 - WARNING - Skipping self-relation for word ID 14497, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,226 - WARNING - Skipping self-relation for word ID 14509, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,233 - WARNING - Skipping self-relation for word ID 14515, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,246 - WARNING - Skipping self-relation for word ID 14521, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,261 - WARNING - Skipping self-relation for word ID 14526, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,279 - WARNING - Skipping self-relation for word ID 14532, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,299 - WARNING - Skipping self-relation for word ID 14540, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,331 - WARNING - Skipping self-relation for word ID 14550, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,359 - WARNING - Skipping self-relation for word ID 14555, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,377 - WARNING - Skipping self-relation for word ID 14567, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,401 - WARNING - Skipping self-relation for word ID 14574, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,411 - WARNING - Skipping self-relation for word ID 14579, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,431 - WARNING - Skipping self-relation for word ID 14586, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,447 - WARNING - Skipping self-relation for word ID 14592, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,479 - WARNING - Skipping self-relation for word ID 14604, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,488 - WARNING - Skipping self-relation for word ID 14610, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,500 - WARNING - Skipping self-relation for word ID 14616, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,514 - WARNING - Skipping self-relation for word ID 14621, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,553 - WARNING - Skipping self-relation for word ID 14636, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,584 - WARNING - Skipping self-relation for word ID 14647, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,593 - WARNING - Skipping self-relation for word ID 14652, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,611 - WARNING - Skipping self-relation for word ID 14658, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,619 - WARNING - Skipping self-relation for word ID 14662, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,644 - WARNING - Skipping self-relation for word ID 14674, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,660 - WARNING - Skipping self-relation for word ID 14681, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,680 - WARNING - Skipping self-relation for word ID 14686, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,697 - WARNING - Skipping self-relation for word ID 14698, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,742 - WARNING - Skipping self-relation for word ID 14716, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,773 - WARNING - Skipping self-relation for word ID 14728, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,813 - WARNING - Skipping self-relation for word ID 14744, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,837 - WARNING - Skipping self-relation for word ID 14754, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,865 - WARNING - Skipping self-relation for word ID 14765, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,901 - WARNING - Skipping self-relation for word ID 14780, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,919 - WARNING - Skipping self-relation for word ID 14785, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,924 - WARNING - Skipping self-relation for word ID 14790, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,934 - WARNING - Skipping self-relation for word ID 14793, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,953 - WARNING - Skipping self-relation for word ID 14799, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,986 - WARNING - Skipping self-relation for word ID 14811, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:34,998 - WARNING - Skipping self-relation for word ID 14818, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,028 - WARNING - Skipping self-relation for word ID 14829, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,086 - WARNING - Skipping self-relation for word ID 14851, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,095 - WARNING - Skipping self-relation for word ID 14856, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,134 - WARNING - Skipping self-relation for word ID 14867, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,154 - WARNING - Skipping self-relation for word ID 14873, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,168 - WARNING - Skipping self-relation for word ID 14878, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,208 - WARNING - Skipping self-relation for word ID 14890, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,323 - WARNING - Skipping self-relation for word ID 14932, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,337 - WARNING - Skipping self-relation for word ID 14936, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,363 - WARNING - Skipping self-relation for word ID 14945, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,413 - WARNING - Skipping self-relation for word ID 14963, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,427 - WARNING - Skipping self-relation for word ID 14968, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,460 - WARNING - Skipping self-relation for word ID 14977, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,486 - WARNING - Skipping self-relation for word ID 14988, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,562 - WARNING - Skipping self-relation for word ID 15015, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,593 - WARNING - Skipping self-relation for word ID 15027, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,631 - WARNING - Skipping self-relation for word ID 15042, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,647 - WARNING - Skipping self-relation for word ID 15049, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,667 - WARNING - Skipping self-relation for word ID 15058, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,678 - WARNING - Skipping self-relation for word ID 15062, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,717 - WARNING - Skipping self-relation for word ID 15075, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,730 - WARNING - Skipping self-relation for word ID 15084, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,785 - WARNING - Skipping self-relation for word ID 15105, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,882 - WARNING - Skipping self-relation for word ID 15139, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,929 - WARNING - Skipping self-relation for word ID 15165, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,938 - WARNING - Skipping self-relation for word ID 15169, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,947 - WARNING - Skipping self-relation for word ID 15174, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,962 - WARNING - Skipping self-relation for word ID 15177, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,970 - WARNING - Skipping self-relation for word ID 15183, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:35,981 - WARNING - Skipping self-relation for word ID 15189, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,027 - WARNING - Skipping self-relation for word ID 15204, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,051 - WARNING - Skipping self-relation for word ID 15211, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,061 - WARNING - Skipping self-relation for word ID 15218, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,089 - WARNING - Skipping self-relation for word ID 15231, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,101 - WARNING - Skipping self-relation for word ID 15238, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,125 - WARNING - Skipping self-relation for word ID 15247, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,139 - WARNING - Skipping self-relation for word ID 15252, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,143 - WARNING - Skipping self-relation for word ID 15257, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,168 - WARNING - Skipping self-relation for word ID 15266, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,196 - WARNING - Skipping self-relation for word ID 15281, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,203 - WARNING - Skipping self-relation for word ID 15286, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,215 - WARNING - Skipping self-relation for word ID 15292, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,228 - WARNING - Skipping self-relation for word ID 15298, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,259 - WARNING - Skipping self-relation for word ID 15310, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,268 - WARNING - Skipping self-relation for word ID 15314, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,276 - WARNING - Skipping self-relation for word ID 15319, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,289 - WARNING - Skipping self-relation for word ID 15326, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,300 - WARNING - Skipping self-relation for word ID 15331, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,310 - WARNING - Skipping self-relation for word ID 15335, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,326 - WARNING - Skipping self-relation for word ID 15341, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,351 - WARNING - Skipping self-relation for word ID 15351, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,444 - WARNING - Skipping self-relation for word ID 15385, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,481 - WARNING - Skipping self-relation for word ID 15399, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,511 - WARNING - Skipping self-relation for word ID 15409, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,533 - WARNING - Skipping self-relation for word ID 15416, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,541 - WARNING - Skipping self-relation for word ID 15418, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,569 - WARNING - Skipping self-relation for word ID 15428, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,577 - WARNING - Skipping self-relation for word ID 15434, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,579 - WARNING - Skipping self-relation for word ID 15434, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,590 - WARNING - Skipping self-relation for word ID 15438, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,599 - WARNING - Skipping self-relation for word ID 15443, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,615 - WARNING - Skipping self-relation for word ID 15449, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,636 - WARNING - Skipping self-relation for word ID 15458, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,653 - WARNING - Skipping self-relation for word ID 15467, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,669 - WARNING - Skipping self-relation for word ID 15473, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,734 - WARNING - Skipping self-relation for word ID 15498, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,754 - WARNING - Skipping self-relation for word ID 15506, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,814 - WARNING - Skipping self-relation for word ID 15531, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,857 - WARNING - Skipping self-relation for word ID 15550, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,866 - WARNING - Skipping self-relation for word ID 15556, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,872 - WARNING - Skipping self-relation for word ID 15561, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,901 - WARNING - Skipping self-relation for word ID 15576, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,908 - WARNING - Skipping self-relation for word ID 15580, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,916 - WARNING - Skipping self-relation for word ID 15583, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,953 - WARNING - Skipping self-relation for word ID 15599, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:36,962 - WARNING - Skipping self-relation for word ID 15604, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,001 - WARNING - Skipping self-relation for word ID 15623, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,015 - WARNING - Skipping self-relation for word ID 15630, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,039 - WARNING - Skipping self-relation for word ID 15642, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,046 - WARNING - Skipping self-relation for word ID 15648, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,056 - WARNING - Skipping self-relation for word ID 15652, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,077 - WARNING - Skipping self-relation for word ID 15666, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,091 - WARNING - Skipping self-relation for word ID 15674, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,105 - WARNING - Skipping self-relation for word ID 15679, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,113 - WARNING - Skipping self-relation for word ID 15685, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,122 - WARNING - Skipping self-relation for word ID 15690, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,143 - WARNING - Skipping self-relation for word ID 15701, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,151 - WARNING - Skipping self-relation for word ID 15706, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,159 - WARNING - Skipping self-relation for word ID 15710, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,193 - WARNING - Skipping self-relation for word ID 15728, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,218 - WARNING - Skipping self-relation for word ID 15741, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,231 - WARNING - Skipping self-relation for word ID 15748, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,271 - WARNING - Skipping self-relation for word ID 15767, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,285 - WARNING - Skipping self-relation for word ID 15774, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,289 - WARNING - Skipping self-relation for word ID 15780, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,328 - WARNING - Skipping self-relation for word ID 15798, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,360 - WARNING - Skipping self-relation for word ID 15812, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,382 - WARNING - Skipping self-relation for word ID 15824, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,413 - WARNING - Skipping self-relation for word ID 15842, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,423 - WARNING - Skipping self-relation for word ID 15847, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,431 - WARNING - Skipping self-relation for word ID 15851, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,442 - WARNING - Skipping self-relation for word ID 15856, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,469 - WARNING - Skipping self-relation for word ID 15867, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,482 - WARNING - Skipping self-relation for word ID 15875, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,512 - WARNING - Skipping self-relation for word ID 15893, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,529 - WARNING - Skipping self-relation for word ID 15902, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,539 - WARNING - Skipping self-relation for word ID 15908, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,544 - WARNING - Skipping self-relation for word ID 15910, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,562 - WARNING - Skipping self-relation for word ID 15917, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,574 - WARNING - Skipping self-relation for word ID 15926, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,589 - WARNING - Skipping self-relation for word ID 15934, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,597 - WARNING - Skipping self-relation for word ID 15938, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,611 - WARNING - Skipping self-relation for word ID 15945, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,617 - WARNING - Skipping self-relation for word ID 15948, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,627 - WARNING - Skipping self-relation for word ID 15953, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,635 - WARNING - Skipping self-relation for word ID 15957, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,646 - WARNING - Skipping self-relation for word ID 15962, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,664 - WARNING - Skipping self-relation for word ID 15969, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,684 - WARNING - Skipping self-relation for word ID 15979, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,689 - WARNING - Skipping self-relation for word ID 15985, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,714 - WARNING - Skipping self-relation for word ID 15994, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,742 - WARNING - Skipping self-relation for word ID 16011, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,757 - WARNING - Skipping self-relation for word ID 16018, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,768 - WARNING - Skipping self-relation for word ID 16024, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,779 - WARNING - Skipping self-relation for word ID 16030, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,811 - WARNING - Skipping self-relation for word ID 16045, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,831 - WARNING - Skipping self-relation for word ID 16057, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,851 - WARNING - Skipping self-relation for word ID 16065, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,857 - WARNING - Skipping self-relation for word ID 16071, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,886 - WARNING - Skipping self-relation for word ID 16084, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,907 - WARNING - Skipping self-relation for word ID 16096, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,920 - WARNING - Skipping self-relation for word ID 16102, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,945 - WARNING - Skipping self-relation for word ID 16114, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,970 - WARNING - Skipping self-relation for word ID 16122, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,974 - WARNING - Skipping self-relation for word ID 16128, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,984 - WARNING - Skipping self-relation for word ID 16133, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:37,993 - WARNING - Skipping self-relation for word ID 16138, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,002 - WARNING - Skipping self-relation for word ID 16142, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,017 - WARNING - Skipping self-relation for word ID 16150, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,068 - WARNING - Skipping self-relation for word ID 16179, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,080 - WARNING - Skipping self-relation for word ID 16184, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,087 - WARNING - Skipping self-relation for word ID 16189, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,113 - WARNING - Skipping self-relation for word ID 16201, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,126 - WARNING - Skipping self-relation for word ID 16206, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,138 - WARNING - Skipping self-relation for word ID 16212, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,146 - WARNING - Skipping self-relation for word ID 16219, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,160 - WARNING - Skipping self-relation for word ID 16226, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,167 - WARNING - Skipping self-relation for word ID 16230, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,169 - WARNING - Skipping self-relation for word ID 16230, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,173 - WARNING - Skipping self-relation for word ID 16234, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,218 - WARNING - Skipping self-relation for word ID 16251, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,255 - WARNING - Skipping self-relation for word ID 16259, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,312 - WARNING - Skipping self-relation for word ID 16285, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,324 - WARNING - Skipping self-relation for word ID 16289, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,342 - WARNING - Skipping self-relation for word ID 16294, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,415 - WARNING - Skipping self-relation for word ID 16325, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,441 - WARNING - Skipping self-relation for word ID 16339, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,454 - WARNING - Skipping self-relation for word ID 16344, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,479 - WARNING - Skipping self-relation for word ID 16353, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,487 - WARNING - Skipping self-relation for word ID 16357, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,511 - WARNING - Skipping self-relation for word ID 16365, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,520 - WARNING - Skipping self-relation for word ID 16370, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,558 - WARNING - Skipping self-relation for word ID 16383, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,564 - WARNING - Skipping self-relation for word ID 16389, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,583 - WARNING - Skipping self-relation for word ID 16397, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,598 - WARNING - Skipping self-relation for word ID 16404, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,620 - WARNING - Skipping self-relation for word ID 16413, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,664 - WARNING - Skipping self-relation for word ID 16431, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,685 - WARNING - Skipping self-relation for word ID 16442, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,694 - WARNING - Skipping self-relation for word ID 16446, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,703 - WARNING - Skipping self-relation for word ID 16448, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,734 - WARNING - Skipping self-relation for word ID 16464, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,756 - WARNING - Skipping self-relation for word ID 16473, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,765 - WARNING - Skipping self-relation for word ID 16478, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,777 - WARNING - Skipping self-relation for word ID 16483, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,795 - WARNING - Skipping self-relation for word ID 16491, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,828 - WARNING - Skipping self-relation for word ID 16499, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,848 - WARNING - Skipping self-relation for word ID 16513, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,872 - WARNING - Skipping self-relation for word ID 16520, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,901 - WARNING - Skipping self-relation for word ID 16533, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,909 - WARNING - Skipping self-relation for word ID 16538, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,922 - WARNING - Skipping self-relation for word ID 16546, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,929 - WARNING - Skipping self-relation for word ID 16548, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,952 - WARNING - Skipping self-relation for word ID 16561, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,960 - WARNING - Skipping self-relation for word ID 16566, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:38,992 - WARNING - Skipping self-relation for word ID 16581, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,024 - WARNING - Skipping self-relation for word ID 16596, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,038 - WARNING - Skipping self-relation for word ID 16601, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,043 - WARNING - Skipping self-relation for word ID 16606, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,055 - WARNING - Skipping self-relation for word ID 16611, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,071 - WARNING - Skipping self-relation for word ID 16618, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,101 - WARNING - Skipping self-relation for word ID 16630, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,133 - WARNING - Skipping self-relation for word ID 16646, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,145 - WARNING - Skipping self-relation for word ID 16651, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,163 - WARNING - Skipping self-relation for word ID 16662, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,174 - WARNING - Skipping self-relation for word ID 16668, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,183 - WARNING - Skipping self-relation for word ID 16673, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,203 - WARNING - Skipping self-relation for word ID 16681, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,232 - WARNING - Skipping self-relation for word ID 16702, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,261 - WARNING - Skipping self-relation for word ID 16719, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,273 - WARNING - Skipping self-relation for word ID 16725, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,294 - WARNING - Skipping self-relation for word ID 16735, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,312 - WARNING - Skipping self-relation for word ID 16745, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,320 - WARNING - Skipping self-relation for word ID 16750, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,345 - WARNING - Skipping self-relation for word ID 16764, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,369 - WARNING - Skipping self-relation for word ID 16775, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,379 - WARNING - Skipping self-relation for word ID 16783, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,411 - WARNING - Skipping self-relation for word ID 16799, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,434 - WARNING - Skipping self-relation for word ID 16811, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,442 - WARNING - Skipping self-relation for word ID 16816, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,461 - WARNING - Skipping self-relation for word ID 16825, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,473 - WARNING - Skipping self-relation for word ID 16830, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,506 - WARNING - Skipping self-relation for word ID 16841, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,550 - WARNING - Skipping self-relation for word ID 16859, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,554 - WARNING - Skipping self-relation for word ID 16863, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,580 - WARNING - Skipping self-relation for word ID 16877, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,595 - WARNING - Skipping self-relation for word ID 16883, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,617 - WARNING - Skipping self-relation for word ID 16895, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,628 - WARNING - Skipping self-relation for word ID 16900, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,639 - WARNING - Skipping self-relation for word ID 16907, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,662 - WARNING - Skipping self-relation for word ID 16917, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,685 - WARNING - Skipping self-relation for word ID 16927, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,692 - WARNING - Skipping self-relation for word ID 16932, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,731 - WARNING - Skipping self-relation for word ID 16950, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,741 - WARNING - Skipping self-relation for word ID 16957, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,748 - WARNING - Skipping self-relation for word ID 16962, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,767 - WARNING - Skipping self-relation for word ID 16971, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,780 - WARNING - Skipping self-relation for word ID 16979, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,787 - WARNING - Skipping self-relation for word ID 16985, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,807 - WARNING - Skipping self-relation for word ID 16996, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,827 - WARNING - Skipping self-relation for word ID 17008, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,839 - WARNING - Skipping self-relation for word ID 17014, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,856 - WARNING - Skipping self-relation for word ID 17021, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,872 - WARNING - Skipping self-relation for word ID 17033, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,889 - WARNING - Skipping self-relation for word ID 17042, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,901 - WARNING - Skipping self-relation for word ID 17048, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,969 - WARNING - Skipping self-relation for word ID 17084, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:39,990 - WARNING - Skipping self-relation for word ID 17097, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,009 - WARNING - Skipping self-relation for word ID 17107, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,028 - WARNING - Skipping self-relation for word ID 17117, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,048 - WARNING - Skipping self-relation for word ID 17122, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,080 - WARNING - Skipping self-relation for word ID 17132, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,118 - WARNING - Skipping self-relation for word ID 17148, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,143 - WARNING - Skipping self-relation for word ID 17157, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,181 - WARNING - Skipping self-relation for word ID 17172, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,202 - WARNING - Skipping self-relation for word ID 17178, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,225 - WARNING - Skipping self-relation for word ID 17188, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,240 - WARNING - Skipping self-relation for word ID 17193, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,256 - WARNING - Skipping self-relation for word ID 17202, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,298 - WARNING - Skipping self-relation for word ID 17220, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,318 - WARNING - Skipping self-relation for word ID 17226, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,324 - WARNING - Skipping self-relation for word ID 17230, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,341 - WARNING - Skipping self-relation for word ID 17236, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,351 - WARNING - Skipping self-relation for word ID 17241, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,374 - WARNING - Skipping self-relation for word ID 17249, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,406 - WARNING - Skipping self-relation for word ID 17262, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,414 - WARNING - Skipping self-relation for word ID 17267, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,423 - WARNING - Skipping self-relation for word ID 17272, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,436 - WARNING - Skipping self-relation for word ID 17277, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,448 - WARNING - Skipping self-relation for word ID 17282, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,468 - WARNING - Skipping self-relation for word ID 17290, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,481 - WARNING - Skipping self-relation for word ID 17298, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,508 - WARNING - Skipping self-relation for word ID 17312, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,521 - WARNING - Skipping self-relation for word ID 17318, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,540 - WARNING - Skipping self-relation for word ID 17326, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,562 - WARNING - Skipping self-relation for word ID 17335, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,601 - WARNING - Skipping self-relation for word ID 17357, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,620 - WARNING - Skipping self-relation for word ID 17368, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,668 - WARNING - Skipping self-relation for word ID 17395, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,679 - WARNING - Skipping self-relation for word ID 17400, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,686 - WARNING - Skipping self-relation for word ID 17405, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,696 - WARNING - Skipping self-relation for word ID 17411, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,716 - WARNING - Skipping self-relation for word ID 17420, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,722 - WARNING - Skipping self-relation for word ID 17422, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,761 - WARNING - Skipping self-relation for word ID 17435, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,813 - WARNING - Skipping self-relation for word ID 17459, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,845 - WARNING - Skipping self-relation for word ID 17471, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,870 - WARNING - Skipping self-relation for word ID 17483, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,878 - WARNING - Skipping self-relation for word ID 17487, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,886 - WARNING - Skipping self-relation for word ID 17490, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,894 - WARNING - Skipping self-relation for word ID 17493, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,903 - WARNING - Skipping self-relation for word ID 17497, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,940 - WARNING - Skipping self-relation for word ID 17517, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,962 - WARNING - Skipping self-relation for word ID 17528, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,974 - WARNING - Skipping self-relation for word ID 17534, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,986 - WARNING - Skipping self-relation for word ID 17539, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:40,994 - WARNING - Skipping self-relation for word ID 17544, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,000 - WARNING - Skipping self-relation for word ID 17548, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,022 - WARNING - Skipping self-relation for word ID 17562, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,053 - WARNING - Skipping self-relation for word ID 17580, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,066 - WARNING - Skipping self-relation for word ID 17585, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,076 - WARNING - Skipping self-relation for word ID 17590, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,093 - WARNING - Skipping self-relation for word ID 17595, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,114 - WARNING - Skipping self-relation for word ID 17608, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,133 - WARNING - Skipping self-relation for word ID 17618, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,144 - WARNING - Skipping self-relation for word ID 17627, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,170 - WARNING - Skipping self-relation for word ID 17642, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,177 - WARNING - Skipping self-relation for word ID 17646, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,191 - WARNING - Skipping self-relation for word ID 17650, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,205 - WARNING - Skipping self-relation for word ID 17661, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,212 - WARNING - Skipping self-relation for word ID 17664, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,219 - WARNING - Skipping self-relation for word ID 17669, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,228 - WARNING - Skipping self-relation for word ID 17674, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,250 - WARNING - Skipping self-relation for word ID 17684, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,280 - WARNING - Skipping self-relation for word ID 17699, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,310 - WARNING - Skipping self-relation for word ID 17719, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,333 - WARNING - Skipping self-relation for word ID 17728, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,352 - WARNING - Skipping self-relation for word ID 17736, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,378 - WARNING - Skipping self-relation for word ID 17753, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,405 - WARNING - Skipping self-relation for word ID 17767, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,410 - WARNING - Skipping self-relation for word ID 17772, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,428 - WARNING - Skipping self-relation for word ID 17781, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,448 - WARNING - Skipping self-relation for word ID 17792, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,460 - WARNING - Skipping self-relation for word ID 17800, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,471 - WARNING - Skipping self-relation for word ID 17805, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,490 - WARNING - Skipping self-relation for word ID 17814, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,496 - WARNING - Skipping self-relation for word ID 17820, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,506 - WARNING - Skipping self-relation for word ID 17825, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,516 - WARNING - Skipping self-relation for word ID 17831, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,527 - WARNING - Skipping self-relation for word ID 17837, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,536 - WARNING - Skipping self-relation for word ID 17843, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,584 - WARNING - Skipping self-relation for word ID 17868, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,606 - WARNING - Skipping self-relation for word ID 17880, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,633 - WARNING - Skipping self-relation for word ID 17894, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,639 - WARNING - Skipping self-relation for word ID 17900, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,649 - WARNING - Skipping self-relation for word ID 17905, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,655 - WARNING - Skipping self-relation for word ID 17910, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,664 - WARNING - Skipping self-relation for word ID 17914, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,678 - WARNING - Skipping self-relation for word ID 17921, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,687 - WARNING - Skipping self-relation for word ID 17926, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,701 - WARNING - Skipping self-relation for word ID 17935, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,710 - WARNING - Skipping self-relation for word ID 17940, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,735 - WARNING - Skipping self-relation for word ID 17953, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,754 - WARNING - Skipping self-relation for word ID 17961, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,773 - WARNING - Skipping self-relation for word ID 17966, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,821 - WARNING - Skipping self-relation for word ID 17981, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,877 - WARNING - Skipping self-relation for word ID 17998, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,937 - WARNING - Skipping self-relation for word ID 18023, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,971 - WARNING - Skipping self-relation for word ID 18034, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,977 - WARNING - Skipping self-relation for word ID 18038, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,985 - WARNING - Skipping self-relation for word ID 18040, type 'derived_from', source 'tagalog.com'.
+2025-04-13 20:27:41,995 - INFO - Statistics for ..\data\root_words_with_associated_words_cleaned.json: {
+  "roots_processed": 2238,
+  "definitions_added": 16704,
+  "relations_added": 14452,
+  "associated_processed": 15806,
+  "errors": 0,
+  "skipped": 0
+}
+2025-04-13 20:27:41,998 - INFO - Successfully processed source: Root Words
+2025-04-13 20:27:41,998 - INFO - Starting processing for KWF Dictionary from ..\data\kwf_dictionary.json
+2025-04-13 20:27:41,999 - INFO - Processing KWF Dictionary: ..\data\kwf_dictionary.json
+2025-04-13 20:27:41,999 - INFO - Using standardized source identifier: 'KWF Diksiyonaryo ng Wikang Filipino'
+2025-04-13 20:27:43,279 - INFO - Found 51237 word entries in ..\data\kwf_dictionary.json
+2025-04-13 20:27:45,190 - INFO - Committed batch after 500 KWF entries.
+2025-04-13 20:27:47,387 - INFO - Committed batch after 1000 KWF entries.
+2025-04-13 20:27:50,001 - INFO - Committed batch after 1500 KWF entries.
+2025-04-13 20:27:52,706 - INFO - Committed batch after 2000 KWF entries.
+2025-04-13 20:27:55,054 - INFO - Committed batch after 2500 KWF entries.
+2025-04-13 20:27:57,370 - INFO - Committed batch after 3000 KWF entries.
+2025-04-13 20:28:00,007 - INFO - Committed batch after 3500 KWF entries.
+2025-04-13 20:28:02,846 - INFO - Committed batch after 4000 KWF entries.
+2025-04-13 20:28:05,634 - INFO - Committed batch after 4500 KWF entries.
+2025-04-13 20:28:08,485 - INFO - Committed batch after 5000 KWF entries.
+2025-04-13 20:28:10,967 - INFO - Committed batch after 5500 KWF entries.
+2025-04-13 20:28:13,380 - INFO - Committed batch after 6000 KWF entries.
+2025-04-13 20:28:15,513 - INFO - Committed batch after 6500 KWF entries.
+2025-04-13 20:28:17,799 - INFO - Committed batch after 7000 KWF entries.
+2025-04-13 20:28:20,044 - INFO - Committed batch after 7500 KWF entries.
+2025-04-13 20:28:21,839 - INFO - Committed batch after 8000 KWF entries.
+2025-04-13 20:28:24,219 - INFO - Committed batch after 8500 KWF entries.
+2025-04-13 20:28:26,279 - INFO - Committed batch after 9000 KWF entries.
+2025-04-13 20:28:28,322 - INFO - Committed batch after 9500 KWF entries.
+2025-04-13 20:28:30,382 - INFO - Committed batch after 10000 KWF entries.
+2025-04-13 20:28:32,353 - INFO - Committed batch after 10500 KWF entries.
+2025-04-13 20:28:34,397 - INFO - Committed batch after 11000 KWF entries.
+2025-04-13 20:28:36,546 - INFO - Committed batch after 11500 KWF entries.
+2025-04-13 20:28:38,684 - INFO - Committed batch after 12000 KWF entries.
+2025-04-13 20:28:40,645 - INFO - Committed batch after 12500 KWF entries.
+2025-04-13 20:28:45,779 - INFO - Committed batch after 13000 KWF entries.
+2025-04-13 20:28:46,069 - INFO - Removed trailing number(s) from lemma: 'hawás1' → 'hawás'
+2025-04-13 20:28:47,815 - INFO - Removed trailing number(s) from lemma: 'hawás1' → 'hawás'
+2025-04-13 20:28:50,781 - INFO - Committed batch after 13500 KWF entries.
+2025-04-13 20:28:54,109 - INFO - Committed batch after 14000 KWF entries.
+2025-04-13 20:28:57,304 - INFO - Committed batch after 14500 KWF entries.
+2025-04-13 20:28:59,724 - INFO - Committed batch after 15000 KWF entries.
+2025-04-13 20:29:01,809 - INFO - Committed batch after 15500 KWF entries.
+2025-04-13 20:29:04,045 - INFO - Committed batch after 16000 KWF entries.
+2025-04-13 20:29:06,577 - INFO - Committed batch after 16500 KWF entries.
+2025-04-13 20:29:09,260 - INFO - Committed batch after 17000 KWF entries.
+2025-04-13 20:29:11,910 - INFO - Committed batch after 17500 KWF entries.
+2025-04-13 20:29:14,358 - INFO - Committed batch after 18000 KWF entries.
+2025-04-13 20:29:17,006 - INFO - Committed batch after 18500 KWF entries.
+2025-04-13 20:29:19,620 - INFO - Committed batch after 19000 KWF entries.
+2025-04-13 20:29:22,204 - INFO - Committed batch after 19500 KWF entries.
+2025-04-13 20:29:24,486 - INFO - Committed batch after 20000 KWF entries.
+2025-04-13 20:29:27,048 - INFO - Committed batch after 20500 KWF entries.
+2025-04-13 20:29:30,773 - INFO - Committed batch after 21000 KWF entries.
+2025-04-13 20:29:33,381 - INFO - Committed batch after 21500 KWF entries.
+2025-04-13 20:29:35,499 - INFO - Committed batch after 22000 KWF entries.
+2025-04-13 20:29:37,719 - INFO - Committed batch after 22500 KWF entries.
+2025-04-13 20:29:39,540 - INFO - Committed batch after 23000 KWF entries.
+2025-04-13 20:29:41,448 - INFO - Committed batch after 23500 KWF entries.
+2025-04-13 20:29:43,828 - INFO - Committed batch after 24000 KWF entries.
+2025-04-13 20:29:45,686 - INFO - Committed batch after 24500 KWF entries.
+2025-04-13 20:29:47,937 - INFO - Committed batch after 25000 KWF entries.
+2025-04-13 20:29:50,012 - INFO - Committed batch after 25500 KWF entries.
+2025-04-13 20:29:51,924 - INFO - Committed batch after 26000 KWF entries.
+2025-04-13 20:29:53,759 - INFO - Committed batch after 26500 KWF entries.
+2025-04-13 20:29:55,756 - INFO - Committed batch after 27000 KWF entries.
+2025-04-13 20:29:57,774 - INFO - Committed batch after 27500 KWF entries.
+2025-04-13 20:30:00,212 - INFO - Committed batch after 28000 KWF entries.
+2025-04-13 20:30:02,281 - INFO - Committed batch after 28500 KWF entries.
+2025-04-13 20:30:04,042 - INFO - Committed batch after 29000 KWF entries.
+2025-04-13 20:30:06,508 - INFO - Committed batch after 29500 KWF entries.
+2025-04-13 20:30:08,596 - INFO - Committed batch after 30000 KWF entries.
+2025-04-13 20:30:10,586 - INFO - Committed batch after 30500 KWF entries.
+2025-04-13 20:30:12,588 - INFO - Committed batch after 31000 KWF entries.
+2025-04-13 20:30:14,486 - INFO - Committed batch after 31500 KWF entries.
+2025-04-13 20:30:16,469 - INFO - Committed batch after 32000 KWF entries.
+2025-04-13 20:30:18,222 - INFO - Committed batch after 32500 KWF entries.
+2025-04-13 20:30:20,463 - INFO - Committed batch after 33000 KWF entries.
+2025-04-13 20:30:22,652 - INFO - Committed batch after 33500 KWF entries.
+2025-04-13 20:30:24,998 - INFO - Committed batch after 34000 KWF entries.
+2025-04-13 20:30:27,028 - INFO - Committed batch after 34500 KWF entries.
+2025-04-13 20:30:29,121 - INFO - Committed batch after 35000 KWF entries.
+2025-04-13 20:30:30,910 - INFO - Committed batch after 35500 KWF entries.
+2025-04-13 20:30:32,836 - INFO - Committed batch after 36000 KWF entries.
+2025-04-13 20:30:34,716 - INFO - Committed batch after 36500 KWF entries.
+2025-04-13 20:30:36,784 - INFO - Committed batch after 37000 KWF entries.
+2025-04-13 20:30:38,858 - INFO - Committed batch after 37500 KWF entries.
+2025-04-13 20:30:40,782 - INFO - Committed batch after 38000 KWF entries.
+2025-04-13 20:30:42,649 - INFO - Committed batch after 38500 KWF entries.
+2025-04-13 20:30:44,671 - INFO - Committed batch after 39000 KWF entries.
+2025-04-13 20:30:46,550 - INFO - Committed batch after 39500 KWF entries.
+2025-04-13 20:30:48,771 - INFO - Committed batch after 40000 KWF entries.
+2025-04-13 20:30:50,939 - INFO - Committed batch after 40500 KWF entries.
+2025-04-13 20:30:53,277 - INFO - Committed batch after 41000 KWF entries.
+2025-04-13 20:30:56,369 - INFO - Committed batch after 41500 KWF entries.
+2025-04-13 20:30:58,875 - INFO - Committed batch after 42000 KWF entries.
+2025-04-13 20:31:01,248 - INFO - Committed batch after 42500 KWF entries.
+2025-04-13 20:31:03,587 - INFO - Committed batch after 43000 KWF entries.
+2025-04-13 20:31:05,566 - INFO - Committed batch after 43500 KWF entries.
+2025-04-13 20:31:07,874 - INFO - Committed batch after 44000 KWF entries.
+2025-04-13 20:31:09,812 - INFO - Committed batch after 44500 KWF entries.
+2025-04-13 20:31:11,852 - INFO - Committed batch after 45000 KWF entries.
+2025-04-13 20:31:13,869 - INFO - Committed batch after 45500 KWF entries.
+2025-04-13 20:31:16,188 - INFO - Committed batch after 46000 KWF entries.
+2025-04-13 20:31:18,318 - INFO - Committed batch after 46500 KWF entries.
+2025-04-13 20:31:20,334 - INFO - Committed batch after 47000 KWF entries.
+2025-04-13 20:31:22,284 - INFO - Committed batch after 47500 KWF entries.
+2025-04-13 20:31:24,264 - INFO - Committed batch after 48000 KWF entries.
+2025-04-13 20:31:26,255 - INFO - Committed batch after 48500 KWF entries.
+2025-04-13 20:31:28,625 - INFO - Committed batch after 49000 KWF entries.
+2025-04-13 20:31:30,529 - INFO - Committed batch after 49500 KWF entries.
+2025-04-13 20:31:32,459 - INFO - Committed batch after 50000 KWF entries.
+2025-04-13 20:31:34,792 - INFO - Committed batch after 50500 KWF entries.
+2025-04-13 20:31:37,126 - INFO - Committed batch after 51000 KWF entries.
+2025-04-13 20:31:38,235 - INFO - Finished processing ..\data\kwf_dictionary.json. Stats: {'processed': 51237, 'definitions': 65124, 'relations': 59932, 'synonyms': 11138, 'antonyms': 0, 'related_terms': 36446, 'cross_refs': 12348, 'etymologies': 6420, 'pronunciations': 3204, 'examples': 5769, 'idioms': 0, 'skipped_invalid': 0, 'errors': 0}
+2025-04-13 20:31:38,316 - INFO - Successfully processed source: KWF Dictionary
+2025-04-13 20:31:38,317 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-13 20:31:38,317 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-13 20:31:38,557 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-13 20:31:38,557 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-13 20:31:41,361 - INFO - Extracted parenthesized text from lemma: original='garini(garni)' → lemma='garini', note='garni'
+2025-04-13 20:31:41,385 - INFO - Extracted parenthesized text from lemma: original='garito(garto)**' → lemma='garito**', note='garto'
+2025-04-13 20:31:41,403 - INFO - Extracted parenthesized text from lemma: original='nariyan(naryan)' → lemma='nariyan', note='naryan'
+2025-04-13 20:31:41,415 - INFO - Extracted parenthesized text from lemma: original='ganiyan(ganyan)' → lemma='ganiyan', note='ganyan'
+2025-04-13 20:31:48,596 - INFO - Removed trailing number(s) from lemma: '2' → ''
+2025-04-13 20:31:48,596 - WARNING - normalize_lemma received empty or None text
+2025-04-13 20:31:48,853 - INFO - Removed trailing number(s) from lemma: '1,000' → '1,'
+2025-04-13 20:31:48,857 - INFO - Removed trailing number(s) from lemma: '1' → ''
+2025-04-13 20:31:48,857 - WARNING - normalize_lemma received empty or None text
+2025-04-13 20:31:48,878 - INFO - Removed trailing number(s) from lemma: 'pansandaan Ordinal abbreviation: ika-100' → 'pansandaan Ordinal abbreviation: ika-'
+2025-04-13 20:31:48,902 - INFO - Removed trailing number(s) from lemma: 'Tagalog Wikipedia article on 100' → 'Tagalog Wikipedia article on '
+2025-04-13 20:31:53,495 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-13 20:32:01,694 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-13 20:32:01,709 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-13 20:32:01,715 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-13 20:32:06,972 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-13 20:32:09,387 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-13 20:32:09,399 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-13 20:32:26,920 - WARNING - Error closing connection: set_session cannot be used inside a transaction

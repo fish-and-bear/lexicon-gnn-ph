@@ -1,0 +1,10 @@
+2025-04-14 01:26:12,913 - INFO - Starting table creation/update process.
+2025-04-14 01:26:13,282 - INFO - Tables created or updated successfully.
+2025-04-14 01:26:13,286 - INFO - Starting processing for Tagalog Words from ..\data\tagalog-words.json
+2025-04-14 01:26:13,286 - INFO - Processing Tagalog words file: ..\data\tagalog-words.json
+2025-04-14 01:26:13,286 - INFO - Using standardized source identifier: 'diksiyonaryo.ph'
+2025-04-14 01:26:13,302 - ERROR - Schema validation failed: Required index words_lemma_idx on words(lemma) does not exist
+2025-04-14 01:26:13,302 - ERROR - Error validating database schema: Required index words_lemma_idx on words(lemma) does not exist
+2025-04-14 01:26:13,303 - INFO - Successfully processed source: Tagalog Words
+2025-04-14 01:26:13,304 - INFO - All sources processed successfully. Committing transaction...
+2025-04-14 01:26:13,305 - INFO - Database connection closed.

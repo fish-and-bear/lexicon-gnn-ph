@@ -1,0 +1,26 @@
+2025-04-13 19:24:54,950 - INFO - Starting table creation/update process.
+2025-04-13 19:24:55,776 - INFO - Tables created or updated successfully.
+2025-04-13 19:24:55,785 - INFO - Starting processing for Tagalog Words from ..\data\tagalog-words.json
+2025-04-13 19:24:55,785 - INFO - Processing tagalog words file: ..\data\tagalog-words.json
+2025-04-13 19:24:55,785 - INFO - Using standardized source identifier: 'diksiyonaryo.ph'
+2025-04-13 19:24:56,710 - ERROR - File ..\data\tagalog-words.json does not contain a 'words' list or it's empty. <class 'list'>
+2025-04-13 19:24:56,713 - ERROR - Error processing source 'Tagalog Words' from ..\data\tagalog-words.json: No words list found in ..\data\tagalog-words.json
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 10547, in migrate_data
+    source["handler"](cur, filepath)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6496, in process_tagalog_words
+    raise ValueError(f"No words list found in {filename}")
+ValueError: No words list found in ..\data\tagalog-words.json
+2025-04-13 19:24:56,721 - ERROR - Error during migration: No words list found in ..\data\tagalog-words.json
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 10553, in migrate_data
+    raise handler_error
+  File "C:\fil-relex\backend\dictionary_manager.py", line 10547, in migrate_data
+    source["handler"](cur, filepath)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\fil-relex\backend\dictionary_manager.py", line 6496, in process_tagalog_words
+    raise ValueError(f"No words list found in {filename}")
+ValueError: No words list found in ..\data\tagalog-words.json
+2025-04-13 19:24:56,723 - INFO - Rolling back transaction due to error.
+2025-04-13 19:24:56,788 - INFO - Database connection closed.
