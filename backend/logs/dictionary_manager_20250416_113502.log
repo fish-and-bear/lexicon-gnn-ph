@@ -1,0 +1,27 @@
+2025-04-16 11:35:02,497 - INFO - Starting table creation/update process.
+2025-04-16 11:35:03,172 - INFO - Tables created or updated successfully.
+2025-04-16 11:35:03,180 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-16 11:35:03,180 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-16 11:35:03,534 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-16 11:35:03,535 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-16 11:35:04,322 - INFO - Extracted parenthesized text from lemma: original='garini(garni)' → lemma='garini', note='garni'
+2025-04-16 11:35:04,337 - INFO - Extracted parenthesized text from lemma: original='garito(garto)**' → lemma='garito**', note='garto'
+2025-04-16 11:35:04,348 - INFO - Extracted parenthesized text from lemma: original='nariyan(naryan)' → lemma='nariyan', note='naryan'
+2025-04-16 11:35:04,357 - INFO - Extracted parenthesized text from lemma: original='ganiyan(ganyan)' → lemma='ganiyan', note='ganyan'
+2025-04-16 11:35:07,367 - INFO - Extracted parenthesized text from lemma: original='(na-)nu' → lemma='nu', note='na-'
+2025-04-16 11:35:13,371 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:35:14,412 - INFO - Extracted parenthesized text from lemma: original='(q)abu(s)' → lemma='abu', note='q, s'
+2025-04-16 11:35:14,765 - INFO - Extracted parenthesized text from lemma: original='(q)uNah' → lemma='uNah', note='q'
+2025-04-16 11:35:16,548 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:35:16,559 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:35:16,571 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:35:20,573 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:35:20,587 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:35:20,592 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:35:24,480 - INFO - Extracted parenthesized text from lemma: original='(si-)ida' → lemma='ida', note='si-'
+2025-04-16 11:35:25,392 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:35:25,795 - INFO - Extracted parenthesized text from lemma: original='(w)asu' → lemma='asu', note='w'
+2025-04-16 11:35:26,380 - INFO - Removed trailing number(s) from lemma: 'd2' → 'd'
+2025-04-16 11:35:26,529 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:35:26,537 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:35:33,213 - WARNING - Error closing connection: set_session cannot be used inside a transaction

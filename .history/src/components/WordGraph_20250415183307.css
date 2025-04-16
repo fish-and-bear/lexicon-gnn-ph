@@ -1,0 +1,481 @@
+.word-graph {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.graph-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.graph-container-g {
+  width: 100%;
+  height: 100%;
+}
+
+/* Make sure the graph takes the full available space */
+.graph-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.graph-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.graph-svg-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.graph-svg.loading {
+  opacity: 0.3;
+}
+
+.graph-svg.loaded {
+  opacity: 1;
+}
+
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block; /* Prevents extra spacing */
+}
+
+.controls-container {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.zoom-controls {
+  display: flex;
+  gap: 6px;
+  margin-right: auto;
+}
+
+.zoom-button {
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  background-color: var(--button-color, rgba(255, 255, 255, 0.8));
+  color: var(--button-text-color, #333);
+  border: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  box-shadow: none;
+  backdrop-filter: blur(6px);
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.zoom-button:hover {
+  background-color: var(--primary-color-light, rgba(70, 130, 180, 0.2));
+  transform: translateY(-1px);
+}
+
+.zoom-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.reset-zoom-button {
+  padding: 6px 12px;
+  font-size: 13px;
+  background-color: var(--button-color, rgba(255, 255, 255, 0.8));
+  color: var(--button-text-color, #333);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: none;
+  backdrop-filter: blur(6px);
+  line-height: 1.2;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.reset-zoom-button:hover {
+  background-color: var(--primary-color-light, rgba(70, 130, 180, 0.2));
+  transform: translateY(-1px);
+}
+
+.reset-zoom-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.network-controls {
+  flex: 1;
+  max-width: calc(100% - 180px);
+}
+
+.graph-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 150px;
+}
+
+.MuiSlider-root {
+  width: 100% !important;
+  color: var(--accent-color) !important;
+}
+
+.MuiTypography-caption {
+  font-size: 0.9rem !important;
+  color: var(--text-color) !important;
+  min-width: 90px;
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  stroke: var(--card-bg-color);
+  stroke-width: 2px;
+  transition: stroke-width 0.3s, stroke 0.3s, r 0.3s;
+}
+
+.node.selected circle {
+  stroke-width: 4px;
+  stroke: var(--selected-node-border-color);
+}
+
+.node text {
+  font-size: 10px;
+  font-weight: bold;
+  fill: var(--node-text-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+.link {
+  stroke-opacity: 0.6;
+  stroke-width: 1px;
+  transition: stroke-opacity 0.3s, stroke-width 0.3s;
+}
+
+.link:hover {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+.node-tooltip {
+  position: absolute;
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--card-border-color);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 10;
+  max-width: 200px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
+}
+
+.legend {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--card-border-color);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 12px;
+  max-width: 150px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.color-box {
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  border-radius: 2px;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .controls-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--controls-background-color, rgba(255, 255, 255, 0.6));
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    gap: 8px;
+    box-shadow: none;
+  }
+
+  .zoom-controls {
+    margin-right: 0;
+    justify-content: center;
+    width: 100%;
+    order: 2;
+  }
+
+  .network-controls {
+    max-width: 100%;
+    order: 1;
+  }
+  
+  .reset-zoom-button {
+    margin-left: 0;
+    order: 3;
+  }
+
+  .graph-container {
+    height: calc(100vh - 220px);
+    min-height: 300px;
+  }
+
+  .graph-controls {
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+    gap: 15px;
+  }
+
+  .slider-container {
+    width: 100%;
+  }
+
+  .MuiSlider-root {
+    width: 100% !important;
+  }
+
+  .legend {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    max-width: none;
+    margin-top: 15px;
+  }
+
+  .legend-item {
+    font-size: 12px;
+  }
+
+  .node-tooltip {
+    max-width: 200px;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .controls-container {
+    padding: 5px;
+  }
+
+  .zoom-button {
+    padding: 3px 8px;
+    font-size: 12px;
+  }
+
+  .slider-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .MuiTypography-caption {
+    font-size: 0.8rem !important;
+    min-width: auto;
+  }
+
+  .node-tooltip {
+    font-size: 11px;
+    padding: 8px;
+    max-width: 150px;
+  }
+
+  .node-tooltip h3 {
+    font-size: 13px;
+  }
+
+  .legend {
+    font-size: 10px;
+    gap: 8px;
+  }
+
+  .color-box {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.loading-overlay, .error-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 10;
+}
+
+.spinner {
+  border: 4px solid var(--accent-color);
+  border-top: 4px solid var(--background-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: var(--error-text-color);
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.retry-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.retry-button:hover {
+  background-color: var(--primary-color);
+}
+
+.graph-legend {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: var(--shadow-md);
+  max-width: 250px;
+  z-index: 100;
+  font-size: 12px;
+  max-height: calc(100% - 100px);
+  overflow-y: auto;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.graph-legend:hover {
+  opacity: 1;
+}
+
+.legend-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.legend-label {
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+/* Update filtered nodes styles for better transitions */
+.node.filtered {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.node:not(.filtered) {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.link.filtered {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.link:not(.filtered) {
+  opacity: 0.6;
+  pointer-events: all;
+}
+
+/* SVG element transition defaults */
+.node,
+.node circle,
+.node text,
+.link {
+  transition: opacity 300ms ease-in-out, 
+              stroke-width 300ms ease-in-out,
+              fill 300ms ease-in-out,
+              stroke 300ms ease-in-out;
+}

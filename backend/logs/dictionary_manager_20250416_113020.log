@@ -1,0 +1,12 @@
+2025-04-16 11:30:20,642 - INFO - Starting table creation/update process.
+2025-04-16 11:30:21,044 - INFO - Tables created or updated successfully.
+2025-04-16 11:30:21,049 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-16 11:30:21,049 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-16 11:30:21,298 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-16 11:30:21,299 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-16 11:30:21,746 - INFO - Extracted parenthesized text from lemma: original='garini(garni)' → lemma='garini', note='garni'
+2025-04-16 11:30:21,757 - INFO - Extracted parenthesized text from lemma: original='garito(garto)**' → lemma='garito**', note='garto'
+2025-04-16 11:30:21,764 - INFO - Extracted parenthesized text from lemma: original='nariyan(naryan)' → lemma='nariyan', note='naryan'
+2025-04-16 11:30:21,770 - INFO - Extracted parenthesized text from lemma: original='ganiyan(ganyan)' → lemma='ganiyan', note='ganyan'
+2025-04-16 11:30:38,104 - INFO - Extracted parenthesized text from lemma: original='(na-)nu' → lemma='nu', note='na-'
+2025-04-16 11:30:45,388 - WARNING - Error closing connection: set_session cannot be used inside a transaction

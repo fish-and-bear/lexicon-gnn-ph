@@ -1,0 +1,1130 @@
+:root {
+  --bg-color: #f8f9fa;
+  --text-color: #1d3557;
+  --primary-color: #1d3557;
+  --secondary-color: #e63946;
+  --accent-color: #fca311;
+  --gold: #d4af37;
+  --card-bg-color: #ffffff;
+  --card-border-color: #e6e8eb;
+  --input-bg-color: #ffffff;
+  --input-border-color: #d1d5db;
+  --button-color: #1d3557;
+  --button-text-color: #ffffff;
+  --graph-bg-color: #f1f5f9;
+  --color-main: #1d3557;
+  --color-derivative: #457b9d;
+  --color-etymology: #2a9d8f;
+  --color-root: #e63946;
+  --color-associated: #fca311;
+  --color-default: #6c757d;
+  --node-text-color: #1d3557;
+  --link-color: #1d3557;
+  --selected-node-border-color: #e6e8eb;
+  --card-bg-color-rgb: 255, 255, 255; /* for light theme */
+}
+
+.dark {
+  --bg-color: #0a0d16;
+  --header-color: #131826;
+  --footer-color: #131826;
+  --text-color: #e0e0e0;
+  --text-color-secondary: #a0a0a0;
+  --text-color-white: #f0f0f0;
+  --primary-color: #ffd166;
+  --secondary-color: #e63946;
+  --accent-color: #e09f3e;
+  --gold: #ffc940;
+  --red: #e63946;
+  --source-color: #4a6fa5;
+  --card-bg-color: #131826;
+  --card-bg-color-elevated: #1a202e;
+  --card-border-color: #2e3a4e;
+  --input-bg-color: #1a202e;
+  --definition-bg-color: #1a202e;
+  --input-border-color: #2e3a4e;
+  --button-color: var(--text-color);
+  --button-text-color: #0a0d16;
+  --graph-bg-color: #161c2c;
+  --link-color: #7ea3cc;
+  --color-main: #5d9cec;
+  --color-derivative: #64b5f6;
+  --color-etymology: #4dd0e1;
+  --color-root: #ff7088;
+  --color-associated: #ffc107;
+  --color-default: #90a4ae;
+  --node-text-color: #f0f0f0;
+  --selected-node-border-color: var(--text-color);
+  --card-bg-color-rgb: 19, 24, 38;
+  --shadow-color: rgba(0, 0, 0, 0.25);
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  height: 100%;
+  overflow: hidden;
+}
+
+.word-explorer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  flex-wrap: wrap; /* Allow items to wrap */
+  gap: 0.5rem; /* Add gap for wrapped items */
+}
+
+.dark .header-content {
+  background-color: var(--header-color);
+  color: var(--primary-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.graph-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.graph-content {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.details-container {
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  position: relative;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.details-container > * {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+.no-word-selected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-secondary-color);
+  padding: 2rem;
+  background-color: var(--card-bg-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--card-shadow);
+}
+
+.no-word-selected p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.word-details h2 {
+  color: var(--secondary-color);
+  padding-bottom: 0.25rem;
+}
+
+.definition-card {
+  background-color: var(--definition-bg-color);
+  border: 1px solid var(--card-border-color);
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.definition-card h3 {
+  color: var(--secondary-color);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.definition-card ol {
+  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.definition-card ol > li {
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.definition-card .source {
+  font-size: 0.8rem;
+  color: var(--accent-color);
+  font-style: italic;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.dark .definition-card .source {
+  color: var(--link-color);
+}
+
+.word-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.word-list li {
+  background-color: var(--input-bg-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  border: 1px solid var(--accent-color);
+}
+
+.dark .word-list li {
+  border: 1px solid var(--color-root);
+}
+
+.search-container {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--card-bg-color);
+  border-bottom: 1px solid var(--card-border-color);
+  flex-wrap: wrap; /* Allow search items to wrap */
+}
+
+.search-input-container {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  height: 100%;
+  align-self: stretch;
+}
+
+.search-button:hover {
+  background-color: var(--primary-color);
+}
+
+.search-button:active {
+  transform: scale(0.95);
+}
+
+.random-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  height: 100%;
+  align-self: stretch;
+}
+
+.random-button:hover {
+  background-color: var(--primary-color);
+}
+
+.random-button:active {
+  transform: scale(0.95);
+}
+
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--input-bg-color);
+  border: 1px solid var(--input-border-color);
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-suggestions li {
+  padding: 10px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.search-suggestions li:hover {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+
+.word-explorer.dark .search-suggestions {
+  background-color: var(--card-bg-color);
+  border-color: var(--card-border-color);
+}
+
+.word-explorer.dark .search-suggestions li:hover {
+  background-color: var(--primary-color);
+}
+
+.search-loading {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  .search-suggestions li {
+    padding: 10px 14px;
+  }
+
+  input[type="text"], button {
+    width: 100%;
+  }
+
+  .word-details h2 {
+    font-size: 1.3rem;
+  }
+
+  .definition-card {
+    padding: 0.5rem;
+  }
+
+  .definition-card h3 {
+    font-size: 1rem;
+  }
+
+  .word-list li {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  main {
+    flex-direction: column;
+  }
+  
+  main [data-panel-group] {
+    flex-direction: column !important;
+  }
+  
+  .graph-container,
+  .details-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0.5rem; /* Reduce padding on very small screens */
+    gap: 0.25rem;
+  }
+
+  h1 {
+    font-size: 1.1rem;
+  }
+
+  .theme-toggle, .history-button {
+    padding: 0.25rem;
+    font-size: 0.8rem;
+  }
+
+  .word-details h2 {
+    font-size: 1.2rem;
+  }
+
+  .definition-card h3 {
+    font-size: 0.9rem;
+  }
+
+  .word-list li {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+  }
+
+  .footer {
+    font-size: 0.7rem;
+    padding: 0.4rem;
+  }
+
+  .search-container {
+    gap: 0.25rem;
+  }
+
+  main {
+    padding: 0;
+  }
+  
+  .graph-container {
+    min-height: 250px;
+  }
+}
+
+.loading-indicator {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--button-text-color);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+  margin-left: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-secondary-color);
+  padding: 2rem;
+  background-color: var(--card-bg-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--card-shadow);
+  font-size: 1.1rem;
+}
+
+.loading-spinner::before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  margin-bottom: 1rem;
+  border: 4px solid var(--card-border-color);
+  border-top: 4px solid var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Note: The word-details-container class is defined in global.css */
+
+/* Word Content Tabs */
+.word-content-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.tab-button {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab-button:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.tab-button.active {
+  background-color: var(--accent-color, #fca311);
+  color: white;
+  border-color: var(--accent-color, #fca311);
+}
+
+.tab-icon {
+  font-size: 1.1em;
+}
+
+.word-content {
+  padding: 1.5rem;
+}
+
+/* Fix for empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.01);
+  border-radius: 0.5rem;
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+}
+
+.empty-state p {
+  margin-bottom: 1rem;
+  color: var(--text-secondary, #6c757d);
+}
+
+.fetch-network-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--accent-color, #fca311);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.fetch-network-button:hover {
+  background-color: var(--accent-color-dark, #e76f51);
+  transform: translateY(-1px);
+}
+
+/* Add MUI TabPanel styling */
+.MuiTabPanel-root {
+  padding: 0 !important;
+  height: calc(100vh - 160px);
+  overflow: hidden;
+}
+
+/* Re-adding Footer Styles */
+.footer {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  text-align: center;
+  padding: 0.25rem;
+  font-size: 0.8rem;
+  border-top: 1px solid var(--accent-color);
+  /* position: sticky; Let flexbox handle placement within word-explorer */
+  /* bottom: 0; */
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width */
+  z-index: 10;
+}
+
+.dark .footer {
+  background-color: var(--footer-color);
+  color: var(--text-color-secondary);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Adjust footer size on small screens */
+@media (max-width: 480px) {
+  /* ... other 480px rules ... */
+  .footer {
+    font-size: 0.7rem;
+    padding: 0.4rem;
+  }
+}
+
+/* Re-adding Theme Toggle Button Styles */
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  margin-left: 0.5rem;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.dark .theme-toggle {
+  color: var(--primary-color);
+  filter: drop-shadow(0 0 2px rgba(255, 209, 102, 0.3));
+}
+
+.dark .theme-toggle:hover {
+  color: var(--gold);
+}
+
+/* Adjust theme toggle size on small screens */
+@media (max-width: 480px) {
+  .theme-toggle, .history-button {
+    padding: 0.25rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* --- REMOVE Targeting the main word header lemma --- */
+/*
+.word-details-header-lemma {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  display: block !important; 
+}
+*/
+
+/* React-Resizable-Panels Styles */
+main [data-panel-group] {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+main [data-panel] {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+main [data-panel-resizer] {
+  width: 4px !important;
+  background-color: var(--card-border-color) !important;
+  cursor: col-resize !important;
+}
+
+.dark .search-container {
+  background-color: var(--card-bg-color);
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+.dark .search-input {
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  border-color: var(--input-border-color);
+}
+
+.dark .search-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.2);
+}
+
+.dark .search-button,
+.dark .random-button {
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
+}
+
+.dark .search-button:hover,
+.dark .random-button:hover {
+  background-color: #e6bc5c;
+}
+
+.dark .graph-container {
+  background-color: var(--graph-bg-color);
+}
+
+.dark .details-container {
+  background-color: var(--card-bg-color);
+  box-shadow: -2px 0 10px var(--shadow-color);
+}
+
+.dark .definition-card {
+  background-color: var(--definition-bg-color);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  color: var(--text-color);
+}
+
+.dark .no-word-selected,
+.dark .loading-spinner {
+  background-color: var(--card-bg-color-elevated);
+  color: var(--text-color-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark main [data-panel-resizer] {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+.dark .word-list li {
+  background-color: var(--input-bg-color);
+  border-color: rgba(255, 209, 102, 0.3);
+  color: var(--text-color);
+}
+
+.dark .search-suggestions {
+  background-color: var(--card-bg-color-elevated);
+  border-color: var(--card-border-color);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.dark .search-suggestions li:hover {
+  background-color: rgba(255, 209, 102, 0.2);
+  color: var(--text-color-white);
+}
+
+.dark .error-message {
+  background-color: rgba(230, 57, 70, 0.1);
+  border: 1px solid rgba(230, 57, 70, 0.3);
+  color: #ff8a93;
+}
+
+.dark .footer {
+  background-color: var(--footer-color);
+  color: var(--text-color-secondary);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Network controls in dark mode - More aggressive overrides */
+.dark .network-controls {
+  background-color: var(--graph-bg-color) !important;
+  border: none !important;
+  color: var(--text-color) !important;
+  box-shadow: none !important;
+}
+
+.dark .network-controls:hover,
+.dark .network-controls:focus,
+.dark .network-controls:active {
+  background-color: var(--card-bg-color-elevated) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Target all Slider components in dark mode */
+.dark .MuiSlider-root,
+.dark .MuiSlider-root.Mui-focused,
+.dark .MuiSlider-root.Mui-active,
+.dark .MuiSlider-root:hover {
+  color: var(--primary-color) !important;
+  box-shadow: none !important;
+}
+
+/* Target rail specifically */
+.dark .MuiSlider-rail,
+.dark .MuiSlider-rail:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Target track specifically */
+.dark .MuiSlider-track,
+.dark .MuiSlider-track:hover {
+  background-color: var(--primary-color) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Target all thumb states */
+.dark .MuiSlider-thumb,
+.dark .MuiSlider-thumb.Mui-focused,
+.dark .MuiSlider-thumb.Mui-active,
+.dark .MuiSlider-thumb:hover,
+.dark .MuiSlider-thumb:active,
+.dark .MuiSlider-thumb.Mui-focusVisible {
+  background-color: var(--primary-color) !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Especially aggressive style to override Material-UI's focus styles */
+.dark [class*="MuiSlider-"] {
+  box-shadow: none !important;
+}
+
+/* Fix for the slider container */
+.dark [class*="SliderContainer-"] {
+  box-shadow: none !important;
+}
+
+/* Enhance dark mode styles for definition cards and content */
+.dark .definition-card {
+  background-color: var(--definition-bg-color);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  color: var(--text-color);
+}
+
+/* Ensure proper styling for MUI components in dark mode */
+.dark .MuiTabs-root {
+  background-color: var(--card-bg-color) !important;
+  color: var(--text-color) !important;
+}
+
+.dark .MuiTab-root {
+  color: var(--text-color-secondary) !important;
+}
+
+.dark .MuiTab-root.Mui-selected {
+  color: var(--primary-color) !important;
+}
+
+.dark .MuiTabPanel-root {
+  background-color: var(--card-bg-color) !important;
+  color: var(--text-color) !important;
+}
+
+.dark .MuiTypography-root {
+  color: var(--text-color) !important;
+}
+
+.dark .MuiPaper-root {
+  background-color: var(--card-bg-color) !important;
+  color: var(--text-color) !important;
+}
+
+.dark .MuiBox-root {
+  color: var(--text-color);
+}
+
+/* Ensure all typography and text elements have proper dark mode colors */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, 
+.dark p, .dark span, .dark div, .dark li {
+  color: var(--text-color);
+}
+
+/* Add styles for buttons in dark mode */
+.dark button:not(.MuiButton-root):not(.search-button):not(.random-button):not(.theme-toggle) {
+  background-color: var(--card-bg-color-elevated);
+  color: var(--text-color);
+  border-color: var(--card-border-color);
+}
+
+.dark button:not(.MuiButton-root):not(.search-button):not(.random-button):not(.theme-toggle):hover {
+  background-color: var(--card-border-color);
+}
+
+/* Ensure proper background for Tab sections */
+.dark .MuiBox-root[role="tabpanel"] {
+  background-color: var(--card-bg-color) !important;
+}
+
+/* Additional styles to remove any box shadows or borders that might look bad in dark mode */
+.dark .MuiPaper-elevation1,
+.dark .MuiPaper-elevation2,
+.dark .MuiPaper-elevation3,
+.dark .MuiPaper-elevation4,
+.dark .MuiPaper-elevation5 {
+  box-shadow: none !important;
+  border: 1px solid var(--card-border-color) !important;
+}
+
+/* Force background colors for all Material-UI components in dark mode */
+.dark .MuiContainer-root,
+.dark .MuiGrid-root,
+.dark .MuiCard-root,
+.dark .MuiCardContent-root,
+.dark .MuiCardHeader-root,
+.dark .MuiCardActions-root,
+.dark .MuiList-root,
+.dark .MuiListItem-root,
+.dark .MuiListItemText-root {
+  background-color: transparent !important;
+  color: var(--text-color) !important;
+}
+
+/* Override Material UI styled components to ensure they respect dark mode */
+.dark [class*="Mui"] {
+  color: var(--text-color);
+}
+
+/* Override specific Material UI components that might be causing issues */
+.dark [class*="MuiTab-root"] {
+  color: var(--text-color-secondary);
+}
+
+.dark [class*="MuiTab-root"].Mui-selected {
+  color: var(--primary-color);
+}
+
+/* Further override for Sliders */
+.dark .MuiSlider-root * {
+  box-shadow: none !important;
+  outline: none !important;
+  border: none !important;
+}
+
+/* Ensure text in definition sections has proper contrast and color */
+.dark .definition-card * {
+  color: var(--text-color);
+}
+
+.dark .definition-card h3 {
+  color: var(--secondary-color);
+}
+
+.dark .definition-card .source {
+  color: var(--link-color);
+}
+
+/* Add contrast to part of speech labels */
+.dark .part-of-speech {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* Ensure proper styling for any nested content */
+.dark .MuiTableContainer-root,
+.dark .MuiTable-root,
+.dark .MuiTableHead-root,
+.dark .MuiTableBody-root,
+.dark .MuiTableRow-root,
+.dark .MuiTableCell-root {
+  background-color: var(--card-bg-color) !important;
+  color: var(--text-color) !important;
+  border-color: var(--card-border-color) !important;
+}
+
+/* Override any remaining box-shadows that might appear */
+.dark * {
+  box-shadow: none !important;
+}
+
+/* Fix text visibility in dark mode - target specific containers */
+.dark .MuiTabPanel-root {
+  background-color: var(--card-bg-color) !important;
+  color: var(--text-color) !important;
+}
+
+.dark .MuiBox-root[role="tabpanel"] {
+  background-color: var(--card-bg-color) !important;
+}
+
+/* Ensure right panel content is properly styled */
+.dark .definition-card {
+  background-color: var(--definition-bg-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--card-border-color) !important;
+}
+
+/* Fix for definition text */
+.dark .definition-card p,
+.dark .definition-card li,
+.dark .definition-card span {
+  color: var(--text-color) !important;
+}
+
+/* Fix for part of speech headers */
+.dark .part-of-speech,
+.dark h2.part-of-speech,
+.dark h3.part-of-speech {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+}
+
+/* Fix for definition sources */
+.dark .definition-card .source {
+  color: var(--link-color) !important;
+}
+
+/* Reset the overly aggressive selector */
+.dark [class*="Mui"] {
+  color: inherit;
+}
+
+/* Target specific Material-UI components instead */
+.dark .MuiPaper-root {
+  background-color: var(--card-bg-color) !important;
+}
+
+.dark .MuiTypography-root {
+  color: var(--text-color) !important;
+}
+
+/* Ensure tab panels have proper background */
+.dark div[role="tabpanel"] {
+  background-color: var(--card-bg-color) !important;
+}
+
+/* Fix styling for word part sections (noun, adjective, etc.) */
+.dark .noun-section,
+.dark .adjective-section,
+.dark .verb-section,
+.dark .adverb-section {
+  background-color: var(--card-bg-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Fix styling for part of speech headings */
+.dark h2.noun,
+.dark h2.adjective,
+.dark h2.verb,
+.dark h2.adverb {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+/* Fix for definition content */
+.dark p.definition,
+.dark div.definition,
+.dark span.definition {
+  color: var(--text-color) !important;
+  background-color: var(--definition-bg-color) !important;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--card-border-color);
+}
+
+/* Fix source attribution styling */
+.dark .source-attribution {
+  color: var(--link-color) !important;
+  font-style: italic;
+  text-align: right;
+  padding-top: 4px;
+}
+
+/* Fix main content background in word details */
+.dark .word-details-content,
+.dark .details-container {
+  background-color: var(--card-bg-color) !important;
+}
+
+/* Fix text styling for definition text which could be in divs or list items */
+.dark div.definition-text,
+.dark li.definition-item,
+.dark p.definition-text {
+  color: var(--text-color) !important;
+}
+
+/* Create more contrast for part of speech labels and headings */
+.dark h3.part-of-speech,
+.dark span.part-of-speech {
+  color: var(--gold) !important;
+  background-color: rgba(255, 209, 102, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+/* Force background color on the main content panel and all its children */
+.dark .MuiPaper-root,
+.dark [role="tabpanel"],
+.dark .details-container,
+.dark .MuiTabPanel-root,
+.dark .MuiBox-root {
+  background-color: var(--card-bg-color) !important;
+}
+
+/* Target the main content directly */
+.dark main,
+.dark main > div,
+.dark main [data-panel],
+.dark .word-details,
+.dark .word-details-content {
+  background-color: var(--card-bg-color) !important;
+}
+
+/* Target specific items that might have white backgrounds */
+.dark .css-1gsv261,
+.dark .MuiTabs-flexContainer,
+.dark .definition-container,
+.dark .MuiBox-root,
+.dark [class*="MuiBox-root"],
+.dark [class*="MuiPaper"],
+.dark [class*="MuiContainer"] {
+  background-color: var(--card-bg-color) !important;
+}
+
+/* Force all direct children of the tabpanel to have the proper background */
+.dark [role="tabpanel"] > *,
+.dark .MuiTabPanel-root > * {
+  background-color: var(--card-bg-color) !important;
+}
+
+/* Last resort: target everything in the main area */
+.dark .details-container * {
+  background-color: var(--card-bg-color) !important;
+}

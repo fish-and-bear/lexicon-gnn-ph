@@ -1,0 +1,21 @@
+2025-04-16 11:29:23,904 - INFO - Starting table creation/update process.
+2025-04-16 11:29:24,464 - INFO - Tables created or updated successfully.
+2025-04-16 11:29:24,470 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-16 11:29:24,471 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-16 11:29:24,728 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-16 11:29:24,729 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-16 11:29:25,351 - INFO - Extracted parenthesized text from lemma: original='garini(garni)' → lemma='garini', note='garni'
+2025-04-16 11:29:25,365 - INFO - Extracted parenthesized text from lemma: original='garito(garto)**' → lemma='garito**', note='garto'
+2025-04-16 11:29:25,374 - INFO - Extracted parenthesized text from lemma: original='nariyan(naryan)' → lemma='nariyan', note='naryan'
+2025-04-16 11:29:25,381 - INFO - Extracted parenthesized text from lemma: original='ganiyan(ganyan)' → lemma='ganiyan', note='ganyan'
+2025-04-16 11:29:30,669 - INFO - Extracted parenthesized text from lemma: original='(na-)nu' → lemma='nu', note='na-'
+2025-04-16 11:29:39,930 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:29:41,062 - INFO - Extracted parenthesized text from lemma: original='(q)abu(s)' → lemma='abu', note='q, s'
+2025-04-16 11:29:41,487 - INFO - Extracted parenthesized text from lemma: original='(q)uNah' → lemma='uNah', note='q'
+2025-04-16 11:29:43,468 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:29:43,482 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:29:43,494 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:30:16,160 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:30:16,188 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:30:16,202 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:30:17,529 - WARNING - Error closing connection: set_session cannot be used inside a transaction

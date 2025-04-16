@@ -1,0 +1,328 @@
+2025-04-16 11:01:24,427 - INFO - Starting table creation/update process.
+2025-04-16 11:01:24,797 - INFO - Tables created or updated successfully.
+2025-04-16 11:01:24,802 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-16 11:01:24,802 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-16 11:01:24,928 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-16 11:01:24,929 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-16 11:01:26,029 - INFO - Extracted parenthesized text from lemma: original='garini(garni)' → lemma='garini', note='garni'
+2025-04-16 11:01:26,356 - INFO - Extracted parenthesized text from lemma: original='garito(garto)**' → lemma='garito**', note='garto'
+2025-04-16 11:01:26,595 - INFO - Extracted parenthesized text from lemma: original='nariyan(naryan)' → lemma='nariyan', note='naryan'
+2025-04-16 11:01:26,740 - INFO - Extracted parenthesized text from lemma: original='ganiyan(ganyan)' → lemma='ganiyan', note='ganyan'
+2025-04-16 11:01:31,594 - INFO - Extracted parenthesized text from lemma: original='(na-)nu' → lemma='nu', note='na-'
+2025-04-16 11:01:43,402 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:01:44,435 - INFO - Extracted parenthesized text from lemma: original='(q)abu(s)' → lemma='abu', note='q, s'
+2025-04-16 11:01:44,758 - INFO - Extracted parenthesized text from lemma: original='(q)uNah' → lemma='uNah', note='q'
+2025-04-16 11:01:58,666 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:01:58,683 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:01:58,691 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:02:12,457 - ERROR - Database error inserting etymology for word ID 1719 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+Traceback (most recent call last):
+  File "C:\fil-relex\backend\dictionary_manager.py", line 5653, in insert_etymology
+    cur.execute(
+    ~~~~~~~~~~~^
+        """
+        ^^^
+    ...<17 lines>...
+        params,
+        ^^^^^^^
+    )
+    ^
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-16 11:02:12,473 - ERROR - Error fetching POS ID for code 'num' (from 'num'): current transaction is aborted, commands ignored until end of transaction block
+. Returning 'unc'.
+2025-04-16 11:02:12,474 - ERROR - Database error inserting definition for word ID 1719 from 'kaikki.org (Tagalog)': 25P02 ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-16 11:02:12,479 - INFO - No definitions successfully processed for word 'isa' (ID: 1719).
+2025-04-16 11:02:13,764 - INFO - Extracted parenthesized text from lemma: original='(si-)ida' → lemma='ida', note='si-'
+2025-04-16 11:02:16,479 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:02:17,623 - INFO - Extracted parenthesized text from lemma: original='(w)asu' → lemma='asu', note='w'
+2025-04-16 11:02:18,997 - INFO - Removed trailing number(s) from lemma: 'd2' → 'd'
+2025-04-16 11:02:19,282 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:02:19,297 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:02:33,588 - INFO - Extracted parenthesized text from lemma: original='(i-)Cu' → lemma='Cu', note='i-'
+2025-04-16 11:02:38,095 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:02:41,190 - INFO - Extracted parenthesized text from lemma: original='pili(h)' → lemma='pili', note='h'
+2025-04-16 11:02:42,196 - INFO - Extracted parenthesized text from lemma: original='kaS(ə)pal' → lemma='kaSpal', note='ə'
+2025-04-16 11:02:42,828 - INFO - Extracted parenthesized text from lemma: original='(q)aʀuhu' → lemma='aʀuhu', note='q'
+2025-04-16 11:02:47,012 - INFO - Extracted parenthesized text from lemma: original='(m-)atay' → lemma='atay', note='m-'
+2025-04-16 11:02:51,754 - WARNING - Invalid or problematic Baybayin form found for 'paling': 'spelling ᜉᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:02:51,773 - WARNING - Invalid or problematic Baybayin form found for 'paling': 'spelling ᜉᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:02:52,403 - WARNING - Invalid or problematic Baybayin form found for 'piling': 'spelling ᜉᜒᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:02:52,452 - WARNING - Invalid or problematic Baybayin form found for 'piling': 'spelling ᜉᜒᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:02:59,397 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:02:59,420 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:03:00,353 - INFO - Extracted parenthesized text from lemma: original='la(ŋ)gaq' → lemma='lagaq', note='ŋ'
+2025-04-16 11:03:02,643 - INFO - Extracted parenthesized text from lemma: original='suq(ə)lút' → lemma='suqlút', note='ə'
+2025-04-16 11:03:06,604 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:03:09,377 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:03:09,919 - INFO - Extracted parenthesized text from lemma: original='*ə(ŋ)juŋ' → lemma='*əjuŋ', note='ŋ'
+2025-04-16 11:03:12,805 - INFO - Extracted parenthesized text from lemma: original='lap(ə)qút' → lemma='lapqút', note='ə'
+2025-04-16 11:03:19,592 - INFO - Extracted parenthesized text from lemma: original='(ma-)təʀas' → lemma='təʀas', note='ma-'
+2025-04-16 11:03:20,825 - INFO - Extracted parenthesized text from lemma: original='bu(ŋ)kas' → lemma='bukas', note='ŋ'
+2025-04-16 11:03:21,838 - INFO - Extracted parenthesized text from lemma: original='(si-)ia' → lemma='ia', note='si-'
+2025-04-16 11:03:21,840 - INFO - Extracted parenthesized text from lemma: original='(si-)ia' → lemma='ia', note='si-'
+2025-04-16 11:03:24,882 - INFO - Extracted parenthesized text from lemma: original='ban(e)sag' → lemma='bansag', note='e'
+2025-04-16 11:03:26,854 - INFO - Extracted parenthesized text from lemma: original='taq(ə)mis' → lemma='taqmis', note='ə'
+2025-04-16 11:03:31,182 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:03:32,064 - INFO - Extracted parenthesized text from lemma: original='(ma-)biʀaw' → lemma='biʀaw', note='ma-'
+2025-04-16 11:03:34,709 - INFO - Extracted parenthesized text from lemma: original='(i-)kaSu' → lemma='kaSu', note='i-'
+2025-04-16 11:03:36,501 - INFO - Extracted parenthesized text from lemma: original='sab(ə)lay' → lemma='sablay', note='ə'
+2025-04-16 11:03:39,289 - INFO - Extracted parenthesized text from lemma: original='i(ŋ)git' → lemma='igit', note='ŋ'
+2025-04-16 11:03:43,469 - INFO - Extracted parenthesized text from lemma: original='luk(ə)suh' → lemma='luksuh', note='ə'
+2025-04-16 11:03:45,372 - INFO - Extracted parenthesized text from lemma: original='bag(ə)sák' → lemma='bagsák', note='ə'
+2025-04-16 11:03:49,871 - INFO - Extracted parenthesized text from lemma: original='luk(e)tún' → lemma='luktún', note='e'
+2025-04-16 11:03:50,532 - INFO - Extracted parenthesized text from lemma: original='kali(n)wala' → lemma='kaliwala', note='n'
+2025-04-16 11:03:50,732 - INFO - Extracted parenthesized text from lemma: original='laŋ(ə)si' → lemma='laŋsi', note='ə'
+2025-04-16 11:03:50,734 - INFO - Extracted parenthesized text from lemma: original='laŋ(ə)si' → lemma='laŋsi', note='ə'
+2025-04-16 11:03:51,135 - INFO - Extracted parenthesized text from lemma: original='də(m)paD' → lemma='dəpaD', note='m'
+2025-04-16 11:03:51,298 - INFO - Extracted parenthesized text from lemma: original='ta(ŋ)kəp' → lemma='takəp', note='ŋ'
+2025-04-16 11:03:53,274 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:03:58,000 - INFO - Extracted parenthesized text from lemma: original='la(ŋ)ka' → lemma='laka', note='ŋ'
+2025-04-16 11:03:58,650 - INFO - Extracted parenthesized text from lemma: original='*bulú(dj)' → lemma='*bulú', note='dj'
+2025-04-16 11:03:59,447 - INFO - Extracted parenthesized text from lemma: original='pi(n)zit' → lemma='pizit', note='n'
+2025-04-16 11:04:05,183 - INFO - Extracted parenthesized text from lemma: original='tə(n)duk' → lemma='təduk', note='n'
+2025-04-16 11:04:19,642 - INFO - Extracted parenthesized text from lemma: original='baŋ(ə)luh' → lemma='baŋluh', note='ə'
+2025-04-16 11:04:24,185 - INFO - Extracted parenthesized text from lemma: original='la(ŋ)kət' → lemma='lakət', note='ŋ'
+2025-04-16 11:04:28,891 - INFO - Extracted parenthesized text from lemma: original='buʀ(ə)túŋ' → lemma='buʀtúŋ', note='ə'
+2025-04-16 11:04:30,014 - INFO - Extracted parenthesized text from lemma: original='rab(ə)nut' → lemma='rabnut', note='ə'
+2025-04-16 11:04:31,087 - INFO - Extracted parenthesized text from lemma: original='mə(n)tik' → lemma='mətik', note='n'
+2025-04-16 11:04:34,687 - INFO - Extracted parenthesized text from lemma: original='sa(m)baw' → lemma='sabaw', note='m'
+2025-04-16 11:04:40,377 - INFO - Extracted parenthesized text from lemma: original='ba(ŋ)kuq' → lemma='bakuq', note='ŋ'
+2025-04-16 11:04:46,536 - INFO - Extracted parenthesized text from lemma: original='taq(ə)baŋ' → lemma='taqbaŋ', note='ə'
+2025-04-16 11:04:46,737 - INFO - Extracted parenthesized text from lemma: original='qi(m)pun' → lemma='qipun', note='m'
+2025-04-16 11:04:49,416 - INFO - Extracted parenthesized text from lemma: original='bulú(dj)' → lemma='bulú', note='dj'
+2025-04-16 11:04:51,490 - INFO - Extracted parenthesized text from lemma: original='pis(ə)ŋí' → lemma='pisŋí', note='ə'
+2025-04-16 11:04:58,431 - INFO - Extracted parenthesized text from lemma: original='luk(ə)ban' → lemma='lukban', note='ə'
+2025-04-16 11:04:59,217 - INFO - Extracted parenthesized text from lemma: original='raq(e)but' → lemma='raqbut', note='e'
+2025-04-16 11:05:08,250 - INFO - Extracted parenthesized text from lemma: original='pag(ə)quŋ' → lemma='pagquŋ', note='ə'
+2025-04-16 11:05:13,431 - WARNING - Invalid or problematic Baybayin form found for 'supling': 'spelling ᜐᜓᜉ᜔ᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:05:19,043 - INFO - Extracted parenthesized text from lemma: original='^황(黃)' → lemma='^황', note='黃'
+2025-04-16 11:05:48,116 - INFO - Extracted parenthesized text from lemma: original='(ma-)qasin' → lemma='qasin', note='ma-'
+2025-04-16 11:05:48,122 - INFO - Extracted parenthesized text from lemma: original='(ma-)qasiN' → lemma='qasiN', note='ma-'
+2025-04-16 11:05:56,148 - INFO - Extracted parenthesized text from lemma: original='*pi(ʀ)sa' → lemma='*pisa', note='ʀ'
+2025-04-16 11:05:56,321 - INFO - Extracted parenthesized text from lemma: original='tak(ə)lub' → lemma='taklub', note='ə'
+2025-04-16 11:05:57,765 - INFO - Extracted parenthesized text from lemma: original='siq(ə)rip' → lemma='siqrip', note='ə'
+2025-04-16 11:05:59,668 - INFO - Extracted parenthesized text from lemma: original='et al. (2023)' → lemma='et al.', note='2023'
+2025-04-16 11:05:59,670 - INFO - Extracted parenthesized text from lemma: original='in the CLDF dataset from (2010–)' → lemma='in the CLDF dataset from', note='2010–'
+2025-04-16 11:06:08,538 - INFO - Extracted parenthesized text from lemma: original='laq(ə)nab' → lemma='laqnab', note='ə'
+2025-04-16 11:06:36,038 - INFO - Extracted parenthesized text from lemma: original='səŋ(ə)hij' → lemma='səŋhij', note='ə'
+2025-04-16 11:06:38,190 - INFO - Extracted parenthesized text from lemma: original='kis(ə)láp' → lemma='kisláp', note='ə'
+2025-04-16 11:06:44,587 - INFO - Extracted parenthesized text from lemma: original='buq(ə)tis' → lemma='buqtis', note='ə'
+2025-04-16 11:07:03,725 - INFO - Extracted parenthesized text from lemma: original='sip(ə)qun' → lemma='sipqun', note='ə'
+2025-04-16 11:07:20,498 - INFO - Extracted parenthesized text from lemma: original='ki(n)sap' → lemma='kisap', note='n'
+2025-04-16 11:07:21,664 - INFO - No definitions successfully processed for word 'puyos' (ID: 70517).
+2025-04-16 11:07:23,173 - WARNING - Invalid or problematic Baybayin form found for 'Feling': 'spelling ᜉᜒᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:07:23,774 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:07:26,178 - INFO - Extracted parenthesized text from lemma: original='high blood (pressure)' → lemma='high blood', note='pressure'
+2025-04-16 11:07:27,340 - INFO - Extracted parenthesized text from lemma: original='lak(ə)táw' → lemma='laktáw', note='ə'
+2025-04-16 11:08:00,915 - WARNING - Vowel mark not following a consonant at position 2
+2025-04-16 11:08:22,717 - INFO - Extracted parenthesized text from lemma: original='lig(ə)tas' → lemma='ligtas', note='ə'
+2025-04-16 11:08:48,570 - INFO - Extracted parenthesized text from lemma: original='bal(ə)ñáw' → lemma='balñáw', note='ə'
+2025-04-16 11:08:49,597 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:08:49,938 - INFO - Extracted parenthesized text from lemma: original='taq(ə)náw' → lemma='taqnáw', note='ə'
+2025-04-16 11:09:15,216 - INFO - Extracted parenthesized text from lemma: original='pus(ə)qun' → lemma='pusqun', note='ə'
+2025-04-16 11:09:46,207 - INFO - Extracted parenthesized text from lemma: original='səŋ(ə)qaw' → lemma='səŋqaw', note='ə'
+2025-04-16 11:10:02,390 - INFO - Extracted parenthesized text from lemma: original='tik(ə)lup' → lemma='tiklup', note='ə'
+2025-04-16 11:10:06,342 - INFO - Extracted parenthesized text from lemma: original='pu(n)zut' → lemma='puzut', note='n'
+2025-04-16 11:10:09,459 - INFO - Extracted parenthesized text from lemma: original='saʀ(ə)qəb' → lemma='saʀqəb', note='ə'
+2025-04-16 11:10:09,510 - INFO - Extracted parenthesized text from lemma: original='lig(ə)pit' → lemma='ligpit', note='ə'
+2025-04-16 11:10:10,222 - INFO - Extracted parenthesized text from lemma: original='sa(m)puk' → lemma='sapuk', note='m'
+2025-04-16 11:10:17,296 - INFO - Extracted parenthesized text from lemma: original='tu(ŋ)kab' → lemma='tukab', note='ŋ'
+2025-04-16 11:10:17,646 - INFO - Extracted parenthesized text from lemma: original='tə(n)dək' → lemma='tədək', note='n'
+2025-04-16 11:10:17,751 - INFO - Extracted parenthesized text from lemma: original='ti(n)zeg' → lemma='tizeg', note='n'
+2025-04-16 11:10:19,572 - WARNING - Invalid or problematic Baybayin form found for 'sopling': 'spelling ᜐᜓᜉ᜔ᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:10:30,214 - INFO - Extracted parenthesized text from lemma: original='sa(m)bay' → lemma='sabay', note='m'
+2025-04-16 11:10:56,870 - WARNING - Invalid or problematic Baybayin form found for 'Intsik beho, tulo laway': 'ᜁᜈ᜔ᜆ᜔ᜐᜒᜃ᜔ ᜊᜒᜑᜓ ᜵ ᜆᜓᜎᜓ ᜎᜏᜌ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:11:01,601 - WARNING - Invalid or problematic Baybayin form found for 'selang': 'spelling ᜐᜒᜎᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:11:13,898 - INFO - Removed trailing numbers: 'd2' → 'd'
+2025-04-16 11:11:19,700 - INFO - Extracted parenthesized text from lemma: original='lə(n)taw' → lemma='lətaw', note='n'
+2025-04-16 11:11:32,996 - INFO - Extracted parenthesized text from lemma: original='tuq(ə)lid' → lemma='tuqlid', note='ə'
+2025-04-16 11:11:40,606 - WARNING - Invalid or problematic Baybayin form found for 'sepelin': 'spelling ᜐᜒᜉᜒᜎᜒᜈ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:11:47,432 - WARNING - Invalid or problematic Baybayin form found for 'pabling': 'spelling ᜉᜊ᜔ᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:11:55,171 - INFO - Extracted parenthesized text from lemma: original='bala(ʀ)báʀ' → lemma='balabáʀ', note='ʀ'
+2025-04-16 11:11:56,777 - WARNING - Vowel mark not following a consonant at position 2
+2025-04-16 11:11:56,788 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:11:56,808 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:12:02,174 - INFO - Extracted parenthesized text from lemma: original='hig(ə)pít' → lemma='higpít', note='ə'
+2025-04-16 11:12:23,010 - INFO - Removed trailing number(s) from lemma: 'dekada '80' → 'dekada ''
+2025-04-16 11:12:23,020 - INFO - Removed trailing number(s) from lemma: 'dekada '90' → 'dekada ''
+2025-04-16 11:12:23,030 - INFO - Removed trailing number(s) from lemma: 'dekada '70' → 'dekada ''
+2025-04-16 11:12:23,196 - INFO - Removed trailing number(s) from lemma: 'dekada '60' → 'dekada ''
+2025-04-16 11:12:23,550 - WARNING - Invalid or problematic Baybayin form found for 'kapag may usok, may apoy': 'ᜃᜉᜄ᜔ ᜋᜌ᜔ ᜂᜐᜓᜃ᜔ ᜵ ᜋᜌ᜔ ᜀᜉᜓᜌ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:23,577 - WARNING - Invalid or problematic Baybayin form found for 'habang may buhay, may pag-asa': 'ᜑᜊᜅ᜔ ᜋᜌ᜔ ᜊᜓᜑᜌ᜔ ᜵ ᜋᜌ᜔ ᜉᜄ᜔ᜀᜐ'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:23,604 - WARNING - Invalid or problematic Baybayin form found for 'bato-bato sa langit, ang tamaan huwag magalit': 'ᜊᜆᜓᜊᜆᜓ ᜐ ᜎᜅᜒᜆ᜔ ᜵ ᜀᜅ᜔ ᜆᜋᜀᜈ᜔ ᜑᜓᜏᜄ᜔ ᜋᜄᜎᜒᜆ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:23,615 - WARNING - Invalid or problematic Baybayin form found for 'ang taong nagigipit, sa patalim kumakapit': 'ᜀᜅ᜔ ᜆᜂᜅ᜔ ᜈᜄᜒᜄᜒᜉᜒᜆ᜔ ᜵ ᜐ ᜉᜆᜎᜒᜋ᜔ ᜃᜓᜋᜃᜉᜒᜆ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:23,625 - WARNING - Invalid or problematic Baybayin form found for 'kapag wala ang pusa, naglalaro ang daga': 'ᜃᜉᜄ᜔ ᜏᜎ ᜀᜅ᜔ ᜉᜓᜐ ᜵ ᜈᜄ᜔ᜎᜎᜇᜓ ᜀᜅ᜔ ᜇᜄ'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:23,635 - WARNING - Invalid or problematic Baybayin form found for 'kapag binato ka ng bato, batuhin mo ng tinapay': 'ᜃᜉᜄ᜔ ᜊᜒᜈᜆᜓ ᜃ ᜈᜅ᜔ ᜊᜆᜓ ᜵ ᜊᜆᜓᜑᜒᜈ᜔ ᜋᜓ ᜈᜅ᜔ ᜆᜒᜈᜉᜌ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:23,654 - WARNING - Invalid or problematic Baybayin form found for 'kapag wala ang pusa, naglalaro ang mga daga': 'ᜃᜉᜄ᜔ ᜏᜎ ᜀᜅ᜔ ᜉᜓᜐ ᜵ ᜈᜄ᜔ᜎᜎᜇᜓ ᜀᜅ᜔ ᜋᜅ ᜇᜄ'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:23,658 - WARNING - Invalid or problematic Baybayin form found for 'kapag may gusto, may paraan': 'ᜃᜉᜄ᜔ ᜋᜌ᜔ ᜄᜓᜐ᜔ᜆᜓ ᜵ ᜋᜌ᜔ ᜉᜇᜀᜈ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:25,614 - WARNING - Invalid or problematic Baybayin form found for 'sala sa init, sala sa lamig': 'ᜐᜎ ᜐ ᜁᜈᜒᜆ᜔ ᜵ ᜐᜎ ᜐ ᜎᜋᜒᜄ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:26,761 - WARNING - Invalid or problematic Baybayin form found for 'ang sakit ng kalingkingan, damdam ng buong katawan': 'ᜀᜅ᜔ ᜐᜃᜒᜆ᜔ ᜈᜅ᜔ ᜃᜎᜒᜅ᜔ᜃᜒᜅᜈ᜔ ᜵ ᜇᜋ᜔ᜇᜋ᜔ ᜈᜅ᜔ ᜊᜓᜂᜅ᜔ ᜃᜆᜏᜈ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:26,786 - WARNING - Invalid or problematic Baybayin form found for 'kung ano ang puno, siya ang bunga': 'ᜃᜓᜅ᜔ ᜀᜈᜓ ᜀᜅ᜔ ᜉᜓᜈᜓ ᜵ ᜐᜒᜌ ᜀᜅ᜔ ᜊᜓᜅ'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:26,963 - WARNING - Invalid or problematic Baybayin form found for 'paano mo sinasabi ang … sa Ingles': 'ᜉᜀᜈᜓ ᜋᜓ ᜐᜒᜈᜐᜊᜒ ᜀᜅ᜔ ᜵ ᜐ ᜁᜅ᜔ᜎᜒᜐ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:27,214 - WARNING - Invalid or problematic Baybayin form found for 'tulak ng bibig, kabig ng dibdib': 'ᜆᜓᜎᜃ᜔ ᜈᜅ᜔ ᜊᜒᜊᜒᜄ᜔ ᜵ ᜃᜊᜒᜄ᜔ ᜈᜅ᜔ ᜇᜒᜊ᜔ᜇᜒᜊ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:30,669 - WARNING - Invalid or problematic Baybayin form found for 'ispeling': 'spelling ᜁᜐ᜔ᜉᜒᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:36,853 - INFO - No definitions successfully processed for word 'mapapel' (ID: 8772).
+2025-04-16 11:12:43,233 - WARNING - Invalid or problematic Baybayin form found for 'kung hinagis ka ng bakal, gantihan mo ng tinapay': 'ᜃᜓᜅ᜔ ᜑᜒᜈᜄᜒᜐ᜔ ᜃ ᜈᜅ᜔ ᜊᜃᜎ᜔ ᜵ ᜄᜈ᜔ᜆᜒᜑᜈ᜔ ᜋᜓ ᜈᜅ᜔ ᜆᜒᜈᜉᜌ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:49,948 - WARNING - Invalid or problematic Baybayin form found for 'kapag may tiyaga, may nilaga': 'ᜃᜉᜄ᜔ ᜋᜌ᜔ ᜆᜒᜌᜄ ᜵ ᜋᜌ᜔ ᜈᜒᜎᜄ'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:49,952 - WARNING - Invalid or problematic Baybayin form found for 'parang awa na': 'ᜉᜇᜅ᜔ ᜀᜏ ᜈ ᜶'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:50,572 - WARNING - Invalid or problematic Baybayin form found for 'ang taong gipit, sa patalim kumakapit': 'ᜀᜅ᜔ ᜆᜂᜅ᜔ ᜈᜄᜒᜄᜒᜉᜒᜆ᜔ ᜵ ᜐ ᜉᜆᜎᜒᜋ᜔ ᜃᜓᜋᜃᜉᜒᜆ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:51,303 - WARNING - Invalid or problematic Baybayin form found for 'isang kahig, isang tuka': 'ᜁᜐᜅ᜔ ᜃᜑᜒᜄ᜔ ᜵ ᜁᜐᜅ᜔ ᜆᜓᜃ'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:55,107 - WARNING - Invalid or problematic Baybayin form found for 'may tainga ang lupa, may pakpak ang balita': 'ᜋᜌ᜔ ᜆᜌᜒᜅ ᜀᜅ᜔ ᜎᜓᜉ ᜵ ᜋᜌ᜔ ᜉᜃ᜔ᜉᜃ᜔ ᜀᜅ᜔ ᜊᜎᜒᜆ'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:56,635 - WARNING - Invalid or problematic Baybayin form found for 'sa lupa ng mga bulag, ang naghahari ay pisak': 'ᜐ ᜎᜓᜉ ᜈᜅ᜔ ᜋᜅ ᜊᜓᜎᜄ᜔ ᜵ ᜀᜅ᜔ ᜈᜄ᜔ᜑᜑᜇᜒ ᜀᜌ᜔ ᜉᜒᜐᜃ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:12:57,005 - WARNING - Invalid or problematic Baybayin form found for 'ang maglakad nang matulin, kung matinik ay malalim': 'ᜀᜅ᜔ ᜋᜄ᜔ᜎᜃᜇ᜔ ᜈᜅ᜔ ᜆᜓᜎᜒᜈ᜔ ᜵ ᜃᜓᜅ᜔ ᜋᜆᜒᜈᜒᜃ᜔ ᜀᜌ᜔ ᜋᜎᜎᜒᜋ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:13:05,883 - WARNING - Invalid or problematic Baybayin form found for 'sanling': 'spelling ᜐᜈ᜔ᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:13:05,892 - WARNING - Invalid or problematic Baybayin form found for 'sanling': 'spelling ᜐᜈ᜔ᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:13:06,308 - WARNING - Invalid or problematic Baybayin form found for 'kulang sa pito, labis sa walo': 'ᜃᜓᜎᜅ᜔ ᜐ ᜉᜒᜆᜓ ᜵ ᜎᜊᜒᜐ᜔ ᜐ ᜏᜎᜓ'. Ignoring Baybayin for this entry.
+2025-04-16 11:13:08,863 - WARNING - Invalid or problematic Baybayin form found for 'reispeling': 'spelling ᜇᜒᜁᜐ᜔ᜉᜒᜎᜒᜅ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:13:13,249 - WARNING - Invalid or problematic Baybayin form found for 'madaling sabihin, mahirap gawin': 'ᜋᜇᜎᜒᜅ᜔ ᜐᜊᜒᜑᜒᜈ᜔ ᜵ ᜋᜑᜒᜇᜉ᜔ ᜄᜏᜒᜈ᜔'. Ignoring Baybayin for this entry.
+2025-04-16 11:13:26,854 - INFO - Completed processing ..\data\kaikki.jsonl:
+2025-04-16 11:13:26,855 - INFO -   Total lines: 27964
+2025-04-16 11:13:26,855 - INFO -   Successfully processed: 27925
+2025-04-16 11:13:26,856 - INFO -   Processed with non-critical errors: 39
+2025-04-16 11:13:26,856 - INFO -   Failed entries: 0
+2025-04-16 11:13:26,856 - INFO -   Skipped JSON errors: 0
+2025-04-16 11:13:26,857 - INFO -   --- Data processed: ---
+2025-04-16 11:13:26,857 - INFO -   Definitions: 40941
+2025-04-16 11:13:26,857 - INFO -   Relations: 278317
+2025-04-16 11:13:26,858 - INFO -   Etymologies: 19859
+2025-04-16 11:13:26,858 - INFO -   Pronunciations: 89032
+2025-04-16 11:13:26,858 - INFO -   Forms: 126408
+2025-04-16 11:13:26,858 - INFO -   Categories: 59243
+2025-04-16 11:13:26,859 - INFO -   Templates: 27964
+2025-04-16 11:13:26,859 - INFO -   Links: 77166
+2025-04-16 11:13:26,859 - INFO -   Scripts: 26974
+2025-04-16 11:13:26,860 - INFO -   Ety Relations: 42142
+2025-04-16 11:13:26,860 - INFO -   Sense Relations: 94799
+2025-04-16 11:13:26,861 - INFO -   Form Relations: 108544
+2025-04-16 11:13:26,861 - INFO -   Examples: 3779
+2025-04-16 11:13:26,863 - WARNING - Error summary for ..\data\kaikki.jsonl: {
+  "EntryError: Form error for 'is\u00e1': posting list tuple with 3 items cannot be split at offset 4\n": 1,
+  "EntryError: Invalid Baybayin form 'spelling \u1709\u170e\u1712\u1705\u1714' ignored": 2,
+  "EntryError: Invalid Baybayin form 'spelling \u1709\u1712\u170e\u1712\u1705\u1714' ignored": 3,
+  "EntryError: Invalid Baybayin form 'spelling \u1710\u1713\u1709\u1714\u170e\u1712\u1705\u1714' ignored": 2,
+  "EntryError: Invalid Baybayin form '\u1701\u1708\u1714\u1706\u1714\u1710\u1712\u1703\u1714 \u170a\u1712\u1711\u1713 \u1735 \u1706\u1713\u170e\u1713 \u170e\u170f\u170c\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form 'spelling \u1710\u1712\u170e\u1705\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form 'spelling \u1710\u1712\u1709\u1712\u170e\u1712\u1708\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form 'spelling \u1709\u170a\u1714\u170e\u1712\u1705\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1703\u1709\u1704\u1714 \u170b\u170c\u1714 \u1702\u1710\u1713\u1703\u1714 \u1735 \u170b\u170c\u1714 \u1700\u1709\u1713\u170c\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1711\u170a\u1705\u1714 \u170b\u170c\u1714 \u170a\u1713\u1711\u170c\u1714 \u1735 \u170b\u170c\u1714 \u1709\u1704\u1714\u1700\u1710' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u170a\u1706\u1713\u170a\u1706\u1713 \u1710 \u170e\u1705\u1712\u1706\u1714 \u1735 \u1700\u1705\u1714 \u1706\u170b\u1700\u1708\u1714 \u1711\u1713\u170f\u1704\u1714 \u170b\u1704\u170e\u1712\u1706\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1700\u1705\u1714 \u1706\u1702\u1705\u1714 \u1708\u1704\u1712\u1704\u1712\u1709\u1712\u1706\u1714 \u1735 \u1710 \u1709\u1706\u170e\u1712\u170b\u1714 \u1703\u1713\u170b\u1703\u1709\u1712\u1706\u1714' ignored": 2,
+  "EntryError: Invalid Baybayin form '\u1703\u1709\u1704\u1714 \u170f\u170e \u1700\u1705\u1714 \u1709\u1713\u1710 \u1735 \u1708\u1704\u1714\u170e\u170e\u1707\u1713 \u1700\u1705\u1714 \u1707\u1704' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1703\u1709\u1704\u1714 \u170a\u1712\u1708\u1706\u1713 \u1703 \u1708\u1705\u1714 \u170a\u1706\u1713 \u1735 \u170a\u1706\u1713\u1711\u1712\u1708\u1714 \u170b\u1713 \u1708\u1705\u1714 \u1706\u1712\u1708\u1709\u170c\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1703\u1709\u1704\u1714 \u170f\u170e \u1700\u1705\u1714 \u1709\u1713\u1710 \u1735 \u1708\u1704\u1714\u170e\u170e\u1707\u1713 \u1700\u1705\u1714 \u170b\u1705 \u1707\u1704' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1703\u1709\u1704\u1714 \u170b\u170c\u1714 \u1704\u1713\u1710\u1714\u1706\u1713 \u1735 \u170b\u170c\u1714 \u1709\u1707\u1700\u1708\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1710\u170e \u1710 \u1701\u1708\u1712\u1706\u1714 \u1735 \u1710\u170e \u1710 \u170e\u170b\u1712\u1704\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1700\u1705\u1714 \u1710\u1703\u1712\u1706\u1714 \u1708\u1705\u1714 \u1703\u170e\u1712\u1705\u1714\u1703\u1712\u1705\u1708\u1714 \u1735 \u1707\u170b\u1714\u1707\u170b\u1714 \u1708\u1705\u1714 \u170a\u1713\u1702\u1705\u1714 \u1703\u1706\u170f\u1708\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1703\u1713\u1705\u1714 \u1700\u1708\u1713 \u1700\u1705\u1714 \u1709\u1713\u1708\u1713 \u1735 \u1710\u1712\u170c \u1700\u1705\u1714 \u170a\u1713\u1705' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1709\u1700\u1708\u1713 \u170b\u1713 \u1710\u1712\u1708\u1710\u170a\u1712 \u1700\u1705\u1714 \u1735 \u1710 \u1701\u1705\u1714\u170e\u1712\u1710\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1706\u1713\u170e\u1703\u1714 \u1708\u1705\u1714 \u170a\u1712\u170a\u1712\u1704\u1714 \u1735 \u1703\u170a\u1712\u1704\u1714 \u1708\u1705\u1714 \u1707\u1712\u170a\u1714\u1707\u1712\u170a\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form 'spelling \u1701\u1710\u1714\u1709\u1712\u170e\u1712\u1705\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1703\u1713\u1705\u1714 \u1711\u1712\u1708\u1704\u1712\u1710\u1714 \u1703 \u1708\u1705\u1714 \u170a\u1703\u170e\u1714 \u1735 \u1704\u1708\u1714\u1706\u1712\u1711\u1708\u1714 \u170b\u1713 \u1708\u1705\u1714 \u1706\u1712\u1708\u1709\u170c\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1703\u1709\u1704\u1714 \u170b\u170c\u1714 \u1706\u1712\u170c\u1704 \u1735 \u170b\u170c\u1714 \u1708\u1712\u170e\u1704' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1709\u1707\u1705\u1714 \u1700\u170f \u1708 \u1736' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1701\u1710\u1705\u1714 \u1703\u1711\u1712\u1704\u1714 \u1735 \u1701\u1710\u1705\u1714 \u1706\u1713\u1703' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u170b\u170c\u1714 \u1706\u170c\u1712\u1705 \u1700\u1705\u1714 \u170e\u1713\u1709 \u1735 \u170b\u170c\u1714 \u1709\u1703\u1714\u1709\u1703\u1714 \u1700\u1705\u1714 \u170a\u170e\u1712\u1706' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1710 \u170e\u1713\u1709 \u1708\u1705\u1714 \u170b\u1705 \u170a\u1713\u170e\u1704\u1714 \u1735 \u1700\u1705\u1714 \u1708\u1704\u1714\u1711\u1711\u1707\u1712 \u1700\u170c\u1714 \u1709\u1712\u1710\u1703\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u1700\u1705\u1714 \u170b\u1704\u1714\u170e\u1703\u1707\u1714 \u1708\u1705\u1714 \u1706\u1713\u170e\u1712\u1708\u1714 \u1735 \u1703\u1713\u1705\u1714 \u170b\u1706\u1712\u1708\u1712\u1703\u1714 \u1700\u170c\u1714 \u170b\u170e\u170e\u1712\u170b\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form 'spelling \u1710\u1708\u1714\u170e\u1712\u1705\u1714' ignored": 2,
+  "EntryError: Invalid Baybayin form '\u1703\u1713\u170e\u1705\u1714 \u1710 \u1709\u1712\u1706\u1713 \u1735 \u170e\u170a\u1712\u1710\u1714 \u1710 \u170f\u170e\u1713' ignored": 1,
+  "EntryError: Invalid Baybayin form 'spelling \u1707\u1712\u1701\u1710\u1714\u1709\u1712\u170e\u1712\u1705\u1714' ignored": 1,
+  "EntryError: Invalid Baybayin form '\u170b\u1707\u170e\u1712\u1705\u1714 \u1710\u170a\u1712\u1711\u1712\u1708\u1714 \u1735 \u170b\u1711\u1712\u1707\u1709\u1714 \u1704\u170f\u1712\u1708\u1714' ignored": 1
+}
+2025-04-16 11:13:26,890 - INFO - Successfully processed source: Kaikki.org (Tagalog)
+2025-04-16 11:13:26,896 - INFO - Starting processing for Kaikki.org (Cebuano) from ..\data\kaikki-ceb.jsonl
+2025-04-16 11:13:26,897 - INFO - Processing Kaikki dictionary: ..\data\kaikki-ceb.jsonl with source ID: 'kaikki.org (Cebuano)'
+2025-04-16 11:13:27,017 - INFO - Found 17909 entries to process in ..\data\kaikki-ceb.jsonl
+2025-04-16 11:13:27,019 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-16 11:13:28,229 - INFO - Extracted parenthesized text from lemma: original='(i-)kita' → lemma='kita', note='i-'
+2025-04-16 11:13:28,232 - INFO - Extracted parenthesized text from lemma: original='(i-)kita' → lemma='kita', note='i-'
+2025-04-16 11:13:31,009 - INFO - Extracted parenthesized text from lemma: original='(i-)aku' → lemma='aku', note='i-'
+2025-04-16 11:13:31,014 - INFO - Extracted parenthesized text from lemma: original='(i-)aku' → lemma='aku', note='i-'
+2025-04-16 11:13:31,160 - INFO - Extracted parenthesized text from lemma: original='(q)abu(s)' → lemma='abu', note='q, s'
+2025-04-16 11:13:31,320 - INFO - Extracted parenthesized text from lemma: original='(q)uNah' → lemma='uNah', note='q'
+2025-04-16 11:13:34,832 - INFO - Extracted parenthesized text from lemma: original='(ma-)basəq' → lemma='basəq', note='ma-'
+2025-04-16 11:13:43,001 - INFO - Extracted parenthesized text from lemma: original='(m-)atay' → lemma='atay', note='m-'
+2025-04-16 11:13:49,747 - INFO - Extracted parenthesized text from lemma: original='(si-)ia' → lemma='ia', note='si-'
+2025-04-16 11:13:49,749 - INFO - Extracted parenthesized text from lemma: original='(si-)ia' → lemma='ia', note='si-'
+2025-04-16 11:13:50,397 - INFO - Extracted parenthesized text from lemma: original='(ma-)baqəʀu' → lemma='baqəʀu', note='ma-'
+2025-04-16 11:13:50,399 - INFO - Extracted parenthesized text from lemma: original='(ma-)baqəʀuh' → lemma='baqəʀuh', note='ma-'
+2025-04-16 11:13:52,623 - INFO - Extracted parenthesized text from lemma: original='(na-)nu' → lemma='nu', note='na-'
+2025-04-16 11:13:52,654 - INFO - Extracted parenthesized text from lemma: original='(ma-)biʀaw' → lemma='biʀaw', note='ma-'
+2025-04-16 11:13:53,509 - INFO - Extracted parenthesized text from lemma: original='sab(e)láy' → lemma='sabláy', note='e'
+2025-04-16 11:13:54,743 - INFO - Extracted parenthesized text from lemma: original='luk(ə)suh' → lemma='luksuh', note='ə'
+2025-04-16 11:13:55,132 - INFO - Extracted parenthesized text from lemma: original='bag(ə)sák' → lemma='bagsák', note='ə'
+2025-04-16 11:13:55,920 - INFO - Extracted parenthesized text from lemma: original='luk(e)tún' → lemma='luktún', note='e'
+2025-04-16 11:13:58,987 - INFO - No definitions successfully processed for word 'binago' (ID: 139375).
+2025-04-16 11:14:03,395 - INFO - Extracted parenthesized text from lemma: original='bug(ə)tuŋ' → lemma='bugtuŋ', note='ə'
+2025-04-16 11:14:03,783 - INFO - Extracted parenthesized text from lemma: original='sip(ə)qun' → lemma='sipqun', note='ə'
+2025-04-16 11:14:04,126 - INFO - Extracted parenthesized text from lemma: original='rab(ə)nut' → lemma='rabnut', note='ə'
+2025-04-16 11:14:07,748 - INFO - Extracted parenthesized text from lemma: original='sa(m)baw' → lemma='sabaw', note='m'
+2025-04-16 11:14:12,153 - INFO - Extracted parenthesized text from lemma: original='pus(e)qun' → lemma='pusqun', note='e'
+2025-04-16 11:14:13,779 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-5' → lemma='ika-5', note='abbr.'
+2025-04-16 11:14:21,425 - INFO - Extracted parenthesized text from lemma: original='Sanskrit पारापत (pārāpata)' → lemma='Sanskrit पारापत', note='pārāpata'
+2025-04-16 11:14:23,443 - INFO - Extracted parenthesized text from lemma: original='luh(ə)naw' → lemma='luhnaw', note='ə'
+2025-04-16 11:14:23,533 - INFO - Extracted parenthesized text from lemma: original='taq(ə)mis' → lemma='taqmis', note='ə'
+2025-04-16 11:14:23,561 - INFO - Extracted parenthesized text from lemma: original='(ma-)taq(ə)mis' → lemma='taqmis', note='ma-, ə'
+2025-04-16 11:14:24,815 - INFO - Extracted parenthesized text from lemma: original='ta(ŋ)kub' → lemma='takub', note='ŋ'
+2025-04-16 11:14:32,034 - INFO - Extracted parenthesized text from lemma: original='tak(e)lub' → lemma='taklub', note='e'
+2025-04-16 11:14:37,362 - INFO - No definitions successfully processed for word 'Bucog' (ID: 144958).
+2025-04-16 11:14:39,931 - INFO - Extracted parenthesized text from lemma: original='taq(ə)náw' → lemma='taqnáw', note='ə'
+2025-04-16 11:14:40,006 - INFO - Extracted parenthesized text from lemma: original='ti(n)zeg' → lemma='tizeg', note='n'
+2025-04-16 11:14:41,349 - INFO - Extracted parenthesized text from lemma: original='taq(e)baŋ' → lemma='taqbaŋ', note='e'
+2025-04-16 11:14:44,448 - INFO - Extracted parenthesized text from lemma: original='ke(m)pes' → lemma='kepes', note='m'
+2025-04-16 11:14:51,213 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-8' → lemma='ika-8', note='abbr.'
+2025-04-16 11:14:53,976 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-7' → lemma='ika-7', note='abbr.'
+2025-04-16 11:14:58,384 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-4' → lemma='ika-4', note='abbr.'
+2025-04-16 11:15:01,223 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-6' → lemma='ika-6', note='abbr.'
+2025-04-16 11:15:01,427 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-9' → lemma='ika-9', note='abbr.'
+2025-04-16 11:15:01,602 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-10' → lemma='ika-10', note='abbr.'
+2025-04-16 11:15:01,646 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-12' → lemma='ika-12', note='abbr.'
+2025-04-16 11:15:01,675 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-11' → lemma='ika-11', note='abbr.'
+2025-04-16 11:15:01,694 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-14' → lemma='ika-14', note='abbr.'
+2025-04-16 11:15:01,717 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-13' → lemma='ika-13', note='abbr.'
+2025-04-16 11:15:01,741 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-20' → lemma='ika-20', note='abbr.'
+2025-04-16 11:15:01,764 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-17' → lemma='ika-17', note='abbr.'
+2025-04-16 11:15:01,784 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-19' → lemma='ika-19', note='abbr.'
+2025-04-16 11:15:01,804 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-15' → lemma='ika-15', note='abbr.'
+2025-04-16 11:15:01,822 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-18' → lemma='ika-18', note='abbr.'
+2025-04-16 11:15:01,841 - INFO - Extracted parenthesized text from lemma: original='(abbr.) ika-16' → lemma='ika-16', note='abbr.'
+2025-04-16 11:15:13,719 - INFO - Extracted parenthesized text from lemma: original='high blood (pressure)' → lemma='high blood', note='pressure'
+2025-04-16 11:15:20,420 - INFO - Removed trailing number(s) from lemma: 'ad2' → 'ad'
+2025-04-16 11:15:23,291 - INFO - Extracted parenthesized text from lemma: original='tuq(ə)lid' → lemma='tuqlid', note='ə'
+2025-04-16 11:15:26,848 - INFO - No definitions successfully processed for word 'Inday Badiday' (ID: 152154).
+2025-04-16 11:15:42,638 - INFO - Extracted parenthesized text from lemma: original='tik(ə)lup' → lemma='tiklup', note='ə'
+2025-04-16 11:15:42,871 - INFO - Extracted parenthesized text from lemma: original='siq(e)rip' → lemma='siqrip', note='e'
+2025-04-16 11:15:43,013 - INFO - Extracted parenthesized text from lemma: original='baŋ(ə)həʀ' → lemma='baŋhəʀ', note='ə'
+2025-04-16 11:15:43,033 - INFO - Extracted parenthesized text from lemma: original='baŋ(ə)qəʀ' → lemma='baŋqəʀ', note='ə'
+2025-04-16 11:15:43,041 - INFO - Extracted parenthesized text from lemma: original='baŋ(ə)qəʀ' → lemma='baŋqəʀ', note='ə'
+2025-04-16 11:15:43,362 - INFO - Removed trailing numbers: 'ad2' → 'ad'
+2025-04-16 11:15:46,975 - INFO - Removed trailing numbers: 'did2' → 'did'
+2025-04-16 11:15:48,026 - INFO - Removed trailing numbers: 'Lapu2' → 'Lapu'
+2025-04-16 11:15:50,631 - INFO - Removed trailing number(s) from lemma: 'buot2' → 'buot'
+2025-04-16 11:15:51,170 - INFO - Extracted parenthesized text from lemma: original='lap(ə)qút' → lemma='lapqút', note='ə'
+2025-04-16 11:15:51,231 - INFO - Completed processing ..\data\kaikki-ceb.jsonl:
+2025-04-16 11:15:51,231 - INFO -   Total lines: 17909
+2025-04-16 11:15:51,232 - INFO -   Successfully processed: 17909
+2025-04-16 11:15:51,232 - INFO -   Processed with non-critical errors: 0
+2025-04-16 11:15:51,232 - INFO -   Failed entries: 0
+2025-04-16 11:15:51,233 - INFO -   Skipped JSON errors: 0
+2025-04-16 11:15:51,233 - INFO -   --- Data processed: ---
+2025-04-16 11:15:51,233 - INFO -   Definitions: 23710
+2025-04-16 11:15:51,233 - INFO -   Relations: 21916
+2025-04-16 11:15:51,233 - INFO -   Etymologies: 11393
+2025-04-16 11:15:51,234 - INFO -   Pronunciations: 9705
+2025-04-16 11:15:51,234 - INFO -   Forms: 3237
+2025-04-16 11:15:51,234 - INFO -   Categories: 23881
+2025-04-16 11:15:51,234 - INFO -   Templates: 17912
+2025-04-16 11:15:51,234 - INFO -   Links: 36360
+2025-04-16 11:15:51,234 - INFO -   Scripts: 0
+2025-04-16 11:15:51,235 - INFO -   Ety Relations: 9524
+2025-04-16 11:15:51,235 - INFO -   Sense Relations: 9371
+2025-04-16 11:15:51,235 - INFO -   Form Relations: 1028
+2025-04-16 11:15:51,235 - INFO -   Examples: 546
+2025-04-16 11:15:51,236 - INFO - Successfully processed source: Kaikki.org (Cebuano)
+2025-04-16 11:15:51,238 - INFO - All sources processed successfully. Committing transaction...
+2025-04-16 11:15:51,246 - INFO - Database connection closed.

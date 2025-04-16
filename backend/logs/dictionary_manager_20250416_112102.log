@@ -1,0 +1,44 @@
+2025-04-16 11:21:02,730 - INFO - Starting table creation/update process.
+2025-04-16 11:21:03,474 - INFO - Tables created or updated successfully.
+2025-04-16 11:21:03,483 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-16 11:21:03,484 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-16 11:21:03,752 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-16 11:21:03,752 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-16 11:21:05,313 - INFO - Extracted parenthesized text from lemma: original='garini(garni)' → lemma='garini', note='garni'
+2025-04-16 11:21:05,344 - INFO - Extracted parenthesized text from lemma: original='garito(garto)**' → lemma='garito**', note='garto'
+2025-04-16 11:21:05,361 - INFO - Extracted parenthesized text from lemma: original='nariyan(naryan)' → lemma='nariyan', note='naryan'
+2025-04-16 11:21:05,378 - INFO - Extracted parenthesized text from lemma: original='ganiyan(ganyan)' → lemma='ganiyan', note='ganyan'
+2025-04-16 11:21:06,093 - INFO - Extracted Baybayin 'ᜀᜇᜊ᜔ᜌ' from mixed string 'ᜐᜏ᜔ᜇᜒ ᜀᜇᜊ᜔ᜌ' for word 'Saudi Arabia'.
+2025-04-16 11:21:06,149 - INFO - Extracted Baybayin 'ᜋᜇᜒᜈᜓ' from mixed string 'ᜐᜈ᜔ ᜋᜇᜒᜈᜓ' for word 'San Marino'.
+2025-04-16 11:21:07,210 - INFO - Extracted Baybayin 'ᜉᜒ' from mixed string 'ᜁᜌ᜔ ᜉᜒ' for word 'AP'.
+2025-04-16 11:21:08,230 - INFO - Extracted Baybayin 'ᜃᜓᜅ᜔' from mixed string 'ᜑᜓᜅ᜔ ᜃᜓᜅ᜔' for word 'Hong Kong'.
+2025-04-16 11:21:09,575 - INFO - Extracted parenthesized text from lemma: original='(na-)nu' → lemma='nu', note='na-'
+2025-04-16 11:21:13,193 - INFO - Extracted Baybayin 'ᜐᜒᜆᜒ' from mixed string 'ᜃᜒᜐᜓᜈ᜔ ᜐᜒᜆᜒ' for word 'Quezon City'.
+2025-04-16 11:21:13,257 - INFO - Extracted Baybayin 'ᜉᜐ᜔' from mixed string 'ᜎ ᜉᜐ᜔' for word 'La Paz'.
+2025-04-16 11:21:13,490 - INFO - Extracted Baybayin 'ᜉ᜔ᜇᜈ᜔ᜐᜒᜐ᜔ᜃᜓ' from mixed string 'ᜐᜈ᜔ ᜉ᜔ᜇᜈ᜔ᜐᜒᜐ᜔ᜃᜓ' for word 'San Francisco'.
+2025-04-16 11:21:14,840 - INFO - Extracted Baybayin 'ᜈᜒᜈ᜔ᜌᜓ' from mixed string 'ᜁᜎ᜔ ᜈᜒᜈ᜔ᜌᜓ' for word 'El Niño'.
+2025-04-16 11:21:15,471 - INFO - Extracted Baybayin 'ᜉᜓᜅ᜔' from mixed string 'ᜉᜒᜅ᜔ ᜉᜓᜅ᜔' for word 'ping pong'.
+2025-04-16 11:21:15,623 - INFO - Extracted Baybayin 'ᜐᜈ᜔ᜆ' from mixed string 'ᜐᜒᜋᜈ ᜐᜈ᜔ᜆ' for word 'Semana Santa'.
+2025-04-16 11:21:17,888 - INFO - Extracted Baybayin 'ᜇ᜔ᜌᜒ' from mixed string 'ᜁᜈ᜔ ᜇ᜔ᜌᜒ' for word 'ng'.
+2025-04-16 11:21:18,791 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:21:20,070 - INFO - Extracted parenthesized text from lemma: original='(q)abu(s)' → lemma='abu', note='q, s'
+2025-04-16 11:21:20,383 - INFO - Extracted parenthesized text from lemma: original='(q)uNah' → lemma='uNah', note='q'
+2025-04-16 11:21:22,107 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:21:22,118 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:21:22,129 - INFO - Extracted Baybayin 'ᜈ᜔' from mixed string '◌ᜈ᜔' for word '-an'.
+2025-04-16 11:21:40,897 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:21:40,915 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:21:40,925 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:21:41,043 - INFO - Extracted Baybayin 'ᜉᜓ' from mixed string 'ᜃᜓᜅ᜔ ᜉᜓ' for word 'kung fu'.
+2025-04-16 11:21:43,377 - INFO - Extracted Baybayin 'ᜂᜈᜒᜇᜓᜐ᜔' from mixed string 'ᜁᜐ᜔ᜆᜇᜓᜐ᜔ ᜂᜈᜒᜇᜓᜐ᜔' for word 'Estados Unidos'.
+2025-04-16 11:21:45,511 - INFO - Extracted parenthesized text from lemma: original='(si-)ida' → lemma='ida', note='si-'
+2025-04-16 11:21:46,666 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:21:47,184 - INFO - Extracted parenthesized text from lemma: original='(w)asu' → lemma='asu', note='w'
+2025-04-16 11:21:47,846 - INFO - Removed trailing number(s) from lemma: 'd2' → 'd'
+2025-04-16 11:21:48,079 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:21:48,093 - WARNING - Vowel mark not following a consonant at position 0
+2025-04-16 11:21:52,267 - INFO - Extracted Baybayin 'ᜇ᜔ᜌᜒ' from mixed string 'ᜁᜈ᜔ ᜇ᜔ᜌᜒ' for word 'Ng'.
+2025-04-16 11:21:57,584 - INFO - Extracted Baybayin 'ᜀᜃ᜔ᜊᜇ᜔' from mixed string 'ᜀᜎᜑᜓ ᜀᜃ᜔ᜊᜇ᜔' for word 'Allahu akbar'.
+2025-04-16 11:21:57,972 - INFO - Extracted Baybayin 'ᜉᜒ' from mixed string 'ᜊᜒ ᜉᜒ' for word 'BP'.
+2025-04-16 11:21:57,978 - INFO - Extracted Baybayin 'ᜀᜌ᜔' from mixed string 'ᜇ᜔ᜌᜒ ᜀᜌ᜔' for word 'GI'.
+2025-04-16 11:22:08,222 - WARNING - Error closing connection: set_session cannot be used inside a transaction
