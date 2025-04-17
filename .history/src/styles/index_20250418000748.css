@@ -1,0 +1,171 @@
+/**
+ * Main stylesheet for the application
+ * Imports all utility styles and components
+ */
+
+/* Import Utility CSS Files */
+@import './utilities/_reset.css';
+@import './utilities/_variables.css';
+@import './utilities/_functions.css';
+@import './utilities/_mixins.css';
+
+/* Base Styles */
+html {
+  font-family: var(--font-family-primary);
+  font-size: 16px;
+  color: var(--color-gray-900);
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: var(--color-white);
+  min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-4);
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+  line-height: 1.25;
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+  line-height: 1.35;
+}
+
+h5 {
+  font-size: var(--font-size-base);
+  line-height: 1.4;
+}
+
+h6 {
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+p {
+  margin-bottom: var(--spacing-4);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-default);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* Default spacing for content blocks */
+section {
+  margin-bottom: var(--spacing-12);
+}
+
+/* Default button styles */
+button, .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2) var(--spacing-4);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.btn-secondary {
+  background-color: var(--color-gray-200);
+  color: var(--color-gray-800);
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-gray-300);
+  text-decoration: none;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: var(--border-width-1) solid var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+/* Form elements */
+input, textarea, select {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: var(--border-width-1) solid var(--color-gray-300);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  transition: var(--transition-default);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing-1);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Form group spacing */
+.form-group {
+  margin-bottom: var(--spacing-4);
+}
+
+/* Import Component CSS Files (if any) */
+/* @import './components/header.css'; */
+/* @import './components/footer.css'; */
+/* @import './components/card.css'; */
+/* Add more component imports as needed */
+
+/* Import Page-specific CSS Files (if any) */
+/* @import './pages/home.css'; */
+/* @import './pages/about.css'; */
+/* Add more page imports as needed */

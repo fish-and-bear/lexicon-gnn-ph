@@ -1,0 +1,165 @@
+{
+  "affixed_affixations": [],
+  "badlit_form": null,
+  "baybayin_form": null,
+  "completeness_score": 0.6499999999999999,
+  "created_at": null,
+  "credits": [],
+  "data_hash": "fe654a46b6b47e82460690a23f0308fe",
+  "definition_relations": [],
+  "definitions": [
+    {
+      "categories": [],
+      "created_at": null,
+      "definition_metadata": {},
+      "definition_relations": [],
+      "definition_text": "who; whom",
+      "examples": null,
+      "id": 2182,
+      "related_words": [],
+      "sources": "tagalog.com",
+      "standardized_pos": {
+        "code": "pron",
+        "description": "Word that substitutes for a noun",
+        "id": 5,
+        "name_en": "Pronoun",
+        "name_tl": "Panghalip"
+      },
+      "standardized_pos_id": 5,
+      "updated_at": null,
+      "usage_notes": null,
+      "word_id": 2245
+    },
+    {
+      "categories": [],
+      "created_at": null,
+      "definition_metadata": {},
+      "definition_relations": [],
+      "definition_text": "Salitang ginagamit pananong sa ngalan ng tao.",
+      "examples": [
+        "{'text': 'S\u00edno ang sumulat ng koridong \u201cIbong Adarna?\u201d', 'label': 'General'}"
+      ],
+      "id": 72148,
+      "related_words": [],
+      "sources": "KWF Diksiyonaryo ng Wikang Filipino",
+      "standardized_pos": {
+        "code": "pron",
+        "description": "Word that substitutes for a noun",
+        "id": 5,
+        "name_en": "Pronoun",
+        "name_tl": "Panghalip"
+      },
+      "standardized_pos_id": 5,
+      "updated_at": null,
+      "usage_notes": "",
+      "word_id": 2245
+    },
+    {
+      "categories": [],
+      "created_at": null,
+      "definition_metadata": {},
+      "definition_relations": [],
+      "definition_text": "Salitang ginagamit pananong sa ngalan ng tao. S\u00edno ang sumulat ng koridong \u201cIbong Adarna?\u201d",
+      "examples": null,
+      "id": 74449,
+      "related_words": [],
+      "sources": "KWF Diksiyonaryo ng Wikang Filipino",
+      "standardized_pos": {
+        "code": "pron",
+        "description": "Word that substitutes for a noun",
+        "id": 5,
+        "name_en": "Pronoun",
+        "name_tl": "Panghalip"
+      },
+      "standardized_pos_id": 5,
+      "updated_at": null,
+      "usage_notes": "",
+      "word_id": 2245
+    },
+    {
+      "categories": [],
+      "created_at": null,
+      "definition_metadata": {},
+      "definition_relations": [],
+      "definition_text": "who",
+      "examples": null,
+      "id": 83276,
+      "related_words": [],
+      "sources": "kaikki.org (Tagalog)",
+      "standardized_pos": {
+        "code": "pron",
+        "description": "Word that substitutes for a noun",
+        "id": 5,
+        "name_en": "Pronoun",
+        "name_tl": "Panghalip"
+      },
+      "standardized_pos_id": 5,
+      "updated_at": null,
+      "usage_notes": null,
+      "word_id": 2245
+    }
+  ],
+  "derived_words": [],
+  "etymologies": [
+    {
+      "created_at": null,
+      "etymology_data": {},
+      "etymology_structure": null,
+      "etymology_text": "From Proto-Philippine *si-nu. Compare Brooke's Point Palawano sinu, Ilocano sino, Waray-Waray hin-o, and Yami sino. See also si, ano.",
+      "id": 7126,
+      "language_codes": "ilo,plw,tao,tl,war",
+      "normalized_components": null,
+      "sources": "kaikki.org (Tagalog)",
+      "updated_at": null
+    }
+  ],
+  "forms": [],
+  "has_baybayin": false,
+  "hyphenation": [
+    "si\u2027no"
+  ],
+  "id": 2245,
+  "idioms": null,
+  "incoming_relations": [],
+  "is_abbreviation": false,
+  "is_initialism": false,
+  "is_proper_noun": false,
+  "is_root": true,
+  "language_code": "tl",
+  "lemma": "s\u00edno",
+  "normalized_lemma": "sino",
+  "outgoing_relations": [],
+  "preferred_spelling": null,
+  "pronunciation_data": null,
+  "pronunciations": [
+    {
+      "created_at": null,
+      "pronunciation_metadata": {},
+      "sources": "kaikki.org (Tagalog)",
+      "tags": {},
+      "type": "respelling",
+      "updated_at": null,
+      "value": "-ino"
+    }
+  ],
+  "related_definitions": [],
+  "romanized_form": null,
+  "root_affixations": [],
+  "root_word": null,
+  "root_word_id": null,
+  "search_text": "'sino':2 's\u00edno':1",
+  "source_info": {
+    "files": [
+      "diksiyonaryo.ph"
+    ],
+    "last_updated": {
+      "diksiyonaryo.ph": "2025-04-16T12:08:38.087285"
+    }
+  },
+  "tags": null,
+  "templates": [],
+  "updated_at": null,
+  "word_metadata": {
+    "source_file": "kaikki.jsonl"
+  }
+}

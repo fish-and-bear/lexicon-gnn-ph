@@ -1,0 +1,181 @@
+{
+  "affixed_affixations": [],
+  "badlit_form": null,
+  "baybayin_form": null,
+  "completeness_score": 0.6499999999999999,
+  "created_at": null,
+  "credits": [],
+  "data_hash": "7bedf197563f9c5efb58df9288e62cac",
+  "definition_relations": [],
+  "definitions": [
+    {
+      "categories": [],
+      "created_at": null,
+      "definition_metadata": {},
+      "definition_relations": [],
+      "definition_text": "teacher; instructor",
+      "examples": null,
+      "id": 8900,
+      "related_words": [],
+      "sources": "tagalog.com",
+      "standardized_pos": {
+        "code": "n",
+        "description": "Word that refers to a person, place, thing, or idea",
+        "id": 1,
+        "name_en": "Noun",
+        "name_tl": "Pangngalan"
+      },
+      "standardized_pos_id": 1,
+      "updated_at": null,
+      "usage_notes": null,
+      "word_id": 9319
+    },
+    {
+      "categories": [],
+      "created_at": null,
+      "definition_metadata": {},
+      "definition_relations": [],
+      "definition_text": "T\u00e1ong ang gawain ay pagtutur\u00f2 .",
+      "examples": [
+        "{'text': 'Matalino ang gur\u00f2 ko sa Filipino.', 'label': 'General'}"
+      ],
+      "id": 32093,
+      "related_words": [],
+      "sources": "KWF Diksiyonaryo ng Wikang Filipino",
+      "standardized_pos": {
+        "code": "n",
+        "description": "Word that refers to a person, place, thing, or idea",
+        "id": 1,
+        "name_en": "Noun",
+        "name_tl": "Pangngalan"
+      },
+      "standardized_pos_id": 1,
+      "updated_at": null,
+      "usage_notes": "lalo na kung sa paaralan",
+      "word_id": 9319
+    },
+    {
+      "categories": [],
+      "created_at": null,
+      "definition_metadata": {},
+      "definition_relations": [],
+      "definition_text": "T\u00e1ong ang gawain ay pagtutur\u00f2 (lalo na kung sa paaralan). Matalino ang gur\u00f2 ko sa Filipino.",
+      "examples": null,
+      "id": 32259,
+      "related_words": [],
+      "sources": "KWF Diksiyonaryo ng Wikang Filipino",
+      "standardized_pos": {
+        "code": "n",
+        "description": "Word that refers to a person, place, thing, or idea",
+        "id": 1,
+        "name_en": "Noun",
+        "name_tl": "Pangngalan"
+      },
+      "standardized_pos_id": 1,
+      "updated_at": null,
+      "usage_notes": "",
+      "word_id": 9319
+    },
+    {
+      "categories": [],
+      "created_at": null,
+      "definition_metadata": {},
+      "definition_relations": [],
+      "definition_text": "teacher; educator; instructor",
+      "examples": null,
+      "id": 92361,
+      "related_words": [],
+      "sources": "kaikki.org (Tagalog)",
+      "standardized_pos": {
+        "code": "n",
+        "description": "Word that refers to a person, place, thing, or idea",
+        "id": 1,
+        "name_en": "Noun",
+        "name_tl": "Pangngalan"
+      },
+      "standardized_pos_id": 1,
+      "updated_at": null,
+      "usage_notes": null,
+      "word_id": 9319
+    }
+  ],
+  "derived_words": [],
+  "etymologies": [
+    {
+      "created_at": null,
+      "etymology_data": {},
+      "etymology_structure": null,
+      "etymology_text": "guru",
+      "id": 1936,
+      "language_codes": null,
+      "normalized_components": null,
+      "sources": "KWF Diksiyonaryo ng Wikang Filipino",
+      "updated_at": null
+    },
+    {
+      "created_at": null,
+      "etymology_data": {},
+      "etymology_structure": null,
+      "etymology_text": "Learned borrowing from Malay guru (\u201cteacher; educator\u201d), ultimately from Sanskrit \u0917\u0941\u0930\u0941 (gur\u00fa). Reintroduced by Eusebio T. Daluz in the early 20th century as a replacement to the previously used words maestro and maestra, both of Spanish origin. Doublet of gulo, another term from Malay guru, that become obsolete in the course of the 19th century. Compare English guru.",
+      "id": 11282,
+      "language_codes": "en,in,ms,sa,tl,tr",
+      "normalized_components": null,
+      "sources": "kaikki.org (Tagalog)",
+      "updated_at": null
+    }
+  ],
+  "forms": [],
+  "has_baybayin": false,
+  "hyphenation": null,
+  "id": 9319,
+  "idioms": null,
+  "incoming_relations": [],
+  "is_abbreviation": false,
+  "is_initialism": false,
+  "is_proper_noun": false,
+  "is_root": false,
+  "language_code": "tl",
+  "lemma": "gur\u00f2",
+  "normalized_lemma": "guro",
+  "outgoing_relations": [],
+  "preferred_spelling": null,
+  "pronunciation_data": null,
+  "pronunciations": [
+    {
+      "created_at": null,
+      "pronunciation_metadata": {},
+      "sources": "kaikki.org (Tagalog)",
+      "tags": {},
+      "type": "respelling",
+      "updated_at": null,
+      "value": "-u\u027eo\u0294"
+    },
+    {
+      "created_at": null,
+      "pronunciation_metadata": {},
+      "sources": "kaikki.org (Tagalog)",
+      "tags": {},
+      "type": "respelling",
+      "updated_at": null,
+      "value": "-o\u0294"
+    }
+  ],
+  "related_definitions": [],
+  "romanized_form": null,
+  "root_affixations": [],
+  "root_word": null,
+  "root_word_id": 9319,
+  "search_text": "'guro':2 'gur\u00f2':1",
+  "source_info": {
+    "files": [
+      "diksiyonaryo.ph"
+    ],
+    "last_updated": {
+      "diksiyonaryo.ph": "2025-04-16T12:07:34.363062"
+    }
+  },
+  "tags": null,
+  "templates": [],
+  "updated_at": null,
+  "word_metadata": {}
+}

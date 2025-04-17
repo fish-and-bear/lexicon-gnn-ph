@@ -1,0 +1,91 @@
+/**
+ * Fil-Relex Main Stylesheet
+ * A modular CSS architecture for maintainability and organization
+ * 
+ * NOTE: As of the latest update, all imports are now handled directly in src/index.css.
+ * This file is kept for backwards compatibility and contains only app-wide styles.
+ */
+
+/* App-wide styles that are specific to the application */
+
+.app {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  height: 100%;
+  transition: 
+    color var(--transition-normal),
+    background-color var(--transition-normal);
+}
+
+/* Material-UI dark mode overrides */
+.dark .MuiPaper-root {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.dark .MuiTypography-root {
+  color: var(--text-color);
+}
+
+.dark .MuiTypography-secondary {
+  color: var(--text-color-secondary);
+}
+
+.dark .MuiTabs-root {
+  background-color: var(--card-bg);
+}
+
+.dark .MuiTab-root {
+  color: var(--text-color);
+}
+
+.dark .MuiTab-root.Mui-selected {
+  color: var(--primary-color);
+}
+
+.dark .MuiTabs-indicator {
+  background-color: var(--primary-color);
+}
+
+.dark .MuiListItem-root {
+  background-color: var(--definition-bg-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.dark .MuiListItemText-primary {
+  color: var(--text-color) !important;
+}
+
+.dark .MuiListItemText-secondary {
+  color: var(--text-color-secondary) !important;
+}
+
+.dark .MuiChip-root {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .MuiChip-label {
+  color: var(--text-color);
+}
+
+.dark .MuiAccordion-root {
+  background-color: transparent;
+}
+
+.dark .MuiAccordionSummary-root {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .MuiAccordionDetails-root {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.dark .MuiDivider-root {
+  background-color: rgba(255, 255, 255, 0.1);
+}

@@ -1,0 +1,31 @@
+2025-04-16 16:19:05,137 - INFO - Starting table creation/update process.
+2025-04-16 16:19:05,137 - INFO - Creating required PostgreSQL extensions...
+2025-04-16 16:19:05,570 - INFO - Tables created or updated successfully.
+2025-04-16 16:19:05,575 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
+2025-04-16 16:19:05,575 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
+2025-04-16 16:19:05,707 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
+2025-04-16 16:19:05,708 - INFO - Initialized BaybayinRomanizer for script romanization
+2025-04-16 16:19:05,902 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'kun'
+2025-04-16 16:19:05,908 - ERROR - Unexpected error processing entry for 'kun': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:06,255 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'tao'
+2025-04-16 16:19:06,312 - ERROR - Unexpected error processing entry for 'tao': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:06,348 - INFO - Extracted parenthesized text from lemma: original='garini(garni)' → lemma='garini', note='garini(garni)'
+2025-04-16 16:19:06,360 - INFO - Extracted parenthesized text from lemma: original='garito(garto)**' → lemma='garito**', note='garito(garto)**'
+2025-04-16 16:19:06,369 - INFO - Extracted parenthesized text from lemma: original='nariyan(naryan)' → lemma='nariyan', note='nariyan(naryan)'
+2025-04-16 16:19:06,376 - INFO - Extracted parenthesized text from lemma: original='ganiyan(ganyan)' → lemma='ganiyan', note='ganiyan(ganyan)'
+2025-04-16 16:19:07,309 - ERROR - Unexpected error processing entry for 'o': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:07,511 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'mundo'
+2025-04-16 16:19:07,523 - ERROR - Unexpected error processing entry for 'mundo': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:07,664 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'balatik'
+2025-04-16 16:19:07,673 - ERROR - Unexpected error processing entry for 'balatik': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:07,807 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'baon'
+2025-04-16 16:19:07,969 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'balik'
+2025-04-16 16:19:09,078 - ERROR - Unexpected error processing entry for 'kita': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:09,237 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'suka'
+2025-04-16 16:19:09,270 - ERROR - Unexpected error processing entry for 'suka': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:09,402 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'look'
+2025-04-16 16:19:09,748 - INFO - Added Orthography Note 'Spanish-based orthography' to metadata for word 'katana'
+2025-04-16 16:19:09,962 - INFO - Extracted parenthesized text from lemma: original='(na-)nu' → lemma='nu', note='(na-)nu'
+2025-04-16 16:19:11,056 - ERROR - Unexpected error processing entry for 'u': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:11,383 - ERROR - Unexpected error processing entry for 'ni': cannot access local variable 'word_metadata' where it is not associated with a value
+2025-04-16 16:19:12,352 - WARNING - Error closing connection: set_session cannot be used inside a transaction

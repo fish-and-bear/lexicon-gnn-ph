@@ -1,0 +1,67 @@
+/**
+ * Common CSS imports for components
+ * This file should be imported by components that need access to shared styling
+ */
+
+/* Add a message explaining the transition */
+.css-notice {
+  display: none; /* Hidden by default */
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fffde7;
+  border: 1px solid #ffd600;
+  border-radius: 4px;
+  color: #424242;
+}
+
+/* Override specific hardcoded colors with variables when component CSS is imported */
+.tab-item {
+  color: var(--text-color-light, #6c757d);
+}
+
+.tab-item:hover {
+  color: var(--primary-color, #1d3557);
+}
+
+.tab-item.active {
+  color: var(--accent-color, #fca311);
+}
+
+.tab-item.active::after {
+  background-color: var(--accent-color, #fca311);
+}
+
+.word-content-tabs {
+  background-color: var(--bg-light, #f8f9fa);
+}
+
+.word-content {
+  background-color: var(--card-bg, white);
+}
+
+/* Dark mode overrides for components */
+.dark .tab-item {
+  color: var(--text-color-secondary, #a0a0a0);
+}
+
+.dark .tab-item:hover {
+  color: var(--primary-color, #5d9cec);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .tab-item.active {
+  color: var(--accent-color, #ffc940);
+}
+
+.dark .tab-item.active::after {
+  background-color: var(--accent-color, #ffc940);
+}
+
+.dark .word-content-tabs {
+  background-color: var(--card-bg, #131826);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .word-content {
+  background-color: var(--card-bg, #131826);
+} 

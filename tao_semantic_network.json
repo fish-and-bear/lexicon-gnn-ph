@@ -1,0 +1,2026 @@
+{
+  "links": [
+    {
+      "directed": false,
+      "id": "566-6427-synonym",
+      "source": "566",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-5854-synonym",
+      "source": "6427",
+      "target": "5854",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-286277-synonym",
+      "source": "6427",
+      "target": "286277",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-3230-synonym",
+      "source": "6427",
+      "target": "3230",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-19012-synonym",
+      "source": "6427",
+      "target": "19012",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-27887-synonym",
+      "source": "6427",
+      "target": "27887",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-29346-synonym",
+      "source": "6427",
+      "target": "29346",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-29341-synonym",
+      "source": "6427",
+      "target": "29341",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-5021-synonym",
+      "source": "6427",
+      "target": "5021",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-55259-synonym",
+      "source": "6427",
+      "target": "55259",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-46596-synonym",
+      "source": "6427",
+      "target": "46596",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "5854-6427-synonym",
+      "source": "5854",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "286277-6427-synonym",
+      "source": "286277",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "3230-6427-synonym",
+      "source": "3230",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "19012-6427-synonym",
+      "source": "19012",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "27887-6427-synonym",
+      "source": "27887",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "29346-6427-synonym",
+      "source": "29346",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "29341-6427-synonym",
+      "source": "29341",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "5021-6427-synonym",
+      "source": "5021",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "55259-6427-synonym",
+      "source": "55259",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "46596-6427-synonym",
+      "source": "46596",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "566-23891-synonym",
+      "source": "566",
+      "target": "23891",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "23891-3633-synonym",
+      "source": "23891",
+      "target": "3633",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "23891-23890-synonym",
+      "source": "23891",
+      "target": "23890",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "23891-28890-synonym",
+      "source": "23891",
+      "target": "28890",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "23891-566-synonym",
+      "source": "23891",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "23891-42156-variant",
+      "source": "23891",
+      "target": "42156",
+      "type": "variant"
+    },
+    {
+      "directed": false,
+      "id": "23891-54581-related",
+      "source": "23891",
+      "target": "54581",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "3633-23891-synonym",
+      "source": "3633",
+      "target": "23891",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "23890-23891-synonym",
+      "source": "23890",
+      "target": "23891",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "28890-23891-synonym",
+      "source": "28890",
+      "target": "23891",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "3633-23891-see_also",
+      "source": "3633",
+      "target": "23891",
+      "type": "see_also"
+    },
+    {
+      "directed": false,
+      "id": "3633-23891-related",
+      "source": "3633",
+      "target": "23891",
+      "type": "related"
+    },
+    {
+      "directed": true,
+      "id": "23890-23891-see_also",
+      "source": "23890",
+      "target": "23891",
+      "type": "see_also"
+    },
+    {
+      "directed": false,
+      "id": "23890-23891-related",
+      "source": "23890",
+      "target": "23891",
+      "type": "related"
+    },
+    {
+      "directed": true,
+      "id": "42156-23891-variant",
+      "source": "42156",
+      "target": "23891",
+      "type": "variant"
+    },
+    {
+      "directed": false,
+      "id": "54581-23891-related",
+      "source": "54581",
+      "target": "23891",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "566-11166-antonym",
+      "source": "566",
+      "target": "11166",
+      "type": "antonym"
+    },
+    {
+      "directed": false,
+      "id": "11166-137412-synonym",
+      "source": "11166",
+      "target": "137412",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11166-566-antonym",
+      "source": "11166",
+      "target": "566",
+      "type": "antonym"
+    },
+    {
+      "directed": false,
+      "id": "11166-14636-synonym",
+      "source": "11166",
+      "target": "14636",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11166-16697-antonym",
+      "source": "11166",
+      "target": "16697",
+      "type": "antonym"
+    },
+    {
+      "directed": false,
+      "id": "11166-122201-synonym",
+      "source": "11166",
+      "target": "122201",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11166-122763-synonym",
+      "source": "11166",
+      "target": "122763",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11166-137234-synonym",
+      "source": "11166",
+      "target": "137234",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "11166-147895-cognate_of",
+      "source": "11166",
+      "target": "147895",
+      "type": "cognate_of"
+    },
+    {
+      "directed": true,
+      "id": "11166-147894-cognate_of",
+      "source": "11166",
+      "target": "147894",
+      "type": "cognate_of"
+    },
+    {
+      "directed": true,
+      "id": "11166-147893-cognate_of",
+      "source": "11166",
+      "target": "147893",
+      "type": "cognate_of"
+    },
+    {
+      "directed": false,
+      "id": "137412-11166-synonym",
+      "source": "137412",
+      "target": "11166",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "14636-11166-synonym",
+      "source": "14636",
+      "target": "11166",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "16697-11166-antonym",
+      "source": "16697",
+      "target": "11166",
+      "type": "antonym"
+    },
+    {
+      "directed": false,
+      "id": "122201-11166-synonym",
+      "source": "122201",
+      "target": "11166",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "122763-11166-synonym",
+      "source": "122763",
+      "target": "11166",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "137234-11166-synonym",
+      "source": "137234",
+      "target": "11166",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "147895-11166-cognate_of",
+      "source": "147895",
+      "target": "11166",
+      "type": "cognate_of"
+    },
+    {
+      "directed": true,
+      "id": "147894-11166-cognate_of",
+      "source": "147894",
+      "target": "11166",
+      "type": "cognate_of"
+    },
+    {
+      "directed": true,
+      "id": "147893-11166-cognate_of",
+      "source": "147893",
+      "target": "11166",
+      "type": "cognate_of"
+    },
+    {
+      "directed": false,
+      "id": "566-53924-synonym",
+      "source": "566",
+      "target": "53924",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "53924-200077-synonym",
+      "source": "53924",
+      "target": "200077",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "53924-1814-synonym",
+      "source": "53924",
+      "target": "1814",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "53924-1813-synonym",
+      "source": "53924",
+      "target": "1813",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "53924-566-synonym",
+      "source": "53924",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "53924-39145-related",
+      "source": "53924",
+      "target": "39145",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "53924-39146-related",
+      "source": "53924",
+      "target": "39146",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "53924-200080-related",
+      "source": "53924",
+      "target": "200080",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "53924-200081-related",
+      "source": "53924",
+      "target": "200081",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "53924-38722-related",
+      "source": "53924",
+      "target": "38722",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "53924-200083-related",
+      "source": "53924",
+      "target": "200083",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "1814-53924-synonym",
+      "source": "1814",
+      "target": "53924",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "1813-53924-synonym",
+      "source": "1813",
+      "target": "53924",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "39145-53924-related",
+      "source": "39145",
+      "target": "53924",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "39146-53924-related",
+      "source": "39146",
+      "target": "53924",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "200080-53924-related",
+      "source": "200080",
+      "target": "53924",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "200081-53924-related",
+      "source": "200081",
+      "target": "53924",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "38722-53924-related",
+      "source": "38722",
+      "target": "53924",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "200083-53924-related",
+      "source": "200083",
+      "target": "53924",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "200084-53924-related",
+      "source": "200084",
+      "target": "53924",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "566-150986-synonym",
+      "source": "566",
+      "target": "150986",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "150986-3715-synonym",
+      "source": "150986",
+      "target": "3715",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "150986-566-synonym",
+      "source": "150986",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "150986-286157-variant",
+      "source": "150986",
+      "target": "286157",
+      "type": "variant"
+    },
+    {
+      "directed": true,
+      "id": "150986-129595-derived_from",
+      "source": "150986",
+      "target": "129595",
+      "type": "derived_from"
+    },
+    {
+      "directed": true,
+      "id": "150986-289614-variant",
+      "source": "150986",
+      "target": "289614",
+      "type": "variant"
+    },
+    {
+      "directed": true,
+      "id": "150986-3715-variant",
+      "source": "150986",
+      "target": "3715",
+      "type": "variant"
+    },
+    {
+      "directed": true,
+      "id": "150986-909-variant",
+      "source": "150986",
+      "target": "909",
+      "type": "variant"
+    },
+    {
+      "directed": false,
+      "id": "3715-150986-synonym",
+      "source": "3715",
+      "target": "150986",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "286157-150986-variant",
+      "source": "286157",
+      "target": "150986",
+      "type": "variant"
+    },
+    {
+      "directed": true,
+      "id": "129595-150986-root_of",
+      "source": "129595",
+      "target": "150986",
+      "type": "root_of"
+    },
+    {
+      "directed": false,
+      "id": "150987-150986-related",
+      "source": "150987",
+      "target": "150986",
+      "type": "related"
+    },
+    {
+      "directed": true,
+      "id": "289614-150986-variant",
+      "source": "289614",
+      "target": "150986",
+      "type": "variant"
+    },
+    {
+      "directed": true,
+      "id": "3715-150986-variant",
+      "source": "3715",
+      "target": "150986",
+      "type": "variant"
+    },
+    {
+      "directed": false,
+      "id": "3715-150986-related",
+      "source": "3715",
+      "target": "150986",
+      "type": "related"
+    },
+    {
+      "directed": true,
+      "id": "909-150986-variant",
+      "source": "909",
+      "target": "150986",
+      "type": "variant"
+    },
+    {
+      "directed": false,
+      "id": "566-129448-synonym",
+      "source": "566",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-21640-synonym",
+      "source": "129448",
+      "target": "21640",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-37169-synonym",
+      "source": "129448",
+      "target": "37169",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-23860-synonym",
+      "source": "129448",
+      "target": "23860",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-56836-synonym",
+      "source": "129448",
+      "target": "56836",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-57807-synonym",
+      "source": "129448",
+      "target": "57807",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-73147-synonym",
+      "source": "129448",
+      "target": "73147",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-106525-synonym",
+      "source": "129448",
+      "target": "106525",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-3192-synonym",
+      "source": "129448",
+      "target": "3192",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129448-34066-synonym",
+      "source": "129448",
+      "target": "34066",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "129448-137500-variant",
+      "source": "129448",
+      "target": "137500",
+      "type": "variant"
+    },
+    {
+      "directed": false,
+      "id": "21640-129448-synonym",
+      "source": "21640",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "2449-129448-synonym",
+      "source": "2449",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "37169-129448-synonym",
+      "source": "37169",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "23860-129448-synonym",
+      "source": "23860",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6209-129448-synonym",
+      "source": "6209",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "56836-129448-synonym",
+      "source": "56836",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "57807-129448-synonym",
+      "source": "57807",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "150-129448-synonym",
+      "source": "150",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "12364-129448-synonym",
+      "source": "12364",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "3260-129448-synonym",
+      "source": "3260",
+      "target": "129448",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "566-87547-synonym",
+      "source": "566",
+      "target": "87547",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "87547-13331-synonym",
+      "source": "87547",
+      "target": "13331",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "87547-1960-synonym",
+      "source": "87547",
+      "target": "1960",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "87547-566-synonym",
+      "source": "87547",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "87547-13331-see_also",
+      "source": "87547",
+      "target": "13331",
+      "type": "see_also"
+    },
+    {
+      "directed": false,
+      "id": "87547-13331-related",
+      "source": "87547",
+      "target": "13331",
+      "type": "related"
+    },
+    {
+      "directed": true,
+      "id": "87547-1960-see_also",
+      "source": "87547",
+      "target": "1960",
+      "type": "see_also"
+    },
+    {
+      "directed": false,
+      "id": "87547-1960-related",
+      "source": "87547",
+      "target": "1960",
+      "type": "related"
+    },
+    {
+      "directed": false,
+      "id": "13331-87547-synonym",
+      "source": "13331",
+      "target": "87547",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "1960-87547-synonym",
+      "source": "1960",
+      "target": "87547",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "566-1960-synonym",
+      "source": "566",
+      "target": "1960",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "1960-566-synonym",
+      "source": "1960",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "1960-1941-derived_from",
+      "source": "1960",
+      "target": "1941",
+      "type": "derived_from"
+    },
+    {
+      "directed": false,
+      "id": "566-295464-synonym",
+      "source": "566",
+      "target": "295464",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "295464-566-synonym",
+      "source": "295464",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": true,
+      "id": "295464-295466-variant",
+      "source": "295464",
+      "target": "295466",
+      "type": "variant"
+    },
+    {
+      "directed": true,
+      "id": "295464-566-variant",
+      "source": "295464",
+      "target": "566",
+      "type": "variant"
+    },
+    {
+      "directed": true,
+      "id": "295466-295464-variant",
+      "source": "295466",
+      "target": "295464",
+      "type": "variant"
+    },
+    {
+      "directed": true,
+      "id": "566-295464-variant",
+      "source": "566",
+      "target": "295464",
+      "type": "variant"
+    },
+    {
+      "directed": false,
+      "id": "566-129457-synonym",
+      "source": "566",
+      "target": "129457",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "129457-566-synonym",
+      "source": "129457",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-566-synonym",
+      "source": "6427",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-566-synonym",
+      "source": "11931",
+      "target": "566",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-5854-synonym",
+      "source": "11931",
+      "target": "5854",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-27887-synonym",
+      "source": "11931",
+      "target": "27887",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-6427-synonym",
+      "source": "11931",
+      "target": "6427",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-29341-synonym",
+      "source": "11931",
+      "target": "29341",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-173947-synonym",
+      "source": "11931",
+      "target": "173947",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-173949-synonym",
+      "source": "11931",
+      "target": "173949",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-173948-synonym",
+      "source": "11931",
+      "target": "173948",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-142328-synonym",
+      "source": "11931",
+      "target": "142328",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-29343-synonym",
+      "source": "11931",
+      "target": "29343",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "11931-173946-synonym",
+      "source": "11931",
+      "target": "173946",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "5854-11931-synonym",
+      "source": "5854",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "27887-11931-synonym",
+      "source": "27887",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "6427-11931-synonym",
+      "source": "6427",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "29341-11931-synonym",
+      "source": "29341",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "173947-11931-synonym",
+      "source": "173947",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "173949-11931-synonym",
+      "source": "173949",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "173948-11931-synonym",
+      "source": "173948",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "142328-11931-synonym",
+      "source": "142328",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "29343-11931-synonym",
+      "source": "29343",
+      "target": "11931",
+      "type": "synonym"
+    },
+    {
+      "directed": false,
+      "id": "566-11931-synonym",
+      "source": "566",
+      "target": "11931",
+      "type": "synonym"
+    }
+  ],
+  "metadata": {
+    "depth": 2,
+    "execution_time": 0.17592835426330566,
+    "language_code": "tl",
+    "normalized_lemma": "tao",
+    "root_word": "t\u00e1o",
+    "total_edges": 157,
+    "total_nodes": 76
+  },
+  "nodes": [
+    {
+      "baybayin_form": null,
+      "depth": 0,
+      "has_baybayin": false,
+      "id": "566",
+      "label": "t\u00e1o",
+      "language": "tl",
+      "main": true,
+      "normalized_lemma": "tao",
+      "type": "main",
+      "word": "t\u00e1o"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "6427",
+      "label": "bant\u00e1y",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "bantay",
+      "type": "synonym",
+      "word": "bant\u00e1y"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "5854",
+      "label": "\u00e1bang",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "abang",
+      "type": "synonym",
+      "word": "\u00e1bang"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "286277",
+      "label": "alel\u00ed",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "aleli",
+      "type": "synonym",
+      "word": "alel\u00ed"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "3230",
+      "label": "\u00e1so",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "aso",
+      "type": "synonym",
+      "word": "\u00e1so"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "19012",
+      "label": "b\u00e1dig\u00e1rd",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "badigard",
+      "type": "synonym",
+      "word": "b\u00e1dig\u00e1rd"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "27887",
+      "label": "b\u00e1kay",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "bakay",
+      "type": "synonym",
+      "word": "b\u00e1kay"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "29346",
+      "label": "esk\u00f3lta",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "eskolta",
+      "type": "synonym",
+      "word": "esk\u00f3lta"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "29341",
+      "label": "guw\u00e1rdiy\u00e1",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "guwardiya",
+      "type": "synonym",
+      "word": "guw\u00e1rdiy\u00e1"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "5021",
+      "label": "h\u00e1gad",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "hagad",
+      "type": "synonym",
+      "word": "h\u00e1gad"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "55259",
+      "label": "jaguar",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "jaguar",
+      "type": "synonym",
+      "word": "jaguar"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "46596",
+      "label": "p\u00f3ste",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "poste",
+      "type": "synonym",
+      "word": "p\u00f3ste"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "23891",
+      "label": "esposo",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "esposo",
+      "type": "synonym",
+      "word": "esposo"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "3633",
+      "label": "as\u00e1wa",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "asawa",
+      "type": "synonym",
+      "word": "as\u00e1wa"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "23890",
+      "label": "b\u00e1na",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "bana",
+      "type": "synonym",
+      "word": "b\u00e1na"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "28890",
+      "label": "m\u00edster",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "mister",
+      "type": "synonym",
+      "word": "m\u00edster"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "42156",
+      "label": "esp\u00f3sa",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "esposa",
+      "type": "variant",
+      "word": "esp\u00f3sa"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "54581",
+      "label": "isp\u00f3nsor",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "isponsor",
+      "type": "related",
+      "word": "isp\u00f3nsor"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "11166",
+      "label": "\u00edbon",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "ibon",
+      "type": "antonym",
+      "word": "\u00edbon"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "137412",
+      "label": "b\u00e9bot",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "bebot",
+      "type": "synonym",
+      "word": "b\u00e9bot"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "14636",
+      "label": "t\u00e1ob",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "taob",
+      "type": "synonym",
+      "word": "t\u00e1ob"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "16697",
+      "label": "tihay\u00e2",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "tihaya",
+      "type": "antonym",
+      "word": "tihay\u00e2"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "122201",
+      "label": "tit\u00ee",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "titi",
+      "type": "synonym",
+      "word": "tit\u00ee"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "122763",
+      "label": "t\u00f3to",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "toto",
+      "type": "synonym",
+      "word": "t\u00f3to"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "137234",
+      "label": "\u00fatin",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "utin",
+      "type": "synonym",
+      "word": "\u00fatin"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "147895",
+      "label": "bunay",
+      "language": "war",
+      "main": false,
+      "normalized_lemma": "bunay",
+      "type": "cognate_of",
+      "word": "bunay"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "147894",
+      "label": "bunay",
+      "language": "bcl",
+      "main": false,
+      "normalized_lemma": "bunay",
+      "type": "cognate_of",
+      "word": "bunay"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "147893",
+      "label": "bunay",
+      "language": "dgc",
+      "main": false,
+      "normalized_lemma": "bunay",
+      "type": "cognate_of",
+      "word": "bunay"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "53924",
+      "label": "\u00edndibidw\u00e1l",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "indibidwal",
+      "type": "synonym",
+      "word": "\u00edndibidw\u00e1l"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "200077",
+      "label": "indibiduwal",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "indibiduwal",
+      "type": "synonym",
+      "word": "indibiduwal"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "1814",
+      "label": "pansar\u00edli",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "pansarili",
+      "type": "synonym",
+      "word": "pansar\u00edli"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "1813",
+      "label": "sar\u00edli",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "sarili",
+      "type": "synonym",
+      "word": "sar\u00edli"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "39145",
+      "label": "dibidend\u00e1so",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "dibidendaso",
+      "type": "related",
+      "word": "dibidend\u00e1so"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "39146",
+      "label": "dibid\u00e9ndo",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "dibidendo",
+      "type": "related",
+      "word": "dibid\u00e9ndo"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "200080",
+      "label": "dibis\u00f3r",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "dibisor",
+      "type": "related",
+      "word": "dibis\u00f3r"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "200081",
+      "label": "dibis\u00f3rya",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "dibisorya",
+      "type": "related",
+      "word": "dibis\u00f3rya"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "38722",
+      "label": "dibisy\u00f3n",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "dibisyon",
+      "type": "related",
+      "word": "dibisy\u00f3n"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "200083",
+      "label": "\u00edndibidwalid\u00e1d",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "indibidwalidad",
+      "type": "related",
+      "word": "\u00edndibidwalid\u00e1d"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "200084",
+      "label": "\u00edndibidwal\u00edsmo",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "indibidwalismo",
+      "type": "related",
+      "word": "\u00edndibidwal\u00edsmo"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "150986",
+      "label": "k\u00e9lot",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "kelot",
+      "type": "synonym",
+      "word": "k\u00e9lot"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "3715",
+      "label": "lal\u00e1ki",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "lalaki",
+      "type": "synonym",
+      "word": "lal\u00e1ki"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "286157",
+      "label": "bro",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "bro",
+      "type": "variant",
+      "word": "bro"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "129595",
+      "label": "en",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "en",
+      "type": "derived_from",
+      "word": "en"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "289614",
+      "label": "guy",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "guy",
+      "type": "variant",
+      "word": "guy"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "909",
+      "label": "man",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "man",
+      "type": "variant",
+      "word": "man"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "150987",
+      "label": "English cat",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "english cat",
+      "type": "related",
+      "word": "English cat"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "129448",
+      "label": "Marinduque",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "marinduque",
+      "type": "synonym",
+      "word": "Marinduque"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "21640",
+      "label": "alup\u00edhan",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "alupihan",
+      "type": "synonym",
+      "word": "alup\u00edhan"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "37169",
+      "label": "dalangh\u00edta",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "dalanghita",
+      "type": "synonym",
+      "word": "dalangh\u00edta"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "23860",
+      "label": "d\u00edkin",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "dikin",
+      "type": "synonym",
+      "word": "d\u00edkin"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "56836",
+      "label": "kalab\u00e1sa",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "kalabasa",
+      "type": "synonym",
+      "word": "kalab\u00e1sa"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "57807",
+      "label": "kamy\u00e1s",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "kamyas",
+      "type": "synonym",
+      "word": "kamy\u00e1s"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "73147",
+      "label": "pig\u00ee",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "pigi",
+      "type": "synonym",
+      "word": "pig\u00ee"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "106525",
+      "label": "pus\u00f3n",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "puson",
+      "type": "synonym",
+      "word": "pus\u00f3n"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "3192",
+      "label": "simulan",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "simulan",
+      "type": "synonym",
+      "word": "simulan"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "34066",
+      "label": "\u00faod",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "uod",
+      "type": "synonym",
+      "word": "\u00faod"
+    },
+    {
+      "baybayin_form": "\u1712",
+      "depth": 2,
+      "has_baybayin": true,
+      "id": "137500",
+      "label": "-i",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "-i",
+      "type": "variant",
+      "word": "-i"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "2449",
+      "label": "b\u00ednaba\u00e9",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "binabae",
+      "type": "synonym",
+      "word": "b\u00ednaba\u00e9"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "6209",
+      "label": "gano\u00f3n",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "ganoon",
+      "type": "synonym",
+      "word": "gano\u00f3n"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "150",
+      "label": "kawal\u00e1n",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "kawalan",
+      "type": "synonym",
+      "word": "kawal\u00e1n"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "12364",
+      "label": "lam\u00f3k",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "lamok",
+      "type": "synonym",
+      "word": "lam\u00f3k"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "3260",
+      "label": "pagmul\u00e1n",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "pagmulan",
+      "type": "synonym",
+      "word": "pagmul\u00e1n"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "87547",
+      "label": "mort\u00e1l",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "mortal",
+      "type": "synonym",
+      "word": "mort\u00e1l"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "13331",
+      "label": "malubh\u00e2",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "malubha",
+      "type": "synonym",
+      "word": "malubh\u00e2"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "1960",
+      "label": "nakamamatay",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "nakamamatay",
+      "type": "synonym",
+      "word": "nakamamatay"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "1941",
+      "label": "pat\u00e1y",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "patay",
+      "type": "derived_from",
+      "word": "pat\u00e1y"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "295464",
+      "label": "otats",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "otats",
+      "type": "synonym",
+      "word": "otats"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "295466",
+      "label": "p\u00e9rson",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "person",
+      "type": "variant",
+      "word": "p\u00e9rson"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "129457",
+      "label": "palan\u00e1",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "palana",
+      "type": "synonym",
+      "word": "palan\u00e1"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 1,
+      "has_baybayin": false,
+      "id": "11931",
+      "label": "t\u00e1nod",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "tanod",
+      "type": "synonym",
+      "word": "t\u00e1nod"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "173947",
+      "label": "pagguwardiya",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "pagguwardiya",
+      "type": "synonym",
+      "word": "pagguwardiya"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "173949",
+      "label": "pagsentinela",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "pagsentinela",
+      "type": "synonym",
+      "word": "pagsentinela"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "173948",
+      "label": "pagtaliba",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "pagtaliba",
+      "type": "synonym",
+      "word": "pagtaliba"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "142328",
+      "label": "sentin\u00e9la",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "sentinela",
+      "type": "synonym",
+      "word": "sentin\u00e9la"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "29343",
+      "label": "tal\u00edba",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "taliba",
+      "type": "synonym",
+      "word": "tal\u00edba"
+    },
+    {
+      "baybayin_form": null,
+      "depth": 2,
+      "has_baybayin": false,
+      "id": "173946",
+      "label": "t\u00e1nor",
+      "language": "tl",
+      "main": false,
+      "normalized_lemma": "tanor",
+      "type": "synonym",
+      "word": "t\u00e1nor"
+    }
+  ]
+}

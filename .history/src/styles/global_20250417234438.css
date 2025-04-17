@@ -1,0 +1,23 @@
+/**
+ * Fil-Relex Main Stylesheet
+ * A modular CSS architecture for maintainability and organization
+ * 
+ * NOTE: As of the latest update, all imports are now handled directly in src/index.css.
+ * This file is kept for backwards compatibility and contains only app-wide styles.
+ */
+
+/* App-wide styles that are specific to the application */
+
+.app {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  height: 100%;
+  transition: 
+    color var(--transition-normal),
+    background-color var(--transition-normal);
+}
+
+/* Note: Material-UI overrides are now in mui-overrides.css */

@@ -1,0 +1,73 @@
+/* Main CSS entry point - imports all modular CSS files */
+
+/* Base styles */
+@import './base/_reset.css';
+@import './base/_variables.css';
+@import './base/_typography.css';
+
+/* Utilities */
+@import './utilities/_helpers.css';
+
+/* Layout styles - add more layout imports as needed */
+/* @import './layout/_header.css';
+@import './layout/_footer.css';
+@import './layout/_grid.css'; */
+
+/* Component styles */
+@import './components/_word-details.css';
+/* Add more component-specific imports here */
+
+/* Theme specific styles */
+/* @import './themes/_dark.css'; */
+
+/* 
+ * Global styles that don't fit elsewhere
+ * Try to keep this section minimal - prefer to use the modular approach instead
+ */
+
+/* Common layout styles */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Skip to content link - accessibility */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-to-content:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  background: var(--primary-color);
+  color: white;
+  z-index: 9999;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
