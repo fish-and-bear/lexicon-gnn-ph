@@ -436,7 +436,6 @@ body {
   position: relative;
   overflow: hidden;
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-  border: var(--card-border);
   max-width: 100%;
   contain: content; /* Improve performance with CSS containment */
   will-change: transform; /* Optimize for animations */

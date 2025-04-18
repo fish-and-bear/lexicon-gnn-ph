@@ -1,18 +1,18 @@
 import React from 'react';
 import WordExplorer from '../src/components/WordExplorer';
 import { ThemeProvider } from '../src/contexts/ThemeContext';
-import ErrorBoundary from '../src/components/ErrorBoundary';
+// import ErrorBoundary from '../src/components/ErrorBoundary'; // Temporarily comment out
 import './App.css';
 
 const App: React.FC = () => {
   return (
-    <ErrorBoundary>
+    // <ErrorBoundary> // Temporarily comment out
       <ThemeProvider>
         <div className="app">
           <WordExplorer />
         </div>
       </ThemeProvider>
-    </ErrorBoundary>
+    // </ErrorBoundary> // Temporarily comment out
   );
 };
 

@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { 
   WordInfo, 
   SearchOptions, 
@@ -17,7 +17,6 @@ import {
   RelatedWord,
   WordNetwork as ImportedWordNetwork
 } from "../types";
-import { sanitizeInput } from '../utils/sanitizer';
 import { getCachedData, setCachedData, clearCache, clearOldCache } from '../utils/caching';
 
 // Environment and configuration constants
@@ -56,13 +55,7 @@ if (!CONFIG.baseURL) {
   throw new Error('API_BASE_URL environment variable is not set');
 }
 
-// Extended Axios types
-interface ExtendedAxiosRequestConfig extends AxiosRequestConfig {
-  retry?: number;
-  retryDelay?: number;
-}
-
-// Enhanced circuit breaker with persistence
+// --- Lazy Initialized Circuit Breaker ---
 class PersistentCircuitBreaker {
   private static readonly STORAGE_KEY = 'circuit_breaker_state';
   private static readonly STATE_TTL = 60 * 60 * 1000; // 1 hour
@@ -70,21 +63,35 @@ class PersistentCircuitBreaker {
   private failures: number = 0;
   private lastFailureTime: number | null = null;
   private state: 'closed' | 'open' | 'half-open' = 'closed';
+  private isInitialized: boolean = false; // Flag to track initialization
 
   constructor() {
+    // Defer initialization
+  }
+
+  private initializeIfNeeded() {
+    if (this.isInitialized) return;
+
     const savedState = this.loadState();
     if (savedState && Date.now() - savedState.timestamp < PersistentCircuitBreaker.STATE_TTL) {
       this.failures = savedState.failures;
       this.lastFailureTime = savedState.lastFailureTime;
       this.state = savedState.state;
+      console.log('Circuit breaker initialized from saved state:', this.getState());
     } else {
-      this.reset();
+      this.resetState(); // Reset internal state variables
+      console.log('Circuit breaker initialized with default state.');
     }
-    console.log('Circuit breaker initialized with state:', this.getState());
+    this.isInitialized = true;
   }
 
   private loadState() {
     try {
+      // Check if localStorage is available
+      if (typeof localStorage === 'undefined') {
+        console.warn('localStorage not available for circuit breaker state.');
+        return null;
+      }
       const state = localStorage.getItem(PersistentCircuitBreaker.STORAGE_KEY);
       return state ? JSON.parse(state) : null;
     } catch (e) {
@@ -94,7 +101,11 @@ class PersistentCircuitBreaker {
   }
 
   private saveState() {
+    if (!this.isInitialized) return; // Don't save if not initialized
     try {
+      // Check if localStorage is available
+      if (typeof localStorage === 'undefined') return;
+
       localStorage.setItem(PersistentCircuitBreaker.STORAGE_KEY, JSON.stringify({
         failures: this.failures,
         lastFailureTime: this.lastFailureTime,
@@ -107,6 +118,7 @@ class PersistentCircuitBreaker {
   }
 
   recordFailure() {
+    this.initializeIfNeeded();
     this.failures++;
     this.lastFailureTime = Date.now();
     if (this.failures >= CONFIG.failureThreshold) {
@@ -117,14 +129,19 @@ class PersistentCircuitBreaker {
   }
 
   recordSuccess() {
-    this.failures = 0;
-    this.state = 'closed';
-    this.saveState();
-    console.log('Circuit breaker recorded success. New state:', this.getState());
+    this.initializeIfNeeded();
+    // Only reset if state was not already closed
+    if (this.state !== 'closed' || this.failures > 0) {
+        this.failures = 0;
+        this.state = 'closed';
+        this.saveState();
+        console.log('Circuit breaker recorded success. New state:', this.getState());
+    }
   }
 
   canMakeRequest(): boolean {
-    clearOldCache();
+    this.initializeIfNeeded(); 
+    clearOldCache(); // Assuming clearOldCache also checks for localStorage
     // Simple check: if open and reset timeout hasn't passed, deny request
     if (this.state === 'open' && this.lastFailureTime && (Date.now() - this.lastFailureTime < CONFIG.resetTimeout)) {
         console.log('Circuit breaker is OPEN. Request denied.');
@@ -141,6 +158,7 @@ class PersistentCircuitBreaker {
   }
 
   getState() {
+    this.initializeIfNeeded();
     return {
       state: this.state,
       failures: this.failures,
@@ -148,66 +166,102 @@ class PersistentCircuitBreaker {
     };
   }
 
-  reset() {
+  // Renamed from reset to avoid conflict, just resets internal state vars
+  private resetState() {
     this.failures = 0;
     this.lastFailureTime = null;
     this.state = 'closed';
-    this.saveState();
+  }
+
+  // Public reset function also clears storage
+  reset() {
+    this.resetState();
+    this.isInitialized = true; // Mark as initialized after reset
+    try {
+       if (typeof localStorage !== 'undefined') {
+         localStorage.removeItem(PersistentCircuitBreaker.STORAGE_KEY);
+       }
+    } catch (e) {
+        console.error('Error removing circuit breaker state from storage:', e);
+    }
+    this.saveState(); // Save the reset state
     console.log('Circuit breaker has been reset. New state:', this.getState());
   }
 }
 
-const circuitBreaker = new PersistentCircuitBreaker();
+// Instantiate the circuit breaker (constructor does nothing now)
+const circuitBreaker = new PersistentCircuitBreaker(); 
 
-// Function to reset the circuit breaker state
+// Function to reset the circuit breaker state (adjust to handle lazy init)
 export function resetCircuitBreaker() {
-  circuitBreaker.reset();
+  circuitBreaker.reset(); // Call the public reset method
   try {
-    localStorage.removeItem('circuit_breaker_state');
+    // Check localStorage availability
+    if (typeof localStorage === 'undefined') {
+        console.warn('localStorage not available, cannot clear related items.');
+        return;
+    }
     localStorage.removeItem('successful_api_endpoint');
     const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key && (key.startsWith('cache:') || key.includes('circuit') || key.includes('api_endpoint'))) {
+      // More specific check to avoid removing unrelated items
+      if (key && (key.startsWith('cache:') || key === 'circuit_breaker_state' || key === 'successful_api_endpoint')) {
         keysToRemove.push(key);
       }
     }
     keysToRemove.forEach(key => localStorage.removeItem(key));
-    api.defaults.baseURL = CONFIG.baseURL;
-    api.defaults.headers.common = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'X-Client-Version': process.env.REACT_APP_VERSION || '1.0.0',
-      'X-Client-Platform': 'web'
-    };
-    console.log(`Circuit breaker has been reset. Cleared ${keysToRemove.length} cache items.`);
-    console.log(`API client baseURL reset to: ${CONFIG.baseURL}`);
+    // Reset base URL lazily if needed, or ensure Axios instance is updated
+    // This might require making `api` mutable or providing a function to update it.
+    // For now, let's assume the initial creation uses the default.
+    console.log(`Circuit breaker reset. Cleared ${keysToRemove.length} cache/state items.`);
+    // Re-test connection after a delay
     setTimeout(() => {
       testApiConnection().then(connected => {
         console.log(`Connection test after reset: ${connected ? 'successful' : 'failed'}`);
       });
     }, 500);
   } catch (e) {
-    console.error('Error clearing localStorage:', e);
+    console.error('Error clearing localStorage during circuit breaker reset:', e);
   }
 }
 
-// Get the successful endpoint from localStorage if available
-const savedEndpoint = localStorage.getItem('successful_api_endpoint');
-let apiBaseURL = CONFIG.baseURL;
+// --- Lazy Loaded API Base URL ---
+let apiBaseURL = CONFIG.baseURL; // Start with default
+let endpointChecked = false;
 
-if (savedEndpoint) {
-  console.log('Using saved API endpoint:', savedEndpoint);
-  if (savedEndpoint.includes('/api/v2')) {
-    apiBaseURL = savedEndpoint;
-  } else {
-    apiBaseURL = `${savedEndpoint}/api/v2`;
+function getApiBaseURL(): string {
+  if (!endpointChecked && typeof localStorage !== 'undefined') {
+    try {
+      const savedEndpoint = localStorage.getItem('successful_api_endpoint');
+      if (savedEndpoint) {
+        console.log('Using saved API endpoint:', savedEndpoint);
+        // Basic validation
+        if (savedEndpoint.startsWith('http')) {
+             if (savedEndpoint.includes('/api/v2')) {
+               apiBaseURL = savedEndpoint;
+             } else {
+               apiBaseURL = `${savedEndpoint}/api/v2`; // Append /api/v2 if missing
+             }
+        } else {
+             console.warn('Saved endpoint looks invalid, using default:', savedEndpoint);
+             localStorage.removeItem('successful_api_endpoint'); // Remove invalid endpoint
+             apiBaseURL = CONFIG.baseURL;
+        }
+      }
+    } catch (e) {
+      console.error('Error reading saved API endpoint from localStorage:', e);
+      apiBaseURL = CONFIG.baseURL; // Fallback to default
+    }
+    endpointChecked = true;
   }
+  return apiBaseURL;
 }
 
 // API client configuration
 const api = axios.create({
-  baseURL: apiBaseURL, // Use potentially saved endpoint
+  // Use a function to get the baseURL lazily
+  baseURL: getApiBaseURL(), 
   timeout: CONFIG.timeout,
   headers: {
     'Content-Type': 'application/json',
@@ -221,12 +275,11 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    config.headers = {
-      ...config.headers,
-      'Origin': window.location.origin,
-      'Access-Control-Request-Method': config.method?.toUpperCase() || 'GET',
-    };
-    console.log(`Making ${config.method?.toUpperCase()} request to: ${config.url}`);
+    // Ensure baseURL is up-to-date before each request
+    config.baseURL = getApiBaseURL(); 
+    config.headers.set('Origin', window.location.origin);
+    config.headers.set('Access-Control-Request-Method', config.method?.toUpperCase() || 'GET');
+    console.log(`Making ${config.method?.toUpperCase()} request to: ${config.baseURL}${config.url}`);
     return config;
   },
   (error) => {
@@ -533,18 +586,6 @@ export async function fetchWordNetwork(
 }
 
 // --- Data Normalization Helpers --- 
-
-// Helper function to safely parse JSON strings
-function safeJsonParse(jsonString: string | null | undefined): Record<string, any> | null {
-  if (!jsonString) return null;
-  try {
-    if (typeof jsonString === 'object') return jsonString; // Already an object
-    return JSON.parse(jsonString);
-  } catch (e) {
-    console.warn('Failed to parse JSON string:', jsonString, e);
-    return null;
-  }
-}
 
 // Helper function to split strings by semicolon, trimming whitespace - Reverted Signature
 function splitSemicolonSeparated(value: string | undefined): string[] { // Use string | undefined

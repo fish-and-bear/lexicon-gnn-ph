@@ -76,7 +76,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const [depth, setDepth] = useState<number>(initialDepth);
   const [breadth, setBreadth] = useState<number>(initialBreadth);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Re-add isLoading state
   const [error, setError] = useState<string | null>(null);
   const [isValidNetwork, setIsValidNetwork] = useState(true);
   const simulationRef = useRef<d3.Simulation<CustomNode, CustomLink> | null>(null);
@@ -86,7 +86,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
   const isDraggingRef = useRef(false);
   const isTransitioningRef = useRef(false);
-  const lastClickTimeRef = useRef(0);
   const prevMainWordRef = useRef<string | null>(null);
 
   // State for tooltip delay
@@ -958,7 +957,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
              // NO restoration of other opacities needed
         });
-  }, [selectedNodeId, onNodeClick, getNodeRadius, getNodeColor, theme, nodeMap]);
+  }, [selectedNodeId, onNodeClick, getNodeRadius, getNodeColor, theme, nodeMap, tooltipTimeoutId, onNodeSelect]); // Added onNodeSelect, tooltipTimeoutId
 
   // Define handleResetZoom before centerOnMainWord
   const handleResetZoom = useCallback(() => {
@@ -1004,423 +1003,443 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!svgRef.current || !wordNetwork || !mainWord || baseNodes.length === 0) {
-      if (svgRef.current) d3.select(svgRef.current).selectAll("*").remove();
-      if (simulationRef.current) simulationRef.current.stop();
-      setError(null);
-      setIsLoading(false);
-      return;
-    }
-
-    // When filters change, we need to completely redraw the graph
-    setIsLoading(true);
-    setError(null);
-
-    console.log("[GRAPH] Building graph with filtered data");
-    console.log(`[GRAPH] Using ${filteredNodes.length} nodes and ${filteredLinks.length} links`);
-
-    if (simulationRef.current) simulationRef.current.stop();
-      
-      const svg = d3.select(svgRef.current);
-      svg.selectAll("*").remove();
-
-    const { width, height } = setupSvgDimensions(svg);
-    const g = svg.append("g")
-      .attr("class", "graph-content")
-      .attr("data-filter-key", filteredRelationships.join(','));
-      const zoom = setupZoom(svg, g);
-      zoomRef.current = zoom;
-
-    // No need to filter links again - use the pre-filtered links directly
-    const currentSim = setupSimulation(filteredNodes, filteredLinks, width, height);
-
-    createLinks(g, filteredLinks);
-    const nodeElements = createNodes(g, filteredNodes, currentSim);
-    setupNodeInteractions(nodeElements);
-
-    if (currentSim) {
-      // Pin the main node to simulation center (0,0)
-      const mainNodeData = filteredNodes.find(n => n.id === mainWord);
-      if (mainNodeData) {
-          mainNodeData.fx = 0;
-          mainNodeData.fy = 0;
+    // --- START OF TRY BLOCK ---
+    try {
+      if (!svgRef.current || !wordNetwork || !mainWord || baseNodes.length === 0) {
+        if (svgRef.current) d3.select(svgRef.current).selectAll("*").remove();
+        if (simulationRef.current) simulationRef.current.stop();
+        setError(null);
+        setIsLoading(false);
+        return;
       }
-      currentSim.alpha(1).restart();
-    }
 
-    setTimeout(() => centerOnMainWord(svg, filteredNodes), 800);
+      // When filters change, we need to completely redraw the graph
+      setIsLoading(true);
+      setError(null);
 
-    // Create a more elegant single-column legend with auto-sizing
-    const legendContainer = svg.append("g")
-      .attr("class", "legend")
-      .attr("transform", `translate(${width - 240}, 20)`); // Correct position to match slider spacing
+      console.log("[GRAPH] Building graph with filtered data");
+      console.log(`[GRAPH] Using ${filteredNodes.length} nodes and ${filteredLinks.length} links`);
 
-    // Define refined legend properties
-    const legendPadding = 12; // Restored original padding
-    const legendItemHeight = 22; 
-    const dotRadius = 5; 
-    const textPadding = 16; // Restored original padding 
-    const categorySpacing = 10; 
-    const maxLabelWidth = 110; // Restored original width
+      if (simulationRef.current) simulationRef.current.stop();
+        
+        const svg = d3.select(svgRef.current);
+        svg.selectAll("*").remove();
 
-    // Organize relation types by category
-    const categories = [
-      { name: "Core", types: ["main"] },
-      { name: "Origin", types: ["root", "derived"] }, 
-      { name: "Meaning", types: ["synonym", "antonym", "related"] },
-      { name: "Form", types: ["variant"] },
-      { name: "Structure", types: ["taxonomic", "part_whole"] },
-      { name: "Info", types: ["usage"] }
-    ];
+      const { width, height } = setupSvgDimensions(svg);
+      const g = svg.append("g")
+        .attr("class", "graph-content")
+        .attr("data-filter-key", filteredRelationships.join(','));
+        const zoom = setupZoom(svg, g);
+        zoomRef.current = zoom;
 
-    // Pre-measure text to determine legend width
-    const tempText = svg.append("text")
-      .attr("font-size", "11px") // Slightly larger text
-      .attr("font-weight", "500")
-      .style("opacity", 0);
+      // No need to filter links again - use the pre-filtered links directly
+      const currentSim = setupSimulation(filteredNodes, filteredLinks, width, height);
 
-    let maxTextWidth = 0;
-    let maxCategoryWidth = 0;
-    
-    // Also measure toggle text to ensure it fits
-    tempText.text("Show disconnected nodes");
-    const toggleTextWidth = tempText.node()?.getBBox().width || 0;
+      createLinks(g, filteredLinks);
+      const nodeElements = createNodes(g, filteredNodes, currentSim);
+      setupNodeInteractions(nodeElements);
 
-    // Measure category headers
-    categories.forEach(category => {
-      tempText.text(category.name);
-      const categoryWidth = tempText.node()?.getBBox().width || 0;
-      maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
+      if (currentSim) {
+        // Pin the main node to simulation center (0,0)
+        const mainNodeData = filteredNodes.find(n => n.id === mainWord);
+        if (mainNodeData) {
+            mainNodeData.fx = 0;
+            mainNodeData.fy = 0;
+        }
+        currentSim.alpha(1).restart();
+      }
+
+      setTimeout(() => centerOnMainWord(svg, filteredNodes), 800);
+
+      // Create a more elegant single-column legend with auto-sizing
+      const legendContainer = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${width - 240}, 20)`); // Correct position to match slider spacing
+
+      // Define refined legend properties
+      const legendPadding = 12; // Restored original padding
+      const legendItemHeight = 22; 
+      const dotRadius = 5; 
+      const textPadding = 16; // Restored original padding 
+      const categorySpacing = 10; 
+      const maxLabelWidth = 110; // Restored original width
+
+      // Organize relation types by category
+      const categories = [
+        { name: "Core", types: ["main"] },
+        { name: "Origin", types: ["root", "derived"] }, 
+        { name: "Meaning", types: ["synonym", "antonym", "related"] },
+        { name: "Form", types: ["variant"] },
+        { name: "Structure", types: ["taxonomic", "part_whole"] },
+        { name: "Info", types: ["usage"] }
+      ];
+
+      // Pre-measure text to determine legend width
+      const tempText = svg.append("text")
+        .attr("font-size", "11px") // Slightly larger text
+        .attr("font-weight", "500")
+        .style("opacity", 0);
+
+      let maxTextWidth = 0;
+      let maxCategoryWidth = 0;
       
-      // Measure each label
-      category.types.forEach(type => {
-        tempText.text(getRelationshipTypeLabel(type).label);
-        const textWidth = tempText.node()?.getBBox().width || 0;
-        maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
+      // Also measure toggle text to ensure it fits
+      tempText.text("Show disconnected nodes");
+      const toggleTextWidth = tempText.node()?.getBBox().width || 0;
+
+      // Measure category headers
+      categories.forEach(category => {
+        tempText.text(category.name);
+        const categoryWidth = tempText.node()?.getBBox().width || 0;
+        maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
+        
+        // Measure each label
+        category.types.forEach(type => {
+          tempText.text(getRelationshipTypeLabel(type).label);
+          const textWidth = tempText.node()?.getBBox().width || 0;
+          maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
+        });
       });
-    });
 
-    tempText.remove();
+      tempText.remove();
 
-    // Calculate legend dimensions based on text measurements
-    // Be more conservative with width calculations
-    const toggleRequiredWidth = toggleTextWidth + 42 + (legendPadding * 2); // Further reduced spacing
-    const legendWidth = Math.max(
-      maxCategoryWidth + 5, // Minimal extra space
-      maxTextWidth + textPadding + 5, // Minimal extra space
-      toggleRequiredWidth
-    ) + (legendPadding * 2);
+      // Calculate legend dimensions based on text measurements
+      // Be more conservative with width calculations
+      const toggleRequiredWidth = toggleTextWidth + 42 + (legendPadding * 2); // Further reduced spacing
+      const legendWidth = Math.max(
+        maxCategoryWidth + 5, // Minimal extra space
+        maxTextWidth + textPadding + 5, // Minimal extra space
+        toggleRequiredWidth
+      ) + (legendPadding * 2);
 
-    // Find total rows for legend layout
-    let totalRows = 0;
-    categories.forEach(cat => {
-      // Each category needs 1 row for header + rows for items
-      totalRows += 1 + cat.types.length;
-    });
+      // Find total rows for legend layout
+      let totalRows = 0;
+      categories.forEach(cat => {
+        // Each category needs 1 row for header + rows for items
+        totalRows += 1 + cat.types.length;
+      });
 
-    // Calculate legend height with more spacing
-    const legendHeight = (totalRows * legendItemHeight) + 
-                        ((categories.length - 1) * categorySpacing) + 
-                        (legendPadding * 2) + 
-                        50 + // Add extra padding for the title and instructions
-                        40; // Add extra space for the checkbox option
+      // Calculate legend height with more spacing
+      const legendHeight = (totalRows * legendItemHeight) + 
+                          ((categories.length - 1) * categorySpacing) + 
+                          (legendPadding * 2) + 
+                          50 + // Add extra padding for the title and instructions
+                          40; // Add extra space for the checkbox option
 
-    // Add refined legend background rectangle
-      legendContainer.append("rect")
-        .attr("width", legendWidth)
-      .attr("height", legendHeight)
-      .attr("rx", 10)
-      .attr("ry", 10)
-      .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.85)" : "rgba(255, 255, 255, 0.92)")
-      .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)")
-      .attr("stroke-width", 1);
+      // Add refined legend background rectangle
+        legendContainer.append("rect")
+          .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .attr("rx", 10)
+        .attr("ry", 10)
+        .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.85)" : "rgba(255, 255, 255, 0.92)")
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)")
+        .attr("stroke-width", 1);
 
-    // Add elegant title with original font size
+      // Add elegant title with original font size
+        legendContainer.append("text")
+          .attr("x", legendWidth / 2)
+        .attr("y", legendPadding + 7)
+          .attr("text-anchor", "middle")
+        .attr("font-weight", "600")
+        .attr("font-size", "12px") // Restored original size
+        .attr("fill", theme === "dark" ? "#eee" : "#333")
+          .text("Relationship Types");
+        
+      // Add subtitle with instructions
       legendContainer.append("text")
         .attr("x", legendWidth / 2)
-      .attr("y", legendPadding + 7)
+        .attr("y", legendPadding + 22)
         .attr("text-anchor", "middle")
-      .attr("font-weight", "600")
-      .attr("font-size", "12px") // Restored original size
-      .attr("fill", theme === "dark" ? "#eee" : "#333")
-        .text("Relationship Types");
+        .attr("font-weight", "400")
+        .attr("font-size", "9px")
+        .attr("fill", theme === "dark" ? "#aaa" : "#666")
+        .text("Click to filter by type");
       
-    // Add subtitle with instructions
-    legendContainer.append("text")
-      .attr("x", legendWidth / 2)
-      .attr("y", legendPadding + 22)
-      .attr("text-anchor", "middle")
-      .attr("font-weight", "400")
-      .attr("font-size", "9px")
-      .attr("fill", theme === "dark" ? "#aaa" : "#666")
-      .text("Click to filter by type");
-    
-    // Add subtle divider line after title
-    legendContainer.append("line")
-      .attr("x1", legendPadding)
-      .attr("y1", legendPadding + 30)
-      .attr("x2", legendWidth - legendPadding)
-      .attr("y2", legendPadding + 30)
-      .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
-      .attr("stroke-width", 1);
+      // Add subtle divider line after title
+      legendContainer.append("line")
+        .attr("x1", legendPadding)
+        .attr("y1", legendPadding + 30)
+        .attr("x2", legendWidth - legendPadding)
+        .attr("y2", legendPadding + 30)
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
+        .attr("stroke-width", 1);
 
-    // Track current y position for legend items
-    let yPos = legendPadding + 38; // More space after title and instructions
+      // Track current y position for legend items
+      let yPos = legendPadding + 38; // More space after title and instructions
 
-    // Render each category
-    categories.forEach((category, categoryIndex) => {
-      // Add category header with refined styling
-      yPos += legendItemHeight;
-      
-      // Add category name with original font size
-      const categoryTextElement = legendContainer.append("text")
-        .attr("x", legendPadding)
-        .attr("y", yPos)
-        .attr("font-weight", "600")
-        .attr("font-size", "11px") // Restored original size
-        .attr("fill", theme === "dark" ? "#ccc" : "#555")
-        .text(category.name);
-      
-      const categoryTextBBox = categoryTextElement.node()?.getBBox();
-      if (categoryTextBBox) {
-        // Add subtle background for category headers
-        legendContainer.append("rect")
-          .attr("x", legendPadding - 4)
-          .attr("y", yPos - categoryTextBBox.height + 2)
-          .attr("width", categoryTextBBox.width + 8)
-          .attr("height", categoryTextBBox.height + 4)
-          .attr("rx", 3)
-          .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.07)" : "rgba(0, 0, 0, 0.04)")
-          .lower(); // Move behind text
-      }
-      
-      // Add category items
-      category.types.forEach(type => {
-        // Calculate y position for each item
+      // Render each category
+      categories.forEach((category, categoryIndex) => {
+        // Add category header with refined styling
         yPos += legendItemHeight;
         
-        // Check if this relationship type is filtered out
-        const isFiltered = filteredRelationships.includes(type.toLowerCase());
-        
-        // Create legend entry group with hover interaction
-        const entry = legendContainer.append("g")
-          .attr("transform", `translate(${legendPadding}, ${yPos})`)
-            .attr("class", "legend-item")
-          .attr("data-type", type);
-          
-        // Create a hover/click target rectangle
-        entry.append("rect")
-          .attr("width", legendWidth - (legendPadding * 2))
-          .attr("height", legendItemHeight)
-          .attr("x", -5)
-          .attr("y", -12)
-          .attr("rx", 4)
-          .attr("fill", isFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent")
-          .attr("cursor", "pointer")
-          .on("mouseover", function(this: SVGRectElement) {
-            d3.select(this)
-              .transition()
-              .duration(200)
-              .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)");
-            d3.select(this.parentNode as SVGGElement).select("circle")
-              .transition()
-              .duration(200)
-              .attr("r", dotRadius * 1.3);
-            d3.select(this.parentNode as SVGGElement).select("text")
-              .transition()
-              .duration(200)
-              .attr("font-weight", "600");
-          })
-          .on("mouseout", function(this: SVGRectElement) {
-            const parentGroup = d3.select(this.parentNode as SVGGElement);
-            const relType = parentGroup.attr("data-type");
-            const isCurrentlyFiltered = filteredRelationships.includes(relType.toLowerCase());
-            
-            d3.select(this)
-              .transition()
-              .duration(200)
-              .attr("fill", isCurrentlyFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent");
-            parentGroup.select("circle")
-              .transition()
-              .duration(200)
-              .attr("r", dotRadius);
-            parentGroup.select("text")
-              .transition()
-              .duration(200)
-              .attr("font-weight", "500");
-          })
-          .on("click", function(this: SVGRectElement) {
-            const parentGroup = d3.select(this.parentNode as SVGGElement);
-            const relType = parentGroup.attr("data-type");
-            
-            // Check if this relationship type is currently filtered
-            const isFiltered = filteredRelationships.includes(relType.toLowerCase());
-            
-            // Toggle filtering for this relationship type
-            console.log(`[FILTER DEBUG] Legend click: ${relType} - currently ${isFiltered ? 'filtered' : 'visible'}`);
-            handleToggleRelationshipFilter(relType);
-            
-            // Update legend item visual state
-            d3.select(this)
-              .transition()
-              .duration(300)
-              .attr("fill", isFiltered ? "transparent" : (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)"));
-            
-            parentGroup.select("text")
-              .transition()
-              .duration(300)
-              .style("text-decoration", isFiltered ? "none" : "line-through")
-              .style("opacity", isFiltered ? 1 : 0.7);
-            
-            parentGroup.select("circle")
-              .transition()
-              .duration(300)
-              .style("opacity", isFiltered ? 1 : 0.5);
-          });
-        
-        // Add color dot with enhanced styling
-        entry.append("circle")
-          .attr("cx", 5)
-            .attr("cy", 0)
-          .attr("r", dotRadius)
-          .attr("fill", getNodeColor(type))
-          .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-          .attr("stroke-width", 0.5)
-          .style("opacity", isFiltered ? 0.5 : 1);
-        
-        // Get label text with possible truncation
-        const labelText = getRelationshipTypeLabel(type).label;
-        const availableWidth = legendWidth - textPadding - (legendPadding * 2) - 10; // Account for dot width and padding
-        const textElement = entry.append("text")
-          .attr("x", textPadding)
-            .attr("y", 0)
-          .attr("dy", ".25em")
+        // Add category name with original font size
+        const categoryTextElement = legendContainer.append("text")
+          .attr("x", legendPadding)
+          .attr("y", yPos)
+          .attr("font-weight", "600")
           .attr("font-size", "11px") // Restored original size
-          .attr("font-weight", "500")
-            .attr("fill", theme === "dark" ? "#ddd" : "#333")
-          .style("text-decoration", isFiltered ? "line-through" : "none")
-          .style("opacity", isFiltered ? 0.7 : 1);
+          .attr("fill", theme === "dark" ? "#ccc" : "#555")
+          .text(category.name);
         
-        // Check if text needs truncation without actually truncating yet
-        textElement.text(labelText);
-        const textWidth = textElement.node()?.getBBox().width || 0;
+        const categoryTextBBox = categoryTextElement.node()?.getBBox();
+        if (categoryTextBBox) {
+          // Add subtle background for category headers
+          legendContainer.append("rect")
+            .attr("x", legendPadding - 4)
+            .attr("y", yPos - categoryTextBBox.height + 2)
+            .attr("width", categoryTextBBox.width + 8)
+            .attr("height", categoryTextBBox.height + 4)
+            .attr("rx", 3)
+            .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.07)" : "rgba(0, 0, 0, 0.04)")
+            .lower(); // Move behind text
+        }
         
-        // If text overflows, truncate it
-        if (textWidth > availableWidth) {
-          // Calculate how many characters we can fit
-          const approxCharsPerWidth = labelText.length / textWidth;
-          const visibleChars = Math.floor(approxCharsPerWidth * availableWidth) - 3;
-          textElement.text(labelText.substring(0, visibleChars) + "...");
+        // Add category items
+        category.types.forEach(type => {
+          // Calculate y position for each item
+          yPos += legendItemHeight;
           
-          // Add title for tooltip on hover
-          entry.append("title").text(labelText);
+          // Check if this relationship type is filtered out
+          const isFiltered = filteredRelationships.includes(type.toLowerCase());
+          
+          // Create legend entry group with hover interaction
+          const entry = legendContainer.append("g")
+            .attr("transform", `translate(${legendPadding}, ${yPos})`)
+              .attr("class", "legend-item")
+            .attr("data-type", type);
+            
+          // Create a hover/click target rectangle
+          entry.append("rect")
+            .attr("width", legendWidth - (legendPadding * 2))
+            .attr("height", legendItemHeight)
+            .attr("x", -5)
+            .attr("y", -12)
+            .attr("rx", 4)
+            .attr("fill", isFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent")
+            .attr("cursor", "pointer")
+            .on("mouseover", function(this: SVGRectElement) {
+              d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)");
+              d3.select(this.parentNode as SVGGElement).select("circle")
+                .transition()
+                .duration(200)
+                .attr("r", dotRadius * 1.3);
+              d3.select(this.parentNode as SVGGElement).select("text")
+                .transition()
+                .duration(200)
+                .attr("font-weight", "600");
+            })
+            .on("mouseout", function(this: SVGRectElement) {
+              const parentGroup = d3.select(this.parentNode as SVGGElement);
+              const relType = parentGroup.attr("data-type");
+              const isCurrentlyFiltered = filteredRelationships.includes(relType.toLowerCase());
+              
+              d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("fill", isCurrentlyFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent");
+              parentGroup.select("circle")
+                .transition()
+                .duration(200)
+                .attr("r", dotRadius);
+              parentGroup.select("text")
+                .transition()
+                .duration(200)
+                .attr("font-weight", "500");
+            })
+            .on("click", function(this: SVGRectElement) {
+              const parentGroup = d3.select(this.parentNode as SVGGElement);
+              const relType = parentGroup.attr("data-type");
+              
+              // Check if this relationship type is currently filtered
+              const isFiltered = filteredRelationships.includes(relType.toLowerCase());
+              
+              // Toggle filtering for this relationship type
+              console.log(`[FILTER DEBUG] Legend click: ${relType} - currently ${isFiltered ? 'filtered' : 'visible'}`);
+              handleToggleRelationshipFilter(relType);
+              
+              // Update legend item visual state
+              d3.select(this)
+                .transition()
+                .duration(300)
+                .attr("fill", isFiltered ? "transparent" : (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)"));
+              
+              parentGroup.select("text")
+                .transition()
+                .duration(300)
+                .style("text-decoration", isFiltered ? "none" : "line-through")
+                .style("opacity", isFiltered ? 1 : 0.7);
+              
+              parentGroup.select("circle")
+                .transition()
+                .duration(300)
+                .style("opacity", isFiltered ? 1 : 0.5);
+            });
+          
+          // Add color dot with enhanced styling
+          entry.append("circle")
+            .attr("cx", 5)
+              .attr("cy", 0)
+            .attr("r", dotRadius)
+            .attr("fill", getNodeColor(type))
+            .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
+            .attr("stroke-width", 0.5)
+            .style("opacity", isFiltered ? 0.5 : 1);
+          
+          // Get label text with possible truncation
+          const labelText = getRelationshipTypeLabel(type).label;
+          const availableWidth = legendWidth - textPadding - (legendPadding * 2) - 10; // Account for dot width and padding
+          const textElement = entry.append("text")
+            .attr("x", textPadding)
+              .attr("y", 0)
+            .attr("dy", ".25em")
+            .attr("font-size", "11px") // Restored original size
+            .attr("font-weight", "500")
+              .attr("fill", theme === "dark" ? "#ddd" : "#333")
+            .style("text-decoration", isFiltered ? "line-through" : "none")
+            .style("opacity", isFiltered ? 0.7 : 1);
+          
+          // Check if text needs truncation without actually truncating yet
+          textElement.text(labelText);
+          const textWidth = textElement.node()?.getBBox().width || 0;
+          
+          // If text overflows, truncate it
+          if (textWidth > availableWidth) {
+            // Calculate how many characters we can fit
+            const approxCharsPerWidth = labelText.length / textWidth;
+            const visibleChars = Math.floor(approxCharsPerWidth * availableWidth) - 3;
+            textElement.text(labelText.substring(0, visibleChars) + "...");
+            
+            // Add title for tooltip on hover
+            entry.append("title").text(labelText);
+          }
+        });
+        
+        // Add spacing after each category (except the last one)
+        if (categoryIndex < categories.length - 1) {
+          yPos += categorySpacing;
         }
       });
-      
-      // Add spacing after each category (except the last one)
-      if (categoryIndex < categories.length - 1) {
-        yPos += categorySpacing;
-      }
-    });
 
-    // Add checkbox for disconnected nodes
-    // Calculate position below the legend
-    const checkboxY = yPos + legendItemHeight + 10;
-    
-    // Add a subtle divider line before the checkbox
-    legendContainer.append("line")
-      .attr("x1", legendPadding)
-      .attr("y1", checkboxY - 15)
-      .attr("x2", legendWidth - legendPadding)
-      .attr("y2", checkboxY - 15)
-      .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
-      .attr("stroke-width", 1);
-    
-    // Add a container for the toggle switch
-    const toggleContainer = legendContainer.append("g")
-      .attr("transform", `translate(${legendPadding}, ${checkboxY})`)
-      .attr("class", "disconnected-nodes-option")
-      .style("cursor", "pointer");
-    
-    // Skip adding a background rectangle for the toggle area entirely
-    
-    // Create a simpler, more elegant toggle switch
-    // 1. Create pill background with cleaner styling
-    const toggleTrack = toggleContainer.append("rect")
-      .attr("width", 30) // Smaller toggle
-      .attr("height", 14) // Smaller toggle
-      .attr("rx", 7)
-      .attr("x", 0)
-      .attr("y", -5)
-      .attr("fill", showDisconnectedNodes ? 
-        (theme === "dark" ? "#4873c4" : "#3873e8") : 
-        (theme === "dark" ? "#505868" : "#d9dee6"))
-      .attr("stroke", "none")
-      .attr("filter", theme === "dark" ? 
-        "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.2))" : 
-        "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1))");
-    
-    // 2. Skip complicated gradients that might look bad
-    
-    // 3. Add toggle handle with cleaner styling
-    const toggleHandle = toggleContainer.append("circle")
-      .attr("r", 5) // Smaller handle
-      .attr("cx", showDisconnectedNodes ? 21 : 9) // Adjusted positions
-      .attr("cy", 2)
-      .attr("fill", theme === "dark" ? "#ffffff" : "#ffffff")
-      .attr("stroke", theme === "dark" ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0.1)")
-      .attr("stroke-width", 0.5)
-      .attr("filter", "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.15))");
-    
-    // 4. Skip inner shadow on handle for simpler appearance
-    
-    // 5. Add simple but clear label with fixed width
-    toggleContainer.append("text")
-      .attr("x", 38) // Reverted to original spacing
-      .attr("y", 2)
-      .attr("dominant-baseline", "middle")
-      .attr("font-size", "11px") // Restored original size
-      .attr("font-weight", "500")
-      .attr("fill", theme === "dark" ? "#ddd" : "#444")
-      .text("Show disconnected nodes");
-    
-    // Add click handler for the toggle with simplified transitions
-    toggleContainer.on("click", function() {
-      const newValue = !showDisconnectedNodes;
-      setShowDisconnectedNodes(newValue);
+      // Add checkbox for disconnected nodes
+      // Calculate position below the legend
+      const checkboxY = yPos + legendItemHeight + 10;
       
-      // Update toggle track color with simple transition
-      toggleTrack
-        .transition().duration(250)
-        .attr("fill", newValue ? 
+      // Add a subtle divider line before the checkbox
+      legendContainer.append("line")
+        .attr("x1", legendPadding)
+        .attr("y1", checkboxY - 15)
+        .attr("x2", legendWidth - legendPadding)
+        .attr("y2", checkboxY - 15)
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
+        .attr("stroke-width", 1);
+      
+      // Add a container for the toggle switch
+      const toggleContainer = legendContainer.append("g")
+        .attr("transform", `translate(${legendPadding}, ${checkboxY})`)
+        .attr("class", "disconnected-nodes-option")
+        .style("cursor", "pointer");
+      
+      // Skip adding a background rectangle for the toggle area entirely
+      
+      // Create a simpler, more elegant toggle switch
+      // 1. Create pill background with cleaner styling
+      const toggleTrack = toggleContainer.append("rect")
+        .attr("width", 30) // Smaller toggle
+        .attr("height", 14) // Smaller toggle
+        .attr("rx", 7)
+        .attr("x", 0)
+        .attr("y", -5)
+        .attr("fill", showDisconnectedNodes ? 
           (theme === "dark" ? "#4873c4" : "#3873e8") : 
-          (theme === "dark" ? "#505868" : "#d9dee6"));
+          (theme === "dark" ? "#505868" : "#d9dee6"))
+        .attr("stroke", "none")
+        .attr("filter", theme === "dark" ? 
+          "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.2))" : 
+          "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1))");
       
-      // Move handle with simple transition
-      toggleHandle
-        .transition()
-        .duration(250)
-        .attr("cx", newValue ? 21 : 9); // Match the positions from above
-      });
-
-      setIsLoading(false);
+      // 2. Skip complicated gradients that might look bad
       
-    // Tooltip depends on state now, so keep it outside useEffect cleanup?
-    const centerTimeout = setTimeout(() => {
-         if (svgRef.current) centerOnMainWord(svg, filteredNodes);
-     }, 800);
+      // 3. Add toggle handle with cleaner styling
+      const toggleHandle = toggleContainer.append("circle")
+        .attr("r", 5) // Smaller handle
+        .attr("cx", showDisconnectedNodes ? 21 : 9) // Adjusted positions
+        .attr("cy", 2)
+        .attr("fill", theme === "dark" ? "#ffffff" : "#ffffff")
+        .attr("stroke", theme === "dark" ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0.1)")
+        .attr("stroke-width", 0.5)
+        .attr("filter", "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.15))");
+      
+      // 4. Skip inner shadow on handle for simpler appearance
+      
+      // 5. Add simple but clear label with fixed width
+      toggleContainer.append("text")
+        .attr("x", 38) // Reverted to original spacing
+        .attr("y", 2)
+        .attr("dominant-baseline", "middle")
+        .attr("font-size", "11px") // Restored original size
+        .attr("font-weight", "500")
+        .attr("fill", theme === "dark" ? "#ddd" : "#444")
+        .text("Show disconnected nodes");
+      
+      // Add click handler for the toggle with simplified transitions
+      toggleContainer.on("click", function() {
+        const newValue = !showDisconnectedNodes;
+        setShowDisconnectedNodes(newValue);
+        
+        // Update toggle track color with simple transition
+        toggleTrack
+          .transition().duration(250)
+          .attr("fill", newValue ? 
+            (theme === "dark" ? "#4873c4" : "#3873e8") : 
+            (theme === "dark" ? "#505868" : "#d9dee6"));
+        
+        // Move handle with simple transition
+        toggleHandle
+          .transition()
+          .duration(250)
+          .attr("cx", newValue ? 21 : 9); // Match the positions from above
+        });
 
-      return () => {
-      if (currentSim) currentSim.stop();
-       clearTimeout(centerTimeout);
-     
-    // Remove all event handlers to prevent memory leaks
-    if (svgRef.current) {
-      const svg = d3.select(svgRef.current);
-      svg.selectAll(".node").on("click", null).on("dblclick", null).on("mouseover", null).on("mouseout", null);
-      svg.selectAll(".legend-item rect").on("click", null).on("mouseover", null).on("mouseout", null);
+        setIsLoading(false);
+        
+      // Tooltip depends on state now, so keep it outside useEffect cleanup?
+      const centerTimeout = setTimeout(() => {
+           if (svgRef.current) centerOnMainWord(svg, filteredNodes);
+       }, 800);
+
+        return () => {
+        if (currentSim) currentSim.stop();
+         clearTimeout(centerTimeout);
+       
+      // Remove all event handlers to prevent memory leaks
+      if (svgRef.current) {
+        const svg = d3.select(svgRef.current);
+        svg.selectAll(".node").on("click", null).on("dblclick", null).on("mouseover", null).on("mouseout", null);
+        svg.selectAll(".legend-item rect").on("click", null).on("mouseover", null).on("mouseout", null);
+      }
+      };
+    // --- END OF TRY BLOCK, START OF CATCH BLOCK ---
+    } catch (err) {
+      console.error("[D3_EFFECT_ERROR] Error during D3 graph rendering:", err);
+      setError(err instanceof Error ? err.message : "An unknown error occurred during graph rendering.");
+      setIsValidNetwork(false); // Mark network as invalid on error
+      setIsLoading(false); // Ensure loading state is reset
+      // Ensure cleanup runs even on error
+      if (simulationRef.current) {
+          simulationRef.current.stop();
+      }
+      if (svgRef.current) {
+          d3.select(svgRef.current).selectAll("*").remove();
+          if (zoomRef.current) {
+              d3.select(svgRef.current).on(".zoom", null);
+          }
+      }
     }
-    };
+    // --- END OF CATCH BLOCK ---
   }, [
      wordNetwork,
      mainWord,
@@ -1587,7 +1606,7 @@ const getRelationshipTypeLabel = (type: string): { group: string, label: string 
   return (
     <div className="graph-container">
       <div className="graph-svg-container">
-        {isLoading && (
+        {isLoading && ( // Use isLoading here
           <div className="loading-overlay"><div className="spinner"></div><p>Loading...</p></div>
         )}
         {error && (
@@ -1595,7 +1614,7 @@ const getRelationshipTypeLabel = (type: string): { group: string, label: string 
             <p className="error-message">{error}</p>
           </div>
         )}
-        {(!wordNetwork || !mainWord || filteredNodes.length === 0 && !isLoading && !error) && (
+        {(!wordNetwork || !mainWord || filteredNodes.length === 0 && !error) && (
           <div className="empty-graph-message">Enter a word to see its network.</div>
         )}
         <svg 
@@ -1616,7 +1635,7 @@ const getRelationshipTypeLabel = (type: string): { group: string, label: string 
           breadth={breadth}
           onDepthChange={handleDepthChange}
           onBreadthChange={handleBreadthChange}
-          onChangeCommitted={(d, b) => onNetworkChange(d, b)}
+          onChangeCommitted={(_d, _b) => onNetworkChange(depth, breadth)} // Use state variables directly
           className="network-controls"
         />
       </div>

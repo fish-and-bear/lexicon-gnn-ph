@@ -1,5 +1,5 @@
-import React, { useCallback, useState, useEffect, useMemo } from 'react';
-import { Definition, WordInfo, RelatedWord, NetworkLink, NetworkNode, WordForm, WordTemplate, Idiom, Affixation, DefinitionCategory, DefinitionLink, DefinitionRelation } from '../types';
+import React, { useCallback, useState, useEffect } from 'react';
+import { Definition, WordInfo, WordForm, WordTemplate, Idiom, Affixation, Credit, BasicWord } from '../types'; // Removed RelatedWord, NetworkLink, NetworkNode, DefinitionCategory, DefinitionLink, DefinitionRelation
 // import { convertToBaybayin } from '../api/wordApi';
 import './WordDetails.css';
 // import './Tabs.css';
@@ -13,7 +13,6 @@ import Tab from '@mui/material/Tab';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Accordion from '@mui/material/Accordion';
@@ -22,17 +21,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
-import Drawer from '@mui/material/Drawer';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import Grid from '@mui/material/Grid';
-
-// Add d3 import here at the top
-import * as d3 from 'd3';
 
 // MUI Icons
 // import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -46,11 +37,6 @@ interface WordDetailsProps {
   etymologyError: string | null;
   onWordLinkClick: (word: string) => void;
   onEtymologyNodeClick: (node: any) => void;
-}
-
-// After initial imports, add this interface to describe any record
-interface AnyRecord {
-  [key: string]: any;
 }
 
 // Helper function to format relation type names
@@ -128,20 +114,6 @@ const graphColors = {
   default: "#78909c"   // Blue-grey
 };
 
-// Helper to determine if a background color is light or dark
-const isColorLight = (hexColor: string): boolean => {
-  try {
-    const color = d3.color(hexColor);
-    if (!color) return true; // Default to light if parsing fails
-    const rgb = color.rgb();
-    // Standard luminance calculation
-    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-    return luminance > 0.5;
-  } catch (e) {
-    return true;
-  }
-};
-
 // --- Styled Components ---
 // Simplified Accordion Styling
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
@@ -188,40 +160,6 @@ const ExpandMoreIcon = () => <Typography sx={{ transform: 'rotate(90deg)', lineH
 const VolumeUpIcon = () => <Typography sx={{ fontSize: '1.2em', lineHeight: 0, color: 'primary.main' }}>🔊</Typography>;
 const StopCircleIcon = () => <Typography sx={{ fontSize: '1.2em', lineHeight: 0, color: 'error.main' }}>⏹️</Typography>;
 
-// Add a styled component for definitions, sources, etc. that properly handles dark mode
-const DefinitionCard = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.mode === 'dark' 
-    ? 'var(--definition-bg-color)' 
-    : theme.palette.background.paper,
-  border: `1px solid ${theme.palette.mode === 'dark' 
-    ? 'rgba(255, 255, 255, 0.08)' 
-    : theme.palette.divider}`,
-  boxShadow: theme.palette.mode === 'dark'
-    ? '0 2px 4px rgba(0, 0, 0, 0.2)'
-    : 'none',
-}));
-
-// Styled definition item
-const DefinitionItem = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(1.5),
-  '&:last-child': {
-    marginBottom: 0,
-  },
-}));
-
-// Source tag for definitions
-const SourceTag = styled(Typography)(({ theme }) => ({
-  fontSize: '0.75rem',
-  fontStyle: 'italic',
-  marginTop: theme.spacing(0.5),
-  color: theme.palette.mode === 'dark' 
-    ? 'var(--link-color)'
-    : theme.palette.text.secondary,
-}));
-
 const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   wordInfo,
   etymologyTree,
@@ -234,17 +172,10 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   const isWideScreen = useMediaQuery(theme.breakpoints.up('md')); // Use 'md' breakpoint for vertical tabs
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const [tabValue, setTabValue] = useState<number>(0); // Tab value state
   const [activeTab, setActiveTab] = useState<string>('definitions'); // Use string for tab value
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   
-  // Add these variables to fix the undefined errors
-  const isLoading = false;
-  const error = null;
-  const onRetry = null;
-  const drawerWidth = 280;
-
   // Effect to setup audio element
   useEffect(() => {
     setIsAudioPlaying(false); // Stop previous audio on word change
@@ -314,16 +245,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     const headerTextColor = isDarkMode 
       ? theme.palette.primary.contrastText // Use contrast text color
       : theme.palette.getContrastText(headerBgColor);
-
-    const afterStyles = isDarkMode ? {
-      top: 0,
-      height: '2px',
-      background: `linear-gradient(90deg, ${alpha(graphColors.main, 0.3)}, ${alpha(graphColors.main, 0)})`
-    } : {
-      bottom: 0,
-      height: '3px',
-      background: `linear-gradient(90deg, ${alpha(graphColors.main, 0.1)}, ${alpha(graphColors.main, 0)})`
-    };
 
     return (
       // More elegant header with subtle styling
@@ -1831,25 +1752,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
               );
             }
             
-            const tabContent = (
-               <Box sx={{ 
-                  flexGrow: 1, 
-                  overflowY: 'auto', 
-                  position: 'relative', 
-                  bgcolor: 'background.default',
-                  ...(isWideScreen && { mt: 0 })
-               }}>
-                  <Box sx={{ px: theme.spacing(3), py: theme.spacing(2) }}>
-                      {activeTab === 'definitions' && renderDefinitionsTab()}
-                      {activeTab === 'relations' && renderRelationsTab()}
-                      {activeTab === 'forms_templates' && renderFormsAndTemplatesTab()}
-                      {activeTab === 'etymology' && renderEtymologyTab()}
-                      {activeTab === 'sources-info' && renderSourcesInfoTab()}
-                      {activeTab === 'metadata' && renderSourcesInfoTab()}
-                  </Box>
-               </Box>
-            );
-
             const tabs = (
                <Box sx={{ height: '100%' }}>
                  <Tabs

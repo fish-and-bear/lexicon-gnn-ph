@@ -21,40 +21,41 @@ interface CacheStats {
   newestTimestamp: number | null;
 }
 
-function calculateCacheStats(): CacheStats {
-  let totalSize = 0;
-  let totalItems = 0;
-  let oldestTimestamp: number | null = null;
-  let newestTimestamp: number | null = null;
+// Function to calculate cache statistics (optional)
+// function calculateCacheStats() {
+//   let totalSize = 0;
+//   let itemCount = 0;
+//   const stats: Record<string, { size: number, expires: number | null }> = {};
+//
+//   for (let i = 0; i < localStorage.length; i++) {
+//     const key = localStorage.key(i);
+//     if (key && key.startsWith(CACHE_PREFIX)) {
+//       try {
+//         const item = localStorage.getItem(key);
+//         if (item) {
+//           const parsed = JSON.parse(item);
+//           const size = (item.length * 2) / 1024; // Size in KB (approx)
+//           totalSize += size;
+//           itemCount++;
+//           stats[key.substring(CACHE_PREFIX.length)] = {
+//             size: parseFloat(size.toFixed(2)),
+//             expires: parsed.expires || null
+//           };
+//         }
+//       } catch (e) {
+//         console.warn(`Error processing cache item ${key}:`, e);
+//       }
+//     }
+//   }
+//
+//   console.log(`Cache Stats: ${itemCount} items, Total Size: ${totalSize.toFixed(2)} KB`);
+//   // console.table(stats);
+//   return { itemCount, totalSize, stats };
+// }
 
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key && key.startsWith('cache:')) {
-      try {
-        const item = JSON.parse(localStorage.getItem(key) || '');
-        totalSize += item.size || 0;
-        totalItems++;
-        const timestamp = item.timestamp || Date.now();
-        if (oldestTimestamp === null || timestamp < oldestTimestamp) {
-          oldestTimestamp = timestamp;
-        }
-        if (newestTimestamp === null || timestamp > newestTimestamp) {
-          newestTimestamp = timestamp;
-        }
-      } catch (e) {
-        console.error('Error calculating cache stats:', e);
-      }
-    }
-  }
-
-  return {
-    totalItems,
-    totalSize: Math.round(totalSize / 1024), // Convert to KB
-    oldestTimestamp,
-    newestTimestamp
-  };
-}
-
+/**
+ * Clears expired cache entries based on their TTL.
+ */
 export function clearOldCache() {
   try {
     const keys = Object.keys(localStorage);
@@ -68,6 +69,7 @@ export function clearOldCache() {
           const { timestamp } = JSON.parse(item);
           if (currentTime - timestamp > CACHE_EXPIRATION) {
             localStorage.removeItem(key);
+            console.log(`Cache item ${key} removed due to expiration.`);
           }
         } catch (e) {
           // If we can't parse the item, remove it
@@ -80,7 +82,20 @@ export function clearOldCache() {
   }
 }
 
+// Flag to ensure interval is only set once
+let cleanupIntervalStarted = false;
+
+// Function to start the cleanup interval if not already started
+function ensureCacheCleanupInterval() {
+  if (!cleanupIntervalStarted) {
+    setInterval(clearOldCache, CACHE_CLEANUP_INTERVAL);
+    cleanupIntervalStarted = true;
+    console.log('Cache cleanup interval started.');
+  }
+}
+
 export function getCachedData<T extends CacheableData>(key: string): T | null {
+  ensureCacheCleanupInterval(); // Ensure interval is running
   const cacheKey = `cache:${key}`;
   const item = localStorage.getItem(cacheKey);
   if (!item) return null;
@@ -115,6 +130,7 @@ export function getCachedData<T extends CacheableData>(key: string): T | null {
 }
 
 export function setCachedData<T extends CacheableData>(key: string, data: T): void {
+  ensureCacheCleanupInterval(); // Ensure interval is running
   try {
     const stats = getCacheStats();
     
@@ -152,9 +168,6 @@ export function setCachedData<T extends CacheableData>(key: string, data: T): vo
     console.error('Error setting cache data:', e);
   }
 }
-
-// Start cache cleanup interval
-setInterval(clearOldCache, CACHE_CLEANUP_INTERVAL);
 
 // Type guards
 function isWordNetwork(data: any): data is WordNetwork {

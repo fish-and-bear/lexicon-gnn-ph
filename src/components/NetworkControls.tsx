@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-import InfoIcon from '@mui/icons-material/Info';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
@@ -72,17 +70,6 @@ const ControlLabel = styled(Typography)(({ theme }) => ({
   fontSize: '0.75rem',
   fontWeight: '600',
   minWidth: '55px',
-}));
-
-const ValueDisplay = styled('span')(({ theme }) => ({
-  display: 'inline-block',
-  minWidth: '16px',
-  marginLeft: '4px',
-  textAlign: 'center',
-  fontWeight: 'bold',
-  fontSize: '0.8rem',
-  color: 'var(--primary-color, #3d5a80)',
-  transition: 'all 0.15s ease',
 }));
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
