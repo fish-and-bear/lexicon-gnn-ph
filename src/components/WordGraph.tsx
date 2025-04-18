@@ -6,7 +6,6 @@ import React, {
   useMemo,
 } from "react";
 import * as d3 from "d3";
-import "./common.css"; // Import common CSS first
 import "./WordGraph.css";
 import { WordNetwork } from "../types";
 import { useTheme } from "../contexts/ThemeContext";

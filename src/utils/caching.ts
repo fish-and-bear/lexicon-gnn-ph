@@ -1,4 +1,4 @@
-import type { WordNetwork, WordInfo, Statistics, PartOfSpeech, EtymologyTree, SearchResult } from "../types.ts";
+import { WordNetwork, WordInfo, Statistics, PartOfSpeech, EtymologyTree, SearchResult } from "../types";
 
 const CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes
 const MAX_CACHE_SIZE = 5 * 1024 * 1024; // 5MB

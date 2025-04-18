@@ -606,6 +606,22 @@ function normalizeWordData(rawData: any): WordInfo {
     search_text: wordData.search_text || null,
     created_at: wordData.created_at || null,
     updated_at: wordData.updated_at || null,
+    
+    // New fields from API improvements
+    pronunciation_data: wordData.pronunciation_data || null,
+    word_metadata: wordData.word_metadata || null, 
+    source_info: wordData.source_info || null,
+    idioms: wordData.idioms || null,
+    badlit_form: wordData.badlit_form || null,
+    hyphenation: wordData.hyphenation || null,
+    is_proper_noun: wordData.is_proper_noun || false,
+    is_abbreviation: wordData.is_abbreviation || false,
+    is_initialism: wordData.is_initialism || false,
+    
+    // Compute is_root based on root_word_id
+    is_root: !wordData.root_word_id,
+    
+    // Arrays that will be populated later
     definitions: [],
     etymologies: [],
     pronunciations: [],
@@ -639,6 +655,38 @@ function normalizeWordData(rawData: any): WordInfo {
       tags: splitCommaSeparated(def.tags), 
       sources: splitCommaSeparated(def.sources), 
       relations: [],
+      // Process definition_metadata (which is called 'metadata' in DB)
+      definition_metadata: def.definition_metadata || def.metadata || null,
+      // Process categories if available
+      categories: Array.isArray(def.categories) 
+        ? def.categories.map((cat: any) => ({
+            id: cat.id,
+            definition_id: cat.definition_id,
+            category_name: cat.category_name,
+            description: cat.description || null,
+            category_kind: cat.category_kind || null,
+            tags: cat.tags || null,
+            category_metadata: cat.category_metadata || cat.metadata || null,
+            parents: Array.isArray(cat.parents) ? cat.parents : splitCommaSeparated(cat.parents)
+          }))
+        : [],
+      // Process definition_relations if available
+      definition_relations: Array.isArray(def.definition_relations)
+        ? def.definition_relations.map((rel: any) => ({
+            id: rel.id,
+            definition_id: rel.definition_id,
+            word_id: rel.word_id,
+            relation_type: rel.relation_type,
+            relation_data: rel.relation_data || rel.metadata || null,
+            related_word: rel.related_word ? {
+              id: rel.related_word.id,
+              lemma: rel.related_word.lemma,
+              language_code: rel.related_word.language_code || null,
+              has_baybayin: rel.related_word.has_baybayin || false,
+              baybayin_form: rel.related_word.baybayin_form || null
+            } : null
+          }))
+        : [],
       // Other optional fields from RawDefinition if needed
       confidence_score: def.confidence_score,
       is_verified: def.is_verified,
@@ -767,6 +815,7 @@ function normalizeWordData(rawData: any): WordInfo {
         return {
           id: rel.id || 0,
           relation_type: rel.relation_type || 'related',
+          relation_data: rel.relation_data || rel.metadata || null,
           target_word: fixedTargetWord
         };
       }
@@ -775,6 +824,7 @@ function normalizeWordData(rawData: any): WordInfo {
       return {
         id: rel.id || 0,
         relation_type: rel.relation_type || 'related',
+        relation_data: rel.relation_data || rel.metadata || null,
         target_word: {
           id: rel.target_word.id || 0,
           lemma: rel.target_word.lemma,
@@ -824,6 +874,7 @@ function normalizeWordData(rawData: any): WordInfo {
         return {
           id: rel.id || 0,
           relation_type: rel.relation_type || 'related',
+          relation_data: rel.relation_data || rel.metadata || null,
           source_word: fixedSourceWord
         };
       }
@@ -832,6 +883,7 @@ function normalizeWordData(rawData: any): WordInfo {
       return {
         id: rel.id || 0,
         relation_type: rel.relation_type || 'related',
+        relation_data: rel.relation_data || rel.metadata || null,
         source_word: {
           id: rel.source_word.id || 0,
           lemma: rel.source_word.lemma,
@@ -933,14 +985,20 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
     // Add query parameters to include all related data
     const response = await api.get(endpoint, {
       params: {
+        // Use the complete parameter to get all data in one request
+        complete: true,
+        // Include specific parameters as fallback
         include_relations: true,
         include_etymologies: true,
+        include_pronunciation: true,
         include_root: true,
         include_derived: true,
         include_affixations: true,
         include_definition_relations: true,
         include_forms: true,
-        include_templates: true
+        include_templates: true,
+        include_credits: true,
+        include_metadata: true
       }
     });
 

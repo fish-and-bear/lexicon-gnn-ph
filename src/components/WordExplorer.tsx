@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef, FormEvent } from "react";
-import "./common.css"; // Import common CSS first
-import "./WordExplorer.css";
 import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
 import { useTheme } from "../contexts/ThemeContext";
+import "./WordExplorer.css";
 import { WordNetwork, WordInfo, SearchResult, SearchOptions, EtymologyTree, Statistics, Definition, SearchWordResult, Relation } from "../types";
 import unidecode from "unidecode";
 import { 
@@ -120,14 +119,7 @@ const WordExplorer: React.FC = () => {
   const [wordData, setWordData] = useState<WordInfo | null>(null);
 
   // Near state declarations, add these new states
-  const [randomWordCache, setRandomWordCache] = useState<any[]>([]);
-  const [isRefreshingCache, setIsRefreshingCache] = useState<boolean>(false);
   const randomWordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const RANDOM_CACHE_SIZE = 20; // Increased from 5 to 20 for better spam clicking support
-  const lastRefreshTimeRef = useRef<number>(0);
-  const retryCountRef = useRef<number>(0);
-  const randomWordCacheRef = useRef<any[]>([]); // Ref for synchronous cache access
-
   const [isRandomLoading, setIsRandomLoading] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState(0);
   
@@ -183,9 +175,71 @@ const WordExplorer: React.FC = () => {
       if (data && data.nodes && data.edges) {
         console.log('Word network data received:', data);
         console.log(`Network has ${data.nodes.length} nodes and ${data.edges.length} edges`);
-        
-        // Set the network data
         setWordNetwork(data);
+        
+        // Sync network data with word details if we have wordData
+        if (wordData && wordData.id) {
+          // Find the main node (root word)
+          const mainNode = data.nodes.find(node => 
+            node.type === 'main' || node.word === word || node.label === word
+          );
+          
+          if (mainNode) {
+            // Create relations from network data
+            const incomingRelations: Relation[] = [];
+            const outgoingRelations: Relation[] = [];
+            
+            // Process each edge to build incoming and outgoing relations
+            data.edges.forEach(edge => {
+              const sourceNode = data.nodes.find(n => n.id === edge.source);
+              const targetNode = data.nodes.find(n => n.id === edge.target);
+              
+              if (sourceNode && targetNode) {
+                // If this edge points to the main node, it's an incoming relation
+                if (targetNode.id === mainNode.id) {
+                  incomingRelations.push({
+                    id: Math.floor(Math.random() * 1000000), // Generate a random ID
+                    relation_type: edge.type,
+                    source_word: {
+                      id: Number(sourceNode.id) || 0,
+                      lemma: sourceNode.word || sourceNode.label,
+                      has_baybayin: sourceNode.has_baybayin,
+                      baybayin_form: sourceNode.baybayin_form
+                    }
+                  });
+                }
+                // If this edge comes from the main node, it's an outgoing relation
+                else if (sourceNode.id === mainNode.id) {
+                  outgoingRelations.push({
+                    id: Math.floor(Math.random() * 1000000), // Generate a random ID
+                    relation_type: edge.type,
+                    target_word: {
+                      id: Number(targetNode.id) || 0,
+                      lemma: targetNode.word || targetNode.label,
+                      has_baybayin: targetNode.has_baybayin,
+                      baybayin_form: targetNode.baybayin_form
+                    }
+                  });
+                }
+              }
+            });
+            
+            // Update wordData with the relations we extracted
+            console.log("Syncing relations:", {
+              incoming: incomingRelations.length,
+              outgoing: outgoingRelations.length
+            });
+            
+            setWordData(prevData => {
+              if (!prevData) return prevData;
+              return {
+                ...prevData,
+                incoming_relations: incomingRelations.length > 0 ? incomingRelations : prevData.incoming_relations,
+                outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : prevData.outgoing_relations
+              };
+            });
+          }
+        }
         
         return data;
       } else {
@@ -398,84 +452,10 @@ const WordExplorer: React.FC = () => {
         }
 
         // Update network data if necessary
-        // Fix: Always set currentNetworkWordId to a meaningful value regardless of depth/breadth
-        // This ensures that when navigating back, network data is always properly fetched
-        const currentNetworkWordId = wordNetwork?.nodes?.find(node => node.type === 'main')?.id || null;
+        const currentNetworkWordId = depth && breadth ? wordData.id : null;
         if (wordData.id !== currentNetworkWordId) {
-          // Set default values if they're not already valid
-          if (!depth || depth < 1) setDepth(2); // DEFAULT_NETWORK_DEPTH
-          if (!breadth || breadth < 1) setBreadth(10); // DEFAULT_NETWORK_BREADTH
-          
-          // Update word network for the new main word
-          try {
-            console.log(`Fetching network for word: ${wordData.lemma} with depth=${depth || 2}, breadth=${breadth || 10}`);
-            const networkData = await fetchWordNetworkData(wordData.lemma, depth || 2, breadth || 10);
-            setWordNetwork(networkData);
-            
-            // Extract relations from the network data - API returns empty arrays for relations
-            if (networkData && networkData.nodes && networkData.edges) {
-              const mainNode = networkData.nodes.find(node => 
-                node.type === 'main' || node.word === wordData.lemma || node.label === wordData.lemma
-              );
-              
-              if (mainNode) {
-                const incomingRelations: Relation[] = [];
-                const outgoingRelations: Relation[] = [];
-                
-                networkData.edges.forEach(edge => {
-                  const sourceNode = networkData.nodes.find(n => n.id === edge.source);
-                  const targetNode = networkData.nodes.find(n => n.id === edge.target);
-                  
-                  if (sourceNode && targetNode) {
-                    if (targetNode.id === mainNode.id) {
-                      incomingRelations.push({
-                        id: Math.floor(Math.random() * 1000000),
-                        relation_type: edge.type,
-                        source_word: {
-                          id: Number(sourceNode.id) || 0,
-                          lemma: sourceNode.word || sourceNode.label,
-                          language_code: sourceNode.language || 'tl',
-                          has_baybayin: sourceNode.has_baybayin,
-                          baybayin_form: sourceNode.baybayin_form
-                        }
-                      });
-                    } else if (sourceNode.id === mainNode.id) {
-                      outgoingRelations.push({
-                        id: Math.floor(Math.random() * 1000000),
-                        relation_type: edge.type,
-                        target_word: {
-                          id: Number(targetNode.id) || 0,
-                          lemma: targetNode.word || targetNode.label,
-                          language_code: targetNode.language || 'tl',
-                          has_baybayin: targetNode.has_baybayin,
-                          baybayin_form: targetNode.baybayin_form
-                        }
-                      });
-                    }
-                  }
-                });
-                
-                // Update selectedWordInfo with the relations we extracted
-                if (incomingRelations.length > 0 || outgoingRelations.length > 0) {
-                  setSelectedWordInfo(prevInfo => {
-                    if (!prevInfo) return prevInfo;
-                    return {
-                      ...prevInfo,
-                      incoming_relations: incomingRelations,
-                      outgoing_relations: outgoingRelations,
-                      semantic_network: {
-                        nodes: networkData.nodes,
-                        links: networkData.edges
-                      }
-                    };
-                  });
-                }
-              }
-            }
-          } catch (networkError) {
-            console.error("Error fetching word network:", networkError);
-            // Don't fail the entire operation if network fetch fails
-          }
+          setDepth(2); // DEFAULT_NETWORK_DEPTH
+          setBreadth(10); // DEFAULT_NETWORK_BREADTH
         }
 
         // Fetch the etymology tree for the word in the background
@@ -493,6 +473,16 @@ const WordExplorer: React.FC = () => {
             });
         } catch (etymologyError) {
           console.error("Error initiating etymology tree fetch:", etymologyError);
+        }
+        
+        // Update word network for the new main word
+        try {
+          console.log(`Fetching network for new main word: ${wordData.lemma}`);
+          const networkData = await fetchWordNetworkData(wordData.lemma, depth, breadth);
+          setWordNetwork(networkData);
+        } catch (networkError) {
+          console.error("Error fetching word network:", networkError);
+          // Don't fail the entire operation if network fetch fails
         }
       }
     } catch (error: any) {
@@ -647,70 +637,10 @@ const WordExplorer: React.FC = () => {
             .then(networkData => {
               console.log(`[DEBUG] Network data received with ${networkData?.nodes?.length || 0} nodes`);
               setWordNetwork(networkData);
-              
-              // Extract relations from the network data
-              if (networkData && networkData.nodes && networkData.edges) {
-                const mainNode = networkData.nodes.find(node => 
-                  node.type === 'main' || node.word === wordData.lemma || node.label === wordData.lemma
-                );
-                
-                if (mainNode) {
-                  const incomingRelations: Relation[] = [];
-                  const outgoingRelations: Relation[] = [];
-                  
-                  networkData.edges.forEach(edge => {
-                    const sourceNode = networkData.nodes.find(n => n.id === edge.source);
-                    const targetNode = networkData.nodes.find(n => n.id === edge.target);
-                    
-                    if (sourceNode && targetNode) {
-                      if (targetNode.id === mainNode.id) {
-                        incomingRelations.push({
-                          id: Math.floor(Math.random() * 1000000),
-                          relation_type: edge.type,
-                          source_word: {
-                            id: Number(sourceNode.id) || 0,
-                            lemma: sourceNode.word || sourceNode.label,
-                            language_code: sourceNode.language || 'tl',
-                            has_baybayin: sourceNode.has_baybayin,
-                            baybayin_form: sourceNode.baybayin_form
-                          }
-                        });
-                      } else if (sourceNode.id === mainNode.id) {
-                        outgoingRelations.push({
-                          id: Math.floor(Math.random() * 1000000),
-                          relation_type: edge.type,
-                          target_word: {
-                            id: Number(targetNode.id) || 0,
-                            lemma: targetNode.word || targetNode.label,
-                            language_code: targetNode.language || 'tl',
-                            has_baybayin: targetNode.has_baybayin,
-                            baybayin_form: targetNode.baybayin_form
-                          }
-                        });
-                      }
-                    }
-                  });
-                  
-                  // Update selectedWordInfo with the relations
-                  if (incomingRelations.length > 0 || outgoingRelations.length > 0) {
-                    setSelectedWordInfo(prevInfo => {
-                      if (!prevInfo) return prevInfo;
-                      return {
-                        ...prevInfo,
-                        incoming_relations: incomingRelations,
-                        outgoing_relations: outgoingRelations,
-                        semantic_network: {
-                          nodes: networkData.nodes,
-                          links: networkData.edges
-                        }
-                      };
-                    });
-                  }
-                }
-              }
             })
             .catch(networkErr => {
               console.error(`[DEBUG] Error fetching network:`, networkErr);
+              // Don't fail the whole search if network fails
             });
           
           // 5. Also try to fetch etymology tree if available
@@ -798,6 +728,110 @@ const WordExplorer: React.FC = () => {
       setIsLoadingSuggestions(false);
     }
   }, [fetchWordDetails, fetchWordNetworkData, fetchEtymologyTree, wordHistory, currentHistoryIndex, depth, breadth]);
+
+  // Simplified handleRandomWord function
+  const handleRandomWord = useCallback(async () => {
+    // --- START: Add Loading Check --- 
+    // Prevent multiple simultaneous requests
+    if (isRandomLoading) {
+      console.log("handleRandomWord called while already loading, exiting.");
+      return;
+    }
+    // --- END: Add Loading Check --- 
+
+    // Clear any existing timeout (still useful to prevent accidental double-clicks)
+    if (randomWordTimeoutRef.current) {
+      clearTimeout(randomWordTimeoutRef.current);
+      randomWordTimeoutRef.current = null;
+    }
+
+    setIsRandomLoading(true);
+    setError(null); // Clear any existing errors
+    
+    try {
+      console.log("Fetching a single random word...");
+      const randomWord = await getRandomWord(); // Directly fetch one word
+      
+      if (!randomWord || !randomWord.lemma) {
+        throw new Error("Received invalid random word data from API.");
+      }
+      
+      console.log("Random word received:", randomWord);
+
+      // Create a normalized WordInfo object (same logic as before)
+      const wordInfo: WordInfo = {
+        id: randomWord.id,
+        lemma: randomWord.lemma,
+        normalized_lemma: randomWord.normalized_lemma || randomWord.lemma,
+        language_code: randomWord.language_code || 'tl',
+        has_baybayin: randomWord.has_baybayin || false,
+        baybayin_form: randomWord.baybayin_form || null,
+        romanized_form: randomWord.romanized_form || null,
+        definitions: randomWord.definitions || [],
+        etymologies: randomWord.etymologies || [],
+        pronunciations: randomWord.pronunciations || [],
+        credits: randomWord.credits || [],
+        outgoing_relations: randomWord.outgoing_relations || [],
+        incoming_relations: randomWord.incoming_relations || [],
+        root_affixations: randomWord.root_affixations || [],
+        affixed_affixations: randomWord.affixed_affixations || [],
+        tags: randomWord.tags || null,
+        data_completeness: randomWord.data_completeness || null,
+        relation_summary: randomWord.relation_summary || null,
+        root_word: randomWord.root_word || null,
+        derived_words: randomWord.derived_words || [],
+      };
+      
+      // Update UI State
+      setSelectedWordInfo(wordInfo);
+      setMainWord(wordInfo.lemma);
+      setInputValue(wordInfo.lemma);
+      
+      // Update history (using the full object for potential ID use later)
+      const historyEntry = { id: wordInfo.id, text: wordInfo.lemma };
+      const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), historyEntry];
+      setWordHistory(newHistory as any); // Use 'as any' carefully, consider better type
+      setCurrentHistoryIndex(newHistory.length - 1);
+      
+      // Fetch network data in parallel
+      fetchWordNetworkData(wordInfo.lemma, depth, breadth)
+        .catch(err => console.error("Error fetching network data for random word:", err));
+      
+      // Fetch etymology tree in parallel
+      if (wordInfo.id) {
+        fetchEtymologyTree(wordInfo.id)
+          .then(tree => {
+            setEtymologyTree(tree);
+          })
+          .catch(err => console.error("Error fetching etymology tree for random word:", err));
+      }
+      
+    } catch (error) {
+      console.error("Error handling random word:", error);
+      setError(error instanceof Error ? error.message : "Failed to get a random word");
+    } finally {
+      // Set a small delay before allowing another click
+      randomWordTimeoutRef.current = setTimeout(() => {
+        setIsRandomLoading(false);
+      }, 50); 
+    }
+  }, [
+    depth, 
+    breadth, 
+    wordHistory, 
+    currentHistoryIndex, 
+    fetchWordNetworkData, // Stable callback
+    fetchEtymologyTree,   // Stable callback
+    // Add state setters used inside:
+    setSelectedWordInfo,
+    setMainWord,
+    setInputValue,
+    setWordHistory,
+    setCurrentHistoryIndex,
+    setError,
+    setIsRandomLoading,
+    setEtymologyTree
+  ]);
 
   const handleSuggestionClick = useCallback(async (suggestion: SearchWordResult) => {
     setInputValue(suggestion.lemma);
@@ -943,368 +977,6 @@ const WordExplorer: React.FC = () => {
     }
   };
 
-  // Function to fetch a batch of random words for the cache without displaying them
-  const fetchRandomWordsForCache = useCallback(async (count: number = RANDOM_CACHE_SIZE): Promise<any[]> => {
-    if (isRefreshingCache) return randomWordCache; // Return existing cache if already refreshing
-    
-    const currentTime = Date.now();
-    const MIN_REFRESH_INTERVAL = 800; // Slightly reduced from 1000ms for better responsiveness
-    
-    if (currentTime - lastRefreshTimeRef.current < MIN_REFRESH_INTERVAL) {
-      console.log('Random word cache refresh throttled (too many requests)');
-      return randomWordCache;
-    }
-    
-    lastRefreshTimeRef.current = currentTime;
-    setIsRefreshingCache(true);
-    
-    try {
-      // DEBUG: Log the current cache state
-      console.log('CACHE REFRESH: Starting with cache size:', randomWordCache.length);
-      console.log('CACHE REFRESH: Unique words in cache:', new Set(randomWordCache.map(w => w.lemma)).size);
-      
-      console.log('Refreshing random word cache...');
-      const newCache: any[] = [];
-      
-      // Optimize by using fewer parallel requests - reduce server load
-      const requestCount = Math.min(Math.ceil(count * 1.5), 30); // Cap at 30 max requests
-      console.log(`CACHE REFRESH: Requesting ${requestCount} new random words`);
-      
-      // Fetch multiple random words in parallel
-      const promises = Array.from({ length: requestCount }, () => 
-        getRandomWord().catch(err => {
-          console.error('Error fetching random word for cache:', err);
-          return null;
-        })
-      );
-      
-      const results = await Promise.all(promises);
-      
-      // Filter out any failed requests and add successful ones to cache
-      const validResults = results.filter(result => 
-        result !== null && 
-        result.lemma && 
-        typeof result.lemma === 'string'
-      );
-      
-      // DEBUG: Log the results
-      console.log(`CACHE REFRESH: Got ${validResults.length} valid results out of ${requestCount} requests`);
-      
-      if (validResults.length === 0) {
-        console.warn('No valid random words found for cache. Will retry later.');
-        // Schedule another attempt after a delay (3 seconds)
-        setTimeout(() => fetchRandomWordsForCache(count), 3000);
-        return randomWordCache;
-      } else {
-        newCache.push(...validResults);
-        
-        // Create a map of existing words by lemma for faster lookup
-        const existingWordMap = new Map();
-        randomWordCache.forEach(word => {
-          if (word && word.lemma) {
-            existingWordMap.set(word.lemma.toLowerCase(), word);
-          }
-        });
-        
-        // Filter out duplicates from the new cache
-        const uniqueNewWords = newCache.filter(word => 
-          !existingWordMap.has(word.lemma.toLowerCase())
-        );
-        
-        console.log(`CACHE REFRESH: ${uniqueNewWords.length} unique new words after deduplication`);
-        
-        // Combine with existing cache
-        let combinedCache = [...randomWordCache];
-        
-        // Only add new words if they're actually unique
-        if (uniqueNewWords.length > 0) {
-          combinedCache = [...randomWordCache, ...uniqueNewWords];
-        }
-        
-        // If we're still not getting new words, clear 50% of the existing cache
-        // to make space for future refreshes
-        if (uniqueNewWords.length === 0 && combinedCache.length > 5) {
-          console.log('CACHE REFRESH: No new unique words found, clearing half of the cache to prevent stagnation');
-          // Remove random half of the cache
-          const shuffledCache = shuffleArray([...combinedCache]);
-          const halfLength = Math.floor(shuffledCache.length / 2);
-          combinedCache = shuffledCache.slice(0, halfLength);
-        }
-        
-        // Shuffle again for variety
-        const shuffledCache = shuffleArray(combinedCache);
-        const finalCache = shuffledCache.slice(0, RANDOM_CACHE_SIZE * 3); // Reduced from 4x to 3x
-        
-        // DEBUG: Check for duplicates
-        const uniqueWords = new Set(finalCache.map(w => w.lemma)).size;
-        console.log(`CACHE REFRESH: Final cache has ${finalCache.length} words (${uniqueWords} unique)`);
-        
-        // Update both state and ref
-        setRandomWordCache(finalCache);
-        randomWordCacheRef.current = finalCache;
-        
-        console.log(`Shuffled and added ${uniqueNewWords.length} words to random word cache (total: ${finalCache.length})`);
-        return finalCache;
-      }
-    } catch (error) {
-      console.error('Error refreshing random word cache:', error);
-      return randomWordCache;
-    } finally {
-      setIsRefreshingCache(false);
-    }
-  }, [isRefreshingCache, randomWordCache, getRandomWord]);
-
-  // Add effect to initialize random word cache on mount
-  useEffect(() => {
-    if (apiConnected) {
-      console.log("Initializing random word cache for rapid word generation");
-      fetchRandomWordsForCache(RANDOM_CACHE_SIZE * 3);
-    }
-  }, [apiConnected, fetchRandomWordsForCache]);
-
-  // Replace the handleRandomWord function with this improved version
-  const handleRandomWord = useCallback(async (forceRefresh = false) => {
-    // Clear any existing timeout
-    if (randomWordTimeoutRef.current) {
-      clearTimeout(randomWordTimeoutRef.current);
-      randomWordTimeoutRef.current = null;
-    }
-
-    // Show loading state immediately
-    setIsRandomLoading(true);
-    setError(null); // Clear any existing errors
-    
-    try {
-      let randomWord: any = null;
-      
-      // Use the ref for immediate access to the current cache
-      const currentCache = randomWordCacheRef.current;
-      
-      // If force refresh is requested or cache is empty, fetch new words immediately
-      if (forceRefresh || currentCache.length === 0) {
-        console.log("Force refreshing random word cache or cache is empty");
-        const words = await fetchRandomWordsForCache(RANDOM_CACHE_SIZE);
-        
-        if (words.length === 0) {
-          throw new Error("Failed to fetch random words");
-        }
-        
-        // Take the first word for immediate display
-        randomWord = words[0];
-        
-        // Update the REF and state with the remaining words for future use
-        const remainingWords = words.slice(1);
-        randomWordCacheRef.current = remainingWords;
-        setRandomWordCache(remainingWords);
-        
-        console.log(`Using freshly fetched random word: ${randomWord.lemma}`);
-      } else {
-        // Get current word to avoid showing it again
-        const currentWordLemma = selectedWordInfo?.lemma?.toLowerCase();
-        
-        // Create a filtered cache that excludes the current word
-        let filteredCache = [...currentCache];
-        if (currentWordLemma && filteredCache.length > 1) {
-          filteredCache = filteredCache.filter(word => 
-            word.lemma.toLowerCase() !== currentWordLemma
-          );
-        }
-        
-        // Choose a random word from filtered cache
-        if (filteredCache.length > 0) {
-          const randomIndex = Math.floor(Math.random() * filteredCache.length);
-          randomWord = filteredCache[randomIndex];
-        } else if (currentCache.length > 0) {
-          // Fallback: Pick from original cache ref
-          console.warn("Could not find a different random word, picking from original cache.");
-          const originalCacheIndex = Math.floor(Math.random() * currentCache.length);
-          randomWord = currentCache[originalCacheIndex];
-        } else {
-          console.error("Error: Filtered and original caches (ref) are empty during selection.");
-        }
-        
-        // Now remove this word from the actual cache REF immediately
-        if (randomWord) {
-          const indexInOriginalCache = currentCache.findIndex(
-            word => word.id === randomWord.id
-          );
-          
-          if (indexInOriginalCache !== -1) {
-            // Create the new cache based on the ref
-            const newCache = [...currentCache];
-            newCache.splice(indexInOriginalCache, 1);
-            
-            // Update the ref immediately for the next click
-            randomWordCacheRef.current = newCache;
-            // Update the state to trigger re-renders etc.
-            setRandomWordCache(newCache);
-            
-            console.log(`Selected new random word: ${randomWord.lemma}${currentWordLemma ? ` (different from current: ${currentWordLemma})` : ''} - Cache size now: ${newCache.length}`);
-          }
-        }
-      }
-      
-      // Always refill the cache in the background if it's getting low
-      if (randomWordCacheRef.current.length < Math.ceil(RANDOM_CACHE_SIZE * 1.5)) {
-        console.log("Cache is getting low, fetching more words in background");
-        // Don't await this - let it happen in background
-        fetchRandomWordsForCache(RANDOM_CACHE_SIZE).then(cachedWords => {
-          if (cachedWords.length > 0) {
-            console.log(`Background refill added ${cachedWords.length} new random words to cache`);
-          }
-        }).catch(err => {
-          console.error('Error refilling cache in background:', err);
-        });
-      }
-      
-      // Process the chosen random word if one was found
-      if (randomWord) {
-        // Create a normalized WordInfo object, including semantic_network if available
-        const wordInfo: WordInfo = {
-          id: randomWord.id,
-          lemma: randomWord.lemma,
-          normalized_lemma: randomWord.normalized_lemma || randomWord.lemma,
-          language_code: randomWord.language_code || 'tl',
-          has_baybayin: randomWord.has_baybayin || false,
-          baybayin_form: randomWord.baybayin_form || null,
-          romanized_form: randomWord.romanized_form || null,
-          definitions: randomWord.definitions || [],
-          etymologies: randomWord.etymologies || [],
-          pronunciations: randomWord.pronunciations || [],
-          credits: randomWord.credits || [],
-          outgoing_relations: randomWord.outgoing_relations || [],
-          incoming_relations: randomWord.incoming_relations || [],
-          root_affixations: randomWord.root_affixations || [],
-          affixed_affixations: randomWord.affixed_affixations || [],
-          tags: randomWord.tags || null,
-          data_completeness: randomWord.data_completeness || null,
-          relation_summary: randomWord.relation_summary || null,
-          root_word: randomWord.root_word || null,
-          derived_words: randomWord.derived_words || [],
-          // Include semantic_network if available in the random word data
-          semantic_network: randomWord.semantic_network || null,
-        };
-        
-        // Update UI with word data immediately
-        setSelectedWordInfo(wordInfo);
-        setMainWord(randomWord.lemma);
-        setInputValue(randomWord.lemma);
-        
-        // Update history
-        const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), { id: randomWord.id, text: randomWord.lemma }];
-        setWordHistory(newHistory);
-        setCurrentHistoryIndex(newHistory.length - 1);
-        
-        // Start fetching network data and etymology tree in parallel
-        Promise.all([
-          // Fetch network data if we have depth and breadth settings
-          depth && breadth 
-            ? fetchWordNetworkData(randomWord.lemma, depth, breadth)
-              .then(networkData => {
-                // If word doesn't have relation data, update with semantic network
-                if (!wordInfo.outgoing_relations?.length && !wordInfo.incoming_relations?.length) {
-                  // Extract relations from the network data
-                  if (networkData && networkData.nodes && networkData.edges) {
-                    const mainNode = networkData.nodes.find(node => 
-                      node.type === 'main' || node.word === randomWord.lemma || node.label === randomWord.lemma
-                    );
-                    
-                    if (mainNode) {
-                      const incomingRelations: Relation[] = [];
-                      const outgoingRelations: Relation[] = [];
-                      
-                      networkData.edges.forEach(edge => {
-                        const sourceNode = networkData.nodes.find(n => n.id === edge.source);
-                        const targetNode = networkData.nodes.find(n => n.id === edge.target);
-                        
-                        if (sourceNode && targetNode) {
-                          if (targetNode.id === mainNode.id) {
-                            incomingRelations.push({
-                              id: Math.floor(Math.random() * 1000000),
-                              relation_type: edge.type,
-                              source_word: {
-                                id: Number(sourceNode.id) || 0,
-                                lemma: sourceNode.word || sourceNode.label,
-                                language_code: sourceNode.language || 'tl',
-                                has_baybayin: sourceNode.has_baybayin,
-                                baybayin_form: sourceNode.baybayin_form
-                              }
-                            });
-                          } else if (sourceNode.id === mainNode.id) {
-                            outgoingRelations.push({
-                              id: Math.floor(Math.random() * 1000000),
-                              relation_type: edge.type,
-                              target_word: {
-                                id: Number(targetNode.id) || 0,
-                                lemma: targetNode.word || targetNode.label,
-                                language_code: targetNode.language || 'tl',
-                                has_baybayin: targetNode.has_baybayin,
-                                baybayin_form: targetNode.baybayin_form
-                              }
-                            });
-                          }
-                        }
-                      });
-                      
-                      // Update selectedWordInfo with the relations
-                      if (incomingRelations.length > 0 || outgoingRelations.length > 0) {
-                        setSelectedWordInfo(prevInfo => {
-                          if (!prevInfo) return prevInfo;
-                          return {
-                            ...prevInfo,
-                            incoming_relations: incomingRelations,
-                            outgoing_relations: outgoingRelations,
-                            semantic_network: {
-                              nodes: networkData.nodes,
-                              links: networkData.edges
-                            }
-                          };
-                        });
-                      }
-                    }
-                  }
-                }
-                setWordNetwork(networkData); // Ensure network is visualized
-              })
-              .catch(err => {
-                console.error("Error fetching network data:", err);
-              })
-            : Promise.resolve(),
-            
-          // Fetch etymology tree data
-          randomWord.id 
-            ? fetchEtymologyTree(randomWord.id)
-              .catch(err => {
-                console.error("Error fetching etymology tree:", err);
-              })
-            : Promise.resolve()
-        ]);
-      } else {
-        // This will now only trigger if both cache and direct fetch failed
-        setError("Failed to get a random word. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error handling random word:", error);
-      setError(error instanceof Error ? error.message : "Failed to get a random word");
-    } finally {
-      // Set a small delay before allowing another click
-      randomWordTimeoutRef.current = setTimeout(() => {
-        setIsRandomLoading(false);
-      }, 50); // Keep at 50ms for rapid response time
-    }
-  }, [
-    depth, 
-    breadth, 
-    fetchWordNetworkData, 
-    fetchEtymologyTree, 
-    wordHistory, 
-    currentHistoryIndex, 
-    selectedWordInfo,
-    randomWordCache,
-    fetchRandomWordsForCache,
-    setWordNetwork,
-  ]);
-
   // Function to manually test API connection
   const handleTestApiConnection = useCallback(async () => {
         setError(null);
@@ -1377,11 +1049,14 @@ const WordExplorer: React.FC = () => {
             
             // Only prefetch the random word cache if the cache is empty
             // This prevents unnecessary API calls on each page load
+            // REMOVED: Cache prefetching logic
+            /*
             if (randomWordCache.length === 0) {
               console.log("Initial random word cache is empty, prefetching words for rapid clicking");
               // Fetch a large initial cache to support rapid clicking (multiple words)
               fetchRandomWordsForCache(RANDOM_CACHE_SIZE * 3);
             }
+            */
           } catch (error) {
             console.error("Error fetching initial data:", error);
           }
@@ -1393,7 +1068,7 @@ const WordExplorer: React.FC = () => {
       console.error("API connection error:", error);
       setApiConnected(false);
     });
-  }, [randomWordCache.length, fetchRandomWordsForCache]); // Added dependencies
+  }, []); // REMOVED: randomWordCache.length dependency
 
   // Implement fetchPartsOfSpeech to use the getPartsOfSpeech function
   const fetchPartsOfSpeech = useCallback(async () => {
@@ -1823,11 +1498,6 @@ const WordExplorer: React.FC = () => {
     // --- END EDIT ---
   }, [wordData]); // Depend only on wordData
 
-  // Synchronize the ref with the state whenever the state changes
-  useEffect(() => {
-    randomWordCacheRef.current = randomWordCache;
-  }, [randomWordCache]);
-
   // Render the search bar with navigation buttons
   const renderSearchBar = () => {
     return (
@@ -1972,13 +1642,9 @@ const WordExplorer: React.FC = () => {
           variant="contained"
           className="random-button"
           startIcon={isRandomLoading ? <CircularProgress size={16} /> : null}
-          onClick={() => handleRandomWord(false)}
+          onClick={handleRandomWord}
           disabled={isRandomLoading || isLoading} 
-          title="Get a random word (long press to refresh cache)"
-          onContextMenu={(e) => {
-            e.preventDefault();
-            handleRandomWord(true); // Force refresh when right-clicked
-          }}
+          title="Get a random word"
           sx={(theme) => ({
             mx: 0.1, 
             whiteSpace: 'nowrap',
@@ -2004,32 +1670,13 @@ const WordExplorer: React.FC = () => {
   // Using 900px as the breakpoint for side-by-side vs stacked
   const isWideLayout = useMediaQuery('(min-width:769px)'); 
 
-  // Add cleanup for timeout ref
-  useEffect(() => {
-    return () => {
-      if (randomWordTimeoutRef.current !== null) {
-        clearTimeout(randomWordTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  // Add properly typed button handlers
-  const handleRandomClick = useCallback(() => {
-    handleRandomWord(false);
-  }, [handleRandomWord]);
-  
-  const handleRandomRightClick = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    handleRandomWord(true); // Force refresh
-  }, [handleRandomWord]);
-
   return (
     <div className={`word-explorer ${theme} ${isLoading ? 'loading' : ''}`}>
       <header className="header-content">
         <h1>Filipino Root Word Explorer</h1>
         <div className="header-buttons">
           <button
-            onClick={handleRandomClick}
+            onClick={handleRandomWord}
             className="random-button"
             title="Get a random word"
             disabled={isRandomLoading || isLoading}

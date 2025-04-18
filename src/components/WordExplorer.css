@@ -1166,55 +1166,6 @@ main [data-panel-resizer] {
   --mui-palette-background-paper: var(--card-bg-color) !important;
   background-color: var(--card-bg-color) !important;
   color: var(--text-color) !important;
-  border-color: var(--border-color-dark) !important;
-}
-
-/* Add specific rule to fix all MUI Paper borders in dark mode */
-.dark .MuiPaper-root,
-.dark [class*="MuiPaper"] {
-  border: 1px solid var(--border-color-dark) !important;
-  box-shadow: none !important;
-}
-
-/* Override any white borders that might be set inline */
-.dark [style*="border-color: white"],
-.dark [style*="border-color: #fff"],
-.dark [style*="border-color: rgb(255, 255, 255)"],
-.dark [style*="border: 1px solid white"],
-.dark [style*="border: 1px solid #fff"] {
-  border-color: var(--border-color-dark) !important;
-  border-width: 1px !important;
-}
-
-/* Fix specific elevation styles */
-.dark .MuiPaper-elevation0,
-.dark .MuiPaper-elevation1,
-.dark .MuiPaper-elevation2,
-.dark .MuiPaper-elevation3,
-.dark .MuiPaper-elevation4,
-.dark .MuiPaper-elevation5,
-.dark .MuiPaper-elevation6 {
-  border: 1px solid var(--border-color-dark) !important;
-  box-shadow: none !important;
-}
-
-/* Override possible inline styles */
-.dark [style*="border:"] {
-  border-color: var(--border-color-dark) !important;
-}
-
-/* Ensure Box components in Paper also have the right borders */
-.dark .MuiPaper-root .MuiBox-root {
-  border-color: var(--border-color-dark) !important;
-}
-
-/* Fix for specific panel components */
-.dark .panel-container .MuiPaper-root {
-  border: 1px solid var(--border-color-dark) !important;
-  border-bottom: 1px solid var(--border-color-dark) !important;
-  border-top: 1px solid var(--border-color-dark) !important;
-  border-left: 1px solid var(--border-color-dark) !important;
-  border-right: 1px solid var(--border-color-dark) !important;
 }
 
 /* Ultimate override - this will affect every element */

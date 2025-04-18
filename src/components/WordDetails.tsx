@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { Definition, WordInfo, RelatedWord, NetworkLink, NetworkNode, WordForm, WordTemplate, Idiom, Affixation, DefinitionCategory, DefinitionLink, DefinitionRelation } from '../types';
 // import { convertToBaybayin } from '../api/wordApi';
-import './common.css'; // Import common CSS first
 import './WordDetails.css';
 // import './Tabs.css';
 
@@ -67,37 +66,35 @@ const formatRelationType = (type: string): string => {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-// Define relation color scheme - aligned with WordGraph component
-const relationColors: Record<string, string> = {
-  // Core
-  main: "#0e4a86",      // Deep blue - standout color for main word
-  
-  // Origin group - Reds and oranges
+// Define relation type colors - Enhance colors for better dark mode support
+const relationColors: { [key: string]: string } = {
+  // Core relations
+  main: "#0e4a86",      // Deep blue
   root: "#e63946",      // Bright red
-  etymology: "#d00000", // Dark red
-  cognate: "#ff5c39",   // Light orange
   
   // Meaning group - Blues
   synonym: "#457b9d",   // Medium blue
-  related: "#48cae4",   // Light blue
   antonym: "#023e8a",   // Dark blue
-  similar: "#a8dadc",   // Pale blue (similar to related)
+  related: "#48cae4",   // Light blue
+  similar: "#4cc9f0",   // Sky blue
+  
+  // Origin group - Reds and oranges
+  etymology: "#d00000", // Dark red
+  cognate: "#ff5c39",   // Light orange
   
   // Form group - Purples
   variant: "#7d4fc3",   // Medium purple
-  spelling: "#9d4edd",  // Light purple
-  abbreviation: "#6247aa", // Dark purple
-  form_of: "#6a4c93",   // Blue-purple
+  spelling_variant: "#9381ff", // Lavender
+  regional_variant: "#b8b8ff", // Light lavender
   
   // Hierarchy group - Greens
-  taxonomic: "#2a9d8f", // Teal
-  hypernym: "#2a9d8f",  // Teal (same as taxonomic)
-  hyponym: "#52b788",   // Light green
-  meronym: "#40916c",   // Forest green
-  holonym: "#40916c",   // Forest green (same as meronym)
-  part_whole: "#40916c", // Forest green
-  component_of: "#40916c", // Forest green
-  component: "#40916c", // Forest green
+  hypernym: "#2a9d8f",  // Teal
+  hyponym: "#40916c",   // Forest green
+  taxonomic: "#52b788", // Medium green
+  meronym: "#74c69d",   // Light green
+  holonym: "#95d5b2",   // Pale green
+  part_whole: "#52b788", // Medium green
+  component: "#74c69d", // Light green
   
   // Derivational group - Yellow-greens
   derived: "#2a9d8f",   // Teal green
@@ -185,11 +182,6 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2, 2, 2, 2), // Consistent padding
   borderTop: 'none', // Remove internal border
   backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'transparent',
-  // Remove any white borders that might be coming from the default component
-  border: 'none',
-  '& .MuiPaper-root': {
-    borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : theme.palette.divider,
-  }
 }));
 
 const ExpandMoreIcon = () => <Typography sx={{ transform: 'rotate(90deg)', lineHeight: 0, color: 'text.secondary' }}>▶</Typography>;
@@ -352,8 +344,15 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
           position: 'absolute',
           left: 0,
           right: 0,
-          // Remove the caret completely in all modes
-          display: 'none'
+          ...(isDarkMode ? {
+            top: 0,
+            height: '2px',
+            background: `linear-gradient(90deg, ${alpha(graphColors.main, 0.3)}, ${alpha(graphColors.main, 0)})`
+          } : {
+            bottom: 0,
+            height: '3px',
+            background: `linear-gradient(90deg, ${alpha(graphColors.main, 0.1)}, ${alpha(graphColors.main, 0)})`
+          })
         }
       }}>
         {/* Lemma and Audio Button */}
@@ -573,15 +572,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                 label={tag}
                 size="small"
                 sx={{
-                  color: isDarkMode 
-                    ? alpha(headerTextColor, 1) // Full opacity for dark mode
-                    : theme.palette.text.primary,
-                  borderColor: isDarkMode 
-                    ? alpha(mainColor, 0.6) // Increased border opacity
-                    : alpha(theme.palette.text.primary, 0.2),
-                  bgcolor: isDarkMode 
-                    ? alpha(mainColor, 0.25) // More vivid background in dark mode
-                    : alpha(theme.palette.background.paper, 0.5),
+                  color: isDarkMode ? alpha(headerTextColor, 0.9) : theme.palette.text.primary,
+                  borderColor: isDarkMode ? alpha(headerTextColor, 0.3) : alpha(theme.palette.text.primary, 0.2),
+                  bgcolor: isDarkMode ? alpha(headerTextColor, 0.07) : alpha(theme.palette.background.paper, 0.5),
                   '& .MuiChip-label': { fontWeight: 500 },
                   height: 'auto',
                   padding: theme.spacing(0.25, 0.5)
@@ -618,19 +611,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     });
 
     return (
-      <Box sx={{ 
-        pt: theme.spacing(1), 
-        width: '100%', 
-        maxWidth: '100%', 
-        overflow: 'hidden' 
-      }}>
+      <Box sx={{ pt: theme.spacing(1), width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
         {Object.entries(definitionsByPosThenSource).map(([posName, defsBySource]) => (
-          <Box key={posName} sx={{ 
-            mb: theme.spacing(3), 
-            width: '100%', 
-            maxWidth: '100%',
-            border: 'none'
-          }}>
+          <Box key={posName} sx={{ mb: theme.spacing(3), width: '100%', maxWidth: '100%' }}>
             {/* Part of Speech Header */}
             <Typography 
               variant="subtitle1" 
@@ -639,7 +622,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                 color: graphColors.main, 
                 fontWeight: 600,
                 pb: theme.spacing(1),
-                borderBottom: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : alpha(theme.palette.divider, 0.6)}`,
+                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
                 mb: theme.spacing(1.5),
                 width: '100%',
                 overflow: 'hidden',
@@ -747,12 +730,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                                 fontSize: '0.7rem',
                                 height: 'auto',
                                 padding: theme.spacing(0.25, 0),
-                                bgcolor: isDarkMode
-                                  ? alpha(theme.palette.primary.main, 0.3) // Increased opacity for dark mode
-                                  : alpha(theme.palette.primary.main, 0.1),
-                                color: isDarkMode
-                                  ? alpha(theme.palette.primary.light, 1) // Use lighter primary shade with full opacity
-                                  : theme.palette.primary.main,
+                                bgcolor: alpha(theme.palette.primary.main, 0.1),
+                                color: theme.palette.primary.main,
                                 '& .MuiChip-label': { 
                                   px: 0.75, 
                                   py: 0.2 
@@ -776,15 +755,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                             fontSize: '0.7rem',
                             height: 'auto',
                             padding: theme.spacing(0.25, 0),
-                            borderColor: isDarkMode
-                              ? alpha(graphColors.related, 0.7) // Increased border opacity for dark mode
-                              : alpha(graphColors.related, 0.4),
-                            color: isDarkMode
-                              ? alpha(graphColors.related, 1) // Full color opacity for dark mode
-                              : alpha(graphColors.related, 0.9),
-                            bgcolor: isDarkMode
-                              ? alpha(graphColors.related, 0.25) // More visible background in dark mode
-                              : alpha(graphColors.related, 0.04),
+                            borderColor: alpha(graphColors.related, 0.4),
+                            color: alpha(graphColors.related, 0.9),
+                            bgcolor: alpha(graphColors.related, 0.04),
                             maxWidth: 'calc(100% - 16px)', // Prevent overflow
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -816,94 +789,18 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     const semanticNetworkNodes = wordInfo.semantic_network?.nodes || [];
     const semanticNetworkLinks = wordInfo.semantic_network?.links || [];
     
-    // Enhanced logic - check if relations actually contain data
-    // Relations may be present but with wrong structure - handle both formats
-    const hasValidRelations = 
-      (incoming_relations.length > 0 && 
-        (incoming_relations[0].source_word || incoming_relations[0].wordObj)) || 
-      (outgoing_relations.length > 0 && 
-        (outgoing_relations[0].target_word || outgoing_relations[0].wordObj));
-    
-    // Check for server errors that might indicate we need to use the network data
+    // Enhanced fallback logic: Use semantic network if regular relations are empty OR there's an error message
+    // This handles the case where the backend returns an error due to the missing relation_data column
     const hasError = typeof wordInfo.server_error === 'string' && wordInfo.server_error.includes('database error');
-    
-    // Enhanced fallback logic: Use semantic network if no valid relations
     const useSemanticNetwork = 
-      (!hasValidRelations) && semanticNetworkLinks.length > 0;
+      ((incoming_relations.length === 0 && outgoing_relations.length === 0) || hasError) && 
+      semanticNetworkLinks.length > 0;
     
-    console.log("Relations check:", { 
-      incomingLen: incoming_relations.length,
-      outgoingLen: outgoing_relations.length,
-      hasValidRelations,
-      useSemanticNetwork,
-      semanticNetworkLinksLen: semanticNetworkLinks.length
-    });
-      
-    // Create relations from semantic network if needed
-    let semanticRelations: any[] = [];
-    if (useSemanticNetwork) {
-      semanticRelations = createRelationsFromNetwork();
-    } else if (incoming_relations.length > 0 || outgoing_relations.length > 0) {
-      // Convert relations to the format expected by the UI
-      semanticRelations = convertRelationsToUIFormat(incoming_relations, outgoing_relations);
+    // Log the fallback status
+    if (hasError) {
+      console.log("Using semantic network fallback due to server error:", wordInfo.server_error);
     }
-    
-    // Check if there are any relations to display
-    const hasRelations = semanticRelations.length > 0;
       
-    if (!hasRelations) {
-        return <Alert severity="info">No relations available for this word.</Alert>;
-    }
-    
-    // Helper function to convert relations from API or network-derived format to UI format
-    function convertRelationsToUIFormat(incoming: any[], outgoing: any[]) {
-      console.log("Converting relations to UI format");
-      const result: any[] = [];
-      
-      // Process incoming relations
-      incoming.forEach(rel => {
-        if (rel.source_word) {
-          result.push({
-            id: rel.id || `rel-${Math.random()}`,
-            relation_type: rel.relation_type || 'related',
-            degree: rel.degree || 1,
-            wordObj: {
-              id: rel.source_word.id,
-              lemma: rel.source_word.lemma,
-              has_baybayin: rel.source_word.has_baybayin,
-              baybayin_form: rel.source_word.baybayin_form
-            }
-          });
-        } else if (rel.wordObj) {
-          // Already in the right format
-          result.push(rel);
-        }
-      });
-      
-      // Process outgoing relations
-      outgoing.forEach(rel => {
-        if (rel.target_word) {
-          result.push({
-            id: rel.id || `rel-${Math.random()}`,
-            relation_type: rel.relation_type || 'related',
-            degree: rel.degree || 1,
-            wordObj: {
-              id: rel.target_word.id,
-              lemma: rel.target_word.lemma,
-              has_baybayin: rel.target_word.has_baybayin,
-              baybayin_form: rel.target_word.baybayin_form
-            }
-          });
-        } else if (rel.wordObj) {
-          // Already in the right format
-          result.push(rel);
-        }
-      });
-      
-      console.log(`Converted ${result.length} relations to UI format`);
-      return result;
-    }
-    
     // Helper function to create relation objects from semantic network data
     function createRelationsFromNetwork() {
       console.log("Creating relations from semantic network as fallback");
@@ -939,12 +836,78 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
       return relations;
     }
     
-    // Group all relations by type - use semanticRelations as the source of truth
-    const allRelations = semanticRelations;
+    // Create relations from semantic network if needed
+    const semanticRelations = useSemanticNetwork ? createRelationsFromNetwork() : [];
+    
+    // Check if there are any standard relations or fallback relations
+    const hasStandardRelations = (incoming_relations.length > 0 || outgoing_relations.length > 0) && !hasError;
+    const hasAnyRelations = hasStandardRelations || semanticRelations.length > 0 || (wordInfo.root_affixations && wordInfo.root_affixations.length > 0) || (wordInfo.affixed_affixations && wordInfo.affixed_affixations.length > 0);
+      
+    if (!hasAnyRelations) {
+        return <Alert severity="info">No relations or affixations available for this word.</Alert>;
+    }
+
+    // Helper to render Affixations Section
+    const renderAffixations = () => {
+      const rootAffix = wordInfo.root_affixations || [];
+      const affixedAffix = wordInfo.affixed_affixations || [];
+
+      if (rootAffix.length === 0 && affixedAffix.length === 0) return null;
+
+      return (
+        <StyledAccordion sx={{ mb: 2 }}> {/* Add margin bottom */}
+          <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Affixations</Typography>
+          </StyledAccordionSummary>
+          <StyledAccordionDetails>
+            {rootAffix.length > 0 && (
+              <Box sx={{ mb: affixedAffix.length > 0 ? 2 : 0 }}> {/* Add margin if both sections exist */}
+                <Typography variant="caption" sx={{ fontWeight: 500 }}>Derived via Affixation:</Typography>
+                <List dense disablePadding sx={{ pl: 1 }}>
+                  {rootAffix.map((affix: Affixation, index: number) => (
+                    <ListItem key={affix.id || index} disableGutters sx={{ py: 0.25 }}>
+                      <ListItemText
+                        primary={affix.affixed_word?.lemma || 'Unknown'}
+                        secondary={`(as ${affix.affix_type})`}
+                        primaryTypographyProps={{ component: 'span', variant: 'body2', sx: { cursor: 'pointer', textDecoration: 'underline', color: theme.palette.primary.main, mr: 1 }, onClick: () => affix.affixed_word && onWordLinkClick(affix.affixed_word.lemma) }}
+                        secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
+                        sx={{ m: 0 }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            )}
+            {affixedAffix.length > 0 && (
+              <Box>
+                <Typography variant="caption" sx={{ fontWeight: 500 }}>Derived from Root:</Typography>
+                <List dense disablePadding sx={{ pl: 1 }}>
+                  {affixedAffix.map((affix: Affixation, index: number) => (
+                    <ListItem key={affix.id || index} disableGutters sx={{ py: 0.25 }}>
+                      <ListItemText
+                        primary={affix.root_word?.lemma || 'Unknown'}
+                        secondary={`(using ${affix.affix_type})`}
+                        primaryTypographyProps={{ component: 'span', variant: 'body2', sx: { cursor: 'pointer', textDecoration: 'underline', color: theme.palette.primary.main, mr: 1 }, onClick: () => affix.root_word && onWordLinkClick(affix.root_word.lemma) }}
+                        secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
+                        sx={{ m: 0 }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            )}
+          </StyledAccordionDetails>
+        </StyledAccordion>
+      );
+    };
+
+    // Group all relations by type - use semantic relations if in fallback mode
+    const allRelations = useSemanticNetwork ? semanticRelations : [...incoming_relations, ...outgoing_relations];
     
     // Add degree information for regular relations
     const relationsWithDegree = allRelations.map(rel => ({
       ...rel, 
+      wordObj: rel.source_word || rel.target_word || rel.wordObj, // Ensure wordObj exists
       degree: rel.degree || 1 // Default to 1 (direct connection) if not specified
     }));
     
@@ -1097,21 +1060,15 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
     const nonEmptyCategories = relationCategories.filter(
       category => categorizedWords[category.name].length > 0
     );
+                
+                return (
+      <Box sx={{ pt: theme.spacing(1), width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+        {/* ADDED Call to render Affixations */} 
+        {renderAffixations()}
 
-      return (
-      <Box sx={{ 
-        pt: theme.spacing(1),
-        border: 'none',
-        '& .MuiPaper-root': {
-          borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : theme.palette.divider,
-        },
-        '& .MuiBox-root': {
-          borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : theme.palette.divider,
-        }
-      }}>
         {/* Show error banner if using fallback due to server error */}
         {hasError && (
-          <Alert severity="warning" sx={{ mb: theme.spacing(2) }}>
+          <Alert severity="warning" sx={{ mb: theme.spacing(2), width: '100%' }}>
             {wordInfo.server_error || 'Server database error. Using semantic network relationships as fallback.'}
           </Alert>
         )}
@@ -1125,13 +1082,14 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: 1
+            gap: 1,
+            width: '100%'
           }}
         >
           <Typography 
             variant="subtitle1" 
             sx={{ 
-            fontWeight: 600,
+              fontWeight: 600, 
               color: graphColors.main,
             }}
           >
@@ -1150,7 +1108,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
         </Box>
         
         {/* Relation categories */}
-        <Box sx={{ mb: theme.spacing(3) }}>
+        <Box sx={{ mb: theme.spacing(3), width: '100%', maxWidth: '100%' }}>
           {nonEmptyCategories.map((category, categoryIndex) => {
             const relations = categorizedWords[category.name];
             
@@ -1161,7 +1119,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                   mb: theme.spacing(2),
                   pb: theme.spacing(2),
                   borderBottom: categoryIndex < nonEmptyCategories.length - 1 ? 
-                    `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none'
+                    `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none',
+                  width: '100%',
+                  maxWidth: '100%'
                 }}
               >
                 <Typography 
@@ -1170,14 +1130,10 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                     display: 'flex',
                     alignItems: 'center',
                     gap: 1,
-            mb: theme.spacing(1.5),
+                    mb: theme.spacing(1.5),
                     pb: theme.spacing(0.5),
-                    borderBottom: `1px solid ${theme.palette.mode === 'dark' 
-                      ? alpha(category.color, 0.5) // Increased opacity for dark mode
-                      : alpha(category.color, 0.2)}`,
-                    color: theme.palette.mode === 'dark'
-                      ? alpha(category.color, 0.9) // Brighter color text in dark mode
-                      : theme.palette.text.primary,
+                    borderBottom: `1px solid ${alpha(category.color, 0.2)}`,
+                    color: theme.palette.text.primary,
                     fontWeight: 600
                   }}
                 >
@@ -1187,12 +1143,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                       width: 12,
                       height: 12,
                       borderRadius: '50%',
-                      bgcolor: theme.palette.mode === 'dark'
-                        ? alpha(category.color, 0.9) // Brighter dot in dark mode
-                        : category.color,
-                      boxShadow: theme.palette.mode === 'dark' 
-                        ? `0 0 0 2px ${alpha(category.color, 0.4)}, 0 0 0 1px ${alpha('#fff', 0.1)}`
-                        : `0 0 0 2px ${alpha(category.color, 0.2)}`
+                      bgcolor: category.color,
+                      boxShadow: `0 0 0 2px ${alpha(category.color, 0.2)}`
                     }}
                   />
                   {category.name}
@@ -1206,8 +1158,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                   >
                     ({relations.length})
                   </Typography>
-          </Typography>
-          
+                </Typography>
+                
                 {/* Group relations by their specific types within the category */}
                 <Box sx={{ pl: theme.spacing(2) }}>
                   {(() => {
@@ -1241,11 +1193,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                           <Typography 
                             variant="body2" 
                             sx={{ 
-                fontWeight: 500,
+                              fontWeight: 500,
                               fontSize: '0.85rem',
-                              color: theme.palette.mode === 'dark'
-                                ? alpha(relColor, 1) // Full opacity for dark mode
-                                : alpha(relColor, 0.9),
+                              color: alpha(relColor, 0.9),
                               mb: theme.spacing(0.75),
                               display: 'flex',
                               alignItems: 'center',
@@ -1259,63 +1209,67 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                                 width: 8,
                                 height: 8,
                                 borderRadius: '50%',
-                                bgcolor: theme.palette.mode === 'dark'
-                                  ? alpha(relColor, 1) // Brighter dot in dark mode
-                                  : relColor,
-                                boxShadow: theme.palette.mode === 'dark' 
-                                  ? `0 0 0 2px ${alpha(relColor, 0.4)}, 0 0 0 1px ${alpha('#fff', 0.1)}`
-                                  : `0 0 0 2px ${alpha(relColor, 0.2)}`
+                                bgcolor: relColor,
+                                boxShadow: `0 0 0 2px ${alpha(relColor, 0.2)}`
                               }}
                             />
                             {formatRelationType(relationType)}
                             <Typography 
                               component="span" 
                               sx={{ 
-                                color: alpha(theme.palette.text.secondary, 0.6),
+                                color: alpha(relColor, 0.6),
                                 fontSize: '0.75rem',
                                 fontWeight: 'normal'
                               }}
                             >
                               ({typeRelations.length})
                             </Typography>
-              </Typography>
-              
+                          </Typography>
+                          
                           <Stack 
                             direction="row" 
                             spacing={1} 
                             useFlexGap 
                             flexWrap="wrap"
-                            sx={{ mb: theme.spacing(1.5), pl: theme.spacing(1) }}
+                            sx={{ mb: theme.spacing(1.5), pl: theme.spacing(1), width: '100%', maxWidth: '100%' }}
                           >
                             {typeRelations.map((relation, index) => {
                               const wordObj = relation.wordObj;
-                  if (!wordObj) return null;
-                  
+                              if (!wordObj) return null;
+                              
                               // Check if this word has multiple relation types
                               const hasMultipleTypes = relation.relationTypes && relation.relationTypes.length > 1;
-                  
-                  return (
-                    <Chip
+              
+              return (
+                <Chip
                                   key={`${wordObj.id || index}`}
                                   label={
-                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                                       {/* Degree indicator dot */}
                                       {relation.degree > 1 && (
                                         <Box 
                                           component="span"
-                      sx={{
+                                          sx={{ 
                                             width: 6, 
                                             height: 6, 
                                             borderRadius: '50%', 
                                             backgroundColor: 'rgba(0,0,0,0.4)',
                                             display: 'inline-block',
                                             mr: 0.8,
-                                            boxShadow: theme.palette.mode === 'dark' ? '0 0 0 1.5px rgba(255,255,255,0.4)' : '0 0 0 1.5px rgba(0,0,0,0.2)'
+                                            boxShadow: theme.palette.mode === 'dark' ? '0 0 0 1.5px rgba(255,255,255,0.4)' : '0 0 0 1.5px rgba(0,0,0,0.2)',
+                                            flexShrink: 0
                                           }}
                                           title={`Indirect connection (${relation.degree} degrees of separation)`}
                                         />
                                       )}
-                                      <span>{wordObj.lemma || wordObj.word}</span>
+                                      <span style={{ 
+                                        overflow: 'hidden', 
+                                        textOverflow: 'ellipsis', 
+                                        whiteSpace: 'nowrap', 
+                                        maxWidth: '130px'
+                                      }}>
+                                        {wordObj.lemma || wordObj.word}
+                                      </span>
                                       {hasMultipleTypes && (
                                         <Typography 
                                           component="span" 
@@ -1323,7 +1277,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                                             fontSize: '0.7rem', 
                                             ml: 0.5,
                                             opacity: 0.7,
-                                            fontWeight: 400
+                                            fontWeight: 400,
+                                            flexShrink: 0
                                           }}
                                         >
                                           ({relation.relationTypes.length})
@@ -1334,48 +1289,40 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                                   onClick={() => onWordLinkClick(wordObj.lemma || wordObj.word)}
                                   variant="outlined"
                                   sx={{
-                                    borderColor: theme.palette.mode === 'dark' 
-                                      ? alpha(relColor, 0.8) // Increased opacity for dark mode
-                                      : alpha(relColor, 0.5),
-                                    color: theme.palette.mode === 'dark'
-                                      ? isColorLight(relColor) ? alpha(relColor, 0.9) : alpha(relColor, 1)
-                                      : relColor,
+                                    borderColor: alpha(relColor, 0.5),
+                                    color: relColor,
                                     fontSize: '0.75rem',
                                     height: 'auto',
                                     padding: theme.spacing(0.25, 0),
-                                    bgcolor: theme.palette.mode === 'dark' 
-                                      ? alpha(relColor, 0.2) // Increased background opacity for dark mode
-                                      : alpha(relColor, 0.05),
+                                    bgcolor: alpha(relColor, 0.05),
                                     my: 0.5,
+                                    maxWidth: '100%',
                                     '& .MuiChip-label': { 
                                       px: 1, 
                                       py: 0.25, 
                                       fontWeight: 500,
-                                      overflow: 'visible' // Allow content to show
+                                      width: '100%',
+                                      maxWidth: '100%',
+                                      overflow: 'hidden'
                                     },
                                     '&:hover': {
-                                      backgroundColor: theme.palette.mode === 'dark'
-                                        ? alpha(relColor, 0.4)
-                                        : alpha(relColor, 0.1),
-                                      borderColor: relColor,
-                                      color: theme.palette.mode === 'dark'
-                                        ? '#ffffff'
-                                        : relColor
+                                      backgroundColor: alpha(relColor, 0.1),
+                                      borderColor: relColor
                                     }
-                      }}
-                    />
-                  );
-                })}
-              </Stack>
-            </Box>
+                                  }}
+                />
+              );
+            })}
+                          </Stack>
+                        </Box>
                       );
                     });
                   })()}
                 </Box>
-        </Box>
-      );
+              </Box>
+            );
           })}
-          </Box>
+        </Box>
         
         {/* Display completeness info if available */}
         {wordInfo.data_completeness && (
@@ -1391,20 +1338,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                   color={value ? "success" : "default"}
                   variant={value ? "filled" : "outlined"}
                   size="small"
-                  sx={{ 
-                    justifyContent: 'flex-start',
-                    ...(isDarkMode && {
-                      bgcolor: value 
-                        ? alpha(theme.palette.success.main, 0.3) // More visible success background
-                        : 'transparent',
-                      borderColor: value 
-                        ? alpha(theme.palette.success.main, 0.7) 
-                        : alpha(theme.palette.grey[500], 0.3),
-                      color: value 
-                        ? theme.palette.success.light 
-                        : alpha(theme.palette.grey[300], 0.9)
-                    })
-                  }}
+                  sx={{ justifyContent: 'flex-start' }}
                 />
               ))}
             </Box>
@@ -1417,17 +1351,15 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   const renderFormsAndTemplatesTab = () => {
     const forms = wordInfo.forms || [];
     const templates = wordInfo.templates || [];
-    const hasForms = forms.length > 0;
-    const hasTemplates = templates.length > 0;
 
-    if (!hasForms && !hasTemplates) {
+    if (forms.length === 0 && templates.length === 0) {
       return <Alert severity="info">No forms or templates available.</Alert>;
     }
 
     return (
       <Box sx={{ pt: theme.spacing(1) }}>
         {/* Forms Section */}
-        {hasForms && (
+        {forms.length > 0 && (
           <StyledAccordion defaultExpanded sx={{ mb: 2 }}>
             <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Forms (Inflections/Conjugations)</Typography>
@@ -1438,52 +1370,10 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                   <ListItem key={form.id || index} disableGutters sx={{ py: 0.25 }}>
                     <ListItemText primary={form.form} />
                     <Stack direction="row" spacing={0.5}>
-                       {form.is_canonical && <Chip 
-                         label="Canonical" 
-                         size="small" 
-                         color="primary" 
-                         variant="outlined" 
-                         sx={{ 
-                           height: 'auto', 
-                           fontSize: '0.6rem',
-                           bgcolor: isDarkMode ? alpha(theme.palette.primary.main, 0.2) : 'transparent',
-                           borderColor: isDarkMode ? alpha(theme.palette.primary.main, 0.7) : undefined,
-                           color: isDarkMode ? alpha(theme.palette.primary.light, 1) : undefined,
-                         }} 
-                       />}
-                       {form.is_primary && <Chip 
-                         label="Primary" 
-                         size="small" 
-                         color="secondary" 
-                         variant="outlined" 
-                         sx={{ 
-                           height: 'auto', 
-                           fontSize: '0.6rem',
-                           bgcolor: isDarkMode ? alpha(theme.palette.secondary.main, 0.2) : 'transparent',
-                           borderColor: isDarkMode ? alpha(theme.palette.secondary.main, 0.7) : undefined,
-                           color: isDarkMode ? alpha(theme.palette.secondary.light, 1) : undefined,
-                         }} 
-                       />}
+                       {form.is_canonical && <Chip label="Canonical" size="small" color="primary" variant="outlined" sx={{ height: 'auto', fontSize: '0.6rem' }} />}
+                       {form.is_primary && <Chip label="Primary" size="small" color="secondary" variant="outlined" sx={{ height: 'auto', fontSize: '0.6rem' }} />}
                        {form.tags && Object.entries(form.tags).map(([key, value]) => (
-                          <Chip 
-                            key={key} 
-                            label={`${key}: ${value}`} 
-                            size="small" 
-                            sx={{ 
-                              height: 'auto', 
-                              fontSize: '0.6rem',
-                              bgcolor: isDarkMode 
-                                ? alpha(theme.palette.info.main, 0.2) 
-                                : alpha(theme.palette.info.main, 0.05),
-                              color: isDarkMode 
-                                ? theme.palette.info.light 
-                                : theme.palette.info.main,
-                              borderColor: isDarkMode 
-                                ? alpha(theme.palette.info.main, 0.6) 
-                                : alpha(theme.palette.info.main, 0.3),
-                              border: '1px solid'
-                            }} 
-                          />
+                          <Chip key={key} label={`${key}: ${value}`} size="small" sx={{ height: 'auto', fontSize: '0.6rem' }} />
                        ))}
                     </Stack>
                   </ListItem>
@@ -1494,7 +1384,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
         )}
 
         {/* Templates Section */}
-        {hasTemplates && (
+        {templates.length > 0 && (
           <StyledAccordion defaultExpanded>
             <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Templates</Typography>
@@ -1527,22 +1417,21 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
       return <Alert severity="error" sx={{ m: 2 }}>{etymologyError}</Alert>;
     }
     
-    // Render etymology tree visualization (Assume function exists or define)
-    const renderEtymologyTreeVisualization = (hasTreeData: boolean) => { // Pass flag in
-      // Placeholder or actual implementation needed here
-      // This might need the complex tree rendering logic from the original file
-      // For now, just return a message if tree data exists
-      if (hasTreeData) { // Use passed flag
-          return <Typography sx={{ m: 2 }}>Etymology tree visualization is available but not fully implemented in this version.</Typography>;
-      } 
-      return null; 
-    };
-
-    // Determine if etymology data exists (Now declared once here)
+    // First check if the word has self-contained etymology information
     const hasWordEtymologies = wordInfo.etymologies && wordInfo.etymologies.length > 0;
     const hasEtymologyTreeData = etymologyTree && etymologyTree.nodes && etymologyTree.nodes.length > 0;
-
-    // If there's no etymology data from either source
+    
+    console.log("Etymology data check:", {
+      wordId: wordInfo.id,
+      word: wordInfo.lemma,
+      hasWordEtymologies,
+      etymologiesData: wordInfo.etymologies,
+      etymologiesCount: wordInfo.etymologies?.length || 0,
+      hasEtymologyTreeData,
+      treeNodesCount: etymologyTree?.nodes?.length || 0
+    });
+    
+    // Handle case where there's no etymology data from either source
     if (!hasWordEtymologies && !hasEtymologyTreeData) {
       return (
         <Box sx={{ p: 2 }}>
@@ -1639,17 +1528,11 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                                 sx={{ 
                                   fontSize: '0.75rem',
                                   height: 24,
-                                  bgcolor: isDarkMode
-                                    ? alpha(graphColors.derived, 0.25) // More vivid background in dark mode
-                                    : alpha(graphColors.derived, 0.1),
-                                  color: isDarkMode
-                                    ? alpha(graphColors.derived, 1) // Full opacity in dark mode
-                                    : graphColors.derived,
+                                  bgcolor: alpha(graphColors.derived, 0.1),
+                                  color: graphColors.derived,
                                   fontWeight: 500,
                                   '&:hover': {
-                                    bgcolor: isDarkMode
-                                      ? alpha(graphColors.derived, 0.4) // Enhanced hover effect
-                                      : alpha(graphColors.derived, 0.2),
+                                    bgcolor: alpha(graphColors.derived, 0.2),
                                   }
                                 }}
                               />
@@ -1682,15 +1565,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                                 sx={{ 
                                   fontSize: '0.75rem',
                                   height: 24,
-                                  borderColor: isDarkMode
-                                    ? alpha(graphColors.variant, 0.8) // Increased border opacity
-                                    : alpha(graphColors.variant, 0.6),
-                                  color: isDarkMode
-                                    ? alpha(graphColors.variant, 1) // Full opacity
-                                    : graphColors.variant,
-                                  bgcolor: isDarkMode 
-                                    ? alpha(graphColors.variant, 0.15) // Subtle background in dark mode
-                                    : 'transparent'
+                                  borderColor: alpha(graphColors.variant, 0.6),
+                                  color: graphColors.variant
                                 }}
                               />
                             ))}
@@ -1722,12 +1598,8 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                                   fontSize: '0.7rem',
                                   height: 'auto',
                                   padding: theme.spacing(0.25, 0),
-                                  bgcolor: isDarkMode
-                                    ? alpha(graphColors.related, 0.25) // More visible background
-                                    : alpha(graphColors.related, 0.1),
-                                  color: isDarkMode
-                                    ? alpha(graphColors.related, 1) // Full opacity
-                                    : graphColors.related,
+                                  bgcolor: alpha(graphColors.related, 0.1),
+                                  color: graphColors.related,
                                   '& .MuiChip-label': { 
                                     px: 1, 
                                     py: 0.25 
@@ -1751,24 +1623,85 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
               <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>
                 Etymology Tree
               </Typography>
-              {renderEtymologyTreeVisualization(hasEtymologyTreeData)} {/* Pass flag */}
+              {renderEtymologyTreeVisualization()}
             </Box>
           )}
         </Box>
       );
     }
     
-    // If only tree data is available, attempt to render it
-    if (hasEtymologyTreeData && !hasWordEtymologies) {
-       return (
-         <Box sx={{ p: theme.spacing(2) }}>
-           {renderEtymologyTreeVisualization(hasEtymologyTreeData)} {/* Pass flag */} 
-         </Box>
-       );
-    }
+    // If only etymology tree data is available, render that
+    return (
+      <Box sx={{ p: 0 }}>
+        {renderEtymologyTreeVisualization()}
+      </Box>
+    );
+  };
+  
+  // Helper function to render the etymology tree visualization
+  const renderEtymologyTreeVisualization = () => {
+    // Assume Etymology Tree structure
+    type EtymologyNode = { id: number; label: string; language?: string; [key: string]: any };
+    type EtymologyEdge = { source: number; target: number; [key: string]: any };
+    type EtymologyTreeMap = { [id: number]: EtymologyNode };
 
-    // Fallback if somehow neither condition above was met (shouldn't happen due to initial checks)
-    return null;
+    // Basic List Rendering of Etymology Nodes
+    const renderNode = (nodeId: number, nodes: EtymologyTreeMap, edges: EtymologyEdge[], level = 0): React.ReactNode => {
+       const node = nodes[nodeId];
+       if (!node) return null;
+
+       // Find children (nodes where the current node is a source)
+       const childrenEdges = edges.filter((edge: EtymologyEdge) => edge.source === nodeId);
+       const childrenIds = childrenEdges.map((edge: EtymologyEdge) => edge.target);
+
+       return (
+          <ListItem key={node.id} sx={{ pl: level * 2.5, display: 'block', py: 0.5, borderLeft: level > 0 ? `1px dashed ${theme.palette.divider}` : 'none', ml: level > 0 ? 0.5 : 0 }}> {/* Indentation based on level */}
+             <ListItemText
+                primary={
+                    <Typography 
+                      variant="body2" 
+                      component="span" 
+                      sx={{ 
+                        fontWeight: level === 0 ? 600 : 400,
+                        cursor: 'pointer',
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                      onClick={() => onEtymologyNodeClick(node.id)}
+                    >
+                        {node.label}
+                    </Typography>
+                }
+                secondary={node.language ? `(${node.language})` : null}
+                sx={{ my: 0 }}
+             />
+             {childrenIds.length > 0 && (
+                <List dense disablePadding sx={{ pl: 0 }}>
+                   {childrenIds.map(childId => renderNode(childId, nodes, edges, level + 1))}
+                </List>
+             )}
+          </ListItem>
+       );
+    };
+
+    // Find the root node(s) - nodes that are not targets of any edge
+    const targetIds = new Set(etymologyTree.edges.map((edge: EtymologyEdge) => edge.target));
+    const rootIds = etymologyTree.nodes
+                      .filter((node: EtymologyNode) => !targetIds.has(node.id))
+                      .map((node: EtymologyNode) => node.id);
+
+    // Build a map for quick node lookup
+    const nodeMap = etymologyTree.nodes.reduce((acc: EtymologyTreeMap, node: EtymologyNode) => {
+        acc[node.id] = node;
+        return acc;
+    }, {});
+
+    return (
+      <List dense sx={{ pt: 1 }}>
+         {rootIds.length > 0
+            ? rootIds.map((rootId: number) => renderNode(rootId, nodeMap, etymologyTree.edges))
+            : <ListItem><Alert severity="warning" variant="outlined" sx={{ width: '100%' }}>Could not determine root etymology node.</Alert></ListItem> }
+      </List>
+    );
   };
 
   const renderSourcesInfoTab = () => {
@@ -1796,15 +1729,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
              <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>{title}</Typography>
            </StyledAccordionSummary>
            <StyledAccordionDetails>
-             <Paper 
-    variant="outlined" 
-    sx={{ 
-      p: 1.5, 
-      bgcolor: isDarkMode ? 'rgba(30, 40, 60, 0.3)' : alpha(theme.palette.grey[500], 0.05), 
-      borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : undefined,
-      overflowX: 'auto' 
-    }}
->
+             <Paper variant="outlined" sx={{ p: 1.5, bgcolor: alpha(theme.palette.grey[500], 0.05), overflowX: 'auto' }}> {/* Add horizontal scroll as fallback */} 
                 <Typography component="pre" sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', fontSize: '0.8rem', fontFamily: 'monospace' }}>
                   {JSON.stringify(data, null, 2)}
                 </Typography>
@@ -1857,20 +1782,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                     color={value ? "success" : "default"}
                     variant={value ? "filled" : "outlined"}
                     size="small"
-                    sx={{ 
-                      justifyContent: 'flex-start',
-                      ...(isDarkMode && {
-                        bgcolor: value 
-                          ? alpha(theme.palette.success.main, 0.3) // More visible success background
-                          : 'transparent',
-                        borderColor: value 
-                          ? alpha(theme.palette.success.main, 0.7) 
-                          : alpha(theme.palette.grey[500], 0.3),
-                        color: value 
-                          ? theme.palette.success.light 
-                          : alpha(theme.palette.grey[300], 0.9)
-                      })
-                    }}
+                    sx={{ justifyContent: 'flex-start' }}
                   />
                 ))}
               </Box>
@@ -1918,40 +1830,6 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
         </Paper>
               );
             }
-            
-            // Update the tab content container in wide screen layout
-            const tabContentWide = (
-              <Box sx={{ 
-                flexGrow: 1, 
-                overflowY: 'auto', 
-                position: 'relative', 
-                bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : 'background.default',
-                width: 'calc(100% - 160px)',
-                maxWidth: '100%',
-                border: 'none',
-                '& .MuiPaper-root': {
-                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : theme.palette.divider,
-                },
-                '& .MuiBox-root': {
-                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : theme.palette.divider,
-                }
-              }}>
-              <Box sx={{ 
-                px: theme.spacing(3), 
-                py: theme.spacing(2), 
-                width: '100%', 
-                maxWidth: '100%',
-                border: 'none' 
-              }}>
-                {activeTab === 'definitions' && renderDefinitionsTab()}
-                {activeTab === 'relations' && renderRelationsTab()}
-                {activeTab === 'forms_templates' && renderFormsAndTemplatesTab()}
-                {activeTab === 'etymology' && renderEtymologyTab()}
-                {activeTab === 'sources-info' && renderSourcesInfoTab()}
-                {activeTab === 'metadata' && renderSourcesInfoTab()}
-              </Box>
-            </Box>
-            );
             
             const tabContent = (
                <Box sx={{ 
@@ -2033,11 +1911,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
         bgcolor: isDarkMode ? 'var(--card-bg-color)' : 'background.paper',
         color: isDarkMode ? 'var(--text-color)' : 'text.primary',
         overflow: 'hidden',
-        maxWidth: '100%',
-        border: 'none',
-        '& .MuiPaper-root': {
-          borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : undefined
-        }
+        maxWidth: '100%'
       }}
     >
 
@@ -2050,8 +1924,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
               display: 'flex', 
               flexDirection: 'row', 
               overflow: 'hidden',
-              width: '100%',
-              border: 'none'
+              width: '100%'
             }}>
                <Box sx={{ 
                  display: 'flex', 
@@ -2064,7 +1937,23 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                }}>
                  {tabs}
                </Box>
-              {tabContentWide}
+               <Box sx={{ 
+                 flexGrow: 1, 
+                 overflowY: 'auto', 
+                 position: 'relative', 
+                 bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : 'background.default',
+                 width: 'calc(100% - 160px)',
+                 maxWidth: '100%'
+               }}>
+                 <Box sx={{ px: theme.spacing(3), py: theme.spacing(2), width: '100%', maxWidth: '100%' }}>
+                     {activeTab === 'definitions' && renderDefinitionsTab()}
+                     {activeTab === 'relations' && renderRelationsTab()}
+                     {activeTab === 'forms_templates' && renderFormsAndTemplatesTab()}
+                     {activeTab === 'etymology' && renderEtymologyTab()}
+                     {activeTab === 'sources-info' && renderSourcesInfoTab()}
+                     {activeTab === 'metadata' && renderSourcesInfoTab()}
+                 </Box>
+               </Box>
             </Box>
           </>
       ) : (
@@ -2078,22 +1967,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
                minHeight: 0,
                position: 'relative',
                bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : 'background.default',
-              width: '100%',
-              border: 'none',
-              '& .MuiPaper-root': {
-                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : theme.palette.divider,
-              },
-              '& .MuiBox-root': {
-                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : theme.palette.divider,
-              }
+               width: '100%'
             }}>
-              <Box sx={{ 
-                px: theme.spacing(3), 
-                py: theme.spacing(2), 
-                width: '100%', 
-                maxWidth: '100%',
-                border: 'none'
-              }}>
+               <Box sx={{ px: theme.spacing(3), py: theme.spacing(2), width: '100%', maxWidth: '100%' }}>
                    {activeTab === 'definitions' && renderDefinitionsTab()}
                    {activeTab === 'relations' && renderRelationsTab()}
                    {activeTab === 'forms_templates' && renderFormsAndTemplatesTab()}
