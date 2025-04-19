@@ -601,7 +601,12 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex(newHistory.length - 1);
       
       fetchWordNetworkData(wordInfo.lemma, depth, breadth)
-        .catch(err => console.error("Error fetching network data for random word:", err));
+        .catch(err => console.error("Error fetching network data for random word:", err))
+        .then(networkData => {
+          if (networkData && networkData.nodes && networkData.edges) {
+            setWordNetwork(networkData);
+          }
+        });
       
       if (wordInfo.id) {
         fetchEtymologyTree(wordInfo.id)
@@ -714,7 +719,12 @@ const WordExplorer: React.FC = () => {
             const updatedWordData = {
               ...wordData,
               incoming_relations: incomingRelations.length > 0 ? incomingRelations : wordData.incoming_relations,
-              outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations
+              outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations,
+              semantic_network: {
+                nodes: networkData.nodes || [],
+                links: networkData.edges || [],
+                mainWord: wordText
+              }
             };
             
             setWordData(updatedWordData);
@@ -835,7 +845,12 @@ const WordExplorer: React.FC = () => {
             const updatedWordData = {
               ...wordData,
               incoming_relations: incomingRelations.length > 0 ? incomingRelations : wordData.incoming_relations,
-              outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations
+              outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations,
+              semantic_network: {
+                nodes: networkData.nodes || [],
+                links: networkData.edges || [],
+                mainWord: wordText
+              }
             };
             
             setWordData(updatedWordData);
@@ -997,6 +1012,23 @@ const WordExplorer: React.FC = () => {
       console.error('Error reading saved API endpoint from localStorage on mount:', e);
     }
   }, []);
+
+  // Synchronize wordNetwork with wordData
+  useEffect(() => {
+    if (wordNetwork && wordData) {
+      setWordData(prev => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          semantic_network: {
+            nodes: wordNetwork.nodes || [],
+            links: wordNetwork.edges || [],
+            mainWord: prev.lemma
+          }
+        };
+      });
+    }
+  }, [wordNetwork, wordData?.id]);
 
   const renderSearchBar = () => {
     return (
