@@ -23,6 +23,17 @@ import { Button } from "@mui/material";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Theme } from '@mui/material/styles';
+
+const isDevMode = () => {
+  // Check if we have a URL parameter for showing debug tools
+  if (typeof window !== 'undefined') {
+    return window.location.href.includes('debug=true') ||
+           window.location.hostname === 'localhost' ||
+           window.location.hostname.includes('127.0.0.1');
+  }
+  return false;
+};
 
 const WordExplorer: React.FC = () => {
   const [wordData, setWordData] = useState<WordInfo | null>(null);
@@ -170,6 +181,8 @@ const WordExplorer: React.FC = () => {
       
       setWordNetwork(null);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   }, [wordData]);
 
@@ -309,12 +322,14 @@ const WordExplorer: React.FC = () => {
 
       if (!fallbackToSearch && wordData) {
         console.log(`Word data retrieved successfully:`, wordData);
+        setWordData(wordData);
         setSelectedNode(wordData.lemma);
         
         const wordId = String(wordData.id);
         if (!wordHistory.some(w => typeof w === 'object' && 'id' in w && String(w.id) === wordId)) {
-          const newHistory = [{ id: wordData.id, text: wordData.lemma }, ...wordHistory].slice(0, 20);
+          const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), { id: wordData.id, text: wordData.lemma }];
           setWordHistory(newHistory as any);
+          setCurrentHistoryIndex(newHistory.length - 1);
         }
 
         const currentNetworkWordId = depth && breadth ? wordData.id : null;
@@ -349,7 +364,6 @@ const WordExplorer: React.FC = () => {
       }
     } catch (error: any) {
       console.error(`Error in handleNodeClick for word '${word}':`, error);
-      setIsLoading(false);
       
       if (error.message.includes('not found')) {
         setError(`Word '${word}' was found in the graph but its details could not be retrieved. This may be due to a database inconsistency.`);
@@ -362,6 +376,8 @@ const WordExplorer: React.FC = () => {
       } else {
         setError(`Error retrieving word details: ${error.message}`);
       }
+    } finally {
+      setIsLoading(false);
     }
   }, [wordHistory, depth, breadth, setDepth, setBreadth, fetchWordDetails, searchWords, fetchWordNetworkData, fetchEtymologyTree]);
 
@@ -562,39 +578,21 @@ const WordExplorer: React.FC = () => {
     setWordData(null);
     setWordNetwork(null);
     setSelectedNode(null);
+    setIsLoading(true);
+    
     try {
       console.log("Fetching a single random word...");
-      const randomWord = await getRandomWord();
+      const randomWordResult = await getRandomWord();
       
-      if (!randomWord || !randomWord.lemma) {
+      if (!randomWordResult || !randomWordResult.lemma) {
         throw new Error("Received invalid random word data from API.");
       }
       
-      console.log("Random word received:", randomWord);
+      console.log("Random word received:", randomWordResult);
 
-      const wordInfo: WordInfo = {
-        id: randomWord.id,
-        lemma: randomWord.lemma,
-        normalized_lemma: randomWord.normalized_lemma || randomWord.lemma,
-        language_code: randomWord.language_code || 'tl',
-        has_baybayin: randomWord.has_baybayin || false,
-        baybayin_form: randomWord.baybayin_form || null,
-        romanized_form: randomWord.romanized_form || null,
-        definitions: randomWord.definitions || [],
-        etymologies: randomWord.etymologies || [],
-        pronunciations: randomWord.pronunciations || [],
-        credits: randomWord.credits || [],
-        outgoing_relations: randomWord.outgoing_relations || [],
-        incoming_relations: randomWord.incoming_relations || [],
-        root_affixations: randomWord.root_affixations || [],
-        affixed_affixations: randomWord.affixed_affixations || [],
-        tags: randomWord.tags || null,
-        data_completeness: randomWord.data_completeness || null,
-        relation_summary: randomWord.relation_summary || null,
-        root_word: randomWord.root_word || null,
-        derived_words: randomWord.derived_words || [],
-      };
+      const wordInfo: WordInfo = randomWordResult;
       
+      setWordData(wordInfo);
       setSelectedNode(wordInfo.lemma);
       
       const historyEntry = { id: wordInfo.id, text: wordInfo.lemma };
@@ -617,9 +615,8 @@ const WordExplorer: React.FC = () => {
       console.error("Error handling random word:", error);
       setError(error instanceof Error ? error.message : "Failed to get a random word");
     } finally {
-      randomWordTimeoutRef.current = setTimeout(() => {
         setIsRandomLoading(false);
-      }, 50); 
+      setIsLoading(false);
     }
   }, [
     depth, 
@@ -642,7 +639,7 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex(newIndex);
       
       const previousWord = wordHistory[newIndex];
-      console.log(`Navigating back to: ${previousWord} (index ${newIndex})`);
+      console.log(`Navigating back to: ${JSON.stringify(previousWord)} (index ${newIndex})`);
       
       const wordText = typeof previousWord === 'string' 
         ? previousWord 
@@ -654,6 +651,9 @@ const WordExplorer: React.FC = () => {
       
       setIsLoading(true);
       setError(null);
+      setWordData(null);
+      setWordNetwork(null);
+      setSelectedNode(null);
       
       Promise.all([
         fetchWordDetails(wordId),
@@ -662,7 +662,85 @@ const WordExplorer: React.FC = () => {
       .then(([wordData, networkData]) => {
         setSelectedNode(wordData.lemma);
         setWordNetwork(networkData);
-        setWordData(wordData);
+        
+        // Sync network relations with word data
+        if (networkData && networkData.nodes && networkData.edges && wordData) {
+          const mainNode = networkData.nodes.find(node => 
+            node.type === 'main' || node.word === wordText || node.label === wordText
+          );
+          
+          if (mainNode) {
+            const incomingRelations: Relation[] = [];
+            const outgoingRelations: Relation[] = [];
+            
+            networkData.edges.forEach(edge => {
+              const sourceNode = networkData.nodes.find(n => n.id === edge.source);
+              const targetNode = networkData.nodes.find(n => n.id === edge.target);
+              
+              if (sourceNode && targetNode) {
+                if (targetNode.id === mainNode.id) {
+                  incomingRelations.push({
+                    id: Math.floor(Math.random() * 1000000),
+                    relation_type: edge.type,
+                    source_word: {
+                      id: Number(sourceNode.id) || 0,
+                      lemma: sourceNode.word || sourceNode.label,
+                      has_baybayin: sourceNode.has_baybayin,
+                      baybayin_form: sourceNode.baybayin_form
+                    }
+                  });
+                }
+                else if (sourceNode.id === mainNode.id) {
+                  outgoingRelations.push({
+                    id: Math.floor(Math.random() * 1000000),
+                    relation_type: edge.type,
+                    target_word: {
+                      id: Number(targetNode.id) || 0,
+                      lemma: targetNode.word || targetNode.label,
+                      has_baybayin: targetNode.has_baybayin,
+                      baybayin_form: targetNode.baybayin_form
+                    }
+                  });
+                }
+              }
+            });
+            
+            console.log("Syncing relations during navigation:", {
+              incoming: incomingRelations.length,
+              outgoing: outgoingRelations.length
+            });
+            
+            // Update word data with relations from network
+            const updatedWordData = {
+              ...wordData,
+              incoming_relations: incomingRelations.length > 0 ? incomingRelations : wordData.incoming_relations,
+              outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations
+            };
+            
+            setWordData(updatedWordData);
+          } else {
+            setWordData(wordData);
+          }
+        } else {
+          setWordData(wordData);
+        }
+        
+        // Fetch etymology tree
+        if (wordData.id) {
+          const etymologyIdString = String(wordData.id);
+          const etymologyId = etymologyIdString.startsWith('id:') ? 
+            parseInt(etymologyIdString.substring(3), 10) : 
+            wordData.id;
+          fetchEtymologyTree(etymologyId)
+            .then(tree => {
+              setEtymologyTree(tree);
+            })
+            .catch(err => {
+              console.error("Error fetching etymology tree:", err);
+            });
+        }
+        
+        setIsLoading(false);
       })
       .catch(error => {
         console.error("Error navigating back:", error);
@@ -671,9 +749,10 @@ const WordExplorer: React.FC = () => {
           errorMessage = error.message;
         }
         setError(errorMessage);
+        setIsLoading(false);
       });
     }
-  }, [currentHistoryIndex, wordHistory, depth, breadth, fetchWordNetworkData]);
+  }, [currentHistoryIndex, wordHistory, depth, breadth, fetchWordNetworkData, fetchWordDetails, fetchEtymologyTree]);
 
   const handleForward = useCallback(() => {
     if (currentHistoryIndex < wordHistory.length - 1) {
@@ -681,7 +760,7 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex(newIndex);
       
       const nextWord = wordHistory[newIndex];
-      console.log(`Navigating forward to: ${nextWord} (index ${newIndex})`);
+      console.log(`Navigating forward to: ${JSON.stringify(nextWord)} (index ${newIndex})`);
       
       const wordText = typeof nextWord === 'string' 
         ? nextWord 
@@ -693,6 +772,9 @@ const WordExplorer: React.FC = () => {
       
       setIsLoading(true);
       setError(null);
+      setWordData(null);
+      setWordNetwork(null);
+      setSelectedNode(null);
       
       Promise.all([
         fetchWordDetails(wordId),
@@ -701,7 +783,85 @@ const WordExplorer: React.FC = () => {
       .then(([wordData, networkData]) => {
         setSelectedNode(wordData.lemma);
         setWordNetwork(networkData);
-        setWordData(wordData);
+        
+        // Sync network relations with word data
+        if (networkData && networkData.nodes && networkData.edges && wordData) {
+          const mainNode = networkData.nodes.find(node => 
+            node.type === 'main' || node.word === wordText || node.label === wordText
+          );
+          
+          if (mainNode) {
+            const incomingRelations: Relation[] = [];
+            const outgoingRelations: Relation[] = [];
+            
+            networkData.edges.forEach(edge => {
+              const sourceNode = networkData.nodes.find(n => n.id === edge.source);
+              const targetNode = networkData.nodes.find(n => n.id === edge.target);
+              
+              if (sourceNode && targetNode) {
+                if (targetNode.id === mainNode.id) {
+                  incomingRelations.push({
+                    id: Math.floor(Math.random() * 1000000),
+                    relation_type: edge.type,
+                    source_word: {
+                      id: Number(sourceNode.id) || 0,
+                      lemma: sourceNode.word || sourceNode.label,
+                      has_baybayin: sourceNode.has_baybayin,
+                      baybayin_form: sourceNode.baybayin_form
+                    }
+                  });
+                }
+                else if (sourceNode.id === mainNode.id) {
+                  outgoingRelations.push({
+                    id: Math.floor(Math.random() * 1000000),
+                    relation_type: edge.type,
+                    target_word: {
+                      id: Number(targetNode.id) || 0,
+                      lemma: targetNode.word || targetNode.label,
+                      has_baybayin: targetNode.has_baybayin,
+                      baybayin_form: targetNode.baybayin_form
+                    }
+                  });
+                }
+              }
+            });
+            
+            console.log("Syncing relations during navigation:", {
+              incoming: incomingRelations.length,
+              outgoing: outgoingRelations.length
+            });
+            
+            // Update word data with relations from network
+            const updatedWordData = {
+              ...wordData,
+              incoming_relations: incomingRelations.length > 0 ? incomingRelations : wordData.incoming_relations,
+              outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations
+            };
+            
+            setWordData(updatedWordData);
+          } else {
+            setWordData(wordData);
+          }
+        } else {
+          setWordData(wordData);
+        }
+        
+        // Fetch etymology tree
+        if (wordData.id) {
+          const etymologyIdString = String(wordData.id);
+          const etymologyId = etymologyIdString.startsWith('id:') ? 
+            parseInt(etymologyIdString.substring(3), 10) : 
+            wordData.id;
+          fetchEtymologyTree(etymologyId)
+            .then(tree => {
+              setEtymologyTree(tree);
+            })
+            .catch(err => {
+              console.error("Error fetching etymology tree:", err);
+            });
+        }
+        
+        setIsLoading(false);
       })
       .catch(error => {
         console.error("Error navigating forward:", error);
@@ -710,9 +870,10 @@ const WordExplorer: React.FC = () => {
           errorMessage = error.message;
         }
         setError(errorMessage);
+        setIsLoading(false);
       });
     }
-  }, [currentHistoryIndex, wordHistory, depth, breadth, fetchWordNetworkData]);
+  }, [currentHistoryIndex, wordHistory, depth, breadth, fetchWordNetworkData, fetchWordDetails, fetchEtymologyTree]);
 
   const handleResetCircuitBreaker = () => {
     resetCircuitBreaker();
@@ -723,16 +884,16 @@ const WordExplorer: React.FC = () => {
   };
 
   const handleTestApiConnection = useCallback(async () => {
-    setError(null);
+        setError(null);
     setApiConnected(null);
         
     try {
       console.log("Manually testing API connection...");
       
-      const isConnected = await testApiConnection();
-      setApiConnected(isConnected);
+        const isConnected = await testApiConnection();
+        setApiConnected(isConnected);
         
-      if (!isConnected) {
+        if (!isConnected) {
         console.log("API connection test failed, showing error...");
         setError(
           "Cannot connect to the API server. Please ensure the backend server is running on port 10000 " +
@@ -751,7 +912,7 @@ const WordExplorer: React.FC = () => {
         if (inputValue) {
           console.log("Trying to search with the connected API...");
           handleSearch(inputValue);
-        } else {
+                  } else {
           console.log("Fetching a random word to test connection further...");
           handleRandomWord();
         }
@@ -953,7 +1114,7 @@ const WordExplorer: React.FC = () => {
           onClick={() => inputValue.trim() && handleSearch(inputValue)}
           disabled={isLoading || !inputValue.trim()} 
           title="Search for this word"
-          sx={(theme) => ({
+          sx={(theme: Theme) => ({
             mx: 0.1, 
             whiteSpace: 'nowrap',
             bgcolor: 'var(--button-color)',
@@ -976,11 +1137,11 @@ const WordExplorer: React.FC = () => {
           onClick={handleRandomWord}
           disabled={isRandomLoading || isLoading} 
           title="Get a random word"
-          sx={(theme) => ({
+          sx={{
             mx: 0.1, 
             whiteSpace: 'nowrap',
             bgcolor: 'var(--accent-color)',
-            color: 'var(--primary-color)',
+            color: 'var(--button-text-color)',
             fontWeight: 'normal',
             borderRadius: '8px',
             boxShadow: 'none',
@@ -989,7 +1150,7 @@ const WordExplorer: React.FC = () => {
               color: '#ffffff',
               boxShadow: 'none'
             }
-          })}
+          }}
         >
           {isRandomLoading ? '⏳ Loading...' : '🎲 Random Word'}
         </Button>
@@ -1004,41 +1165,38 @@ const WordExplorer: React.FC = () => {
       <header className="header-content">
         <h1>Filipino Root Word Explorer</h1>
         <div className="header-buttons">
+          {isDevMode() && (
+            <>
+              <button
+                onClick={handleResetCircuitBreaker}
+                className="debug-button"
+                title="Reset API connection"
+              >
+                <span>🔄</span> Reset API
+              </button>
+              <button
+                onClick={handleTestApiConnection}
+                className="debug-button"
+                title="Test API connection"
+              >
+                <span>🔌</span> Test API
+              </button>
+              <div className={`api-status ${
+                (apiConnected === null ? 'checking' : (apiConnected ? 'connected' : 'disconnected'))
+              }`}>
+                {apiConnected === null ? <span>⏳</span> : 
+                 apiConnected ? <span>✅</span> : <span>❌</span>}
+                 API
+              </div>
+            </>
+          )}
           <button
-            onClick={handleRandomWord}
-            className="random-button"
-            title="Get a random word"
-            disabled={isRandomLoading || isLoading}
+            onClick={toggleTheme}
+            className="theme-toggle"
+            aria-label="Toggle theme"
           >
-            {isRandomLoading ? '⏳ Loading...' : '🎲 Random Word'}
+            {theme && theme === "light" ? "🌙" : "☀️"}
           </button>
-          <button
-            onClick={handleResetCircuitBreaker}
-            className="debug-button"
-            title="Reset API connection"
-          >
-            🔄 Reset API
-          </button>
-          <button
-            onClick={handleTestApiConnection}
-            className="debug-button"
-            title="Test API connection"
-          >
-            🔌 Test API
-          </button>
-          <div className={`api-status ${
-            (apiConnected === null ? 'checking' : (apiConnected ? 'connected' : 'disconnected'))
-          }`}>
-            API: {apiConnected === null ? 'Checking...' : 
-                 apiConnected ? '✅ Connected' : '❌ Disconnected'}
-          </div>
-        <button
-          onClick={toggleTheme}
-          className="theme-toggle"
-          aria-label="Toggle theme"
-        >
-          {theme === "light" ? "🌙" : "☀️"}
-        </button>
         </div>
       </header>
       
