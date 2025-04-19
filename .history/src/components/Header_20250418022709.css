@@ -1,0 +1,153 @@
+/**
+ * Header component styles
+ */
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #1a2e5c;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+
+.random-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background-color: #f8a100;
+  color: #1a2e5c;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.random-button:hover {
+  background-color: #ffb429;
+}
+
+.random-button:active {
+  transform: scale(0.95);
+}
+
+.random-button:disabled {
+  background-color: #c7c7c7;
+  cursor: not-allowed;
+}
+
+.debug-button {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  background-color: #36c;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.debug-button:hover {
+  background-color: #2b56a5;
+}
+
+.theme-toggle {
+  padding: 0.4rem;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.api-status {
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border-radius: 1rem;
+  background-color: #333;
+  white-space: nowrap;
+}
+
+.api-status.connected {
+  background-color: #38b000;
+  color: white;
+}
+
+.api-status.disconnected {
+  background-color: #e5383b;
+  color: white;
+}
+
+.api-status.checking {
+  background-color: #f8a100;
+  color: white;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header-content {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .header-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .random-button {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.125rem;
+  }
+  
+  .debug-button,
+  .api-status,
+  .random-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .theme-toggle {
+    padding: 0.25rem;
+    font-size: 1rem;
+  }
+} 

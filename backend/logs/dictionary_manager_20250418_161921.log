@@ -1,0 +1,16 @@
+2025-04-18 16:19:28,864 - ERROR - Error displaying source statistics: invalid input syntax for type json
+LINE 3:                         COALESCE(source_info, 'Unknown') as ...
+                                                      ^
+DETAIL:  Token "Unknown" is invalid.
+CONTEXT:  JSON data, line 1: Unknown
+
+2025-04-18 16:19:28,870 - WARNING - Error getting Baybayin stats for Total Baybayin Forms: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-18 16:19:28,872 - WARNING - Error getting Baybayin stats for With Romanization: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-18 16:19:28,874 - WARNING - Error getting Baybayin stats for Verified Forms: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-18 16:19:28,875 - WARNING - Error getting Baybayin stats for With Badlit: current transaction is aborted, commands ignored until end of transaction block
+
+2025-04-18 16:19:28,876 - WARNING - Error getting Baybayin stats for Complete Forms: current transaction is aborted, commands ignored until end of transaction block
+

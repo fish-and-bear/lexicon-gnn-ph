@@ -1,0 +1,17 @@
+/* Import fonts first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+// This file is no longer the primary CSS entry point.
+// Global styles are now imported directly from src/styles/index.css in src/index.tsx.
+
+/* Basic styling overrides (Keep if needed, or move to src/styles/index.css) */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: var(--font-family-mono, source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace);
+}
+
+/* Note: Baybayin text classes are defined in base/_typography.css */

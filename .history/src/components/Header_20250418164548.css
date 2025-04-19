@@ -1,0 +1,271 @@
+/**
+ * Header component styles
+ */
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--primary-color, #1d3557);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  height: 3.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto; /* Push all buttons to the right */
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-color-white, white);
+  margin-right: auto; /* Keep title on the left */
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.01em;
+}
+
+.random-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background-color: var(--accent-color, #fca311);
+  color: var(--primary-color, #1d3557);
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: 2.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.random-button:hover {
+  background-color: var(--gold, #ffb429);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.random-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.random-button:disabled {
+  background-color: #c7c7c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.debug-button {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-color-white, white);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: 2.25rem;
+  white-space: nowrap;
+}
+
+.debug-button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.theme-toggle {
+  padding: 0.4rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-color-white, white);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.25rem;
+  width: 2.25rem;
+  margin-left: 0.25rem;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.api-status {
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border-radius: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  height: 2.25rem;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.api-status.connected {
+  background-color: rgba(56, 176, 0, 0.15);
+  color: #38b000;
+  border: 1px solid rgba(56, 176, 0, 0.5);
+}
+
+.api-status.disconnected {
+  background-color: rgba(229, 56, 59, 0.15);
+  color: #e5383b;
+  border: 1px solid rgba(229, 56, 59, 0.5);
+}
+
+.api-status.checking {
+  background-color: rgba(248, 161, 0, 0.15);
+  color: #f8a100;
+  border: 1px solid rgba(248, 161, 0, 0.5);
+}
+
+/* Dark mode specific styling */
+.dark .header-content {
+  background-color: var(--header-color, #0a1525);
+  color: var(--text-color-white, #f0f0f0);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.dark h1 {
+  color: var(--text-color-white, #f0f0f0);
+}
+
+.dark .random-button {
+  background-color: var(--accent-color, #e09f3e);
+  color: var(--bg-color, #0a0d16);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.dark .random-button:hover {
+  background-color: var(--gold, #ffc940);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+}
+
+.dark .debug-button {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-color-white, #f0f0f0);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark .debug-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.dark .theme-toggle {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--primary-color, #ffd166);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark .theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--gold, #ffc940);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.dark .api-status.connected {
+  background-color: rgba(56, 176, 0, 0.1);
+  color: #5cd85c;
+  border-color: rgba(56, 176, 0, 0.3);
+}
+
+.dark .api-status.disconnected {
+  background-color: rgba(229, 56, 59, 0.1);
+  color: #ff6b6e;
+  border-color: rgba(229, 56, 59, 0.3);
+}
+
+.dark .api-status.checking {
+  background-color: rgba(248, 161, 0, 0.1);
+  color: #ffc107;
+  border-color: rgba(248, 161, 0, 0.3);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header-content {
+    flex-wrap: nowrap; /* Keep in a single row */
+    padding: 0.75rem 1rem;
+    height: auto;
+    min-height: 3.5rem;
+  }
+  
+  .header-buttons {
+    flex-wrap: nowrap; /* Keep buttons in a single row */
+    overflow-x: auto; /* Allow scrolling if needed */
+    padding-bottom: 0.25rem; /* Space for scrollbar */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+  }
+  
+  /* Hide scrollbar in WebKit browsers */
+  .header-buttons::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .random-button,
+  .debug-button,
+  .api-status,
+  .theme-toggle {
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+  }
+  
+  .random-button {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  h1 {
+    font-size: 1.125rem;
+    max-width: 40%; /* Limit title width on very small screens */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .debug-button,
+  .api-status,
+  .random-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .theme-toggle {
+    padding: 0.25rem;
+    font-size: 1rem;
+  }
+} 

@@ -1,0 +1,23 @@
+/**
+ * Main stylesheet for the application
+ * Imports all utility and base styles.
+ * Component-specific styles are imported within their respective component files.
+ */
+
+/* Import Utility CSS Files */
+@import './utilities/_reset.css';
+@import './utilities/_variables.css';
+@import './utilities/_functions.css';
+@import './utilities/_utilities.css';
+
+/* Import Base Styles */
+@import './base/_typography.css';
+@import './base/_base.css';
+@import './base/_layout.css';
+@import './base/_forms.css';
+@import './base/_buttons.css';
+
+/* 
+  Import Page-specific CSS Files (if any) below 
+  e.g., @import './pages/home.css'; 
+*/

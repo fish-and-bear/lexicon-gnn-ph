@@ -1,0 +1,4 @@
+/* Default spacing for content blocks */
+section {
+  margin-bottom: var(--spacing-12);
+} 

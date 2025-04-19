@@ -1,0 +1,193 @@
+/* 
+  Header Component Styles
+  Simple single-row header 
+*/
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4);
+  background-color: var(--color-white);
+  border-bottom: var(--border-width-1) solid var(--color-gray-200);
+}
+
+.header-logo {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.header-nav-item {
+  color: var(--color-gray-700);
+  transition: var(--transition-default);
+}
+
+.header-nav-item:hover {
+  color: var(--color-primary);
+}
+
+.header-nav-item.active {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Filipino Root Word Explorer Header Styles */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1d3557; /* Dark blue background */
+  color: white;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.api-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  background-color: white;
+  color: #333;
+  padding: 0.3rem 0.75rem;
+  border-radius: 4px;
+}
+
+.api-status.connected {
+  color: #2e7d32;
+}
+
+.api-status-indicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background-color: #2e7d32;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  margin-top: 0.5rem;
+}
+
+.search-input {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  padding: 0.5rem 0.75rem;
+  min-width: 300px;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.search-button {
+  background-color: #4a6fa5;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #3a5a8a;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 0.25rem;
+  background-color: #283e59;
+  border-radius: 4px;
+  padding: 0.25rem;
+}
+
+.nav-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  border-radius: 2px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-button.back, .nav-button.forward {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fca311; /* Orange for most buttons */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-button:hover {
+  background-color: #e39100;
+}
+
+.header-button.random {
+  background-color: #6c757d; /* Grey for random button */
+}
+
+.header-button.random:hover {
+  background-color: #5a6268;
+}
+
+.header-button.reset {
+  background-color: #fca311; /* Orange for reset button */
+}
+
+.header-button.reset:hover {
+  background-color: #e39100;
+}
+
+.header-button.test {
+  background-color: #fca311; /* Orange for test button */
+}
+
+.header-button.test:hover {
+  background-color: #e39100;
+} 
