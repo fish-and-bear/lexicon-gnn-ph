@@ -4101,7 +4101,7 @@ def _fetch_word_details(word_id,
         word = Word()
         for key in word_result._mapping.keys():
             if hasattr(word, key) and key != 'is_root':
-                value = word_result[key]
+                value = word_result._mapping[key] # Access value using mapping
                 try:
                     # Handle baybayin_form specially to avoid validation errors
                     if key == 'baybayin_form':
@@ -4262,7 +4262,7 @@ def _fetch_word_details(word_id,
                     for key in d._mapping.keys():
                         if hasattr(definition, key):
                            try: # Added inner try-except for attribute setting
-                                setattr(definition, key, d[key])
+                                setattr(definition, key, d._mapping[key]) # Access value using mapping
                            except Exception as attr_e:
                                 logger.warning(f"Error setting definition attr {key} for word {word_id}: {attr_e}")
                     definition.word_id = word_id
@@ -4306,7 +4306,7 @@ def _fetch_word_details(word_id,
                     for key in e_row._mapping.keys():
                         if hasattr(etymology, key):
                             try:
-                                setattr(etymology, key, e_row[key])
+                                setattr(etymology, key, e_row._mapping[key]) # Access value using mapping
                             except Exception as attr_e:
                                 logger.warning(f"Error setting etymology attr {key} for word {word_id}: {attr_e}")
                     etymology.word_id = word_id
