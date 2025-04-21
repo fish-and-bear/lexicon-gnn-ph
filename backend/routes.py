@@ -4195,7 +4195,7 @@ def _fetch_word_details(word_id,
                     try:
                         # Modified SQL to only select columns that definitely exist
                         sql_links = """
-                        SELECT id, definition_id, link_text, target_url, display_text, is_external
+                        SELECT id, definition_id, link_text, display_text, is_external
                         FROM definition_links
                         WHERE definition_id = ANY(:ids)
                         """
@@ -4205,7 +4205,7 @@ def _fetch_word_details(word_id,
                             link.id = l_row.id
                             link.definition_id = l_row.definition_id
                             link.link_text = l_row.link_text
-                            link.target_url = l_row.target_url
+                            link.target_url = None # Set to None as column doesn't exist
                             link.display_text = l_row.display_text
                             link.is_external = l_row.is_external
                             
@@ -4350,7 +4350,7 @@ def _fetch_word_details(word_id,
             try:
                 # Outgoing relations
                 sql_out_rel = """
-                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type, r.relation_data,
+                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type,
                        w.id as target_id, w.lemma as target_lemma, w.language_code as target_language_code,
                        w.has_baybayin as target_has_baybayin, w.baybayin_form as target_baybayin_form
                   FROM relations r
@@ -4367,7 +4367,7 @@ def _fetch_word_details(word_id,
                         relation.from_word_id = getattr(r, 'from_word_id', None)
                         relation.to_word_id = getattr(r, 'to_word_id', None)
                         relation.relation_type = getattr(r, 'relation_type', None)
-                        relation.relation_data = getattr(r, 'relation_data', None)
+                        relation.relation_data = {} # Default to empty dict as column doesn't exist
 
                         target_word = Word()
                         target_word.id = getattr(r, 'target_id', None)
@@ -4395,7 +4395,7 @@ def _fetch_word_details(word_id,
 
                 # Incoming relations
                 sql_in_rel = """
-                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type, r.relation_data,
+                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type,
                        w.id as source_id, w.lemma as source_lemma, w.language_code as source_language_code,
                        w.has_baybayin as source_has_baybayin, w.baybayin_form as source_baybayin_form
                   FROM relations r
@@ -4411,11 +4411,10 @@ def _fetch_word_details(word_id,
                         relation.from_word_id = getattr(r, 'from_word_id', None)
                         relation.to_word_id = getattr(r, 'to_word_id', None)
                         relation.relation_type = getattr(r, 'relation_type', None)
-                        relation.relation_data = getattr(r, 'relation_data', None)
+                        relation.relation_data = {} # Default to empty dict as column doesn't exist
 
                         source_word = Word()
                         source_word.id = getattr(r, 'source_id', None)
-                        # Remove duplicate ID assignment
                         source_word.lemma = r.source_lemma
                         source_word.language_code = r.source_language_code
                         source_word.has_baybayin = r.source_has_baybayin
