@@ -480,7 +480,6 @@ def get_connection():
     else:
         # Parse the DATABASE_URL using SQLAlchemy's helper
         try:
-            from sqlalchemy.engine.url import make_url
             url = make_url(database_url)
             # translate_connect_args handles drivername differences if any
             conn_args = url.translate_connect_args(database_driver='psycopg2') 
