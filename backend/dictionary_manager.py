@@ -466,14 +466,29 @@ def get_db_config():
 # Core Database Connection
 # -------------------------------------------------------------------
 def get_connection():
-    conn = psycopg2.connect(
-        dbname=os.environ.get("DB_NAME", DB_NAME),
-        user=os.environ.get("DB_USER", DB_USER),
-        password=os.environ.get("DB_PASSWORD", DB_PASSWORD),
-        host=os.environ.get("DB_HOST", DB_HOST),
-        port=os.environ.get("DB_PORT", DB_PORT),
-    )
-    conn.autocommit = False  # Ensure transactions are used.
+    database_url = os.getenv('DATABASE_URL')
+    if not database_url:
+        # Fallback to individual variables if DATABASE_URL is not set
+        logger.warning("DATABASE_URL not set, falling back to individual DB_* variables for dictionary_manager connection.")
+        conn = psycopg2.connect(
+            dbname=os.getenv("DB_NAME", DB_NAME),
+            user=os.getenv("DB_USER", DB_USER),
+            password=os.getenv("DB_PASSWORD", DB_PASSWORD),
+            host=os.getenv("DB_HOST", DB_HOST),
+            port=os.getenv("DB_PORT", DB_PORT),
+        )
+    else:
+        # Parse the DATABASE_URL using SQLAlchemy's helper
+        try:
+            url = make_url(database_url)
+            # translate_connect_args handles drivername differences if any
+            conn_args = url.translate_connect_args(database_driver='psycopg2') 
+            conn = psycopg2.connect(**conn_args)
+        except Exception as e:
+            logger.error(f"Failed to connect using DATABASE_URL ({database_url}): {e}", exc_info=True)
+            raise # Re-raise the exception
+
+    conn.autocommit = False
     return conn
 
 
@@ -8213,6 +8228,11 @@ from typing import Optional, Tuple, Dict, Union, List # Ensure needed types are 
 from tqdm import tqdm
 # --- Add other necessary imports like RelationshipType ---
 from enum import Enum # Example if RelationshipType is an Enum
+DB_NAME = os.getenv('DB_NAME', 'postgres') # Example default
+DB_USER = os.getenv('DB_USER', 'postgres') # Example default
+DB_PASSWORD = os.getenv('DB_PASSWORD', '') # Example default
+DB_HOST = os.getenv('DB_HOST', 'localhost') # Example default
+DB_PORT = os.getenv('DB_PORT', '5432') # Example default
 
 @with_transaction(commit=False) # Manage commit manually within the function
 def process_marayum_json(cur, filename: str, source_identifier: Optional[str] = None) -> Tuple[int, int]:

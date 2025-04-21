@@ -196,9 +196,8 @@ def create_app(testing=False):
         else:
             logger.warning("REDIS_ENABLED is true but REDIS_URL is not set. Falling back to memory storage for rate limiter.")
 
-    # Initialize limiter using init_app
+    app.config['RATELIMIT_STORAGE_URI'] = storage_uri # Set config BEFORE initializing limiter
     limiter.init_app(app)
-    app.config['RATELIMIT_STORAGE_URI'] = storage_uri
     app.config['RATELIMIT_DEFAULT_LIMITS'] = ["200 per minute", "5 per second"]
     # Configure the key function using app.config
     app.config['RATELIMIT_KEY_FUNC'] = lambda: f"{get_remote_address()}:{request.endpoint}"

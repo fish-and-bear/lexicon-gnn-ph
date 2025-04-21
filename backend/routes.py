@@ -1755,16 +1755,6 @@ def get_relationship_types():
         logger.error(f"Error retrieving relationship types: {e}", exc_info=True)
         return jsonify({"error": str(e)}), 500
 
-# Add schema for DefinitionRelation
-class DefinitionRelationSchema(BaseSchema):
-    """Schema for definition relation data."""
-    relation_type = fields.Str(required=True)
-    definition_id = fields.Int(required=True) 
-    word_id = fields.Int(required=True)
-    relation_data = fields.Dict()  # Use relation_data to match our property
-    definition = fields.Nested('DefinitionSchema', only=('id', 'definition_text'))
-    related_word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'))
-
 @bp.route("/words/<path:word>/definition_relations", methods=["GET"])
 def get_word_definition_relations(word):
     """Get definition relations for a word."""
