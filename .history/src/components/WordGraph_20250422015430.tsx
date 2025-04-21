@@ -1860,18 +1860,17 @@ const WordGraph: React.FC<WordGraphProps> = ({
             title="Network Controls"
             sx={{ 
                 position: 'absolute',
-                bottom: 8, // Adjusted spacing
-                right: 8, // Adjusted spacing
-                // Theme-aware styling
+                bottom: 8, // Increased spacing slightly
+                right: 8, // Increased spacing slightly
                 bgcolor: theme === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', 
-                backdropFilter: 'blur(3px)', 
+                backdropFilter: 'blur(3px)', // Optional: subtle blur
                 border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)',
-                color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', 
-                zIndex: 1500, // Ensure it's on top
-                '&:hover': { 
-                  color: theme === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)',
-                  bgcolor: theme === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' 
-                }
+                color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', // Slightly increased opacity
+                zIndex: 1500, // *** Ensure button is on top ***
+                 '&:hover': { 
+                   color: theme === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)',
+                   bgcolor: theme === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' 
+                 }
             }}
           >
             <TuneIcon />
@@ -1910,7 +1909,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 breadth={breadth}
                 onDepthChange={handleDepthChange}
                 onBreadthChange={handleBreadthChange}
-                onChangeCommitted={(_d, _b) => onNetworkChange(depth, breadth)}
+                onChangeCommitted={onNetworkChange} 
             />
              {/* *** RENDER LEGEND CONTENT IN DRAWER *** */}
             {renderLegendContent()}
