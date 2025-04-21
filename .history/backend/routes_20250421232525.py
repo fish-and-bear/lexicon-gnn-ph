@@ -73,7 +73,7 @@ try:
 except Exception as e:
     logger.error(f"Failed to initialize cache client: {e}")
     cache_client = None
-
+        
 # Test endpoint - quick connection test without hitting the database
 @bp.route('/test', methods=['GET'])
 def test_api():
@@ -1302,13 +1302,13 @@ def get_semantic_network(word: str):
         word_id = None
         word_data = None
         identifier = word # Keep original identifier for logging/error messages
-        
+
         # 1. Check for "id:" prefix
         if identifier.startswith("id:"):
-            try:
+        try:
                 word_id = int(identifier.split(":")[1])
-                sql = "SELECT id, lemma, normalized_lemma, language_code FROM words WHERE id = :id"
-                word_result = db.session.execute(text(sql), {"id": word_id}).fetchone()
+            sql = "SELECT id, lemma, normalized_lemma, language_code FROM words WHERE id = :id"
+            word_result = db.session.execute(text(sql), {"id": word_id}).fetchone()
                 if word_result:
                     word_data = {
                         "id": word_result.id,
@@ -1332,13 +1332,13 @@ def get_semantic_network(word: str):
                     word_result = db.session.execute(text(sql), {"id": potential_id}).fetchone()
                     if word_result:
                         word_id = potential_id
-                        word_data = {
-                            "id": word_result.id,
-                            "lemma": word_result.lemma,
-                            "normalized_lemma": word_result.normalized_lemma,
-                            "language_code": word_result.language_code
-                        }
-            except ValueError:
+            word_data = {
+                "id": word_result.id,
+                "lemma": word_result.lemma,
+                "normalized_lemma": word_result.normalized_lemma,
+                "language_code": word_result.language_code
+            }
+        except ValueError:
                 # Not an integer, proceed to lemma search
                 pass
 
@@ -1373,24 +1373,24 @@ def get_semantic_network(word: str):
         if word_data is None or word_id is None:
             # Use the original identifier in the error message
             error_identifier = identifier.split(":")[1] if identifier.startswith("id:") else identifier
-            return jsonify({
+                return jsonify({
                 "error": f"Word with identifier '{error_identifier}' not found",
-                "nodes": [],
-                "links": [],
-                "metadata": {
+                    "nodes": [],
+                    "links": [],
+                    "metadata": {
                     "root_word": identifier, # Use original identifier
                     "normalized_lemma": normalize_word(identifier) if not identifier.startswith("id:") else None,
-                    "language_code": None,
-                    "depth": depth,
+                        "language_code": None,
+                        "depth": depth,
                     "breadth": breadth,
-                    "total_nodes": 0,
-                    "total_edges": 0
-                }
-            }), 404
-
+                        "total_nodes": 0,
+                        "total_edges": 0
+                    }
+                }), 404
+            
         # Use found word_data lemma for logging
         logger.info(f"Generating semantic network for word '{word_data['lemma']}' (ID: {word_id}, depth: {depth}, breadth: {breadth})")
-        
+
         # Initialize nodes and edges sets to avoid duplicates
         nodes = {}
         edges = {}
@@ -3998,7 +3998,7 @@ def _fetch_word_details(word_id,
                             category.definition_id = c_row.definition_id
                             category.category_name = c_row.category_name
                             category.category_kind = kind # Assign validated kind
-
+                            
                             if c_row.definition_id not in categories_by_def_id:
                                 categories_by_def_id[c_row.definition_id] = []
                             categories_by_def_id[c_row.definition_id].append(category)
@@ -4028,7 +4028,7 @@ def _fetch_word_details(word_id,
                             # Assign default values for removed fields
                             link.tags = {}
                             link.link_metadata = {}
-
+                            
                             if l_row.definition_id not in links_by_def_id:
                                 links_by_def_id[l_row.definition_id] = []
                             links_by_def_id[l_row.definition_id].append(link)
