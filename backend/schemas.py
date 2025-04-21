@@ -2,7 +2,7 @@
 Marshmallow schemas for API serialization with enhanced validation and performance.
 """
 
-from marshmallow import Schema, fields, pre_dump, post_dump, validates, ValidationError
+from marshmallow import Schema, fields, pre_dump, post_dump, validates, ValidationError, validate
 from marshmallow.validate import Length, Range, OneOf
 import datetime
 from typing import Dict, Any, List, Optional, Union
