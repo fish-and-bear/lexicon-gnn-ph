@@ -98,7 +98,6 @@ import json # Make sure json is imported too
 import hashlib # Make sure hashlib is imported
 from psycopg2.extras import Json
 import re  # Ensure re is imported if not already
-from sqlalchemy.engine.url import make_url
 
 # Define a regex for valid Baybayin characters (U+1700–U+171F)
 # Allows Baybayin letters, vowels, viramas, AND whitespace. Adjust if other punctuation is needed.

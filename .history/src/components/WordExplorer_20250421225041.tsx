@@ -29,10 +29,6 @@ import { Box } from "@mui/material";
 import { Autocomplete, TextField } from "@mui/material";
 import { debounce } from '@mui/material/utils';
 import Chip from '@mui/material/Chip';
-import { IconButton } from "@mui/material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Paper } from "@mui/material";
 
 const isDevMode = () => {
   // Check if we have a URL parameter for showing debug tools
@@ -1335,76 +1331,8 @@ const WordExplorer: React.FC = () => {
     );
   };
 
-  // Add state for detecting mobile view
-  const [isMobile, setIsMobile] = useState(false);
-  
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Initial check
-    checkMobile();
-    
-    // Listen for resize
-    window.addEventListener('resize', checkMobile);
-    
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, []);
-  
-  // Detect virtual keyboard for mobile devices
-  useEffect(() => {
-    if (!isMobile) return;
-    
-    const detectKeyboard = () => {
-      const isKeyboardOpen = window.visualViewport && 
-        window.visualViewport.height < window.innerHeight * 0.75;
-      
-      document.body.classList.toggle('keyboard-open', isKeyboardOpen);
-    };
-    
-    window.visualViewport?.addEventListener('resize', detectKeyboard);
-    
-    return () => {
-      window.visualViewport?.removeEventListener('resize', detectKeyboard);
-    };
-  }, [isMobile]);
-  
-  // Use a memoized search handler that debounces
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
-  
-  const debouncedSearch = useCallback((term: string) => {
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current);
-    }
-    
-    debounceTimeout.current = setTimeout(() => {
-      handleSearch(term);
-    }, isMobile ? 300 : 200); // Slightly longer debounce on mobile
-  }, [handleSearch, isMobile]);
-  
-  // Update search handler
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = e.target.value;
-    setInputValue(searchTerm);
-    
-    if (searchTerm.length > 1) {
-      debouncedSearch(searchTerm);
-    } else {
-      setSearchResults([]);
-    }
-  };
-
   return (
-    <Paper
-      elevation={3}
-      className={`word-explorer-container ${themeName} ${isLoading ? 'loading' : ''}`}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
+    <div className={`word-explorer ${themeName} ${isLoading ? 'loading' : ''}`}>
       <header className="header-content">
         <h1>Filipino Root Word Explorer</h1>
         <div className="header-buttons">
@@ -1656,30 +1584,10 @@ const WordExplorer: React.FC = () => {
       {/* Render mobile action bar */}
       {renderMobileActions()}
       
-      <footer className={`footer ${isMobile ? 'mobile-footer safe-area-bottom' : ''}`}>
+      <footer className="footer">
         © {new Date().getFullYear()} Filipino Root Word Explorer. All Rights Reserved.
-        {isMobile && (
-          <div className="mobile-history-controls">
-            <IconButton 
-              disabled={wordHistory.length <= 1 || currentHistoryIndex === 0}
-              onClick={handleBack}
-              className="a11y-touch-target"
-              size="small"
-            >
-              <ArrowBackIosIcon />
-            </IconButton>
-            <IconButton 
-              disabled={currentHistoryIndex >= wordHistory.length - 1}
-              onClick={handleForward}
-              className="a11y-touch-target"
-              size="small"
-            >
-              <ArrowForwardIosIcon />
-            </IconButton>
-          </div>
-        )}
       </footer>
-    </Paper>
+    </div>
   );
 };
 

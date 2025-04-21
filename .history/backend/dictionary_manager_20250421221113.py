@@ -98,7 +98,6 @@ import json # Make sure json is imported too
 import hashlib # Make sure hashlib is imported
 from psycopg2.extras import Json
 import re  # Ensure re is imported if not already
-from sqlalchemy.engine.url import make_url
 
 # Define a regex for valid Baybayin characters (U+1700–U+171F)
 # Allows Baybayin letters, vowels, viramas, AND whitespace. Adjust if other punctuation is needed.
@@ -466,31 +465,31 @@ def get_db_config():
 # -------------------------------------------------------------------
 # Core Database Connection
 # -------------------------------------------------------------------
-def get_connection():
-    database_url = os.getenv('DATABASE_URL')
-    if not database_url:
-        # Fallback to individual variables if DATABASE_URL is not set
-        logger.warning("DATABASE_URL not set, falling back to individual DB_* variables for dictionary_manager connection.")
-        conn = psycopg2.connect(
-            dbname=os.getenv("DB_NAME", DB_NAME),
-            user=os.getenv("DB_USER", DB_USER),
-            password=os.getenv("DB_PASSWORD", DB_PASSWORD),
-            host=os.getenv("DB_HOST", DB_HOST),
-            port=os.getenv("DB_PORT", DB_PORT),
-        )
-    else:
-        # Parse the DATABASE_URL using SQLAlchemy's helper
-        try:
-            url = make_url(database_url)
-            # translate_connect_args handles drivername differences if any
-            conn_args = url.translate_connect_args(database_driver='psycopg2') 
-            conn = psycopg2.connect(**conn_args)
-        except Exception as e:
-            logger.error(f"Failed to connect using DATABASE_URL ({database_url}): {e}", exc_info=True)
-            raise # Re-raise the exception
+    def get_connection():
+        database_url = os.getenv('DATABASE_URL')
+        if not database_url:
+            # Fallback to individual variables if DATABASE_URL is not set
+            logger.warning("DATABASE_URL not set, falling back to individual DB_* variables for dictionary_manager connection.")
+            conn = psycopg2.connect(
+                dbname=os.getenv("DB_NAME", DB_NAME),
+                user=os.getenv("DB_USER", DB_USER),
+                password=os.getenv("DB_PASSWORD", DB_PASSWORD),
+                host=os.getenv("DB_HOST", DB_HOST),
+                port=os.getenv("DB_PORT", DB_PORT),
+            )
+        else:
+            # Parse the DATABASE_URL using SQLAlchemy's helper
+            try:
+                url = make_url(database_url)
+                # translate_connect_args handles drivername differences if any
+                conn_args = url.translate_connect_args(database_driver='psycopg2') 
+                conn = psycopg2.connect(**conn_args)
+            except Exception as e:
+                logger.error(f"Failed to connect using DATABASE_URL ({database_url}): {e}", exc_info=True)
+                raise # Re-raise the exception
 
-    conn.autocommit = False
-    return conn
+        conn.autocommit = False
+        return conn
 
 
 def get_cursor():

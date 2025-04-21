@@ -43,7 +43,7 @@ from .dictionary_manager import (
 from .utils.word_processing import normalize_word
 from .utils.rate_limiting import limiter
 from .utils.ip import get_remote_address
-from .schemas import WordSchema, SearchQuerySchema, SearchFilterSchema, StatisticsSchema, ExportFilterSchema, QualityAssessmentFilterSchema, PartOfSpeechSchema, RelationSchema, EtymologySchema, PronunciationType, DefinitionSchema, AffixationSchema, CreditSchema, WordFormSchema, WordTemplateSchema, DefinitionCategorySchema, DefinitionLinkSchema, DefinitionRelationSchema # Added missing schema imports
+from .schemas import WordSchema # Changed to relative
 
 # Import metrics from the metrics module - Changed to relative
 from .metrics import API_REQUESTS, API_ERRORS, REQUEST_LATENCY, REQUEST_COUNT
@@ -110,10 +110,190 @@ def is_testing_db(engine):
     return engine.url.database.endswith('_test')
 
 # Schema definitions
-# --- Removed redundant schema definitions (BaseSchema, PronunciationType, EtymologySchema, RelationSchema, AffixationSchema, DefinitionSchema, DefinitionCategorySchema, DefinitionLinkSchema, PartOfSpeechSchema, CreditSchema, WordFormSchema, WordTemplateSchema, WordSchema) ---
-# They should be imported from .schemas
+class BaseSchema(Schema):
+    """Base schema with common metadata fields."""
+    id = fields.Int(dump_only=True)
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    sources = fields.String()
 
-# Schemas kept here as they might be route-specific or not defined in schemas.py
+class PronunciationType(Schema):
+    """Schema for pronunciation data."""
+    type = fields.Str(validate=validate.OneOf(['ipa', 'rhyme', 'respelling', 'audio', 'phonemic', 'x-sampa', 'pinyin', 'jyutping', 'romaji']))
+    value = fields.Str(required=True)
+    tags = fields.Dict()
+    pronunciation_metadata = fields.Dict()  # Renamed from metadata to match DB/model
+    sources = fields.String()
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+    word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'))
+
+class EtymologySchema(BaseSchema):
+    """Schema for etymology data."""
+    etymology_text = fields.Str(required=True)
+    normalized_components = fields.String()
+    etymology_structure = fields.String()
+    language_codes = fields.String()
+    sources = fields.String()  # Add sources field
+    etymology_data = fields.Dict()  # Use etymology_data property instead of etymology_metadata
+    word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'))
+
+class RelationSchema(BaseSchema):
+    """Schema for word relationships."""
+    relation_type = fields.Str(required=True)
+    relation_data = fields.Dict()
+    source_word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code', 'has_baybayin', 'baybayin_form'))
+    target_word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code', 'has_baybayin', 'baybayin_form'))
+
+class AffixationSchema(BaseSchema):
+    """Schema for word affixation data."""
+    affix_type = fields.Str(required=True)
+    sources = fields.String() # Added sources
+    # Adjusted nesting to match common relationship patterns
+    root_word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'))
+    affixed_word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'))
+
+class DefinitionSchema(BaseSchema):
+    """Schema for word definitions."""
+    id = fields.Int(dump_only=True)
+    definition_text = fields.Str(required=True)
+    word_id = fields.Int()
+    standardized_pos_id = fields.Int()
+    usage_notes = fields.String()
+    examples = fields.List(fields.String(), dump_default=[])
+    sources = fields.String()
+    definition_metadata = fields.Dict()  # Add this field to match the property in the model
+    original_pos = fields.String(allow_none=True) # Keep existing original_pos if it was added
+    tags = fields.String(allow_none=True) # Add missing tags field from DB
+    
+    # Relationships
+    word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'), dump_default=None)
+    # Use fully qualified name to avoid RegistryError
+    standardized_pos = fields.Nested('PartOfSpeechSchema', dump_default=None)
+    categories = fields.List(fields.Nested('DefinitionCategorySchema', exclude=('definition',)))
+    # Skip links due to column mismatch
+    # links = fields.List(fields.Nested('backend.routes.DefinitionLinkSchema', exclude=('definition',)))
+    
+    # Related definitions/words relationships
+    definition_relations = fields.List(fields.Nested('DefinitionRelationSchema', exclude=('definition',)))
+    related_words = fields.List(fields.Nested('WordSchema', only=('id', 'lemma', 'language_code')))
+
+class DefinitionCategorySchema(BaseSchema):
+    """Schema for definition categories."""
+    id = fields.Int(dump_only=True)
+    definition_id = fields.Int(required=True)
+    category_name = fields.Str(required=True)
+    category_kind = fields.Str(allow_none=True)  # Add this missing field
+    # tags = fields.Dict() # Remove this field - not in DB table
+    category_metadata = fields.Dict()
+    parents = fields.List(fields.Str(), dump_default=[])  # Add this field to match model
+    definition = fields.Nested('DefinitionSchema', only=('id', 'definition_text'), dump_default=None)
+
+class DefinitionLinkSchema(BaseSchema):
+    """Schema for definition links."""
+    id = fields.Int(dump_only=True)
+    definition_id = fields.Int(required=True)
+    link_text = fields.Str(required=True)  # Changed from link_type to link_text
+    target_url = fields.Str(required=True)
+    display_text = fields.Str()
+    is_external = fields.Bool(dump_default=False)
+    tags = fields.Dict()
+    link_metadata = fields.Dict()
+    definition = fields.Nested('DefinitionSchema', only=('id', 'definition_text'), dump_default=None)
+
+class PartOfSpeechSchema(Schema):
+    """Schema for parts of speech."""
+    id = fields.Int(dump_only=True)
+    code = fields.Str(required=True)
+    name_en = fields.Str(required=True)
+    name_tl = fields.Str(required=True)
+    description = fields.String()
+    # Represent derived_words relationship correctly
+    derived_words = fields.List(fields.Nested('WordSchema', only=('id', 'lemma', 'language_code')))
+
+    # --- Add missing relationships and columns ---
+    forms = fields.List(fields.Nested('WordFormSchema', exclude=("word",)))
+    templates = fields.List(fields.Nested('WordTemplateSchema', exclude=("word",)))
+    # language = fields.Nested('LanguageSchema') # Add nested language info
+    # Add computed/hybrid properties
+    completeness_score = fields.Float(dump_only=True) # Use the hybrid property
+    # ------------------------------------------
+
+class CreditSchema(BaseSchema):
+    """Schema for word credits."""
+    credit = fields.Str(required=True)
+    # Removed word nesting
+    # word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'))
+
+# --- Add Schemas for missing models ---
+class WordFormSchema(BaseSchema):
+    """Schema for word forms (inflections, conjugations)."""
+    form = fields.Str(required=True)
+    tags = fields.Dict() # Assuming JSONB tags map to a dict
+    is_canonical = fields.Bool(dump_default=False)
+    is_primary = fields.Bool(dump_default=False)
+    word = fields.Nested('WordSchema', only=('id', 'lemma')) # Nested word info
+
+class WordTemplateSchema(BaseSchema):
+    """Schema for word templates."""
+    template_name = fields.Str(required=True)
+    args = fields.Dict() # Assuming JSONB args map to a dict
+    expansion = fields.Str()
+    word = fields.Nested('WordSchema', only=('id', 'lemma')) # Nested word info
+
+class WordSchema(BaseSchema):
+    """Schema for word entries."""
+    id = fields.Int(dump_only=True)
+    lemma = fields.Str(required=True)
+    normalized_lemma = fields.Str()
+    language_code = fields.Str(required=True)
+    has_baybayin = fields.Bool()
+    baybayin_form = fields.Str()
+    romanized_form = fields.Str()
+    root_word_id = fields.Int()
+    preferred_spelling = fields.Str()
+    tags = fields.String()
+    idioms = fields.Raw(allow_none=True)  # Changed from Dict to Raw
+    source_info = fields.Raw(allow_none=True)  # Changed from Dict to Raw
+    word_metadata = fields.Raw(allow_none=True)  # Changed from Dict to Raw
+    pronunciation_data = fields.Raw(allow_none=True)  # Added to match DB column
+    data_hash = fields.String()
+    search_text = fields.String()
+    badlit_form = fields.String()
+    hyphenation = fields.Raw(allow_none=True)  # Changed from Dict to Raw
+    is_proper_noun = fields.Bool()
+    is_abbreviation = fields.Bool()
+    is_initialism = fields.Bool()
+    is_root = fields.Bool()
+    completeness_score = fields.Float(dump_only=True)
+    
+    # Relationships - ensure names match model relationship names
+    # Use selectinload in helper, so schema just defines nesting
+    definitions = fields.List(fields.Nested('DefinitionSchema', exclude=("word",)))
+    etymologies = fields.List(fields.Nested('EtymologySchema', exclude=("word",)))
+    pronunciations = fields.List(fields.Nested('PronunciationType', exclude=("word",)))
+    credits = fields.List(fields.Nested('CreditSchema', exclude=("word",)))
+    # Adjust nesting based on expected structure from helper function
+    outgoing_relations = fields.List(fields.Nested('RelationSchema', exclude=("source_word",)))
+    incoming_relations = fields.List(fields.Nested('RelationSchema', exclude=("target_word",)))
+    root_affixations = fields.List(fields.Nested('AffixationSchema', exclude=("root_word",))) # Affixes where this word is the root
+    affixed_affixations = fields.List(fields.Nested('AffixationSchema', exclude=("affixed_word",))) # Affixes where this word is the result
+
+    # Represent root_word relationship correctly
+    root_word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'), dump_default=None)
+    # Represent derived_words relationship correctly
+    derived_words = fields.List(fields.Nested('WordSchema', only=('id', 'lemma', 'language_code')))
+
+    # Add forms and templates relationships
+    forms = fields.List(fields.Nested('WordFormSchema', exclude=("word",)))
+    templates = fields.List(fields.Nested('WordTemplateSchema', exclude=("word",)))
+    
+    # Add definition relation relationships
+    definition_relations = fields.List(fields.Nested('DefinitionRelationSchema', exclude=("related_word",)))
+    related_definitions = fields.List(fields.Nested('DefinitionSchema', exclude=("word", "related_words")))
+
+# ------------------------------------
+
 class SearchQuerySchema(Schema):
     """Schema for search query parameters."""
     q = fields.Str(required=True)
@@ -1754,6 +1934,16 @@ def get_relationship_types():
     except Exception as e:
         logger.error(f"Error retrieving relationship types: {e}", exc_info=True)
         return jsonify({"error": str(e)}), 500
+
+# Add schema for DefinitionRelation
+class DefinitionRelationSchema(BaseSchema):
+    """Schema for definition relation data."""
+    relation_type = fields.Str(required=True)
+    definition_id = fields.Int(required=True) 
+    word_id = fields.Int(required=True)
+    relation_data = fields.Dict()  # Use relation_data to match our property
+    definition = fields.Nested('DefinitionSchema', only=('id', 'definition_text'))
+    related_word = fields.Nested('WordSchema', only=('id', 'lemma', 'language_code'))
 
 @bp.route("/words/<path:word>/definition_relations", methods=["GET"])
 def get_word_definition_relations(word):
@@ -3977,28 +4167,21 @@ def _fetch_word_details(word_id,
                     try:
                         # Modified SQL to only select columns that definitely exist
                         sql_categories = """
-                        SELECT id, definition_id, category_name, category_kind -- Removed category_metadata, parents
+                        SELECT id, definition_id, category_name, category_kind, category_metadata, parents
                         FROM definition_categories
                         WHERE definition_id = ANY(:ids)
                         """
                         category_results = db.session.execute(text(sql_categories), {"ids": definition_ids}).fetchall()
-                        
-                        # Define allowed kinds (consider moving this to a config or enum)
-                        allowed_kinds = {'semantic', 'usage', 'dialect', 'grammar', 'topic', 'register', 'style', 'etymology', 'custom', None} # Added None as a valid kind
-                        
                         for c_row in category_results:
-                            # Validate category_kind before creating the object
-                            kind = c_row.category_kind
-                            if kind not in allowed_kinds:
-                                logger.warning(f"Invalid category kind '{kind}' found for definition_id {c_row.definition_id} (category ID {c_row.id}). Skipping category.")
-                                continue # Skip this category
-                                
                             category = DefinitionCategory()
                             category.id = c_row.id
                             category.definition_id = c_row.definition_id
                             category.category_name = c_row.category_name
-                            category.category_kind = kind # Assign validated kind
-
+                            category.category_kind = c_row.category_kind
+                            # Get metadata and parents from the query results
+                            category.category_metadata = c_row.category_metadata if c_row.category_metadata else {}
+                            category.parents = c_row.parents if c_row.parents else []
+                            
                             if c_row.definition_id not in categories_by_def_id:
                                 categories_by_def_id[c_row.definition_id] = []
                             categories_by_def_id[c_row.definition_id].append(category)
@@ -4012,7 +4195,7 @@ def _fetch_word_details(word_id,
                     try:
                         # Modified SQL to only select columns that definitely exist
                         sql_links = """
-                        SELECT id, definition_id, link_text, is_wikipedia -- Select is_wikipedia instead of is_external
+                        SELECT id, definition_id, link_text, target_url, display_text, is_external
                         FROM definition_links
                         WHERE definition_id = ANY(:ids)
                         """
@@ -4022,13 +4205,10 @@ def _fetch_word_details(word_id,
                             link.id = l_row.id
                             link.definition_id = l_row.definition_id
                             link.link_text = l_row.link_text
-                            link.target_url = None # Set to None as column doesn't exist
-                            link.display_text = None # Default value as column removed
-                            link.is_wikipedia = l_row.is_wikipedia # Use is_wikipedia
-                            # Assign default values for removed fields
-                            link.tags = {}
-                            link.link_metadata = {}
-
+                            link.target_url = l_row.target_url
+                            link.display_text = l_row.display_text
+                            link.is_external = l_row.is_external
+                            
                             if l_row.definition_id not in links_by_def_id:
                                 links_by_def_id[l_row.definition_id] = []
                             links_by_def_id[l_row.definition_id].append(link)
@@ -4082,7 +4262,7 @@ def _fetch_word_details(word_id,
                     for key in d._mapping.keys():
                         if hasattr(definition, key):
                            try: # Added inner try-except for attribute setting
-                                setattr(definition, key, d._mapping[key]) # Access value using mapping
+                                setattr(definition, key, d[key])
                            except Exception as attr_e:
                                 logger.warning(f"Error setting definition attr {key} for word {word_id}: {attr_e}")
                     definition.word_id = word_id
@@ -4126,7 +4306,7 @@ def _fetch_word_details(word_id,
                     for key in e_row._mapping.keys():
                         if hasattr(etymology, key):
                             try:
-                                setattr(etymology, key, e_row._mapping[key]) # Access value using mapping
+                                setattr(etymology, key, e_row[key])
                             except Exception as attr_e:
                                 logger.warning(f"Error setting etymology attr {key} for word {word_id}: {attr_e}")
                     etymology.word_id = word_id
@@ -4170,7 +4350,7 @@ def _fetch_word_details(word_id,
             try:
                 # Outgoing relations
                 sql_out_rel = """
-                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type,
+                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type, r.relation_data,
                        w.id as target_id, w.lemma as target_lemma, w.language_code as target_language_code,
                        w.has_baybayin as target_has_baybayin, w.baybayin_form as target_baybayin_form
                   FROM relations r
@@ -4187,7 +4367,7 @@ def _fetch_word_details(word_id,
                         relation.from_word_id = getattr(r, 'from_word_id', None)
                         relation.to_word_id = getattr(r, 'to_word_id', None)
                         relation.relation_type = getattr(r, 'relation_type', None)
-                        relation.relation_data = {} # Default to empty dict as column doesn't exist
+                        relation.relation_data = getattr(r, 'relation_data', None)
 
                         target_word = Word()
                         target_word.id = getattr(r, 'target_id', None)
@@ -4215,7 +4395,7 @@ def _fetch_word_details(word_id,
 
                 # Incoming relations
                 sql_in_rel = """
-                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type,
+                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type, r.relation_data,
                        w.id as source_id, w.lemma as source_lemma, w.language_code as source_language_code,
                        w.has_baybayin as source_has_baybayin, w.baybayin_form as source_baybayin_form
                   FROM relations r
@@ -4231,10 +4411,11 @@ def _fetch_word_details(word_id,
                         relation.from_word_id = getattr(r, 'from_word_id', None)
                         relation.to_word_id = getattr(r, 'to_word_id', None)
                         relation.relation_type = getattr(r, 'relation_type', None)
-                        relation.relation_data = {} # Default to empty dict as column doesn't exist
+                        relation.relation_data = getattr(r, 'relation_data', None)
 
                         source_word = Word()
                         source_word.id = getattr(r, 'source_id', None)
+                        # Remove duplicate ID assignment
                         source_word.lemma = r.source_lemma
                         source_word.language_code = r.source_language_code
                         source_word.has_baybayin = r.source_has_baybayin

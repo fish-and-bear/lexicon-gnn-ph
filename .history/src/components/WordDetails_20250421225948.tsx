@@ -330,9 +330,9 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
               </Typography>
               
               {/* Adjusted playback controls for better touch targets on mobile */}
-              {hasAudio && (
+              {wordInfo.audio_url && (
                 <IconButton
-                  onClick={playAudio}
+                  onClick={toggleAudio}
                   sx={{ 
                     color: headerTextColor, 
                     bgcolor: alpha(headerTextColor, 0.1),

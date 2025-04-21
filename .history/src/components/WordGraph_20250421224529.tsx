@@ -65,18 +65,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
   isMobileView,
 }) => {
   const { theme } = useTheme();
-  const isDarkTheme = theme === 'dark';
-  const graphRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement | null>(null);
-  const simulation = useRef<any>(null);
-  const [depth, setDepth] = useState(initialDepth);
-  const [breadth, setBreadth] = useState(initialBreadth);
-  const [scale, setScale] = useState(1);
-  const [translateX, setTranslateX] = useState(0);
-  const [translateY, setTranslateY] = useState(0);
-  const [showControls, setShowControls] = useState(!isMobileView); // Hide controls by default on mobile
-  const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  
+  const svgRef = useRef<SVGSVGElement>(null);
+
   // Log the received mainWord prop
   useEffect(() => {
     console.log(`[WordGraph] Received mainWord prop: '${mainWord}'`);
@@ -85,9 +75,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const [hoveredNode, setHoveredNode] = useState<CustomNode | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(mainWord);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  const [depth, setDepth] = useState<number>(initialDepth);
+  const [breadth, setBreadth] = useState<number>(initialBreadth);
   const [isLoading, setIsLoading] = useState(false); // Re-add isLoading state
   const [error, setError] = useState<string | null>(null);
   const [isValidNetwork, setIsValidNetwork] = useState(true);
+  const simulationRef = useRef<d3.Simulation<CustomNode, CustomLink> | null>(null);
   const [filteredRelationships, setFilteredRelationships] = useState<string[]>([]);
   const [forceUpdate, setForceUpdate] = useState<number>(0); // Force remount counter
   const [showDisconnectedNodes, setShowDisconnectedNodes] = useState<boolean>(false);
@@ -110,210 +103,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const lastClickTimeRef = useRef<number>(0);
   const lastClickedNodeRef = useRef<string | null>(null);
 
-  // Add state to track pinch gestures
-  const [pinchStartDistance, setPinchStartDistance] = useState<number | null>(null);
-  const [initialScale, setInitialScale] = useState<number>(1);
-  const [lastTapTime, setLastTapTime] = useState<number>(0);
-  const [touchTimeout, setTouchTimeout] = useState<NodeJS.Timeout | null>(null);
-  
-  // Calculate distance between two touch points
-  const getTouchDistance = (touches: TouchList): number => {
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-  };
-  
-  // Handle touch events for pinch-to-zoom and better mobile interaction
-  useEffect(() => {
-    if (!isMobileView || !graphRef.current) return;
-    
-    const graphElement = graphRef.current;
-    
-    const handleTouchStart = (e: TouchEvent) => {
-      // For pinch gestures
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const distance = getTouchDistance(e.touches);
-        setPinchStartDistance(distance);
-        setInitialScale(scale);
-      }
-      
-      // For double-tap to reset view
-      if (e.touches.length === 1) {
-        const now = Date.now();
-        if (now - lastTapTime < 300) { // Double tap detected
-          // Reset zoom and center
-          if (svgRef.current && zoomRef.current) {
-            const svg = d3.select(svgRef.current);
-            svg.transition().duration(500).call(
-              zoomRef.current.transform,
-              d3.zoomIdentity.scale(1).translate(0, 0)
-            );
-            setScale(1);
-            setTranslateX(0);
-            setTranslateY(0);
-          }
-        }
-        setLastTapTime(now);
-      }
-    };
-    
-    const handleTouchMove = (e: TouchEvent) => {
-      // Handle pinch zoom
-      if (e.touches.length === 2 && pinchStartDistance !== null) {
-        e.preventDefault();
-        const currentDistance = getTouchDistance(e.touches);
-        const delta = currentDistance / pinchStartDistance;
-        
-        const newScale = initialScale * delta;
-        
-        // Apply limits to prevent extreme zooming
-        const limitedScale = Math.min(Math.max(newScale, 0.1), 10);
-        
-        if (svgRef.current && zoomRef.current) {
-          // Update scale state
-          setScale(limitedScale);
-          
-          // Calculate center point between fingers
-          const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-          const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-          
-          // Apply transform to svg
-          const svg = d3.select(svgRef.current);
-          const transform = d3.zoomIdentity
-            .translate(centerX, centerY)
-            .scale(limitedScale)
-            .translate(-centerX, -centerY);
-          
-          svg.call(zoomRef.current.transform, transform);
-        }
-      }
-    };
-    
-    const handleTouchEnd = () => {
-      setPinchStartDistance(null);
-    };
-    
-    // Long press to show info tooltip
-    const handleLongTouch = (e: TouchEvent) => {
-      if (e.touches.length === 1) {
-        if (touchTimeout) clearTimeout(touchTimeout);
-        
-        const timeout = setTimeout(() => {
-          const touch = e.touches[0];
-          const element = document.elementFromPoint(touch.clientX, touch.clientY);
-          
-          // Find if we're touching a node
-          if (element && element.classList.contains('node')) {
-            const nodeId = element.getAttribute('data-id');
-            if (nodeId) {
-              // Handle long press on node - select it
-              onNodeSelect(nodeId);
-              
-              // Provide haptic feedback if supported
-              if (navigator.vibrate) {
-                navigator.vibrate(50);
-              }
-            }
-          }
-        }, 500);
-        
-        setTouchTimeout(timeout);
-      }
-    };
-    
-    const clearLongTouch = () => {
-      if (touchTimeout) {
-        clearTimeout(touchTimeout);
-        setTouchTimeout(null);
-      }
-    };
-    
-    // Add event listeners
-    graphElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-    graphElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-    graphElement.addEventListener('touchend', handleTouchEnd);
-    graphElement.addEventListener('touchstart', handleLongTouch);
-    graphElement.addEventListener('touchend', clearLongTouch);
-    graphElement.addEventListener('touchcancel', clearLongTouch);
-    
-    // Cleanup
-    return () => {
-      graphElement.removeEventListener('touchstart', handleTouchStart);
-      graphElement.removeEventListener('touchmove', handleTouchMove);
-      graphElement.removeEventListener('touchend', handleTouchEnd);
-      graphElement.removeEventListener('touchstart', handleLongTouch);
-      graphElement.removeEventListener('touchend', clearLongTouch);
-      graphElement.removeEventListener('touchcancel', clearLongTouch);
-      
-      if (touchTimeout) clearTimeout(touchTimeout);
-    };
-  }, [
-    isMobileView, 
-    graphRef, 
-    svgRef, 
-    zoomRef, 
-    pinchStartDistance, 
-    initialScale, 
-    scale,
-    onNodeSelect,
-    lastTapTime,
-    touchTimeout
-  ]);
-  
-  // Optimize for mobile performance in the main useEffect
-  useEffect(() => {
-    if (!wordNetwork || !graphRef.current) return;
-
-    // Mobile-specific optimizations
-    if (isMobileView) {
-      // Reduce animation durations
-      const transitionDuration = 200; // shorter for mobile
-      
-      // Simplify simulation parameters
-      const mobileLinkDistance = 60; // shorter for mobile displays
-      const mobileChargeStrength = -120; // less repulsion to keep nodes closer
-      
-      // Apply these values to the simulation
-      if (simulation.current) {
-        simulation.current
-          .force("link", d3.forceLink(links).id((d: any) => d.id).distance(mobileLinkDistance))
-          .force("charge", d3.forceManyBody().strength(mobileChargeStrength));
-      }
-      
-      // Simpler node styling for better performance
-      d3.selectAll('.node-label')
-        .style('font-size', '8px') // smaller text for mobile
-        .style('text-shadow', 'none'); // remove expensive text shadows
-      
-      // Remove hover effects that might cause lag on mobile
-      d3.selectAll('.node')
-        .on('mouseover', null)
-        .on('mouseout', null);
-      
-      // Add touch-specific node interaction
-      d3.selectAll('.node')
-        .on('touchstart', function(event) {
-          event.preventDefault();
-          d3.select(this).classed('touch-active', true);
-        })
-        .on('touchend', function(event, d: any) {
-          event.preventDefault();
-          d3.select(this).classed('touch-active', false);
-          
-          // Fire click event with a delay to distinguish from scrolling
-          setTimeout(() => {
-            if (d && d.id) {
-              onNodeClick(d.id);
-            }
-          }, 100);
-        });
-    }
-    
-    // ... rest of the existing code ...
-    
-  }, [wordNetwork, isDarkTheme, mainWord, isMobileView, onNodeClick]);
-  
   useEffect(() => {
     if (!wordNetwork || !wordNetwork.nodes || !Array.isArray(wordNetwork.nodes) || 
         !wordNetwork.edges || !Array.isArray(wordNetwork.edges)) {
@@ -796,7 +585,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, [getNodeRadius]); // Added getNodeRadius dependency
 
   const setupSimulation = useCallback((nodes: CustomNode[], links: CustomLink[], width: number, height: number) => {
-      simulation.current = d3.forceSimulation<CustomNode>(nodes)
+      simulationRef.current = d3.forceSimulation<CustomNode>(nodes)
         .alphaDecay(0.025) // Slightly slower decay for potentially better label settling
         .velocityDecay(0.4)
         .force("link", d3.forceLink<CustomNode, CustomLink>()
@@ -811,7 +600,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .force("center", d3.forceCenter(0, 0))
         .on("tick", ticked);
 
-        return simulation.current;
+        return simulationRef.current;
   }, [getNodeRadius, ticked]);
 
   const createDragBehavior = useCallback((simulation: d3.Simulation<CustomNode, CustomLink>) => {
@@ -826,7 +615,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
           // Record when drag started (to distinguish from clicks)
           dragStartTime = Date.now();
           
-          if (!event.active) simulation.current.alphaTarget(0.3).restart();
+          if (!event.active) simulation.alphaTarget(0.3).restart();
           d.fx = d.x; d.fy = d.y;
           isDraggingRef.current = true;
           
@@ -841,7 +630,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
           d.fy = event.y; 
       })
       .on("end", (event, d) => {
-          if (!event.active) simulation.current.alphaTarget(0);
+          if (!event.active) simulation.alphaTarget(0);
           if (!d.pinned) { d.fx = null; d.fy = null; }
           
           // Reset visual state
@@ -901,7 +690,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const createNodes = useCallback((
       g: d3.Selection<SVGGElement, unknown, null, undefined>,
       nodesData: CustomNode[],
-      simulation: any | null
+      simulation: d3.Simulation<CustomNode, CustomLink> | null
       ) => {
     const drag = simulation ? createDragBehavior(simulation) : null;
     
@@ -1152,7 +941,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
   // Update initial node layout to ensure main word is centered and visible
   useEffect(() => {
-    if (simulation.current && mainWord) {
+    if (simulationRef.current && mainWord) {
       // Find the main word node data
       const mainNodeData = filteredNodes.find(n => n.id === mainWord);
       if (mainNodeData) {
@@ -1160,7 +949,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         mainNodeData.fx = 0;
         mainNodeData.fy = 0;
         // Reset simulation to apply new positions
-        simulation.current.alpha(0.3).restart();
+        simulationRef.current.alpha(0.3).restart();
       }
     }
   }, [filteredNodes, mainWord]);
@@ -1342,8 +1131,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
               .attr("height", height);
             
             // Force layout update
-            if (simulation.current) {
-              simulation.current.alpha(0.3).restart();
+            if (simulationRef.current) {
+              simulationRef.current.alpha(0.3).restart();
             }
           }
         }
@@ -1423,7 +1212,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     try {
     if (!svgRef.current || !wordNetwork || !mainWord || baseNodes.length === 0) {
       if (svgRef.current) d3.select(svgRef.current).selectAll("*").remove();
-      if (simulation.current) simulation.current.stop();
+      if (simulationRef.current) simulationRef.current.stop();
       setError(null);
       setIsLoading(false);
       return;
@@ -1437,7 +1226,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     console.log("[GRAPH] Building graph with filtered data");
     console.log(`[GRAPH] Using ${filteredNodes.length} nodes and ${filteredLinks.length} links`);
 
-    if (simulation.current) simulation.current.stop();
+    if (simulationRef.current) simulationRef.current.stop();
       
       // Use the declared svg variable
       svg.selectAll("*").remove();
@@ -1845,8 +1634,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
       setIsValidNetwork(false); // Mark network as invalid on error
       setIsLoading(false); // Ensure loading state is reset
       // Ensure cleanup runs even on error
-      if (simulation.current) {
-          simulation.current.stop();
+      if (simulationRef.current) {
+          simulationRef.current.stop();
       }
       if (svgRef.current) {
           d3.select(svgRef.current).selectAll("*").remove();

@@ -3982,22 +3982,16 @@ def _fetch_word_details(word_id,
                         WHERE definition_id = ANY(:ids)
                         """
                         category_results = db.session.execute(text(sql_categories), {"ids": definition_ids}).fetchall()
-                        
-                        # Define allowed kinds (consider moving this to a config or enum)
-                        allowed_kinds = {'semantic', 'usage', 'dialect', 'grammar', 'topic', 'register', 'style', 'etymology', 'custom', None} # Added None as a valid kind
-                        
                         for c_row in category_results:
-                            # Validate category_kind before creating the object
-                            kind = c_row.category_kind
-                            if kind not in allowed_kinds:
-                                logger.warning(f"Invalid category kind '{kind}' found for definition_id {c_row.definition_id} (category ID {c_row.id}). Skipping category.")
-                                continue # Skip this category
-                                
                             category = DefinitionCategory()
                             category.id = c_row.id
                             category.definition_id = c_row.definition_id
                             category.category_name = c_row.category_name
-                            category.category_kind = kind # Assign validated kind
+                            category.category_kind = c_row.category_kind
+                            # Get metadata and parents from the query results - Assign defaults as they are removed
+                            category.category_metadata = {} # Default value
+                            category.parents = [] # Default value
+                            # category.description is likely not a direct column based on cache error, remove attempt to set if not needed
 
                             if c_row.definition_id not in categories_by_def_id:
                                 categories_by_def_id[c_row.definition_id] = []

@@ -30,8 +30,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { debounce } from '@mui/material/utils';
 import Chip from '@mui/material/Chip';
 import { IconButton } from "@mui/material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { ArrowBackIcon, ArrowForwardIcon } from "@mui/icons-material";
 import { Paper } from "@mui/material";
 
 const isDevMode = () => {
@@ -1656,28 +1655,8 @@ const WordExplorer: React.FC = () => {
       {/* Render mobile action bar */}
       {renderMobileActions()}
       
-      <footer className={`footer ${isMobile ? 'mobile-footer safe-area-bottom' : ''}`}>
+      <footer className="footer">
         © {new Date().getFullYear()} Filipino Root Word Explorer. All Rights Reserved.
-        {isMobile && (
-          <div className="mobile-history-controls">
-            <IconButton 
-              disabled={wordHistory.length <= 1 || currentHistoryIndex === 0}
-              onClick={handleBack}
-              className="a11y-touch-target"
-              size="small"
-            >
-              <ArrowBackIosIcon />
-            </IconButton>
-            <IconButton 
-              disabled={currentHistoryIndex >= wordHistory.length - 1}
-              onClick={handleForward}
-              className="a11y-touch-target"
-              size="small"
-            >
-              <ArrowForwardIosIcon />
-            </IconButton>
-          </div>
-        )}
       </footer>
     </Paper>
   );

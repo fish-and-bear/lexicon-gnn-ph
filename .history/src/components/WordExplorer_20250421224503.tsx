@@ -29,10 +29,6 @@ import { Box } from "@mui/material";
 import { Autocomplete, TextField } from "@mui/material";
 import { debounce } from '@mui/material/utils';
 import Chip from '@mui/material/Chip';
-import { IconButton } from "@mui/material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Paper } from "@mui/material";
 
 const isDevMode = () => {
   // Check if we have a URL parameter for showing debug tools
@@ -964,179 +960,6 @@ const WordExplorer: React.FC = () => {
   const isTabletLayout = useMediaQuery('(min-width:600px) and (max-width:899px)');
   const isMobileLayout = useMediaQuery('(max-width:599px)');
   
-  // Add these new states for mobile UX
-  const [showMobileActions, setShowMobileActions] = useState<boolean>(false);
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const [touchStartY, setTouchStartY] = useState<number | null>(null);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
-  const mainRef = useRef<HTMLElement>(null);
-  
-  // Detect if we're on a mobile device - don't add special handling for desktop
-  const isMobileDevice = useMediaQuery('(max-width:767px)');
-  
-  // Handle keyboard appearance on mobile
-  useEffect(() => {
-    if (!isMobileDevice) return;
-    
-    const handleResize = () => {
-      // Determine if the keyboard is likely visible by checking height change
-      const viewportHeight = window.innerHeight;
-      const initialHeight = window.outerHeight;
-      const heightDifference = initialHeight - viewportHeight;
-      
-      // If height reduction is significant, keyboard is likely visible
-      setIsKeyboardVisible(heightDifference > 150);
-      
-      // Add class to body for CSS targeting
-      if (heightDifference > 150) {
-        document.body.classList.add('virtual-keyboard-open');
-      } else {
-        document.body.classList.remove('virtual-keyboard-open');
-      }
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isMobileDevice]);
-  
-  // Handle swipe gestures for mobile history navigation
-  useEffect(() => {
-    if (!isMobileDevice || !mainRef.current) return;
-    
-    const main = mainRef.current;
-    
-    const handleTouchStart = (e: TouchEvent) => {
-      setTouchStartX(e.touches[0].clientX);
-      setTouchStartY(e.touches[0].clientY);
-    };
-    
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (touchStartX === null || touchStartY === null) return;
-      
-      const touchEndX = e.changedTouches[0].clientX;
-      const touchEndY = e.changedTouches[0].clientY;
-      
-      const deltaX = touchEndX - touchStartX;
-      const deltaY = touchEndY - touchStartY;
-      
-      // Only consider horizontal swipes with minimal vertical movement
-      if (Math.abs(deltaX) > 100 && Math.abs(deltaY) < 50) {
-        if (deltaX > 0 && currentHistoryIndex > 0) {
-          // Swipe right - go back
-          handleBack();
-        } else if (deltaX < 0 && currentHistoryIndex < wordHistory.length - 1) {
-          // Swipe left - go forward
-          handleForward();
-        }
-      }
-      
-      setTouchStartX(null);
-      setTouchStartY(null);
-    };
-    
-    main.addEventListener('touchstart', handleTouchStart);
-    main.addEventListener('touchend', handleTouchEnd);
-    
-    return () => {
-      main.removeEventListener('touchstart', handleTouchStart);
-      main.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [isMobileDevice, mainRef, currentHistoryIndex, wordHistory.length, handleBack, handleForward, touchStartX, touchStartY]);
-  
-  // Toggle mobile actions bar when appropriate
-  useEffect(() => {
-    if (isMobileDevice && wordData) {
-      setShowMobileActions(true);
-    } else {
-      setShowMobileActions(false);
-    }
-  }, [isMobileDevice, wordData]);
-  
-  // Add touch feedback for better tap response
-  const handleTouchStart = (element: HTMLElement) => {
-    element.classList.add('touch-active');
-  };
-  
-  const handleTouchEnd = (element: HTMLElement) => {
-    element.classList.remove('touch-active');
-  };
-  
-  // Quick browse alphabet - helper for mobile
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-  
-  const handleQuickLetter = (letter: string) => {
-    setInputValue(letter.toLowerCase());
-    handleSearch(letter.toLowerCase());
-  };
-  
-  // Render quick browse alphabet for mobile
-  const renderQuickBrowse = () => {
-    if (!isMobileDevice) return null;
-    
-    return (
-      <div className="quick-browse">
-        {alphabet.map((letter) => (
-          <button 
-            key={letter} 
-            className="quick-letter"
-            onClick={() => handleQuickLetter(letter)}
-          >
-            {letter}
-          </button>
-        ))}
-      </div>
-    );
-  };
-  
-  // Render mobile action bar with quick actions
-  const renderMobileActions = () => {
-    if (!isMobileDevice || !showMobileActions) return null;
-    
-    return (
-      <>
-        <div className="mobile-action-bar">
-          <button 
-            className="mobile-action-button"
-            onClick={handleBack}
-            disabled={currentHistoryIndex <= 0}
-          >
-            <span className="mobile-action-button-icon">←</span>
-            <span>Back</span>
-          </button>
-          
-          <button 
-            className="mobile-action-button"
-            onClick={handleRandomWord}
-            disabled={isRandomLoading}
-          >
-            <span className="mobile-action-button-icon">🎲</span>
-            <span>Random</span>
-          </button>
-          
-          <button 
-            className="mobile-action-button"
-            onClick={() => setActiveMobilePanel(activeMobilePanel === 'details' ? 'graph' : 'details')}
-          >
-            <span className="mobile-action-button-icon">
-              {activeMobilePanel === 'details' ? '🔍' : '📝'}
-            </span>
-            <span>{activeMobilePanel === 'details' ? 'Network' : 'Details'}</span>
-          </button>
-          
-          <button 
-            className="mobile-action-button"
-            onClick={handleForward}
-            disabled={currentHistoryIndex >= wordHistory.length - 1}
-          >
-            <span className="mobile-action-button-icon">→</span>
-            <span>Forward</span>
-          </button>
-        </div>
-        <div className="mobile-action-bar-spacer"></div>
-      </>
-    );
-  };
-
   const renderSearchBar = () => {
     const muiTheme = useMuiTheme(); // Get the actual MUI theme object
     return (
@@ -1335,76 +1158,8 @@ const WordExplorer: React.FC = () => {
     );
   };
 
-  // Add state for detecting mobile view
-  const [isMobile, setIsMobile] = useState(false);
-  
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Initial check
-    checkMobile();
-    
-    // Listen for resize
-    window.addEventListener('resize', checkMobile);
-    
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, []);
-  
-  // Detect virtual keyboard for mobile devices
-  useEffect(() => {
-    if (!isMobile) return;
-    
-    const detectKeyboard = () => {
-      const isKeyboardOpen = window.visualViewport && 
-        window.visualViewport.height < window.innerHeight * 0.75;
-      
-      document.body.classList.toggle('keyboard-open', isKeyboardOpen);
-    };
-    
-    window.visualViewport?.addEventListener('resize', detectKeyboard);
-    
-    return () => {
-      window.visualViewport?.removeEventListener('resize', detectKeyboard);
-    };
-  }, [isMobile]);
-  
-  // Use a memoized search handler that debounces
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
-  
-  const debouncedSearch = useCallback((term: string) => {
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current);
-    }
-    
-    debounceTimeout.current = setTimeout(() => {
-      handleSearch(term);
-    }, isMobile ? 300 : 200); // Slightly longer debounce on mobile
-  }, [handleSearch, isMobile]);
-  
-  // Update search handler
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = e.target.value;
-    setInputValue(searchTerm);
-    
-    if (searchTerm.length > 1) {
-      debouncedSearch(searchTerm);
-    } else {
-      setSearchResults([]);
-    }
-  };
-
   return (
-    <Paper
-      elevation={3}
-      className={`word-explorer-container ${themeName} ${isLoading ? 'loading' : ''}`}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
+    <div className={`word-explorer ${themeName} ${isLoading ? 'loading' : ''}`}>
       <header className="header-content">
         <h1>Filipino Root Word Explorer</h1>
         <div className="header-buttons">
@@ -1444,9 +1199,6 @@ const WordExplorer: React.FC = () => {
       </header>
       
       {renderSearchBar()}
-      
-      {/* Add quick browse for mobile */}
-      {renderQuickBrowse()}
       
       {error && (
         <div className="error-message">
@@ -1527,27 +1279,7 @@ const WordExplorer: React.FC = () => {
         </div>
       )}
       
-      <main ref={mainRef}>
-        {isMobileDevice && (
-          <>
-            {/* Touch swipe areas for mobile history navigation */}
-            <div 
-              className="swipe-area swipe-area-left"
-              onClick={handleBack}
-              style={{ display: currentHistoryIndex > 0 ? 'block' : 'none' }}
-            >
-              <div className="swipe-indicator">←</div>
-            </div>
-            <div 
-              className="swipe-area swipe-area-right"
-              onClick={handleForward}
-              style={{ display: currentHistoryIndex < wordHistory.length - 1 ? 'block' : 'none' }}
-            >
-              <div className="swipe-indicator">→</div>
-            </div>
-          </>
-        )}
-        
+      <main>
         {isWideLayout ? (
           // Desktop layout - horizontal split with resizable panels
           <div style={{ width: '100%', height: '100%', display: 'flex', overflow: 'hidden' }}>
@@ -1596,7 +1328,7 @@ const WordExplorer: React.FC = () => {
             </PanelGroup>
           </div>
         ) : (
-          // Mobile/Tablet layout with enhanced touch handling
+          // Mobile/Tablet layout - tabs to switch between panels
           <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             {/* Details Panel - Show when selected or no word data yet */}
             <div className="details-container" 
@@ -1653,33 +1385,10 @@ const WordExplorer: React.FC = () => {
         )}
       </main>
       
-      {/* Render mobile action bar */}
-      {renderMobileActions()}
-      
-      <footer className={`footer ${isMobile ? 'mobile-footer safe-area-bottom' : ''}`}>
+      <footer className="footer">
         © {new Date().getFullYear()} Filipino Root Word Explorer. All Rights Reserved.
-        {isMobile && (
-          <div className="mobile-history-controls">
-            <IconButton 
-              disabled={wordHistory.length <= 1 || currentHistoryIndex === 0}
-              onClick={handleBack}
-              className="a11y-touch-target"
-              size="small"
-            >
-              <ArrowBackIosIcon />
-            </IconButton>
-            <IconButton 
-              disabled={currentHistoryIndex >= wordHistory.length - 1}
-              onClick={handleForward}
-              className="a11y-touch-target"
-              size="small"
-            >
-              <ArrowForwardIosIcon />
-            </IconButton>
-          </div>
-        )}
       </footer>
-    </Paper>
+    </div>
   );
 };
 
