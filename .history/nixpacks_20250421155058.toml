@@ -6,10 +6,10 @@ providers = ["python"] # Force using the Python provider
 # Ensure necessary OS packages (like postgresql-client for psycopg2) are available if needed
 # nixPkgs = ["...", "postgresql"] # Example: uncomment and add if needed
 
-# [phases.install] # REMOVED - Let Nixpacks handle pip install automatically
-# # Command to install dependencies, relative to project root
-# cmds = ["pip install --upgrade pip", "pip install -r backend/requirements.txt"]
+[phases.install]
+# Explicitly tell pip where the requirements file is
+cmds = ["pip install -r backend/requirements.txt"]
 
 [start]
 # The command to start the application, relative to project root
-cmd = "gunicorn --pythonpath . backend.app:app --bind 0.0.0.0:$PORT --log-level debug --access-logfile - --error-logfile -" 
+cmd = "gunicorn --pythonpath . backend.app:app --bind 0.0.0.0:$PORT" 

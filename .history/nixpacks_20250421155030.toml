@@ -12,4 +12,4 @@ providers = ["python"] # Force using the Python provider
 
 [start]
 # The command to start the application, relative to project root
-cmd = "gunicorn --pythonpath . backend.app:app --bind 0.0.0.0:$PORT --log-level debug --access-logfile - --error-logfile -" 
+cmd = "gunicorn --pythonpath . backend.app:app --bind 0.0.0.0:$PORT" 
