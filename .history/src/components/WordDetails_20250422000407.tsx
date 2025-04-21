@@ -2,8 +2,6 @@ import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Definition, WordInfo, WordForm, WordTemplate, Idiom, Affixation, Credit, BasicWord, EtymologyTree, WordSuggestion } from '../types'; // Added EtymologyTree and WordSuggestion
 // import { convertToBaybayin } from '../api/wordApi';
 import './WordDetails.css';
-// Import color utility functions needed
-import { getNodeColor, getTextColorForBackground } from '../utils/colorUtils'; 
 // import './Tabs.css';
 
 // MUI Imports
@@ -1620,8 +1618,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   const renderEtymologyTreeVisualization = () => {
     // *** ADD NULL CHECKS ***
     if (!etymologyTree || !etymologyTree.nodes || !etymologyTree.edges) {
-      // Optionally return a loading state or an informative message
-      return <Alert severity="info">Etymology tree data is not available or is loading.</Alert>;
+      return <Alert severity="info">Etymology tree data is missing or invalid.</Alert>;
     }
   
     // Type definitions remain the same
@@ -1645,8 +1642,7 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
             />
             <Link
               component="button"
-              // *** Convert node.id (number) to string format "id:number" ***
-              onClick={() => onWordClick(`id:${node.id}`)} 
+              onClick={() => onWordClick(`id:${node.id}`)} // *** PASS ID AS STRING ***
               sx={{ 
                 fontWeight: 500, 
                 fontSize: '1rem', 

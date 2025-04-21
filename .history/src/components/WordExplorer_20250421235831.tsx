@@ -3,7 +3,7 @@ import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
 import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
-import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchWordResult, Relation, WordSuggestion, BasicWord } from "../types";
+import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchWordResult, Relation, WordSuggestion } from "../types";
 import unidecode from "unidecode";
 import { 
   fetchWordNetwork, 
@@ -20,15 +20,12 @@ import {
   getEtymologyTree,
   fetchSuggestions,
 } from "../api/wordApi";
-import { Button } from "@mui/material";
+import { Button, Box, Autocomplete, TextField, Chip, CircularProgress, IconButton } from "@mui/material";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Theme, useTheme as useMuiTheme } from '@mui/material/styles';
-import { Box } from "@mui/material";
-import { Autocomplete, TextField } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import { debounce } from '@mui/material/utils';
-import Chip from '@mui/material/Chip';
 
 const isDevMode = () => {
   // Check if we have a URL parameter for showing debug tools
@@ -69,6 +66,9 @@ const WordExplorer: React.FC = () => {
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([]);
   const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isDrawerExpanded, setIsDrawerExpanded] = useState<boolean>(false);
 
   const fetchSuggestionsDebounced = React.useMemo(
     () =>
@@ -332,6 +332,10 @@ const WordExplorer: React.FC = () => {
           setCurrentHistoryIndex(newHistory.length - 1);
         }
         
+        // *** Open the drawer when a node is clicked/data loaded ***
+        setIsDrawerOpen(true);
+        setIsDrawerExpanded(false); // Start partially open or closed, expand on interaction
+
         // Fetch related data (Network and Etymology)
         // const confirmedIdentifier = identifier; // Revert: Don't use identifier here
         
@@ -395,7 +399,8 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex, 
       setError, 
       setWordNetwork, 
-      setEtymologyTree
+      setEtymologyTree,
+      setIsDrawerOpen, setIsDrawerExpanded
   ]); // Ensure all dependencies are listed
 
   const handleNodeSelect = useCallback(async (word: string) => {
@@ -442,7 +447,7 @@ const WordExplorer: React.FC = () => {
     }
   }, [fetchEtymologyTree]);
 
-  const handleSearch = useCallback(async (searchTerm: string | WordSuggestion | BasicWord | null) => {
+  const handleSearch = useCallback(async (searchTerm: string | WordSuggestion | null) => {
     if (!searchTerm) return;
 
     let identifierToSearch: string;
@@ -454,21 +459,16 @@ const WordExplorer: React.FC = () => {
       displayLemma = identifierToSearch;
       console.log(`Searching by typed text: ${identifierToSearch}`);
     } else {
-      // Prefer ID if available (WordSuggestion or BasicWord might have it)
-      if (searchTerm.id) {
-          identifierToSearch = `id:${searchTerm.id}`; // Use format "id:123"
-          displayLemma = searchTerm.lemma; // Use lemma for display
-          console.log(`Searching by selected ID: ${identifierToSearch} (lemma: ${displayLemma})`);
-      } else if (searchTerm.lemma) {
-          // Fallback to lemma if no ID (less common for BasicWord/WordSuggestion)
-          identifierToSearch = searchTerm.lemma;
-          displayLemma = searchTerm.lemma;
-          console.log(`Searching by selected Lemma (no ID found): ${identifierToSearch}`);
-      } else {
-         console.error("Selected suggestion/word object is missing ID and Lemma:", searchTerm);
-         setError("Selected item is invalid. Please try again.");
-         return;
+      // If user selects a suggestion object, use its ID
+      // Ensure the suggestion object has an 'id' field from the API
+      if (!searchTerm.id) {
+        console.error("Selected suggestion is missing an ID:", searchTerm);
+        setError("Selected suggestion is invalid. Please try again.");
+        return;
       }
+      identifierToSearch = `id:${searchTerm.id}`; // Use format "id:123"
+      displayLemma = searchTerm.lemma;
+      console.log(`Searching by selected ID: ${identifierToSearch}`);
     }
 
     if (!identifierToSearch) return;
@@ -478,10 +478,10 @@ const WordExplorer: React.FC = () => {
     setSuggestions([]);
     setAutocompleteOpen(false);
 
-    // Call handleNodeClick directly
+    // Call handleNodeClick directly (which now opens the drawer)
     await handleNodeClick(identifierToSearch);
 
-  }, [handleNodeClick]); // Add handleNodeClick to dependency array
+  }, [handleNodeClick]);
 
   const handleRandomWord = useCallback(async () => {
     setError(null);
@@ -511,6 +511,10 @@ const WordExplorer: React.FC = () => {
       setWordHistory(newHistory as any);
       setCurrentHistoryIndex(newHistory.length - 1);
       
+      // *** Open the drawer ***
+      setIsDrawerOpen(true);
+      setIsDrawerExpanded(false);
+
       // Use ID for network fetch
       const networkIdentifier = `id:${wordInfo.id}`;
       fetchWordNetworkData(networkIdentifier, depth, breadth)
@@ -548,7 +552,8 @@ const WordExplorer: React.FC = () => {
     setCurrentHistoryIndex,
     setError,
     setIsRandomLoading,
-    setEtymologyTree
+    setEtymologyTree,
+    setIsDrawerOpen, setIsDrawerExpanded
   ]);
 
   const handleBack = useCallback(() => {
@@ -957,6 +962,18 @@ const WordExplorer: React.FC = () => {
     }
   }, [wordNetwork, wordData?.id]);
 
+  // Add handlers for drawer state
+  const handleCloseDrawer = useCallback(() => {
+    setIsDrawerOpen(false);
+    setIsDrawerExpanded(false);
+    setWordData(null); // Optionally clear data when drawer closes
+    setSelectedNode(null);
+  }, []);
+
+  const handleToggleDrawerExpand = useCallback(() => {
+    setIsDrawerExpanded(prev => !prev);
+  }, []);
+
   const muiTheme = useMuiTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md')); // Check for mobile/tablet
 
@@ -1262,86 +1279,55 @@ const WordExplorer: React.FC = () => {
         </div>
       )}
       
-      <main>
-        {isMobile ? (
-          <div className="explorer-content-mobile">
-            <div className="graph-area-mobile">
-              {isLoading && <CircularProgress />}
-              {error && <div className="error-message">{error}</div>}
-              {!isLoading && !error && wordNetwork && (
-                <WordGraph
-                  wordNetwork={wordNetwork}
-                  onNodeClick={handleNodeClick}
-                  mainWord={selectedNode}
-                  isMobile={isMobile}
-                  onNodeSelect={handleNodeSelect}
-                  onNetworkChange={handleNetworkChange}
-                  initialDepth={depth}
-                  initialBreadth={breadth}
-                />
-              )}
-              {!isLoading && !wordNetwork && !error && (
-                <div className="placeholder">Enter a word to explore its network.</div>
-              )}
+      <main className="main-content-area">
+        <div className="graph-view-container">
+          {isLoading && <CircularProgress sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}/>}
+          {!isLoading && !error && wordNetwork && (
+             <WordGraph
+                networkData={wordNetwork}
+                mainWord={selectedNode}
+                onNodeClick={handleNodeClick}
+                onNodeSelect={handleNodeSelect}
+                onNetworkChange={handleNetworkChange}
+                initialDepth={depth}
+                initialBreadth={breadth}
+             />
+          )}
+          {!wordNetwork && !isLoading && !error && (
+              <div className="graph-placeholder">Enter a word or click Random to explore.</div>
+          )}
+        </div>
+
+        {wordData && isDrawerOpen && (
+          <div 
+             className={`details-drawer ${isDrawerExpanded ? 'expanded' : ''}`}
+             ref={detailsContainerRef}
+          >
+            <div className="drawer-header" onClick={handleToggleDrawerExpand}>
+              <div className="drawer-handle"></div>
+              <span className="drawer-title">{wordData.lemma}</span>
+              <IconButton 
+                 onClick={(e) => { e.stopPropagation(); handleCloseDrawer(); }} 
+                 className="drawer-close-button" 
+                 aria-label="Close details"
+                 size="small"
+              >
+                 <CloseIcon fontSize="inherit" />
+              </IconButton>
             </div>
 
-            {wordData && (
-              <div className="details-area-mobile" ref={detailsContainerRef}>
-                 <WordDetails
-                  wordData={wordData}
-                  etymologyTree={etymologyTree}
-                  isLoadingEtymology={isLoadingEtymology}
-                  etymologyError={etymologyError}
-                  onFetchEtymology={fetchEtymologyTree}
-                  onWordClick={handleSearch}
-                  isMobile={isMobile}
-                />
-              </div>
-            )}
+            <div className="drawer-content">
+               <WordDetails
+                 wordInfo={wordData}
+                 etymologyTree={etymologyTree}
+                 isLoadingEtymology={isLoadingEtymology}
+                 etymologyError={etymologyError}
+                 onWordLinkClick={handleNodeClick}
+                 onEtymologyNodeClick={handleNodeClick}
+                 onClose={handleCloseDrawer}
+               />
+            </div>
           </div>
-        ) : (
-          <PanelGroup direction="horizontal" className="explorer-panel-group">
-            <Panel defaultSize={65} minSize={30} className="explorer-panel-main">
-              <div className="explorer-content">
-                {isLoading && <CircularProgress />}
-                {error && <div className="error-message">{error}</div>}
-                {!isLoading && !error && wordNetwork && (
-                   <WordGraph
-                     wordNetwork={wordNetwork}
-                     onNodeClick={handleNodeClick}
-                     mainWord={selectedNode}
-                     isMobile={isMobile}
-                     onNodeSelect={handleNodeSelect}
-                     onNetworkChange={handleNetworkChange}
-                     initialDepth={depth}
-                     initialBreadth={breadth}
-                   />
-                 )}
-                 {!isLoading && !wordNetwork && !error && (
-                   <div className="placeholder">Enter a word to explore its network.</div>
-                 )}
-              </div>
-            </Panel>
-            <PanelResizeHandle className="resize-handle" />
-            <Panel defaultSize={35} minSize={25} className="explorer-panel-details">
-               {wordData && (
-                  <div className="details-content" ref={detailsContainerRef}>
-                     <WordDetails
-                       wordData={wordData}
-                       etymologyTree={etymologyTree}
-                       isLoadingEtymology={isLoadingEtymology}
-                       etymologyError={etymologyError}
-                       onFetchEtymology={fetchEtymologyTree}
-                       onWordClick={handleSearch}
-                       isMobile={isMobile}
-                     />
-                   </div>
-               )}
-               {!wordData && !isLoading && (
-                <div className="details-placeholder">Select a node or search a word to see details.</div>
-               )}
-            </Panel>
-          </PanelGroup>
         )}
       </main>
       

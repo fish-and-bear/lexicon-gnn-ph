@@ -242,32 +242,39 @@ svg {
 /* Responsive layout */
 @media (max-width: 768px) {
   .controls-container {
-    position: absolute;
-    bottom: 4px;
-    left: 4px;
-    right: 4px;
-    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 6px;
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
     gap: 6px;
     pointer-events: none;
   }
 
   .zoom-controls {
-    display: flex;
-    gap: 6px;
     margin-right: 0;
-    order: 0;
+    order: 1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     pointer-events: auto;
   }
 
   .reset-zoom-button {
-    margin-left: 0;
+    order: 2;
+    margin-left: 6px;
     pointer-events: auto;
   }
 
-  .network-controls-trigger {
+  .zoom-controls-group {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    gap: 6px;
     pointer-events: auto;
   }
 
@@ -318,15 +325,6 @@ svg {
     font-size: 10px;
     max-width: 120px;
   }
-
-  .legend-item {
-    margin-bottom: 3px;
-  }
-
-  .color-box {
-    width: 10px;
-    height: 10px;
-  }
 }
 
 /* Style for the mobile trigger button (add if sx prop isn't sufficient) */
@@ -347,7 +345,7 @@ svg {
     font-size: 11px;
   }
 
-  .zoom-controls {
+  .zoom-controls-group {
     gap: 4px;
   }
 

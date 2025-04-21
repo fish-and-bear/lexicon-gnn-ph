@@ -1415,7 +1415,7 @@ main [data-panel-resizer] {
 .explorer-content-mobile {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 100px); /* Adjusted based on estimated header+search height */
+  height: calc(100vh - 60px); /* Adjust based on header height */
   overflow-y: auto; /* Allow scrolling if content overflows */
 }
 
@@ -1434,12 +1434,13 @@ main [data-panel-resizer] {
 
 .details-area-mobile {
   flex-grow: 1; /* Allow details to take remaining space */
+  overflow-y: auto; /* Scroll details independently if needed */
 }
 
 /* Overrides for panel layout on larger screens if necessary */
-@media (min-width: 901px) { /* Match MUI 'md' breakpoint more closely */
+@media (min-width: 769px) { /* Or match MUI 'md' breakpoint if different */
   .explorer-panel-group {
-    height: calc(100vh - 100px); /* Adjusted based on estimated header+search height */
+    height: calc(100vh - 60px); /* Adjust based on header height */
     border-top: 1px solid var(--border-color);
   }
 

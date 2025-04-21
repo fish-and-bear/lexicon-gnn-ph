@@ -1745,7 +1745,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         <div className="zoom-controls">
           <button onClick={() => handleZoom(1.3)} className="zoom-button" title="Zoom In">+</button>
           <button onClick={() => handleZoom(1 / 1.3)} className="zoom-button" title="Zoom Out">-</button>
-          <button onClick={handleResetZoom} className="zoom-button reset-zoom-button" title="Reset View">Reset</button> 
+          <button onClick={handleResetZoom} className="zoom-button reset-zoom-button" title="Reset View">Reset</button> {/* Combined class */} 
         </div>
 
         {/* Conditional Network Controls */} 
@@ -1766,7 +1766,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             className="network-controls-trigger" 
             aria-label="Open network controls"
             title="Network Controls"
-            sx={{ 
+            sx={{ /* Add positioning styles via sx or CSS */ 
                 position: 'absolute',
                 bottom: 4, 
                 right: 4,
@@ -1779,7 +1779,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             <TuneIcon />
           </IconButton>
         )}
-      </div> {/* Closing tag for controls-container */} 
+      </div>
       
       {/* Mobile Controls Drawer */} 
       {isMobile && (
@@ -1787,15 +1787,18 @@ const WordGraph: React.FC<WordGraphProps> = ({
           anchor="bottom"
           open={controlsOpen}
           onClose={() => setControlsOpen(false)}
+          // Optional: Add styling for paper for rounded corners etc.
           PaperProps={{
               sx: {
                   borderTopLeftRadius: 16,
                   borderTopRightRadius: 16,
+                  // Consider adding a max-height
+                  // maxHeight: '40vh',
               }
           }}
         >
           <Box sx={{ p: 2, pt: 1 }}>
-             {/* Grab handle */} 
+             {/* Optional: Add a grab handle indicator */}
             <Box sx={{
                 width: 40,
                 height: 6,
@@ -1804,23 +1807,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 mx: 'auto',
                 mb: 1,
              }} />
-             {/* Title */}
+             {/* Optional: Add a title */}
             <Typography variant="h6" sx={{ textAlign: 'center', mb: 1 }}>Network Controls</Typography>
-             {/* Controls */} 
-            <NetworkControls 
-                depth={depth}
-                breadth={breadth}
-                onDepthChange={handleDepthChange}
-                onBreadthChange={handleBreadthChange}
-                onChangeCommitted={(_d, _b) => onNetworkChange(depth, breadth)}
-            />
-          </Box>
-        </Drawer>
-      )}
-
-      {/* Tooltip */} 
       {renderTooltip()}
-    </div> // Closing tag for graph-container
+    </div>
   );
 };
 

@@ -2,8 +2,6 @@ import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Definition, WordInfo, WordForm, WordTemplate, Idiom, Affixation, Credit, BasicWord, EtymologyTree, WordSuggestion } from '../types'; // Added EtymologyTree and WordSuggestion
 // import { convertToBaybayin } from '../api/wordApi';
 import './WordDetails.css';
-// Import color utility functions needed
-import { getNodeColor, getTextColorForBackground } from '../utils/colorUtils'; 
 // import './Tabs.css';
 
 // MUI Imports

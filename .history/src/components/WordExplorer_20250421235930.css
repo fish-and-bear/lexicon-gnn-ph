@@ -1480,3 +1480,164 @@ main [data-panel-resizer] {
     padding: var(--space-sm);
   }
 }
+
+/* --- Base Layout --- */
+.word-explorer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  position: fixed; /* Changed from relative? Ensure this is intended */
+  top: 0;
+  left: 0;
+  overflow: hidden; /* Prevent body scroll */
+}
+
+.main-content-area {
+  flex: 1; /* Take remaining vertical space */
+  display: flex; /* Use flex for children */
+  flex-direction: column; /* Stack graph and drawer */
+  position: relative; /* Needed for absolute positioning of drawer */
+  overflow: hidden; /* Prevent main area overflow */
+}
+
+.graph-view-container {
+  flex: 1; /* Graph takes available space */
+  position: relative; /* For loading/placeholder absolute positioning */
+  overflow: hidden; /* Ensure graph content doesn't overflow */
+}
+
+.graph-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* --- Details Drawer Styles --- */
+.details-drawer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%; /* Default partial height */
+  max-height: calc(100% - 60px); /* Don't overlap header too much */
+  background-color: var(--card-bg, white);
+  border-top: 1px solid var(--border-color, #ccc);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(100%); /* Start hidden below */
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100; /* Ensure it's above graph controls */
+  display: flex;
+  flex-direction: column;
+}
+
+.details-drawer.open {
+  transform: translateY(0); /* Slide in */
+}
+
+.details-drawer.expanded {
+  height: calc(100% - 50px); /* Expand to nearly full height, leave space for top elements */
+  max-height: calc(100% - 50px);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color, #ccc);
+  cursor: pointer; /* Indicate it's clickable to expand/collapse */
+  background-color: var(--card-bg-elevated, #f8f9fa); /* Slightly different bg */
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.dark .drawer-header {
+  background-color: var(--card-bg-color-elevated, #1a202e);
+}
+
+.drawer-handle {
+  width: 40px;
+  height: 5px;
+  background-color: var(--border-color, #ccc);
+  border-radius: 3px;
+  margin: 0 auto 4px; /* Center the handle */
+  position: absolute; /* Position relative to header */
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.drawer-title {
+  flex-grow: 1;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  padding-left: 30px; /* Space for close button */
+  padding-right: 30px; /* Space for handle area */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.drawer-close-button {
+  margin-left: auto; /* Push to the right */
+  color: var(--text-secondary);
+}
+
+.drawer-content {
+  flex-grow: 1; /* Content takes remaining space */
+  overflow-y: auto; /* Allow content scrolling */
+  /* Ensure WordDetails content fits */
+}
+
+.drawer-content > .word-details-container {
+  height: 100%; /* Make WordDetails fill the drawer content area */
+  border-left: none; /* Remove border from WordDetails itself */
+  box-shadow: none; /* Remove shadow from WordDetails itself */
+}
+
+/* Adjustments for WordDetails when inside drawer */
+.drawer-content .word-details {
+  /* Add padding if needed, or rely on WordDetails internal padding */
+}
+
+/* --- Existing Responsive Styles (Keep or adjust) --- */
+
+/* Styles for the stacked mobile/tablet layout (Now unused, can be removed or repurposed) */
+/*
+.explorer-content-mobile {
+  ...
+}
+.graph-area-mobile,
+.details-area-mobile {
+  ...
+}
+*/
+
+/* Overrides for panel layout on larger screens (Now used as base desktop styles) */
+/* @media (min-width: 901px) { ... } */ /* Remove media query wrapper if panels are desktop only */
+
+/* Keep panel styling if needed for desktop, otherwise remove */
+/*
+.explorer-panel-group { ... }
+.explorer-panel-main .explorer-content, .explorer-panel-details .details-content { ... }
+.resize-handle { ... }
+.details-placeholder { ... }
+*/
+
+/* Adjustments for very small screens if needed */
+@media (max-width: 480px) {
+  .details-drawer {
+     /* Potentially make drawer full height immediately on open? */
+     /* height: calc(100% - 40px); */
+  }
+  .drawer-title {
+    font-size: 0.9rem;
+  }
+}
+
+/* WordExplorer.css */
+/* ... (keep existing styles for header, search, footer, dark mode etc.) */

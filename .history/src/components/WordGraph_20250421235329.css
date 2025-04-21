@@ -242,33 +242,31 @@ svg {
 /* Responsive layout */
 @media (max-width: 768px) {
   .controls-container {
-    position: absolute;
-    bottom: 4px;
-    left: 4px;
-    right: 4px;
-    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 6px;
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
     gap: 6px;
-    pointer-events: none;
   }
 
   .zoom-controls {
-    display: flex;
-    gap: 6px;
     margin-right: 0;
-    order: 0;
-    pointer-events: auto;
+    order: 1;
   }
 
+  .network-controls {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+  }
+  
   .reset-zoom-button {
+    order: 2;
     margin-left: 0;
-    pointer-events: auto;
-  }
-
-  .network-controls-trigger {
-    pointer-events: auto;
   }
 
   .graph-container {
@@ -310,28 +308,6 @@ svg {
     padding: 6px;
     font-size: 11px;
   }
-
-  .graph-legend {
-    top: 8px;
-    right: 8px;
-    padding: 6px;
-    font-size: 10px;
-    max-width: 120px;
-  }
-
-  .legend-item {
-    margin-bottom: 3px;
-  }
-
-  .color-box {
-    width: 10px;
-    height: 10px;
-  }
-}
-
-/* Style for the mobile trigger button (add if sx prop isn't sufficient) */
-.network-controls-trigger {
-  pointer-events: auto;
 }
 
 /* Very small screens */
@@ -347,8 +323,14 @@ svg {
     font-size: 11px;
   }
 
-  .zoom-controls {
+  .slider-container {
+    min-width: 120px;
     gap: 4px;
+  }
+
+  .MuiTypography-caption {
+    font-size: 0.8rem !important;
+    min-width: 70px;
   }
 
   .node text {
@@ -511,6 +493,14 @@ svg {
 }
 
 @media (max-width: 768px) {
+  .graph-legend {
+    top: 8px;
+    right: 8px;
+    padding: 6px;
+    font-size: 10px;
+    max-width: 120px;
+  }
+
   .legend-title {
     font-size: 12px;
     margin-bottom: 6px;

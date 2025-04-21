@@ -3,7 +3,7 @@ import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
 import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
-import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchWordResult, Relation, WordSuggestion, BasicWord } from "../types";
+import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchWordResult, Relation, WordSuggestion } from "../types";
 import unidecode from "unidecode";
 import { 
   fetchWordNetwork, 
@@ -442,7 +442,7 @@ const WordExplorer: React.FC = () => {
     }
   }, [fetchEtymologyTree]);
 
-  const handleSearch = useCallback(async (searchTerm: string | WordSuggestion | BasicWord | null) => {
+  const handleSearch = useCallback(async (searchTerm: string | WordSuggestion | null) => {
     if (!searchTerm) return;
 
     let identifierToSearch: string;
@@ -454,21 +454,16 @@ const WordExplorer: React.FC = () => {
       displayLemma = identifierToSearch;
       console.log(`Searching by typed text: ${identifierToSearch}`);
     } else {
-      // Prefer ID if available (WordSuggestion or BasicWord might have it)
-      if (searchTerm.id) {
-          identifierToSearch = `id:${searchTerm.id}`; // Use format "id:123"
-          displayLemma = searchTerm.lemma; // Use lemma for display
-          console.log(`Searching by selected ID: ${identifierToSearch} (lemma: ${displayLemma})`);
-      } else if (searchTerm.lemma) {
-          // Fallback to lemma if no ID (less common for BasicWord/WordSuggestion)
-          identifierToSearch = searchTerm.lemma;
-          displayLemma = searchTerm.lemma;
-          console.log(`Searching by selected Lemma (no ID found): ${identifierToSearch}`);
-      } else {
-         console.error("Selected suggestion/word object is missing ID and Lemma:", searchTerm);
-         setError("Selected item is invalid. Please try again.");
-         return;
+      // If user selects a suggestion object, use its ID
+      // Ensure the suggestion object has an 'id' field from the API
+      if (!searchTerm.id) {
+        console.error("Selected suggestion is missing an ID:", searchTerm);
+        setError("Selected suggestion is invalid. Please try again.");
+        return;
       }
+      identifierToSearch = `id:${searchTerm.id}`; // Use format "id:123"
+      displayLemma = searchTerm.lemma;
+      console.log(`Searching by selected ID: ${identifierToSearch}`);
     }
 
     if (!identifierToSearch) return;
@@ -1270,14 +1265,10 @@ const WordExplorer: React.FC = () => {
               {error && <div className="error-message">{error}</div>}
               {!isLoading && !error && wordNetwork && (
                 <WordGraph
-                  wordNetwork={wordNetwork}
+                  networkData={wordNetwork}
                   onNodeClick={handleNodeClick}
-                  mainWord={selectedNode}
+                  selectedNodeId={selectedNode}
                   isMobile={isMobile}
-                  onNodeSelect={handleNodeSelect}
-                  onNetworkChange={handleNetworkChange}
-                  initialDepth={depth}
-                  initialBreadth={breadth}
                 />
               )}
               {!isLoading && !wordNetwork && !error && (
@@ -1293,7 +1284,7 @@ const WordExplorer: React.FC = () => {
                   isLoadingEtymology={isLoadingEtymology}
                   etymologyError={etymologyError}
                   onFetchEtymology={fetchEtymologyTree}
-                  onWordClick={handleSearch}
+                  onWordClick={(word: string | WordSuggestion | null) => handleSearch(word)}
                   isMobile={isMobile}
                 />
               </div>
@@ -1307,14 +1298,10 @@ const WordExplorer: React.FC = () => {
                 {error && <div className="error-message">{error}</div>}
                 {!isLoading && !error && wordNetwork && (
                    <WordGraph
-                     wordNetwork={wordNetwork}
+                     networkData={wordNetwork}
                      onNodeClick={handleNodeClick}
-                     mainWord={selectedNode}
+                     selectedNodeId={selectedNode}
                      isMobile={isMobile}
-                     onNodeSelect={handleNodeSelect}
-                     onNetworkChange={handleNetworkChange}
-                     initialDepth={depth}
-                     initialBreadth={breadth}
                    />
                  )}
                  {!isLoading && !wordNetwork && !error && (
@@ -1332,7 +1319,7 @@ const WordExplorer: React.FC = () => {
                        isLoadingEtymology={isLoadingEtymology}
                        etymologyError={etymologyError}
                        onFetchEtymology={fetchEtymologyTree}
-                       onWordClick={handleSearch}
+                       onWordClick={(word: string | WordSuggestion | null) => handleSearch(word)}
                        isMobile={isMobile}
                      />
                    </div>

@@ -2,8 +2,6 @@ import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Definition, WordInfo, WordForm, WordTemplate, Idiom, Affixation, Credit, BasicWord, EtymologyTree, WordSuggestion } from '../types'; // Added EtymologyTree and WordSuggestion
 // import { convertToBaybayin } from '../api/wordApi';
 import './WordDetails.css';
-// Import color utility functions needed
-import { getNodeColor, getTextColorForBackground } from '../utils/colorUtils'; 
 // import './Tabs.css';
 
 // MUI Imports
@@ -26,7 +24,6 @@ import Alert from '@mui/material/Alert';
 import Link from '@mui/material/Link';
 import { styled, useTheme, alpha, Theme } from '@mui/material/styles'; // Import Theme type
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
-import Button from '@mui/material/Button';
 
 // MUI Icons
 // import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -1618,68 +1615,67 @@ const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   
   // Helper function to render the etymology tree visualization
   const renderEtymologyTreeVisualization = () => {
-    // *** ADD NULL CHECKS ***
-    if (!etymologyTree || !etymologyTree.nodes || !etymologyTree.edges) {
-      // Optionally return a loading state or an informative message
-      return <Alert severity="info">Etymology tree data is not available or is loading.</Alert>;
-    }
-  
-    // Type definitions remain the same
+    // Assume Etymology Tree structure
     type EtymologyNode = { id: number; label: string; language?: string; [key: string]: any };
     type EtymologyEdge = { source: number; target: number; [key: string]: any };
     type EtymologyTreeMap = { [id: number]: EtymologyNode };
-  
+
+    // Basic List Rendering of Etymology Nodes
     const renderNode = (nodeId: number, nodes: EtymologyTreeMap, edges: EtymologyEdge[], level = 0): React.ReactNode => {
-      const node = nodes[nodeId];
-      if (!node) return null;
-  
-      const childrenEdges = edges.filter(edge => edge.source === nodeId);
-  
-      return (
-        <Box key={node.id} sx={{ ml: level * 2.5, mb: 1.5 }}>
-          <Paper elevation={1} sx={{ p: 1.5, display: 'flex', alignItems: 'center', gap: 1.5, borderRadius: '8px', bgcolor: alpha(getNodeColor(node.language || 'associated'), 0.1) }}>
-            <Chip 
-              label={node.language?.toUpperCase() || 'UNK'} 
-              size="small" 
-              sx={{ fontWeight: 600, bgcolor: getNodeColor(node.language || 'associated'), color: getTextColorForBackground(getNodeColor(node.language || 'associated')) }}
-            />
-            <Link
-              component="button"
-              // *** Convert node.id (number) to string format "id:number" ***
-              onClick={() => onWordClick(`id:${node.id}`)} 
-              sx={{ 
-                fontWeight: 500, 
-                fontSize: '1rem', 
-                cursor: 'pointer', 
-                color: 'text.primary', 
-                '&:hover': { color: 'primary.main' }
-              }}
-            >
-              {node.label}
-            </Link>
-          </Paper>
-          {childrenEdges.length > 0 && (
-            <Box sx={{ mt: 1, pl: 2, borderLeft: `2px solid ${theme.palette.divider}` }}>
-              {childrenEdges.map(edge => renderNode(edge.target, nodes, edges, level + 1))}
-            </Box>
-          )}
-        </Box>
-      );
+       const node = nodes[nodeId];
+       if (!node) return null;
+
+       // Find children (nodes where the current node is a source)
+       const childrenEdges = edges.filter((edge: EtymologyEdge) => edge.source === nodeId);
+       const childrenIds = childrenEdges.map((edge: EtymologyEdge) => edge.target);
+
+       return (
+          <ListItem key={node.id} sx={{ pl: level * 2.5, display: 'block', py: 0.5, borderLeft: level > 0 ? `1px dashed ${theme.palette.divider}` : 'none', ml: level > 0 ? 0.5 : 0 }}> {/* Indentation based on level */}
+             <ListItemText
+                primary={
+                    <Typography 
+                      variant="body2" 
+                      component="span" 
+                      sx={{ 
+                        fontWeight: level === 0 ? 600 : 400,
+                        cursor: 'pointer',
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                      onClick={() => onWordClick(node.id)}
+                    >
+                        {node.label}
+                    </Typography>
+                }
+                secondary={node.language ? `(${node.language})` : null}
+                sx={{ my: 0 }}
+             />
+             {childrenIds.length > 0 && (
+                <List dense disablePadding sx={{ pl: 0 }}>
+                   {childrenIds.map(childId => renderNode(childId, nodes, edges, level + 1))}
+                </List>
+             )}
+          </ListItem>
+       );
     };
-    
-    // *** Use etymologyTree safely after null check ***
-    const rootNodes = etymologyTree.nodes.filter(node => 
-      !etymologyTree.edges.some(edge => edge.target === node.id)
-    );
-    const nodeMap = etymologyTree.nodes.reduce((map, node) => {
-      map[node.id] = node;
-      return map;
-    }, {} as EtymologyTreeMap);
-    
+
+    // Find the root node(s) - nodes that are not targets of any edge
+    const targetIds = new Set(etymologyTree.edges.map((edge: EtymologyEdge) => edge.target));
+    const rootIds = etymologyTree.nodes
+                      .filter((node: EtymologyNode) => !targetIds.has(node.id))
+                      .map((node: EtymologyNode) => node.id);
+
+    // Build a map for quick node lookup
+    const nodeMap = etymologyTree.nodes.reduce((acc: EtymologyTreeMap, node: EtymologyNode) => {
+        acc[node.id] = node;
+        return acc;
+    }, {});
+
     return (
-      <Box sx={{ fontFamily: 'system-ui, sans-serif' }}>
-        {rootNodes.map(rootNode => renderNode(rootNode.id, nodeMap, etymologyTree.edges))}
-      </Box>
+      <List dense sx={{ pt: 1 }}>
+         {rootIds.length > 0
+            ? rootIds.map((rootId: number) => renderNode(rootId, nodeMap, etymologyTree.edges))
+            : <ListItem><Alert severity="warning" variant="outlined" sx={{ width: '100%' }}>Could not determine root etymology node.</Alert></ListItem> }
+      </List>
     );
   };
 

@@ -21,13 +21,6 @@ import {
   getRelationshipTypeLabel
 } from '../utils/colorUtils';
 
-// *** ADD MUI Drawer/Button/Icon imports ***
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-// Import an icon, e.g., TuneIcon or SettingsIcon
-import TuneIcon from '@mui/icons-material/Tune'; // Or any other suitable icon
-
 interface WordGraphProps {
   wordNetwork: WordNetwork | null;
   mainWord: string | null;
@@ -36,7 +29,6 @@ interface WordGraphProps {
   onNetworkChange: (depth: number, breadth: number) => void;
   initialDepth: number;
   initialBreadth: number;
-  isMobile: boolean; // *** Add isMobile prop ***
 }
 
 interface CustomNode extends d3.SimulationNodeDatum {
@@ -69,7 +61,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
   onNetworkChange,
   initialDepth,
   initialBreadth,
-  isMobile // *** Destructure isMobile ***
 }) => {
   const { theme } = useTheme();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -91,9 +82,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const [filteredRelationships, setFilteredRelationships] = useState<string[]>([]);
   const [forceUpdate, setForceUpdate] = useState<number>(0); // Force remount counter
   const [showDisconnectedNodes, setShowDisconnectedNodes] = useState<boolean>(false);
-
-  // *** ADD Drawer state ***
-  const [controlsOpen, setControlsOpen] = useState(false);
 
   const isDraggingRef = useRef(false);
   const isTransitioningRef = useRef(false);
@@ -558,7 +546,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     const width = containerRect ? containerRect.width : 800;
     const height = containerRect ? containerRect.height : 600;
     const zoom = d3.zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.1, 4]) // Increased max zoom slightly
+      .scaleExtent([0.1, 8]) // Increased max zoom slightly
       .interpolate(d3.interpolateZoom)
       .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         if (!isDraggingRef.current) g.attr("transform", event.transform.toString());
@@ -1738,89 +1726,23 @@ const WordGraph: React.FC<WordGraphProps> = ({
         >
         </svg>
       </div>
-      
-      {/* CONTROLS AREA */} 
       <div className="controls-container">
-        {/* Zoom Controls - Always visible */} 
         <div className="zoom-controls">
           <button onClick={() => handleZoom(1.3)} className="zoom-button" title="Zoom In">+</button>
           <button onClick={() => handleZoom(1 / 1.3)} className="zoom-button" title="Zoom Out">-</button>
-          <button onClick={handleResetZoom} className="zoom-button reset-zoom-button" title="Reset View">Reset</button> 
+          <button onClick={handleResetZoom} className="zoom-button" title="Reset View">Reset</button>
         </div>
-
-        {/* Conditional Network Controls */} 
-        {!isMobile ? (
-          // Desktop: Static controls
-          <NetworkControls 
-            depth={depth}
-            breadth={breadth}
-            onDepthChange={handleDepthChange}
-            onBreadthChange={handleBreadthChange}
-            onChangeCommitted={(_d, _b) => onNetworkChange(depth, breadth)}
-            className="network-controls"
-          />
-        ) : (
-          // Mobile: Button to open Drawer
-          <IconButton 
-            onClick={() => setControlsOpen(true)}
-            className="network-controls-trigger" 
-            aria-label="Open network controls"
-            title="Network Controls"
-            sx={{ 
-                position: 'absolute',
-                bottom: 4, 
-                right: 4,
-                bgcolor: 'rgba(255, 255, 255, 0.7)',
-                backdropFilter: 'blur(4px)',
-                border: '1px solid rgba(0,0,0,0.1)',
-                 '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.9)' }
-            }}
-          >
-            <TuneIcon />
-          </IconButton>
-        )}
-      </div> {/* Closing tag for controls-container */} 
-      
-      {/* Mobile Controls Drawer */} 
-      {isMobile && (
-        <Drawer
-          anchor="bottom"
-          open={controlsOpen}
-          onClose={() => setControlsOpen(false)}
-          PaperProps={{
-              sx: {
-                  borderTopLeftRadius: 16,
-                  borderTopRightRadius: 16,
-              }
-          }}
-        >
-          <Box sx={{ p: 2, pt: 1 }}>
-             {/* Grab handle */} 
-            <Box sx={{
-                width: 40,
-                height: 6,
-                bgcolor: 'grey.300',
-                borderRadius: 3,
-                mx: 'auto',
-                mb: 1,
-             }} />
-             {/* Title */}
-            <Typography variant="h6" sx={{ textAlign: 'center', mb: 1 }}>Network Controls</Typography>
-             {/* Controls */} 
-            <NetworkControls 
-                depth={depth}
-                breadth={breadth}
-                onDepthChange={handleDepthChange}
-                onBreadthChange={handleBreadthChange}
-                onChangeCommitted={(_d, _b) => onNetworkChange(depth, breadth)}
-            />
-          </Box>
-        </Drawer>
-      )}
-
-      {/* Tooltip */} 
+        <NetworkControls 
+          depth={depth}
+          breadth={breadth}
+          onDepthChange={handleDepthChange}
+          onBreadthChange={handleBreadthChange}
+          onChangeCommitted={(_d, _b) => onNetworkChange(depth, breadth)} // Use state variables directly
+          className="network-controls"
+        />
+      </div>
       {renderTooltip()}
-    </div> // Closing tag for graph-container
+    </div>
   );
 };
 
