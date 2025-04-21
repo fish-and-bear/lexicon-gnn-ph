@@ -4259,7 +4259,7 @@ def _fetch_word_details(word_id,
 
                 for d in defs_result:
                     definition = Definition()
-                    for key in d.keys():
+                    for key in d._mapping.keys():
                         if hasattr(definition, key):
                            try: # Added inner try-except for attribute setting
                                 setattr(definition, key, d[key])
@@ -4303,7 +4303,7 @@ def _fetch_word_details(word_id,
                 word.etymologies = []
                 for e_row in etym_result:
                     etymology = Etymology()
-                    for key in e_row.keys():
+                    for key in e_row._mapping.keys():
                         if hasattr(etymology, key):
                             try:
                                 setattr(etymology, key, e_row[key])
