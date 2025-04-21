@@ -336,4 +336,132 @@ class WordSchema(Schema):
         # Add derived property
         data['is_root'] = data.get('root_word_id') is None
         
-        return data 
+        return data
+
+# --- Add Schemas retrieved from routes.py.bak ---
+
+class SearchQuerySchema(Schema):
+    """Schema for search query parameters."""
+    q = fields.Str(required=True)
+    mode = fields.Str(validate=validate.OneOf(['all', 'exact', 'prefix', 'suffix']),
+                     dump_default='all', load_default='all')
+    limit = fields.Int(dump_default=50, load_default=50)
+    offset = fields.Int(dump_default=0, load_default=0)
+    
+    # Sorting options
+    sort = fields.Str(dump_default='relevance', load_default='relevance')
+    order = fields.Str(validate=validate.OneOf(['asc', 'desc']), 
+                      dump_default='desc', load_default='desc')
+    
+    include_full = fields.Bool(dump_default=False, load_default=False)
+    include_definitions = fields.Bool(dump_default=True, load_default=True)
+    include_pronunciations = fields.Bool(dump_default=True, load_default=True)
+    include_etymologies = fields.Bool(dump_default=True, load_default=True)
+    include_relations = fields.Bool(dump_default=True, load_default=True)
+    include_forms = fields.Bool(dump_default=True, load_default=True)
+    include_templates = fields.Bool(dump_default=True, load_default=True)
+    include_metadata = fields.Bool(dump_default=True, load_default=True)
+    
+    # Relation expansion options
+    include_related_words = fields.Bool(dump_default=False, load_default=False)
+    include_definition_relations = fields.Bool(dump_default=False, load_default=False)
+    
+    # Filter parameters
+    has_etymology = fields.Bool(dump_default=None, load_default=None)
+    has_pronunciation = fields.Bool(dump_default=None, load_default=None)
+    has_baybayin = fields.Bool(dump_default=None, load_default=None)
+    exclude_baybayin = fields.Bool(dump_default=False, load_default=False)
+    has_forms = fields.Bool(dump_default=None, load_default=None)
+    has_templates = fields.Bool(dump_default=None, load_default=None)
+    
+    # Advanced filtering
+    language = fields.Str(dump_default=None, load_default=None)
+    pos = fields.Str(dump_default=None, load_default=None)
+
+class SearchFilterSchema(Schema):
+    """Schema for validating filter query parameters."""
+    # Basic filters
+    language = fields.Str(dump_default=None, load_default=None)
+    pos = fields.Str(dump_default=None, load_default=None)
+    
+    # Feature filters
+    has_baybayin = fields.Bool(dump_default=None, load_default=None)
+    has_etymology = fields.Bool(dump_default=None, load_default=None)
+    has_pronunciation = fields.Bool(dump_default=None, load_default=None)
+    has_forms = fields.Bool(dump_default=None, load_default=None)
+    
+    # Date range filters
+    date_added_from = fields.DateTime(dump_default=None, load_default=None)
+    date_added_to = fields.DateTime(dump_default=None, load_default=None)
+    date_modified_from = fields.DateTime(dump_default=None, load_default=None)
+    date_modified_to = fields.DateTime(dump_default=None, load_default=None)
+    
+    # Definition and relation count filters
+    min_definition_count = fields.Int(validate=validate.Range(min=0), dump_default=None, load_default=None)
+    max_definition_count = fields.Int(validate=validate.Range(min=0), dump_default=None, load_default=None)
+    min_relation_count = fields.Int(validate=validate.Range(min=0), dump_default=None, load_default=None)
+    max_relation_count = fields.Int(validate=validate.Range(min=0), dump_default=None, load_default=None)
+    
+    # Completeness score range
+    min_completeness = fields.Float(validate=validate.Range(min=0.0, max=1.0), dump_default=None, load_default=None)
+    max_completeness = fields.Float(validate=validate.Range(min=0.0, max=1.0), dump_default=None, load_default=None)
+    
+    # Specific tags and categories
+    tags = fields.List(fields.Str(), dump_default=None, load_default=None)
+    categories = fields.List(fields.Str(), dump_default=None, load_default=None)
+
+class StatisticsSchema(Schema):
+    """Schema for dictionary statistics."""
+    total_words = fields.Int()
+    total_definitions = fields.Int()
+    total_etymologies = fields.Int()
+    total_relations = fields.Int()
+    total_affixations = fields.Int()
+    words_with_examples = fields.Int()
+    words_with_etymology = fields.Int()
+    words_with_relations = fields.Int()
+    words_with_baybayin = fields.Int()
+    words_by_language = fields.Dict(keys=fields.Str(), values=fields.Int())
+    words_by_pos = fields.Dict(keys=fields.Str(), values=fields.Int())
+    verification_stats = fields.Dict(keys=fields.Str(), values=fields.Int())
+    quality_distribution = fields.Dict(keys=fields.Str(), values=fields.Int())
+    update_frequency = fields.Dict(keys=fields.Str(), values=fields.Int())
+
+# Add schema for export/import filters
+class ExportFilterSchema(Schema):
+    """Schema for export filter parameters."""
+    language_code = fields.Str(dump_default=None, load_default=None)
+    pos = fields.Str(dump_default=None, load_default=None)
+    has_etymology = fields.Bool(dump_default=None, load_default=None)
+    has_pronunciation = fields.Bool(dump_default=None, load_default=None)
+    has_baybayin = fields.Bool(dump_default=None, load_default=None)
+    min_completeness = fields.Float(validate=validate.Range(min=0.0, max=1.0), dump_default=None, load_default=None)
+    created_after = fields.DateTime(dump_default=None, load_default=None)
+    created_before = fields.DateTime(dump_default=None, load_default=None)
+    updated_after = fields.DateTime(dump_default=None, load_default=None)
+    updated_before = fields.DateTime(dump_default=None, load_default=None)
+    include_relations = fields.Bool(dump_default=True, load_default=True)
+    include_etymologies = fields.Bool(dump_default=True, load_default=True)
+    include_pronunciations = fields.Bool(dump_default=True, load_default=True)
+    include_definitions = fields.Bool(dump_default=True, load_default=True)
+    include_credits = fields.Bool(dump_default=True, load_default=True)
+    include_forms = fields.Bool(dump_default=True, load_default=True)
+    include_templates = fields.Bool(dump_default=True, load_default=True)
+    include_definition_relations = fields.Bool(dump_default=True, load_default=True)
+    limit = fields.Int(validate=validate.Range(min=1, max=10000), dump_default=5000, load_default=5000)
+    offset = fields.Int(validate=validate.Range(min=0), dump_default=0, load_default=0)
+    format = fields.Str(validate=validate.OneOf(['json', 'csv', 'zip']), dump_default='json', load_default='json')
+
+class QualityAssessmentFilterSchema(Schema):
+    """Schema for quality assessment filter parameters."""
+    language_code = fields.Str(dump_default=None, load_default=None)
+    pos = fields.Str(dump_default=None, load_default=None)
+    min_completeness = fields.Float(validate=validate.Range(min=0.0, max=1.0), dump_default=None, load_default=None)
+    max_completeness = fields.Float(validate=validate.Range(min=0.0, max=1.0), dump_default=None, load_default=None)
+    created_after = fields.DateTime(dump_default=None, load_default=None)
+    created_before = fields.DateTime(dump_default=None, load_default=None)
+    updated_after = fields.DateTime(dump_default=None, load_default=None)
+    updated_before = fields.DateTime(dump_default=None, load_default=None)
+    include_issues = fields.Bool(dump_default=True, load_default=True)
+    issue_severity = fields.Str(validate=validate.OneOf(['all', 'critical', 'warning', 'info']), dump_default='all', load_default='all')
+    max_results = fields.Int(validate=validate.Range(min=1, max=1000), dump_default=100, load_default=100) 
