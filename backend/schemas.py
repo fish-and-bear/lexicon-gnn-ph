@@ -7,23 +7,80 @@ from marshmallow.validate import Length, Range, OneOf
 import datetime
 from typing import Dict, Any, List, Optional, Union
 import json
+import logging
 
 class MetadataField(fields.Dict):
     """Custom field for handling JSONB metadata fields."""
     def _serialize(self, value, attr, obj, **kwargs):
+        processed_value = {}
+        logger = logging.getLogger(__name__) # Get logger instance
+
         if value is None:
             return {}
-        return super()._serialize(value, attr, obj, **kwargs)
-        
+
+        try:
+            # Priority 1: If it's already a dict, try creating a new dict from it
+            # This validates that it behaves like a standard dict for the constructor.
+            if isinstance(value, dict):
+                processed_value = dict(value)
+            # Priority 2: If it's a non-empty string, try loading as JSON
+            elif isinstance(value, str) and value.strip():
+                try:
+                    loaded_json = json.loads(value)
+                    # Ensure the loaded JSON is actually a dictionary
+                    if isinstance(loaded_json, dict):
+                        processed_value = loaded_json
+                    else:
+                        logger.warning(f"JSON loaded from string for MetadataField '{attr}' is not a dict: {type(loaded_json)}. Value: {value}. Returning empty dict.")
+                except json.JSONDecodeError:
+                    logger.warning(f"Invalid JSON string for MetadataField '{attr}': {value}. Returning empty dict.")
+            else:
+                # If it's neither dict nor valid JSON string, log and default to {}
+                logger.warning(f"Invalid type/value for MetadataField '{attr}' on object {obj}: Expected dict or JSON string, got {type(value)}. Value: {repr(value)}. Returning empty dict.")
+
+        except (ValueError, TypeError) as e:
+            # Catch errors during dict(value) or json.loads if 'value' is problematic
+            logger.warning(f"Error processing MetadataField '{attr}' on object {obj}. Type: {type(value)}, Value: {repr(value)}, Error: {e}. Returning empty dict.")
+            processed_value = {} # Ensure fallback to empty dict on error
+
+        # Final check ensure processed_value is a dict before passing to super
+        if not isinstance(processed_value, dict):
+             processed_value = {}
+
+        # Call the parent serializer with the processed, guaranteed-to-be-dict value
+        return super()._serialize(processed_value, attr, obj, **kwargs)
+
     def _deserialize(self, value, attr, data, **kwargs):
+        processed_value = {}
+        logger = logging.getLogger(__name__)
+
         if value is None:
             return {}
-        if isinstance(value, str):
-            try:
-                value = json.loads(value)
-            except json.JSONDecodeError:
-                raise ValidationError("Invalid JSON format for metadata")
-        return super()._deserialize(value, attr, data, **kwargs)
+        
+        try:
+            if isinstance(value, dict):
+                processed_value = dict(value) # Ensure it's a standard dict
+            elif isinstance(value, str) and value.strip():
+                try:
+                    loaded_json = json.loads(value)
+                    if isinstance(loaded_json, dict):
+                        processed_value = loaded_json
+                    else:
+                         logger.warning(f"Deserialized JSON for MetadataField '{attr}' is not dict: {type(loaded_json)}. Value: {value}. Returning empty dict.")
+                except json.JSONDecodeError:
+                    raise ValidationError(f"Invalid JSON format for metadata field '{attr}'.")
+            else:
+                 logger.warning(f"Deserializing invalid type for MetadataField '{attr}': Expected dict or JSON string, got {type(value)}. Value: {repr(value)}. Returning empty dict.")
+        
+        except (ValueError, TypeError) as e:
+            logger.warning(f"Error deserializing MetadataField '{attr}'. Type: {type(value)}, Value: {repr(value)}, Error: {e}. Returning empty dict.")
+            processed_value = {}
+            
+        # Ensure deserialized value is a dict before passing to super
+        if not isinstance(processed_value, dict):
+            processed_value = {}
+            
+        return super()._deserialize(processed_value, attr, data, **kwargs)
 
 class DefinitionLinkSchema(Schema):
     """Schema for definition links."""
