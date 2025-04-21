@@ -24,11 +24,22 @@ import Alert from '@mui/material/Alert';
 import Link from '@mui/material/Link';
 import { styled, useTheme, alpha, Theme } from '@mui/material/styles'; // Import Theme type
 import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // Using MUI icon
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'; // Using MUI icon
+import StopCircleIcon from '@mui/icons-material/StopCircle'; // Using MUI icon
 
 // MUI Icons
 // import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // import StopCircleIcon from '@mui/icons-material/StopCircle'; // Icon for stop button
+
+import {
+  mapRelationshipToGroup,
+  getNodeColor,
+  getTextColorForBackground,
+  getRelationshipTypeLabel
+} from '../utils/colorUtils';
+import * as d3 from 'd3'; // Needed for darker color calculation in Chip border
 
 interface WordDetailsProps {
   wordInfo: WordInfo;
@@ -155,10 +166,6 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }: { theme: The
   borderTop: 'none', // Remove internal border
   backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'transparent',
 }));
-
-const ExpandMoreIcon = () => <Typography sx={{ transform: 'rotate(90deg)', lineHeight: 0, color: 'text.secondary' }}>▶</Typography>;
-const VolumeUpIcon = () => <Typography sx={{ fontSize: '1.2em', lineHeight: 0, color: 'primary.main' }}>🔊</Typography>;
-const StopCircleIcon = () => <Typography sx={{ fontSize: '1.2em', lineHeight: 0, color: 'error.main' }}>⏹️</Typography>;
 
 const WordDetails: React.FC<WordDetailsProps> = React.memo(({
   wordInfo,
