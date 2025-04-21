@@ -1396,54 +1396,48 @@ const WordExplorer: React.FC = () => {
       
       <main> {/* Adjust height based on mobile view */}
         {isMobile ? (
-          // Mobile: Stacked layout
-          <Box className="explorer-content-mobile" sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-             {/* Graph Area */}
-             <Box className="graph-area-mobile" sx={{ minHeight: '250px', pb: 1, position: 'relative' /* Ensure relative positioning for children */ }}>
-               {isLoading && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
-               {error && !isLoading && <div className="error-message">{error}</div>}
-               {wordNetwork && !error && (
-                 <WordGraph
-                   wordNetwork={wordNetwork}
-                   onNodeClick={handleNodeClick}
-                   mainWord={selectedNode}
-                   isMobile={isMobile}
-                   onNodeSelect={handleNodeSelect}
-                   onNetworkChange={handleNetworkChange}
-                   initialDepth={depth}
-                   initialBreadth={breadth}
-                 />
+          // Mobile: Stacked layout (Graph above Details)
+          <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, overflow: 'hidden', minHeight: 0 }}> {/* ADDED: flex styles to outer Box, removed className */}
+            <Box className="graph-area-mobile" sx={{ flexShrink: 0, minHeight: '250px', borderBottom: '1px solid var(--card-border-color)', pb: 1 }}> {/* CHANGED: minHeight to 250px, removed mb, adjusted pb */}
+              {/* Keep existing loading/error/graph rendering logic here */}
+              {isLoading && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
+              {error && !isLoading && <div className="error-message">{error}</div>}
+              {wordNetwork && !error && (
+                <WordGraph
+                  wordNetwork={wordNetwork}
+                  onNodeClick={handleNodeClick}
+                  mainWord={selectedNode}
+                  isMobile={isMobile}
+                  onNodeSelect={handleNodeSelect}
+                  onNetworkChange={handleNetworkChange}
+                  initialDepth={depth}
+                  initialBreadth={breadth}
+                />
+              )}
+              {!isLoading && !wordNetwork && !error && (
+                 <div className="placeholder">Enter a word to explore its network.</div>
                )}
-                {/* Placeholder moved inside graph area for consistency, shown when graph isn't loading/error/present */}
-                {!wordNetwork && !isLoading && !error && (
-                  <Box sx={{ p: 2, textAlign: 'center', color: 'text.secondary' }}>
-                    Search for a word to explore its connections.
-                  </Box>
-                )}
-             </Box> {/* Closing tag for graph-area-mobile */}
+            </Box>
 
-             {/* Details Area */}
-             <Box className="details-area-mobile" sx={{ flexGrow: 1, overflowY: 'auto', minHeight: 0 }}>
-               {error && <div className="error-message">{error}</div>} {/* Show error in details area too if applicable */}
-               {wordData && !error && (
+            {/* Details Area */}
+             <Box className="details-area-mobile" sx={{ flexGrow: 1, overflowY: 'auto', minHeight: 0 }} ref={detailsContainerRef}> {/* CONFIRMED: flexGrow, overflowY, ADDED: minHeight: 0 */}
+               {wordData && (
                  <WordDetails
-                   ref={detailsContainerRef} // Pass the ref here
-                   wordData={wordData}
-                   etymologyTree={etymologyTree}
-                   isLoadingEtymology={isLoadingEtymology}
-                   etymologyError={etymologyError}
-                   onFetchEtymology={fetchEtymologyTree}
-                   onWordClick={handleSearch} // Make sure clicking words in details triggers a search/navigation
-                   isMobile={isMobile}
-                 />
+                  wordData={wordData}
+                  etymologyTree={etymologyTree}
+                  isLoadingEtymology={isLoadingEtymology}
+                  etymologyError={etymologyError}
+                  onFetchEtymology={fetchEtymologyTree}
+                  onWordClick={handleSearch} // Make sure clicking words in details triggers a search/navigation
+                  isMobile={isMobile}
+                />
                )}
                {!wordData && !isLoading && !error && (
                  <div className="placeholder">Select a node or search a word to see details.</div>
                )}
-               {/* Loading indicator specifically for details when wordData is absent but main graph isn't loading */}
-               {isLoading && !wordData && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
-             </Box> {/* Closing tag for details-area-mobile */}
-          </Box> // Closing tag for explorer-content-mobile
+               {isLoading && !wordData && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
+             </Box>
+          </Box> {/* CHANGED: This is now a Box */}
         ) : (
           // Desktop: Side-by-side Panel layout
           <PanelGroup direction="horizontal" className="explorer-panel-group">

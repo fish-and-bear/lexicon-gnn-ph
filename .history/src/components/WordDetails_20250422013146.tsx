@@ -179,6 +179,17 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
 ) => {
   const theme = useTheme();
   // const isWideScreen = useMediaQuery(theme.breakpoints.up('md')); // Replace with isMobile prop
+const WordDetails: React.FC<WordDetailsProps> = React.memo(({
+  wordData,
+  etymologyTree,
+  isLoadingEtymology,
+  etymologyError,
+  onFetchEtymology,
+  onWordClick,
+  isMobile
+}) => {
+  const theme = useTheme();
+  // const isWideScreen = useMediaQuery(theme.breakpoints.up('md')); // Replace with isMobile prop
   const isDarkMode = theme.palette.mode === 'dark';
 
   const [activeTab, setActiveTab] = useState<string>('definitions');
@@ -1888,12 +1899,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       </Box>
     </Box>
   );
-}); // <-- This closes React.forwardRef
+});
 
-// Ensure display name for DevTools
-WordDetailsComponent.displayName = 'WordDetailsComponent';
-
-// Wrap the forwardRef component with React.memo and export it
-const WordDetails = React.memo(WordDetailsComponent);
-
-export default WordDetails; // Export the memoized component
+export default WordDetails;

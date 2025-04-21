@@ -435,6 +435,7 @@ main {
 
   main {
     flex-direction: column;
+    overflow-y: auto; /* Allow main content to scroll on mobile */
     overflow-x: hidden;
     height: auto; /* Let height be determined by flex */
   }
@@ -457,7 +458,6 @@ main {
     flex-grow: 1; /* Allow it to fill main */
     overflow-y: auto; /* Allow scrolling if content overflows */
     background-color: var(--bg-color); /* Ensure background color */
-    min-height: 0; /* Added to help flex sizing */
   }
 
   .graph-area-mobile,
@@ -470,7 +470,7 @@ main {
   }
 
   .graph-area-mobile {
-    min-height: 250px; /* Reduced min-height */
+    min-height: 300px; /* Ensure graph has some minimum space */
     border-bottom: 1px solid var(--card-border-color); /* Use card border color */
     margin-bottom: 0; /* Remove margin */
     padding-bottom: 8px;
