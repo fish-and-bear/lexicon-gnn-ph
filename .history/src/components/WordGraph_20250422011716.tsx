@@ -1564,7 +1564,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       
       // Create a simpler, more elegant toggle switch
       // 1. Create pill background with cleaner styling
-      const toggleTrack: d3.Selection<SVGRectElement, unknown, null, undefined> = toggleContainer.append("rect")
+      const toggleTrack = toggleContainer.append("rect")
         .attr("width", 30) // Smaller toggle
         .attr("height", 14) // Smaller toggle
         .attr("rx", 7)
@@ -1581,7 +1581,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       // 2. Skip complicated gradients that might look bad
       
       // 3. Add toggle handle with cleaner styling
-      const toggleHandle: d3.Selection<SVGCircleElement, unknown, null, undefined> = toggleContainer.append("circle")
+      const toggleHandle = toggleContainer.append("circle")
         .attr("r", 5) // Smaller handle
         .attr("cx", showDisconnectedNodes ? 21 : 9) // Adjusted positions
         .attr("cy", 2)
@@ -1664,6 +1664,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
      depth,
      breadth,
     theme, 
+     mapRelationshipToGroup,
+    getNodeColor, 
      getNodeRadius,
      setupZoom,
      ticked,

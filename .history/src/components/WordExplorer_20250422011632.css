@@ -455,6 +455,7 @@ main {
   .explorer-content-mobile {
     display: flex;
     flex-direction: column;
+    /* height: calc(100vh - 100px); REMOVE THIS */
     flex-grow: 1; /* Allow it to fill main */
     overflow-y: auto; /* Allow scrolling if content overflows */
     background-color: var(--bg-color); /* Ensure background color */
@@ -479,7 +480,6 @@ main {
   .details-area-mobile {
     flex-grow: 1; /* Allow details to take remaining space */
     padding-top: 8px;
-    min-height: 0; /* Important for flex children to not overflow */
   }
 
   .placeholder {
@@ -501,11 +501,6 @@ main {
   }
   .dark main [data-panel-resizer].resize-handle.horizontal {
       background-color: rgba(255, 255, 255, 0.1) !important; /* Dark mode handle */
-  }
-
-  /* Force hide legend SVG group on mobile */
-  .graph-svg .legend {
-    display: none !important;
   }
 }
 
@@ -1539,12 +1534,32 @@ main [data-panel-resizer] {
   color: var(--code-text-dark, #f06292);
 }
 
+/* Responsive Styles */
+
 /* Styles for the stacked mobile/tablet layout */
-/* MOVED INSIDE @media (max-width: 768px) */
-/* .explorer-content-mobile { ... } */
-/* .graph-area-mobile, .details-area-mobile { ... } */
-/* .graph-area-mobile { ... } */
-/* .details-area-mobile { ... } */
+.explorer-content-mobile {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 100px); /* Adjusted based on estimated header+search height */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.graph-area-mobile,
+.details-area-mobile {
+  width: 100%;
+  padding: var(--space-md); /* Use spacing variable */
+  box-sizing: border-box;
+}
+
+.graph-area-mobile {
+  min-height: 300px; /* Ensure graph has some minimum space */
+  border-bottom: 1px solid var(--border-color); /* Separator */
+  margin-bottom: var(--space-md);
+}
+
+.details-area-mobile {
+  flex-grow: 1; /* Allow details to take remaining space */
+}
 
 /* Overrides for panel layout on larger screens if necessary */
 @media (min-width: 901px) { /* Match MUI 'md' breakpoint more closely */
