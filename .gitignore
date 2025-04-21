@@ -34,3 +34,7 @@ tsconfig.json
 .traces/
 .ariana_saved_traces/
 .vault_secret_key
+
+# Database Dumps
+fil_dict_db_dump.sql
+fil_dict_db_dump_dir/
