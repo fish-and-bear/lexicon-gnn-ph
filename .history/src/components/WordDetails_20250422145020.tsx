@@ -1340,7 +1340,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                   onClick={() => onWordClick(wordObj.lemma || wordObj.word)}
                                   variant="outlined"
                                   sx={{
-                                    // Base styles (Light mode defaults)
                                     borderColor: alpha(relColor, 0.5),
                                     color: relColor,
                                     fontSize: '0.75rem',
@@ -1357,22 +1356,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                       maxWidth: '100%',
                                       overflow: 'hidden'
                                     },
-                                    // Dark Mode Overrides
-                                    ...(theme.palette.mode === 'dark' && {
-                                      bgcolor: alpha(relColor, 0.35), // More visible base color
-                                      color: theme.palette.common.white, // Use white for contrast
-                                      borderColor: alpha(relColor, 0.7), // More visible border
-                                    }),
-                                    // Hover styles
                                     '&:hover': {
-                                      // Light mode hover
                                       backgroundColor: alpha(relColor, 0.1),
-                                      borderColor: relColor,
-                                      // Dark Mode hover overrides
-                                      ...(theme.palette.mode === 'dark' && {
-                                        backgroundColor: alpha(relColor, 0.6), // Intensify background
-                                        borderColor: alpha(relColor, 0.9), // Intensify border
-                                      }),
+                                      borderColor: relColor
                                     }
                                   }}
                 />
