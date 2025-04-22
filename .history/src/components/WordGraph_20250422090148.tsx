@@ -1305,7 +1305,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .attr("transform", `translate(${Math.max(width - initialLegendWidth - 20, 10)}, 20)`);
 
       // Get unique relationship groups from our helper function
-      const { uniqueTypes: legendUniqueTypes, categories: legendCategories } = getUniqueRelationshipGroups();
+      const { uniqueTypes, categories } = getUniqueRelationshipGroups();
 
       // Pre-measure text to determine legend width
       const tempText = svg.append("text")
@@ -1321,14 +1321,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       const toggleTextWidth = tempText.node()?.getBBox().width || 0;
 
       // Measure category headers
-      legendCategories.forEach((category, categoryIndex) => {
+      categories.forEach(category => {
         tempText.text(category.name);
         const categoryWidth = tempText.node()?.getBBox().width || 0;
         maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
         
         // Measure each label
         category.types.forEach(type => {
-          const typeInfo = legendUniqueTypes[type];
+          const typeInfo = uniqueTypes[type];
           tempText.text(typeInfo.label);
           const textWidth = tempText.node()?.getBBox().width || 0;
           maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
@@ -1351,14 +1351,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
       // Find total rows for legend layout
       let totalRows = 0;
-      legendCategories.forEach(cat => {
+      categories.forEach(cat => {
         // Each category needs 1 row for header + rows for items
         totalRows += 1 + cat.types.length;
       });
 
       // Calculate legend height with more spacing
       const legendHeight = (totalRows * legendItemHeight) + 
-                          ((legendCategories.length - 1) * categorySpacing) + 
+                          ((categories.length - 1) * categorySpacing) + 
                           (legendPadding * 2) + 
                           50 + // Add extra padding for the title and instructions
                           40; // Add extra space for the checkbox option
@@ -1406,7 +1406,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       let yPos = legendPadding + 44;
 
       // Render each category
-      legendCategories.forEach((category, categoryIndex) => {
+      categories.forEach((category, categoryIndex) => {
         // Add category header with refined styling
         yPos += legendItemHeight;
         
@@ -1438,7 +1438,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
           yPos += legendItemHeight;
           
           // Get the type info from our unique types
-          const typeInfo = legendUniqueTypes[type];
+          const typeInfo = uniqueTypes[type];
           
           // Check if this relationship type is filtered out
           const isFiltered = filteredRelationships.includes(type.toLowerCase());
@@ -1694,7 +1694,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     };
 
     // Group by category for the legend
-    const categoriesArray: Array<{ name: string; types: string[] }> = [
+    const categories: Array<{ name: string; types: string[] }> = [
       { name: "Core", types: [] },
       { name: "Origin", types: [] },
       { name: "Derived", types: [] },
@@ -1709,7 +1709,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
     // Fill categories with their types
     Object.entries(uniqueTypes).forEach(([type, info]) => {
-      const categoryObj = categoriesArray.find(cat => cat.name === info.category);
+      const categoryObj = categories.find(cat => cat.name === info.category);
       if (categoryObj) {
         categoryObj.types.push(type);
       }
@@ -1718,7 +1718,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     // Filter out empty categories
     return {
       uniqueTypes,
-      categories: categoriesArray.filter(cat => cat.types.length > 0)
+      categories: categories.filter(cat => cat.types.length > 0)
     };
   }, [getNodeColor]);
 

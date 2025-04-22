@@ -69,18 +69,6 @@ interface CustomLink extends d3.SimulationLinkDatum<CustomNode> {
   target: string | CustomNode;
 }
 
-// Define interfaces at the top of the file after other interfaces
-interface RelationshipTypeInfo {
-  category: string;
-  label: string;
-  color: string;
-}
-
-interface RelationshipGroups {
-  uniqueTypes: Record<string, RelationshipTypeInfo>;
-  categories: Array<{ name: string; types: string[] }>;
-}
-
 const WordGraph: React.FC<WordGraphProps> = ({
   wordNetwork,
   mainWord,
@@ -1304,12 +1292,23 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .attr("class", "legend")
         .attr("transform", `translate(${Math.max(width - initialLegendWidth - 20, 10)}, 20)`);
 
-      // Get unique relationship groups from our helper function
-      const { uniqueTypes: legendUniqueTypes, categories: legendCategories } = getUniqueRelationshipGroups();
+      // Organize relation types by category - ensure each type appears in only one category
+      const categories = [
+        { name: "Core", types: ["main"] },
+        { name: "Origin", types: ["root", "root_of", "etymology"] },
+        { name: "Derived", types: ["derived", "derived_from", "derivative"] },
+        { name: "Meaning", types: ["synonym", "antonym", "related", "similar"] },
+        { name: "Cultural", types: ["kaugnay", "kahulugan", "kasalungat"] },
+        { name: "Form", types: ["variant", "spelling_variant", "regional_variant", "abbreviation", "form_of"] },
+        { name: "Translation", types: ["itapat", "atapat", "inatapat"] },
+        { name: "Structure", types: ["hypernym", "hyponym", "meronym", "holonym", "taxonomic"] },
+        { name: "Part-Whole", types: ["part_whole", "component", "component_of"] },
+        { name: "Other", types: ["affix", "usage", "associated", "other"] }
+      ];
 
       // Pre-measure text to determine legend width
       const tempText = svg.append("text")
-        .attr("font-size", "11px") 
+        .attr("font-size", "11px") // Slightly larger text
         .attr("font-weight", "500")
         .style("opacity", 0);
 
@@ -1321,15 +1320,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       const toggleTextWidth = tempText.node()?.getBBox().width || 0;
 
       // Measure category headers
-      legendCategories.forEach((category, categoryIndex) => {
+      categories.forEach(category => {
         tempText.text(category.name);
         const categoryWidth = tempText.node()?.getBBox().width || 0;
         maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
         
         // Measure each label
         category.types.forEach(type => {
-          const typeInfo = legendUniqueTypes[type];
-          tempText.text(typeInfo.label);
+          tempText.text(getRelationshipTypeLabel(type).label);
           const textWidth = tempText.node()?.getBBox().width || 0;
           maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
         });
@@ -1351,14 +1349,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
       // Find total rows for legend layout
       let totalRows = 0;
-      legendCategories.forEach(cat => {
+      categories.forEach(cat => {
         // Each category needs 1 row for header + rows for items
         totalRows += 1 + cat.types.length;
       });
 
       // Calculate legend height with more spacing
       const legendHeight = (totalRows * legendItemHeight) + 
-                          ((legendCategories.length - 1) * categorySpacing) + 
+                          ((categories.length - 1) * categorySpacing) + 
                           (legendPadding * 2) + 
                           50 + // Add extra padding for the title and instructions
                           40; // Add extra space for the checkbox option
@@ -1406,7 +1404,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       let yPos = legendPadding + 44;
 
       // Render each category
-      legendCategories.forEach((category, categoryIndex) => {
+      categories.forEach((category, categoryIndex) => {
         // Add category header with refined styling
         yPos += legendItemHeight;
         
@@ -1437,16 +1435,13 @@ const WordGraph: React.FC<WordGraphProps> = ({
           // Calculate y position for each item
           yPos += legendItemHeight;
           
-          // Get the type info from our unique types
-          const typeInfo = legendUniqueTypes[type];
-          
           // Check if this relationship type is filtered out
           const isFiltered = filteredRelationships.includes(type.toLowerCase());
           
           // Create legend entry group with hover interaction
           const entry = legendContainer.append("g")
             .attr("transform", `translate(${legendPadding}, ${yPos})`)
-            .attr("class", "legend-item")
+              .attr("class", "legend-item")
             .attr("data-type", type);
             
           // Create a hover/click target rectangle
@@ -1459,7 +1454,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
             .attr("fill", isFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent")
             .attr("cursor", "pointer")
             .on("mouseover", function(this: SVGRectElement) {
-              // Keep existing mouseover handler
               d3.select(this)
                 .transition()
                 .duration(200)
@@ -1474,7 +1468,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 .attr("font-weight", "600");
             })
             .on("mouseout", function(this: SVGRectElement) {
-              // Keep existing mouseout handler
               const parentGroup = d3.select(this.parentNode as SVGGElement);
               const relType = parentGroup.attr("data-type");
               const isCurrentlyFiltered = filteredRelationships.includes(relType.toLowerCase());
@@ -1493,7 +1486,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 .attr("font-weight", "500");
             })
             .on("click", function(this: SVGRectElement) {
-              // Keep existing click handler
               const parentGroup = d3.select(this.parentNode as SVGGElement);
               const relType = parentGroup.attr("data-type");
               
@@ -1527,24 +1519,125 @@ const WordGraph: React.FC<WordGraphProps> = ({
             .attr("cx", 5)
               .attr("cy", 0)
             .attr("r", dotRadius)
-            .attr("fill", typeInfo.color)
+            .attr("fill", getNodeColor(type))
             .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
             .attr("stroke-width", 0.5)
             .style("opacity", isFiltered ? 0.5 : 1);
           
-          // Add label text with improved styling
-          entry.append("text")
+          // Get label text with possible truncation
+          const labelText = getRelationshipTypeLabel(type).label;
+          const availableWidth = legendWidth - textPadding - (legendPadding * 2) - 10; // Account for dot width and padding
+          const textElement = entry.append("text")
             .attr("x", textPadding)
-            .attr("y", 0)
+              .attr("y", 0)
             .attr("dy", ".25em")
-            .attr("font-size", "11px")
+            .attr("font-size", "11px") // Restored original size
             .attr("font-weight", "500")
-            .attr("fill", theme === "dark" ? "#ddd" : "#333")
+              .attr("fill", theme === "dark" ? "#ddd" : "#333")
             .style("text-decoration", isFiltered ? "line-through" : "none")
-            .style("opacity", isFiltered ? 0.7 : 1)
-            .text(typeInfo.label);
+            .style("opacity", isFiltered ? 0.7 : 1);
+          
+          // Check if text needs truncation without actually truncating yet
+          textElement.text(labelText);
+          const textWidth = textElement.node()?.getBBox().width || 0;
+          
+          // If text overflows, truncate it
+          if (textWidth > availableWidth) {
+            // Calculate how many characters we can fit
+            const approxCharsPerWidth = labelText.length / textWidth;
+            const visibleChars = Math.floor(approxCharsPerWidth * availableWidth) - 3;
+            textElement.text(labelText.substring(0, visibleChars) + "...");
+            
+            // Add title for tooltip on hover
+            entry.append("title").text(labelText);
+          }
         });
+        
+        // Add spacing after each category (except the last one)
+        if (categoryIndex < categories.length - 1) {
+          yPos += categorySpacing;
+        }
       });
+
+      // Add checkbox for disconnected nodes
+      // Calculate position below the legend
+      const checkboxY = yPos + legendItemHeight + 10;
+      
+      // Add a subtle divider line before the checkbox
+      legendContainer.append("line")
+        .attr("x1", legendPadding)
+        .attr("y1", checkboxY - 15)
+        .attr("x2", legendWidth - legendPadding)
+        .attr("y2", checkboxY - 15)
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
+        .attr("stroke-width", 1);
+      
+      // Add a container for the toggle switch
+      const toggleContainer = legendContainer.append("g")
+        .attr("transform", `translate(${legendPadding}, ${checkboxY})`)
+        .attr("class", "disconnected-nodes-option")
+        .style("cursor", "pointer");
+      
+      // Skip adding a background rectangle for the toggle area entirely
+      
+      // Create a simpler, more elegant toggle switch
+      // 1. Create pill background with cleaner styling
+      const toggleTrack: d3.Selection<SVGRectElement, unknown, null, undefined> = toggleContainer.append("rect")
+        .attr("width", 30) // Smaller toggle
+        .attr("height", 14) // Smaller toggle
+        .attr("rx", 7)
+        .attr("x", 0)
+        .attr("y", -5)
+        .attr("fill", showDisconnectedNodes ? 
+          (theme === "dark" ? "#4873c4" : "#3873e8") : 
+          (theme === "dark" ? "#505868" : "#d9dee6"))
+        .attr("stroke", "none")
+        .attr("filter", theme === "dark" ? 
+          "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.2))" : 
+          "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1))");
+      
+      // 2. Skip complicated gradients that might look bad
+      
+      // 3. Add toggle handle with cleaner styling
+      const toggleHandle: d3.Selection<SVGCircleElement, unknown, null, undefined> = toggleContainer.append("circle")
+        .attr("r", 5) // Smaller handle
+        .attr("cx", showDisconnectedNodes ? 21 : 9) // Adjusted positions
+        .attr("cy", 2)
+        .attr("fill", theme === "dark" ? "#ffffff" : "#ffffff")
+        .attr("stroke", theme === "dark" ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0.1)")
+        .attr("stroke-width", 0.5)
+        .attr("filter", "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.15))");
+      
+      // 4. Skip inner shadow on handle for simpler appearance
+      
+      // 5. Add simple but clear label with fixed width
+      toggleContainer.append("text")
+        .attr("x", 38) // Reverted to original spacing
+        .attr("y", 2)
+        .attr("dominant-baseline", "middle")
+        .attr("font-size", "11px") // Restored original size
+        .attr("font-weight", "500")
+        .attr("fill", theme === "dark" ? "#ddd" : "#444")
+        .text("Show disconnected nodes");
+      
+      // Add click handler for the toggle with simplified transitions
+      toggleContainer.on("click", function() {
+        const newValue = !showDisconnectedNodes;
+        setShowDisconnectedNodes(newValue);
+        
+        // Update toggle track color with simple transition
+        toggleTrack
+          .transition().duration(250)
+          .attr("fill", newValue ? 
+            (theme === "dark" ? "#4873c4" : "#3873e8") : 
+            (theme === "dark" ? "#505868" : "#d9dee6"));
+        
+        // Move handle with simple transition
+        toggleHandle
+          .transition()
+          .duration(250)
+          .attr("cx", newValue ? 21 : 9); // Match the positions from above
+        });
     } // End of !isMobile conditional block for legend 
 
     setIsLoading(false);
@@ -1605,8 +1698,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
    filterUpdateKey,
    forceUpdate,
    handleToggleRelationshipFilter,
-   showDisconnectedNodes,
-   getUniqueRelationshipGroups
+   showDisconnectedNodes
   ]);
 
   useEffect(() => {
@@ -1634,10 +1726,11 @@ const WordGraph: React.FC<WordGraphProps> = ({
        }
   }, []);
 
-  // Fix getUniqueRelationshipGroups function with complete definition
-  const getUniqueRelationshipGroups = useCallback((): RelationshipGroups => {
+  // Add a helper function for the legend before renderLegendContent
+  const getUniqueRelationshipGroups = useCallback(() => {
     // Define a mapping of relationship types to ensure they appear only once
-    const uniqueTypes: Record<string, RelationshipTypeInfo> = {
+    // with correct grouping and colors
+    const uniqueTypes = {
       // Core
       main: { category: "Core", label: "Main Word", color: getNodeColor("main") },
       
@@ -1694,7 +1787,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     };
 
     // Group by category for the legend
-    const categoriesArray: Array<{ name: string; types: string[] }> = [
+    const categories = [
       { name: "Core", types: [] },
       { name: "Origin", types: [] },
       { name: "Derived", types: [] },
@@ -1709,7 +1802,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
     // Fill categories with their types
     Object.entries(uniqueTypes).forEach(([type, info]) => {
-      const categoryObj = categoriesArray.find(cat => cat.name === info.category);
+      const categoryObj = categories.find(cat => cat.name === info.category);
       if (categoryObj) {
         categoryObj.types.push(type);
       }
@@ -1718,7 +1811,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     // Filter out empty categories
     return {
       uniqueTypes,
-      categories: categoriesArray.filter(cat => cat.types.length > 0)
+      categories: categories.filter(cat => cat.types.length > 0)
     };
   }, [getNodeColor]);
 
@@ -1860,6 +1953,70 @@ const WordGraph: React.FC<WordGraphProps> = ({
       </List>
     );
   }, [filteredRelationships, handleToggleRelationshipFilter, showDisconnectedNodes, theme, getUniqueRelationshipGroups]);
+
+  // Now update the desktop legend as well - replace the existing categories definition
+  // Around line 1290-1310
+  // Organize relation types by category - ensure each type appears in only one category
+  const { uniqueTypes, categories } = getUniqueRelationshipGroups();
+
+  // Pre-measure text to determine legend width
+  const tempText = svg.append("text")
+    .attr("font-size", "11px")
+    .attr("font-weight", "500")
+    .style("opacity", 0);
+
+  // Continue with rest of the code but update the entry rendering
+  // Around line 1440-1450, modify the part where we create the legend entries
+  // Add category items
+  category.types.forEach(type => {
+    // Calculate y position for each item
+    yPos += legendItemHeight;
+    
+    // Get the unique type info
+    const typeInfo = uniqueTypes[type];
+    
+    // Check if this relationship type is filtered out
+    const isFiltered = filteredRelationships.includes(type.toLowerCase());
+    
+    // Create legend entry group with hover interaction
+    const entry = legendContainer.append("g")
+      .attr("transform", `translate(${legendPadding}, ${yPos})`)
+      .attr("class", "legend-item")
+      .attr("data-type", type);
+      
+    // Create a hover/click target rectangle
+    entry.append("rect")
+      .attr("width", legendWidth - (legendPadding * 2))
+      .attr("height", legendItemHeight)
+      .attr("x", -5)
+      .attr("y", -12)
+      .attr("rx", 4)
+      .attr("fill", isFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent")
+      .attr("cursor", "pointer")
+      // [rest of the hover/click handlers remain the same]
+      
+    // Add color dot with enhanced styling
+    entry.append("circle")
+      .attr("cx", 5)
+      .attr("cy", 0)
+      .attr("r", dotRadius)
+      .attr("fill", typeInfo.color)
+      .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
+      .attr("stroke-width", 0.5)
+      .style("opacity", isFiltered ? 0.5 : 1);
+    
+    // Add label text with improved styling
+    const textElement = entry.append("text")
+      .attr("x", textPadding)
+      .attr("y", 0)
+      .attr("dy", ".25em")
+      .attr("font-size", "11px")
+      .attr("font-weight", "500")
+      .attr("fill", theme === "dark" ? "#ddd" : "#333")
+      .style("text-decoration", isFiltered ? "line-through" : "none")
+      .style("opacity", isFiltered ? 0.7 : 1)
+      .text(typeInfo.label);
+  });
 
   if (!isValidNetwork) {
     return (

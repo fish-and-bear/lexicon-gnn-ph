@@ -1694,7 +1694,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     };
 
     // Group by category for the legend
-    const categoriesArray: Array<{ name: string; types: string[] }> = [
+    const categories: Array<{ name: string; types: string[] }> = [
       { name: "Core", types: [] },
       { name: "Origin", types: [] },
       { name: "Derived", types: [] },
@@ -1709,7 +1709,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
     // Fill categories with their types
     Object.entries(uniqueTypes).forEach(([type, info]) => {
-      const categoryObj = categoriesArray.find(cat => cat.name === info.category);
+      const categoryObj = categories.find(cat => cat.name === info.category);
       if (categoryObj) {
         categoryObj.types.push(type);
       }
@@ -1718,7 +1718,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     // Filter out empty categories
     return {
       uniqueTypes,
-      categories: categoriesArray.filter(cat => cat.types.length > 0)
+      categories: categories.filter(cat => cat.types.length > 0)
     };
   }, [getNodeColor]);
 
