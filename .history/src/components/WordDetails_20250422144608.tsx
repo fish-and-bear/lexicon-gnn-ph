@@ -1767,12 +1767,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             </Link>
           </Paper>
           {childrenEdges.length > 0 && (
-            <Box sx={{ 
-              mt: isMobile ? 0.5 : 1, 
-              pl: isMobile ? 1.5 : 2, 
-              // Refine borderLeft for visual connection
-              borderLeft: `1px solid ${alpha(theme.palette.divider, isMobile ? 0.7 : 0.5)}` 
-            }}>
+            <Box sx={{ mt: 1, pl: 2, borderLeft: `2px solid ${theme.palette.divider}` }}>
               {childrenEdges.map(edge => renderNode(edge.target, nodes, edges, level + 1))}
             </Box>
           )}

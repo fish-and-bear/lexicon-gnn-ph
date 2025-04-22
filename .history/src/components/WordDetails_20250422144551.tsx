@@ -1273,16 +1273,10 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           
                           <Stack 
                             direction="row" 
-                            spacing={1} // Keep spacing for consistency between items
-                            useFlexGap // Allow wrapping
+                            spacing={1} 
+                            useFlexGap 
                             flexWrap="wrap"
-                            sx={{ 
-                              mb: theme.spacing(1.5), 
-                              pl: theme.spacing(1), 
-                              width: '100%', 
-                              maxWidth: '100%',
-                              gap: isMobile ? 1 : 0.75 // Add/adjust gap for spacing between wrapped lines (more on mobile)
-                            }}
+                            sx={{ mb: theme.spacing(1.5), pl: theme.spacing(1), width: '100%', maxWidth: '100%' }}
                           >
                             {typeRelations.map((relation, index) => {
                               const wordObj = relation.wordObj;
@@ -1767,12 +1761,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             </Link>
           </Paper>
           {childrenEdges.length > 0 && (
-            <Box sx={{ 
-              mt: isMobile ? 0.5 : 1, 
-              pl: isMobile ? 1.5 : 2, 
-              // Refine borderLeft for visual connection
-              borderLeft: `1px solid ${alpha(theme.palette.divider, isMobile ? 0.7 : 0.5)}` 
-            }}>
+            <Box sx={{ mt: 1, pl: 2, borderLeft: `2px solid ${theme.palette.divider}` }}>
               {childrenEdges.map(edge => renderNode(edge.target, nodes, edges, level + 1))}
             </Box>
           )}
