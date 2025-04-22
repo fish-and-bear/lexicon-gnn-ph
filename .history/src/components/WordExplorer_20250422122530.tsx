@@ -1187,10 +1187,10 @@ const WordExplorer: React.FC = () => {
   // New function to render the mobile header using AppBar/Toolbar
   const renderMobileHeader = () => {
     return (
-      <AppBar position="static" color="default" elevation={1} sx={{ pt: 0, pb: 0 }}>
-        <Toolbar variant="dense" sx={{ minHeight: 48, py: 0.5 }}>
+      <AppBar position="static" color="default" elevation={1} sx={{ pt: 0, pb: 0 /* Remove default AppBar padding */ }}>
+        <Toolbar variant="dense" sx={{ minHeight: 48, py: 0.5 /* Make Toolbar slightly shorter */ }}>
           {/* Optional: Add a title or back button */}
-          <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, fontSize: '1rem' }}>
+          <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, fontSize: '1rem' /* Slightly smaller title */ }}> {/* Hide title on very small screens */}
              Filipino Root Explorer
           </Typography>
 
@@ -1335,8 +1335,8 @@ const WordExplorer: React.FC = () => {
 
   return (
     <div className={`word-explorer ${themeName} ${(isLoadingDetails || isLoadingNetwork) ? 'loading' : ''}`}>
-      <header className="header-content" style={{ padding: isMobile ? '0.5rem 0.8rem' : '1rem 1.5rem' }}>
-        <h1 style={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}>Filipino Root Word Explorer</h1>
+      <header className="header-content" style={{ padding: isMobile ? '0.5rem 0.8rem' : '1rem 1.5rem' /* Reduced padding for mobile */ }}>
+        <h1 style={{ fontSize: isMobile ? '1.1rem' : '1.5rem' /* Reduced font size for mobile */ }}>Filipino Root Word Explorer</h1>
         <div className="header-buttons">
           {isDevMode() && (
             <>
@@ -1444,7 +1444,7 @@ const WordExplorer: React.FC = () => {
           // Mobile: Stacked layout
           <Box className="explorer-content-mobile" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: 0 }}> {/* Allow flex grow and prevent excessive height */}
              {/* Graph Area */}
-             <Box className="graph-area-mobile" sx={{ height: '50%', minHeight: '200px', flexShrink: 0, position: 'relative' }}> {/* INCREASED height to 50% */}
+             <Box className="graph-area-mobile" sx={{ height: '50%', minHeight: '200px', flexShrink: 0, position: 'relative' /* Ensure relative positioning for children */ }}> {/* INCREASED height to 50% */}
                {isLoadingNetwork && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>}
                {wordNetwork && !error && (
