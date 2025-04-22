@@ -1448,7 +1448,12 @@ const WordExplorer: React.FC = () => {
             aria-label="Toggle theme"
             title="Toggle theme"
             color="inherit"
-            size="small"
+            sx={{ 
+              // Apply existing size/shape directly if needed, or rely on CSS
+              // width: 36, height: 36, 
+              // bgcolor: 'rgba(255, 255, 255, 0.15)', // Moved to CSS? 
+              // borderRadius: '50%'
+            }}
           >
             {themeName === "light" ? <Brightness4Icon fontSize="inherit" /> : <Brightness7Icon fontSize="inherit" />}
           </IconButton>

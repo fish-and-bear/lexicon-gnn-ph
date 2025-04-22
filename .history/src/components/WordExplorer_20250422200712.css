@@ -754,13 +754,13 @@ main {
 
 /* Re-adding Theme Toggle Button Styles */
 .theme-toggle {
-  /* background: none; Already none */
+  background: none;
   border: none;
   cursor: pointer;
   line-height: 1;
   margin-left: 0.5rem;
-  transition: transform 0.3s, opacity 0.2s, background-color 0.2s;
-  /* background-color: rgba(255, 255, 255, 0.15); REMOVED */
+  transition: transform 0.3s, opacity 0.2s;
+  background-color: rgba(255, 255, 255, 0.15);
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -768,44 +768,4 @@ main {
   align-items: center;
   justify-content: center;
   color: inherit;
-  /* Add slight transparency for blending */
-  background-color: transparent; /* Make fully transparent by default */
-}
-
-.theme-toggle:hover {
-  transform: scale(1.1);
-  opacity: 0.9;
-  /* background-color: rgba(255, 255, 255, 0.25); REMOVED */
-   /* Add subtle background on hover for feedback */
-   background-color: rgba(255, 255, 255, 0.1); 
-}
-
-.dark .theme-toggle {
-  color: var(--primary-color);
-  filter: drop-shadow(0 0 3px rgba(255, 209, 102, 0.3));
-  /* background-color: transparent; Already transparent */
-}
-
-.dark .theme-toggle:hover {
-  color: var(--gold);
-  /* background-color: rgba(255, 209, 102, 0.15); REMOVED */
-  /* Add subtle background on hover for feedback in dark */
-  background-color: rgba(255, 209, 102, 0.1);
-}
-
-/* Adjust theme toggle size on small screens */
-@media (max-width: 480px) {
-  .theme-toggle, .history-button { /* Apply to IconButton */
-    width: 32px;
-    height: 32px;
-  }
-  /* Ensure icon inside adjusts if needed */
-  .theme-toggle svg {
-      font-size: 1.2rem; /* Match old emoji font size */
-  }
-}
-
-/* React-Resizable-Panels Styles */
-main [data-panel-group] {
-  flex-direction: column !important;
 }
