@@ -1623,56 +1623,54 @@ main [data-panel-resizer] {
   justify-content: center !important;
 }
 
-/* Desktop-only styles for the controls container above the footer */
-@media (min-width: 769px) {
-  /* Position the main controls container */
-  .controls-container {
-    position: absolute;
-    bottom: var(--footer-height);
-    left: 0;
-    width: 100%;
-    z-index: 10001; /* Above footer */
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Push zoom/network controls apart */
-    padding: 0.5rem 1rem; /* Add some padding */
-    background-color: rgba(var(--card-bg-color-rgb), 0.85); /* Semi-transparent background */
-    backdrop-filter: blur(4px);
-    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
-    border-top: 1px solid var(--card-border-color);
-    box-sizing: border-box;
-    pointer-events: auto; /* Allow clicks within this container */
-  }
+/* Position the main controls container */
+.controls-container {
+  position: absolute;
+  bottom: var(--footer-height);
+  left: 0;
+  width: 100%;
+  z-index: 10001; /* Above footer */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Push zoom/network controls apart */
+  padding: 0.5rem 1rem; /* Add some padding */
+  background-color: rgba(var(--card-bg-color-rgb), 0.85); /* Semi-transparent background */
+  backdrop-filter: blur(4px);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--card-border-color);
+  box-sizing: border-box;
+  pointer-events: auto; /* Allow clicks within this container */
+}
 
-  /* Reset network controls positioning (it's now inside the positioned container) */
-  .network-controls {
-    position: static; /* Override previous absolute positioning */
-    width: auto; /* Allow flexbox to size it */
-    background-color: transparent; /* Inherit from container */
-    padding: 0;
-    box-shadow: none;
-    border-top: none;
-    flex-grow: 1; /* Allow sliders to take available space */
-    margin-left: 1rem; /* Add space between zoom controls and network controls */
-  }
+/* Reset network controls positioning (it's now inside the positioned container) */
+.network-controls {
+  position: static; /* Override previous absolute positioning */
+  width: auto; /* Allow flexbox to size it */
+  background-color: transparent; /* Inherit from container */
+  padding: 0;
+  box-shadow: none;
+  border-top: none;
+  /* display: flex; justify-content... REMOVED - internal layout handled by NetworkControls component */
+  flex-grow: 1; /* Allow sliders to take available space */
+  margin-left: 1rem; /* Add space between zoom controls and network controls */
+}
 
-  /* Ensure zoom controls don't grow/shrink unexpectedly */
-  .zoom-controls {
-    flex-shrink: 0;
-  }
+/* Ensure zoom controls don't grow/shrink unexpectedly */
+.zoom-controls {
+  flex-shrink: 0;
+}
 
-  /* Dark mode adjustments */
-  .dark .controls-container {
-    background-color: rgba(var(--card-bg-color-rgb), 0.9); /* Darker semi-transparent */
-    border-top: 1px solid var(--card-border-color);
-  }
+/* Dark mode adjustments */
+.dark .controls-container {
+  background-color: rgba(var(--card-bg-color-rgb), 0.9); /* Darker semi-transparent */
+  border-top: 1px solid var(--card-border-color);
+}
 
-  /* Remove the specific dark mode overrides for network-controls background/border/shadow */
-  .dark .network-controls {
-     background-color: transparent !important; /* Ensure transparency */
-     border: none !important;
-     box-shadow: none !important;
-     color: inherit !important; /* Inherit color from parent */
-     /* Keep slider styles from below */
-  }
+/* Remove the specific dark mode overrides for network-controls background/border/shadow */
+.dark .network-controls {
+   background-color: transparent !important; /* Ensure transparency */
+   border: none !important;
+   box-shadow: none !important;
+   color: inherit !important; /* Inherit color from parent */
+   /* Keep slider styles from below */
 }
