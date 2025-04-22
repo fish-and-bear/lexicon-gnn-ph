@@ -1418,11 +1418,11 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                     primary={rhyme.value} 
                     primaryTypographyProps={{ sx: { fontFamily: 'monospace'} }} 
                   />
-                  {/* {rhyme.note && ( // Remove check for non-existent 'note' property
+                  {rhyme.note && (
                     <Typography variant="caption" sx={{ color: 'text.secondary', ml: 2 }}>
                       ({rhyme.note})
                     </Typography>
-                  )} */}
+                  )}
                 </ListItem>
               ))}
             </List>
