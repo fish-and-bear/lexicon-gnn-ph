@@ -1365,71 +1365,68 @@ const WordGraph: React.FC<WordGraphProps> = ({
         legendContainer.append("rect")
           .attr("width", legendWidth)
         .attr("height", legendHeight)
-        .attr("rx", 12)
-        .attr("ry", 12)
-        .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.92)" : "rgba(255, 255, 255, 0.95)")
-        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-        .attr("stroke-width", 1)
-        .attr("filter", theme === "dark" ? 
-          "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25))" : 
-          "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1))");
+        .attr("rx", 10)
+        .attr("ry", 10)
+        .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.85)" : "rgba(255, 255, 255, 0.92)")
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)")
+        .attr("stroke-width", 1);
 
-      // Add elegant title with improved styling
+      // Add elegant title with original font size
         legendContainer.append("text")
           .attr("x", legendWidth / 2)
-        .attr("y", legendPadding + 8)
+        .attr("y", legendPadding + 7)
           .attr("text-anchor", "middle")
         .attr("font-weight", "600")
-        .attr("font-size", "13px")
+        .attr("font-size", "12px") // Restored original size
         .attr("fill", theme === "dark" ? "#eee" : "#333")
           .text("Relationship Types");
         
-      // Add subtitle with instructions - improved styling
+      // Add subtitle with instructions
       legendContainer.append("text")
         .attr("x", legendWidth / 2)
-        .attr("y", legendPadding + 24)
+        .attr("y", legendPadding + 22)
         .attr("text-anchor", "middle")
         .attr("font-weight", "400")
-        .attr("font-size", "10px")
+        .attr("font-size", "9px")
         .attr("fill", theme === "dark" ? "#aaa" : "#666")
         .text("Click to filter by type");
       
-      // Add subtle divider line after title with improved styling
+      // Add subtle divider line after title
       legendContainer.append("line")
         .attr("x1", legendPadding)
-        .attr("y1", legendPadding + 32)
+        .attr("y1", legendPadding + 30)
         .attr("x2", legendWidth - legendPadding)
-        .attr("y2", legendPadding + 32)
-        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-        .attr("stroke-width", 1.5);
+        .attr("y2", legendPadding + 30)
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
+        .attr("stroke-width", 1);
 
-      // Track current y position for legend items - add more space after title
-      let yPos = legendPadding + 44;
+      // Track current y position for legend items
+      let yPos = legendPadding + 38; // More space after title and instructions
 
       // Render each category
       categories.forEach((category, categoryIndex) => {
         // Add category header with refined styling
         yPos += legendItemHeight;
         
-        // Add category name with improved styling
+        // Add category name with original font size
         const categoryTextElement = legendContainer.append("text")
           .attr("x", legendPadding)
           .attr("y", yPos)
           .attr("font-weight", "600")
-          .attr("font-size", "11.5px")
-          .attr("fill", theme === "dark" ? "#d0d0d0" : "#444")
+          .attr("font-size", "11px") // Restored original size
+          .attr("fill", theme === "dark" ? "#ccc" : "#555")
           .text(category.name);
         
         const categoryTextBBox = categoryTextElement.node()?.getBBox();
         if (categoryTextBBox) {
-          // Add subtle background for category headers with improved styling
+          // Add subtle background for category headers
           legendContainer.append("rect")
             .attr("x", legendPadding - 4)
             .attr("y", yPos - categoryTextBBox.height + 2)
             .attr("width", categoryTextBBox.width + 8)
             .attr("height", categoryTextBBox.height + 4)
-            .attr("rx", 4)
-            .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)")
+            .attr("rx", 3)
+            .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.07)" : "rgba(0, 0, 0, 0.04)")
             .lower(); // Move behind text
         }
         

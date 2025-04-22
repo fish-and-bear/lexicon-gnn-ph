@@ -1365,71 +1365,68 @@ const WordGraph: React.FC<WordGraphProps> = ({
         legendContainer.append("rect")
           .attr("width", legendWidth)
         .attr("height", legendHeight)
-        .attr("rx", 12)
-        .attr("ry", 12)
-        .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.92)" : "rgba(255, 255, 255, 0.95)")
-        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-        .attr("stroke-width", 1)
-        .attr("filter", theme === "dark" ? 
-          "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25))" : 
-          "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1))");
+        .attr("rx", 10)
+        .attr("ry", 10)
+        .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.85)" : "rgba(255, 255, 255, 0.92)")
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)")
+        .attr("stroke-width", 1);
 
-      // Add elegant title with improved styling
+      // Add elegant title with original font size
         legendContainer.append("text")
           .attr("x", legendWidth / 2)
-        .attr("y", legendPadding + 8)
+        .attr("y", legendPadding + 7)
           .attr("text-anchor", "middle")
         .attr("font-weight", "600")
-        .attr("font-size", "13px")
+        .attr("font-size", "12px") // Restored original size
         .attr("fill", theme === "dark" ? "#eee" : "#333")
           .text("Relationship Types");
         
-      // Add subtitle with instructions - improved styling
+      // Add subtitle with instructions
       legendContainer.append("text")
         .attr("x", legendWidth / 2)
-        .attr("y", legendPadding + 24)
+        .attr("y", legendPadding + 22)
         .attr("text-anchor", "middle")
         .attr("font-weight", "400")
-        .attr("font-size", "10px")
+        .attr("font-size", "9px")
         .attr("fill", theme === "dark" ? "#aaa" : "#666")
         .text("Click to filter by type");
       
-      // Add subtle divider line after title with improved styling
+      // Add subtle divider line after title
       legendContainer.append("line")
         .attr("x1", legendPadding)
-        .attr("y1", legendPadding + 32)
+        .attr("y1", legendPadding + 30)
         .attr("x2", legendWidth - legendPadding)
-        .attr("y2", legendPadding + 32)
-        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-        .attr("stroke-width", 1.5);
+        .attr("y2", legendPadding + 30)
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
+        .attr("stroke-width", 1);
 
-      // Track current y position for legend items - add more space after title
-      let yPos = legendPadding + 44;
+      // Track current y position for legend items
+      let yPos = legendPadding + 38; // More space after title and instructions
 
       // Render each category
       categories.forEach((category, categoryIndex) => {
         // Add category header with refined styling
         yPos += legendItemHeight;
         
-        // Add category name with improved styling
+        // Add category name with original font size
         const categoryTextElement = legendContainer.append("text")
           .attr("x", legendPadding)
           .attr("y", yPos)
           .attr("font-weight", "600")
-          .attr("font-size", "11.5px")
-          .attr("fill", theme === "dark" ? "#d0d0d0" : "#444")
+          .attr("font-size", "11px") // Restored original size
+          .attr("fill", theme === "dark" ? "#ccc" : "#555")
           .text(category.name);
         
         const categoryTextBBox = categoryTextElement.node()?.getBBox();
         if (categoryTextBBox) {
-          // Add subtle background for category headers with improved styling
+          // Add subtle background for category headers
           legendContainer.append("rect")
             .attr("x", legendPadding - 4)
             .attr("y", yPos - categoryTextBBox.height + 2)
             .attr("width", categoryTextBBox.width + 8)
             .attr("height", categoryTextBBox.height + 4)
-            .attr("rx", 4)
-            .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)")
+            .attr("rx", 3)
+            .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.07)" : "rgba(0, 0, 0, 0.04)")
             .lower(); // Move behind text
         }
         
@@ -1754,25 +1751,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
           mt: 1, 
           maxHeight: 'calc(100vh - 250px)', 
           overflow: 'auto', 
-          width: '100%',
-          '& .MuiListSubheader-root': {
-            backgroundColor: theme === 'dark' ? 'rgba(40, 48, 68, 0.6)' : 'rgba(245, 245, 245, 0.9)'
-          }
+          width: '100%'
         }}
       >
-        <ListSubheader 
-          sx={{ 
-            bgcolor: 'transparent', 
-            lineHeight: '24px', 
-            py: 1, 
-            fontWeight: 'medium',
-            textAlign: 'center',
-            borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)',
-            position: 'sticky',
-            top: 0,
-            zIndex: 10
-          }}
-        >
+        <ListSubheader sx={{ bgcolor: 'transparent', lineHeight: '24px', py: 1, fontWeight: 'medium' }}>
           Relationship Types (Click to filter)
         </ListSubheader>
         
@@ -1780,71 +1762,40 @@ const WordGraph: React.FC<WordGraphProps> = ({
         {categories.map((category: { name: string; types: string[] }, categoryIndex: number) => (
           <React.Fragment key={category.name}>
             {categoryIndex > 0 && <Divider component="li" variant="middle" />}
-            <ListSubheader 
-              sx={{ 
-                bgcolor: 'transparent', 
-                fontWeight: 'bold', 
-                lineHeight: '36px',
-                py: 0,
-                pl: 2,
-                color: theme === 'dark' ? '#d0d0d0' : '#444'
-              }}
-            >
-              {category.name}
-            </ListSubheader>
-            {/* Display items in a grid for better space usage on wide devices */}
-            <Box sx={{ 
-              display: 'flex', 
-              flexWrap: 'wrap',
-              px: 1
-            }}>
-              {category.types.map((type: string) => {
-                const isFiltered = filteredRelationships.includes(type.toLowerCase());
-                const labelId = `legend-checkbox-label-${type}`;
+            <ListSubheader sx={{ bgcolor: 'transparent', fontWeight: 'bold', lineHeight: '36px' }}>{category.name}</ListSubheader>
+            {/* Add type to map parameter */}
+            {category.types.map((type: string) => {
+              const isFiltered = filteredRelationships.includes(type.toLowerCase());
+              const labelId = `legend-checkbox-label-${type}`;
 
-                return (
-                  <ListItem
-                    key={type}
-                    button
-                    onClick={() => handleToggleRelationshipFilter(type)}
-                    sx={{
-                      opacity: isFiltered ? 0.6 : 1,
-                      textDecoration: isFiltered ? 'line-through' : 'none',
-                      py: 0.5,
-                      px: 1,
-                      width: { xs: '100%', sm: '50%', md: '33.333%' }, // Responsive width based on screen size
-                      minWidth: '120px',
-                      flexGrow: 0
-                    }}
-                  >
-                    <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5 }}>
-                      <Box
-                        component="span"
-                        sx={{
-                          width: 12,
-                          height: 12,
-                          borderRadius: '50%',
-                          bgcolor: getNodeColor(type),
-                          display: 'inline-block',
-                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)'
-                        }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText 
-                      id={labelId} 
-                      primary={getRelationshipTypeLabel(type).label} 
-                      primaryTypographyProps={{
-                        noWrap: true,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        fontSize: '0.875rem'
+              return (
+                <ListItem
+                  key={type}
+                  button
+                  onClick={() => handleToggleRelationshipFilter(type)}
+                  sx={{
+                    opacity: isFiltered ? 0.6 : 1,
+                    textDecoration: isFiltered ? 'line-through' : 'none',
+                    py: 0.5 // Adjust vertical padding
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5 }}>
+                    <Box
+                      component="span"
+                      sx={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: '50%',
+                        bgcolor: getNodeColor(type),
+                        display: 'inline-block',
+                        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)'
                       }}
-                      sx={{ m: 0 }} 
                     />
-                  </ListItem>
-                );
-              })}
-            </Box>
+                  </ListItemIcon>
+                  <ListItemText id={labelId} primary={getRelationshipTypeLabel(type).label} sx={{ m: 0 }} />
+                </ListItem>
+              );
+            })}
           </React.Fragment>
         ))}
         <Divider component="li" />
@@ -1852,14 +1803,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         <ListItem
           button
           onClick={() => setShowDisconnectedNodes(prev => !prev)}
-          sx={{ 
-            py: 1,
-            backgroundColor: theme === 'dark' ? 'rgba(60, 70, 90, 0.3)' : 'rgba(230, 235, 245, 0.4)',
-            borderRadius: 1,
-            my: 1,
-            mx: 1,
-            width: 'calc(100% - 16px)'
-          }}
+          sx={{ py: 0.5 }}
         >
           <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5 }}>
              <Checkbox
@@ -1871,11 +1815,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 inputProps={{ 'aria-labelledby': 'legend-checkbox-label-disconnected' }}
               />
           </ListItemIcon>
-          <ListItemText 
-            id="legend-checkbox-label-disconnected" 
-            primary="Show disconnected nodes" 
-            sx={{ m: 0 }}
-          />
+          <ListItemText id="legend-checkbox-label-disconnected" primary="Show disconnected nodes" sx={{ m: 0 }}/>
         </ListItem>
       </List>
     );

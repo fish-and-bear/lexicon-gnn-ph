@@ -1276,21 +1276,18 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
     // Conditionally render the legend only on desktop
     if (!isMobile) {
-      // Define refined legend properties
-      const legendPadding = 12;
-      const legendItemHeight = 22; 
-      const dotRadius = 5; 
-      const textPadding = 16;
-      const categorySpacing = 10; 
-      const maxLabelWidth = 110;
-      
-      // Use a fixed initial width for positioning
-      const initialLegendWidth = 240;
-      
-      // Create legend container with initial width estimate
+      // Create a more elegant single-column legend with auto-sizing
       const legendContainer = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${Math.max(width - initialLegendWidth - 20, 10)}, 20)`);
+        .attr("transform", `translate(${Math.max(width - 240, 10)}, 20)`); // Responsive positioning
+
+      // Define refined legend properties
+      const legendPadding = 12; // Restored original padding
+      const legendItemHeight = 22; 
+      const dotRadius = 5; 
+      const textPadding = 16; // Restored original padding 
+      const categorySpacing = 10; 
+      const maxLabelWidth = 110; // Restored original width
 
       // Organize relation types by category - ensure each type appears in only one category
       const categories = [
@@ -1304,343 +1301,337 @@ const WordGraph: React.FC<WordGraphProps> = ({
         { name: "Structure", types: ["hypernym", "hyponym", "meronym", "holonym", "taxonomic"] },
         { name: "Part-Whole", types: ["part_whole", "component", "component_of"] },
         { name: "Other", types: ["affix", "usage", "associated", "other"] }
-      ];
+    ];
 
-      // Pre-measure text to determine legend width
-      const tempText = svg.append("text")
-        .attr("font-size", "11px") // Slightly larger text
-        .attr("font-weight", "500")
-        .style("opacity", 0);
+    // Pre-measure text to determine legend width
+    const tempText = svg.append("text")
+      .attr("font-size", "11px") // Slightly larger text
+      .attr("font-weight", "500")
+      .style("opacity", 0);
 
-      let maxTextWidth = 0;
-      let maxCategoryWidth = 0;
+    let maxTextWidth = 0;
+    let maxCategoryWidth = 0;
+    
+    // Also measure toggle text to ensure it fits
+    tempText.text("Show disconnected nodes");
+    const toggleTextWidth = tempText.node()?.getBBox().width || 0;
+
+    // Measure category headers
+    categories.forEach(category => {
+      tempText.text(category.name);
+      const categoryWidth = tempText.node()?.getBBox().width || 0;
+      maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
       
-      // Also measure toggle text to ensure it fits
-      tempText.text("Show disconnected nodes");
-      const toggleTextWidth = tempText.node()?.getBBox().width || 0;
-
-      // Measure category headers
-      categories.forEach(category => {
-        tempText.text(category.name);
-        const categoryWidth = tempText.node()?.getBBox().width || 0;
-        maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
-        
-        // Measure each label
-        category.types.forEach(type => {
-          tempText.text(getRelationshipTypeLabel(type).label);
-          const textWidth = tempText.node()?.getBBox().width || 0;
-          maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
-        });
+      // Measure each label
+      category.types.forEach(type => {
+        tempText.text(getRelationshipTypeLabel(type).label);
+        const textWidth = tempText.node()?.getBBox().width || 0;
+        maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
       });
+    });
 
-      tempText.remove();
+    tempText.remove();
 
-      // Calculate legend dimensions based on text measurements
-      // Be more conservative with width calculations
-      const toggleRequiredWidth = toggleTextWidth + 42 + (legendPadding * 2);
-      const legendWidth = Math.max(
-        maxCategoryWidth + 5,
-        maxTextWidth + textPadding + 5,
-        toggleRequiredWidth
-      ) + (legendPadding * 2);
-      
-      // Update the legend container position once we know the actual width
-      legendContainer.attr("transform", `translate(${Math.max(width - legendWidth - 20, 10)}, 20)`);
+    // Calculate legend dimensions based on text measurements
+    // Be more conservative with width calculations
+    const toggleRequiredWidth = toggleTextWidth + 42 + (legendPadding * 2); // Further reduced spacing
+    const legendWidth = Math.max(
+      maxCategoryWidth + 5, // Minimal extra space
+      maxTextWidth + textPadding + 5, // Minimal extra space
+      toggleRequiredWidth
+    ) + (legendPadding * 2);
 
-      // Find total rows for legend layout
-      let totalRows = 0;
-      categories.forEach(cat => {
-        // Each category needs 1 row for header + rows for items
-        totalRows += 1 + cat.types.length;
-      });
+    // Find total rows for legend layout
+    let totalRows = 0;
+    categories.forEach(cat => {
+      // Each category needs 1 row for header + rows for items
+      totalRows += 1 + cat.types.length;
+    });
 
-      // Calculate legend height with more spacing
-      const legendHeight = (totalRows * legendItemHeight) + 
-                          ((categories.length - 1) * categorySpacing) + 
-                          (legendPadding * 2) + 
-                          50 + // Add extra padding for the title and instructions
-                          40; // Add extra space for the checkbox option
+    // Calculate legend height with more spacing
+    const legendHeight = (totalRows * legendItemHeight) + 
+                        ((categories.length - 1) * categorySpacing) + 
+                        (legendPadding * 2) + 
+                        50 + // Add extra padding for the title and instructions
+                        40; // Add extra space for the checkbox option
 
-      // Add refined legend background rectangle
-        legendContainer.append("rect")
-          .attr("width", legendWidth)
-        .attr("height", legendHeight)
-        .attr("rx", 12)
-        .attr("ry", 12)
-        .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.92)" : "rgba(255, 255, 255, 0.95)")
-        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-        .attr("stroke-width", 1)
-        .attr("filter", theme === "dark" ? 
-          "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25))" : 
-          "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1))");
+    // Add refined legend background rectangle
+      legendContainer.append("rect")
+        .attr("width", legendWidth)
+      .attr("height", legendHeight)
+      .attr("rx", 10)
+      .attr("ry", 10)
+      .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.85)" : "rgba(255, 255, 255, 0.92)")
+      .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)")
+      .attr("stroke-width", 1);
 
-      // Add elegant title with improved styling
-        legendContainer.append("text")
-          .attr("x", legendWidth / 2)
-        .attr("y", legendPadding + 8)
-          .attr("text-anchor", "middle")
-        .attr("font-weight", "600")
-        .attr("font-size", "13px")
-        .attr("fill", theme === "dark" ? "#eee" : "#333")
-          .text("Relationship Types");
-        
-      // Add subtitle with instructions - improved styling
+    // Add elegant title with original font size
       legendContainer.append("text")
         .attr("x", legendWidth / 2)
-        .attr("y", legendPadding + 24)
+      .attr("y", legendPadding + 7)
         .attr("text-anchor", "middle")
-        .attr("font-weight", "400")
-        .attr("font-size", "10px")
-        .attr("fill", theme === "dark" ? "#aaa" : "#666")
-        .text("Click to filter by type");
+      .attr("font-weight", "600")
+      .attr("font-size", "12px") // Restored original size
+      .attr("fill", theme === "dark" ? "#eee" : "#333")
+        .text("Relationship Types");
       
-      // Add subtle divider line after title with improved styling
-      legendContainer.append("line")
-        .attr("x1", legendPadding)
-        .attr("y1", legendPadding + 32)
-        .attr("x2", legendWidth - legendPadding)
-        .attr("y2", legendPadding + 32)
-        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-        .attr("stroke-width", 1.5);
+    // Add subtitle with instructions
+    legendContainer.append("text")
+      .attr("x", legendWidth / 2)
+      .attr("y", legendPadding + 22)
+      .attr("text-anchor", "middle")
+      .attr("font-weight", "400")
+      .attr("font-size", "9px")
+      .attr("fill", theme === "dark" ? "#aaa" : "#666")
+      .text("Click to filter by type");
+    
+    // Add subtle divider line after title
+    legendContainer.append("line")
+      .attr("x1", legendPadding)
+      .attr("y1", legendPadding + 30)
+      .attr("x2", legendWidth - legendPadding)
+      .attr("y2", legendPadding + 30)
+      .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
+      .attr("stroke-width", 1);
 
-      // Track current y position for legend items - add more space after title
-      let yPos = legendPadding + 44;
+    // Track current y position for legend items
+    let yPos = legendPadding + 38; // More space after title and instructions
 
-      // Render each category
-      categories.forEach((category, categoryIndex) => {
-        // Add category header with refined styling
+    // Render each category
+    categories.forEach((category, categoryIndex) => {
+      // Add category header with refined styling
+      yPos += legendItemHeight;
+      
+      // Add category name with original font size
+      const categoryTextElement = legendContainer.append("text")
+        .attr("x", legendPadding)
+        .attr("y", yPos)
+        .attr("font-weight", "600")
+        .attr("font-size", "11px") // Restored original size
+        .attr("fill", theme === "dark" ? "#ccc" : "#555")
+        .text(category.name);
+      
+      const categoryTextBBox = categoryTextElement.node()?.getBBox();
+      if (categoryTextBBox) {
+        // Add subtle background for category headers
+        legendContainer.append("rect")
+          .attr("x", legendPadding - 4)
+          .attr("y", yPos - categoryTextBBox.height + 2)
+          .attr("width", categoryTextBBox.width + 8)
+          .attr("height", categoryTextBBox.height + 4)
+          .attr("rx", 3)
+          .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.07)" : "rgba(0, 0, 0, 0.04)")
+          .lower(); // Move behind text
+      }
+      
+      // Add category items
+      category.types.forEach(type => {
+        // Calculate y position for each item
         yPos += legendItemHeight;
         
-        // Add category name with improved styling
-        const categoryTextElement = legendContainer.append("text")
-          .attr("x", legendPadding)
-          .attr("y", yPos)
-          .attr("font-weight", "600")
-          .attr("font-size", "11.5px")
-          .attr("fill", theme === "dark" ? "#d0d0d0" : "#444")
-          .text(category.name);
+        // Check if this relationship type is filtered out
+        const isFiltered = filteredRelationships.includes(type.toLowerCase());
         
-        const categoryTextBBox = categoryTextElement.node()?.getBBox();
-        if (categoryTextBBox) {
-          // Add subtle background for category headers with improved styling
-          legendContainer.append("rect")
-            .attr("x", legendPadding - 4)
-            .attr("y", yPos - categoryTextBBox.height + 2)
-            .attr("width", categoryTextBBox.width + 8)
-            .attr("height", categoryTextBBox.height + 4)
-            .attr("rx", 4)
-            .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)")
-            .lower(); // Move behind text
-        }
-        
-        // Add category items
-        category.types.forEach(type => {
-          // Calculate y position for each item
-          yPos += legendItemHeight;
+        // Create legend entry group with hover interaction
+        const entry = legendContainer.append("g")
+          .attr("transform", `translate(${legendPadding}, ${yPos})`)
+            .attr("class", "legend-item")
+          .attr("data-type", type);
           
-          // Check if this relationship type is filtered out
-          const isFiltered = filteredRelationships.includes(type.toLowerCase());
-          
-          // Create legend entry group with hover interaction
-          const entry = legendContainer.append("g")
-            .attr("transform", `translate(${legendPadding}, ${yPos})`)
-              .attr("class", "legend-item")
-            .attr("data-type", type);
+        // Create a hover/click target rectangle
+        entry.append("rect")
+          .attr("width", legendWidth - (legendPadding * 2))
+          .attr("height", legendItemHeight)
+          .attr("x", -5)
+          .attr("y", -12)
+          .attr("rx", 4)
+          .attr("fill", isFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent")
+          .attr("cursor", "pointer")
+          .on("mouseover", function(this: SVGRectElement) {
+            d3.select(this)
+              .transition()
+              .duration(200)
+              .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)");
+            d3.select(this.parentNode as SVGGElement).select("circle")
+              .transition()
+              .duration(200)
+              .attr("r", dotRadius * 1.3);
+            d3.select(this.parentNode as SVGGElement).select("text")
+              .transition()
+              .duration(200)
+              .attr("font-weight", "600");
+          })
+          .on("mouseout", function(this: SVGRectElement) {
+            const parentGroup = d3.select(this.parentNode as SVGGElement);
+            const relType = parentGroup.attr("data-type");
+            const isCurrentlyFiltered = filteredRelationships.includes(relType.toLowerCase());
             
-          // Create a hover/click target rectangle
-          entry.append("rect")
-            .attr("width", legendWidth - (legendPadding * 2))
-            .attr("height", legendItemHeight)
-            .attr("x", -5)
-            .attr("y", -12)
-            .attr("rx", 4)
-            .attr("fill", isFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent")
-            .attr("cursor", "pointer")
-            .on("mouseover", function(this: SVGRectElement) {
-              d3.select(this)
-                .transition()
-                .duration(200)
-                .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)");
-              d3.select(this.parentNode as SVGGElement).select("circle")
-                .transition()
-                .duration(200)
-                .attr("r", dotRadius * 1.3);
-              d3.select(this.parentNode as SVGGElement).select("text")
-                .transition()
-                .duration(200)
-                .attr("font-weight", "600");
-            })
-            .on("mouseout", function(this: SVGRectElement) {
-              const parentGroup = d3.select(this.parentNode as SVGGElement);
-              const relType = parentGroup.attr("data-type");
-              const isCurrentlyFiltered = filteredRelationships.includes(relType.toLowerCase());
-              
-              d3.select(this)
-                .transition()
-                .duration(200)
-                .attr("fill", isCurrentlyFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent");
-              parentGroup.select("circle")
-                .transition()
-                .duration(200)
-                .attr("r", dotRadius);
-              parentGroup.select("text")
-                .transition()
-                .duration(200)
-                .attr("font-weight", "500");
-            })
-            .on("click", function(this: SVGRectElement) {
-              const parentGroup = d3.select(this.parentNode as SVGGElement);
-              const relType = parentGroup.attr("data-type");
-              
-              // Check if this relationship type is currently filtered
-              const isFiltered = filteredRelationships.includes(relType.toLowerCase());
-              
-              // Toggle filtering for this relationship type
-              console.log(`[FILTER DEBUG] Legend click: ${relType} - currently ${isFiltered ? 'filtered' : 'visible'}`);
-              handleToggleRelationshipFilter(relType);
-              
-              // Update legend item visual state
-              d3.select(this)
-                .transition()
-                .duration(300)
-                .attr("fill", isFiltered ? "transparent" : (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)"));
-              
-              parentGroup.select("text")
-                .transition()
-                .duration(300)
-                .style("text-decoration", isFiltered ? "none" : "line-through")
-                .style("opacity", isFiltered ? 1 : 0.7);
-              
-              parentGroup.select("circle")
-                .transition()
-                .duration(300)
-                .style("opacity", isFiltered ? 1 : 0.5);
-            });
-          
-          // Add color dot with enhanced styling
-          entry.append("circle")
-            .attr("cx", 5)
-              .attr("cy", 0)
-            .attr("r", dotRadius)
-            .attr("fill", getNodeColor(type))
-            .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-            .attr("stroke-width", 0.5)
-            .style("opacity", isFiltered ? 0.5 : 1);
-          
-          // Get label text with possible truncation
-          const labelText = getRelationshipTypeLabel(type).label;
-          const availableWidth = legendWidth - textPadding - (legendPadding * 2) - 10; // Account for dot width and padding
-          const textElement = entry.append("text")
-            .attr("x", textPadding)
-              .attr("y", 0)
-            .attr("dy", ".25em")
-            .attr("font-size", "11px") // Restored original size
-            .attr("font-weight", "500")
-              .attr("fill", theme === "dark" ? "#ddd" : "#333")
-            .style("text-decoration", isFiltered ? "line-through" : "none")
-            .style("opacity", isFiltered ? 0.7 : 1);
-          
-          // Check if text needs truncation without actually truncating yet
-          textElement.text(labelText);
-          const textWidth = textElement.node()?.getBBox().width || 0;
-          
-          // If text overflows, truncate it
-          if (textWidth > availableWidth) {
-            // Calculate how many characters we can fit
-            const approxCharsPerWidth = labelText.length / textWidth;
-            const visibleChars = Math.floor(approxCharsPerWidth * availableWidth) - 3;
-            textElement.text(labelText.substring(0, visibleChars) + "...");
+            d3.select(this)
+              .transition()
+              .duration(200)
+              .attr("fill", isCurrentlyFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent");
+            parentGroup.select("circle")
+              .transition()
+              .duration(200)
+              .attr("r", dotRadius);
+            parentGroup.select("text")
+              .transition()
+              .duration(200)
+              .attr("font-weight", "500");
+          })
+          .on("click", function(this: SVGRectElement) {
+            const parentGroup = d3.select(this.parentNode as SVGGElement);
+            const relType = parentGroup.attr("data-type");
             
-            // Add title for tooltip on hover
-            entry.append("title").text(labelText);
-          }
-        });
+            // Check if this relationship type is currently filtered
+            const isFiltered = filteredRelationships.includes(relType.toLowerCase());
+            
+            // Toggle filtering for this relationship type
+            console.log(`[FILTER DEBUG] Legend click: ${relType} - currently ${isFiltered ? 'filtered' : 'visible'}`);
+            handleToggleRelationshipFilter(relType);
+            
+            // Update legend item visual state
+            d3.select(this)
+              .transition()
+              .duration(300)
+              .attr("fill", isFiltered ? "transparent" : (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)"));
+            
+            parentGroup.select("text")
+              .transition()
+              .duration(300)
+              .style("text-decoration", isFiltered ? "none" : "line-through")
+              .style("opacity", isFiltered ? 1 : 0.7);
+            
+            parentGroup.select("circle")
+              .transition()
+              .duration(300)
+              .style("opacity", isFiltered ? 1 : 0.5);
+          });
         
-        // Add spacing after each category (except the last one)
-        if (categoryIndex < categories.length - 1) {
-          yPos += categorySpacing;
+        // Add color dot with enhanced styling
+        entry.append("circle")
+          .attr("cx", 5)
+            .attr("cy", 0)
+          .attr("r", dotRadius)
+          .attr("fill", getNodeColor(type))
+          .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
+          .attr("stroke-width", 0.5)
+          .style("opacity", isFiltered ? 0.5 : 1);
+        
+        // Get label text with possible truncation
+        const labelText = getRelationshipTypeLabel(type).label;
+        const availableWidth = legendWidth - textPadding - (legendPadding * 2) - 10; // Account for dot width and padding
+        const textElement = entry.append("text")
+          .attr("x", textPadding)
+            .attr("y", 0)
+          .attr("dy", ".25em")
+          .attr("font-size", "11px") // Restored original size
+          .attr("font-weight", "500")
+            .attr("fill", theme === "dark" ? "#ddd" : "#333")
+          .style("text-decoration", isFiltered ? "line-through" : "none")
+          .style("opacity", isFiltered ? 0.7 : 1);
+        
+        // Check if text needs truncation without actually truncating yet
+        textElement.text(labelText);
+        const textWidth = textElement.node()?.getBBox().width || 0;
+        
+        // If text overflows, truncate it
+        if (textWidth > availableWidth) {
+          // Calculate how many characters we can fit
+          const approxCharsPerWidth = labelText.length / textWidth;
+          const visibleChars = Math.floor(approxCharsPerWidth * availableWidth) - 3;
+          textElement.text(labelText.substring(0, visibleChars) + "...");
+          
+          // Add title for tooltip on hover
+          entry.append("title").text(labelText);
         }
       });
+      
+      // Add spacing after each category (except the last one)
+      if (categoryIndex < categories.length - 1) {
+        yPos += categorySpacing;
+      }
+    });
 
-      // Add checkbox for disconnected nodes
-      // Calculate position below the legend
-      const checkboxY = yPos + legendItemHeight + 10;
+    // Add checkbox for disconnected nodes
+    // Calculate position below the legend
+    const checkboxY = yPos + legendItemHeight + 10;
+    
+    // Add a subtle divider line before the checkbox
+    legendContainer.append("line")
+      .attr("x1", legendPadding)
+      .attr("y1", checkboxY - 15)
+      .attr("x2", legendWidth - legendPadding)
+      .attr("y2", checkboxY - 15)
+      .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
+      .attr("stroke-width", 1);
+    
+    // Add a container for the toggle switch
+    const toggleContainer = legendContainer.append("g")
+      .attr("transform", `translate(${legendPadding}, ${checkboxY})`)
+      .attr("class", "disconnected-nodes-option")
+      .style("cursor", "pointer");
+    
+    // Skip adding a background rectangle for the toggle area entirely
+    
+    // Create a simpler, more elegant toggle switch
+    // 1. Create pill background with cleaner styling
+    const toggleTrack: d3.Selection<SVGRectElement, unknown, null, undefined> = toggleContainer.append("rect")
+      .attr("width", 30) // Smaller toggle
+      .attr("height", 14) // Smaller toggle
+      .attr("rx", 7)
+      .attr("x", 0)
+      .attr("y", -5)
+      .attr("fill", showDisconnectedNodes ? 
+        (theme === "dark" ? "#4873c4" : "#3873e8") : 
+        (theme === "dark" ? "#505868" : "#d9dee6"))
+      .attr("stroke", "none")
+      .attr("filter", theme === "dark" ? 
+        "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.2))" : 
+        "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1))");
+    
+    // 2. Skip complicated gradients that might look bad
+    
+    // 3. Add toggle handle with cleaner styling
+    const toggleHandle: d3.Selection<SVGCircleElement, unknown, null, undefined> = toggleContainer.append("circle")
+      .attr("r", 5) // Smaller handle
+      .attr("cx", showDisconnectedNodes ? 21 : 9) // Adjusted positions
+      .attr("cy", 2)
+      .attr("fill", theme === "dark" ? "#ffffff" : "#ffffff")
+      .attr("stroke", theme === "dark" ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0.1)")
+      .attr("stroke-width", 0.5)
+      .attr("filter", "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.15))");
+    
+    // 4. Skip inner shadow on handle for simpler appearance
+    
+    // 5. Add simple but clear label with fixed width
+    toggleContainer.append("text")
+      .attr("x", 38) // Reverted to original spacing
+      .attr("y", 2)
+      .attr("dominant-baseline", "middle")
+      .attr("font-size", "11px") // Restored original size
+      .attr("font-weight", "500")
+      .attr("fill", theme === "dark" ? "#ddd" : "#444")
+      .text("Show disconnected nodes");
+    
+    // Add click handler for the toggle with simplified transitions
+    toggleContainer.on("click", function() {
+      const newValue = !showDisconnectedNodes;
+      setShowDisconnectedNodes(newValue);
       
-      // Add a subtle divider line before the checkbox
-      legendContainer.append("line")
-        .attr("x1", legendPadding)
-        .attr("y1", checkboxY - 15)
-        .attr("x2", legendWidth - legendPadding)
-        .attr("y2", checkboxY - 15)
-        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)")
-        .attr("stroke-width", 1);
-      
-      // Add a container for the toggle switch
-      const toggleContainer = legendContainer.append("g")
-        .attr("transform", `translate(${legendPadding}, ${checkboxY})`)
-        .attr("class", "disconnected-nodes-option")
-        .style("cursor", "pointer");
-      
-      // Skip adding a background rectangle for the toggle area entirely
-      
-      // Create a simpler, more elegant toggle switch
-      // 1. Create pill background with cleaner styling
-      const toggleTrack: d3.Selection<SVGRectElement, unknown, null, undefined> = toggleContainer.append("rect")
-        .attr("width", 30) // Smaller toggle
-        .attr("height", 14) // Smaller toggle
-        .attr("rx", 7)
-        .attr("x", 0)
-        .attr("y", -5)
-        .attr("fill", showDisconnectedNodes ? 
+      // Update toggle track color with simple transition
+      toggleTrack
+        .transition().duration(250)
+        .attr("fill", newValue ? 
           (theme === "dark" ? "#4873c4" : "#3873e8") : 
-          (theme === "dark" ? "#505868" : "#d9dee6"))
-        .attr("stroke", "none")
-        .attr("filter", theme === "dark" ? 
-          "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.2))" : 
-          "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1))");
+          (theme === "dark" ? "#505868" : "#d9dee6"));
       
-      // 2. Skip complicated gradients that might look bad
-      
-      // 3. Add toggle handle with cleaner styling
-      const toggleHandle: d3.Selection<SVGCircleElement, unknown, null, undefined> = toggleContainer.append("circle")
-        .attr("r", 5) // Smaller handle
-        .attr("cx", showDisconnectedNodes ? 21 : 9) // Adjusted positions
-        .attr("cy", 2)
-        .attr("fill", theme === "dark" ? "#ffffff" : "#ffffff")
-        .attr("stroke", theme === "dark" ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0.1)")
-        .attr("stroke-width", 0.5)
-        .attr("filter", "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.15))");
-      
-      // 4. Skip inner shadow on handle for simpler appearance
-      
-      // 5. Add simple but clear label with fixed width
-      toggleContainer.append("text")
-        .attr("x", 38) // Reverted to original spacing
-        .attr("y", 2)
-        .attr("dominant-baseline", "middle")
-        .attr("font-size", "11px") // Restored original size
-        .attr("font-weight", "500")
-        .attr("fill", theme === "dark" ? "#ddd" : "#444")
-        .text("Show disconnected nodes");
-      
-      // Add click handler for the toggle with simplified transitions
-      toggleContainer.on("click", function() {
-        const newValue = !showDisconnectedNodes;
-        setShowDisconnectedNodes(newValue);
-        
-        // Update toggle track color with simple transition
-        toggleTrack
-          .transition().duration(250)
-          .attr("fill", newValue ? 
-            (theme === "dark" ? "#4873c4" : "#3873e8") : 
-            (theme === "dark" ? "#505868" : "#d9dee6"));
-        
-        // Move handle with simple transition
-        toggleHandle
-          .transition()
-          .duration(250)
-          .attr("cx", newValue ? 21 : 9); // Match the positions from above
-        });
+      // Move handle with simple transition
+      toggleHandle
+        .transition()
+        .duration(250)
+        .attr("cx", newValue ? 21 : 9); // Match the positions from above
+      });
     } // End of !isMobile conditional block for legend 
 
     setIsLoading(false);
@@ -1754,97 +1745,50 @@ const WordGraph: React.FC<WordGraphProps> = ({
           mt: 1, 
           maxHeight: 'calc(100vh - 250px)', 
           overflow: 'auto', 
-          width: '100%',
-          '& .MuiListSubheader-root': {
-            backgroundColor: theme === 'dark' ? 'rgba(40, 48, 68, 0.6)' : 'rgba(245, 245, 245, 0.9)'
-          }
+          width: '100%'
         }}
       >
-        <ListSubheader 
-          sx={{ 
-            bgcolor: 'transparent', 
-            lineHeight: '24px', 
-            py: 1, 
-            fontWeight: 'medium',
-            textAlign: 'center',
-            borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)',
-            position: 'sticky',
-            top: 0,
-            zIndex: 10
-          }}
-        >
+        <ListSubheader sx={{ bgcolor: 'transparent', lineHeight: '24px', py: 1, fontWeight: 'medium' }}>
           Relationship Types (Click to filter)
         </ListSubheader>
-        
         {/* Add types to map parameters */}
         {categories.map((category: { name: string; types: string[] }, categoryIndex: number) => (
           <React.Fragment key={category.name}>
             {categoryIndex > 0 && <Divider component="li" variant="middle" />}
-            <ListSubheader 
-              sx={{ 
-                bgcolor: 'transparent', 
-                fontWeight: 'bold', 
-                lineHeight: '36px',
-                py: 0,
-                pl: 2,
-                color: theme === 'dark' ? '#d0d0d0' : '#444'
-              }}
-            >
-              {category.name}
-            </ListSubheader>
-            {/* Display items in a grid for better space usage on wide devices */}
-            <Box sx={{ 
-              display: 'flex', 
-              flexWrap: 'wrap',
-              px: 1
-            }}>
-              {category.types.map((type: string) => {
-                const isFiltered = filteredRelationships.includes(type.toLowerCase());
-                const labelId = `legend-checkbox-label-${type}`;
+            <ListSubheader sx={{ bgcolor: 'transparent', fontWeight: 'bold', lineHeight: '36px' }}>{category.name}</ListSubheader>
+            {/* Add type to map parameter */}
+            {category.types.map((type: string) => {
+              const isFiltered = filteredRelationships.includes(type.toLowerCase());
+              const labelId = `legend-checkbox-label-${type}`;
 
-                return (
-                  <ListItem
-                    key={type}
-                    button
-                    onClick={() => handleToggleRelationshipFilter(type)}
-                    sx={{
-                      opacity: isFiltered ? 0.6 : 1,
-                      textDecoration: isFiltered ? 'line-through' : 'none',
-                      py: 0.5,
-                      px: 1,
-                      width: { xs: '100%', sm: '50%', md: '33.333%' }, // Responsive width based on screen size
-                      minWidth: '120px',
-                      flexGrow: 0
-                    }}
-                  >
-                    <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5 }}>
-                      <Box
-                        component="span"
-                        sx={{
-                          width: 12,
-                          height: 12,
-                          borderRadius: '50%',
-                          bgcolor: getNodeColor(type),
-                          display: 'inline-block',
-                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)'
-                        }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText 
-                      id={labelId} 
-                      primary={getRelationshipTypeLabel(type).label} 
-                      primaryTypographyProps={{
-                        noWrap: true,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        fontSize: '0.875rem'
+              return (
+                <ListItem
+                  key={type}
+                  button
+                  onClick={() => handleToggleRelationshipFilter(type)}
+                  sx={{
+                    opacity: isFiltered ? 0.6 : 1,
+                    textDecoration: isFiltered ? 'line-through' : 'none',
+                    py: 0.5 // Adjust vertical padding
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5 }}>
+                    <Box
+                      component="span"
+                      sx={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: '50%',
+                        bgcolor: getNodeColor(type),
+                        display: 'inline-block',
+                        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)'
                       }}
-                      sx={{ m: 0 }} 
                     />
-                  </ListItem>
-                );
-              })}
-            </Box>
+                  </ListItemIcon>
+                  <ListItemText id={labelId} primary={getRelationshipTypeLabel(type).label} sx={{ m: 0 }} />
+                </ListItem>
+              );
+            })}
           </React.Fragment>
         ))}
         <Divider component="li" />
@@ -1852,14 +1796,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         <ListItem
           button
           onClick={() => setShowDisconnectedNodes(prev => !prev)}
-          sx={{ 
-            py: 1,
-            backgroundColor: theme === 'dark' ? 'rgba(60, 70, 90, 0.3)' : 'rgba(230, 235, 245, 0.4)',
-            borderRadius: 1,
-            my: 1,
-            mx: 1,
-            width: 'calc(100% - 16px)'
-          }}
+          sx={{ py: 0.5 }}
         >
           <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5 }}>
              <Checkbox
@@ -1871,14 +1808,11 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 inputProps={{ 'aria-labelledby': 'legend-checkbox-label-disconnected' }}
               />
           </ListItemIcon>
-          <ListItemText 
-            id="legend-checkbox-label-disconnected" 
-            primary="Show disconnected nodes" 
-            sx={{ m: 0 }}
-          />
+          <ListItemText id="legend-checkbox-label-disconnected" primary="Show disconnected nodes" sx={{ m: 0 }}/>
         </ListItem>
       </List>
     );
+    // Remove categories from dependency array as it's defined inside
   }, [filteredRelationships, handleToggleRelationshipFilter, showDisconnectedNodes, getNodeColor, getRelationshipTypeLabel, theme]);
 
   if (!isValidNetwork) {
