@@ -1392,8 +1392,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
       // --- Text Measurement (similar to before, adjust font size) ---
       const tempText = svg.append("text")
-        // Provide a fallback font family
-        .style("font-family", muiTheme.typography.fontFamily || "system-ui, -apple-system, sans-serif") 
+        .style("font-family", muiTheme.typography.fontFamily)
         .style("font-size", muiTheme.typography.pxToRem(11)) // Use theme font size
         .style("opacity", 0);
 
