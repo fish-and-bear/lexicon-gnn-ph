@@ -1681,6 +1681,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             />
             <Link
               component="button"
+              // *** Convert node.id (number) to string format "id:number" ***
               onClick={() => onWordClick(`id:${node.id}`)} 
               sx={{ 
                 fontWeight: 500, 
@@ -1718,7 +1719,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     );
   };
 
-  // *** START: Re-insert renderSourcesInfoTab ***
   const renderSourcesInfoTab = () => {
      const credits = wordData.credits || [];
      const sourceInfo = wordData.source_info || {};
@@ -1744,7 +1744,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
              <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>{title}</Typography>
            </StyledAccordionSummary>
            <StyledAccordionDetails>
-             <Paper variant="outlined" sx={{ p: 1.5, bgcolor: alpha(theme.palette.grey[500], 0.05), overflowX: 'auto' }}>
+             <Paper variant="outlined" sx={{ p: 1.5, bgcolor: alpha(theme.palette.grey[500], 0.05), overflowX: 'auto' }}> {/* Add horizontal scroll as fallback */} 
                 <Typography component="pre" sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', fontSize: '0.8rem', fontFamily: 'monospace' }}>
                   {JSON.stringify(data, null, 2)}
                 </Typography>
@@ -1827,7 +1827,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
        </Box>
      );
   };
-  // *** END: Re-insert renderSourcesInfoTab ***
 
   // --- Main Component Return ---
   if (!wordData?.id) {

@@ -634,27 +634,24 @@ const WordGraph: React.FC<WordGraphProps> = ({
     setForceUpdate(prev => prev + 1);
   }, [filteredRelationships]);
 
-  // Completely redesigned toggle filter handler - accepts single type or array
-  const handleToggleRelationshipFilter = useCallback((typeOrTypes: string | string[]) => {
-    const typesToToggle = Array.isArray(typeOrTypes) ? typeOrTypes : [typeOrTypes];
-    const typesToToggleLower = typesToToggle.map(t => t.toLowerCase());
+  // Completely redesigned toggle filter handler - with clear state updates
+  const handleToggleRelationshipFilter = useCallback((relationship: string) => {
+    const relationshipLower = relationship.toLowerCase();
     
-    console.log(`[FILTER] Toggling filter for type(s): '${typesToToggleLower.join(', ')}'`);
+    console.log(`[FILTER] Toggling filter for '${relationshipLower}'`);
     
     setFilteredRelationships(prevFilters => {
-      // Check if *all* types in the group are currently filtered
-      const allAreFiltered = typesToToggleLower.every(t => prevFilters.includes(t));
+      const isCurrentlyFiltered = prevFilters.includes(relationshipLower);
       let newFilters;
       
-      if (allAreFiltered) {
-        // Remove all types in this group from filters
-        console.log(`[FILTER] Removing group '${typesToToggleLower.join(', ')}' from filters`);
-        newFilters = prevFilters.filter(f => !typesToToggleLower.includes(f));
+      if (isCurrentlyFiltered) {
+        // Remove this relationship from filters
+        console.log(`[FILTER] Removing '${relationshipLower}' from filters`);
+        newFilters = prevFilters.filter(f => f !== relationshipLower);
       } else {
-        // Add any missing types from this group to filters (ensure all are added)
-        console.log(`[FILTER] Adding group '${typesToToggleLower.join(', ')}' to filters`);
-        // Use a Set to avoid duplicates if some types were already filtered
-        newFilters = Array.from(new Set([...prevFilters, ...typesToToggleLower]));
+        // Add this relationship to filters
+        console.log(`[FILTER] Adding '${relationshipLower}' to filters`);
+        newFilters = [...prevFilters, relationshipLower];
       }
       
       console.log(`[FILTER] New filters:`, newFilters);
@@ -1426,8 +1423,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
         maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
         
         // Measure each label
-        category.labels.forEach(labelInfo => { // Iterate through labels
-          tempText.text(labelInfo.label);
+        category.labels.forEach(label => {
+          tempText.text(label.label);
           const textWidth = tempText.node()?.getBBox().width || 0;
           maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
         });
@@ -1436,37 +1433,43 @@ const WordGraph: React.FC<WordGraphProps> = ({
       tempText.remove();
 
       // Calculate legend dimensions based on text measurements
+      // Be more conservative with width calculations
       const toggleRequiredWidth = toggleTextWidth + 42 + (legendPadding * 2);
       const legendWidth = Math.max(
-          maxCategoryWidth + 5,
-          maxTextWidth + textPadding + 5,
+        maxCategoryWidth + 5,
+        maxTextWidth + textPadding + 5,
         toggleRequiredWidth
       ) + (legendPadding * 2);
-        
+      
+      // Update the legend container position once we know the actual width
       legendContainer.attr("transform", `translate(${Math.max(width - legendWidth - 20, 10)}, 20)`);
 
       // Find total rows for legend layout
       let totalRows = 0;
       legendCategories.forEach(category => {
-        totalRows += 1 + category.labels.length; // Count labels
+        // Each category needs 1 row for header + rows for items
+        totalRows += 1 + category.labels.length;
       });
 
+      // Calculate legend height with more spacing
       const legendHeight = (totalRows * legendItemHeight) + 
-                            ((legendCategories.length - 1) * categorySpacing) + 
+                          ((legendCategories.length - 1) * categorySpacing) + 
                           (legendPadding * 2) + 
-                          50 + // Padding for title/instructions
-                          40; // Space for checkbox
+                          50 + // Add extra padding for the title and instructions
+                          40; // Add extra space for the checkbox option
 
-      legendContainer.append("rect")
+      // Add refined legend background rectangle
+        legendContainer.append("rect")
           .attr("width", legendWidth)
         .attr("height", legendHeight)
-          .attr("rx", 12)
-          .attr("ry", 12)
-          .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.92)" : "rgba(255, 255, 255, 0.95)")
-          .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
+        .attr("rx", 12)
+        .attr("ry", 12)
+        .attr("fill", theme === "dark" ? "rgba(28, 30, 38, 0.92)" : "rgba(255, 255, 255, 0.95)")
+        .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
         .attr("stroke-width", 1);
 
-      legendContainer.append("text") // Title
+      // Add elegant title with improved styling
+        legendContainer.append("text")
           .attr("x", legendWidth / 2)
         .attr("y", legendPadding + 8)
           .attr("text-anchor", "middle")
@@ -1475,8 +1478,9 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .attr("fill", theme === "dark" ? "#eee" : "#333")
           .text("Relationship Types");
         
-      legendContainer.append("text") // Subtitle
-          .attr("x", legendWidth / 2)
+      // Add subtitle with instructions - improved styling
+      legendContainer.append("text")
+        .attr("x", legendWidth / 2)
         .attr("y", legendPadding + 24)
         .attr("text-anchor", "middle")
         .attr("font-weight", "400")
@@ -1484,106 +1488,156 @@ const WordGraph: React.FC<WordGraphProps> = ({
         .attr("fill", theme === "dark" ? "#aaa" : "#666")
         .text("Click to filter by type");
       
-      legendContainer.append("line") // Divider
-          .attr("x1", legendPadding)
+      // Add subtle divider line after title with improved styling
+      legendContainer.append("line")
+        .attr("x1", legendPadding)
         .attr("y1", legendPadding + 32)
         .attr("x2", legendWidth - legendPadding)
         .attr("y2", legendPadding + 32)
         .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
         .attr("stroke-width", 1.5);
 
+      // Track current y position for legend items - add more space after title
       let yPos = legendPadding + 44;
 
+      // Render each category
       legendCategories.forEach((category, categoryIndex) => {
-        yPos += legendItemHeight; // Space for category header
+        // Add category header with refined styling
+        yPos += legendItemHeight;
         
-        const categoryTextElement = legendContainer.append("text") // Category Header Text
-            .attr("x", legendPadding)
-            .attr("y", yPos)
-            .attr("font-weight", "600")
-            .attr("font-size", "11.5px")
-            .attr("fill", theme === "dark" ? "#d0d0d0" : "#444")
-            .text(category.name);
+        // Add category name with improved styling
+        const categoryTextElement = legendContainer.append("text")
+          .attr("x", legendPadding)
+          .attr("y", yPos)
+          .attr("font-weight", "600")
+          .attr("font-size", "11.5px")
+          .attr("fill", theme === "dark" ? "#d0d0d0" : "#444")
+          .text(category.name);
         
         const categoryTextBBox = categoryTextElement.node()?.getBBox();
-        if (categoryTextBBox) { // Category Header Background
+        if (categoryTextBBox) {
+          // Add subtle background for category headers with improved styling
           legendContainer.append("rect")
-              .attr("x", legendPadding - 4)
-              .attr("y", yPos - categoryTextBBox.height + 2)
-              .attr("width", categoryTextBBox.width + 8)
-              .attr("height", categoryTextBBox.height + 4)
-              .attr("rx", 4)
-              .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)")
-              .lower();
+            .attr("x", legendPadding - 4)
+            .attr("y", yPos - categoryTextBBox.height + 2)
+            .attr("width", categoryTextBBox.width + 8)
+            .attr("height", categoryTextBBox.height + 4)
+            .attr("rx", 4)
+            .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)")
+            .lower(); // Move behind text
         }
         
-        // Add category items (iterate through labels)
-        category.labels.forEach(labelInfo => {
+        // Add category items
+        category.labels.forEach(label => {
+          // Calculate y position for each item
           yPos += legendItemHeight;
           
-          // Check if *all* original types for this label are filtered
-          const allOriginalTypesFiltered = labelInfo.types.every(t => 
-            filteredRelationships.includes(t.toLowerCase())
-          );
+          // Get the type info from our unique types
+          const typeInfo = legendUniqueTypes[label.label];
           
+          // Check if this relationship type is filtered out
+          const isFiltered = filteredRelationships.includes(label.label.toLowerCase());
+          
+          // Create legend entry group with hover interaction
           const entry = legendContainer.append("g")
             .attr("transform", `translate(${legendPadding}, ${yPos})`)
             .attr("class", "legend-item")
-            .attr("data-label", labelInfo.label); // Use data-label
+            .attr("data-type", label.label);
             
-          entry.append("rect") // Click/hover target
+          // Create a hover/click target rectangle
+          entry.append("rect")
             .attr("width", legendWidth - (legendPadding * 2))
             .attr("height", legendItemHeight)
             .attr("x", -5)
             .attr("y", -12)
             .attr("rx", 4)
-            .attr("fill", allOriginalTypesFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent")
+            .attr("fill", isFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent")
             .attr("cursor", "pointer")
             .on("mouseover", function(this: SVGRectElement) {
-              d3.select(this).transition().duration(200).attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)");
-              d3.select(this.parentNode as SVGGElement).select("circle").transition().duration(200).attr("r", dotRadius * 1.3);
-              d3.select(this.parentNode as SVGGElement).select("text").transition().duration(200).attr("font-weight", "600");
+              // Keep existing mouseover handler
+              d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("fill", theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)");
+              d3.select(this.parentNode as SVGGElement).select("circle")
+                .transition()
+                .duration(200)
+                .attr("r", dotRadius * 1.3);
+              d3.select(this.parentNode as SVGGElement).select("text")
+                .transition()
+                .duration(200)
+                .attr("font-weight", "600");
             })
             .on("mouseout", function(this: SVGRectElement) {
-              const isCurrentlyFiltered = labelInfo.types.every(t => filteredRelationships.includes(t.toLowerCase()));
-              d3.select(this).transition().duration(200).attr("fill", isCurrentlyFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent");
-              d3.select(this.parentNode as SVGGElement).select("circle").transition().duration(200).attr("r", dotRadius);
-              d3.select(this.parentNode as SVGGElement).select("text").transition().duration(200).attr("font-weight", "500");
+              // Keep existing mouseout handler
+              const parentGroup = d3.select(this.parentNode as SVGGElement);
+              const relType = parentGroup.attr("data-type");
+              const isCurrentlyFiltered = filteredRelationships.includes(relType.toLowerCase());
+              
+              d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("fill", isCurrentlyFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent");
+              parentGroup.select("circle")
+                .transition()
+                .duration(200)
+                .attr("r", dotRadius);
+              parentGroup.select("text")
+                .transition()
+                .duration(200)
+                .attr("font-weight", "500");
             })
             .on("click", function(this: SVGRectElement) {
-              // Pass the array of original types to the filter handler
-              handleToggleRelationshipFilter(labelInfo.types);
-              
-              // Update visual state based on whether *all* types are now filtered
-              const areNowFiltered = labelInfo.types.every(t => 
-                !filteredRelationships.includes(t.toLowerCase()) // Check against the state *before* the update applied
-              );
-              
-              d3.select(this).transition().duration(300).attr("fill", areNowFiltered ? (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)") : "transparent");
+              // Keep existing click handler
               const parentGroup = d3.select(this.parentNode as SVGGElement);
-              parentGroup.select("text").transition().duration(300).style("text-decoration", areNowFiltered ? "line-through" : "none").style("opacity", areNowFiltered ? 0.7 : 1);
-              parentGroup.select("circle").transition().duration(300).style("opacity", areNowFiltered ? 0.5 : 1);
+              const relType = parentGroup.attr("data-type");
+              
+              // Check if this relationship type is currently filtered
+              const isFiltered = filteredRelationships.includes(relType.toLowerCase());
+              
+              // Toggle filtering for this relationship type
+              console.log(`[FILTER DEBUG] Legend click: ${relType} - currently ${isFiltered ? 'filtered' : 'visible'}`);
+              handleToggleRelationshipFilter(relType);
+              
+              // Update legend item visual state
+              d3.select(this)
+                .transition()
+                .duration(300)
+                .attr("fill", isFiltered ? "transparent" : (theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)"));
+              
+              parentGroup.select("text")
+                .transition()
+                .duration(300)
+                .style("text-decoration", isFiltered ? "none" : "line-through")
+                .style("opacity", isFiltered ? 1 : 0.7);
+              
+              parentGroup.select("circle")
+                .transition()
+                .duration(300)
+                .style("opacity", isFiltered ? 1 : 0.5);
             });
           
-          entry.append("circle") // Color dot
+          // Add color dot with enhanced styling
+          entry.append("circle")
             .attr("cx", 5)
-            .attr("cy", 0)
+              .attr("cy", 0)
             .attr("r", dotRadius)
-            .attr("fill", labelInfo.color)
+            .attr("fill", label.color)
             .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
             .attr("stroke-width", 0.5)
-            .style("opacity", allOriginalTypesFiltered ? 0.5 : 1);
+            .style("opacity", isFiltered ? 0.5 : 1);
           
-          entry.append("text") // Label text
+          // Add label text with improved styling
+          entry.append("text")
             .attr("x", textPadding)
             .attr("y", 0)
             .attr("dy", ".25em")
             .attr("font-size", "11px")
             .attr("font-weight", "500")
             .attr("fill", theme === "dark" ? "#ddd" : "#333")
-            .style("text-decoration", allOriginalTypesFiltered ? "line-through" : "none")
-            .style("opacity", allOriginalTypesFiltered ? 0.7 : 1)
-            .text(labelInfo.label);
+            .style("text-decoration", isFiltered ? "line-through" : "none")
+            .style("opacity", isFiltered ? 0.7 : 1)
+            .text(label.label);
         });
       });
     } // End of !isMobile conditional block for legend 
@@ -1677,7 +1731,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
   // Update renderLegendContent to use our unique relationship types
   const renderLegendContent = useCallback(() => {
-    const { categories } = getUniqueRelationshipGroups(); // Already returns the new structure
+    const { uniqueTypes, categories } = getUniqueRelationshipGroups();
 
     return (
       <List 
@@ -1696,7 +1750,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
       >
         <ListSubheader 
           sx={{ 
-            // ... attributes ...
+            bgcolor: 'transparent', 
+            lineHeight: '24px', 
+            py: 1, 
+            fontWeight: 'medium',
+            textAlign: 'center',
+            borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)',
             position: 'sticky',
             top: 0,
             zIndex: 10
@@ -1710,7 +1769,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
             {categoryIndex > 0 && <Divider component="li" variant="middle" />}
             <ListSubheader 
               sx={{ 
-                // ... attributes ...
+                bgcolor: 'transparent', 
+                fontWeight: 'bold', 
+                lineHeight: '36px',
+                py: 0,
+                pl: 2,
+                color: theme === 'dark' ? '#d0d0d0' : '#444'
               }}
             >
               {category.name}
@@ -1720,21 +1784,19 @@ const WordGraph: React.FC<WordGraphProps> = ({
               flexWrap: 'wrap',
               px: 1
             }}>
-              {category.labels.map((labelInfo) => { // Iterate through labels
-                // Check if *all* original types for this label are filtered
-                const allOriginalTypesFiltered = labelInfo.types.every(t => 
-                  filteredRelationships.includes(t.toLowerCase())
-                );
-                const labelId = `legend-checkbox-label-${labelInfo.label.replace(/\s|\//g, '-')}`;
+              {category.labels.map((label) => {
+                const isFiltered = filteredRelationships.includes(label.label.toLowerCase());
+                const labelId = `legend-checkbox-label-${label.label}`;
+                const typeInfo = uniqueTypes[label.label];
 
                 return (
                   <ListItem
-                    key={labelInfo.label} // Use label as key
+                    key={label.label}
                     button
-                    onClick={() => handleToggleRelationshipFilter(labelInfo.types)} // Pass array of types
+                    onClick={() => handleToggleRelationshipFilter(label.label)}
                     sx={{
-                      opacity: allOriginalTypesFiltered ? 0.6 : 1,
-                      textDecoration: allOriginalTypesFiltered ? 'line-through' : 'none',
+                      opacity: isFiltered ? 0.6 : 1,
+                      textDecoration: isFiltered ? 'line-through' : 'none',
                       py: 0.5,
                       px: 1,
                       width: { xs: '100%', sm: '50%', md: '33.333%' }, 
@@ -1749,16 +1811,15 @@ const WordGraph: React.FC<WordGraphProps> = ({
                           width: 12,
                           height: 12,
                           borderRadius: '50%',
-                          bgcolor: labelInfo.color, // Use label's color
+                          bgcolor: label.color,
                           display: 'inline-block',
-                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)',
-                          opacity: allOriginalTypesFiltered ? 0.5 : 1
+                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)'
                         }}
                       />
                     </ListItemIcon>
                     <ListItemText 
                       id={labelId} 
-                      primary={labelInfo.label} // Use label's text
+                      primary={label.label} 
                       primaryTypographyProps={{
                         noWrap: true,
                         overflow: 'hidden',
