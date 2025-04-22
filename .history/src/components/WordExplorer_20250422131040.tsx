@@ -33,7 +33,6 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { alpha } from '@mui/material/styles';
 
 const isDevMode = () => {
   // Check if we have a URL parameter for showing debug tools
@@ -1204,24 +1203,9 @@ const WordExplorer: React.FC = () => {
              height: '40px',
              ml: 0.5,
              whiteSpace: 'nowrap',
-             bgcolor: 'var(--accent-color)', 
-             color: 'var(--button-text-color)',
-             fontWeight: 'normal', 
-             borderRadius: '8px', 
-             boxShadow: 'none',
-             transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
-             '&:hover': {
-               bgcolor: themeName === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9),
-               color: '#ffffff',
-               boxShadow: 'none' 
-             },
-             '&:active': {
-               transform: 'scale(0.95)'
-             },
-             '&.Mui-disabled': {
-                bgcolor: 'action.disabledBackground',
-                color: 'action.disabled'
-             }
+             bgcolor: 'var(--accent-color)', color: 'var(--button-text-color)',
+             fontWeight: 'normal', borderRadius: '8px', boxShadow: 'none',
+             '&:hover': { bgcolor: 'var(--secondary-color)', color: '#ffffff', boxShadow: 'none' }
            }}
          >
            {isRandomLoading ? <CircularProgress size={20} color="inherit"/> : '🎲 Random Word'}
@@ -1360,18 +1344,14 @@ const WordExplorer: React.FC = () => {
               sx={{ 
                 minWidth: 'auto', px: 1, // Allow shrinking
                 height: 38, // Match TextField height
-                bgcolor: 'var(--accent-color)', 
-                color: 'var(--button-text-color)',
-                transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
+                bgcolor: 'var(--accent-color)', // Use theme variable
+                color: 'var(--button-text-color)', // Use theme variable
                 '&:hover': { 
-                  bgcolor: themeName === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9)
+                  bgcolor: 'var(--secondary-color)' // Use theme variable for hover
                 },
-                '&:active': {
-                  transform: 'scale(0.95)'
-                },
-                '&.Mui-disabled': {
-                  bgcolor: 'action.disabledBackground',
-                  color: 'action.disabled'
+                '&.Mui-disabled': { // Keep consistent disabled style
+                  bgcolor: themeName === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+                  color: themeName === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)',
                 }
               }}
             >
