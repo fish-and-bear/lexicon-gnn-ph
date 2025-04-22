@@ -184,12 +184,14 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     onFetchEtymology,
     onWordClick,
     isMobile,
-    isLoading
+    isLoading // Destructure isLoading
   },
-  ref
+  ref // Accept the ref as the second argument
 ) => {
   const theme = useTheme();
+  // const isWideScreen = useMediaQuery(theme.breakpoints.up('md')); // Replace with isMobile prop
   const isDarkMode = theme.palette.mode === 'dark';
+
   const [activeTab, setActiveTab] = useState<string>('definitions');
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
@@ -589,10 +591,19 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       return <Alert severity="info">No definitions available for this word.</Alert>;
     }
 
+    // Group definitions first by POS, then by source
     const definitionsByPosThenSource: { [pos: string]: { [source: string]: Definition[] } } = {};
+    
     wordData.definitions.forEach((def: Definition) => {
+      // Grouping Key Logic:
+      // 1. Prefer English name (name_en) if available.
+      // 2. Fallback to POS code if name_en is missing.
+      // 3. Default to 'Other' if neither is available.
       const posKey = def.part_of_speech?.name_en || def.part_of_speech?.code || 'Other';
+      
+      // Handle cases where sources might be null or empty
       const sourceKey = (def.sources && def.sources.length > 0) ? def.sources[0] : 'Unknown Source'; 
+      
       if (!definitionsByPosThenSource[posKey]) {
         definitionsByPosThenSource[posKey] = {};
       }
@@ -603,52 +614,88 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     });
 
     return (
-      // Use pt instead of wrapping Box for top padding
-      <Box sx={{ pt: 1, width: '100%', maxWidth: '100%' }}> 
-        {Object.entries(definitionsByPosThenSource).map(([posName, defsBySource]) => {
+      <Box sx={{ pt: theme.spacing(1), width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+        {Object.entries(definitionsByPosThenSource).map(([posName, defsBySource], posIndex, posArray) => {
+          console.log(`[DefinitionsTab] Rendering POS: ${posName}`, defsBySource); // Log POS group
+          const isLastPosGroup = posIndex === posArray.length - 1;
           return (
-          <Box key={posName} sx={{ mb: 3, width: '100%', maxWidth: '100%' }}>
-            {/* Part of Speech Header - English/Code Only */}
+          <Box 
+              key={posName} 
+              sx={{
+                // Remove bottom margin only on the very last POS group
+                mb: isLastPosGroup ? 0 : theme.spacing(3), 
+                width: '100%', 
+                maxWidth: '100%'
+              }} 
+          >
+            {/* Part of Speech Header - Modify to include TL name */}
             <Typography 
               variant="subtitle1" 
               component="h3" 
               sx={{ 
                 color: graphColors.main, 
                 fontWeight: 600,
-                pb: 1,
+                pb: theme.spacing(1),
                 borderBottom: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
-                mb: 1.5,
+                mb: theme.spacing(1.5),
                 width: '100%',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis'
               }}
             >
-              {posName} 
+              {(() => {
+                // Determine the primary POS name (English or Code)
+                let primaryPosDisplay = posName; // posName already handles fallback logic
+                let tagalogPosDisplay = null;
+
+                // Check if the first definition in this group has TL name
+                const firstDef = Object.values(defsBySource)[0]?.[0];
+                if (firstDef?.part_of_speech?.name_tl && firstDef.part_of_speech.name_tl !== primaryPosDisplay) {
+                  tagalogPosDisplay = firstDef.part_of_speech.name_tl;
+                }
+
+                if (tagalogPosDisplay) {
+                  return (
+                    <>
+                      {primaryPosDisplay} 
+                      <Typography component="span" variant="body2" sx={{ color: 'text.secondary', ml: 1, fontWeight: 'normal' }}>
+                        ({tagalogPosDisplay})
+                      </Typography>
+                    </>
+                  );
+                } else {
+                  return primaryPosDisplay;
+                }
+              })()}
             </Typography>
             
             {/* Iterate through definitions grouped by source */}
             {Object.entries(defsBySource).map(([sourceName, defs]) => {
-              // Filtering logic
+              console.log(`[DefinitionsTab]   Rendering Source: ${sourceName}`, defs); // Log Source group
+              
+              // *** FILTERING LOGIC START ***
               const seenBaseDefinitions = new Set<string>();
               const filteredDefs = defs.filter((def) => {
                 const baseText = stripLeadingNumber(def.text);
                 if (seenBaseDefinitions.has(baseText)) {
-                  return false; 
+                  console.log(`[DefinitionsTab]     Filtering duplicate def ID ${def.id}: ${baseText}`);
+                  return false; // Already seen this base definition text
                 }
                 seenBaseDefinitions.add(baseText);
-                return true; 
+                return true; // Keep the first instance
               });
+              // *** FILTERING LOGIC END ***
               
-              if (filteredDefs.length === 0) return null;
+              // Render only the filtered definitions
+              if (filteredDefs.length === 0) return null; // Don't render empty source groups
 
               return (
-              <Box key={sourceName} sx={{ mb: 2, width: '100%', maxWidth: '100%' }}>
+              <Box key={sourceName} sx={{ mb: theme.spacing(2), width: '100%', maxWidth: '100%' }}> {/* Add margin between source groups */}
                 <List disablePadding>
+                  {/* *** Use filteredDefs instead of defs *** */}
                   {filteredDefs.map((def: Definition, index: number) => {
                     const isLastDefinitionForSource = index === filteredDefs.length - 1;
-                    const tagalogPos = def.part_of_speech?.name_tl;
-                    const showTagalogPos = tagalogPos && tagalogPos !== posName;
-
+                    console.log(`[DefinitionsTab]     Rendering def ID ${def.id}: Last? ${isLastDefinitionForSource}, Sources:`, def.sources); // Log each definition
                     return (
                     <ListItem 
                       key={def.id || index} 
@@ -656,40 +703,27 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                       sx={{ 
                         flexDirection: 'column', 
                         gap: 0.5, 
-                        py: 1.5, 
+                        py: theme.spacing(1.5), 
                         pl: 0, 
-                        position: 'relative', 
-                        pb: isLastDefinitionForSource && sourceName !== 'Unknown Source' ? 3 : 1.5, 
+                        position: 'relative', // Needed for absolute positioning of the chip
+                        pb: isLastDefinitionForSource && sourceName !== 'Unknown Source' ? theme.spacing(3) : 1.5, // Add extra padding if chip is present
                       }}
                     >
+
                       {/* Definition text */}
                       <ListItemText
                         primaryTypographyProps={{ 
                           variant: 'body1', 
                           fontWeight: 500, 
-                          pl: 0.5 
+                          // Add left padding if POS is displayed to align text
+                          pl: def.part_of_speech ? 0.5 : 0 
                         }}
                         primary={def.text}
                       />
-
-                      {/* Display Tagalog POS if available and different */}
-                      {showTagalogPos && (
-                        <Typography 
-                          variant="caption" 
-                          sx={{ 
-                            pl: 0.5, // Indent slightly
-                            mt: 0.5, // Add space below definition text
-                            color: 'text.secondary', 
-                            fontStyle: 'italic' 
-                          }}
-                        >
-                          (TL: {tagalogPos})
-                        </Typography>
-                      )}
                       
-                      {/* Examples */}
+                      {/* Examples with quote styling */}
                       {def.examples && def.examples.length > 0 && (
-                        <Box sx={{ pl: 2, mb: 1 }}>
+                        <Box sx={{ pl: theme.spacing(2), mb: theme.spacing(1) }}>
                           {def.examples.map((example, exIndex) => (
                             <Typography 
                               key={exIndex} 
@@ -699,7 +733,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                 color: 'text.secondary',
                                 mb: exIndex < def.examples.length - 1 ? 0.5 : 0,
                                 position: 'relative',
-                                pl: 3,
+                                pl: theme.spacing(3),
                                 '&:before': {
                                   content: '"""',
                                   position: 'absolute',
@@ -717,9 +751,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         </Box>
                       )}
                       
-                      {/* Usage notes */}
+                      {/* Usage notes if available */}
                       {def.usage_notes && def.usage_notes.length > 0 && (
-                        <Box sx={{ pl: 1, mb: 1 }}>
+                        <Box sx={{ pl: theme.spacing(1), mb: theme.spacing(1) }}>
                           <Typography 
                             variant="caption" 
                             component="div" 
@@ -739,14 +773,14 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         </Box>
                       )}
                       
-                      {/* Definition tags */}
+                      {/* Definition metadata/tags if available */}
                       {def.tags && def.tags.length > 0 && (
                         <Stack 
                           direction="row" 
                           spacing={0.5} 
                           useFlexGap 
                           flexWrap="wrap" 
-                          sx={{ mt: 0.5 }}
+                          sx={{ mt: theme.spacing(0.5) }}
                         >
                           {def.tags.map((tag, tagIndex) => (
                             <Chip
@@ -769,7 +803,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         </Stack>
                       )}
 
-                      {/* Source Chip */}
+                      {/* Display Source Chip only once after the LAST definition, bottom right */}
                       {isLastDefinitionForSource && sourceName !== 'Unknown Source' && (
                         <Chip
                           label={`${sourceName}`}
@@ -797,15 +831,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         />
                       )}
                     </ListItem>
-                    );
-                  })}
+                  );})}
                 </List>
               </Box>
-            );
-          })}
+            )})}
           </Box>
-        );
-      })}
+        )})}
       </Box>
     );
   };
@@ -1869,36 +1900,36 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   };
   // *** END: Re-insert renderSourcesInfoTab ***
 
-  // --- Main Component Return --- 
+  // --- Main Component Return ---
   if (!wordData?.id) {
-    // Placeholder...
+    // Placeholder if no word data
     return (
-        <Paper elevation={1} sx={{ 
-            p: 3, 
-            height: '100%', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : 'background.default',
-            color: isDarkMode ? 'var(--text-color-secondary)' : 'text.secondary'
-        }}>
-            <Typography color={isDarkMode ? 'inherit' : 'text.secondary'}>Select a word to see details.</Typography>
-        </Paper>
+      <Paper elevation={1} sx={{ 
+          p: 3, 
+          height: '100%', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : 'background.default',
+          color: isDarkMode ? 'var(--text-color-secondary)' : 'text.secondary'
+      }}>
+          <Typography color={isDarkMode ? 'inherit' : 'text.secondary'}>Select a word to see details.</Typography>
+      </Paper>
     );
   }
             
-  if (isLoading && !wordData?.id) { 
-    // Loading indicator...
+  // Add loading indicator if isLoading is true
+  if (isLoading && !wordData?.id) { // Show loading only if data isn't already present
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', p: 3 }}>
-            <CircularProgress />
-            <Typography sx={{ ml: 2 }} color="text.secondary">Loading details...</Typography>
-        </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', p: 3 }}>
+        <CircularProgress />
+        <Typography sx={{ ml: 2 }} color="text.secondary">Loading details...</Typography>
+      </Box>
     );
   }
             
-  // Main Render Logic
   return (
+    // Main Wrapper Box
     <Box 
       ref={ref} 
       className={`word-details-container ${theme.palette.mode}`}
@@ -1910,44 +1941,58 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         bgcolor: 'background.default',
         width: '100%', 
         maxWidth: 'none', 
-        p: 0, // No padding on the outermost container
+        p: 0, 
         m: 0 
       }}
     >
       {/* Header Section */} 
-      <Box sx={{ 
-          p: isMobile ? 1.5 : 0, // Desktop padding is 0
-          borderBottom: 1, 
-          borderColor: 'divider',
-          flexShrink: 0 
-        }}>
-        {renderHeader()}
-      </Box>
+        height: '100%', // Ensure it tries to fill height
+        overflow: 'hidden', // Prevent content overflow issues at this level
+        bgcolor: 'background.default', // Use theme background
+        width: '100%', // <<< ENSURE FULL WIDTH
+        maxWidth: 'none', // <<< REMOVE MAX WIDTH LIMIT
+        p: 0, // <<< REMOVE PADDING AT THIS LEVEL (padding should be inside sections)
+        m: 0 // <<< REMOVE MARGIN AT THIS LEVEL
+      }}
+    >
+      {isLoading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', p: 3 }}>
+          <CircularProgress />
+        </Box>
+      )}
+      {!isLoading && wordData && (
+        <>
+          {/* Header Section - Remove padding for desktop */ 
+          <Box sx={{ 
+              p: isMobile ? 1.5 : 0, // Set desktop padding to 0
+              borderBottom: 1, 
+              borderColor: 'divider' 
+            }}>
+            {renderHeader()}
+          </Box>
 
-      {/* Main Content Area (Tabs + Panel) */} 
-      <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden', height: '100%' }}>
-        
-        {/* Vertical Tabs (Desktop) */} 
-        {!isMobile && (
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={activeTab}
-            onChange={handleTabChange}
-            aria-label="Word details sections"
-            sx={{
-              borderRight: 1,
-              borderColor: 'divider',
-              minWidth: 160, 
-              bgcolor: 'background.paper',
-              flexShrink: 0,
-               '& .MuiTab-root': {
+          {/* Tabs and Content Section */}
+          <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
+            {/* Vertical Tabs for Desktop */}
+            {!isMobile && (
+              <Tabs
+                orientation="vertical"
+                variant="scrollable"
+                value={activeTab}
+                onChange={handleTabChange}
+                aria-label="Word details sections"
+                sx={{
+                  borderRight: 1,
+                  borderColor: 'divider',
+                  minWidth: 160, // Give tabs a reasonable min-width
+                  bgcolor: 'background.paper',
+                  '& .MuiTab-root': {
                     textTransform: 'none',
                     fontWeight: theme.typography.fontWeightRegular,
                     fontSize: theme.typography.pxToRem(14),
-                    minHeight: 48, 
+                    minHeight: 48, // Adjust height
                     justifyContent: 'flex-start',
-                    pl: 2, 
+                    pl: 2, // Add padding
                     '&.Mui-selected': {
                       fontWeight: theme.typography.fontWeightMedium,
                       color: 'primary.main',
@@ -1957,67 +2002,67 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                     },
                   },
                   '& .MuiTabs-indicator': {
-                    left: 0, 
-                    width: 3, 
+                    left: 0, // Move indicator to the left
+                    width: 3, // Make indicator thicker
                     borderRadius: '3px 3px 0 0',
                   },
-            }}
-          >
-            <Tab label="Definitions" value="definitions" />
-            <Tab label="Relations" value="relations" />
-            <Tab label="Etymology" value="etymology" />
-            <Tab label="Forms" value="forms" />
-            <Tab label="Sources" value="sources" />
-          </Tabs>
-        )} 
+                }}
+              >
+                <Tab label="Definitions" value="definitions" />
+                <Tab label="Relations" value="relations" />
+                <Tab label="Etymology" value="etymology" />
+                <Tab label="Forms" value="forms" />
+                <Tab label="Sources" value="sources" />
+                {/* <Tab label="Debug" value="debug" /> */}
+              </Tabs>
+            )} { /* End of !isMobile check */} 
 
-        {/* Tab Content Panel (Scrollable) */} 
-        <Box
-          role="tabpanel"
-          hidden={false} // Keep it always rendered for simplicity
-          sx={{
-            flexGrow: 1, 
-            overflowY: 'auto', 
-            p: isMobile ? 1.5 : 2, // Apply padding here (desktop reduced)
-            width: '100%', 
-            minWidth: 0, 
-          }}
-        >
-          {/* Conditionally render content based on activeTab */} 
-          {activeTab === 'definitions' && renderDefinitionsTab()}
-          {activeTab === 'relations' && renderRelationsTab()}
-          {activeTab === 'etymology' && renderEtymologyTab()}
-          {activeTab === 'forms' && renderFormsAndTemplatesTab()}
-          {activeTab === 'sources' && renderSourcesInfoTab()}
-        </Box>
+            {/* Tab Content Area - Takes remaining space and scrolls - Slightly reduce desktop padding */}
+            <Box
+              sx={{
+                flexGrow: 1,
+                overflowY: 'auto', // Allow vertical scrolling for content
+                p: isMobile ? 1.5 : 2, // Reduce desktop padding slightly (e.g., from 2.5 to 2)
+                width: '100%', // Ensure it takes available width
+              }}
+            >
+              {activeTab === 'definitions' && renderDefinitionsTab()}
+              {activeTab === 'relations' && renderRelationsTab()}
+              {activeTab === 'etymology' && renderEtymologyTab()}
+              {activeTab === 'forms' && renderFormsAndTemplatesTab()}
+              {activeTab === 'sources' && renderSourcesInfoTab()}
+              {/* {activeTab === 'debug' && renderDebugTab()} */}
+            </Box> { /* End of Tab Content Area Box */} 
+          </Box> { /* End of Tabs and Content Section Box */} 
 
-      </Box> { /* End Main Content Area Box */}
-
-      {/* Horizontal Tabs (Mobile) */} 
-      {isMobile && (
-        <Paper square sx={{ borderTop: 1, borderColor: 'divider', flexShrink: 0 }}>
-          <Tabs
-            value={activeTab}
-            onChange={handleTabChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            allowScrollButtonsMobile
-            aria-label="Word details sections mobile"
-            sx={{ 
-              '& .MuiTab-root': { fontSize: '0.75rem', minWidth: 'auto', p: 1 },
-            }}
-          >
-            <Tab label="Defs" value="definitions" />
-            <Tab label="Rels" value="relations" />
-            <Tab label="Etym" value="etymology" />
-            <Tab label="Forms" value="forms" />
-            <Tab label="Srcs" value="sources" />
-          </Tabs>
-        </Paper>
-      )}
-    </Box> // End Main Wrapper Box
+          {/* Horizontal Tabs for Mobile */} 
+          {isMobile && (
+            <Paper square sx={{ borderTop: 1, borderColor: 'divider', position: 'sticky', bottom: 0, zIndex: 1 }}>
+              <Tabs
+                value={activeTab}
+                onChange={handleTabChange}
+                variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
+                aria-label="Word details sections mobile"
+                sx={{ 
+                  '& .MuiTab-root': { fontSize: '0.75rem', minWidth: 'auto', p: 1 },
+                }}
+              >
+                <Tab label="Defs" value="definitions" />
+                <Tab label="Rels" value="relations" />
+                <Tab label="Etym" value="etymology" />
+                <Tab label="Forms" value="forms" />
+                <Tab label="Srcs" value="sources" />
+                {/* <Tab label="Debug" value="debug" /> */}
+              </Tabs>
+            </Paper>
+          )} { /* End of isMobile check */} 
+        </> { /* End of !isLoading && wordData fragment */} 
+      )} { /* End of !isLoading && wordData condition */} 
+    </Box> { /* End of main wrapper Box */} 
   );
-}); // End forwardRef
+});
 
 // Export the component with memoization
 export default React.memo(WordDetailsComponent);

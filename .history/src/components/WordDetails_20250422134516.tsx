@@ -769,7 +769,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         </Stack>
                       )}
 
-                      {/* Source Chip */}
+                      {/* Display Source Chip only once after the LAST definition, bottom right */}
                       {isLastDefinitionForSource && sourceName !== 'Unknown Source' && (
                         <Chip
                           label={`${sourceName}`}
@@ -797,15 +797,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         />
                       )}
                     </ListItem>
-                    );
-                  })}
+                  );})}
                 </List>
               </Box>
-            );
-          })}
+            )})}
           </Box>
-        );
-      })}
+        )})}
       </Box>
     );
   };
@@ -1869,36 +1866,36 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   };
   // *** END: Re-insert renderSourcesInfoTab ***
 
-  // --- Main Component Return --- 
+  // --- Main Component Return ---
   if (!wordData?.id) {
-    // Placeholder...
+    // Placeholder if no word data
     return (
-        <Paper elevation={1} sx={{ 
-            p: 3, 
-            height: '100%', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : 'background.default',
-            color: isDarkMode ? 'var(--text-color-secondary)' : 'text.secondary'
-        }}>
-            <Typography color={isDarkMode ? 'inherit' : 'text.secondary'}>Select a word to see details.</Typography>
-        </Paper>
+      <Paper elevation={1} sx={{ 
+          p: 3, 
+          height: '100%', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : 'background.default',
+          color: isDarkMode ? 'var(--text-color-secondary)' : 'text.secondary'
+      }}>
+          <Typography color={isDarkMode ? 'inherit' : 'text.secondary'}>Select a word to see details.</Typography>
+      </Paper>
     );
   }
             
-  if (isLoading && !wordData?.id) { 
-    // Loading indicator...
+  // Add loading indicator if isLoading is true
+  if (isLoading && !wordData?.id) { // Show loading only if data isn't already present
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', p: 3 }}>
-            <CircularProgress />
-            <Typography sx={{ ml: 2 }} color="text.secondary">Loading details...</Typography>
-        </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', p: 3 }}>
+        <CircularProgress />
+        <Typography sx={{ ml: 2 }} color="text.secondary">Loading details...</Typography>
+      </Box>
     );
   }
             
-  // Main Render Logic
   return (
+    // Main Wrapper Box
     <Box 
       ref={ref} 
       className={`word-details-container ${theme.palette.mode}`}
@@ -1910,114 +1907,127 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         bgcolor: 'background.default',
         width: '100%', 
         maxWidth: 'none', 
-        p: 0, // No padding on the outermost container
+        p: 0, 
         m: 0 
       }}
     >
       {/* Header Section */} 
-      <Box sx={{ 
-          p: isMobile ? 1.5 : 0, // Desktop padding is 0
-          borderBottom: 1, 
-          borderColor: 'divider',
-          flexShrink: 0 
-        }}>
-        {renderHeader()}
-      </Box>
-
-      {/* Main Content Area (Tabs + Panel) */} 
-      <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden', height: '100%' }}>
-        
-        {/* Vertical Tabs (Desktop) */} 
-        {!isMobile && (
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={activeTab}
-            onChange={handleTabChange}
-            aria-label="Word details sections"
-            sx={{
-              borderRight: 1,
-              borderColor: 'divider',
-              minWidth: 160, 
-              bgcolor: 'background.paper',
-              flexShrink: 0,
-               '& .MuiTab-root': {
-                    textTransform: 'none',
-                    fontWeight: theme.typography.fontWeightRegular,
-                    fontSize: theme.typography.pxToRem(14),
-                    minHeight: 48, 
-                    justifyContent: 'flex-start',
-                    pl: 2, 
-                    '&.Mui-selected': {
-                      fontWeight: theme.typography.fontWeightMedium,
-                      color: 'primary.main',
-                    },
-                    '&:hover': {
-                      backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                    },
-                  },
-                  '& .MuiTabs-indicator': {
-                    left: 0, 
-                    width: 3, 
-                    borderRadius: '3px 3px 0 0',
-                  },
-            }}
-          >
-            <Tab label="Definitions" value="definitions" />
-            <Tab label="Relations" value="relations" />
-            <Tab label="Etymology" value="etymology" />
-            <Tab label="Forms" value="forms" />
-            <Tab label="Sources" value="sources" />
-          </Tabs>
-        )} 
-
-        {/* Tab Content Panel (Scrollable) */} 
-        <Box
-          role="tabpanel"
-          hidden={false} // Keep it always rendered for simplicity
-          sx={{
-            flexGrow: 1, 
-            overflowY: 'auto', 
-            p: isMobile ? 1.5 : 2, // Apply padding here (desktop reduced)
-            width: '100%', 
-            minWidth: 0, 
-          }}
-        >
-          {/* Conditionally render content based on activeTab */} 
-          {activeTab === 'definitions' && renderDefinitionsTab()}
-          {activeTab === 'relations' && renderRelationsTab()}
-          {activeTab === 'etymology' && renderEtymologyTab()}
-          {activeTab === 'forms' && renderFormsAndTemplatesTab()}
-          {activeTab === 'sources' && renderSourcesInfoTab()}
+        height: '100%', // Ensure it tries to fill height
+        overflow: 'hidden', // Prevent content overflow issues at this level
+        bgcolor: 'background.default', // Use theme background
+        width: '100%', // <<< ENSURE FULL WIDTH
+        maxWidth: 'none', // <<< REMOVE MAX WIDTH LIMIT
+        p: 0, // <<< REMOVE PADDING AT THIS LEVEL (padding should be inside sections)
+        m: 0 // <<< REMOVE MARGIN AT THIS LEVEL
+      }}
+    >
+      {isLoading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', p: 3 }}>
+          <CircularProgress />
         </Box>
-
-      </Box> { /* End Main Content Area Box */}
-
-      {/* Horizontal Tabs (Mobile) */} 
-      {isMobile && (
-        <Paper square sx={{ borderTop: 1, borderColor: 'divider', flexShrink: 0 }}>
-          <Tabs
-            value={activeTab}
-            onChange={handleTabChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            allowScrollButtonsMobile
-            aria-label="Word details sections mobile"
-            sx={{ 
-              '& .MuiTab-root': { fontSize: '0.75rem', minWidth: 'auto', p: 1 },
-            }}
-          >
-            <Tab label="Defs" value="definitions" />
-            <Tab label="Rels" value="relations" />
-            <Tab label="Etym" value="etymology" />
-            <Tab label="Forms" value="forms" />
-            <Tab label="Srcs" value="sources" />
-          </Tabs>
-        </Paper>
       )}
-    </Box> // End Main Wrapper Box
+      {!isLoading && wordData && (
+        <>
+          {/* Header Section - Remove padding for desktop */ 
+          <Box sx={{ 
+              p: isMobile ? 1.5 : 0, // Set desktop padding to 0
+              borderBottom: 1, 
+              borderColor: 'divider' 
+            }}>
+            {renderHeader()}
+          </Box>
+
+          {/* Main Content Area (Tabs + Panel) */} 
+          <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden', height: '100%' }}>
+            
+            {/* Vertical Tabs (Desktop) */} 
+            {!isMobile && (
+              <Tabs
+                orientation="vertical"
+                variant="scrollable"
+                value={activeTab}
+                onChange={handleTabChange}
+                aria-label="Word details sections"
+                sx={{
+                  borderRight: 1,
+                  borderColor: 'divider',
+                  minWidth: 160, 
+                  bgcolor: 'background.paper',
+                  flexShrink: 0,
+                   '& .MuiTab-root': {
+                        textTransform: 'none',
+                        fontWeight: theme.typography.fontWeightRegular,
+                        fontSize: theme.typography.pxToRem(14),
+                        minHeight: 48, 
+                        justifyContent: 'flex-start',
+                        pl: 2, 
+                        '&.Mui-selected': {
+                          fontWeight: theme.typography.fontWeightMedium,
+                          color: 'primary.main',
+                        },
+                        '&:hover': {
+                          backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                        },
+                      },
+                      '& .MuiTabs-indicator': {
+                        left: 0, 
+                        width: 3, 
+                        borderRadius: '3px 3px 0 0',
+                      },
+                }}
+              >
+                <Tab label="Definitions" value="definitions" />
+                <Tab label="Relations" value="relations" />
+                <Tab label="Etymology" value="etymology" />
+                <Tab label="Forms" value="forms" />
+                <Tab label="Sources" value="sources" />
+              </Tabs>
+            )} {/* Correctly closed conditional block */}
+
+            {/* Tab Content Panel (Scrollable) */} 
+            <Box
+              sx={{
+                flexGrow: 1,
+                overflowY: 'auto', // Allow vertical scrolling for content
+                p: isMobile ? 1.5 : 2, // Reduce desktop padding slightly (e.g., from 2.5 to 2)
+                width: '100%', // Ensure it takes available width
+              }}
+            >
+              {activeTab === 'definitions' && renderDefinitionsTab()}
+              {activeTab === 'relations' && renderRelationsTab()}
+              {activeTab === 'etymology' && renderEtymologyTab()}
+              {activeTab === 'forms' && renderFormsAndTemplatesTab()}
+              {activeTab === 'sources' && renderSourcesInfoTab()}
+            </Box> { /* End of Tab Content Panel Box */ }
+          </Box> { /* End of Main Content Area Box */ }
+
+          {/* Horizontal Tabs for Mobile */} 
+          {isMobile && (
+            <Paper square sx={{ borderTop: 1, borderColor: 'divider', position: 'sticky', bottom: 0, zIndex: 1 }}>
+              <Tabs
+                value={activeTab}
+                onChange={handleTabChange}
+                variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
+                aria-label="Word details sections mobile"
+                sx={{ 
+                  '& .MuiTab-root': { fontSize: '0.75rem', minWidth: 'auto', p: 1 },
+                }}
+              >
+                <Tab label="Defs" value="definitions" />
+                <Tab label="Rels" value="relations" />
+                <Tab label="Etym" value="etymology" />
+                <Tab label="Forms" value="forms" />
+                <Tab label="Srcs" value="sources" />
+              </Tabs>
+            </Paper>
+          )} { /* End of isMobile check */} 
+        </> { /* End of !isLoading && wordData fragment */} 
+      )} { /* End of !isLoading && wordData condition */} 
+    </Box> { /* End of main wrapper Box */} 
   );
-}); // End forwardRef
+});
 
 // Export the component with memoization
 export default React.memo(WordDetailsComponent);
