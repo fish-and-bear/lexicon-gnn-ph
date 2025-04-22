@@ -104,54 +104,35 @@ const WordExplorer: React.FC = () => {
   useEffect(() => {
     // Add null check
     if (detailsContainerRef.current) {
-      // Check if the ref has the getSize method (likely from ImperativePanelHandle)
-      // before trying to access style on a potential underlying element
-      if (typeof detailsContainerRef.current.getSize === 'function') {
-          // We can't reliably get the underlying DOM node's style this way.
-          // If resizing needs to be restored, it should likely use Panel API methods.
-          // For now, just log that we have the handle.
-          console.log("Panel ref is available, but restoring width via direct style access is unreliable.");
-          // const savedWidth = localStorage.getItem('wordDetailsWidth');
-          // if (savedWidth && !isNaN(parseFloat(savedWidth))) {
-          //   // This won't work reliably: detailsContainerRef.current.style.width = `${savedWidth}px`;
-          // }
+      const savedWidth = localStorage.getItem('wordDetailsWidth');
+      // Ensure savedWidth is valid before applying
+      if (savedWidth && !isNaN(parseFloat(savedWidth))) {
+        detailsContainerRef.current.style.width = `${savedWidth}px`;
       }
     }
   }, []);
 
   useEffect(() => {
-    // Keep the null check
+    // Add null check
     if (!detailsContainerRef.current) return;
     
-    // We need the actual DOM element to observe, not the Panel handle.
-    // Let's try to find the element using the Panel's ID.
-    // Note: This relies on the Panel rendering a DOM element with this ID.
-    const panelElement = document.getElementById("details-panel");
+    const elementToObserve = detailsContainerRef.current;
 
-    if (!panelElement) {
-      console.warn("Could not find details panel element for ResizeObserver");
-      return; // Exit if element not found
-    }
-    
     const resizeObserver = new ResizeObserver(entries => {
       for (const entry of entries) {
-        if (entry.target === panelElement) {
+        if (entry.target === elementToObserve) {
           const newWidth = entry.contentRect.width;
-          // Persist width in localStorage (using size percentage might be better)
-          localStorage.setItem('wordDetailsWidthPercent', detailsContainerRef.current?.getSize().toString() ?? '40'); 
+          localStorage.setItem('wordDetailsWidth', newWidth.toString());
         }
       }
     });
     
-    resizeObserver.observe(panelElement);
+    resizeObserver.observe(elementToObserve);
     
     return () => {
-        // Check if panelElement was found before trying to unobserve
-        if (panelElement) {
-          resizeObserver.unobserve(panelElement);
-        }
+      resizeObserver.unobserve(elementToObserve);
     };
-  }, []); // Dependencies remain empty
+  }, []);
 
   const normalizeInput = (input: string) => unidecode(input.trim().toLowerCase());
 
@@ -1595,22 +1576,20 @@ const WordExplorer: React.FC = () => {
             <PanelResizeHandle className="resize-handle" />
             <Panel 
               minSize={20} 
-              id="details-panel" // ID used by ResizeObserver effect
+              id="details-panel" 
               className="details-panel-container" 
-              ref={detailsContainerRef} // Restore ref for Panel handle
               order={2}
-              // Restore default size from localStorage if needed
-              defaultSize={parseInt(localStorage.getItem('wordDetailsWidthPercent') || '40', 10)}
             >
-               {/* Ref is no longer on this div */}
+               {/* Apply styles and ref directly to the div wrapping WordDetails */}
                <div 
+                 ref={detailsContainerRef}
                  style={{ 
                    height: '100%', 
                    width: '100%', 
                    overflowY: 'auto', 
-                   position: 'relative' 
+                   position: 'relative' // Added for potential absolute positioning inside
                  }}
-                 className="details-content"
+                 className="details-content" // Keep class if needed for other styles, padding is removed
                >
                  {wordData && (
                     // No extra wrapper div needed here
