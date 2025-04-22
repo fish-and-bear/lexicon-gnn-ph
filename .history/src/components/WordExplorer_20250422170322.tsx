@@ -534,9 +534,10 @@ const WordExplorer: React.FC = () => {
 
   const handleRandomWord = useCallback(async () => {
     setError(null);
-    setIsRandomLoading(true); // Set button loading immediately
+    setIsRandomLoading(true);
     setIsLoadingDetails(true); // Start details loading indicator
-    // setWordNetwork(null); // <-- DO NOT CLEAR HERE
+    // Don't clear wordNetwork immediately, wait for details fetch
+    // setWordNetwork(null);
     // setSelectedNode(null); 
 
     try {
@@ -569,11 +570,11 @@ const WordExplorer: React.FC = () => {
 
       // NOW start fetching network and etymology in the background
       // --- DO NOT CLEAR OLD DATA --- 
-      // setWordNetwork(null); // <-- DO NOT CLEAR HERE
-      // setEtymologyTree(null); // <-- DO NOT CLEAR HERE
+      // setWordNetwork(null); 
+      // setEtymologyTree(null);
 
       // Fetch network data (don't await)
-      setIsLoadingNetwork(true); // Start network loading indicator BEFORE fetch
+      setIsLoadingNetwork(true); // Start network loading indicator
       fetchWordNetworkData(networkIdentifier, depth, breadth)
         .then(networkData => {
           if (networkData && networkData.nodes && networkData.edges) {
@@ -583,7 +584,7 @@ const WordExplorer: React.FC = () => {
         .catch(err => {
           console.error("Error fetching network data for random word:", err);
           setError("Failed to load word network. Please try again.");
-          // setWordNetwork(null); // Don't clear on error either, keep stale potentially
+          setWordNetwork(null); // Ensure network is null on error
         })
         .finally(() => {
           setIsLoadingNetwork(false); // Stop network loading indicator regardless of outcome
@@ -591,7 +592,7 @@ const WordExplorer: React.FC = () => {
 
       // Fetch etymology tree (don't await)
       if (wordInfo.id) {
-        setIsLoadingEtymology(true); // Start etymology loading BEFORE fetch
+        setIsLoadingEtymology(true); // Start etymology loading
         fetchEtymologyTree(wordInfo.id)
           .then(tree => {
             setEtymologyTree(tree);
@@ -599,13 +600,13 @@ const WordExplorer: React.FC = () => {
           .catch(err => {
             console.error("Error fetching etymology tree for random word:", err);
             setEtymologyError("Failed to load etymology.");
-            // setEtymologyTree(null); // Don't clear on error either
+            setEtymologyTree(null);
           })
           .finally(() => {
             setIsLoadingEtymology(false); // Stop etymology loading
           });
       } else {
-        setEtymologyTree(null); // Clear if no ID exists
+        setEtymologyTree(null);
       }
 
     } catch (error) {
@@ -615,9 +616,10 @@ const WordExplorer: React.FC = () => {
       setWordNetwork(null);
       setSelectedNode(null);
       setIsLoadingDetails(false); // Ensure details loading stops on error
-      // isLoadingNetwork/Etymology are handled in their own finally blocks
+      setIsLoadingNetwork(false); // Ensure network loading stops on error
+      setIsLoadingEtymology(false); // Ensure etymology loading stops on error
     } finally {
-        setIsRandomLoading(false); // Stop the main random button loading indicator AFTER details fetch completes
+        setIsRandomLoading(false); // Stop the main random button loading indicator
     }
   }, [
     depth, 
@@ -630,7 +632,7 @@ const WordExplorer: React.FC = () => {
     setWordHistory,
     setCurrentHistoryIndex,
     setError,
-    // Removed setIsRandomLoading from deps as it's now only in finally
+    setIsRandomLoading,
     setEtymologyTree
   ]);
 
