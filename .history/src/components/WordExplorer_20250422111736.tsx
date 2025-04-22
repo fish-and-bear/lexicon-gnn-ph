@@ -1429,6 +1429,7 @@ const WordExplorer: React.FC = () => {
                    onNodeClick={handleNodeClick}
                    mainWord={selectedNode}
                    isMobile={isMobile}
+                   onNodeSelect={handleNodeSelect}
                    onNetworkChange={handleNetworkChange}
                    initialDepth={depth}
                    initialBreadth={breadth}
@@ -1478,6 +1479,7 @@ const WordExplorer: React.FC = () => {
                      onNodeClick={handleNodeClick}
                      mainWord={selectedNode}
                      isMobile={isMobile}
+                     onNodeSelect={handleNodeSelect}
                      onNetworkChange={handleNetworkChange}
                      initialDepth={depth}
                      initialBreadth={breadth}
