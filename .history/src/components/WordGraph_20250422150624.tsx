@@ -1385,12 +1385,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
       const dividerColor = alpha(muiTheme.palette.divider, 0.5);
 
       // Get legend data and add expanded state (default to false, except Core)
-      // Use a stable reference for legendData across updates within the effect scope
-      let legendData = useMemo(() => getUniqueRelationshipGroups().categories.map((cat, index) => ({ 
+      let legendData = getUniqueRelationshipGroups().categories.map((cat, index) => ({ 
         ...cat, 
         expanded: cat.name === "Core" // Default expanded state (only Core initially)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      })), [getUniqueRelationshipGroups]); // Dependency on the grouping function
+      }));
 
       const legendContainer = svg.append("g").attr("class", "legend");
 
@@ -1469,11 +1467,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             .style("cursor", "pointer")
             .on("click", () => {
               // Toggle expanded state for this category
-              // Find the category in the *current* legendData array and toggle its state
-              const targetCategory = legendData.find(c => c.name === category.name);
-              if (targetCategory) {
-                  targetCategory.expanded = !targetCategory.expanded;
-              }
+              category.expanded = !category.expanded;
               updateLegend(); // Redraw the legend
             });
 
@@ -1519,14 +1513,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 .attr("class", "legend-item")
                 .style("cursor", "pointer")
                 .style("opacity", itemOpacity)
-                .on("mouseover", function(this: SVGGElement) { /* Add hover logic if desired */ })
-                .on("mouseout", function(this: SVGGElement) { /* Add hover logic if desired */ })
+                .on("mouseover", function() { /* ... hover logic ... */ })
+                .on("mouseout", function() { /* ... hover logic ... */ })
                 .on("click", (event) => {
                   event.stopPropagation(); // Prevent category collapse when clicking item
                   handleToggleRelationshipFilter(labelInfo.types);
-                  // Opacity update needs state change, legend redraw will handle visual toggle implicitly
-                  // Consider adding explicit visual feedback for the filter toggle here if needed.
-                  // updateLegend(); // Calling updateLegend might be redundant if filter change triggers redraw
+                  // Opacity will update on next render via filteredNodes/filteredLinks dependency
                 });
 
               // Item Click Target (Invisible Rect) - Adjusted position
@@ -1557,6 +1549,9 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
       // Initial draw
       updateLegend();
+
+      // Add cleanup for legend click handlers if necessary, although D3 handles this usually
+      // The return function of useEffect already handles general SVG cleanup.
 
     } // End of if (!isMobile)
 
