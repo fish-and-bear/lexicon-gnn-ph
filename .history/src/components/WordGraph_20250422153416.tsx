@@ -90,6 +90,13 @@ interface RelationshipGroups {
   categories: Array<{ name: string; labels: RelationshipLabelInfo[] }>;
 }
 
+// Add LegendCategory interface near other interfaces
+interface LegendCategory {
+  name: string;
+  labels: RelationshipLabelInfo[];
+  expanded: boolean;
+}
+
 const WordGraph: React.FC<WordGraphProps> = ({
   wordNetwork,
   mainWord,
@@ -224,6 +231,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       categories: finalCategories
     };
   }, [getNodeColor]);
+
+  // ADDED: Calculate initial legend structure here using useMemo
+  const initialLegendData = useMemo(() => {
+    return getUniqueRelationshipGroups().categories.map((cat) => ({
+      ...cat,
+      expanded: cat.name === "Core" // Default expanded state
+    }));
+  }, [getUniqueRelationshipGroups]);
 
   useEffect(() => {
     if (!wordNetwork || !wordNetwork.nodes || !Array.isArray(wordNetwork.nodes) || 
@@ -1368,13 +1383,15 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
     // Conditionally render the legend only on desktop
     if (!isMobile) {
-      // --- START: Restore Static SVG Legend --- 
-      const legendPadding = 16; // Original padding
-      const legendItemHeight = 24; // Original height
+      // --- Desktop Legend Settings ---
+      const legendPadding = 12; // Reduced padding
+      const legendItemHeight = 20; // Reduced height
       const dotRadius = 4;
-      const textPadding = 12; // Original padding
-      const categorySpacing = 12; // Original spacing
-      const maxLabelWidth = 120;
+      const textPadding = 10; // Reduced padding
+      const categorySpacing = 8; // Reduced spacing
+      const categoryHeaderHeight = 24; // Height for category header row
+      const titleHeight = 20;
+      const subtitleHeight = 16;
 
       // Use theme for styling
       const bgColor = alpha(muiTheme.palette.background.paper, 0.85);
@@ -1382,124 +1399,173 @@ const WordGraph: React.FC<WordGraphProps> = ({
       const textColorSecondary = muiTheme.palette.text.secondary;
       const dividerColor = alpha(muiTheme.palette.divider, 0.5);
 
+      // REMOVED: useMemo call from inside useEffect
+      // Create a mutable copy of the initial data for this effect instance
+      // Apply the explicit type LegendCategory[]
+      let mutableLegendData: LegendCategory[] = JSON.parse(JSON.stringify(initialLegendData));
+
       const legendContainer = svg.append("g").attr("class", "legend");
 
-      const { categories: legendCategories } = getUniqueRelationshipGroups();
+      // --- Function to draw/update the legend ---
+      const updateLegend = () => {
+        // Remove previous legend elements before redrawing
+        legendContainer.selectAll("*").remove();
 
-      // --- Text Measurement ---
-      const tempText = svg.append("text")
+        // --- Text Measurement (measure only visible items) ---
+        const tempText = svg.append("text")
           .style("font-family", muiTheme.typography.fontFamily || "system-ui, -apple-system, sans-serif")
-          .style("font-size", muiTheme.typography.pxToRem(11)) // Original font size
-        .style("opacity", 0);
-      let maxTextWidth = 0;
-      let maxCategoryWidth = 0;
-      legendCategories.forEach((category) => {
-        tempText.style("font-weight", 600).text(category.name);
-        const categoryWidth = tempText.node()?.getBBox().width || 0;
-        maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
-        category.labels.forEach(labelInfo => {
-          tempText.style("font-weight", 400).text(labelInfo.label);
-          const textWidth = tempText.node()?.getBBox().width || 0;
-          maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
+          .style("font-size", muiTheme.typography.pxToRem(10)) // Reduced font size
+          .style("opacity", 0);
+        let maxTextWidth = 0;
+        let maxCategoryWidth = 0;
+        mutableLegendData.forEach((category) => {
+          tempText.style("font-weight", 600).text(category.name);
+          maxCategoryWidth = Math.max(maxCategoryWidth, tempText.node()?.getBBox().width || 0);
+          if (category.expanded) { // Only measure items if expanded
+            category.labels.forEach(labelInfo => {
+              tempText.style("font-weight", 400).text(labelInfo.label);
+              maxTextWidth = Math.max(maxTextWidth, tempText.node()?.getBBox().width || 0);
+            });
+          }
         });
-      });
-      tempText.remove();
+        tempText.remove();
 
-      // --- Calculate Legend Dimensions --- 
-      const legendWidth = Math.max(
-          maxCategoryWidth,
-          maxTextWidth + dotRadius * 2 + textPadding // Dot + padding + text
-      ) + (legendPadding * 2);
+        // --- Calculate Legend Dimensions (based on expanded state) ---
+        const legendWidth = Math.max(
+          maxCategoryWidth + 25, // Add space for expand icon
+          maxTextWidth + dotRadius * 2 + textPadding
+        ) + (legendPadding * 2);
 
-      // Position container top-right
-      legendContainer.attr("transform", `translate(${width - legendWidth - 20}, 20)`);
+        let currentHeight = legendPadding;
+        currentHeight += titleHeight;
+        currentHeight += subtitleHeight;
+        currentHeight += categorySpacing;
+        mutableLegendData.forEach(category => {
+          currentHeight += categoryHeaderHeight; // Space for category header
+          if (category.expanded) {
+            currentHeight += category.labels.length * legendItemHeight; // Space for items
+          }
+          currentHeight += categorySpacing; // Space after category
+        });
+        currentHeight += legendPadding;
+        currentHeight -= categorySpacing; // Remove last category spacing
+        const finalLegendHeight = currentHeight;
 
-      // Calculate height dynamically
-      let calculatedHeight = legendPadding;
-      calculatedHeight += 24; // Space for title
-      calculatedHeight += 18; // Space for subtitle
-      calculatedHeight += categorySpacing;
-      legendCategories.forEach(category => {
-        calculatedHeight += legendItemHeight; // Space for category header
-        calculatedHeight += category.labels.length * legendItemHeight; // Space for items
-        calculatedHeight += categorySpacing;
-      });
-      calculatedHeight += legendPadding;
-      const legendHeight = calculatedHeight - categorySpacing;
+        // Position legend container (top-right)
+        legendContainer.attr("transform", `translate(${width - legendWidth - 20}, 20)`);
 
-      // --- Render Legend Elements --- 
-      // Background Rectangle
-      legendContainer.append("rect")
-        .attr("width", legendWidth).attr("height", legendHeight)
-        .attr("rx", 10).attr("ry", 10).attr("fill", bgColor)
-        .attr("stroke", dividerColor).attr("stroke-width", 0.5);
+        // Background Rectangle
+        legendContainer.append("rect")
+          .attr("width", legendWidth)
+          .attr("height", finalLegendHeight)
+          .attr("rx", 8).attr("ry", 8) // Slightly less rounded
+          .attr("fill", bgColor)
+          .attr("stroke", dividerColor).attr("stroke-width", 0.5);
 
-      // Title & Subtitle
-      legendContainer.append("text") // Title
-        .attr("x", legendWidth / 2).attr("y", legendPadding + 10).attr("text-anchor", "middle")
-        .style("font-size", muiTheme.typography.pxToRem(13)).style("font-weight", 600)
-        .attr("fill", textColorPrimary).text("Relationship Types");
-      legendContainer.append("text") // Subtitle
-        .attr("x", legendWidth / 2).attr("y", legendPadding + 26).attr("text-anchor", "middle")
-        .style("font-size", muiTheme.typography.pxToRem(10)).attr("fill", textColorSecondary)
-        .text("Click to filter");
+        // Title & Subtitle
+        legendContainer.append("text") // Title
+          .attr("x", legendWidth / 2).attr("y", legendPadding + 5)
+          .attr("text-anchor", "middle").style("font-size", muiTheme.typography.pxToRem(12))
+          .style("font-weight", 600).attr("fill", textColorPrimary).text("Relationship Types");
+        legendContainer.append("text") // Subtitle
+          .attr("x", legendWidth / 2).attr("y", legendPadding + titleHeight + 2)
+          .attr("text-anchor", "middle").style("font-size", muiTheme.typography.pxToRem(9))
+          .attr("fill", textColorSecondary).text("Click category to expand/collapse");
 
-      let yPos = legendPadding + 40 + categorySpacing;
+        let yPos = legendPadding + titleHeight + subtitleHeight + categorySpacing;
 
-      legendCategories.forEach((category) => {
-        // Category Header
-        legendContainer.append("text")
-          .attr("x", legendPadding).attr("y", yPos + legendItemHeight / 2).attr("dy", ".35em")
-          .style("font-weight", 600).style("font-size", muiTheme.typography.pxToRem(11))
-          .attr("fill", textColorPrimary).text(category.name);
-        yPos += legendItemHeight;
-
-        // Category Items (Labels)
-        category.labels.forEach(labelInfo => {
-          const allOriginalTypesFiltered = labelInfo.types.every(t =>
-            filteredRelationships.includes(t.toLowerCase())
-          );
-          const itemOpacity = allOriginalTypesFiltered ? 0.5 : 1;
-
-          const entry = legendContainer.append("g")
-            .attr("transform", `translate(${legendPadding}, ${yPos + legendItemHeight / 2})`)
-            .attr("class", "legend-item").style("cursor", "pointer").style("opacity", itemOpacity)
-            .on("mouseover", function(this: SVGGElement) { /* Original hover logic */
-              if (itemOpacity === 1) {
-                  d3.select(this).select("circle").transition().duration(150).attr("r", dotRadius * 1.3);
-                  d3.select(this).select("text").transition().duration(150).style("font-weight", 600);
-              }
-            })
-            .on("mouseout", function(this: SVGGElement) { /* Original hover logic */
-               d3.select(this).select("circle").transition().duration(150).attr("r", dotRadius);
-               d3.select(this).select("text").transition().duration(150).style("font-weight", 400);
-            })
-            .on("click", function(this: SVGGElement) { // Original click logic
-              handleToggleRelationshipFilter(labelInfo.types);
+        // Render Categories and Items
+        mutableLegendData.forEach((category) => {
+          const categoryGroup = legendContainer.append("g")
+            .attr("class", "legend-category")
+            .style("cursor", "pointer")
+            .on("click", () => {
+              // Toggle expanded state directly on the mutable copy
+              category.expanded = !category.expanded;
+              updateLegend(); // Redraw the legend
             });
 
-            // Click Target (Invisible Rect)
-            entry.append("rect")
-              .attr("x", -legendPadding / 2).attr("y", -legendItemHeight / 2)
-              .attr("width", legendWidth - legendPadding).attr("height", legendItemHeight)
-              .attr("fill", "transparent");
+          // Category Header Background (for click target)
+          categoryGroup.append("rect")
+            .attr("x", legendPadding / 2)
+            .attr("y", yPos)
+            .attr("width", legendWidth - legendPadding)
+            .attr("height", categoryHeaderHeight)
+            .attr("fill", "transparent"); // Make background transparent
 
-            // Color Dot
-            entry.append("circle")
-              .attr("cx", dotRadius).attr("cy", 0).attr("r", dotRadius)
-              .attr("fill", labelInfo.color).attr("stroke", alpha(labelInfo.color, 0.5)).attr("stroke-width", 0.5);
+          // Expand/Collapse Icon
+          categoryGroup.append("text")
+            .attr("x", legendPadding)
+            .attr("y", yPos + categoryHeaderHeight / 2)
+            .attr("dy", ".35em")
+            .style("font-size", muiTheme.typography.pxToRem(12))
+            .attr("fill", textColorSecondary)
+            .text(category.expanded ? "−" : "+"); // Minus or Plus
 
-            // Label Text
-            entry.append("text")
-              .attr("x", dotRadius * 2 + textPadding).attr("y", 0).attr("dy", ".35em")
-              .style("font-size", muiTheme.typography.pxToRem(11))
-              .style("font-weight", 400).attr("fill", textColorPrimary).text(labelInfo.label);
+          // Category Header Text
+          categoryGroup.append("text")
+            .attr("x", legendPadding + 15) // Indent text past icon
+            .attr("y", yPos + categoryHeaderHeight / 2)
+            .attr("dy", ".35em")
+            .style("font-weight", 600)
+            .style("font-size", muiTheme.typography.pxToRem(10))
+            .attr("fill", textColorPrimary)
+            .text(category.name);
+            
+          yPos += categoryHeaderHeight;
 
-          yPos += legendItemHeight;
+          // Category Items (Labels) - Only if expanded
+          if (category.expanded) {
+            category.labels.forEach(labelInfo => {
+              const allOriginalTypesFiltered = labelInfo.types.every(t =>
+                filteredRelationships.includes(t.toLowerCase())
+              );
+              const itemOpacity = allOriginalTypesFiltered ? 0.5 : 1;
+
+              const itemGroup = legendContainer.append("g") // Add items directly to legendContainer for positioning
+                .attr("transform", `translate(${legendPadding * 2}, ${yPos + legendItemHeight / 2})`) // Indent items
+                .attr("class", "legend-item")
+                .style("cursor", "pointer")
+                .style("opacity", itemOpacity)
+                .on("mouseover", function(this: SVGGElement) { /* Add hover logic if desired */ })
+                .on("mouseout", function(this: SVGGElement) { /* Add hover logic if desired */ })
+                .on("click", (event) => {
+                  event.stopPropagation(); // Prevent category collapse when clicking item
+                  handleToggleRelationshipFilter(labelInfo.types);
+                  // Opacity update needs state change, legend redraw will handle visual toggle implicitly
+                  // Consider adding explicit visual feedback for the filter toggle here if needed.
+                  // updateLegend(); // Calling updateLegend might be redundant if filter change triggers redraw
+                });
+
+              // Item Click Target (Invisible Rect) - Adjusted position
+              itemGroup.append("rect")
+                  .attr("x", -legendPadding) // Adjust x to cover area better
+                  .attr("y", -legendItemHeight / 2)
+                  .attr("width", legendWidth - legendPadding * 2)
+                  .attr("height", legendItemHeight)
+                  .attr("fill", "transparent");
+
+              // Color Dot
+              itemGroup.append("circle")
+                .attr("cx", dotRadius).attr("cy", 0).attr("r", dotRadius)
+                .attr("fill", labelInfo.color).attr("stroke", alpha(labelInfo.color, 0.5)).attr("stroke-width", 0.5);
+
+              // Label Text
+              itemGroup.append("text")
+                .attr("x", dotRadius * 2 + textPadding).attr("y", 0).attr("dy", ".35em")
+                .style("font-size", muiTheme.typography.pxToRem(10))
+                .style("font-weight", 400).attr("fill", textColorPrimary).text(labelInfo.label);
+
+              yPos += legendItemHeight;
+            });
+          }
+          yPos += categorySpacing;
         });
-        yPos += categorySpacing;
-      });
-      // --- END: Restore Static SVG Legend --- 
+      }; // --- End of updateLegend function ---
+
+      // Initial draw
+      updateLegend();
+
     } // End of if (!isMobile)
 
     // Tooltip depends on state now, so keep it outside useEffect cleanup?
@@ -1559,6 +1625,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
    handleToggleRelationshipFilter,
    getUniqueRelationshipGroups,
    muiTheme, // Add muiTheme dependency
+   initialLegendData // Add initialLegendData dependency
   ]);
 
   useEffect(() => {
@@ -1638,12 +1705,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 );
                 const labelId = `legend-checkbox-label-${labelInfo.label.replace(/\s|\//g, '-')}`;
 
-              return (
-                <ListItem
+                return (
+                  <ListItem
                     key={labelInfo.label} // Use label as key
-                  button
+                    button
                     onClick={() => handleToggleRelationshipFilter(labelInfo.types)} // Pass array of types
-                  sx={{
+                    sx={{
                       opacity: allOriginalTypesFiltered ? 0.6 : 1,
                       textDecoration: allOriginalTypesFiltered ? 'line-through' : 'none',
                       py: 0.5,
@@ -1651,22 +1718,22 @@ const WordGraph: React.FC<WordGraphProps> = ({
                       width: { xs: '100%', sm: '50%', md: '33.333%' }, 
                       minWidth: '120px',
                       flexGrow: 0
-                  }}
-                >
-                  <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5 }}>
-                    <Box
-                      component="span"
-                      sx={{
-                        width: 12,
-                        height: 12,
-                        borderRadius: '50%',
+                    }}
+                  >
+                    <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5 }}>
+                      <Box
+                        component="span"
+                        sx={{
+                          width: 12,
+                          height: 12,
+                          borderRadius: '50%',
                           bgcolor: labelInfo.color, // Use label's color
-                        display: 'inline-block',
+                          display: 'inline-block',
                           border: theme === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)',
                           opacity: allOriginalTypesFiltered ? 0.5 : 1
-                      }}
-                    />
-                  </ListItemIcon>
+                        }}
+                      />
+                    </ListItemIcon>
                     <ListItemText 
                       id={labelId} 
                       primary={labelInfo.label} // Use label's text
@@ -1678,9 +1745,9 @@ const WordGraph: React.FC<WordGraphProps> = ({
                       }}
                       sx={{ m: 0 }} 
                     />
-                </ListItem>
-              );
-            })}
+                  </ListItem>
+                );
+              })}
             </Box>
           </React.Fragment>
         ))}
@@ -1750,7 +1817,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             aria-label="Open network controls"
             title="Network Controls"
             sx={{ 
-                position: 'absolute',
+              position: 'absolute',
               bottom: theme => theme.spacing(2), // Use theme spacing
               right: theme => theme.spacing(2), // Use theme spacing
               width: 40, // Set fixed width
@@ -1762,16 +1829,16 @@ const WordGraph: React.FC<WordGraphProps> = ({
               alignItems: 'center',
               justifyContent: 'center', // Ensure icon is centered
               borderRadius: '50%', // Ensure it's perfectly circular
-                bgcolor: theme === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', 
-                backdropFilter: 'blur(3px)', 
-                border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)',
-                color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', 
+              bgcolor: theme === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', 
+              backdropFilter: 'blur(3px)', 
+              border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)',
+              color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', 
               zIndex: 9999, // INCREASED zIndex significantly further
               pointerEvents: 'auto', // << Explicitly capture clicks on the button
-                '&:hover': { 
-                  color: theme === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)',
-                  bgcolor: theme === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' 
-                }
+              '&:hover': { 
+                color: theme === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)',
+                bgcolor: theme === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' 
+              }
             }}
           >
             <TuneIcon fontSize="small" />
