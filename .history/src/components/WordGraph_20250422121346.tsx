@@ -1368,11 +1368,11 @@ const WordGraph: React.FC<WordGraphProps> = ({
     // Conditionally render the legend only on desktop
     if (!isMobile) {
       // Define refined legend properties
-      const legendPadding = 10; // Reduced from 12
-      const legendItemHeight = 18; // Reduced from 22 
+      const legendPadding = 12;
+      const legendItemHeight = 22; 
       const dotRadius = 5; 
       const textPadding = 16;
-      const categorySpacing = 8; // Reduced from 10
+      const categorySpacing = 10; 
       const maxLabelWidth = 110;
       
       // Use a fixed initial width for positioning
@@ -1431,10 +1431,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
         totalRows += 1 + category.labels.length; // Count labels
       });
 
-      const legendHeaderHeight = 36; // Reduced from 44
+      const legendHeaderHeight = 44; // Height for title/subtitle/divider
       const legendContentHeight = (totalRows * legendItemHeight) + 
                                 ((legendCategories.length - 1) * categorySpacing);
-      const legendHeight = legendHeaderHeight + legendContentHeight + (legendPadding * 2);
+      const legendHeight = legendHeaderHeight + legendContentHeight + (legendPadding * 2); // REMOVED toggleHeight
 
       legendContainer.append("rect")
           .attr("width", legendWidth)
@@ -1447,31 +1447,31 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
       legendContainer.append("text") // Title
           .attr("x", legendWidth / 2)
-        .attr("y", legendPadding + 6) // Adjusted Y for reduced header height
-        .attr("text-anchor", "middle")
-      .attr("font-weight", "600")
-        .attr("font-size", "12px") // Slightly smaller title
-      .attr("fill", theme === "dark" ? "#eee" : "#333")
-        .text("Relationship Types");
-      
+        .attr("y", legendPadding + 8)
+          .attr("text-anchor", "middle")
+        .attr("font-weight", "600")
+        .attr("font-size", "13px")
+        .attr("fill", theme === "dark" ? "#eee" : "#333")
+          .text("Relationship Types");
+        
       legendContainer.append("text") // Subtitle
-      .attr("x", legendWidth / 2)
-        .attr("y", legendPadding + 18) // Adjusted Y for reduced header height
-      .attr("text-anchor", "middle")
-      .attr("font-weight", "400")
-        .attr("font-size", "9px") // Slightly smaller subtitle
-      .attr("fill", theme === "dark" ? "#aaa" : "#666")
-      .text("Click to filter by type");
-    
+          .attr("x", legendWidth / 2)
+        .attr("y", legendPadding + 24)
+        .attr("text-anchor", "middle")
+        .attr("font-weight", "400")
+        .attr("font-size", "10px")
+        .attr("fill", theme === "dark" ? "#aaa" : "#666")
+        .text("Click to filter by type");
+      
       legendContainer.append("line") // Divider
-      .attr("x1", legendPadding)
-        .attr("y1", legendPadding + 26) // Adjusted Y for reduced header height
-      .attr("x2", legendWidth - legendPadding)
-        .attr("y2", legendPadding + 26) // Adjusted Y for reduced header height
+          .attr("x1", legendPadding)
+        .attr("y1", legendPadding + 32)
+        .attr("x2", legendWidth - legendPadding)
+        .attr("y2", legendPadding + 32)
         .attr("stroke", theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)")
-        .attr("stroke-width", 1);
+        .attr("stroke-width", 1.5);
 
-      let yPos = legendPadding + 32; // Adjusted starting Y for reduced header height
+      let yPos = legendPadding + 44;
 
       legendCategories.forEach((category, categoryIndex) => {
         yPos += legendItemHeight; // Space for category header
