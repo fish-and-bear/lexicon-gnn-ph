@@ -478,8 +478,7 @@ interface LocalWordNetwork {
 
 export async function fetchWordNetwork(
   word: string, 
-  options: WordNetworkOptions = {},
-  signal?: AbortSignal // Add optional signal parameter
+  options: WordNetworkOptions = {}
 ): Promise<ImportedWordNetwork> {
   const sanitizedWord = word.toLowerCase();
   const {
@@ -530,8 +529,7 @@ export async function fetchWordNetwork(
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
-      signal // Pass signal to axios
+      }
     });
 
     if (!response.data) {
@@ -1744,8 +1742,7 @@ export async function getRandomWord(): Promise<WordInfo> {
     console.log("Fetching random word from API...");
     
     // Use the base random word URL without filtering for baybayin
-    // Add a cache-busting parameter (_=timestamp)
-    const randomWordUrl = `${CONFIG.baseURL}/random?_=${Date.now()}`;
+    const randomWordUrl = `${CONFIG.baseURL}/random`;
     console.log("Random word URL:", randomWordUrl);
     
     // Use direct fetch instead of axios for more control

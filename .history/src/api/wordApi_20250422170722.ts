@@ -478,8 +478,7 @@ interface LocalWordNetwork {
 
 export async function fetchWordNetwork(
   word: string, 
-  options: WordNetworkOptions = {},
-  signal?: AbortSignal // Add optional signal parameter
+  options: WordNetworkOptions = {}
 ): Promise<ImportedWordNetwork> {
   const sanitizedWord = word.toLowerCase();
   const {
@@ -530,8 +529,7 @@ export async function fetchWordNetwork(
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
-      signal // Pass signal to axios
+      }
     });
 
     if (!response.data) {

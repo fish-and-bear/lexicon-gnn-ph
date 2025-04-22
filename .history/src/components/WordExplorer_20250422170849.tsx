@@ -71,6 +71,8 @@ const WordExplorer: React.FC = () => {
   const [apiConnected, setApiConnected] = useState<boolean | null>(null);
 
   const randomWordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const networkAbortControllerRef = useRef<AbortController | null>(null);
+  const etymologyAbortControllerRef = useRef<AbortController | null>(null);
   
   const detailsContainerRef = useRef<ImperativePanelHandle>(null);
 
@@ -153,9 +155,17 @@ const WordExplorer: React.FC = () => {
     };
   }, []); // Dependencies remain empty
 
+  // Cleanup pending fetches on unmount
+  useEffect(() => {
+    return () => {
+      networkAbortControllerRef.current?.abort();
+      etymologyAbortControllerRef.current?.abort();
+    };
+  }, []);
+
   const normalizeInput = (input: string) => unidecode(input.trim().toLowerCase());
 
-  const fetchWordNetworkData = useCallback(async (word: string, depthParam: number = 2, breadthParam: number = 10) => {
+  const fetchWordNetworkData = useCallback(async (word: string, depthParam: number = 2, breadthParam: number = 10, signal?: AbortSignal) => {
     try {
       setIsLoadingNetwork(true);
       setError(null);
@@ -166,7 +176,8 @@ const WordExplorer: React.FC = () => {
         breadth: breadthParam,
         include_affixes: true,
         include_etymology: true,
-        cluster_threshold: 0.3
+        cluster_threshold: 0.3,
+        signal: signal
       });
       
       if (data && data.nodes && data.edges) {
@@ -252,7 +263,7 @@ const WordExplorer: React.FC = () => {
     }
   }, [wordData]);
 
-  const fetchEtymologyTree = useCallback(async (wordId: number): Promise<EtymologyTree | null> => {
+  const fetchEtymologyTree = useCallback(async (wordId: number, signal?: AbortSignal): Promise<EtymologyTree | null> => {
     if (!wordId) return null;
     
     setIsLoadingEtymology(true);
@@ -387,9 +398,18 @@ const WordExplorer: React.FC = () => {
           // Use ID for network fetch if available
           const networkIdentifier = wordData.id ? `id:${wordData.id}` : wordData.lemma;
           console.log(`[handleNodeClick] Fetching network using identifier: ${networkIdentifier}`); 
-          fetchWordNetworkData(networkIdentifier, depth, breadth) 
-              .then(networkData => setWordNetwork(networkData))
-              .catch(networkError => console.error("Error fetching word network:", networkError));
+          networkAbortControllerRef.current?.abort(); // Abort previous network fetch
+          networkAbortControllerRef.current = new AbortController(); // Create new controller
+          fetchWordNetworkData(networkIdentifier, depth, breadth, networkAbortControllerRef.current.signal) // Pass signal
+            .then(networkData => setWordNetwork(networkData))
+            .catch(networkError => {
+              if (networkError.name !== 'AbortError') { // Handle only non-abort errors
+                console.error("Error fetching word network:", networkError);
+                setError("Failed to load word network. Please try again.");
+              } else {
+                console.log("Previous network fetch aborted.");
+              }
+            });
         } catch (networkError) {
           console.error("Error initiating word network fetch:", networkError);
         }
@@ -398,9 +418,12 @@ const WordExplorer: React.FC = () => {
           // Etymology should still use the confirmed ID from wordData if available
           const confirmedId = wordData.id; 
           if (confirmedId) {
+            // TODO: Add abort logic for node clicks too?
             fetchEtymologyTree(confirmedId)
                 .then(tree => setEtymologyTree(tree))
-                .catch(etymologyError => console.error("Error fetching etymology tree:", etymologyError));
+                .catch(etymologyError => {
+                  console.error("Error fetching etymology tree:", etymologyError);
+                });
           } else {
              console.warn("No ID available to fetch etymology tree.");
              setEtymologyTree(null);
@@ -534,10 +557,9 @@ const WordExplorer: React.FC = () => {
 
   const handleRandomWord = useCallback(async () => {
     setError(null);
-    setIsRandomLoading(true);
+    setIsRandomLoading(true); // Set button loading immediately
     setIsLoadingDetails(true); // Start details loading indicator
-    // Don't clear wordNetwork immediately, wait for details fetch
-    // setWordNetwork(null);
+    // setWordNetwork(null); // <-- DO NOT CLEAR HERE
     // setSelectedNode(null); 
 
     try {
@@ -569,21 +591,28 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex(newHistory.length - 1);
 
       // NOW start fetching network and etymology in the background
-      setIsLoadingNetwork(true); // Start network loading indicator
-      setWordNetwork(null); // Clear previous network now
-      setEtymologyTree(null);
+      // --- DO NOT CLEAR OLD DATA --- 
+      // setWordNetwork(null); // <-- DO NOT CLEAR HERE
+      // setEtymologyTree(null); // <-- DO NOT CLEAR HERE
 
       // Fetch network data (don't await)
-      fetchWordNetworkData(networkIdentifier, depth, breadth)
+      setIsLoadingNetwork(true); // Start network loading indicator BEFORE fetch
+      networkAbortControllerRef.current?.abort(); // Abort previous network fetch
+      networkAbortControllerRef.current = new AbortController(); // Create new controller
+      fetchWordNetworkData(networkIdentifier, depth, breadth, networkAbortControllerRef.current.signal) // Pass signal
         .then(networkData => {
           if (networkData && networkData.nodes && networkData.edges) {
             setWordNetwork(networkData);
           }
         })
         .catch(err => {
-          console.error("Error fetching network data for random word:", err);
-          setError("Failed to load word network. Please try again.");
-          setWordNetwork(null); // Ensure network is null on error
+          if (err.name !== 'AbortError') { // Handle only non-abort errors
+             console.error("Error fetching network data for random word:", err);
+             setError("Failed to load word network. Please try again.");
+          } else {
+             console.log("Previous network fetch aborted.");
+          }
+          // setWordNetwork(null); // Don't clear on error either, keep stale potentially
         })
         .finally(() => {
           setIsLoadingNetwork(false); // Stop network loading indicator regardless of outcome
@@ -591,34 +620,42 @@ const WordExplorer: React.FC = () => {
 
       // Fetch etymology tree (don't await)
       if (wordInfo.id) {
-        setIsLoadingEtymology(true); // Start etymology loading
-        fetchEtymologyTree(wordInfo.id)
+        setIsLoadingEtymology(true); // Start etymology loading BEFORE fetch
+        etymologyAbortControllerRef.current?.abort(); // Abort previous etymology fetch
+        etymologyAbortControllerRef.current = new AbortController(); // Create new controller
+        fetchEtymologyTree(wordInfo.id, etymologyAbortControllerRef.current.signal) // Pass signal
           .then(tree => {
             setEtymologyTree(tree);
           })
           .catch(err => {
-            console.error("Error fetching etymology tree for random word:", err);
-            setEtymologyError("Failed to load etymology.");
-            setEtymologyTree(null);
+            if (err.name !== 'AbortError') { // Handle only non-abort errors
+               console.error("Error fetching etymology tree for random word:", err);
+               setEtymologyError("Failed to load etymology.");
+            } else {
+               console.log("Previous etymology fetch aborted.");
+            }
+            // setEtymologyTree(null); // Don't clear on error either
           })
           .finally(() => {
             setIsLoadingEtymology(false); // Stop etymology loading
           });
       } else {
-        setEtymologyTree(null);
+        setEtymologyTree(null); // Clear if no ID exists
       }
 
-    } catch (error) {
-      console.error("Error handling random word:", error);
-      setError(error instanceof Error ? error.message : "Failed to get a random word");
-      setWordData(null); // Clear data on error
-      setWordNetwork(null);
-      setSelectedNode(null);
-      setIsLoadingDetails(false); // Ensure details loading stops on error
-      setIsLoadingNetwork(false); // Ensure network loading stops on error
-      setIsLoadingEtymology(false); // Ensure etymology loading stops on error
+    } catch (error: unknown) { // Type error as unknown
+      // Check if it's an error object and not an AbortError before handling
+      if (error instanceof Error && error.name !== 'AbortError') { 
+        console.error("Error handling random word:", error);
+        setError(error instanceof Error ? error.message : "Failed to get a random word");
+        setWordData(null); // Clear data on error
+        setWordNetwork(null);
+        setSelectedNode(null);
+        setIsLoadingDetails(false); // Ensure details loading stops on error
+        // isLoadingNetwork/Etymology are handled in their own finally blocks
+      }
     } finally {
-        setIsRandomLoading(false); // Stop the main random button loading indicator
+        setIsRandomLoading(false); // Stop the main random button loading indicator AFTER details fetch completes
     }
   }, [
     depth, 
@@ -631,7 +668,7 @@ const WordExplorer: React.FC = () => {
     setWordHistory,
     setCurrentHistoryIndex,
     setError,
-    setIsRandomLoading,
+    // Removed setIsRandomLoading from deps as it's now only in finally
     setEtymologyTree
   ]);
 
@@ -991,13 +1028,17 @@ const WordExplorer: React.FC = () => {
       fetchWordNetworkData(identifier, newDepth, newBreadth)
         .then(networkData => {
           setWordNetwork(networkData);
+          setIsLoadingNetwork(false); // Stop loading indicator after success
+          setIsLoadingDetails(false); // Also stop details loading
         })
         .catch(error => {
           console.error("Error updating network:", error);
           setError("Failed to update network. Please try again.");
+          setIsLoadingNetwork(false); // Stop loading indicator on error
+          setIsLoadingDetails(false); // Also stop details loading
         });
     }
-  }, [selectedNode, fetchWordNetworkData]);
+  }, [selectedNode, wordData?.id, fetchWordNetworkData, setError, setWordNetwork, setIsLoadingNetwork, setIsLoadingDetails]); // Added dependencies
 
   useEffect(() => {
     if (wordData && wordData.id) {

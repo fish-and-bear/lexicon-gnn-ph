@@ -479,7 +479,7 @@ interface LocalWordNetwork {
 export async function fetchWordNetwork(
   word: string, 
   options: WordNetworkOptions = {},
-  signal?: AbortSignal // Add optional signal parameter
+  signal?: AbortSignal // Add signal parameter
 ): Promise<ImportedWordNetwork> {
   const sanitizedWord = word.toLowerCase();
   const {
@@ -525,100 +525,98 @@ export async function fetchWordNetwork(
       params.relation_types = relation_types.join(',');
     }
     
-    const response = await api.get(endpoint, {
+    console.log(`Fetching word network for '${word}' with options:`, params);
+
+    const response = await api.get<LocalWordNetwork>(endpoint, {
       params,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
       signal // Pass signal to axios
     });
 
-    if (!response.data) {
+    if (response.status === 200 && response.data && response.data.nodes && response.data.edges) {
+      console.log('Network data received:', response.data);
+
+      // Check for required properties and validate structure
+      if (!response.data.nodes || !Array.isArray(response.data.nodes) || 
+          !response.data.edges || !Array.isArray(response.data.edges)) {
+        console.error('Invalid response data:', response.data);
+        throw new Error('Invalid network data structure received from API');
+      }
+
+      // Normalize and validate each node
+      const nodes = response.data.nodes.map((n: any) => {
+        const node = n as Partial<NetworkNode>;
+        if (!node.id) {
+          console.warn('Node missing ID:', node);
+          throw new Error('Invalid node data: missing ID');
+        }
+
+        return {
+          id: String(node.id),
+          label: node.label || node.word || String(node.id),
+          word: node.word || node.label || String(node.id),
+          language: node.language || 'tl',
+          type: node.type || (node.main ? 'main' : 'related'),
+          depth: typeof node.depth === 'number' ? node.depth : 0,
+          has_baybayin: Boolean(node.has_baybayin),
+          baybayin_form: node.baybayin_form || null,
+          normalized_lemma: node.normalized_lemma || node.label || String(node.id),
+          main: Boolean(node.main)
+        } as NetworkNode;
+      });
+
+      // Normalize and validate each edge
+      const edges = response.data.edges.map((e: any) => {
+        if (!e.source || !e.target) {
+          console.warn('Edge missing source or target:', e);
+          throw new Error('Invalid edge data: missing source or target');
+        }
+
+        return {
+          id: e.id || `${e.source}-${e.target}-${e.type || 'related'}`,
+          source: String(e.source),
+          target: String(e.target),
+          type: e.type || 'related',
+          directed: e.directed ?? false,
+          weight: typeof e.weight === 'number' ? e.weight : 1
+        };
+      });
+
+      const wordNetwork: LocalWordNetwork = {
+        nodes,
+        edges,
+        metadata: {
+          root_word: word,
+          normalized_lemma: sanitizedWord,
+          language_code: response.data.metadata?.language_code || 'tl',
+          depth: sanitizedDepth,
+          total_nodes: nodes.length,
+          total_edges: edges.length,
+          query_time: response.data.metadata?.query_time || null,
+          filters_applied: {
+            depth: sanitizedDepth,
+            breadth: sanitizedBreadth,
+            include_affixes,
+            include_etymology,
+            relation_types: relation_types || []
+          }
+        }
+      };
+
+      // Validate network connectivity
+      const hasMainNode = nodes.some((n: NetworkNode) => n.main || n.type === 'main');
+      if (!hasMainNode) {
+        console.warn('Network missing main node');
+        throw new Error('Invalid network: missing main node');
+      }
+
+      // Record success and cache the data
+      circuitBreaker.recordSuccess();
+      setCachedData(cacheKey, wordNetwork as unknown as ImportedWordNetwork);
+
+      return wordNetwork as unknown as ImportedWordNetwork;
+    } else {
       throw new Error('No data received from API');
     }
-
-    console.log('Network data received:', response.data);
-
-    // Check for required properties and validate structure
-    if (!response.data.nodes || !Array.isArray(response.data.nodes) || 
-        !response.data.links || !Array.isArray(response.data.links)) {
-      console.error('Invalid response data:', response.data);
-      throw new Error('Invalid network data structure received from API');
-    }
-
-    // Normalize and validate each node
-    const nodes = response.data.nodes.map((n: any) => {
-      const node = n as Partial<NetworkNode>;
-      if (!node.id) {
-        console.warn('Node missing ID:', node);
-        throw new Error('Invalid node data: missing ID');
-      }
-
-      return {
-        id: String(node.id),
-        label: node.label || node.word || String(node.id),
-        word: node.word || node.label || String(node.id),
-        language: node.language || 'tl',
-        type: node.type || (node.main ? 'main' : 'related'),
-        depth: typeof node.depth === 'number' ? node.depth : 0,
-        has_baybayin: Boolean(node.has_baybayin),
-        baybayin_form: node.baybayin_form || null,
-        normalized_lemma: node.normalized_lemma || node.label || String(node.id),
-        main: Boolean(node.main)
-      } as NetworkNode;
-    });
-
-    // Normalize and validate each edge
-    const edges = response.data.links.map((e: any) => {
-      if (!e.source || !e.target) {
-        console.warn('Edge missing source or target:', e);
-        throw new Error('Invalid edge data: missing source or target');
-      }
-
-      return {
-        id: e.id || `${e.source}-${e.target}-${e.type || 'related'}`,
-        source: String(e.source),
-        target: String(e.target),
-        type: e.type || 'related',
-        directed: e.directed ?? false,
-        weight: typeof e.weight === 'number' ? e.weight : 1
-      };
-    });
-
-    const wordNetwork: LocalWordNetwork = {
-      nodes,
-      edges,
-      metadata: {
-        root_word: word,
-        normalized_lemma: sanitizedWord,
-        language_code: response.data.metadata?.language_code || 'tl',
-        depth: sanitizedDepth,
-        total_nodes: nodes.length,
-        total_edges: edges.length,
-        query_time: response.data.metadata?.execution_time || null,
-        filters_applied: {
-          depth: sanitizedDepth,
-          breadth: sanitizedBreadth,
-          include_affixes,
-          include_etymology,
-          relation_types: relation_types || []
-        }
-      }
-    };
-
-    // Validate network connectivity
-    const hasMainNode = nodes.some((n: NetworkNode) => n.main || n.type === 'main');
-    if (!hasMainNode) {
-      console.warn('Network missing main node');
-      throw new Error('Invalid network: missing main node');
-    }
-
-    // Record success and cache the data
-    circuitBreaker.recordSuccess();
-    setCachedData(cacheKey, wordNetwork as unknown as ImportedWordNetwork);
-
-    return wordNetwork as unknown as ImportedWordNetwork;
   } catch (error) {
     console.error('Error in fetchWordNetwork:', error);
     
@@ -1666,7 +1664,8 @@ export const testApiConnection = async (): Promise<boolean> => {
 
 export async function getEtymologyTree(
   wordId: number, 
-  maxDepth: number = 2 
+  maxDepth: number = 2, 
+  signal?: AbortSignal // Add signal parameter
 ): Promise<EtymologyTree> {
   console.log(`Fetching etymology tree for wordId=${wordId}, maxDepth=${maxDepth}`);
   const cacheKey = `cache:etymologyTree:${wordId}-${maxDepth}`;
@@ -1682,7 +1681,7 @@ export async function getEtymologyTree(
     const endpoint = `/words/${wordId}/etymology/tree`;
     console.log(`Making API request to: ${endpoint} with maxDepth=${maxDepth}`);
     
-    const response = await api.get(endpoint, { params: { max_depth: maxDepth } });
+    const response = await api.get(endpoint, { params: { max_depth: maxDepth }, signal });
     console.log(`Etymology tree API response status: ${response.status}`);
     
     if (response.status !== 200) {
@@ -1744,8 +1743,7 @@ export async function getRandomWord(): Promise<WordInfo> {
     console.log("Fetching random word from API...");
     
     // Use the base random word URL without filtering for baybayin
-    // Add a cache-busting parameter (_=timestamp)
-    const randomWordUrl = `${CONFIG.baseURL}/random?_=${Date.now()}`;
+    const randomWordUrl = `${CONFIG.baseURL}/random`;
     console.log("Random word URL:", randomWordUrl);
     
     // Use direct fetch instead of axios for more control
