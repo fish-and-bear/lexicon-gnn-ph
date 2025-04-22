@@ -1482,12 +1482,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   const renderEtymologyTab = () => {
     // If the component is still loading the etymology data, show a spinner
     if (isLoadingEtymology) {
-      return <Box sx={{ display: 'flex', justifyContent: 'center', p: isMobile ? 2 : 3 }}><CircularProgress /></Box>;
+      return <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}><CircularProgress /></Box>;
     }
     
     // If there was an error loading the etymology tree, show the error
     if (etymologyError) {
-      return <Alert severity="error" sx={{ m: isMobile ? 1.5 : 2 }}>{etymologyError}</Alert>;
+      return <Alert severity="error" sx={{ m: 2 }}>{etymologyError}</Alert>;
     }
     
     // First check if the word has self-contained etymology information
@@ -1507,19 +1507,18 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     // Handle case where there's no etymology data from either source
     if (!hasWordEtymologies && !hasEtymologyTreeData) {
       return (
-        <Box sx={{ p: isMobile ? 1.5 : 2 }}>
+        <Box sx={{ p: 2 }}>
           <Alert severity="info" sx={{ mb: 2 }}>No etymology information available for word ID: {wordData.id} ({wordData.lemma}).</Alert>
           
           {/* Add links to external etymology resources */}
-          <Typography variant="subtitle2" sx={{ mt: isMobile ? 2 : 3, mb: 1, fontSize: isMobile ? '0.85rem' : '0.875rem' }}>
+          <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>
             Try external etymology resources:
           </Typography>
-          <Stack spacing={isMobile ? 0.5 : 1}>
+          <Stack spacing={1}>
             <Link 
               href={`https://en.wiktionary.org/wiki/${encodeURIComponent(wordData.lemma)}`} 
               target="_blank" 
               rel="noopener noreferrer"
-              sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}
             >
               Look up "{wordData.lemma}" on Wiktionary
             </Link>
@@ -1528,7 +1527,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                 href={`https://diksiyonaryo.ph/search/${encodeURIComponent(wordData.lemma)}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}
               >
                 Look up "{wordData.lemma}" on Diksiyonaryo.ph
               </Link>
@@ -1541,14 +1539,13 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     // If there's etymology data in the word itself, display it regardless of tree
     if (hasWordEtymologies) {
       return (
-        // Adjust padding for mobile
-        <Box sx={{ p: isMobile ? 0 : theme.spacing(2) }}>
+        <Box sx={{ p: theme.spacing(2) }}>
           {/* Display direct etymology data from word */}
-          <List dense={isMobile}>
+          <List dense>
             {wordData.etymologies!.map((etym, index) => (
               <ListItem key={index} sx={{ 
                 display: 'block', 
-                py: isMobile ? 1 : 1.5,
+                py: 1.5,
                 px: 0,
                 borderBottom: index < wordData.etymologies!.length - 1 ? 
                   `1px solid ${theme.palette.divider}` : 'none'
@@ -1558,14 +1555,13 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                     <Typography variant="subtitle1" sx={{ 
                       fontWeight: 600, 
                       mb: 0.5,
-                      color: graphColors.main,
-                      fontSize: isMobile ? '0.9rem' : '1rem'
+                      color: graphColors.main
                     }}>
                       Etymology {index + 1}
                     </Typography>
                   }
                   secondary={
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 0.5 : 1 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                       {/* Main text with improved styling */}
                       <Typography 
                         variant="body1" 
@@ -1574,8 +1570,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           whiteSpace: 'pre-wrap',
                           wordBreak: 'break-word',
                           lineHeight: 1.5,
-                          py: theme.spacing(isMobile ? 0.5 : 1),
-                          fontSize: isMobile ? '0.85rem' : '0.875rem'
+                          py: theme.spacing(1)
                         }}
                       >
                         {etym.text || etym.etymology_text}
@@ -1583,20 +1578,19 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                       
                       {/* Components with improved clickable styling */}
                       {etym.components && etym.components.length > 0 && (
-                        <Box sx={{ mt: isMobile ? 0.5 : 1 }}>
+                        <Box sx={{ mt: 1 }}>
                           <Typography 
                             variant="caption" 
                             component="div" 
                             color="text.secondary" 
                             sx={{ 
                               mb: 0.5,
-                              fontWeight: 500, 
-                              fontSize: isMobile ? '0.7rem' : '0.75rem'
+                              fontWeight: 500 
                             }}
                           >
                             Components:
                           </Typography>
-                          <Stack direction="row" spacing={isMobile ? 0.5 : 1} useFlexGap flexWrap="wrap">
+                          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
                             {etym.components.map((comp, i) => (
                               <Chip 
                                 key={i}
@@ -1605,8 +1599,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                 clickable
                                 onClick={() => onWordClick(comp)}
                                 sx={{ 
-                                  fontSize: isMobile ? '0.7rem' : '0.75rem',
-                                  height: isMobile ? 20 : 24,
+                                  fontSize: '0.75rem',
+                                  height: 24,
                                   bgcolor: alpha(graphColors.derived, 0.1),
                                   color: graphColors.derived,
                                   fontWeight: 500,

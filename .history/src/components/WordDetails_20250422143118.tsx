@@ -270,11 +270,10 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       <Box sx={{ 
         bgcolor: isDarkMode ? 'rgba(30, 40, 60, 0.4)' : headerBgColor, 
         color: headerTextColor, 
-        // Reduced padding for mobile
-        pt: theme.spacing(isMobile ? 1.5 : 3), 
-        pb: theme.spacing(isMobile ? 1 : 1.5), 
-        pl: theme.spacing(isMobile ? 1.5 : 3), 
-        pr: theme.spacing(isMobile ? 1.5 : 2),
+        pt: theme.spacing(3), 
+        pb: theme.spacing(1.5), // Increased bottom padding slightly
+        pl: theme.spacing(3), 
+        pr: theme.spacing(2),
         boxShadow: isDarkMode ? 'none' : 'inset 0 -1px 0 rgba(0,0,0,0.08)',
         borderBottom: isDarkMode ? '1px solid rgba(255,255,255,0.05)' : `1px solid ${alpha(theme.palette.divider, 0.08)}`,
         borderRadius: theme.spacing(0),
@@ -311,12 +310,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               // Text wrapping and sizing
               overflowWrap: 'break-word',
               wordBreak: 'break-word', 
-              // Responsive font sizing - REDUCED FOR MOBILE
+              // Responsive font sizing
               fontSize: {
-                xs: '1.3rem',   // Mobile (was 1.5rem)
-                sm: '1.5rem',  // Tablet (was 1.75rem)
-                md: '2rem',     
-                lg: '2.125rem', 
+                xs: '1.5rem',   // Mobile
+                sm: '1.75rem',  // Tablet 
+                md: '2rem',     // Small desktop
+                lg: '2.125rem', // Large desktop
               },
               // Additional styling
               fontWeight: 700, 
@@ -326,9 +325,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               '&::after': {
                 content: '""',
                 position: 'absolute',
-                bottom: { xs: -1, sm: -2 }, // Adjusted bottom offset
+                bottom: { xs: -2, sm: -4 }, 
                 left: 0,
-                width: '30px', // Shorter underline
+                width: '40px',
                 height: '2px',
                 bgcolor: mainColor,
                 display: 'block',
@@ -364,11 +363,10 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           {/* IPA Pronunciation Display (uses the case-insensitive check above) */}
           {ipaPronunciation && (
             <Typography 
-              variant="body1" // Reduced from h6
+              variant="h6" 
               sx={{ 
                 fontStyle: 'italic', 
                 pl: theme.spacing(0.5),
-                fontSize: isMobile ? '0.9rem' : '1rem', // Smaller font on mobile
                 color: isDarkMode ? alpha(headerTextColor, 0.85) : alpha(theme.palette.text.primary, 0.75),
                 display: 'inline-block',
                 py: 0.5,
@@ -612,10 +610,10 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
 
     return (
       // Use pt instead of wrapping Box for top padding
-      <Box sx={{ pt: isMobile ? 0.5 : 1, width: '100%', maxWidth: '100%' }}> 
+      <Box sx={{ pt: 1, width: '100%', maxWidth: '100%' }}> 
         {Object.entries(definitionsByPosThenSource).map(([posName, defsBySource]) => {
           return (
-          <Box key={posName} sx={{ mb: isMobile ? 2 : 3, width: '100%', maxWidth: '100%' }}>
+          <Box key={posName} sx={{ mb: 3, width: '100%', maxWidth: '100%' }}>
             {/* Part of Speech Header - English/Code Only */}
             <Typography 
               variant="subtitle1" 
@@ -623,10 +621,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               sx={{ 
                 color: graphColors.main, 
                 fontWeight: 600,
-                pb: isMobile ? 0.5 : 1,
-                fontSize: isMobile ? '0.9rem' : '1rem', // Reduced font size
+                pb: 1,
                 borderBottom: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
-                mb: isMobile ? 1 : 1.5,
+                mb: 1.5,
                 width: '100%',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis'
@@ -665,11 +662,10 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                       sx={{ 
                         flexDirection: 'column', 
                         gap: 0.5, 
-                        py: isMobile ? 1 : 1.5, 
+                        py: 1.5, 
                         pl: 0, 
-                        pr: 0, // Ensure no right padding
                         position: 'relative', 
-                        pb: isLastDefinitionForSource && sourceName !== 'Unknown Source' ? (isMobile ? 2.5 : 3) : (isMobile ? 1 : 1.5), 
+                        pb: isLastDefinitionForSource && sourceName !== 'Unknown Source' ? 3 : 1.5, 
                       }}
                     >
                       {/* Definition text */}
@@ -677,7 +673,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         primaryTypographyProps={{ 
                           variant: 'body1', 
                           fontWeight: 500, 
-                          fontSize: isMobile ? '0.85rem' : '1rem', // Reduced font size
                           pl: 0.5 
                         }}
                         primary={def.text}
@@ -690,7 +685,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           sx={{ 
                             pl: 0.5, // Indent slightly
                             mt: 0.5, // Add space below definition text
-                            fontSize: isMobile ? '0.7rem' : '0.75rem', // Reduced font size
                             color: 'text.secondary', 
                             fontStyle: 'italic' 
                           }}
@@ -709,7 +703,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                               sx={{ 
                                 fontStyle: 'italic', 
                                 color: 'text.secondary',
-                                fontSize: isMobile ? '0.8rem' : '0.875rem', // Reduced font size
                                 mb: exIndex < def.examples.length - 1 ? 0.5 : 0,
                                 position: 'relative',
                                 pl: 3,
@@ -736,7 +729,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           <Typography 
                             variant="caption" 
                             component="div" 
-                            sx={{ fontWeight: 500, mb: 0.5, fontSize: isMobile ? '0.75rem' : '0.8rem' }}
+                            sx={{ fontWeight: 500, mb: 0.5 }}
                           >
                             Usage Notes:
                           </Typography>
@@ -744,7 +737,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                             <Typography 
                               key={noteIndex} 
                               variant="body2" 
-                              sx={{ color: 'text.secondary', fontSize: isMobile ? '0.8rem' : '0.875rem' }}
+                              sx={{ color: 'text.secondary' }}
                             >
                               {note}
                             </Typography>
@@ -767,7 +760,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                               label={tag}
                               size="small"
                               sx={{
-                                fontSize: isMobile ? '0.65rem' : '0.7rem', // Reduced font size
+                                fontSize: '0.7rem',
                                 height: 'auto',
                                 padding: theme.spacing(0.25, 0),
                                 bgcolor: alpha(theme.palette.primary.main, 0.1),
@@ -790,9 +783,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           variant="outlined"
                           sx={{
                             position: 'absolute', // Position relative to ListItem
-                            bottom: theme.spacing(isMobile ? 0.25 : 0.5),
-                            right: theme.spacing(isMobile ? 0.25 : 0.5),
-                            fontSize: isMobile ? '0.65rem' : '0.7rem', // Reduced font size
+                            bottom: theme.spacing(0.5),
+                            right: theme.spacing(0.5),
+                            fontSize: '0.7rem',
                             height: 'auto',
                             padding: theme.spacing(0.25, 0),
                             borderColor: alpha(graphColors.related, 0.4),
@@ -1394,6 +1387,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   const renderFormsAndTemplatesTab = () => {
     const forms = wordData.forms || [];
     const templates = wordData.templates || [];
+    // Extract rhyme pronunciations
     const rhymes = wordData.pronunciations?.filter(p => p.type?.toLowerCase() === 'rhyme') || [];
 
     if (forms.length === 0 && templates.length === 0 && rhymes.length === 0) {
@@ -1401,27 +1395,23 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     }
 
     return (
-      // Adjust top padding for mobile
-      <Box sx={{ pt: isMobile ? theme.spacing(0.5) : theme.spacing(1) }}>
+      <Box sx={{ pt: theme.spacing(1) }}>
         {/* Forms Section */}
         {forms.length > 0 && (
           <StyledAccordion defaultExpanded sx={{ mb: 2 }}>
             <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500, fontSize: isMobile ? '0.85rem' : '0.875rem' }}>Word Forms</Typography>
+              <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Forms (Inflections/Conjugations)</Typography>
             </StyledAccordionSummary>
-            <StyledAccordionDetails sx={{ px: isMobile ? 1 : 2 }}>
-              <List dense={isMobile} disablePadding>
+            <StyledAccordionDetails>
+              <List dense disablePadding>
                 {forms.map((form: WordForm, index: number) => (
-                  <ListItem key={form.id || index} disableGutters sx={{ py: isMobile ? 0.1 : 0.25 }}>
-                    <ListItemText 
-                      primary={form.form} 
-                      primaryTypographyProps={{ sx: { fontSize: isMobile ? '0.8rem' : '0.875rem' }}}
-                    />
-                    <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
-                       {form.is_canonical && <Chip label="Canonical" size="small" color="primary" variant="outlined" sx={{ height: 'auto', fontSize: isMobile ? '0.6rem' : '0.65rem', py: 0.1, px: 0.25 }} />}
-                       {form.is_primary && <Chip label="Primary" size="small" color="secondary" variant="outlined" sx={{ height: 'auto', fontSize: isMobile ? '0.6rem' : '0.65rem', py: 0.1, px: 0.25 }} />}
+                  <ListItem key={form.id || index} disableGutters sx={{ py: 0.25 }}>
+                    <ListItemText primary={form.form} />
+                    <Stack direction="row" spacing={0.5}>
+                       {form.is_canonical && <Chip label="Canonical" size="small" color="primary" variant="outlined" sx={{ height: 'auto', fontSize: '0.6rem' }} />}
+                       {form.is_primary && <Chip label="Primary" size="small" color="secondary" variant="outlined" sx={{ height: 'auto', fontSize: '0.6rem' }} />}
                        {form.tags && Object.entries(form.tags).map(([key, value]) => (
-                          <Chip key={key} label={`${key}: ${value}`} size="small" sx={{ height: 'auto', fontSize: isMobile ? '0.6rem' : '0.65rem', py: 0.1, px: 0.25 }} />
+                          <Chip key={key} label={`${key}: ${value}`} size="small" sx={{ height: 'auto', fontSize: '0.6rem' }} />
                        ))}
                     </Stack>
                   </ListItem>
@@ -1435,18 +1425,15 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         {templates.length > 0 && (
           <StyledAccordion defaultExpanded>
             <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500, fontSize: isMobile ? '0.85rem' : '0.875rem' }}>Word Templates</Typography>
+              <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>Word Templates</Typography>
             </StyledAccordionSummary>
-            <StyledAccordionDetails sx={{ px: isMobile ? 1 : 2 }}>
-              <List dense={isMobile} disablePadding>
+            <StyledAccordionDetails>
+              <List dense disablePadding>
                 {templates.map((template: WordTemplate, index: number) => (
-                  <ListItem key={template.id || index} disableGutters sx={{ py: isMobile ? 0.1 : 0.25, flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <ListItemText 
-                      primary={template.template_name} 
-                      primaryTypographyProps={{ sx: { fontSize: isMobile ? '0.8rem' : '0.875rem' }}}
-                    />
-                    {template.expansion && <Typography variant="caption" sx={{ fontFamily: 'monospace', color: 'text.secondary', fontSize: isMobile ? '0.7rem' : '0.75rem' }}>Expansion: {template.expansion}</Typography>}
-                    {template.args && <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: isMobile ? '0.7rem' : '0.75rem' }}>Args: {JSON.stringify(template.args)}</Typography>}
+                  <ListItem key={template.id || index} disableGutters sx={{ py: 0.25, flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <ListItemText primary={template.template_name} />
+                    {template.expansion && <Typography variant="caption" sx={{ fontFamily: 'monospace', color: 'text.secondary' }}>Expansion: {template.expansion}</Typography>}
+                    {template.args && <Typography variant="caption" sx={{ color: 'text.secondary' }}>Args: {JSON.stringify(template.args)}</Typography>}
                   </ListItem>
                 ))}
               </List>
@@ -1454,22 +1441,22 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           </StyledAccordion>
         )}
 
-        {/* Rhymes Section - Adjusted for mobile */}
+        {/* ADDED: Rhymes Section */}
         {rhymes.length > 0 && (
-          <Box sx={{ 
-              mt: templates.length > 0 || forms.length > 0 ? (isMobile ? 2 : 3) : 0, 
-              pt: templates.length > 0 || forms.length > 0 ? (isMobile ? 1 : 2) : 0, 
-              borderTop: templates.length > 0 || forms.length > 0 ? `1px solid ${theme.palette.divider}` : 'none',
-              px: isMobile ? 1 : 0 // Add horizontal padding only on mobile for this box
-            }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: isMobile ? 1 : 1.5, fontSize: isMobile ? '0.85rem' : '0.875rem' }}>Rhymes</Typography>
-            <List dense={isMobile} disablePadding>
+          <Box sx={{ mt: templates.length > 0 || forms.length > 0 ? 3 : 0, pt: templates.length > 0 || forms.length > 0 ? 2 : 0, borderTop: templates.length > 0 || forms.length > 0 ? `1px solid ${theme.palette.divider}` : 'none' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 1.5 }}>Rhymes</Typography>
+            <List dense disablePadding>
               {rhymes.map((rhyme, index) => (
-                <ListItem key={`rhyme-${index}`} disableGutters sx={{ py: isMobile ? 0.1 : 0.25 }}>
+                <ListItem key={`rhyme-${index}`} disableGutters sx={{ py: 0.25 }}>
                   <ListItemText 
                     primary={rhyme.value} 
-                    primaryTypographyProps={{ sx: { fontFamily: 'monospace', fontSize: isMobile ? '0.8rem' : '0.875rem'} }} 
+                    primaryTypographyProps={{ sx: { fontFamily: 'monospace'} }} 
                   />
+                  {/* {rhyme.note && ( // Remove check for non-existent 'note' property
+                    <Typography variant="caption" sx={{ color: 'text.secondary', ml: 2 }}>
+                      ({rhyme.note})
+                    </Typography>
+                  )} */}
                 </ListItem>
               ))}
             </List>
@@ -1482,12 +1469,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   const renderEtymologyTab = () => {
     // If the component is still loading the etymology data, show a spinner
     if (isLoadingEtymology) {
-      return <Box sx={{ display: 'flex', justifyContent: 'center', p: isMobile ? 2 : 3 }}><CircularProgress /></Box>;
+      return <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}><CircularProgress /></Box>;
     }
     
     // If there was an error loading the etymology tree, show the error
     if (etymologyError) {
-      return <Alert severity="error" sx={{ m: isMobile ? 1.5 : 2 }}>{etymologyError}</Alert>;
+      return <Alert severity="error" sx={{ m: 2 }}>{etymologyError}</Alert>;
     }
     
     // First check if the word has self-contained etymology information
@@ -1507,19 +1494,18 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     // Handle case where there's no etymology data from either source
     if (!hasWordEtymologies && !hasEtymologyTreeData) {
       return (
-        <Box sx={{ p: isMobile ? 1.5 : 2 }}>
+        <Box sx={{ p: 2 }}>
           <Alert severity="info" sx={{ mb: 2 }}>No etymology information available for word ID: {wordData.id} ({wordData.lemma}).</Alert>
           
           {/* Add links to external etymology resources */}
-          <Typography variant="subtitle2" sx={{ mt: isMobile ? 2 : 3, mb: 1, fontSize: isMobile ? '0.85rem' : '0.875rem' }}>
+          <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>
             Try external etymology resources:
           </Typography>
-          <Stack spacing={isMobile ? 0.5 : 1}>
+          <Stack spacing={1}>
             <Link 
               href={`https://en.wiktionary.org/wiki/${encodeURIComponent(wordData.lemma)}`} 
               target="_blank" 
               rel="noopener noreferrer"
-              sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}
             >
               Look up "{wordData.lemma}" on Wiktionary
             </Link>
@@ -1528,7 +1514,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                 href={`https://diksiyonaryo.ph/search/${encodeURIComponent(wordData.lemma)}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}
               >
                 Look up "{wordData.lemma}" on Diksiyonaryo.ph
               </Link>
@@ -1541,14 +1526,13 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     // If there's etymology data in the word itself, display it regardless of tree
     if (hasWordEtymologies) {
       return (
-        // Adjust padding for mobile
-        <Box sx={{ p: isMobile ? 0 : theme.spacing(2) }}>
+        <Box sx={{ p: theme.spacing(2) }}>
           {/* Display direct etymology data from word */}
-          <List dense={isMobile}>
+          <List dense>
             {wordData.etymologies!.map((etym, index) => (
               <ListItem key={index} sx={{ 
                 display: 'block', 
-                py: isMobile ? 1 : 1.5,
+                py: 1.5,
                 px: 0,
                 borderBottom: index < wordData.etymologies!.length - 1 ? 
                   `1px solid ${theme.palette.divider}` : 'none'
@@ -1558,14 +1542,13 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                     <Typography variant="subtitle1" sx={{ 
                       fontWeight: 600, 
                       mb: 0.5,
-                      color: graphColors.main,
-                      fontSize: isMobile ? '0.9rem' : '1rem'
+                      color: graphColors.main
                     }}>
                       Etymology {index + 1}
                     </Typography>
                   }
                   secondary={
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 0.5 : 1 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                       {/* Main text with improved styling */}
                       <Typography 
                         variant="body1" 
@@ -1574,8 +1557,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           whiteSpace: 'pre-wrap',
                           wordBreak: 'break-word',
                           lineHeight: 1.5,
-                          py: theme.spacing(isMobile ? 0.5 : 1),
-                          fontSize: isMobile ? '0.85rem' : '0.875rem'
+                          py: theme.spacing(1)
                         }}
                       >
                         {etym.text || etym.etymology_text}
@@ -1583,20 +1565,19 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                       
                       {/* Components with improved clickable styling */}
                       {etym.components && etym.components.length > 0 && (
-                        <Box sx={{ mt: isMobile ? 0.5 : 1 }}>
+                        <Box sx={{ mt: 1 }}>
                           <Typography 
                             variant="caption" 
                             component="div" 
                             color="text.secondary" 
                             sx={{ 
                               mb: 0.5,
-                              fontWeight: 500, 
-                              fontSize: isMobile ? '0.7rem' : '0.75rem'
+                              fontWeight: 500 
                             }}
                           >
                             Components:
                           </Typography>
-                          <Stack direction="row" spacing={isMobile ? 0.5 : 1} useFlexGap flexWrap="wrap">
+                          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
                             {etym.components.map((comp, i) => (
                               <Chip 
                                 key={i}
@@ -1605,8 +1586,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                 clickable
                                 onClick={() => onWordClick(comp)}
                                 sx={{ 
-                                  fontSize: isMobile ? '0.7rem' : '0.75rem',
-                                  height: isMobile ? 20 : 24,
+                                  fontSize: '0.75rem',
+                                  height: 24,
                                   bgcolor: alpha(graphColors.derived, 0.1),
                                   color: graphColors.derived,
                                   fontWeight: 500,
