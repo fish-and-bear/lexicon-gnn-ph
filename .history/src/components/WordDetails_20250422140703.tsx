@@ -1904,7 +1904,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       className={`word-details-container ${theme.palette.mode}`}
       sx={{
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column', // Stack header, content+tabs, mobile-tabs vertically
         height: '100%', 
         overflow: 'hidden', 
         bgcolor: 'background.default',
@@ -1914,20 +1914,21 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         m: 0 
       }}
     >
-      {/* Header Section */} 
+      {/* 1. Header Section (Always Visible) */} 
       <Box sx={{ 
           p: isMobile ? 1.5 : 0, // Desktop padding is 0
           borderBottom: 1, 
           borderColor: 'divider',
-          flexShrink: 0 
+          flexShrink: 0 // Prevent header from shrinking
         }}>
         {renderHeader()}
       </Box>
 
-      {/* Main Content Area (Tabs + Panel) */} 
-      <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden', height: '100%' }}>
+      {/* 2. Main Content Area (Desktop Vertical Tabs + Content Panel) */} 
+      {/* This Box grows to fill available space and handles horizontal layout */}
+      <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
         
-        {/* Vertical Tabs (Desktop) */} 
+        {/* 2a. Vertical Tabs (Desktop Only) */} 
         {!isMobile && (
           <Tabs
             orientation="vertical"
@@ -1940,7 +1941,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               borderColor: 'divider',
               minWidth: 160, 
               bgcolor: 'background.paper',
-              flexShrink: 0,
+              flexShrink: 0, // Prevent tabs from shrinking
+              height: '100%', // Ensure tabs take full height of container
+              overflowY: 'auto', // Allow scrolling if many tabs
                '& .MuiTab-root': {
                     textTransform: 'none',
                     fontWeight: theme.typography.fontWeightRegular,
@@ -1971,39 +1974,38 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           </Tabs>
         )} 
 
-        {/* Tab Content Panel (Scrollable) */} 
+        {/* 2b. Tab Content Panel (Scrollable, always rendered) */} 
+        {/* This Box grows horizontally and handles vertical scrolling */}
         <Box
           role="tabpanel"
-          hidden={false} // Keep it always rendered for simplicity
+          // hidden={false} // No need to hide, just render different content
           sx={{
-            flexGrow: 1, 
-            overflowY: 'auto', 
+            flexGrow: 1, // Takes remaining horizontal space
+            overflowY: 'auto', // Allows vertical scrolling
+            height: '100%', // Takes full height of parent flex container
             p: isMobile ? 1.5 : 2, // Apply padding here (desktop reduced)
-            width: '100%', 
-            minWidth: 0, 
+            width: '100%', // Needed for flexGrow
+            minWidth: 0, // Prevent content from breaking flex layout
           }}
         >
-          {/* Conditionally render content based on activeTab */} 
+          {/* Conditionally render tab content */} 
           {activeTab === 'definitions' && renderDefinitionsTab()}
           {activeTab === 'relations' && renderRelationsTab()}
           {activeTab === 'etymology' && renderEtymologyTab()}
           {activeTab === 'forms' && renderFormsAndTemplatesTab()}
           {activeTab === 'sources' && renderSourcesInfoTab()}
         </Box>
+      </Box>
 
-      </Box> { /* End Main Content Area Box */}
-
-      {/* Horizontal Tabs (Mobile) */} 
+      {/* 3. Horizontal Tabs (Mobile Only, Sticky at Bottom) */} 
       {isMobile && (
         <Paper 
           square 
-          // elevation={3} // Removed by user
           sx={{ 
-            // Revert to original simple style
+            // Styling for the sticky bottom bar
             borderTop: 1, 
             borderColor: 'divider', 
-            flexShrink: 0, 
-            // Remove sticky/zIndex/bgcolor properties
+            flexShrink: 0, // Prevent this bar from shrinking
           }}
         >
           <Tabs
@@ -2014,11 +2016,11 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             allowScrollButtonsMobile
             aria-label="Word details sections mobile"
             sx={{ 
+              // Styling for the Tabs component itself
               '& .MuiTab-root': { 
                 fontSize: '0.75rem', 
                 minWidth: 'auto', 
                 p: 1,
-                // minHeight: 48 // Removed by user
               },
             }}
           >
@@ -2030,7 +2032,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           </Tabs>
         </Paper>
       )}
-    </Box> // End Main Wrapper Box
+    </Box> // End Main Wrapper Box (flexDirection: column)
   );
 }); // End forwardRef
 

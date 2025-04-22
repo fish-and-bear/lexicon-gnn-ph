@@ -1997,13 +1997,16 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       {isMobile && (
         <Paper 
           square 
-          // elevation={3} // Removed by user
+          // elevation={3} // Removed
           sx={{ 
-            // Revert to original simple style
+            // Styling for the sticky bottom bar - REVERTED
             borderTop: 1, 
             borderColor: 'divider', 
-            flexShrink: 0, 
-            // Remove sticky/zIndex/bgcolor properties
+            flexShrink: 0, // Prevent this bar from shrinking
+            // position: 'sticky', // Removed
+            // bottom: 0, // Removed
+            // zIndex: 10, // Removed
+            // bgcolor: theme.palette.background.paper // Removed - default paper bg is fine
           }}
         >
           <Tabs
@@ -2014,11 +2017,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             allowScrollButtonsMobile
             aria-label="Word details sections mobile"
             sx={{ 
+              // Styling for the Tabs component itself - REVERTED
               '& .MuiTab-root': { 
                 fontSize: '0.75rem', 
                 minWidth: 'auto', 
                 p: 1,
-                // minHeight: 48 // Removed by user
+                // minHeight: 48 // Removed
               },
             }}
           >

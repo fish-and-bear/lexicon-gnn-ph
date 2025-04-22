@@ -1997,13 +1997,15 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       {isMobile && (
         <Paper 
           square 
-          // elevation={3} // Removed by user
+          elevation={3}
           sx={{ 
-            // Revert to original simple style
             borderTop: 1, 
             borderColor: 'divider', 
-            flexShrink: 0, 
-            // Remove sticky/zIndex/bgcolor properties
+            flexShrink: 0,
+            position: 'sticky',
+            bottom: 0,
+            zIndex: 10, 
+            bgcolor: theme.palette.background.paper
           }}
         >
           <Tabs
@@ -2018,7 +2020,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                 fontSize: '0.75rem', 
                 minWidth: 'auto', 
                 p: 1,
-                // minHeight: 48 // Removed by user
+                minHeight: 48
               },
             }}
           >

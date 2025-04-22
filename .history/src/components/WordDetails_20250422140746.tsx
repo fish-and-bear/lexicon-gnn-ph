@@ -1995,17 +1995,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
 
       {/* Horizontal Tabs (Mobile) */} 
       {isMobile && (
-        <Paper 
-          square 
-          // elevation={3} // Removed by user
-          sx={{ 
-            // Revert to original simple style
-            borderTop: 1, 
-            borderColor: 'divider', 
-            flexShrink: 0, 
-            // Remove sticky/zIndex/bgcolor properties
-          }}
-        >
+        <Paper square sx={{ borderTop: 1, borderColor: 'divider', flexShrink: 0 }}>
           <Tabs
             value={activeTab}
             onChange={handleTabChange}
@@ -2014,12 +2004,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             allowScrollButtonsMobile
             aria-label="Word details sections mobile"
             sx={{ 
-              '& .MuiTab-root': { 
-                fontSize: '0.75rem', 
-                minWidth: 'auto', 
-                p: 1,
-                // minHeight: 48 // Removed by user
-              },
+              '& .MuiTab-root': { fontSize: '0.75rem', minWidth: 'auto', p: 1 },
             }}
           >
             <Tab label="Defs" value="definitions" />
