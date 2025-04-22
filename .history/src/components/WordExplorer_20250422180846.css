@@ -360,6 +360,7 @@ main {
   /* Adjust padding for mobile toolbar */
   .word-explorer .MuiToolbar-root {
     padding-left: 8px; /* Reduce left padding */
+    padding-right: 8px; /* Reduce right padding */
   }
 
   /* Style mobile autocomplete input */

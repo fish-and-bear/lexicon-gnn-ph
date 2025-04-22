@@ -360,12 +360,21 @@ main {
   /* Adjust padding for mobile toolbar */
   .word-explorer .MuiToolbar-root {
     padding-left: 8px; /* Reduce left padding */
+    padding-right: 8px; /* Reduce right padding */
   }
 
   /* Style mobile autocomplete input */
   .search-input-mobile .MuiOutlinedInput-input {
-    padding: 8px 14px; /* Adjust padding for mobile */
-    font-size: 0.9rem; /* Slightly smaller font */
+    padding: 8.5px 14px; /* Adjust padding to match dense variant */
+    font-size: 0.9rem;
+  }
+
+  /* Style mobile action buttons */
+  .search-button-mobile,
+  .random-button-mobile {
+    min-width: 36px !important; /* Reduce min-width slightly */
+    height: 36px; /* Match text field height */
+    padding: 6px 8px !important; /* Reduce padding slightly */
   }
 
   /* Style the Toolbar */
