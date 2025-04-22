@@ -1814,14 +1814,16 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   const renderSourcesInfoTab = () => {
      const credits = wordData.credits || [];
      const sourceInfo = wordData.source_info || {};
+     const wordMetadata = wordData.word_metadata || {};
      const completeness = wordData.data_completeness || {};
 
      const hasCredits = credits.length > 0;
      const hasSourceInfo = Object.keys(sourceInfo).length > 0;
+     const hasWordMeta = Object.keys(wordMetadata).length > 0;
      const hasCompleteness = Object.keys(completeness).length > 0;
      const hasEntryInfo = wordData.created_at || wordData.updated_at;
 
-     if (!hasCredits && !hasSourceInfo && !hasCompleteness && !hasEntryInfo) {
+     if (!hasCredits && !hasSourceInfo && !hasWordMeta && !hasCompleteness && !hasEntryInfo) {
        return <Alert severity="info" sx={{ m: 2 }}>No source, metadata, or entry information available.</Alert>;
      }
 
@@ -1872,6 +1874,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
          {/* Source Info JSON */}
          {renderJsonData('Source Info', sourceInfo)}
 
+         {/* Word Metadata JSON */}
+         {renderJsonData('Word Metadata', wordMetadata)}
+
          {/* Completeness Info */}
          {hasCompleteness && (
             <Box sx={{ mt: 3 }}>
@@ -1893,7 +1898,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
 
          {/* Entry Timestamps */}
          {hasEntryInfo && (
-           <Box sx={{ mt: 3, pt: 2, borderTop: hasCredits || hasSourceInfo || hasCompleteness ? `1px solid ${theme.palette.divider}` : 'none' }}>
+           <Box sx={{ mt: 3, pt: 2, borderTop: hasCredits || hasSourceInfo || hasWordMeta || hasCompleteness ? `1px solid ${theme.palette.divider}` : 'none' }}>
              <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Entry Information</Typography>
              <Stack spacing={1}>
                {wordData.created_at && (
