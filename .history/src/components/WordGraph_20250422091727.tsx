@@ -94,46 +94,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const { theme } = useTheme();
   const svgRef = useRef<SVGSVGElement>(null);
 
-  // Log the received mainWord prop
-  useEffect(() => {
-    console.log(`[WordGraph] Received mainWord prop: '${mainWord}'`);
-  }, [mainWord]);
-
-  const [hoveredNode, setHoveredNode] = useState<CustomNode | null>(null);
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(mainWord);
-  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
-  const [depth, setDepth] = useState<number>(initialDepth);
-  const [breadth, setBreadth] = useState<number>(initialBreadth);
-  const [isLoading, setIsLoading] = useState(false); // Re-add isLoading state
-  const [error, setError] = useState<string | null>(null);
-  const [isValidNetwork, setIsValidNetwork] = useState(true);
-  const simulationRef = useRef<d3.Simulation<CustomNode, CustomLink> | null>(null);
-  const [filteredRelationships, setFilteredRelationships] = useState<string[]>([]);
-  const [forceUpdate, setForceUpdate] = useState<number>(0); // Force remount counter
-  const [showDisconnectedNodes, setShowDisconnectedNodes] = useState<boolean>(false);
-
-  // *** ADD Drawer state ***
-  const [controlsOpen, setControlsOpen] = useState(false);
-
-  const isDraggingRef = useRef(false);
-  const isTransitioningRef = useRef(false);
-  const prevMainWordRef = useRef<string | null>(null);
-
-  // State for tooltip delay
-  const [tooltipTimeoutId, setTooltipTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
-  // Create a key that changes whenever filtered relationships change
-  // This will force the graph to completely rebuild
-  const filterUpdateKey = useMemo(() => {
-    return filteredRelationships.join(',');
-  }, [filteredRelationships]);
-
-  // Add a new click timeout ref
-  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastClickTimeRef = useRef<number>(0);
-  const lastClickedNodeRef = useRef<string | null>(null);
-
-  // Define getUniqueRelationshipGroups function before it's used in any hooks
+  // Fix getUniqueRelationshipGroups function with complete definition
   const getUniqueRelationshipGroups = useCallback((): RelationshipGroups => {
     // Define a mapping of relationship types to ensure they appear only once
     const uniqueTypes: Record<string, RelationshipTypeInfo> = {
@@ -220,6 +181,45 @@ const WordGraph: React.FC<WordGraphProps> = ({
       categories: categoriesArray.filter(cat => cat.types.length > 0)
     };
   }, [getNodeColor]);
+
+  // Log the received mainWord prop
+  useEffect(() => {
+    console.log(`[WordGraph] Received mainWord prop: '${mainWord}'`);
+  }, [mainWord]);
+
+  const [hoveredNode, setHoveredNode] = useState<CustomNode | null>(null);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(mainWord);
+  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  const [depth, setDepth] = useState<number>(initialDepth);
+  const [breadth, setBreadth] = useState<number>(initialBreadth);
+  const [isLoading, setIsLoading] = useState(false); // Re-add isLoading state
+  const [error, setError] = useState<string | null>(null);
+  const [isValidNetwork, setIsValidNetwork] = useState(true);
+  const simulationRef = useRef<d3.Simulation<CustomNode, CustomLink> | null>(null);
+  const [filteredRelationships, setFilteredRelationships] = useState<string[]>([]);
+  const [forceUpdate, setForceUpdate] = useState<number>(0); // Force remount counter
+  const [showDisconnectedNodes, setShowDisconnectedNodes] = useState<boolean>(false);
+
+  // *** ADD Drawer state ***
+  const [controlsOpen, setControlsOpen] = useState(false);
+
+  const isDraggingRef = useRef(false);
+  const isTransitioningRef = useRef(false);
+  const prevMainWordRef = useRef<string | null>(null);
+
+  // State for tooltip delay
+  const [tooltipTimeoutId, setTooltipTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+  // Create a key that changes whenever filtered relationships change
+  // This will force the graph to completely rebuild
+  const filterUpdateKey = useMemo(() => {
+    return filteredRelationships.join(',');
+  }, [filteredRelationships]);
+
+  // Add a new click timeout ref
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastClickTimeRef = useRef<number>(0);
+  const lastClickedNodeRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!wordNetwork || !wordNetwork.nodes || !Array.isArray(wordNetwork.nodes) || 

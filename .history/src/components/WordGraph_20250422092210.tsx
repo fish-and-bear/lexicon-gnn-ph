@@ -122,18 +122,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   // State for tooltip delay
   const [tooltipTimeoutId, setTooltipTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
-  // Create a key that changes whenever filtered relationships change
-  // This will force the graph to completely rebuild
-  const filterUpdateKey = useMemo(() => {
-    return filteredRelationships.join(',');
-  }, [filteredRelationships]);
-
-  // Add a new click timeout ref
-  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastClickTimeRef = useRef<number>(0);
-  const lastClickedNodeRef = useRef<string | null>(null);
-
-  // Define getUniqueRelationshipGroups function before it's used in any hooks
+  // Define getUniqueRelationshipGroups function - SINGLE IMPLEMENTATION
   const getUniqueRelationshipGroups = useCallback((): RelationshipGroups => {
     // Define a mapping of relationship types to ensure they appear only once
     const uniqueTypes: Record<string, RelationshipTypeInfo> = {
@@ -220,6 +209,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
       categories: categoriesArray.filter(cat => cat.types.length > 0)
     };
   }, [getNodeColor]);
+
+  // Create a key that changes whenever filtered relationships change
+  // This will force the graph to completely rebuild
+  const filterUpdateKey = useMemo(() => {
+    return filteredRelationships.join(',');
+  }, [filteredRelationships]);
 
   useEffect(() => {
     if (!wordNetwork || !wordNetwork.nodes || !Array.isArray(wordNetwork.nodes) || 

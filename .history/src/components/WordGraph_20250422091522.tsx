@@ -81,6 +81,94 @@ interface RelationshipGroups {
   categories: Array<{ name: string; types: string[] }>;
 }
 
+// Fix getUniqueRelationshipGroups function with complete definition
+const getUniqueRelationshipGroups = useCallback((): RelationshipGroups => {
+  // Define a mapping of relationship types to ensure they appear only once
+  const uniqueTypes: Record<string, RelationshipTypeInfo> = {
+    // Core
+    main: { category: "Core", label: "Main Word", color: getNodeColor("main") },
+    
+    // Origin - keep these distinct
+    root: { category: "Origin", label: "Root Word", color: getNodeColor("root") },
+    root_of: { category: "Origin", label: "Root Origin", color: getNodeColor("root") },
+    etymology: { category: "Origin", label: "Etymology", color: getNodeColor("etymology") },
+    
+    // Derived
+    derived: { category: "Derived", label: "Derived", color: getNodeColor("derived") },
+    derived_from: { category: "Derived", label: "Derived From", color: getNodeColor("derived") },
+    derivative: { category: "Derived", label: "Derivative", color: getNodeColor("derived") },
+    
+    // Meaning
+    synonym: { category: "Meaning", label: "Synonym", color: getNodeColor("synonym") },
+    antonym: { category: "Meaning", label: "Antonym", color: getNodeColor("antonym") },
+    related: { category: "Meaning", label: "Related", color: getNodeColor("related") },
+    similar: { category: "Meaning", label: "Similar", color: getNodeColor("related") },
+    
+    // Cultural
+    kaugnay: { category: "Cultural", label: "Kaugnay", color: getNodeColor("related") },
+    kahulugan: { category: "Cultural", label: "Kahulugan", color: getNodeColor("related") },
+    kasalungat: { category: "Cultural", label: "Kasalungat", color: getNodeColor("antonym") },
+    
+    // Form
+    variant: { category: "Form", label: "Variant", color: getNodeColor("variant") },
+    spelling_variant: { category: "Form", label: "Spelling Variant", color: getNodeColor("variant") },
+    regional_variant: { category: "Form", label: "Regional Variant", color: getNodeColor("variant") },
+    abbreviation: { category: "Form", label: "Abbreviation", color: getNodeColor("variant") },
+    form_of: { category: "Form", label: "Form Of", color: getNodeColor("variant") },
+    
+    // Translation
+    itapat: { category: "Translation", label: "Itapat", color: getNodeColor("variant") },
+    atapat: { category: "Translation", label: "Atapat", color: getNodeColor("variant") },
+    inatapat: { category: "Translation", label: "Inatapat", color: getNodeColor("variant") },
+    
+    // Structure
+    hypernym: { category: "Structure", label: "Hypernym", color: getNodeColor("taxonomic") },
+    hyponym: { category: "Structure", label: "Hyponym", color: getNodeColor("taxonomic") },
+    meronym: { category: "Structure", label: "Meronym", color: getNodeColor("part_whole") },
+    holonym: { category: "Structure", label: "Holonym", color: getNodeColor("part_whole") },
+    taxonomic: { category: "Structure", label: "Taxonomic", color: getNodeColor("taxonomic") },
+    
+    // Part-Whole
+    part_whole: { category: "Part-Whole", label: "Part-Whole", color: getNodeColor("part_whole") },
+    component: { category: "Part-Whole", label: "Component", color: getNodeColor("part_whole") },
+    component_of: { category: "Part-Whole", label: "Component Of", color: getNodeColor("part_whole") },
+    
+    // Other
+    affix: { category: "Other", label: "Affix", color: getNodeColor("derived") },
+    usage: { category: "Other", label: "Usage", color: getNodeColor("usage") },
+    associated: { category: "Other", label: "Associated", color: getNodeColor("related") },
+    other: { category: "Other", label: "Other", color: "#adb5bd" }
+  };
+
+  // Group by category for the legend
+  const categoriesArray: Array<{ name: string; types: string[] }> = [
+    { name: "Core", types: [] },
+    { name: "Origin", types: [] },
+    { name: "Derived", types: [] },
+    { name: "Meaning", types: [] },
+    { name: "Cultural", types: [] },
+    { name: "Form", types: [] },
+    { name: "Translation", types: [] },
+    { name: "Structure", types: [] },
+    { name: "Part-Whole", types: [] },
+    { name: "Other", types: [] }
+  ];
+
+  // Fill categories with their types
+  Object.entries(uniqueTypes).forEach(([type, info]) => {
+    const categoryObj = categoriesArray.find(cat => cat.name === info.category);
+    if (categoryObj) {
+      categoryObj.types.push(type);
+    }
+  });
+
+  // Filter out empty categories
+  return {
+    uniqueTypes,
+    categories: categoriesArray.filter(cat => cat.types.length > 0)
+  };
+}, [getNodeColor]);
+
 const WordGraph: React.FC<WordGraphProps> = ({
   wordNetwork,
   mainWord,
@@ -132,94 +220,6 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastClickTimeRef = useRef<number>(0);
   const lastClickedNodeRef = useRef<string | null>(null);
-
-  // Define getUniqueRelationshipGroups function before it's used in any hooks
-  const getUniqueRelationshipGroups = useCallback((): RelationshipGroups => {
-    // Define a mapping of relationship types to ensure they appear only once
-    const uniqueTypes: Record<string, RelationshipTypeInfo> = {
-      // Core
-      main: { category: "Core", label: "Main Word", color: getNodeColor("main") },
-      
-      // Origin - keep these distinct
-      root: { category: "Origin", label: "Root Word", color: getNodeColor("root") },
-      root_of: { category: "Origin", label: "Root Origin", color: getNodeColor("root") },
-      etymology: { category: "Origin", label: "Etymology", color: getNodeColor("etymology") },
-      
-      // Derived
-      derived: { category: "Derived", label: "Derived", color: getNodeColor("derived") },
-      derived_from: { category: "Derived", label: "Derived From", color: getNodeColor("derived") },
-      derivative: { category: "Derived", label: "Derivative", color: getNodeColor("derived") },
-      
-      // Meaning
-      synonym: { category: "Meaning", label: "Synonym", color: getNodeColor("synonym") },
-      antonym: { category: "Meaning", label: "Antonym", color: getNodeColor("antonym") },
-      related: { category: "Meaning", label: "Related", color: getNodeColor("related") },
-      similar: { category: "Meaning", label: "Similar", color: getNodeColor("related") },
-      
-      // Cultural
-      kaugnay: { category: "Cultural", label: "Kaugnay", color: getNodeColor("related") },
-      kahulugan: { category: "Cultural", label: "Kahulugan", color: getNodeColor("related") },
-      kasalungat: { category: "Cultural", label: "Kasalungat", color: getNodeColor("antonym") },
-      
-      // Form
-      variant: { category: "Form", label: "Variant", color: getNodeColor("variant") },
-      spelling_variant: { category: "Form", label: "Spelling Variant", color: getNodeColor("variant") },
-      regional_variant: { category: "Form", label: "Regional Variant", color: getNodeColor("variant") },
-      abbreviation: { category: "Form", label: "Abbreviation", color: getNodeColor("variant") },
-      form_of: { category: "Form", label: "Form Of", color: getNodeColor("variant") },
-      
-      // Translation
-      itapat: { category: "Translation", label: "Itapat", color: getNodeColor("variant") },
-      atapat: { category: "Translation", label: "Atapat", color: getNodeColor("variant") },
-      inatapat: { category: "Translation", label: "Inatapat", color: getNodeColor("variant") },
-      
-      // Structure
-      hypernym: { category: "Structure", label: "Hypernym", color: getNodeColor("taxonomic") },
-      hyponym: { category: "Structure", label: "Hyponym", color: getNodeColor("taxonomic") },
-      meronym: { category: "Structure", label: "Meronym", color: getNodeColor("part_whole") },
-      holonym: { category: "Structure", label: "Holonym", color: getNodeColor("part_whole") },
-      taxonomic: { category: "Structure", label: "Taxonomic", color: getNodeColor("taxonomic") },
-      
-      // Part-Whole
-      part_whole: { category: "Part-Whole", label: "Part-Whole", color: getNodeColor("part_whole") },
-      component: { category: "Part-Whole", label: "Component", color: getNodeColor("part_whole") },
-      component_of: { category: "Part-Whole", label: "Component Of", color: getNodeColor("part_whole") },
-      
-      // Other
-      affix: { category: "Other", label: "Affix", color: getNodeColor("derived") },
-      usage: { category: "Other", label: "Usage", color: getNodeColor("usage") },
-      associated: { category: "Other", label: "Associated", color: getNodeColor("related") },
-      other: { category: "Other", label: "Other", color: "#adb5bd" }
-    };
-
-    // Group by category for the legend
-    const categoriesArray: Array<{ name: string; types: string[] }> = [
-      { name: "Core", types: [] },
-      { name: "Origin", types: [] },
-      { name: "Derived", types: [] },
-      { name: "Meaning", types: [] },
-      { name: "Cultural", types: [] },
-      { name: "Form", types: [] },
-      { name: "Translation", types: [] },
-      { name: "Structure", types: [] },
-      { name: "Part-Whole", types: [] },
-      { name: "Other", types: [] }
-    ];
-
-    // Fill categories with their types
-    Object.entries(uniqueTypes).forEach(([type, info]) => {
-      const categoryObj = categoriesArray.find(cat => cat.name === info.category);
-      if (categoryObj) {
-        categoryObj.types.push(type);
-      }
-    });
-
-    // Filter out empty categories
-    return {
-      uniqueTypes,
-      categories: categoriesArray.filter(cat => cat.types.length > 0)
-    };
-  }, [getNodeColor]);
 
   useEffect(() => {
     if (!wordNetwork || !wordNetwork.nodes || !Array.isArray(wordNetwork.nodes) || 
