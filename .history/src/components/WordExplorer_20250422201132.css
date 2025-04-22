@@ -352,7 +352,6 @@ main {
   color: #888;
 }
 
-/* Mobile/Tablet styles (up to 899.95px) */
 @media (max-width: 899.95px) {
   /* Hide desktop container */
   .controls-container {
@@ -360,50 +359,120 @@ main {
   }
   /* Show mobile trigger button */
   .network-controls-trigger {
-    display: flex !important;
+    display: flex !important; /* Or inline-flex, block depending on IconButton style */
+    /* Positioning is handled by sx prop in component */
   }
-
-  /* General styles for mobile/tablet (previously in 768px block) */
-   .search-container-desktop { display: none; }
-  .word-explorer .MuiToolbar-root { padding-left: 8px; min-height: 56px; }
-  .search-input-mobile .MuiOutlinedInput-input { padding: 8px 14px; font-size: 0.9rem; }
-  .search-button-mobile, .random-button-mobile { padding: 6px 12px; font-size: 0.8rem; min-width: 100px; flex-shrink: 0; }
-  .search-input { font-size: 14px; padding: 10px 14px; }
-  .search-suggestions li { padding: 10px 14px; }
-  input[type="text"], button { width: 100%; }
-  .word-details h2 { font-size: 1.3rem; }
-  .definition-card { padding: 0.5rem; }
-  .definition-card h3 { font-size: 1rem; }
-  .word-list li { font-size: 0.8rem; padding: 0.2rem 0.4rem; }
-  /* REMOVED flex-direction: column from main here */
-  main {
-     overflow-x: hidden;
-     height: auto;
+  
+  /* Styles previously in @media (max-width: 768px) */
+   .search-container-desktop {
+    display: none;
   }
-  /* REMOVED flex-direction: column from panel group here */
-  .graph-container, .details-container { width: 100% !important; max-width: 100% !important; flex-shrink: 0; }
-  .explorer-content-mobile { display: flex; flex-direction: column; flex-grow: 1; overflow-y: auto; background-color: var(--bg-color); min-height: 0; }
-  .graph-area-mobile, .details-area-mobile { width: 100%; padding: 8px; box-sizing: border-box; background-color: var(--bg-color); color: var(--text-color); }
-  .graph-area-mobile { min-height: 250px; border-bottom: 1px solid var(--card-border-color); margin-bottom: 0; padding-bottom: 8px; }
-  .details-area-mobile { flex-grow: 1; padding-top: 8px; min-height: 0; }
-  .placeholder { padding: 16px; text-align: center; color: var(--text-color-secondary); background-color: var(--bg-color); }
-  main [data-panel].details-panel { padding: 0; }
-  main [data-panel-resizer].resize-handle.horizontal { height: 4px !important; background-color: rgba(128, 128, 128, 0.3) !important; }
-  .dark main [data-panel-resizer].resize-handle.horizontal { background-color: rgba(255, 255, 255, 0.1) !important; }
-}
-
-/* Mobile-only STACKED layout styles (<= 768px) */
-@media (max-width: 768px) {
+  .word-explorer .MuiToolbar-root {
+    padding-left: 8px;
+  }
+  .search-input-mobile .MuiOutlinedInput-input {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+   .word-explorer .MuiToolbar-root {
+    min-height: 56px;
+  }
+  .search-input-mobile .MuiOutlinedInput-input {
+     padding: 8px 14px;
+     font-size: 0.9rem;
+  }
+  .search-button-mobile,
+  .random-button-mobile {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    min-width: 100px;
+    flex-shrink: 0;
+  }
+  .explorer-panel-group {
+     flex-grow: 1;
+  }
+  .search-input {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+  .search-suggestions li {
+    padding: 10px 14px;
+  }
+  input[type="text"], button {
+    width: 100%;
+  }
+  .word-details h2 {
+    font-size: 1.3rem;
+  }
+  .definition-card {
+    padding: 0.5rem;
+  }
+  .definition-card h3 {
+    font-size: 1rem;
+  }
+  .word-list li {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.4rem;
+  }
   main {
     flex-direction: column;
+    overflow-x: hidden;
+    height: auto;
   }
   main [data-panel-group] {
     flex-direction: column !important;
   }
-  /* Add any other styles that *only* apply below 769px here */
+  .graph-container,
+  .details-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 0;
+  }
+  .explorer-content-mobile {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: var(--bg-color);
+    min-height: 0;
+  }
+  .graph-area-mobile,
+  .details-area-mobile {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  .graph-area-mobile {
+    min-height: 250px;
+    border-bottom: 1px solid var(--card-border-color);
+    margin-bottom: 0;
+    padding-bottom: 8px;
+  }
+  .details-area-mobile {
+    flex-grow: 1;
+    padding-top: 8px;
+    min-height: 0;
+  }
+  .placeholder {
+    padding: 16px;
+    text-align: center;
+    color: var(--text-color-secondary);
+    background-color: var(--bg-color);
+  }
+  main [data-panel].details-panel {
+    padding: 0;
+  }
+  main [data-panel-resizer].resize-handle.horizontal {
+      height: 4px !important;
+      background-color: rgba(128, 128, 128, 0.3) !important;
+  }
+  .dark main [data-panel-resizer].resize-handle.horizontal {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+  }
 }
 
-/* Desktop-only styles (>= 900px) */
 @media (min-width: 900px) {
   /* Show and position the main controls container */
   /* Assuming .controls-container is a direct child of .graph-container */
