@@ -46,7 +46,6 @@ interface WordGraphProps {
   initialDepth: number;
   initialBreadth: number;
   isMobile: boolean; // *** Add isMobile prop ***
-  isLoading: boolean; // Add isLoading prop for network
 }
 
 interface CustomNode extends d3.SimulationNodeDatum {
@@ -96,8 +95,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   onNetworkChange,
   initialDepth,
   initialBreadth,
-  isMobile, // *** Destructure isMobile ***
-  isLoading // *** Destructure isLoading ***
+  isMobile // *** Destructure isMobile ***
 }) => {
   const { theme } = useTheme();
   const muiTheme = useMuiTheme(); // The actual MUI theme object
@@ -112,6 +110,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const [depth, setDepth] = useState<number>(initialDepth);
   const [breadth, setBreadth] = useState<number>(initialBreadth);
+  const [isLoading, setIsLoading] = useState(false); // Re-add isLoading state
   const [error, setError] = useState<string | null>(null);
   const [isValidNetwork, setIsValidNetwork] = useState(true);
   const simulationRef = useRef<d3.Simulation<CustomNode, CustomLink> | null>(null);
@@ -1325,12 +1324,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       if (svgRef.current) d3.select(svgRef.current).selectAll("*").remove();
       if (simulationRef.current) simulationRef.current.stop();
       setError(null);
+      setIsLoading(false);
       return;
     }
 
       // Declare svg variable ONCE at the top of the effect
       const svg = d3.select(svgRef.current);
 
+    setIsLoading(true);
     setError(null);
     console.log("[GRAPH] Building graph with filtered data");
     console.log(`[GRAPH] Using ${filteredNodes.length} nodes and ${filteredLinks.length} links`);
@@ -1569,6 +1570,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
       
     } // End of !isMobile conditional block for legend 
 
+    setIsLoading(false);
+      
     // Tooltip depends on state now, so keep it outside useEffect cleanup?
     const centerTimeout = setTimeout(() => {
          if (svgRef.current) centerOnMainWord(svg, filteredNodes);
@@ -1590,6 +1593,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       console.error("[D3_EFFECT_ERROR] Error during D3 graph rendering:", err);
       setError(err instanceof Error ? err.message : "An unknown error occurred during graph rendering.");
       setIsValidNetwork(false); // Mark network as invalid on error
+      setIsLoading(false); // Ensure loading state is reset
       // Ensure cleanup runs even on error
       if (simulationRef.current) {
           simulationRef.current.stop();
@@ -1770,7 +1774,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
     <div className="graph-container" style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
       <div className="graph-svg-container" style={{ width: '100%', height: '100%' }}>
         {isLoading && (
-          <div className="loading-overlay"><div className="spinner"></div><p>Loading Network...</p></div>
+          <div className="loading-overlay"><div className="spinner"></div><p>Loading...</p></div>
         )}
         {error && (
           <div className="error-overlay">

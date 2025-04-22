@@ -60,9 +60,7 @@ const WordExplorer: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [depth, setDepth] = useState<number>(2);
   const [breadth, setBreadth] = useState<number>(10);
-  // Store history with associated graph settings
-  type HistoryEntry = { identifier: string; lemma: string; depth: number; breadth: number };
-  const [wordHistory, setWordHistory] = useState<HistoryEntry[]>([]);
+  const [wordHistory, setWordHistory] = useState<Array<string | {id: number | string, text: string}>>([]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState<number>(-1);
   const [searchResults, setSearchResults] = useState<SearchWordResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
@@ -333,22 +331,9 @@ const WordExplorer: React.FC = () => {
         setWordData(wordData);
         setSelectedNode(wordData.lemma);
 
-        // Use ID identifier if available, otherwise lemma
-        const historyIdentifier = wordData.id ? `id:${wordData.id}` : wordData.lemma;
-
-        // Check if the *identifier* already exists at the current index + 1 to avoid duplicates on re-click
-        const nextHistoryEntry = wordHistory[currentHistoryIndex + 1];
-        if (!nextHistoryEntry || nextHistoryEntry.identifier !== historyIdentifier) {
-          const newHistoryEntry: HistoryEntry = { 
-            identifier: historyIdentifier, 
-            lemma: wordData.lemma,
-            depth: depth, // Store current depth
-            breadth: breadth // Store current breadth
-          };
-          const newHistory = [
-            ...wordHistory.slice(0, currentHistoryIndex + 1), 
-            newHistoryEntry
-          ];
+        const wordId = String(wordData.id);
+        if (!wordHistory.some(w => typeof w === 'object' && 'id' in w && String(w.id) === wordId)) {
+          const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), { id: wordData.id, text: wordData.lemma }];
           setWordHistory(newHistory as any);
           setCurrentHistoryIndex(newHistory.length - 1);
         }
@@ -529,18 +514,13 @@ const WordExplorer: React.FC = () => {
       setWordData(wordInfo);
       setSelectedNode(wordInfo.lemma);
       
-      const networkIdentifier = `id:${wordInfo.id}`; // Use ID for network fetch
-      const historyEntry: HistoryEntry = { 
-        identifier: networkIdentifier, 
-        lemma: wordInfo.lemma,
-        depth: depth, // Store current depth
-        breadth: breadth // Store current breadth
-      };
+      const historyEntry = { id: wordInfo.id, text: wordInfo.lemma };
       const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), historyEntry];
       setWordHistory(newHistory as any);
       setCurrentHistoryIndex(newHistory.length - 1);
       
       // Use ID for network fetch
+      const networkIdentifier = `id:${wordInfo.id}`;
       fetchWordNetworkData(networkIdentifier, depth, breadth)
         .catch(err => console.error("Error fetching network data for random word:", err))
         .then(networkData => {
@@ -586,18 +566,22 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex(newIndex);
       
       const previousWord = wordHistory[newIndex];
-      // Restore settings from history
-      setDepth(previousWord.depth);
-      setBreadth(previousWord.breadth);
-
       console.log(`Navigating back to: ${JSON.stringify(previousWord)} (index ${newIndex})`);
       
-      // Use the stored identifier and settings
-      const detailsIdentifier = previousWord.identifier;
-      const networkIdentifier = previousWord.identifier;
-      const historyDepth = previousWord.depth;
-      const historyBreadth = previousWord.breadth;
+      const wordText = typeof previousWord === 'string' 
+        ? previousWord 
+        : previousWord.text;
+        
+      // Determine the identifier for network fetch: prioritize ID format
+      const networkIdentifier = typeof previousWord === 'object' && previousWord.id 
+        ? `id:${previousWord.id}`
+        : wordText; // Fallback to text/lemma for network fetch
 
+      // Determine the identifier for details fetch (original logic: uses ID or lemma string)
+      const detailsIdentifier = typeof previousWord === 'object' && previousWord.id
+        ? `id:${previousWord.id}` // Use id: format for details too, as it handles both
+        : wordText;
+            
       setIsLoadingDetails(true);
       setIsLoadingNetwork(true);
       setError(null);
@@ -606,7 +590,7 @@ const WordExplorer: React.FC = () => {
       
       Promise.all([
         fetchWordDetails(detailsIdentifier), // Use ID or lemma string for details
-        fetchWordNetworkData(networkIdentifier, historyDepth, historyBreadth) // Use restored settings
+        fetchWordNetworkData(networkIdentifier, depth, breadth) // Use ID format or lemma for network
       ])
       .then(([wordData, networkData]) => {
         setSelectedNode(wordData.lemma);
@@ -615,7 +599,7 @@ const WordExplorer: React.FC = () => {
         // Sync network relations with word data
         if (networkData && networkData.nodes && networkData.edges && wordData) {
           const mainNode = networkData.nodes.find(node => 
-            node.type === 'main' || node.word === detailsIdentifier || node.label === detailsIdentifier
+            node.type === 'main' || node.word === wordText || node.label === wordText
           );
           
           if (mainNode) {
@@ -667,7 +651,7 @@ const WordExplorer: React.FC = () => {
               semantic_network: {
                 nodes: networkData.nodes || [],
                 links: networkData.edges || [],
-                mainWord: detailsIdentifier
+                mainWord: wordText
               }
             };
             
@@ -716,17 +700,21 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex(newIndex);
       
       const nextWord = wordHistory[newIndex];
-      // Restore settings from history
-      setDepth(nextWord.depth);
-      setBreadth(nextWord.breadth);
-
       console.log(`Navigating forward to: ${JSON.stringify(nextWord)} (index ${newIndex})`);
       
-      // Use the stored identifier and settings
-      const detailsIdentifier = nextWord.identifier;
-      const networkIdentifier = nextWord.identifier;
-      const historyDepth = nextWord.depth;
-      const historyBreadth = nextWord.breadth;
+      const wordText = typeof nextWord === 'string' 
+        ? nextWord 
+        : nextWord.text;
+        
+      // Determine the identifier for network fetch: prioritize ID format
+      const networkIdentifier = typeof nextWord === 'object' && nextWord.id
+        ? `id:${nextWord.id}`
+        : wordText; // Fallback to text/lemma for network fetch
+        
+      // Determine the identifier for details fetch (original logic: uses ID or lemma string)
+      const detailsIdentifier = typeof nextWord === 'object' && nextWord.id
+        ? `id:${nextWord.id}` // Use id: format for details too, as it handles both
+        : wordText;
 
       setIsLoadingDetails(true);
       setIsLoadingNetwork(true);
@@ -736,7 +724,7 @@ const WordExplorer: React.FC = () => {
       
       Promise.all([
         fetchWordDetails(detailsIdentifier), // Use ID or lemma string for details
-        fetchWordNetworkData(networkIdentifier, historyDepth, historyBreadth) // Use restored settings
+        fetchWordNetworkData(networkIdentifier, depth, breadth) // Use ID format or lemma for network
       ])
       .then(([wordData, networkData]) => {
         setSelectedNode(wordData.lemma);
@@ -745,7 +733,7 @@ const WordExplorer: React.FC = () => {
         // Sync network relations with word data
         if (networkData && networkData.nodes && networkData.edges && wordData) {
           const mainNode = networkData.nodes.find(node => 
-            node.type === 'main' || node.word === detailsIdentifier || node.label === detailsIdentifier
+            node.type === 'main' || node.word === wordText || node.label === wordText
           );
           
           if (mainNode) {
@@ -797,7 +785,7 @@ const WordExplorer: React.FC = () => {
               semantic_network: {
                 nodes: networkData.nodes || [],
                 links: networkData.edges || [],
-                mainWord: detailsIdentifier
+                mainWord: wordText
               }
             };
             

@@ -1325,12 +1325,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
       if (svgRef.current) d3.select(svgRef.current).selectAll("*").remove();
       if (simulationRef.current) simulationRef.current.stop();
       setError(null);
+      setIsLoading(false);
       return;
     }
 
       // Declare svg variable ONCE at the top of the effect
       const svg = d3.select(svgRef.current);
 
+    setIsLoading(true);
     setError(null);
     console.log("[GRAPH] Building graph with filtered data");
     console.log(`[GRAPH] Using ${filteredNodes.length} nodes and ${filteredLinks.length} links`);
@@ -1569,6 +1571,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
       
     } // End of !isMobile conditional block for legend 
 
+    setIsLoading(false);
+      
     // Tooltip depends on state now, so keep it outside useEffect cleanup?
     const centerTimeout = setTimeout(() => {
          if (svgRef.current) centerOnMainWord(svg, filteredNodes);
@@ -1590,6 +1594,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       console.error("[D3_EFFECT_ERROR] Error during D3 graph rendering:", err);
       setError(err instanceof Error ? err.message : "An unknown error occurred during graph rendering.");
       setIsValidNetwork(false); // Mark network as invalid on error
+      setIsLoading(false); // Ensure loading state is reset
       // Ensure cleanup runs even on error
       if (simulationRef.current) {
           simulationRef.current.stop();

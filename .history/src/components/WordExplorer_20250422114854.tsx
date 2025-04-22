@@ -48,8 +48,7 @@ const WordExplorer: React.FC = () => {
   const [wordData, setWordData] = useState<WordInfo | null>(null);
   const [wordNetwork, setWordNetwork] = useState<WordNetwork | null>(null);
   const [etymologyTree, setEtymologyTree] = useState<EtymologyTree | null>(null);
-  const [isLoadingNetwork, setIsLoadingNetwork] = useState(false);
-  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isLoadingEtymology, setIsLoadingEtymology] = useState(false);
   const [isRandomLoading, setIsRandomLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,9 +59,7 @@ const WordExplorer: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [depth, setDepth] = useState<number>(2);
   const [breadth, setBreadth] = useState<number>(10);
-  // Store history with associated graph settings
-  type HistoryEntry = { identifier: string; lemma: string; depth: number; breadth: number };
-  const [wordHistory, setWordHistory] = useState<HistoryEntry[]>([]);
+  const [wordHistory, setWordHistory] = useState<Array<string | {id: number | string, text: string}>>([]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState<number>(-1);
   const [searchResults, setSearchResults] = useState<SearchWordResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
@@ -130,7 +127,7 @@ const WordExplorer: React.FC = () => {
 
   const fetchWordNetworkData = useCallback(async (word: string, depthParam: number = 2, breadthParam: number = 10) => {
     try {
-      setIsLoadingNetwork(true);
+      setIsLoading(true);
       setError(null);
       
       console.log('Fetching word network data for:', word);
@@ -221,7 +218,7 @@ const WordExplorer: React.FC = () => {
       setWordNetwork(null);
       throw error;
     } finally {
-      setIsLoadingNetwork(false);
+      setIsLoading(false);
     }
   }, [wordData]);
 
@@ -279,8 +276,7 @@ const WordExplorer: React.FC = () => {
     }
 
     setError(null);
-    setIsLoadingDetails(true);
-    setIsLoadingNetwork(true);
+    setIsLoading(true);
 
     try {
       let wordData: WordInfo | null = null;
@@ -333,22 +329,9 @@ const WordExplorer: React.FC = () => {
         setWordData(wordData);
         setSelectedNode(wordData.lemma);
 
-        // Use ID identifier if available, otherwise lemma
-        const historyIdentifier = wordData.id ? `id:${wordData.id}` : wordData.lemma;
-
-        // Check if the *identifier* already exists at the current index + 1 to avoid duplicates on re-click
-        const nextHistoryEntry = wordHistory[currentHistoryIndex + 1];
-        if (!nextHistoryEntry || nextHistoryEntry.identifier !== historyIdentifier) {
-          const newHistoryEntry: HistoryEntry = { 
-            identifier: historyIdentifier, 
-            lemma: wordData.lemma,
-            depth: depth, // Store current depth
-            breadth: breadth // Store current breadth
-          };
-          const newHistory = [
-            ...wordHistory.slice(0, currentHistoryIndex + 1), 
-            newHistoryEntry
-          ];
+        const wordId = String(wordData.id);
+        if (!wordHistory.some(w => typeof w === 'object' && 'id' in w && String(w.id) === wordId)) {
+          const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), { id: wordData.id, text: wordData.lemma }];
           setWordHistory(newHistory as any);
           setCurrentHistoryIndex(newHistory.length - 1);
         }
@@ -399,8 +382,7 @@ const WordExplorer: React.FC = () => {
       setWordData(null);
       setWordNetwork(null);
     } finally {
-      setIsLoadingDetails(false);
-      setIsLoadingNetwork(false);
+      setIsLoading(false);
     }
   }, [
       wordHistory, 
@@ -508,11 +490,10 @@ const WordExplorer: React.FC = () => {
   const handleRandomWord = useCallback(async () => {
     setError(null);
     setIsRandomLoading(true);
-    setIsLoadingDetails(true);
-    setIsLoadingNetwork(true);
     setWordData(null);
     setWordNetwork(null);
     setSelectedNode(null);
+    setIsLoading(true);
     
     try {
       console.log("Fetching a single random word...");
@@ -529,18 +510,13 @@ const WordExplorer: React.FC = () => {
       setWordData(wordInfo);
       setSelectedNode(wordInfo.lemma);
       
-      const networkIdentifier = `id:${wordInfo.id}`; // Use ID for network fetch
-      const historyEntry: HistoryEntry = { 
-        identifier: networkIdentifier, 
-        lemma: wordInfo.lemma,
-        depth: depth, // Store current depth
-        breadth: breadth // Store current breadth
-      };
+      const historyEntry = { id: wordInfo.id, text: wordInfo.lemma };
       const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), historyEntry];
       setWordHistory(newHistory as any);
       setCurrentHistoryIndex(newHistory.length - 1);
       
       // Use ID for network fetch
+      const networkIdentifier = `id:${wordInfo.id}`;
       fetchWordNetworkData(networkIdentifier, depth, breadth)
         .catch(err => console.error("Error fetching network data for random word:", err))
         .then(networkData => {
@@ -562,8 +538,7 @@ const WordExplorer: React.FC = () => {
       setError(error instanceof Error ? error.message : "Failed to get a random word");
     } finally {
         setIsRandomLoading(false);
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
+      setIsLoading(false);
     }
   }, [
     depth, 
@@ -586,27 +561,31 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex(newIndex);
       
       const previousWord = wordHistory[newIndex];
-      // Restore settings from history
-      setDepth(previousWord.depth);
-      setBreadth(previousWord.breadth);
-
       console.log(`Navigating back to: ${JSON.stringify(previousWord)} (index ${newIndex})`);
       
-      // Use the stored identifier and settings
-      const detailsIdentifier = previousWord.identifier;
-      const networkIdentifier = previousWord.identifier;
-      const historyDepth = previousWord.depth;
-      const historyBreadth = previousWord.breadth;
+      const wordText = typeof previousWord === 'string' 
+        ? previousWord 
+        : previousWord.text;
+        
+      // Determine the identifier for network fetch: prioritize ID format
+      const networkIdentifier = typeof previousWord === 'object' && previousWord.id 
+        ? `id:${previousWord.id}`
+        : wordText; // Fallback to text/lemma for network fetch
 
-      setIsLoadingDetails(true);
-      setIsLoadingNetwork(true);
+      // Determine the identifier for details fetch (original logic: uses ID or lemma string)
+      const detailsIdentifier = typeof previousWord === 'object' && previousWord.id
+        ? `id:${previousWord.id}` // Use id: format for details too, as it handles both
+        : wordText;
+            
+      setIsLoading(true);
       setError(null);
       setWordData(null);
       setWordNetwork(null);
+      setSelectedNode(null);
       
       Promise.all([
         fetchWordDetails(detailsIdentifier), // Use ID or lemma string for details
-        fetchWordNetworkData(networkIdentifier, historyDepth, historyBreadth) // Use restored settings
+        fetchWordNetworkData(networkIdentifier, depth, breadth) // Use ID format or lemma for network
       ])
       .then(([wordData, networkData]) => {
         setSelectedNode(wordData.lemma);
@@ -615,7 +594,7 @@ const WordExplorer: React.FC = () => {
         // Sync network relations with word data
         if (networkData && networkData.nodes && networkData.edges && wordData) {
           const mainNode = networkData.nodes.find(node => 
-            node.type === 'main' || node.word === detailsIdentifier || node.label === detailsIdentifier
+            node.type === 'main' || node.word === wordText || node.label === wordText
           );
           
           if (mainNode) {
@@ -667,7 +646,7 @@ const WordExplorer: React.FC = () => {
               semantic_network: {
                 nodes: networkData.nodes || [],
                 links: networkData.edges || [],
-                mainWord: detailsIdentifier
+                mainWord: wordText
               }
             };
             
@@ -694,8 +673,7 @@ const WordExplorer: React.FC = () => {
             });
         }
         
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
+        setIsLoading(false);
       })
       .catch(error => {
         console.error("Error navigating back:", error);
@@ -704,8 +682,7 @@ const WordExplorer: React.FC = () => {
           errorMessage = error.message;
         }
         setError(errorMessage);
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
+        setIsLoading(false);
       });
     }
   }, [currentHistoryIndex, wordHistory, depth, breadth, fetchWordNetworkData, fetchWordDetails, fetchEtymologyTree]);
@@ -716,27 +693,31 @@ const WordExplorer: React.FC = () => {
       setCurrentHistoryIndex(newIndex);
       
       const nextWord = wordHistory[newIndex];
-      // Restore settings from history
-      setDepth(nextWord.depth);
-      setBreadth(nextWord.breadth);
-
       console.log(`Navigating forward to: ${JSON.stringify(nextWord)} (index ${newIndex})`);
       
-      // Use the stored identifier and settings
-      const detailsIdentifier = nextWord.identifier;
-      const networkIdentifier = nextWord.identifier;
-      const historyDepth = nextWord.depth;
-      const historyBreadth = nextWord.breadth;
+      const wordText = typeof nextWord === 'string' 
+        ? nextWord 
+        : nextWord.text;
+        
+      // Determine the identifier for network fetch: prioritize ID format
+      const networkIdentifier = typeof nextWord === 'object' && nextWord.id
+        ? `id:${nextWord.id}`
+        : wordText; // Fallback to text/lemma for network fetch
+        
+      // Determine the identifier for details fetch (original logic: uses ID or lemma string)
+      const detailsIdentifier = typeof nextWord === 'object' && nextWord.id
+        ? `id:${nextWord.id}` // Use id: format for details too, as it handles both
+        : wordText;
 
-      setIsLoadingDetails(true);
-      setIsLoadingNetwork(true);
+      setIsLoading(true);
       setError(null);
       setWordData(null);
       setWordNetwork(null);
+      setSelectedNode(null);
       
       Promise.all([
         fetchWordDetails(detailsIdentifier), // Use ID or lemma string for details
-        fetchWordNetworkData(networkIdentifier, historyDepth, historyBreadth) // Use restored settings
+        fetchWordNetworkData(networkIdentifier, depth, breadth) // Use ID format or lemma for network
       ])
       .then(([wordData, networkData]) => {
         setSelectedNode(wordData.lemma);
@@ -745,7 +726,7 @@ const WordExplorer: React.FC = () => {
         // Sync network relations with word data
         if (networkData && networkData.nodes && networkData.edges && wordData) {
           const mainNode = networkData.nodes.find(node => 
-            node.type === 'main' || node.word === detailsIdentifier || node.label === detailsIdentifier
+            node.type === 'main' || node.word === wordText || node.label === wordText
           );
           
           if (mainNode) {
@@ -797,7 +778,7 @@ const WordExplorer: React.FC = () => {
               semantic_network: {
                 nodes: networkData.nodes || [],
                 links: networkData.edges || [],
-                mainWord: detailsIdentifier
+                mainWord: wordText
               }
             };
             
@@ -824,8 +805,7 @@ const WordExplorer: React.FC = () => {
             });
         }
         
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
+        setIsLoading(false);
       })
       .catch(error => {
         console.error("Error navigating forward:", error);
@@ -834,8 +814,7 @@ const WordExplorer: React.FC = () => {
           errorMessage = error.message;
         }
         setError(errorMessage);
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
+        setIsLoading(false);
       });
     }
   }, [currentHistoryIndex, wordHistory, depth, breadth, fetchWordNetworkData, fetchWordDetails, fetchEtymologyTree]);
@@ -929,8 +908,7 @@ const WordExplorer: React.FC = () => {
     if (selectedNode) {
       // Use word ID if available, otherwise fall back to selectedNode (lemma)
       const identifier = wordData?.id ? `id:${wordData.id}` : normalizeInput(selectedNode);
-      setIsLoadingDetails(true);
-      setIsLoadingNetwork(true);
+      setIsLoading(true);
       fetchWordNetworkData(identifier, newDepth, newBreadth)
         .then(networkData => {
           setWordNetwork(networkData);
@@ -1149,29 +1127,29 @@ const WordExplorer: React.FC = () => {
            variant="contained"
            className="search-button"
            onClick={() => inputValue.trim() && handleSearch(inputValue)}
-           disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim()}
+           disabled={isLoading || !inputValue.trim()}
            title="Search for this word"
            sx={{
              height: '40px',
-             ml: 0.5,
+             mx: 0.1,
              whiteSpace: 'nowrap',
              bgcolor: 'var(--button-color)', color: 'var(--button-text-color)',
              borderRadius: '8px', boxShadow: 'none',
              '&:hover': { bgcolor: 'var(--primary-color)', boxShadow: 'none' }
            }}
          >
-           {(isLoadingDetails || isLoadingNetwork) ? <CircularProgress size={20} color="inherit"/> : '🔍 Search'}
+           {isLoading ? <CircularProgress size={20} color="inherit"/> : '🔍 Search'}
          </Button>
 
          <Button
            variant="contained"
            className="random-button"
            onClick={handleRandomWord}
-           disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork}
+           disabled={isRandomLoading || isLoading}
            title="Get a random word"
            sx={{
              height: '40px',
-             ml: 0.5,
+             mx: 0.1,
              whiteSpace: 'nowrap',
              bgcolor: 'var(--accent-color)', color: 'var(--button-text-color)',
              fontWeight: 'normal', borderRadius: '8px', boxShadow: 'none',
@@ -1286,11 +1264,10 @@ const WordExplorer: React.FC = () => {
               size="small" // Smaller button
               className="search-button-mobile" // Add specific class
               onClick={() => inputValue.trim() && handleSearch(inputValue)}
-              disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim()}
+              disabled={isLoading || !inputValue.trim()}
               title="Search"
               sx={{ 
                 minWidth: 'auto', px: 1, // Allow shrinking
-                height: 38, // Match TextField height
                 bgcolor: 'var(--button-color)', // Use theme variable
                 color: 'var(--button-text-color)', // Use theme variable
                 '&:hover': { 
@@ -1302,18 +1279,17 @@ const WordExplorer: React.FC = () => {
                 }
               }}
             >
-              {(isLoadingDetails || isLoadingNetwork) ? <CircularProgress size={20} color="inherit" /> : '🔍'} {/* Icon only */}
+              {isLoading ? <CircularProgress size={20} color="inherit" /> : '🔍'} {/* Icon only */}
             </Button>
             <Button
               variant="contained"
               size="small" // Smaller button
               className="random-button-mobile" // Add specific class
               onClick={handleRandomWord}
-              disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork}
+              disabled={isRandomLoading || isLoading}
               title="Random Word"
               sx={{ 
                 minWidth: 'auto', px: 1, // Allow shrinking
-                height: 38, // Match TextField height
                 bgcolor: 'var(--accent-color)', // Use theme variable
                 color: 'var(--button-text-color)', // Use theme variable
                 '&:hover': { 
@@ -1334,7 +1310,7 @@ const WordExplorer: React.FC = () => {
   };
 
   return (
-    <div className={`word-explorer ${themeName} ${(isLoadingDetails || isLoadingNetwork) ? 'loading' : ''}`}>
+    <div className={`word-explorer ${themeName} ${isLoading ? 'loading' : ''}`}>
       <header className="header-content">
         <h1>Filipino Root Word Explorer</h1>
         <div className="header-buttons">
@@ -1445,8 +1421,8 @@ const WordExplorer: React.FC = () => {
           <Box className="explorer-content-mobile" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: 0 }}> {/* Allow flex grow and prevent excessive height */}
              {/* Graph Area */}
              <Box className="graph-area-mobile" sx={{ height: '40%', minHeight: '200px', flexShrink: 0, position: 'relative' /* Ensure relative positioning for children */ }}> {/* Give graph fixed % height */}
-               {isLoadingNetwork && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
-               {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>}
+               {isLoading && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
+               {error && !isLoading && <div className="error-message">{error}</div>}
                {wordNetwork && !error && (
                  <WordGraph
                    wordNetwork={wordNetwork}
@@ -1456,11 +1432,10 @@ const WordExplorer: React.FC = () => {
                    onNetworkChange={handleNetworkChange}
                    initialDepth={depth}
                    initialBreadth={breadth}
-                   isLoading={isLoadingNetwork}
                  />
                )}
                 {/* Placeholder moved inside graph area for consistency, shown when graph isn't loading/error/present */}
-                {!wordNetwork && !isLoadingDetails && !isLoadingNetwork && !error && (
+                {!wordNetwork && !isLoading && !error && (
                   <Box sx={{ p: 2, textAlign: 'center', color: 'text.secondary' }}>
                     Search for a word to explore its connections.
                   </Box>
@@ -1469,12 +1444,11 @@ const WordExplorer: React.FC = () => {
 
              {/* Details Area */}
              <Box className="details-area-mobile" sx={{ flexGrow: 1, overflowY: 'auto', minHeight: 0 }}> {/* This already seems correct, relying on parent flex */}
-               {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>} {/* Show error in details area too if applicable */}
+               {error && <div className="error-message">{error}</div>} {/* Show error in details area too if applicable */}
                {wordData && !error && (
                  <WordDetails
                    ref={detailsContainerRef} // Pass the ref here
                    wordData={wordData}
-                   isLoading={isLoadingDetails}
                    etymologyTree={etymologyTree}
                    isLoadingEtymology={isLoadingEtymology}
                    etymologyError={etymologyError}
@@ -1483,11 +1457,11 @@ const WordExplorer: React.FC = () => {
                    isMobile={isMobile}
                  />
                )}
-               {!wordData && !isLoadingDetails && !isLoadingNetwork && !error && (
-                 <div className="details-placeholder">Select a node or search a word to see details.</div>
+               {!wordData && !isLoading && !error && (
+                 <div className="placeholder">Select a node or search a word to see details.</div>
                )}
                {/* Loading indicator specifically for details when wordData is absent but main graph isn't loading */}
-               {isLoadingDetails && !wordData && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
+               {isLoading && !wordData && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
              </Box> {/* Closing tag for details-area-mobile */}
           </Box> // Closing tag for explorer-content-mobile
         ) : (
@@ -1495,9 +1469,9 @@ const WordExplorer: React.FC = () => {
           <PanelGroup direction="horizontal" className="explorer-panel-group" style={{ flexGrow: 1, minHeight: 0 }}> {/* Ensure PanelGroup fills space */}
             <Panel defaultSize={65} minSize={30} className="explorer-panel-main">
               <div className="explorer-content" style={{ height: '100%', width: '100%', overflow: 'hidden' }}> {/* Ensure graph area fills panel */}
-                {/* Graph rendering logic with specific loading state */}
-                {isLoadingNetwork && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
-                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>}
+                {/* Graph rendering logic remains the same */}
+                {isLoading && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
+                {error && !isLoading && <div className="error-message">{error}</div>}
                 {wordNetwork && !error && (
                    <WordGraph
                      wordNetwork={wordNetwork}
@@ -1507,13 +1481,12 @@ const WordExplorer: React.FC = () => {
                      onNetworkChange={handleNetworkChange}
                      initialDepth={depth}
                      initialBreadth={breadth}
-                     isLoading={isLoadingNetwork}
                    />
                  )}
-                 {!wordData && !isLoadingDetails && !isLoadingNetwork && !error && (
+                 {!wordData && !isLoading && !error && (
                   <div className="details-placeholder">Select a node or search a word to see details.</div>
                  )}
-                 {isLoadingDetails && !wordData && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
+                 {isLoading && !wordData && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
               </div>
             </Panel>
             <PanelResizeHandle className="resize-handle" />
@@ -1524,7 +1497,6 @@ const WordExplorer: React.FC = () => {
                     <div className="details-content" ref={detailsContainerRef}>
                      <WordDetails
                        wordData={wordData}
-                       isLoading={isLoadingDetails}
                        etymologyTree={etymologyTree}
                        isLoadingEtymology={isLoadingEtymology}
                        etymologyError={etymologyError}
@@ -1534,10 +1506,10 @@ const WordExplorer: React.FC = () => {
                      />
                    </div>
                  )}
-                 {!wordData && !isLoadingDetails && !isLoadingNetwork && !error && (
+                 {!wordData && !isLoading && !error && (
                   <div className="details-placeholder">Select a node or search a word to see details.</div>
                  )}
-                 {isLoadingDetails && !wordData && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
+                 {isLoading && !wordData && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
                </div>
             </Panel>
           </PanelGroup>
