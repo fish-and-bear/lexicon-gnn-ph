@@ -21,7 +21,7 @@ import {
   fetchSuggestions,
 } from "../api/wordApi";
 import { Button } from "@mui/material";
-import { Panel, PanelGroup, PanelResizeHandle, ImperativePanelHandle } from "react-resizable-panels";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Theme, useTheme as useMuiTheme } from '@mui/material/styles';
@@ -53,6 +53,7 @@ const WordExplorer: React.FC = () => {
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   const [isLoadingEtymology, setIsLoadingEtymology] = useState(false);
   const [isRandomLoading, setIsRandomLoading] = useState(false);
+  const [isFetchingRandomWord, setIsFetchingRandomWord] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [etymologyError, setEtymologyError] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
@@ -72,7 +73,7 @@ const WordExplorer: React.FC = () => {
 
   const randomWordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  const detailsContainerRef = useRef<ImperativePanelHandle>(null);
+  const detailsContainerRef = useRef<HTMLDivElement>(null);
 
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([]);
@@ -533,107 +534,65 @@ const WordExplorer: React.FC = () => {
   }, [handleNodeClick]); // Add handleNodeClick to dependency array
 
   const handleRandomWord = useCallback(async () => {
+    // Prevent multiple simultaneous requests
+    if (isFetchingRandomWord) {
+      console.log("Random word fetch already in progress, ignoring click.");
+      return; 
+    }
+
+    console.log("Fetching random word...");
+    setIsRandomLoading(true); // Still useful for general feedback
+    setIsFetchingRandomWord(true); // Disable button
     setError(null);
-    setIsRandomLoading(true);
-    setIsLoadingDetails(true); // Start details loading indicator
-    // Don't clear wordNetwork immediately, wait for details fetch
-    // setWordNetwork(null);
-    // setSelectedNode(null); 
+    
+    // Clear any pending timeout if button is spammed
+    if (randomWordTimeoutRef.current) {
+      clearTimeout(randomWordTimeoutRef.current);
+      randomWordTimeoutRef.current = null;
+    }
 
     try {
-      console.log("Fetching a single random word...");
-      // Fetch details first
       const randomWordResult = await getRandomWord();
-
-      if (!randomWordResult || !randomWordResult.lemma) {
-        throw new Error("Received invalid random word data from API.");
-      }
-      console.log("Random word received:", randomWordResult);
-      const wordInfo: WordInfo = randomWordResult;
-
-      // Update details and selected node
-      setWordData(wordInfo);
-      setSelectedNode(wordInfo.lemma);
-      setIsLoadingDetails(false); // Stop details loading indicator
-
-      // Update history
-      const networkIdentifier = `id:${wordInfo.id}`; // Use ID for history/network fetch
-      const historyEntry: HistoryEntry = { 
-        identifier: networkIdentifier, 
-        lemma: wordInfo.lemma,
-        depth: depth, // Store current depth
-        breadth: breadth // Store current breadth
-      };
-      const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), historyEntry];
-      setWordHistory(newHistory as any);
-      setCurrentHistoryIndex(newHistory.length - 1);
-
-      // NOW start fetching network and etymology in the background
-      setIsLoadingNetwork(true); // Start network loading indicator
-      setWordNetwork(null); // Clear previous network now
-      setEtymologyTree(null);
-
-      // Fetch network data (don't await)
-      fetchWordNetworkData(networkIdentifier, depth, breadth)
-        .then(networkData => {
-          if (networkData && networkData.nodes && networkData.edges) {
-            setWordNetwork(networkData);
-          }
-        })
-        .catch(err => {
-          console.error("Error fetching network data for random word:", err);
-          setError("Failed to load word network. Please try again.");
-          setWordNetwork(null); // Ensure network is null on error
-        })
-        .finally(() => {
-          setIsLoadingNetwork(false); // Stop network loading indicator regardless of outcome
-        });
-
-      // Fetch etymology tree (don't await)
-      if (wordInfo.id) {
-        setIsLoadingEtymology(true); // Start etymology loading
-        fetchEtymologyTree(wordInfo.id)
-          .then(tree => {
-            setEtymologyTree(tree);
-          })
-          .catch(err => {
-            console.error("Error fetching etymology tree for random word:", err);
-            setEtymologyError("Failed to load etymology.");
-            setEtymologyTree(null);
-          })
-          .finally(() => {
-            setIsLoadingEtymology(false); // Stop etymology loading
-          });
+      if (randomWordResult && randomWordResult.lemma) {
+        console.log("Random word received:", randomWordResult.lemma);
+        // Update search input visually (optional but good UX)
+        setInputValue(randomWordResult.lemma);
+        // Push to history BEFORE setting selected node to capture current state
+        if (selectedNode && wordData?.lemma) {
+            const currentEntry: HistoryEntry = {
+                identifier: `word:${wordData.lemma}`, // Use lemma for consistency
+                lemma: wordData.lemma,
+                depth: depth,
+                breadth: breadth
+            };
+            const newHistory = wordHistory.slice(0, currentHistoryIndex + 1);
+            newHistory.push(currentEntry);
+            setWordHistory(newHistory);
+            setCurrentHistoryIndex(newHistory.length - 1);
+        }
+        // Set selected node - this will trigger the useEffect to fetch data
+        setSelectedNode(randomWordResult.lemma); 
       } else {
-        setEtymologyTree(null);
+        throw new Error("Failed to get a random word from API.");
       }
-
     } catch (error) {
-      console.error("Error handling random word:", error);
-      setError(error instanceof Error ? error.message : "Failed to get a random word");
-      setWordData(null); // Clear data on error
-      setWordNetwork(null);
-      setSelectedNode(null);
-      setIsLoadingDetails(false); // Ensure details loading stops on error
-      setIsLoadingNetwork(false); // Ensure network loading stops on error
-      setIsLoadingEtymology(false); // Ensure etymology loading stops on error
+      console.error("Error fetching random word:", error);
+      setError(error instanceof Error ? error.message : "An unknown error occurred fetching a random word.");
+      // Ensure loading state is reset on error
+      setIsRandomLoading(false); 
+      setIsFetchingRandomWord(false);
     } finally {
-        setIsRandomLoading(false); // Stop the main random button loading indicator
+      // Use a short timeout before re-enabling to prevent accidental double-clicks 
+      // if the fetch was extremely fast.
+      randomWordTimeoutRef.current = setTimeout(() => {
+          setIsRandomLoading(false); // Reset general loading indicator
+          setIsFetchingRandomWord(false); // Re-enable button
+          randomWordTimeoutRef.current = null;
+          console.log("Random word fetch complete, button re-enabled.");
+      }, 150); // 150ms delay
     }
-  }, [
-    depth, 
-    breadth, 
-    wordHistory, 
-    currentHistoryIndex, 
-    fetchWordNetworkData,
-    fetchEtymologyTree,
-    setSelectedNode,
-    setWordHistory,
-    setCurrentHistoryIndex,
-    setError,
-    setIsRandomLoading,
-    setEtymologyTree
-  ]);
+  // Add isFetchingRandomWord to dependency array to prevent stale closure
+  }, [isFetchingRandomWord, depth, breadth, wordHistory, currentHistoryIndex, selectedNode, wordData]); 
 
   const handleBack = useCallback(() => {
     if (currentHistoryIndex > 0) {
@@ -1519,8 +1478,8 @@ const WordExplorer: React.FC = () => {
         {isMobile ? (
           // Mobile: Stacked layout
           <Box className="explorer-content-mobile" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: 0 }}> {/* Allow flex grow and prevent excessive height */}
-             {/* Graph Area */}
-             <Box className="graph-area-mobile" sx={{ height: '50%', minHeight: '200px', flexShrink: 0, position: 'relative' }}> {/* INCREASED height to 50% */}
+             {/* Graph Area - Reduce minHeight slightly */}
+             <Box className="graph-area-mobile" sx={{ height: '45%', minHeight: '180px', flexShrink: 0, position: 'relative' }}> {/* Changed height to 45%, minHeight to 180px */}
                {isLoadingNetwork && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>}
                {wordNetwork && !error && (
@@ -1548,6 +1507,7 @@ const WordExplorer: React.FC = () => {
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>} {/* Show error in details area too if applicable */}
                {wordData && !error && (
                  <WordDetails
+                   ref={detailsContainerRef} // Pass the ref here
                    wordData={wordData}
                    isLoading={isLoadingDetails}
                    etymologyTree={etymologyTree}

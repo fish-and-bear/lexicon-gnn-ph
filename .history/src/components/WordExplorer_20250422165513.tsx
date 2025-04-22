@@ -21,7 +21,7 @@ import {
   fetchSuggestions,
 } from "../api/wordApi";
 import { Button } from "@mui/material";
-import { Panel, PanelGroup, PanelResizeHandle, ImperativePanelHandle } from "react-resizable-panels";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Theme, useTheme as useMuiTheme } from '@mui/material/styles';
@@ -72,7 +72,7 @@ const WordExplorer: React.FC = () => {
 
   const randomWordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  const detailsContainerRef = useRef<ImperativePanelHandle>(null);
+  const detailsContainerRef = useRef<HTMLDivElement>(null);
 
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([]);
@@ -1519,8 +1519,8 @@ const WordExplorer: React.FC = () => {
         {isMobile ? (
           // Mobile: Stacked layout
           <Box className="explorer-content-mobile" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: 0 }}> {/* Allow flex grow and prevent excessive height */}
-             {/* Graph Area */}
-             <Box className="graph-area-mobile" sx={{ height: '50%', minHeight: '200px', flexShrink: 0, position: 'relative' }}> {/* INCREASED height to 50% */}
+             {/* Graph Area - Reduce minHeight slightly */}
+             <Box className="graph-area-mobile" sx={{ height: '45%', minHeight: '180px', flexShrink: 0, position: 'relative' }}> {/* Changed height to 45%, minHeight to 180px */}
                {isLoadingNetwork && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>}
                {wordNetwork && !error && (
@@ -1548,6 +1548,7 @@ const WordExplorer: React.FC = () => {
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>} {/* Show error in details area too if applicable */}
                {wordData && !error && (
                  <WordDetails
+                   ref={detailsContainerRef} // Pass the ref here
                    wordData={wordData}
                    isLoading={isLoadingDetails}
                    etymologyTree={etymologyTree}

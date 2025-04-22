@@ -53,6 +53,7 @@ const WordExplorer: React.FC = () => {
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   const [isLoadingEtymology, setIsLoadingEtymology] = useState(false);
   const [isRandomLoading, setIsRandomLoading] = useState(false);
+  const [isFetchingRandomWord, setIsFetchingRandomWord] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [etymologyError, setEtymologyError] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
@@ -72,7 +73,7 @@ const WordExplorer: React.FC = () => {
 
   const randomWordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  const detailsContainerRef = useRef<ImperativePanelHandle>(null);
+  const detailsContainerRef = useRef<HTMLDivElement>(null);
 
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([]);
@@ -102,56 +103,36 @@ const WordExplorer: React.FC = () => {
   );
 
   useEffect(() => {
-    // Add null check
-    if (detailsContainerRef.current) {
-      // Check if the ref has the getSize method (likely from ImperativePanelHandle)
-      // before trying to access style on a potential underlying element
-      if (typeof detailsContainerRef.current.getSize === 'function') {
-          // We can't reliably get the underlying DOM node's style this way.
-          // If resizing needs to be restored, it should likely use Panel API methods.
-          // For now, just log that we have the handle.
-          console.log("Panel ref is available, but restoring width via direct style access is unreliable.");
-          // const savedWidth = localStorage.getItem('wordDetailsWidth');
-          // if (savedWidth && !isNaN(parseFloat(savedWidth))) {
-          //   // This won't work reliably: detailsContainerRef.current.style.width = `${savedWidth}px`;
-          // }
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    // Keep the null check
-    if (!detailsContainerRef.current) return;
-    
-    // We need the actual DOM element to observe, not the Panel handle.
-    // Let's try to find the element using the Panel's ID.
-    // Note: This relies on the Panel rendering a DOM element with this ID.
-    const panelElement = document.getElementById("details-panel");
+    const panelElement = document.getElementById('details-panel');
 
     if (!panelElement) {
-      console.warn("Could not find details panel element for ResizeObserver");
-      return; // Exit if element not found
+      console.warn("Could not find details panel element for ResizeObserver using ID: details-panel");
+      return;
     }
-    
+
     const resizeObserver = new ResizeObserver(entries => {
       for (const entry of entries) {
         if (entry.target === panelElement) {
           const newWidth = entry.contentRect.width;
-          // Persist width in localStorage (using size percentage might be better)
-          localStorage.setItem('wordDetailsWidthPercent', detailsContainerRef.current?.getSize().toString() ?? '40'); 
+          const parentWidth = panelElement.parentElement?.getBoundingClientRect().width;
+          if (parentWidth && parentWidth > 0) {
+              const widthPercent = (newWidth / parentWidth) * 100;
+              localStorage.setItem('wordDetailsWidthPercent', widthPercent.toString());
+          } else {
+              localStorage.setItem('wordDetailsWidth', newWidth.toString()); 
+          }
         }
       }
     });
-    
+
     resizeObserver.observe(panelElement);
-    
+
     return () => {
-        // Check if panelElement was found before trying to unobserve
         if (panelElement) {
           resizeObserver.unobserve(panelElement);
         }
     };
-  }, []); // Dependencies remain empty
+  }, []);
 
   const normalizeInput = (input: string) => unidecode(input.trim().toLowerCase());
 
@@ -533,107 +514,65 @@ const WordExplorer: React.FC = () => {
   }, [handleNodeClick]); // Add handleNodeClick to dependency array
 
   const handleRandomWord = useCallback(async () => {
+    // Prevent multiple simultaneous requests
+    if (isFetchingRandomWord) {
+      console.log("Random word fetch already in progress, ignoring click.");
+      return; 
+    }
+
+    console.log("Fetching random word...");
+    setIsRandomLoading(true); // Still useful for general feedback
+    setIsFetchingRandomWord(true); // Disable button
     setError(null);
-    setIsRandomLoading(true);
-    setIsLoadingDetails(true); // Start details loading indicator
-    // Don't clear wordNetwork immediately, wait for details fetch
-    // setWordNetwork(null);
-    // setSelectedNode(null); 
+    
+    // Clear any pending timeout if button is spammed
+    if (randomWordTimeoutRef.current) {
+      clearTimeout(randomWordTimeoutRef.current);
+      randomWordTimeoutRef.current = null;
+    }
 
     try {
-      console.log("Fetching a single random word...");
-      // Fetch details first
       const randomWordResult = await getRandomWord();
-
-      if (!randomWordResult || !randomWordResult.lemma) {
-        throw new Error("Received invalid random word data from API.");
-      }
-      console.log("Random word received:", randomWordResult);
-      const wordInfo: WordInfo = randomWordResult;
-
-      // Update details and selected node
-      setWordData(wordInfo);
-      setSelectedNode(wordInfo.lemma);
-      setIsLoadingDetails(false); // Stop details loading indicator
-
-      // Update history
-      const networkIdentifier = `id:${wordInfo.id}`; // Use ID for history/network fetch
-      const historyEntry: HistoryEntry = { 
-        identifier: networkIdentifier, 
-        lemma: wordInfo.lemma,
-        depth: depth, // Store current depth
-        breadth: breadth // Store current breadth
-      };
-      const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), historyEntry];
-      setWordHistory(newHistory as any);
-      setCurrentHistoryIndex(newHistory.length - 1);
-
-      // NOW start fetching network and etymology in the background
-      setIsLoadingNetwork(true); // Start network loading indicator
-      setWordNetwork(null); // Clear previous network now
-      setEtymologyTree(null);
-
-      // Fetch network data (don't await)
-      fetchWordNetworkData(networkIdentifier, depth, breadth)
-        .then(networkData => {
-          if (networkData && networkData.nodes && networkData.edges) {
-            setWordNetwork(networkData);
-          }
-        })
-        .catch(err => {
-          console.error("Error fetching network data for random word:", err);
-          setError("Failed to load word network. Please try again.");
-          setWordNetwork(null); // Ensure network is null on error
-        })
-        .finally(() => {
-          setIsLoadingNetwork(false); // Stop network loading indicator regardless of outcome
-        });
-
-      // Fetch etymology tree (don't await)
-      if (wordInfo.id) {
-        setIsLoadingEtymology(true); // Start etymology loading
-        fetchEtymologyTree(wordInfo.id)
-          .then(tree => {
-            setEtymologyTree(tree);
-          })
-          .catch(err => {
-            console.error("Error fetching etymology tree for random word:", err);
-            setEtymologyError("Failed to load etymology.");
-            setEtymologyTree(null);
-          })
-          .finally(() => {
-            setIsLoadingEtymology(false); // Stop etymology loading
-          });
+      if (randomWordResult && randomWordResult.lemma) {
+        console.log("Random word received:", randomWordResult.lemma);
+        // Update search input visually (optional but good UX)
+        setInputValue(randomWordResult.lemma);
+        // Push to history BEFORE setting selected node to capture current state
+        if (selectedNode && wordData?.lemma) {
+            const currentEntry: HistoryEntry = {
+                identifier: `word:${wordData.lemma}`, // Use lemma for consistency
+                lemma: wordData.lemma,
+                depth: depth,
+                breadth: breadth
+            };
+            const newHistory = wordHistory.slice(0, currentHistoryIndex + 1);
+            newHistory.push(currentEntry);
+            setWordHistory(newHistory);
+            setCurrentHistoryIndex(newHistory.length - 1);
+        }
+        // Set selected node - this will trigger the useEffect to fetch data
+        setSelectedNode(randomWordResult.lemma); 
       } else {
-        setEtymologyTree(null);
+        throw new Error("Failed to get a random word from API.");
       }
-
     } catch (error) {
-      console.error("Error handling random word:", error);
-      setError(error instanceof Error ? error.message : "Failed to get a random word");
-      setWordData(null); // Clear data on error
-      setWordNetwork(null);
-      setSelectedNode(null);
-      setIsLoadingDetails(false); // Ensure details loading stops on error
-      setIsLoadingNetwork(false); // Ensure network loading stops on error
-      setIsLoadingEtymology(false); // Ensure etymology loading stops on error
+      console.error("Error fetching random word:", error);
+      setError(error instanceof Error ? error.message : "An unknown error occurred fetching a random word.");
+      // Ensure loading state is reset on error
+      setIsRandomLoading(false); 
+      setIsFetchingRandomWord(false);
     } finally {
-        setIsRandomLoading(false); // Stop the main random button loading indicator
+      // Use a short timeout before re-enabling to prevent accidental double-clicks 
+      // if the fetch was extremely fast.
+      randomWordTimeoutRef.current = setTimeout(() => {
+          setIsRandomLoading(false); // Reset general loading indicator
+          setIsFetchingRandomWord(false); // Re-enable button
+          randomWordTimeoutRef.current = null;
+          console.log("Random word fetch complete, button re-enabled.");
+      }, 150); // 150ms delay
     }
-  }, [
-    depth, 
-    breadth, 
-    wordHistory, 
-    currentHistoryIndex, 
-    fetchWordNetworkData,
-    fetchEtymologyTree,
-    setSelectedNode,
-    setWordHistory,
-    setCurrentHistoryIndex,
-    setError,
-    setIsRandomLoading,
-    setEtymologyTree
-  ]);
+  // Add isFetchingRandomWord to dependency array to prevent stale closure
+  }, [isFetchingRandomWord, depth, breadth, wordHistory, currentHistoryIndex, selectedNode, wordData]); 
 
   const handleBack = useCallback(() => {
     if (currentHistoryIndex > 0) {
@@ -1519,8 +1458,8 @@ const WordExplorer: React.FC = () => {
         {isMobile ? (
           // Mobile: Stacked layout
           <Box className="explorer-content-mobile" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: 0 }}> {/* Allow flex grow and prevent excessive height */}
-             {/* Graph Area */}
-             <Box className="graph-area-mobile" sx={{ height: '50%', minHeight: '200px', flexShrink: 0, position: 'relative' }}> {/* INCREASED height to 50% */}
+             {/* Graph Area - Reduce minHeight slightly */}
+             <Box className="graph-area-mobile" sx={{ height: '45%', minHeight: '180px', flexShrink: 0, position: 'relative' }}> {/* Changed height to 45%, minHeight to 180px */}
                {isLoadingNetwork && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>}
                {wordNetwork && !error && (
@@ -1548,6 +1487,7 @@ const WordExplorer: React.FC = () => {
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>} {/* Show error in details area too if applicable */}
                {wordData && !error && (
                  <WordDetails
+                   ref={detailsContainerRef} // Pass the ref here
                    wordData={wordData}
                    isLoading={isLoadingDetails}
                    etymologyTree={etymologyTree}
@@ -1593,13 +1533,13 @@ const WordExplorer: React.FC = () => {
             </Panel>
             <PanelResizeHandle className="resize-handle" />
             <Panel 
-              minSize={20} 
-              id="details-panel" // ID used by ResizeObserver effect
-              className="details-panel-container" 
-              ref={detailsContainerRef} // Restore ref for Panel handle
+              id="details-panel" 
+              ref={detailsContainerRef} 
+              defaultSize={Number(localStorage.getItem('wordDetailsWidthPercent') || 40)} 
+              minSize={25}
+              maxSize={75}
               order={2}
-              // Restore default size from localStorage if needed
-              defaultSize={parseInt(localStorage.getItem('wordDetailsWidthPercent') || '40', 10)}
+              className="details-panel"
             >
                {/* Ref is no longer on this div */}
                <div 

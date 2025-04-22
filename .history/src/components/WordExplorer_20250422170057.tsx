@@ -1548,6 +1548,7 @@ const WordExplorer: React.FC = () => {
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>} {/* Show error in details area too if applicable */}
                {wordData && !error && (
                  <WordDetails
+                   ref={detailsContainerRef} // Pass the ref here
                    wordData={wordData}
                    isLoading={isLoadingDetails}
                    etymologyTree={etymologyTree}

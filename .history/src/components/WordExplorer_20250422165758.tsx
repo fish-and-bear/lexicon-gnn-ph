@@ -21,7 +21,7 @@ import {
   fetchSuggestions,
 } from "../api/wordApi";
 import { Button } from "@mui/material";
-import { Panel, PanelGroup, PanelResizeHandle, ImperativePanelHandle } from "react-resizable-panels";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Theme, useTheme as useMuiTheme } from '@mui/material/styles';
@@ -72,7 +72,7 @@ const WordExplorer: React.FC = () => {
 
   const randomWordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  const detailsContainerRef = useRef<ImperativePanelHandle>(null);
+  const detailsContainerRef = useRef<HTMLDivElement>(null);
 
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([]);
@@ -1548,6 +1548,7 @@ const WordExplorer: React.FC = () => {
                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>} {/* Show error in details area too if applicable */}
                {wordData && !error && (
                  <WordDetails
+                   ref={detailsContainerRef} // Pass the ref here
                    wordData={wordData}
                    isLoading={isLoadingDetails}
                    etymologyTree={etymologyTree}
