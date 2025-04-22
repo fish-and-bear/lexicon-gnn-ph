@@ -638,6 +638,38 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         pb: isLastDefinitionForSource && sourceName !== 'Unknown Source' ? theme.spacing(3) : 1.5, // Add extra padding if chip is present
                       }}
                     >
+                      {/* Part of Speech Info - Display Code, Name EN, Name TL */}
+                      {def.part_of_speech && (
+                        <Stack 
+                          direction="row" 
+                          spacing={1} 
+                          alignItems="center" 
+                          sx={{ mb: 0.5 }} // Add some margin below POS info
+                        >
+                          <Chip 
+                            label={def.part_of_speech.code}
+                            size="small"
+                            sx={{
+                              fontWeight: 'bold',
+                              bgcolor: alpha(graphColors.main, 0.15),
+                              color: graphColors.main,
+                              fontSize: '0.7rem',
+                              height: 'auto',
+                              minWidth: '30px',
+                              '& .MuiChip-label': { px: 0.75, py: 0.2 }
+                            }}
+                          />
+                          <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                            {def.part_of_speech.name_en}
+                          </Typography>
+                          {/* Conditionally render Tagalog name in parentheses */}
+                          {def.part_of_speech.name_tl && (
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                              ({def.part_of_speech.name_tl})
+                            </Typography>
+                          )}
+                        </Stack>
+                      )}
 
                       {/* Definition text */}
                       <ListItemText

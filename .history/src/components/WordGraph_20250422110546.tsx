@@ -41,7 +41,8 @@ import { useTheme as useMuiTheme } from '@mui/material/styles';
 interface WordGraphProps {
   wordNetwork: WordNetwork | null;
   mainWord: string | null;
-  onNodeClick: (word: string) => void; // Renamed from onNodeDoubleClick for clarity
+  onNodeClick: (word: string) => void;
+  onNodeSelect: (word: string) => void;
   onNetworkChange: (depth: number, breadth: number) => void;
   initialDepth: number;
   initialBreadth: number;
@@ -92,6 +93,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   wordNetwork,
   mainWord,
   onNodeClick,
+  onNodeSelect,
   onNetworkChange,
   initialDepth,
   initialBreadth,
@@ -107,6 +109,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, [mainWord]);
 
   const [hoveredNode, setHoveredNode] = useState<CustomNode | null>(null);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(mainWord);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const [depth, setDepth] = useState<number>(initialDepth);
   const [breadth, setBreadth] = useState<number>(initialBreadth);
@@ -132,6 +135,11 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const filterUpdateKey = useMemo(() => {
     return filteredRelationships.join(',');
   }, [filteredRelationships]);
+
+  // Add a new click timeout ref
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastClickTimeRef = useRef<number>(0);
+  const lastClickedNodeRef = useRef<string | null>(null);
 
   // Define getUniqueRelationshipGroups function before it's used in any hooks
   const getUniqueRelationshipGroups = useCallback((): RelationshipGroups => {
@@ -232,6 +240,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
       setIsValidNetwork(true);
     }
   }, [wordNetwork]);
+
+  useEffect(() => {
+    setSelectedNodeId(mainWord);
+  }, [mainWord]);
 
   const baseLinks = useMemo<{ source: string; target: string; relationship: string }[]>(() => {
     if (!wordNetwork?.nodes || !wordNetwork.edges) return [];
@@ -992,6 +1004,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
           event.stopPropagation();
           
           if (isDraggingRef.current) return;
+          
+          // Clear any potential timeouts
+          if (clickTimeoutRef.current) {
+              clearTimeout(clickTimeoutRef.current);
+              clickTimeoutRef.current = null;
+          }
           
           // Visual effect prior to navigation
           const circleElement = d3.select(this).select("circle");
