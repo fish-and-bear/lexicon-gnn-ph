@@ -1118,7 +1118,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             setTooltipTimeoutId(newTimeoutId);
         });
 
-  }, [onNodeClick, themeMode, tooltipTimeoutId, nodeMap, baseLinks, getNodeRadius, getNodeColor]); // Corrected dependency array
+  }, [onNodeClick, themeMode, tooltipTimeoutId]); // Add themeMode and tooltipTimeoutId dependencies
 
   // Update initial node layout to ensure main word is centered and visible
   useEffect(() => {
@@ -1235,7 +1235,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         </div>
       </div>
     );
-  }, [hoveredNode, themeMode, getNodeColor, mainWord]); // Corrected dependency array
+  }, [hoveredNode, themeMode, getNodeColor, mainWord]);
 
   // Improved visual styling
   useEffect(() => {
@@ -1674,7 +1674,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
           overflow: 'auto', 
           width: '100%',
           '& .MuiListSubheader-root': {
-            backgroundColor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.6)' : 'rgba(245, 245, 245, 0.9)' // Use themeMode
+            backgroundColor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.6)' : 'rgba(245, 245, 245, 0.9)'
           }
         }}
       >
@@ -1735,7 +1735,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
                         borderRadius: '50%',
                           bgcolor: labelInfo.color, // Use label's color
                         display: 'inline-block',
-                          border: themeMode === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)', // Use themeMode
+                          border: themeMode === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)',
                           opacity: allOriginalTypesFiltered ? 0.5 : 1
                       }}
                     />
@@ -1760,7 +1760,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         <Divider component="li" />
       </List>
     );
-  }, [filteredRelationships, handleToggleRelationshipFilter, themeMode, getUniqueRelationshipGroups]); // Corrected dependency array
+  }, [filteredRelationships, handleToggleRelationshipFilter, themeMode, getUniqueRelationshipGroups]);
 
   if (!isValidNetwork) {
     return (
@@ -1830,15 +1830,15 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 width: 40, height: 40, minWidth: 40, minHeight: 40, 
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 borderRadius: '50%',
-                bgcolor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', // Use themeMode
+                bgcolor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)',
                 backdropFilter: 'blur(3px)',
-                border: themeMode === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)', // Use themeMode
-                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', // Use themeMode
+                border: themeMode === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)',
+                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)',
                 zIndex: 9999,
                 pointerEvents: 'auto',
                 '&:hover': {
-                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)', // Use themeMode
-                  bgcolor: themeMode === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' // Use themeMode
+                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)',
+                  bgcolor: themeMode === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)'
                 }
             }}
           >

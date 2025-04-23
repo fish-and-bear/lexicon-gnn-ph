@@ -781,7 +781,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
           .join(
               enter => enter.append("line")
       .attr("class", "link")
-                  .attr("stroke", themeMode === "dark" ? "#666" : "#ccc") // Consistent neutral color
+                  .attr("stroke", theme === "dark" ? "#666" : "#ccc") // Consistent neutral color
                   .attr("stroke-opacity", 0) // Start transparent
                   .attr("stroke-width", 1.5) // Consistent width
                   .attr("stroke-linecap", "round")
@@ -794,7 +794,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
                   .call(enter => enter.transition().duration(300).attr("stroke-opacity", 0.6)), // Default opacity slightly higher
               update => update
                   // Ensure updates reset to default style before transitions
-                  .attr("stroke", themeMode === "dark" ? "#666" : "#ccc")
+                  .attr("stroke", theme === "dark" ? "#666" : "#ccc")
                   .attr("stroke-width", 1.5)
                   .call(update => update.transition().duration(300)
                         .attr("stroke-opacity", 0.6)), // Transition opacity on update if needed
@@ -803,7 +803,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
                   .remove()
           );
       return linkGroup;
-  }, [themeMode]);
+  }, [theme]);
 
   const createNodes = useCallback((
       g: d3.Selection<SVGGElement, unknown, null, undefined>,
@@ -865,12 +865,12 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 textElement.clone(true)
                     .lower()
                     .attr("fill", "none")
-                    .attr("stroke", themeMode === "dark" ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
+                    .attr("stroke", theme === "dark" ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
                     .attr("stroke-width", 3)
                     .attr("stroke-linejoin", "round");
 
                 // Set main text fill color based on theme
-                textElement.attr("fill", themeMode === "dark" ? "#eee" : "#222");
+                textElement.attr("fill", theme === "dark" ? "#eee" : "#222");
 
                 textElement.call(enter => enter.transition().duration(300).style("opacity", 1));
                 return textElement;
@@ -883,7 +883,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
       if (drag) nodeGroups.call(drag as any);
     return nodeGroups; // Return the node groups for interaction setup
-  }, [createDragBehavior, getNodeRadius, getNodeColor, themeMode, mainWord]);
+  }, [createDragBehavior, getNodeRadius, getNodeColor, theme, mainWord]);
 
   // Optimize hover effect and enhance visual feedback
   const setupNodeInteractions = useCallback((
@@ -940,7 +940,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 const connectedNode = nodeMap.get(connectedId);
                 
                 // Use the relationship type to determine color
-                return connectedNode ? getNodeColor(connectedNode.group) : (themeMode === "dark" ? "#aaa" : "#666");
+                return connectedNode ? getNodeColor(connectedNode.group) : (theme === "dark" ? "#aaa" : "#666");
             });
           
           // Highlight connected nodes
@@ -962,20 +962,20 @@ const WordGraph: React.FC<WordGraphProps> = ({
       nodeSelection.on("mouseleave", function(event, d) {
           if (isDraggingRef.current) return;
           
-          // Reset this node
-          d3.select(this)
-            .select("circle")
-              .attr("stroke-width", 1.5)
-              .attr("stroke-opacity", 1)
-              .attr("filter", null);
+          // Reset appearance on mouseout
+          d3.select(this).select("circle")
+            .attr("stroke-width", d.id === mainWord ? 2.5 : 1.5)
+            .attr("stroke-opacity", 0.7)
+            .attr("filter", d.id === mainWord ? "brightness(1.15)" : "none")
+            .attr("stroke", d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888");
           
-          // Reset all links
+          // Reset connected links
           d3.selectAll<SVGLineElement, CustomLink>(".link")
             .attr("stroke-opacity", 0.6)
             .attr("stroke-width", 1.5)
-            .attr("stroke", themeMode === "dark" ? "#666" : "#ccc");
-          
-          // Reset all nodes
+            .attr("stroke", theme === "dark" ? "#666" : "#ccc");
+            
+          // Reset connected nodes 
           d3.selectAll<SVGGElement, CustomNode>(".node")
             .style("opacity", n => n.id === mainWord ? 1 : 0.8)
             .select("circle")
@@ -1049,76 +1049,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             if (tooltipTimeoutId) clearTimeout(tooltipTimeoutId);
             setHoveredNode(null);
       });
-
-        // Handle Pinning (Toggle on Ctrl+Click)
-        nodeSelection.on("mousedown", function(event, d) {
-          if (event.ctrlKey) {
-            event.preventDefault(); // Prevent browser context menu
-            d.pinned = !d.pinned;
-            d.fx = d.pinned ? d.x : null;
-            d.fy = d.pinned ? d.y : null;
-
-            // Visual feedback for pinning
-            d3.select(this).select("circle")
-              .attr("stroke", d.pinned ? (themeMode === 'dark' ? '#ffd700' : '#e65100') : (d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888"))
-              .attr("stroke-width", d.pinned ? 3 : 1.5);
-          }
-        });
-
-        // Clear Tooltip on MouseOut
-        nodeSelection.on("mouseout", function(event, d) {
-            // Clear the tooltip timeout if the mouse leaves before the delay
-            if (tooltipTimeoutId) {
-                clearTimeout(tooltipTimeoutId);
-                setTooltipTimeoutId(null);
-            }
-            // Hide the tooltip
-            d3.select(".tooltip").style("opacity", 0).style("pointer-events", "none");
-            setHoveredNode(null);
-        });
-
-        // Delayed Tooltip on MouseOver
-        nodeSelection.on("mouseover", function(event, d) {
-            // Clear any existing timeout
-            if (tooltipTimeoutId) {
-                clearTimeout(tooltipTimeoutId);
-            }
-
-            // Set a new timeout to show the tooltip after a delay (e.g., 500ms)
-            const newTimeoutId = setTimeout(() => {
-                if (!isDraggingRef.current) {
-                    setHoveredNode(d); // Update hovered node state for tooltip content
-                    
-                    // Tooltip content
-                    const tooltipHtml = `
-                        <div style="font-weight: bold; margin-bottom: 4px; font-size: 0.9rem;">${d.word}</div>
-                        <div style="font-size: 0.8rem; color: #555;">
-                          ${d.relationshipToMain ? 
-                            `<div>Relationship: <span style="font-weight: 500;">${getRelationshipTypeLabel(d.relationshipToMain)}</span></div>` : ''}
-                          ${d.language ? 
-                            `<div>Language: <span style="font-weight: 500;">${d.language.toUpperCase()}</span></div>` : ''}
-                          ${d.definitions && d.definitions.length > 0 ? 
-                            `<div>Definition: ${d.definitions[0].substring(0, 100)}${d.definitions[0].length > 100 ? '...' : ''}</div>` : ''}
-                          ${d.pinned ? '<div style="color: #e65100; font-weight: bold; margin-top: 4px;">(Pinned)</div>' : ''}
-                        </div>
-                    `;
-
-                    // Position and show tooltip
-                    const tooltip = d3.select(".tooltip");
-                    tooltip.html(tooltipHtml)
-                      .style("left", `${event.pageX + 15}px`)
-                      .style("top", `${event.pageY - 10}px`)
-                      .transition()
-                      .duration(150)
-                      .style("opacity", 0.95)
-                      .style("pointer-events", "all"); // Make it interactable if needed later
-                }
-            }, 500); // 500ms delay
-
-            setTooltipTimeoutId(newTimeoutId);
-        });
-
-  }, [onNodeClick, themeMode, tooltipTimeoutId, nodeMap, baseLinks, getNodeRadius, getNodeColor]); // Corrected dependency array
+  }, [mainWord, onNodeClick, getNodeColor, theme, nodeMap, baseLinks, getNodeRadius]);
 
   // Update initial node layout to ensure main word is centered and visible
   useEffect(() => {
@@ -1154,7 +1085,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
           position: "absolute",
           left: `${screenX + offsetX}px`,
           top: `${screenY + offsetY}px`,
-          background: themeMode === "dark" ? "rgba(30, 30, 30, 0.95)" : "rgba(250, 250, 250, 0.95)",
+          background: theme === "dark" ? "rgba(30, 30, 30, 0.95)" : "rgba(250, 250, 250, 0.95)",
           border: `1.5px solid ${getNodeColor(hoveredNode.group)}`, 
           borderRadius: "8px",
           padding: "10px 14px", 
@@ -1163,7 +1094,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
           pointerEvents: "none",
           fontFamily: "system-ui, -apple-system, sans-serif",
           transition: "opacity 0.15s ease-out, transform 0.15s ease-out",
-          boxShadow: themeMode === "dark" ? "0 4px 15px rgba(0,0,0,0.4)" : "0 4px 15px rgba(0,0,0,0.15)",
+          boxShadow: theme === "dark" ? "0 4px 15px rgba(0,0,0,0.4)" : "0 4px 15px rgba(0,0,0,0.15)",
           opacity: 1,
           transform: "translateY(0)",
           animation: "fadeInTooltip 0.2s ease-out",
@@ -1178,14 +1109,14 @@ const WordGraph: React.FC<WordGraphProps> = ({
              alignItems: "center", 
              gap: "6px", 
              paddingBottom: "4px",
-             background: themeMode === "dark" ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.03)",
+             background: theme === "dark" ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.03)",
              padding: "5px 8px",
              borderRadius: "4px",
              marginBottom: "5px"
            }}>
              <span style={{ 
                fontSize: "11px", 
-               color: themeMode === "dark" ? "#aaa" : "#666", 
+               color: theme === "dark" ? "#aaa" : "#666", 
                fontWeight: "500",
                whiteSpace: "nowrap"
              }}>
@@ -1193,7 +1124,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
                <span style={{ margin: "0 4px", opacity: 0.7 }}>→</span> 
                <span style={{ 
                  fontStyle: "italic", 
-                 color: themeMode === "dark" ? "#ddd" : "#333",
+                 color: theme === "dark" ? "#ddd" : "#333",
                  fontWeight: "600" 
                }}>
                  {(hoveredNode as any).relationshipToMain}
@@ -1204,29 +1135,29 @@ const WordGraph: React.FC<WordGraphProps> = ({
          
          <div style={{ display: "flex", alignItems: "center", gap: "6px", paddingBottom: "4px" }}>
             <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: getNodeColor(hoveredNode.group), flexShrink: 0 }}></span>
-            <span style={{ fontSize: "13px", color: themeMode === 'dark' ? '#ccc' : '#555', fontWeight: "500" }}>
+            <span style={{ fontSize: "13px", color: theme === 'dark' ? '#ccc' : '#555', fontWeight: "500" }}>
                 {hoveredNode.group.charAt(0).toUpperCase() + hoveredNode.group.slice(1).replace(/_/g, ' ')}
             </span>
         </div>
          {hoveredNode.definitions && hoveredNode.definitions.length > 0 && (
-              <p style={{ fontSize: '12px', color: themeMode === 'dark' ? '#bbb' : '#666', margin: '6px 0 0 0', fontStyle: 'italic' }}>
+              <p style={{ fontSize: '12px', color: theme === 'dark' ? '#bbb' : '#666', margin: '6px 0 0 0', fontStyle: 'italic' }}>
                   {hoveredNode.definitions[0].length > 100 ? hoveredNode.definitions[0].substring(0, 97) + '...' : hoveredNode.definitions[0]}
           </p>
         )}
          <div style={{ 
            fontSize: "11px", 
            marginTop: "8px", 
-           color: themeMode === "dark" ? "#8b949e" : "#777777",
+           color: theme === "dark" ? "#8b949e" : "#777777",
            display: "flex",
            justifyContent: "center",
            gap: "12px",
-           borderTop: themeMode === "dark" ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.06)",
+           borderTop: theme === "dark" ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.06)",
            paddingTop: "6px"
          }}>
            <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
              <span style={{ 
                fontSize: "10px", 
-               background: themeMode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.06)", 
+               background: theme === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.06)", 
                borderRadius: "3px", 
                padding: "1px 4px"
              }}>Double-click</span>
@@ -1235,7 +1166,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         </div>
       </div>
     );
-  }, [hoveredNode, themeMode, getNodeColor, mainWord]); // Corrected dependency array
+  }, [hoveredNode, theme, getNodeColor, mainWord]);
 
   // Improved visual styling
   useEffect(() => {
@@ -1613,7 +1544,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
      mainWord,
      depth,
      breadth,
-    themeMode, 
+    theme, 
      getNodeRadius,
      setupZoom,
      ticked,
@@ -1674,7 +1605,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
           overflow: 'auto', 
           width: '100%',
           '& .MuiListSubheader-root': {
-            backgroundColor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.6)' : 'rgba(245, 245, 245, 0.9)' // Use themeMode
+            backgroundColor: theme === 'dark' ? 'rgba(40, 48, 68, 0.6)' : 'rgba(245, 245, 245, 0.9)'
           }
         }}
       >
@@ -1735,7 +1666,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
                         borderRadius: '50%',
                           bgcolor: labelInfo.color, // Use label's color
                         display: 'inline-block',
-                          border: themeMode === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)', // Use themeMode
+                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)',
                           opacity: allOriginalTypesFiltered ? 0.5 : 1
                       }}
                     />
@@ -1760,7 +1691,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
         <Divider component="li" />
       </List>
     );
-  }, [filteredRelationships, handleToggleRelationshipFilter, themeMode, getUniqueRelationshipGroups]); // Corrected dependency array
+  }, [filteredRelationships, handleToggleRelationshipFilter, theme, getUniqueRelationshipGroups]);
 
   if (!isValidNetwork) {
     return (
@@ -1830,15 +1761,15 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 width: 40, height: 40, minWidth: 40, minHeight: 40, 
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 borderRadius: '50%',
-                bgcolor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', // Use themeMode
+                bgcolor: theme === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)',
                 backdropFilter: 'blur(3px)',
-                border: themeMode === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)', // Use themeMode
-                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', // Use themeMode
+                border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)',
+                color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)',
                 zIndex: 9999,
                 pointerEvents: 'auto',
                 '&:hover': {
-                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)', // Use themeMode
-                  bgcolor: themeMode === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' // Use themeMode
+                  color: theme === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)',
+                  bgcolor: theme === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)'
                 }
             }}
           >
