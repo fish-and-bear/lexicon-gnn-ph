@@ -1981,33 +1981,20 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         }}>
         
         {/* Vertical Tabs (Render Unconditionally) */} 
+        {/* {!isMobile && ( */} // Remove condition
           <Tabs
             orientation="vertical"
             variant="scrollable"
             value={activeTab}
             onChange={handleTabChange}
             aria-label="Word details sections"
-            sx={{
+            sx={{ /* Existing sx props */
               borderRight: 1,
               borderColor: 'divider',
-              // Adjust minWidth for mobile
-              minWidth: isMobile ? 120 : 160, // Smaller width on mobile
+              minWidth: 160, // Keep minWidth, might need CSS adjustment for mobile 
               bgcolor: 'background.paper',
               flexShrink: 0,
-              // Adjust tab padding and font size for mobile if needed
-               '& .MuiTab-root': {
-                    textTransform: 'none',
-                    fontWeight: theme.typography.fontWeightRegular,
-                    fontSize: theme.typography.pxToRem(isMobile ? 12 : 14), // Smaller font on mobile
-                    minHeight: 48, 
-                    justifyContent: 'flex-start',
-                    pl: isMobile ? 1 : 2, // Less padding on mobile
-                    pr: isMobile ? 0.5 : 1, // Less padding on mobile
-                    py: isMobile ? 0.5 : 1, // Adjust vertical padding if needed
-                    minWidth: isMobile ? 110 : 'auto', // Allow tabs to be smaller on mobile
-                    '&.Mui-selected': { /* Existing inner sx */ },
-                    '&:hover': { /* Existing inner sx */ },
-                  },
+               '& .MuiTab-root': { /* Existing inner sx */ },
                   '& .MuiTabs-indicator': { /* Existing inner sx */ },
             }}
           >
@@ -2018,6 +2005,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             <Tab label="Forms" value="forms" />
             <Tab label="Sources" value="sources" />
           </Tabs>
+        {/* )} */} 
 
         {/* Horizontal Tabs (Mobile) - REMOVED */} 
         {/* {isMobile && ( ... )} */}

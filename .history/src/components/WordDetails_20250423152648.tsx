@@ -1972,55 +1972,78 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       </Box>
 
       {/* Main Content Area (Tabs + Panel) */}
-      {/* REMOVE flex direction change. Always use row for vertical tabs. */}
+      {/* Adjust flex direction for mobile */}
       <Box sx={{ 
           display: 'flex', 
-          flexDirection: 'row', // Always row now
+          flexDirection: isMobile ? 'column' : 'row', // Column on mobile, row on desktop 
           flexGrow: 1, 
           overflow: 'hidden' 
         }}>
         
-        {/* Vertical Tabs (Render Unconditionally) */} 
+        {/* Vertical Tabs (Desktop) */} 
+        {!isMobile && (
           <Tabs
             orientation="vertical"
             variant="scrollable"
             value={activeTab}
             onChange={handleTabChange}
             aria-label="Word details sections"
-            sx={{
+            sx={{ /* Existing sx props */
               borderRight: 1,
               borderColor: 'divider',
-              // Adjust minWidth for mobile
-              minWidth: isMobile ? 120 : 160, // Smaller width on mobile
+              minWidth: 160, 
               bgcolor: 'background.paper',
               flexShrink: 0,
-              // Adjust tab padding and font size for mobile if needed
-               '& .MuiTab-root': {
-                    textTransform: 'none',
-                    fontWeight: theme.typography.fontWeightRegular,
-                    fontSize: theme.typography.pxToRem(isMobile ? 12 : 14), // Smaller font on mobile
-                    minHeight: 48, 
-                    justifyContent: 'flex-start',
-                    pl: isMobile ? 1 : 2, // Less padding on mobile
-                    pr: isMobile ? 0.5 : 1, // Less padding on mobile
-                    py: isMobile ? 0.5 : 1, // Adjust vertical padding if needed
-                    minWidth: isMobile ? 110 : 'auto', // Allow tabs to be smaller on mobile
-                    '&.Mui-selected': { /* Existing inner sx */ },
-                    '&:hover': { /* Existing inner sx */ },
-                  },
+               '& .MuiTab-root': { /* Existing inner sx */ },
                   '& .MuiTabs-indicator': { /* Existing inner sx */ },
             }}
           >
-            {/* Tabs remain the same */} 
+            {/* Desktop Tabs */} 
             <Tab label="Definitions" value="definitions" />
             <Tab label="Relations" value="relations" />
             <Tab label="Etymology" value="etymology" />
             <Tab label="Forms" value="forms" />
             <Tab label="Sources" value="sources" />
           </Tabs>
+        )} 
 
-        {/* Horizontal Tabs (Mobile) - REMOVED */} 
-        {/* {isMobile && ( ... )} */}
+        {/* Horizontal Tabs (Mobile) - MOVED HERE */} 
+        {isMobile && (
+          <Paper 
+            square 
+            elevation={1} // Add slight elevation to separate from content
+            sx={{ 
+              // borderTop: 1, // No longer needed at top
+              borderBottom: 1, // Add border below tabs
+              borderColor: 'divider', 
+              flexShrink: 0, 
+              bgcolor: 'background.paper',
+              minHeight: 48,
+              overflow: 'hidden' 
+            }}
+          >
+            <Tabs
+              value={activeTab}
+              onChange={handleTabChange}
+              variant="scrollable"
+              scrollButtons="auto"
+              allowScrollButtonsMobile
+              aria-label="Word details sections mobile"
+              sx={{ /* Existing sx props */ 
+                minHeight: 48,
+                width: '100%', 
+                '& .MuiTab-root': { /* Existing inner sx */ },
+              }}
+            >
+              {/* Mobile Tabs */} 
+              <Tab label="Defs" value="definitions" />
+              <Tab label="Rels" value="relations" />
+              <Tab label="Etym" value="etymology" />
+              <Tab label="Forms" value="forms" />
+              <Tab label="Srcs" value="sources" />
+            </Tabs>
+          </Paper>
+        )}
 
         {/* Tab Content Panel (Scrollable) */} 
         <Box
@@ -2029,7 +2052,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           sx={{ /* Existing sx props */
             flexGrow: 1, 
             overflowY: 'auto', 
-            p: isMobile ? 1.5 : 2, // Keep responsive padding for now 
+            p: isMobile ? 1.5 : 2, 
             width: '100%', 
             minWidth: 0, 
           }}
@@ -2043,6 +2066,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         </Box>
 
       </Box> { /* End Main Content Area Box */}
+
+      {/* Horizontal Tabs (Mobile) - REMOVED FROM HERE */}
+      {/* {isMobile && ( ... )} */}
 
     </Box> // End Main Wrapper Box
   );
