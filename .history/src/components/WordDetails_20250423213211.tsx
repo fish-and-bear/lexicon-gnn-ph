@@ -158,8 +158,7 @@ const StyledAccordionSummary = styled(AccordionSummary)(({ theme }: { theme: The
 const StyledAccordionDetails = styled(AccordionDetails)(({ theme }: { theme: Theme }) => ({ // Add Theme type
   padding: theme.spacing(2, 2, 2, 2), // Consistent padding
   borderTop: 'none', // Remove internal border
-  // Use elevated background color in dark mode for definition section
-  backgroundColor: theme.palette.mode === 'dark' ? 'var(--card-bg-color-elevated)' : 'transparent',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'transparent',
 }));
 
 const ExpandMoreIcon = () => <Typography sx={{ transform: 'rotate(90deg)', lineHeight: 0, color: 'text.secondary' }}>▶</Typography>;
@@ -269,8 +268,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     return (
       // More elegant header with subtle styling
       <Box sx={{ 
-        // Use elevated navy background in dark mode
-        bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : headerBgColor, 
+        bgcolor: isDarkMode ? 'rgba(30, 40, 60, 0.4)' : headerBgColor, 
         color: headerTextColor, 
         // Reduced padding for mobile
         pt: theme.spacing(isMobile ? 1.5 : 3), 
@@ -425,7 +423,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                 // REMOVE inline fontFamily - Use CSS class
                 fontSize: isMobile ? '1.5rem' : '2rem', 
                 padding: isMobile ? '4px 8px' : '8px 12px',
-                // background: isDarkMode ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.5)', // REMOVED - Handled by CSS
+                background: isDarkMode ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.5)',
                 borderRadius: '4px',
                 display: 'inline-block',
                 lineHeight: 1.2,
@@ -451,7 +449,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               style={{
                 fontSize: isMobile ? '1.2rem' : '1.5rem', 
                 padding: isMobile ? '4px 8px' : '8px 12px',
-                // background: isDarkMode ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.5)', // REMOVED - Handled by CSS
+                background: isDarkMode ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.5)',
                 borderRadius: '4px',
                 display: 'inline-block',
                 lineHeight: 1.2,
