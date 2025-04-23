@@ -1,0 +1,7 @@
+.word-explorer {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  background-color: var(--background-color);
+  color: var(--text-color);
+} 
