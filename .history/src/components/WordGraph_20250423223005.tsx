@@ -785,24 +785,20 @@ const WordGraph: React.FC<WordGraphProps> = ({
       const linkSelection = svg.selectAll<SVGLineElement, CustomLink>(".link");
       const labelSelection = svg.selectAll<SVGTextElement, CustomNode>(".node-label"); // Select external labels
 
-      // Update node group positions with safety checks
-      nodeSelection.attr("transform", d => 
-          (typeof d.x === 'number' && typeof d.y === 'number') 
-          ? `translate(${d.x}, ${d.y})` 
-          : `translate(0, 0)` // Default position if coords are invalid
-      );
+      // Update node group positions
+      nodeSelection.attr("transform", d => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
 
-      // Update link line coordinates with safety checks
+      // Update link line coordinates
       linkSelection
-          .attr("x1", d => (typeof d.source === 'object' && typeof d.source.x === 'number') ? d.source.x : 0)
-          .attr("y1", d => (typeof d.source === 'object' && typeof d.source.y === 'number') ? d.source.y : 0)
-          .attr("x2", d => (typeof d.target === 'object' && typeof d.target.x === 'number') ? d.target.x : 0)
-          .attr("y2", d => (typeof d.target === 'object' && typeof d.target.y === 'number') ? d.target.y : 0);
+          .attr("x1", d => (typeof d.source === 'object' ? d.source.x ?? 0 : 0))
+          .attr("y1", d => (typeof d.source === 'object' ? d.source.y ?? 0 : 0))
+          .attr("x2", d => (typeof d.target === 'object' ? d.target.x ?? 0 : 0))
+          .attr("y2", d => (typeof d.target === 'object' ? d.target.y ?? 0 : 0));
 
-      // Update external text label positions with safety checks
+      // Update external text label positions (e.g., slightly below node)
       labelSelection
-          .attr("x", d => typeof d.x === 'number' ? d.x : 0)
-          .attr("y", d => (typeof d.y === 'number' ? d.y : 0) + getNodeRadius(d) + 12); // Adjust offset as needed
+          .attr("x", d => d.x ?? 0)
+          .attr("y", d => (d.y ?? 0) + getNodeRadius(d) + 12); // Adjust offset as needed
 
   }, [getNodeRadius]); // Added getNodeRadius dependency
 
@@ -1905,23 +1901,19 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 position: 'absolute',
                 bottom: theme => theme.spacing(2),
                 right: theme => theme.spacing(2),
-                // Robust Centering: Use Flexbox within fixed dimensions, remove padding.
-                width: 40, 
-                height: 40, 
-                padding: 0, // Crucial: Remove internal padding
-                display: 'flex', 
-                alignItems: 'center', // Vertical center
-                justifyContent: 'center', // Horizontal center
+                // Keep explicit size, but remove padding: 0
+                width: 40, height: 40, minWidth: 40, minHeight: 40, 
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
                 borderRadius: '50%',
-                bgcolor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', 
+                bgcolor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', // Use themeMode
                 backdropFilter: 'blur(3px)',
-                border: themeMode === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)', 
-                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', 
+                border: themeMode === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)', // Use themeMode
+                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', // Use themeMode
                 zIndex: 9999,
                 pointerEvents: 'auto',
                 '&:hover': {
-                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)', 
-                  bgcolor: themeMode === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' 
+                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)', // Use themeMode
+                  bgcolor: themeMode === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' // Use themeMode
                 }
             }}
           >

@@ -1905,23 +1905,20 @@ const WordGraph: React.FC<WordGraphProps> = ({
                 position: 'absolute',
                 bottom: theme => theme.spacing(2),
                 right: theme => theme.spacing(2),
-                // Robust Centering: Use Flexbox within fixed dimensions, remove padding.
-                width: 40, 
-                height: 40, 
-                padding: 0, // Crucial: Remove internal padding
-                display: 'flex', 
-                alignItems: 'center', // Vertical center
-                justifyContent: 'center', // Horizontal center
+                // Adjusted for better centering
+                width: 40, height: 40, 
+                padding: 0, // Ensure no padding interferes
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
                 borderRadius: '50%',
-                bgcolor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', 
+                bgcolor: themeMode === 'dark' ? 'rgba(40, 48, 68, 0.8)' : 'rgba(255, 255, 255, 0.85)', // Use themeMode
                 backdropFilter: 'blur(3px)',
-                border: themeMode === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)', 
-                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', 
+                border: themeMode === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.08)', // Use themeMode
+                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)', // Use themeMode
                 zIndex: 9999,
                 pointerEvents: 'auto',
                 '&:hover': {
-                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)', 
-                  bgcolor: themeMode === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' 
+                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)', // Use themeMode
+                  bgcolor: themeMode === 'dark' ? 'rgba(50, 60, 80, 0.9)' : 'rgba(245, 245, 245, 0.95)' // Use themeMode
                 }
             }}
           >
