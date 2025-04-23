@@ -126,7 +126,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
   const isTransitioningRef = useRef(false);
   const prevMainWordRef = useRef<string | null>(null);
 
-  // REMOVED tooltipTimeoutId state
+  // State for tooltip delay
+  const [tooltipTimeoutId, setTooltipTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   // Create a key that changes whenever filtered relationships change
   // This will force the graph to completely rebuild
@@ -748,8 +749,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
       })
       .on("end", (event, d) => {
           if (!event.active) simulation.alphaTarget(0);
-          // Remove pinning logic from drag end - pinning is handled separately if desired
-          d.fx = null; d.fy = null;
+          if (!d.pinned) { d.fx = null; d.fy = null; }
           
           // Reset visual state
           d3.select(event.sourceEvent.target.closest(".node"))
@@ -885,173 +885,240 @@ const WordGraph: React.FC<WordGraphProps> = ({
     return nodeGroups; // Return the node groups for interaction setup
   }, [createDragBehavior, getNodeRadius, getNodeColor, themeMode, mainWord]);
 
-  // --- START: Replaced setupNodeInteractions with Backup Logic ---
+  // Optimize hover effect and enhance visual feedback
   const setupNodeInteractions = useCallback((
-    nodeSelection: d3.Selection<d3.BaseType, CustomNode, SVGGElement, unknown>
+      nodeSelection: d3.Selection<d3.BaseType, CustomNode, SVGGElement, unknown>
   ) => {
-    // Clear all event handlers first
-    nodeSelection.on(".click", null)
-                .on(".dblclick", null)
-                .on("mousedown", null)
-                .on("mouseup", null)
-                .on("mouseenter", null)
-                .on("mouseleave", null)
-                .on("mouseover", null)
-                .on("mouseout", null);
+      // Clear all event handlers first
+      nodeSelection.on(".click", null)
+                  .on(".dblclick", null)
+                  .on("mousedown", null)
+                  .on("mouseup", null)
+                  .on("mouseenter", null)
+                  .on("mouseleave", null)
+                  .on("mouseover", null)
+                  .on("mouseout", null);
 
-    // Enhanced hover effect to show relationship (Backup Logic)
-    nodeSelection.on("mouseenter", function(event, d) {
-      if (isDraggingRef.current) return;
+      // Enhanced hover effect to show relationship
+      nodeSelection.on("mouseenter", function(event, d) {
+          if (isDraggingRef.current) return;
 
-      // Emphasize this node
-      d3.select(this)
-        .raise() // Bring to front
-        .select("circle")
-          .attr("stroke-width", 3)
-          .attr("stroke-opacity", 1)
-          .attr("filter", "brightness(1.1)");
+          // Emphasize this node
+          d3.select(this)
+            .raise() // Bring to front
+            .select("circle")
+              .attr("stroke-width", 3)
+              .attr("stroke-opacity", 1)
+              .attr("filter", "brightness(1.1)");
 
-      // Find and highlight connections
-      const connectedIds = new Set<string>([d.id]);
+          // Find and highlight connections
+          const connectedIds = new Set<string>([d.id]);
 
-      // Temporarily highlight connections to this node
-      const connectedLinks = d3.selectAll<SVGLineElement, CustomLink>(".link").filter((l: CustomLink) => {
-           const sourceId = typeof l.source === 'object' ? (l.source as CustomNode).id : l.source as string;
-           const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
+          // Temporarily highlight connections to this node
+          const connectedLinks = d3.selectAll<SVGLineElement, CustomLink>(".link").filter((l: CustomLink) => {
+               const sourceId = typeof l.source === 'object' ? (l.source as CustomNode).id : l.source as string;
+               const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
 
-          // Add connected nodes to set
-          if (sourceId === d.id) connectedIds.add(targetId);
-          if (targetId === d.id) connectedIds.add(sourceId);
+              // Add connected nodes to set
+              if (sourceId === d.id) connectedIds.add(targetId);
+              if (targetId === d.id) connectedIds.add(sourceId);
 
-          return sourceId === d.id || targetId === d.id;
+              return sourceId === d.id || targetId === d.id;
+          });
+
+          // Raise and highlight links
+          connectedLinks
+            .raise()
+            .attr("stroke-opacity", 0.85)
+            .attr("stroke-width", 2.5)
+            .attr("stroke", function(l: CustomLink) {
+                  const sourceId = typeof l.source === 'object' ? (l.source as CustomNode).id : l.source as string;
+                  const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
+
+                // Color based on connected node
+                const connectedId = sourceId === d.id ? targetId : sourceId;
+                const connectedNode = nodeMap.get(connectedId);
+
+                // Use the relationship type to determine color
+                return connectedNode ? getNodeColor(connectedNode.group) : (themeMode === "dark" ? "#aaa" : "#666"); // Use themeMode
+            });
+
+          // Highlight connected nodes
+          d3.selectAll<SVGGElement, CustomNode>(".node")
+            .filter(n => connectedIds.has(n.id) && n.id !== d.id)
+            .raise() // Bring to front
+              .style("opacity", 1)
+            .select("circle")
+              .attr("stroke-width", 2)
+              .attr("stroke-opacity", 0.9);
+
+          // Also highlight connected node labels
+          d3.selectAll<SVGTextElement, CustomNode>(".node-label")
+            .filter(n => connectedIds.has(n.id))
+            .style("opacity", 1)
+            .style("font-weight", "bold");
       });
 
-      // Raise and highlight links
-      connectedLinks
-        .raise()
-        .attr("stroke-opacity", 0.85)
-        .attr("stroke-width", 2.5)
-        .attr("stroke", function(l: CustomLink) {
-              const sourceId = typeof l.source === 'object' ? (l.source as CustomNode).id : l.source as string;
-              const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
+      nodeSelection.on("mouseleave", function(event, d) {
+          if (isDraggingRef.current) return;
 
-            // Color based on connected node
-            const connectedId = sourceId === d.id ? targetId : sourceId;
-            const connectedNode = nodeMap.get(connectedId);
+          // Reset appearance on mouseout
+          d3.select(this).select("circle")
+            .attr("stroke-width", d.id === mainWord ? 2.5 : 1.5)
+            .attr("stroke-opacity", 0.7)
+            .attr("filter", d.id === mainWord ? "brightness(1.15)" : "none")
+            .attr("stroke", d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888");
 
-            // Use the relationship type to determine color
-            return connectedNode ? getNodeColor(connectedNode.group) : (themeMode === "dark" ? "#aaa" : "#666"); // Use themeMode
+          // Reset connected links
+          d3.selectAll<SVGLineElement, CustomLink>(".link")
+            .attr("stroke-opacity", 0.6)
+            .attr("stroke-width", 1.5)
+            .attr("stroke", themeMode === "dark" ? "#666" : "#ccc"); // Use themeMode
+
+          // Reset connected nodes
+          d3.selectAll<SVGGElement, CustomNode>(".node")
+            .style("opacity", n => n.id === mainWord ? 1 : 0.8)
+            .select("circle")
+              .attr("stroke-width", n => n.id === mainWord ? 2.5 : 1.5)
+              .attr("stroke-opacity", 0.7);
+
+          // Reset node labels
+          d3.selectAll<SVGTextElement, CustomNode>(".node-label")
+            .style("opacity", 0.9)
+            .style("font-weight", n => n.id === mainWord ? "bold" : "normal");
+      });
+
+      // Double-click to navigate with improved reliability
+      nodeSelection.on("dblclick", function(event, d) {
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (isDraggingRef.current) return;
+
+          // Visual effect prior to navigation
+          const circleElement = d3.select(this).select("circle");
+          const originalFill = circleElement.attr("fill");
+          
+          // Pulse effect to indicate navigation
+          circleElement
+            .attr("fill-opacity", 0.7)
+            .attr("r", function() { return parseFloat(d3.select(this).attr("r")) * 1.2; });
+            
+          setTimeout(() => {
+              // Reset visual state (though navigation will likely reload the component)
+              circleElement
+                .attr("fill-opacity", 1)
+                .attr("fill", originalFill)
+                .attr("r", getNodeRadius(d));
+                
+              console.log(`Double-click on node: ${d.word} - Navigating`);
+              
+              // Navigate after visual feedback
+              if (onNodeClick) {
+                  onNodeClick(d.word);
+              }
+          }, 120);
+      });
+      
+      // Enhanced tooltip with relationship info
+      nodeSelection.on("mouseover", (event, d) => {
+            if (isDraggingRef.current) return;
+            if (tooltipTimeoutId) clearTimeout(tooltipTimeoutId);
+
+          // Check if this is directly connected to main word
+          let relationshipToMain = "";
+          if (d.id !== mainWord) {
+              const link = baseLinks.find(l => 
+                  (l.source === mainWord && l.target === d.id) || 
+                  (l.source === d.id && l.target === mainWord)
+              );
+              if (link) {
+                  relationshipToMain = link.relationship;
+              }
+          }
+          
+          // Pass relationship to tooltip
+          setHoveredNode({ 
+              ...d, 
+              relationshipToMain 
+          });
+      });
+      
+      nodeSelection.on("mouseout", (event, d) => {
+            if (isDraggingRef.current) return;
+            if (tooltipTimeoutId) clearTimeout(tooltipTimeoutId);
+            setHoveredNode(null);
+      });
+
+        // Handle Pinning (Toggle on Ctrl+Click)
+        nodeSelection.on("mousedown", function(event, d) {
+          if (event.ctrlKey) {
+            event.preventDefault(); // Prevent browser context menu
+            d.pinned = !d.pinned;
+            d.fx = d.pinned ? d.x : null;
+            d.fy = d.pinned ? d.y : null;
+
+            // Visual feedback for pinning
+            d3.select(this).select("circle")
+              .attr("stroke", d.pinned ? (themeMode === 'dark' ? '#ffd700' : '#e65100') : (d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888"))
+              .attr("stroke-width", d.pinned ? 3 : 1.5);
+          }
         });
 
-      // Highlight connected nodes
-      d3.selectAll<SVGGElement, CustomNode>(".node")
-        .filter(n => connectedIds.has(n.id) && n.id !== d.id)
-        .raise() // Bring to front
-          .style("opacity", 1)
-        .select("circle")
-          .attr("stroke-width", 2)
-          .attr("stroke-opacity", 0.9);
+        // Clear Tooltip on MouseOut
+        nodeSelection.on("mouseout", function(event, d) {
+            // Clear the tooltip timeout if the mouse leaves before the delay
+            if (tooltipTimeoutId) {
+                clearTimeout(tooltipTimeoutId);
+                setTooltipTimeoutId(null);
+            }
+            // Hide the tooltip
+            d3.select(".tooltip").style("opacity", 0).style("pointer-events", "none");
+            setHoveredNode(null);
+        });
 
-      // Also highlight connected node labels
-      d3.selectAll<SVGTextElement, CustomNode>(".node-label")
-        .filter(n => connectedIds.has(n.id))
-        .style("opacity", 1)
-        .style("font-weight", "bold");
-    });
+        // Delayed Tooltip on MouseOver
+        nodeSelection.on("mouseover", function(event, d) {
+            // Clear any existing timeout
+            if (tooltipTimeoutId) {
+                clearTimeout(tooltipTimeoutId);
+            }
 
-    nodeSelection.on("mouseleave", function(event, d) {
-      if (isDraggingRef.current) return;
+            // Set a new timeout to show the tooltip after a delay (e.g., 500ms)
+            const newTimeoutId = setTimeout(() => {
+                if (!isDraggingRef.current) {
+                    setHoveredNode(d); // Update hovered node state for tooltip content
+                    
+                    // Tooltip content
+                    const tooltipHtml = `
+                        <div style="font-weight: bold; margin-bottom: 4px; font-size: 0.9rem;">${d.word}</div>
+                        <div style="font-size: 0.8rem; color: #555;">
+                          ${d.relationshipToMain ? 
+                            `<div>Relationship: <span style="font-weight: 500;">${getRelationshipTypeLabel(d.relationshipToMain)}</span></div>` : ''}
+                          ${d.language ? 
+                            `<div>Language: <span style="font-weight: 500;">${d.language.toUpperCase()}</span></div>` : ''}
+                          ${d.definitions && d.definitions.length > 0 ? 
+                            `<div>Definition: ${d.definitions[0].substring(0, 100)}${d.definitions[0].length > 100 ? '...' : ''}</div>` : ''}
+                          ${d.pinned ? '<div style="color: #e65100; font-weight: bold; margin-top: 4px;">(Pinned)</div>' : ''}
+                        </div>
+                    `;
 
-      // Reset appearance on mouseout
-      d3.select(this).select("circle")
-        .attr("stroke-width", d.id === mainWord ? 2.5 : 1.5)
-        .attr("stroke-opacity", 0.7)
-        .attr("filter", d.id === mainWord ? "brightness(1.15)" : "none")
-        .attr("stroke", d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888");
+                    // Position and show tooltip
+                    const tooltip = d3.select(".tooltip");
+                    tooltip.html(tooltipHtml)
+                      .style("left", `${event.pageX + 15}px`)
+                      .style("top", `${event.pageY - 10}px`)
+                      .transition()
+                      .duration(150)
+                      .style("opacity", 0.95)
+                      .style("pointer-events", "all"); // Make it interactable if needed later
+                }
+            }, 500); // 500ms delay
 
-      // Reset connected links
-      d3.selectAll<SVGLineElement, CustomLink>(".link")
-        .attr("stroke-opacity", 0.6)
-        .attr("stroke-width", 1.5)
-        .attr("stroke", themeMode === "dark" ? "#666" : "#ccc"); // Use themeMode
+            setTooltipTimeoutId(newTimeoutId);
+        });
 
-      // Reset connected nodes 
-      d3.selectAll<SVGGElement, CustomNode>(".node")
-        .style("opacity", n => n.id === mainWord ? 1 : 0.8)
-        .select("circle")
-          .attr("stroke-width", n => n.id === mainWord ? 2.5 : 1.5)
-          .attr("stroke-opacity", 0.7);
-          
-      // Reset node labels
-      d3.selectAll<SVGTextElement, CustomNode>(".node-label")
-        .style("opacity", 0.9)
-        .style("font-weight", n => n.id === mainWord ? "bold" : "normal");
-    });
-    
-    // Double-click to navigate with improved reliability (Backup Logic)
-    nodeSelection.on("dblclick", function(event, d) {
-      event.preventDefault();
-      event.stopPropagation();
-      
-      if (isDraggingRef.current) return;
-      
-      // Visual effect prior to navigation
-      const circleElement = d3.select(this).select("circle");
-      const originalFill = circleElement.attr("fill");
-      
-      // Pulse effect to indicate navigation
-      circleElement
-        .attr("fill-opacity", 0.7)
-        .attr("r", function() { return parseFloat(d3.select(this).attr("r")) * 1.2; });
-        
-      setTimeout(() => {
-          // Reset visual state (though navigation will likely reload the component)
-          circleElement
-            .attr("fill-opacity", 1)
-            .attr("fill", originalFill)
-            .attr("r", getNodeRadius(d));
-            
-          console.log(`Double-click on node: ${d.word} - Navigating`);
-          
-          // Navigate after visual feedback
-          if (onNodeClick) {
-              onNodeClick(d.word);
-          }
-      }, 120);
-    });
-    
-    // Enhanced tooltip with relationship info (Backup Logic)
-    nodeSelection.on("mouseover", (event, d) => {
-        if (isDraggingRef.current) return;
-        // Removed clearTimeout check
-
-      // Check if this is directly connected to main word
-      let relationshipToMain = "";
-      if (d.id !== mainWord) {
-          const link = baseLinks.find(l => 
-              (l.source === mainWord && l.target === d.id) || 
-              (l.source === d.id && l.target === mainWord)
-          );
-          if (link) {
-              relationshipToMain = link.relationship;
-          }
-      }
-      
-      // Pass relationship to tooltip
-      setHoveredNode({ 
-          ...d, 
-          relationshipToMain 
-      });
-    });
-    
-    nodeSelection.on("mouseout", (event, d) => {
-        if (isDraggingRef.current) return;
-        // Removed clearTimeout check
-        setHoveredNode(null);
-    });
-
-  }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, baseLinks, getNodeRadius]); // Corrected dependency array
-  // --- END: Replaced setupNodeInteractions ---
+  }, [onNodeClick, themeMode, tooltipTimeoutId, nodeMap, baseLinks, getNodeRadius, getNodeColor]); // Corrected dependency array
 
   // Update initial node layout to ensure main word is centered and visible
   useEffect(() => {
@@ -1354,7 +1421,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
     createLinks(g, filteredLinks);
     const nodeElements = createNodes(g, filteredNodes, currentSim);
-    setupNodeInteractions(nodeElements); // Call the corrected interaction setup
+    setupNodeInteractions(nodeElements);
 
     if (currentSim) {
       const mainNodeData = filteredNodes.find(n => n.id === mainWord);
@@ -1471,6 +1538,8 @@ const WordGraph: React.FC<WordGraphProps> = ({
           const entry = legendContainer.append("g")
             .attr("transform", `translate(${legendPadding}, ${yPos + legendItemHeight / 2})`)
             .attr("class", "legend-item").style("cursor", "pointer").style("opacity", itemOpacity)
+            // UNCOMMENT EVENT HANDLERS
+            // /* REMOVE COMMENT START
             .on("mouseover", function(this: SVGGElement) { 
               if (itemOpacity === 1) {
                   d3.select(this).select("circle").transition().duration(150).attr("r", dotRadius * 1.3);
@@ -1484,6 +1553,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
             .on("click", function(this: SVGGElement) { // Call the memoized handler
               handleToggleRelationshipFilter(labelInfo.types);
             })
+            // REMOVE COMMENT END */
             ;
 
             // Click Target (Invisible Rect)
@@ -1560,16 +1630,13 @@ const WordGraph: React.FC<WordGraphProps> = ({
     centerOnMainWord,
      setupSvgDimensions,
      filteredNodes,
-   baseLinks, // Added baseLinks dependency
-   filteredLinks, // Added filteredLinks dependency
-   nodeMap, // Added nodeMap dependency
+   baseLinks,
    filteredRelationships,
    filterUpdateKey,
    forceUpdate,
    handleToggleRelationshipFilter,
    getUniqueRelationshipGroups,
    muiTheme, // Add muiTheme dependency
-   isMobile, // Added isMobile dependency
   ]);
 
   useEffect(() => {
