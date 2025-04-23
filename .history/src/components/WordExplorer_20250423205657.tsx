@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
-import { useAppTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchWordResult, Relation, WordSuggestion, BasicWord } from "../types";
 import unidecode from "unidecode";
@@ -56,7 +56,7 @@ const WordExplorer: React.FC = () => {
   const [etymologyError, setEtymologyError] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
 
-  const { themeMode, toggleTheme } = useAppTheme();
+  const { theme: themeName, toggleTheme } = useTheme();
   const [inputValue, setInputValue] = useState<string>("");
   const [depth, setDepth] = useState<number>(2);
   const [breadth, setBreadth] = useState<number>(10);
@@ -1237,7 +1237,7 @@ const WordExplorer: React.FC = () => {
              boxShadow: 'none',
              transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
              '&:hover': {
-               bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9),
+               bgcolor: themeName === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9),
                color: '#ffffff',
                boxShadow: 'none' 
              },
@@ -1369,8 +1369,8 @@ const WordExplorer: React.FC = () => {
                   bgcolor: 'var(--primary-color)' // Use theme variable for hover
                 },
                 '&.Mui-disabled': { // Keep consistent disabled style
-                  bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)', // Use themeMode
-                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)', // Use themeMode
+                  bgcolor: themeName === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+                  color: themeName === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)',
                 }
               }}
             >
@@ -1390,7 +1390,7 @@ const WordExplorer: React.FC = () => {
                 color: 'var(--button-text-color)',
                 transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
                 '&:hover': { 
-                  bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9) // Use themeMode
+                  bgcolor: themeName === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9)
                 },
                 '&:active': {
                   transform: 'scale(0.95)'
@@ -1410,7 +1410,7 @@ const WordExplorer: React.FC = () => {
   };
 
   return (
-    <div className={`word-explorer ${themeMode} ${(isLoadingDetails || isLoadingNetwork) ? 'loading' : ''}`}>
+    <div className={`word-explorer ${themeName} ${(isLoadingDetails || isLoadingNetwork) ? 'loading' : ''}`}>
       <header className="header-content" style={{ padding: isMobile ? '0.5rem 0.8rem' : '1rem 1.5rem' }}>
         <h1 style={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}>Filipino Root Word Explorer</h1>
         <div className="header-buttons">
@@ -1445,7 +1445,7 @@ const WordExplorer: React.FC = () => {
             aria-label="Toggle theme"
             title="Toggle theme"
           >
-            {themeMode === "light" ? "🌙" : "☀️"}
+            {themeName === "light" ? "🌙" : "☀️"}
           </button>
         </div>
       </header>

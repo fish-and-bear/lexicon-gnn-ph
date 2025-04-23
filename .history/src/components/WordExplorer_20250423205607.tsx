@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
-import { useAppTheme } from "../contexts/ThemeContext";
+import { useAppTheme } from "../../src/contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchWordResult, Relation, WordSuggestion, BasicWord } from "../types";
 import unidecode from "unidecode";
@@ -33,6 +33,10 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
+import Header from './Header';
+import NetworkControls from './NetworkControls';
+import useWordNavigation from '../../src/hooks/useWordNavigation';
+import useCircuitBreaker from '../../src/hooks/useCircuitBreaker';
 
 const isDevMode = () => {
   // Check if we have a URL parameter for showing debug tools
@@ -62,8 +66,13 @@ const WordExplorer: React.FC = () => {
   const [breadth, setBreadth] = useState<number>(10);
   // Store history with associated graph settings
   type HistoryEntry = { identifier: string; lemma: string; depth: number; breadth: number };
-  const [wordHistory, setWordHistory] = useState<HistoryEntry[]>([]);
-  const [currentHistoryIndex, setCurrentHistoryIndex] = useState<number>(-1);
+  const { 
+    wordHistory, 
+    currentHistoryIndex, 
+    addToHistory, 
+    goBack, 
+    goForward 
+  } = useWordNavigation<HistoryEntry>();
   const [searchResults, setSearchResults] = useState<SearchWordResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState<boolean>(false);
@@ -75,7 +84,7 @@ const WordExplorer: React.FC = () => {
 
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([]);
-  const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
+  const { state: apiState, recordSuccess, recordFailure, reset: resetApiState } = useCircuitBreaker('wordApi');
 
   const fetchSuggestionsDebounced = React.useMemo(
     () =>
@@ -376,8 +385,7 @@ const WordExplorer: React.FC = () => {
             ...wordHistory.slice(0, currentHistoryIndex + 1), 
             newHistoryEntry
           ];
-          setWordHistory(newHistory as any);
-          setCurrentHistoryIndex(newHistory.length - 1);
+          addToHistory(newHistoryEntry);
         }
         
         // Fetch related data (Network and Etymology)
@@ -440,8 +448,7 @@ const WordExplorer: React.FC = () => {
       fetchEtymologyTree, 
       setWordData, 
       setSelectedNode, 
-      setWordHistory, 
-      setCurrentHistoryIndex, 
+      addToHistory, 
       setError, 
       setWordNetwork, 
       setEtymologyTree
@@ -564,9 +571,7 @@ const WordExplorer: React.FC = () => {
         depth: depth, // Store current depth
         breadth: breadth // Store current breadth
       };
-      const newHistory = [...wordHistory.slice(0, currentHistoryIndex + 1), historyEntry];
-      setWordHistory(newHistory as any);
-      setCurrentHistoryIndex(newHistory.length - 1);
+      addToHistory(historyEntry);
 
       // NOW start fetching network and etymology in the background
       setIsLoadingNetwork(true); // Start network loading indicator
@@ -628,277 +633,34 @@ const WordExplorer: React.FC = () => {
     fetchWordNetworkData,
     fetchEtymologyTree,
     setSelectedNode,
-    setWordHistory,
-    setCurrentHistoryIndex,
+    addToHistory,
     setError,
     setIsRandomLoading,
     setEtymologyTree
   ]);
 
-  const handleBack = useCallback(() => {
-    if (currentHistoryIndex > 0) {
-      const newIndex = currentHistoryIndex - 1;
-      setCurrentHistoryIndex(newIndex);
-
-      const previousWord = wordHistory[newIndex];
-      // Restore settings from history
-      setDepth(previousWord.depth);
-      setBreadth(previousWord.breadth);
-      // Set selected node *immediately* for better visual sync during load
-      setSelectedNode(previousWord.lemma);
-
-      console.log(`Navigating back to: ${JSON.stringify(previousWord)} (index ${newIndex})`);
-      
-      // Use the stored identifier and settings
-      const detailsIdentifier = previousWord.identifier;
-      const networkIdentifier = previousWord.identifier;
-      const historyDepth = previousWord.depth;
-      const historyBreadth = previousWord.breadth;
-
-      setIsLoadingDetails(true);
-      setIsLoadingNetwork(true);
-      setError(null);
-      setWordData(null);
-      setWordNetwork(null);
-      
-      Promise.all([
-        fetchWordDetails(detailsIdentifier), // Use ID or lemma string for details
-        fetchWordNetworkData(networkIdentifier, historyDepth, historyBreadth) // Use restored settings
-      ])
-      .then(([wordData, networkData]) => {
-        setWordNetwork(networkData);
-        
-        // Sync network relations with word data
-        if (networkData && networkData.nodes && networkData.edges && wordData) {
-          const mainNode = networkData.nodes.find(node => 
-            node.type === 'main' || node.word === detailsIdentifier || node.label === detailsIdentifier
-          );
-          
-          if (mainNode) {
-            const incomingRelations: Relation[] = [];
-            const outgoingRelations: Relation[] = [];
-            
-            networkData.edges.forEach(edge => {
-              const sourceNode = networkData.nodes.find(n => n.id === edge.source);
-              const targetNode = networkData.nodes.find(n => n.id === edge.target);
-              
-              if (sourceNode && targetNode) {
-                if (targetNode.id === mainNode.id) {
-                  incomingRelations.push({
-                    id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
-                    source_word: {
-                      id: Number(sourceNode.id) || 0,
-                      lemma: sourceNode.word || sourceNode.label,
-                      has_baybayin: sourceNode.has_baybayin,
-                      baybayin_form: sourceNode.baybayin_form
-                    }
-                  });
-                }
-                else if (sourceNode.id === mainNode.id) {
-                  outgoingRelations.push({
-                    id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
-                    target_word: {
-                      id: Number(targetNode.id) || 0,
-                      lemma: targetNode.word || targetNode.label,
-                      has_baybayin: targetNode.has_baybayin,
-                      baybayin_form: targetNode.baybayin_form
-                    }
-                  });
-                }
-              }
-            });
-            
-            console.log("Syncing relations during navigation:", {
-              incoming: incomingRelations.length,
-              outgoing: outgoingRelations.length
-            });
-            
-            // Update word data with relations from network
-            const updatedWordData = {
-              ...wordData,
-              incoming_relations: incomingRelations.length > 0 ? incomingRelations : wordData.incoming_relations,
-              outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations,
-              semantic_network: {
-                nodes: networkData.nodes || [],
-                links: networkData.edges || [],
-                mainWord: detailsIdentifier
-              }
-            };
-            
-            setWordData(updatedWordData);
-          } else {
-            setWordData(wordData);
-          }
-        } else {
-          setWordData(wordData);
-        }
-        
-        // Fetch etymology tree
-        if (wordData.id) {
-          const etymologyIdString = String(wordData.id);
-          const etymologyId = etymologyIdString.startsWith('id:') ? 
-            parseInt(etymologyIdString.substring(3), 10) : 
-            wordData.id;
-          fetchEtymologyTree(etymologyId)
-            .then(tree => {
-              setEtymologyTree(tree);
-            })
-            .catch(err => {
-              console.error("Error fetching etymology tree:", err);
-            });
-        }
-        
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
-      })
-      .catch(error => {
-        console.error("Error navigating back:", error);
-        let errorMessage = "Failed to navigate back.";
-        if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-        setError(errorMessage);
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
-      });
+  const handleBack = () => {
+    const previousEntry = goBack();
+    if (previousEntry) {
+      setDepth(previousEntry.depth);
+      setBreadth(previousEntry.breadth);
+      setInputValue(previousEntry.lemma);
+      setSelectedNode(previousEntry.lemma);
     }
-  }, [currentHistoryIndex, wordHistory, fetchWordNetworkData, fetchWordDetails, fetchEtymologyTree]);
+  };
 
-  const handleForward = useCallback(() => {
-    if (currentHistoryIndex < wordHistory.length - 1) {
-      const newIndex = currentHistoryIndex + 1;
-      setCurrentHistoryIndex(newIndex);
-
-      const nextWord = wordHistory[newIndex];
-      // Restore settings from history
-      setDepth(nextWord.depth);
-      setBreadth(nextWord.breadth);
-      // Set selected node *immediately* for better visual sync during load
-      setSelectedNode(nextWord.lemma);
-
-      console.log(`Navigating forward to: ${JSON.stringify(nextWord)} (index ${newIndex})`);
-      
-      // Use the stored identifier and settings
-      const detailsIdentifier = nextWord.identifier;
-      const networkIdentifier = nextWord.identifier;
-      const historyDepth = nextWord.depth;
-      const historyBreadth = nextWord.breadth;
-
-      setIsLoadingDetails(true);
-      setIsLoadingNetwork(true);
-      setError(null);
-      setWordData(null);
-      setWordNetwork(null);
-      
-      Promise.all([
-        fetchWordDetails(detailsIdentifier), // Use ID or lemma string for details
-        fetchWordNetworkData(networkIdentifier, historyDepth, historyBreadth) // Use restored settings
-      ])
-      .then(([wordData, networkData]) => {
-        setWordNetwork(networkData);
-        
-        // Sync network relations with word data
-        if (networkData && networkData.nodes && networkData.edges && wordData) {
-          const mainNode = networkData.nodes.find(node => 
-            node.type === 'main' || node.word === detailsIdentifier || node.label === detailsIdentifier
-          );
-          
-          if (mainNode) {
-            const incomingRelations: Relation[] = [];
-            const outgoingRelations: Relation[] = [];
-            
-            networkData.edges.forEach(edge => {
-              const sourceNode = networkData.nodes.find(n => n.id === edge.source);
-              const targetNode = networkData.nodes.find(n => n.id === edge.target);
-              
-              if (sourceNode && targetNode) {
-                if (targetNode.id === mainNode.id) {
-                  incomingRelations.push({
-                    id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
-                    source_word: {
-                      id: Number(sourceNode.id) || 0,
-                      lemma: sourceNode.word || sourceNode.label,
-                      has_baybayin: sourceNode.has_baybayin,
-                      baybayin_form: sourceNode.baybayin_form
-                    }
-                  });
-                }
-                else if (sourceNode.id === mainNode.id) {
-                  outgoingRelations.push({
-                    id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
-                    target_word: {
-                      id: Number(targetNode.id) || 0,
-                      lemma: targetNode.word || targetNode.label,
-                      has_baybayin: targetNode.has_baybayin,
-                      baybayin_form: targetNode.baybayin_form
-                    }
-                  });
-                }
-              }
-            });
-            
-            console.log("Syncing relations during navigation:", {
-              incoming: incomingRelations.length,
-              outgoing: outgoingRelations.length
-            });
-            
-            // Update word data with relations from network
-            const updatedWordData = {
-              ...wordData,
-              incoming_relations: incomingRelations.length > 0 ? incomingRelations : wordData.incoming_relations,
-              outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations,
-              semantic_network: {
-                nodes: networkData.nodes || [],
-                links: networkData.edges || [],
-                mainWord: detailsIdentifier
-              }
-            };
-            
-            setWordData(updatedWordData);
-          } else {
-            setWordData(wordData);
-          }
-        } else {
-          setWordData(wordData);
-        }
-        
-        // Fetch etymology tree
-        if (wordData.id) {
-          const etymologyIdString = String(wordData.id);
-          const etymologyId = etymologyIdString.startsWith('id:') ? 
-            parseInt(etymologyIdString.substring(3), 10) : 
-            wordData.id;
-          fetchEtymologyTree(etymologyId)
-            .then(tree => {
-              setEtymologyTree(tree);
-            })
-            .catch(err => {
-              console.error("Error fetching etymology tree:", err);
-            });
-        }
-        
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
-      })
-      .catch(error => {
-        console.error("Error navigating forward:", error);
-        let errorMessage = "Failed to navigate forward.";
-        if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-        setError(errorMessage);
-        setIsLoadingDetails(false);
-        setIsLoadingNetwork(false);
-      });
+  const handleForward = () => {
+    const nextEntry = goForward();
+    if (nextEntry) {
+      setDepth(nextEntry.depth);
+      setBreadth(nextEntry.breadth);
+      setInputValue(nextEntry.lemma);
+      setSelectedNode(nextEntry.lemma);
     }
-  }, [currentHistoryIndex, wordHistory, fetchWordNetworkData, fetchWordDetails, fetchEtymologyTree]);
+  };
 
   const handleResetCircuitBreaker = () => {
-    resetCircuitBreaker();
+    resetApiState();
     setError(null);
     if (inputValue) {
       handleSearch(inputValue);
@@ -906,48 +668,21 @@ const WordExplorer: React.FC = () => {
   };
 
   const handleTestApiConnection = useCallback(async () => {
-        setError(null);
     setApiConnected(null);
-        
     try {
-      console.log("Manually testing API connection...");
-      
-        const isConnected = await testApiConnection();
-        setApiConnected(isConnected);
-        
-        if (!isConnected) {
-        console.log("API connection test failed, showing error...");
-        setError(
-          "Cannot connect to the API server. Please ensure the backend server is running on port 10000 " +
-          "and the /api/v2/test endpoint is accessible. You can start the backend server by running:\n" +
-          "1. cd backend\n" +
-          "2. python app.py"
-        );
+      const connected = await testApiConnection();
+      setApiConnected(connected);
+      if (connected) {
+        recordSuccess();
       } else {
-        console.log("API connection successful!");
-        
-        const savedEndpoint = localStorage.getItem('successful_api_endpoint');
-        if (savedEndpoint) {
-          console.log('Loaded initial API endpoint from localStorage:', savedEndpoint);
-        }
-        
-        if (inputValue) {
-          console.log("Trying to search with the connected API...");
-          handleSearch(inputValue);
-                  } else {
-          console.log("Fetching a random word to test connection further...");
-          handleRandomWord();
-        }
+        recordFailure();
       }
     } catch (e) {
       console.error("Error testing API connection:", e);
       setApiConnected(false);
-      setError(
-        "Error testing API connection. Please ensure the backend server is running and the " +
-        "/api/v2/test endpoint is accessible. Check the console for more details."
-      );
+      recordFailure();
     }
-  }, [inputValue, handleSearch, handleRandomWord]);
+  }, [recordSuccess, recordFailure]);
 
   // Define fetchStatistics *before* the useEffect that uses it
   const fetchStatistics = useCallback(async () => {
@@ -1044,7 +779,6 @@ const WordExplorer: React.FC = () => {
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md')); // Check for mobile/tablet
 
   const renderSearchBar = () => {
-    const muiTheme = useMuiTheme(); // Get the actual MUI theme object
     return (
       <Box className="search-container-desktop" sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', padding: muiTheme.spacing(1, 2), borderBottom: '1px solid var(--card-border-color)' }}>
          <Box className="nav-buttons" sx={{ display: 'flex', gap: 0.5 }}>
@@ -1099,7 +833,7 @@ const WordExplorer: React.FC = () => {
              }
              getOptionLabel={(option) => typeof option === 'string' ? option : option.lemma}
              options={suggestions}
-             loading={isSuggestionsLoading}
+             loading={isLoadingSuggestions}
              filterOptions={(x) => x}
              freeSolo
              autoComplete
@@ -1107,13 +841,8 @@ const WordExplorer: React.FC = () => {
              value={inputValue}
              onInputChange={(event, newInputValue, reason) => {
                setInputValue(newInputValue);
-               if (reason === 'input' && newInputValue) {
-                 fetchSuggestionsDebounced({ input: newInputValue }, (results) => {
-                   setSuggestions(results);
-                 });
-               } else if (reason === 'clear' || !newInputValue) {
-                 setSuggestions([]);
-               }
+               if (reason === 'input' && newInputValue && newInputValue.length >= 2) { fetchSuggestionsDebounced({ input: newInputValue }, setSuggestions); }
+               else if (reason === 'clear' || !newInputValue || newInputValue.length < 2) { setSuggestions([]); }
              }}
              onChange={(event, newValue, reason) => {
                if ((reason === 'selectOption' || reason === 'createOption') && newValue) {
@@ -1133,7 +862,7 @@ const WordExplorer: React.FC = () => {
                    notched: false,
                    endAdornment: (
                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                       {isSuggestionsLoading && (
+                       {isLoadingSuggestions && (
                          <CircularProgress color="inherit" size={20} />
                        )}
                        {params.InputProps.endAdornment}
@@ -1145,10 +874,7 @@ const WordExplorer: React.FC = () => {
              ListboxProps={{
                 className: 'search-suggestions',
                 sx: {
-                    // Add styles here to mimic .search-suggestions padding, etc.
-                    // Example:
-                    // padding: '0',
-                    // maxHeight: '300px'
+                    bgcolor: 'var(--card-bg-color)', color: 'var(--text-color)', padding: '0', maxHeight: '300px'
                 }
              }}
              slotProps={{
@@ -1159,7 +885,7 @@ const WordExplorer: React.FC = () => {
                 paper: {
                     className: 'search-suggestions-paper',
                     sx: {
-                        // Add styles here to mimic .search-suggestions background, border, etc.
+                        bgcolor: 'var(--card-bg-color)', color: 'var(--text-color)', border: '1px solid var(--card-border-color)', borderRadius: '8px', marginTop: '4px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', backgroundImage: 'none'
                     }
                 },
                 clearIndicator: {
@@ -1167,6 +893,7 @@ const WordExplorer: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    color: 'var(--text-color)',
                     '& .MuiSvgIcon-root': {
                       fontSize: '1.1rem' 
                     },
@@ -1192,7 +919,10 @@ const WordExplorer: React.FC = () => {
                          height: 'auto',
                          fontSize: '0.7rem',
                          lineHeight: 1.2,
-                         padding: '1px 4px'
+                         padding: '1px 4px',
+                         borderColor: 'var(--card-border-color)',
+                         color: 'var(--text-color-secondary)',
+                         bgcolor: 'transparent'
                        }}
                      />
                    </Box>
@@ -1206,7 +936,7 @@ const WordExplorer: React.FC = () => {
            variant="contained"
            className="search-button"
            onClick={() => inputValue.trim() && handleSearch(inputValue)}
-           disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim()}
+           disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim() || apiState === 'OPEN'}
            title="Search for this word"
            sx={{
              height: '40px',
@@ -1214,7 +944,13 @@ const WordExplorer: React.FC = () => {
              whiteSpace: 'nowrap',
              bgcolor: 'var(--button-color)', color: 'var(--button-text-color)',
              borderRadius: '8px', boxShadow: 'none',
-             '&:hover': { bgcolor: 'var(--primary-color)', boxShadow: 'none' }
+             transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
+             '&:hover': { bgcolor: 'var(--primary-color)', boxShadow: 'none' },
+             '&:active': { transform: 'scale(0.95)' },
+             '&.Mui-disabled': {
+               bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+               color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)'
+             }
            }}
          >
            {(isLoadingDetails || isLoadingNetwork) ? <CircularProgress size={20} color="inherit"/> : '🔍 Search'}
@@ -1224,7 +960,7 @@ const WordExplorer: React.FC = () => {
            variant="contained"
            className="random-button"
            onClick={handleRandomWord}
-           disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork}
+           disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork || apiState === 'OPEN'}
            title="Get a random word"
            sx={{
              height: '40px',
@@ -1237,16 +973,16 @@ const WordExplorer: React.FC = () => {
              boxShadow: 'none',
              transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
              '&:hover': {
-               bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9),
-               color: '#ffffff',
+               bgcolor: themeMode === 'dark' ? 'var(--gold)' : alpha(muiTheme.palette.warning.dark, 0.9),
+               color: themeMode === 'dark' ? 'var(--bg-color)' : '#ffffff',
                boxShadow: 'none' 
              },
              '&:active': {
                transform: 'scale(0.95)'
              },
              '&.Mui-disabled': {
-                bgcolor: 'action.disabledBackground',
-                color: 'action.disabled'
+                bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)'
              }
            }}
          >
@@ -1259,7 +995,7 @@ const WordExplorer: React.FC = () => {
   // New function to render the mobile header using AppBar/Toolbar
   const renderMobileHeader = () => {
     return (
-      <AppBar position="static" color="default" elevation={1} sx={{ pt: 0, pb: 0 }}>
+      <AppBar position="static" color="default" elevation={1} sx={{ pt: 0, pb: 0, bgcolor: 'var(--header-color)' }}>
         <Toolbar variant="dense" sx={{ minHeight: 48, py: 0.5 }}>
           {/* Optional: Add a title or back button */}
           <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, fontSize: '1rem' }}>
@@ -1284,7 +1020,7 @@ const WordExplorer: React.FC = () => {
               }
               getOptionLabel={(option) => typeof option === 'string' ? option : option.lemma}
               options={suggestions}
-              loading={isSuggestionsLoading}
+              loading={isLoadingSuggestions}
               filterOptions={(x) => x}
               freeSolo
               autoComplete
@@ -1292,13 +1028,8 @@ const WordExplorer: React.FC = () => {
               value={inputValue}
               onInputChange={(event, newInputValue, reason) => {
                 setInputValue(newInputValue);
-                if (reason === 'input' && newInputValue) {
-                  fetchSuggestionsDebounced({ input: newInputValue }, (results) => {
-                    setSuggestions(results);
-                  });
-                } else if (reason === 'clear' || !newInputValue) {
-                  setSuggestions([]);
-                }
+                if (reason === 'input' && newInputValue && newInputValue.length >= 2) { fetchSuggestionsDebounced({ input: newInputValue }, setSuggestions); }
+                else if (reason === 'clear' || !newInputValue || newInputValue.length < 2) { setSuggestions([]); }
               }}
               onChange={(event, newValue, reason) => {
                 if ((reason === 'selectOption' || reason === 'createOption') && newValue) {
@@ -1317,7 +1048,7 @@ const WordExplorer: React.FC = () => {
                     notched: false,
                     endAdornment: (
                       <React.Fragment>
-                        {isSuggestionsLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                        {isLoadingSuggestions ? <CircularProgress color="inherit" size={20} /> : null}
                         {params.InputProps.endAdornment}
                       </React.Fragment>
                     ),
@@ -1358,7 +1089,7 @@ const WordExplorer: React.FC = () => {
               size="small" // Smaller button
               className="search-button-mobile" // Add specific class
               onClick={() => inputValue.trim() && handleSearch(inputValue)}
-              disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim()}
+              disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim() || apiState === 'OPEN'}
               title="Search"
               sx={{ 
                 minWidth: 'auto', px: 1, // Allow shrinking
@@ -1369,8 +1100,8 @@ const WordExplorer: React.FC = () => {
                   bgcolor: 'var(--primary-color)' // Use theme variable for hover
                 },
                 '&.Mui-disabled': { // Keep consistent disabled style
-                  bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)', // Use themeMode
-                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)', // Use themeMode
+                  bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)',
                 }
               }}
             >
@@ -1381,7 +1112,7 @@ const WordExplorer: React.FC = () => {
               size="small" // Smaller button
               className="random-button-mobile" // Add specific class
               onClick={handleRandomWord}
-              disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork}
+              disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork || apiState === 'OPEN'}
               title="Random Word"
               sx={{ 
                 minWidth: 'auto', px: 1, // Allow shrinking
@@ -1390,7 +1121,7 @@ const WordExplorer: React.FC = () => {
                 color: 'var(--button-text-color)',
                 transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
                 '&:hover': { 
-                  bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9) // Use themeMode
+                  bgcolor: themeMode === 'dark' ? 'var(--gold)' : alpha(muiTheme.palette.warning.dark, 0.9)
                 },
                 '&:active': {
                   transform: 'scale(0.95)'
@@ -1411,44 +1142,13 @@ const WordExplorer: React.FC = () => {
 
   return (
     <div className={`word-explorer ${themeMode} ${(isLoadingDetails || isLoadingNetwork) ? 'loading' : ''}`}>
-      <header className="header-content" style={{ padding: isMobile ? '0.5rem 0.8rem' : '1rem 1.5rem' }}>
-        <h1 style={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}>Filipino Root Word Explorer</h1>
-        <div className="header-buttons">
-          {isDevMode() && (
-            <>
-              <button
-                onClick={handleResetCircuitBreaker}
-                className="debug-button"
-                title="Reset API connection"
-              >
-                <span>🔄</span> Reset API
-              </button>
-              <button
-                onClick={handleTestApiConnection}
-                className="debug-button"
-                title="Test API connection"
-              >
-                <span>🔌</span> Test API
-              </button>
-              <div className={`api-status ${
-                (apiConnected === null ? 'checking' : (apiConnected ? 'connected' : 'disconnected'))
-              }`}>
-                {apiConnected === null ? <span>⏳</span> : 
-                 apiConnected ? <span>✅</span> : <span>❌</span>}
-                 API
-              </div>
-            </>
-          )}
-          <button
-            onClick={toggleTheme}
-            className="theme-toggle"
-            aria-label="Toggle theme"
-            title="Toggle theme"
-          >
-            {themeMode === "light" ? "🌙" : "☀️"}
-          </button>
-        </div>
-      </header>
+      <Header 
+        title="Filipino Root Word Explorer" 
+        onToggleTheme={toggleTheme}
+        onTestApiConnection={handleTestApiConnection}
+        onResetCircuitBreaker={handleResetCircuitBreaker}
+        apiConnected={apiConnected}
+      />
       
       {/* Conditionally render search bars */}
       {!isMobile && renderSearchBar()} 

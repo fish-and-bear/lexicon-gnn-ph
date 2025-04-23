@@ -1980,6 +1980,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           overflow: 'hidden' 
         }}>
         
+        {/* Vertical Tabs (Render Unconditionally) */ 
           <Tabs
             orientation="vertical"
             variant="scrollable"

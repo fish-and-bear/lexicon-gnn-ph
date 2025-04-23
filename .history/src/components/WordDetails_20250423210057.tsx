@@ -419,8 +419,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             <div 
               className="baybayin-text"
               style={{
-                // REMOVE inline fontFamily - Use CSS class
-                fontSize: isMobile ? '1.5rem' : '2rem', 
+                fontFamily: "'Noto Sans Tagalog', 'Arial Unicode MS', 'Noto Sans', sans-serif !important", // Corrected font name
+                fontSize: isMobile ? '1.5rem' : '2rem', // Reduced size on mobile
                 padding: isMobile ? '4px 8px' : '8px 12px',
                 background: isDarkMode ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.5)',
                 borderRadius: '4px',
@@ -434,7 +434,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             >
               {wordData.baybayin_form}
             </div>
-          </Box> 
+          </Box> // Ensure this Box is closed
         )}
 
         {/* Badlit Form - Show only if available */}
@@ -446,7 +446,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             <div 
               className="badlit-text"
               style={{
-                fontSize: isMobile ? '1.2rem' : '1.5rem', 
+                fontSize: isMobile ? '1.2rem' : '1.5rem', // Reduced size on mobile
                 padding: isMobile ? '4px 8px' : '8px 12px',
                 background: isDarkMode ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.5)',
                 borderRadius: '4px',
@@ -1980,6 +1980,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           overflow: 'hidden' 
         }}>
         
+        {/* Vertical Tabs (Render Unconditionally) */} 
           <Tabs
             orientation="vertical"
             variant="scrollable"

@@ -33,6 +33,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
+import { useAppTheme } from "../contexts/ThemeContext";
 
 const isDevMode = () => {
   // Check if we have a URL parameter for showing debug tools
@@ -56,7 +57,7 @@ const WordExplorer: React.FC = () => {
   const [etymologyError, setEtymologyError] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
 
-  const { themeMode, toggleTheme } = useAppTheme();
+  const { theme: themeMode, toggleTheme } = useTheme();
   const [inputValue, setInputValue] = useState<string>("");
   const [depth, setDepth] = useState<number>(2);
   const [breadth, setBreadth] = useState<number>(10);
@@ -1369,8 +1370,8 @@ const WordExplorer: React.FC = () => {
                   bgcolor: 'var(--primary-color)' // Use theme variable for hover
                 },
                 '&.Mui-disabled': { // Keep consistent disabled style
-                  bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)', // Use themeMode
-                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)', // Use themeMode
+                  bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)',
                 }
               }}
             >
@@ -1390,7 +1391,7 @@ const WordExplorer: React.FC = () => {
                 color: 'var(--button-text-color)',
                 transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
                 '&:hover': { 
-                  bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9) // Use themeMode
+                  bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9)
                 },
                 '&:active': {
                   transform: 'scale(0.95)'
