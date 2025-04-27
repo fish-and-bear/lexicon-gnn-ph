@@ -33,13 +33,9 @@ import unicodedata
 from .models import (
     Word, Definition, Etymology, Pronunciation, Relation, DefinitionCategory,
     DefinitionLink, DefinitionRelation, Affixation, WordForm, WordTemplate,
-    PartOfSpeech, Credit
+    PartOfSpeech, Credit, DefinitionExample
 )
 from .database import db, cached_query, get_cache_client
-from .dictionary_manager import (
-    normalize_lemma, extract_etymology_components, extract_language_codes,
-    RelationshipType, RelationshipCategory, BaybayinRomanizer
-)
 from .utils.word_processing import normalize_word
 from .utils.rate_limiting import limiter
 from .utils.ip import get_remote_address
@@ -47,6 +43,43 @@ from .schemas import WordSchema, SearchQuerySchema, SearchFilterSchema, Statisti
 
 # Import metrics from the metrics module - Changed to relative
 from .metrics import API_REQUESTS, API_ERRORS, REQUEST_LATENCY, REQUEST_COUNT
+
+# Absolute imports from dictionary_manager
+from backend.dictionary_manager.db_helpers import (
+    DEFAULT_LANGUAGE_CODE,  # Assuming DEFAULT_LANGUAGE_CODE is here
+    Json,
+    RelationshipType,  # Assuming RelationshipType enum is exposed here or in enums directly
+    add_linguistic_note,
+    get_standardized_pos_id, # Corrected import name
+    get_or_create_word_id,
+    insert_definition,
+    insert_definition_category,
+    insert_definition_example,
+    insert_definition_link,
+    insert_etymology,
+    insert_pronunciation,
+    insert_relation,
+    insert_word_form,
+    insert_word_template,
+    with_transaction,
+)
+from backend.dictionary_manager.text_helpers import (
+    NON_WORD_STRINGS,
+    VALID_BAYBAYIN_REGEX,
+    BaybayinRomanizer, # BaybayinRomanizer is in text_helpers
+    clean_html,
+    extract_etymology_components, # Moved import here
+    extract_language_codes, # Moved import here
+    get_non_word_note_type,
+    normalize_lemma, # Moved import here
+    standardize_source_identifier,
+    # process_kaikki_lemma, # Moved to text_helpers, should be imported if needed, but seems unused now
+)
+from backend.dictionary_manager.enums import (
+    RelationshipType, RelationshipCategory # Import Enums separately
+)
+# Import enums directly (if RelationshipType isn't in db_helpers)
+# from backend.dictionary_manager.enums import RelationshipType
 
 
 
@@ -3971,6 +4004,7 @@ def _fetch_word_details(word_id,
                 categories_by_def_id = {}
                 links_by_def_id = {}
                 def_relations_by_def_id = {}
+                examples_by_def_id = {} # ADDED: Dictionary for examples
 
                 if definition_ids:
                     # Categories (Assume always needed if definitions are included)
@@ -4074,8 +4108,36 @@ def _fetch_word_details(word_id,
                             # Rollback just this query to keep transaction alive
                             db.session.rollback()
                             relations_by_def_id = {}
-                # --- End pre-fetch ---
 
+                    # ADDED: Fetch Examples (Assume always needed if definitions are included)
+                    try:
+                        sql_examples = """
+                        SELECT id, definition_id, example_text, translation, example_type, reference, metadata, sources
+                        FROM definition_examples
+                        WHERE definition_id = ANY(:ids)
+                        ORDER BY id -- Maintain consistent order
+                        """
+                        example_results = db.session.execute(text(sql_examples), {"ids": definition_ids}).fetchall()
+                        for ex_row in example_results:
+                            example = DefinitionExample()
+                            example.id = ex_row.id
+                            example.definition_id = ex_row.definition_id
+                            example.example_text = ex_row.example_text
+                            example.translation = ex_row.translation
+                            example.example_type = ex_row.example_type
+                            example.reference = ex_row.reference
+                            example.metadata = ex_row.metadata
+                            example.sources = ex_row.sources
+                            # Timestamps could be fetched if needed, but often omitted in helpers
+
+                            if ex_row.definition_id not in examples_by_def_id:
+                                examples_by_def_id[ex_row.definition_id] = []
+                            examples_by_def_id[ex_row.definition_id].append(example)
+                    except Exception as e:
+                        logger.error(f"Error loading definition examples for word {word_id}: {e}", exc_info=False)
+                        db.session.rollback() # Rollback example query on error
+                        examples_by_def_id = {} # Clear results on error
+                    # --- END: Fetch Examples ---
 
                 for d in defs_result:
                     definition = Definition()
@@ -4103,6 +4165,8 @@ def _fetch_word_details(word_id,
                     else: # Ensure attribute exists even if not included
                          definition.definition_relations = []
                     # --- End definition related attachment ---
+
+                    definition.examples = examples_by_def_id.get(definition.id, []) # ADDED: Attach examples
 
                     word.definitions.append(definition)
             except Exception as e:

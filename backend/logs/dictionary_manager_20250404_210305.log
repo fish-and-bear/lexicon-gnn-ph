@@ -1,7 +1,0 @@
-2025-04-04 21:03:05,634 - INFO - Starting table creation/update process.
-2025-04-04 21:03:07,044 - INFO - Tables created or updated successfully.
-2025-04-04 21:03:07,049 - INFO - Starting processing for Kaikki.org (Tagalog) from ..\data\kaikki.jsonl
-2025-04-04 21:03:07,050 - INFO - Processing Kaikki dictionary: ..\data\kaikki.jsonl with source ID: 'kaikki.org (Tagalog)'
-2025-04-04 21:03:07,195 - INFO - Found 27964 entries to process in ..\data\kaikki.jsonl
-2025-04-04 21:03:07,195 - INFO - Initialized BaybayinRomanizer for script romanization
-2025-04-04 21:03:10,320 - WARNING - Error closing connection: set_session cannot be used inside a transaction

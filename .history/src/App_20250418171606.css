@@ -1,8 +1,0 @@
-/* 
- * App-specific styles
- * Most styles are imported from the modular architecture in styles/global.css
- */
-
-.app {
-  min-height: 100vh;
-}

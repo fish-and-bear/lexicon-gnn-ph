@@ -81,7 +81,7 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
   minWidth: 0,
   transition: 'opacity 0.2s ease',
   '.dark &': {
-    color: 'var(--primary-color, #ffd166)',
+    color: 'var(--primary-color)',
     boxShadow: 'none',
   },
   '&:hover': {
@@ -94,13 +94,13 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
     boxShadow: 'none',
     transition: 'all 0.2s ease-out',
     '.dark &': {
-      backgroundColor: 'var(--primary-color, #ffd166)',
+      backgroundColor: 'var(--primary-color)',
       boxShadow: 'none',
     },
     '&:hover, &.Mui-focusVisible': {
       boxShadow: 'none',
       '.dark &': {
-        backgroundColor: 'var(--primary-color, #ffd166)',
+        backgroundColor: 'var(--primary-color)',
         boxShadow: 'none',
       }
     },
@@ -147,7 +147,7 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
     fontWeight: 'bold',
     top: -6,
     '.dark &': {
-      backgroundColor: 'var(--primary-color, #ffd166)',
+      backgroundColor: 'var(--primary-color)',
       color: 'var(--button-text-color, #0a0d16)',
       boxShadow: 'none',
     },

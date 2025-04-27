@@ -1,9 +1,0 @@
-2025-04-01 13:57:31,184 - INFO - Starting table creation/update process.
-2025-04-01 13:57:31,248 - ERROR - Schema creation error: syntax error at or near "-"
-LINE 159: - Create definition_relations table
-          ^
-
-2025-04-01 13:57:31,249 - ERROR - Error during migration: syntax error at or near "-"
-LINE 159: - Create definition_relations table
-          ^
-

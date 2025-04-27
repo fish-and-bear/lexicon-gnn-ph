@@ -1,4 +1,0 @@
-2025-03-30 14:29:52,513 - ERROR - Error displaying leaderboard: column d.part_of_speech does not exist
-LINE 16:                     COUNT(DISTINCT d.part_of_speech) AS pos_...
-                                            ^
-

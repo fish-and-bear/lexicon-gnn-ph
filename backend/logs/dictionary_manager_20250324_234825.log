@@ -1,5 +1,0 @@
-2025-03-24 23:48:25,973 - INFO - Looking up word: Namespace(command='lookup', word='nakakatawa', debug=False, format='rich')
-2025-03-24 23:48:25,973 - INFO - Word argument value: 'nakakatawa'
-2025-03-24 23:48:26,013 - INFO - Normalized word: nakakatawa
-2025-03-24 23:48:26,014 - INFO - Database connection test successful
-2025-03-24 23:48:26,021 - INFO - Word data fetched: False

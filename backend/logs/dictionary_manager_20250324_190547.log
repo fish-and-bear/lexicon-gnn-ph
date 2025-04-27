@@ -1,9 +1,0 @@
-2025-03-24 19:05:47,530 - INFO - Starting table creation/update process.
-2025-03-24 19:05:48,876 - INFO - Tables created or updated successfully.
-2025-03-24 19:05:48,877 - INFO - Setting up PostgreSQL extensions...
-2025-03-24 19:05:48,884 - INFO - Extension pg_trgm already installed
-2025-03-24 19:05:48,884 - INFO - Extension unaccent already installed
-2025-03-24 19:05:48,885 - INFO - Extension fuzzystrmatch already installed
-2025-03-24 19:05:48,885 - INFO - Installing extension: dict_xsyn
-2025-03-24 19:05:48,920 - INFO - Cleared any existing transactions
-2025-03-24 19:05:48,920 - ERROR - Database connection error: 'Namespace' object has no attribute 'source'

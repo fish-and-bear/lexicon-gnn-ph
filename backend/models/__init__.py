@@ -20,6 +20,7 @@ try:
     from .definition_category import DefinitionCategory
     from .definition_link import DefinitionLink
     from .definition_relation import DefinitionRelation
+    from .definition_example import DefinitionExample
 except ImportError as e:
     import logging
     logging.error(f"Error importing models: {e}")
@@ -37,6 +38,7 @@ except ImportError as e:
     class DefinitionCategory: pass
     class DefinitionLink: pass
     class DefinitionRelation: pass
+    class DefinitionExample: pass
 
 # Export all models
 __all__ = [
@@ -46,6 +48,7 @@ __all__ = [
     'Etymology',
     'Pronunciation',
     'Credit',
+    'DefinitionExample',
     
     # Relational models
     'Relation',
@@ -80,6 +83,7 @@ def get_model_class(model_name):
         'word_template': WordTemplate,
         'definition_category': DefinitionCategory,
         'definition_relation': DefinitionRelation,
-        'definition_link': DefinitionLink
+        'definition_link': DefinitionLink,
+        'definition_example': DefinitionExample
     }
     return models.get(model_name.lower()) 

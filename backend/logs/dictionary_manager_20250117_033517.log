@@ -1,9 +1,0 @@
-2025-01-17 03:35:17,367 - INFO - Attempting database connection...
-2025-01-17 03:35:17,373 - INFO - Database configuration:
-2025-01-17 03:35:17,378 - INFO -   Database Name: fil_dict_db
-2025-01-17 03:35:17,382 - INFO -   User: postgres
-2025-01-17 03:35:17,387 - INFO -   Host: localhost
-2025-01-17 03:35:17,391 - INFO -   Password: ********
-2025-01-17 03:35:18,261 - INFO - Successfully established database connection
-2025-01-17 03:35:21,548 - ERROR - Error processing word information: Only str or Text can be appended to Text
-2025-01-17 03:35:21,549 - ERROR - Error during word lookup: Only str or Text can be appended to Text

@@ -1,6 +1,0 @@
-2025-04-02 14:22:52,704 - ERROR - Error generating Baybayin statistics: column "badlit_form" does not exist
-LINE 26:                             COUNT(CASE WHEN badlit_form IS N...
-                                                     ^
-
-2025-04-02 14:22:52,706 - ERROR - Error generating relationship statistics: current transaction is aborted, commands ignored until end of transaction block
-

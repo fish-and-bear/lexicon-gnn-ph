@@ -1,7 +1,0 @@
-2025-02-28 12:14:21,039 - INFO - Attempting database connection...
-2025-02-28 12:14:21,039 - INFO - Database configuration:
-2025-02-28 12:14:21,040 - INFO -   Database Name: fil_dict_db
-2025-02-28 12:14:21,040 - INFO -   User: postgres
-2025-02-28 12:14:21,040 - INFO -   Host: db
-2025-02-28 12:14:21,040 - INFO -   Password: ********
-2025-02-28 12:14:21,041 - ERROR - Unexpected error during database connection: module 'psycopg2' has no attribute 'pool'

@@ -83,26 +83,85 @@ class MetadataField(fields.Dict):
         return super()._deserialize(processed_value, attr, data, **kwargs)
 
 class DefinitionLinkSchema(Schema):
-    """Schema for definition links."""
+    """
+    Schema for definition links.
+    Reflects storage in link_metadata and provides derived fields.
+    """
     id = fields.Integer(dump_only=True)
     definition_id = fields.Integer(required=True)
-    link_text = fields.String(required=True)
-    link_target = fields.String(required=True)
-    is_wikipedia = fields.Boolean(dump_default=False)
+    link_text = fields.String(required=True) # The visible text of the link
+    link_metadata = MetadataField(dump_default={}) # Stores target_url, is_external, sources etc.
+    tags = fields.String(allow_none=True) # Added from DB schema (TEXT)
+    # sources = fields.List(fields.String(), dump_default=[]) # Removed as column doesn't exist; source info is in link_metadata
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
+
+    # Add derived fields during serialization for convenience/compatibility
+    target_url = fields.String(dump_only=True)
+    is_external = fields.Boolean(dump_only=True)
+    is_wikipedia = fields.Boolean(dump_only=True)
+
+    @post_dump(pass_many=True)
+    def derive_link_fields(self, data, many, **kwargs):
+        """Extract common link properties from link_metadata after dumping."""
+        if many:
+            for item in data:
+                self._add_derived_fields(item)
+        else:
+            self._add_derived_fields(data)
+        return data
+
+    def _add_derived_fields(self, item_data):
+        """Helper to add derived fields to a single item's data."""
+        metadata = item_data.get('link_metadata', {})
+        item_data['target_url'] = metadata.get('target_url', item_data.get('link_text', '')) # Default target to link_text if missing
+        item_data['is_external'] = metadata.get('is_external', False)
+        item_data['is_wikipedia'] = metadata.get('is_wikipedia', False)
+        # We could optionally extract sources here too if needed for the API response
+        # item_data['sources'] = metadata.get('sources', [])
 
 class DefinitionCategorySchema(Schema):
     """Schema for definition categories."""
     id = fields.Integer(dump_only=True)
     definition_id = fields.Integer(required=True)
     category_name = fields.String(required=True)
-    category_kind = fields.String(allow_none=True)
-    parents = fields.List(fields.String(), allow_none=True)
-    tags = MetadataField(dump_default={})
-    category_metadata = MetadataField(dump_default={})
+    category_kind = fields.String(allow_none=True) # Matches DB
+    parents = fields.List(fields.String(), allow_none=True) # Matches DB (JSONB assumed to store list of strings)
+    # Removed tags and category_metadata as they are not in the final DB schema
+    # tags = fields.String(allow_none=True)
+    # category_metadata = MetadataField(dump_default={})
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
+
+class ExampleSchema(Schema):
+    """Schema for structured definition examples."""
+    id = fields.Integer(dump_only=True)
+    definition_id = fields.Integer(dump_only=True)
+    example_text = fields.String(required=True)
+    translation = fields.String(allow_none=True)
+    reference = fields.String(allow_none=True)
+    example_type = fields.String(dump_default="example")
+    metadata = MetadataField(dump_default={})
+    sources = fields.List(fields.String(), dump_default=[])
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
+
+    @post_dump(pass_many=True)
+    def extract_romanization(self, data, many, **kwargs):
+        if many:
+            for item in data:
+                self._add_romanization(item)
+        else:
+            self._add_romanization(data)
+        return data
+
+    def _add_romanization(self, item_data):
+        metadata = item_data.get('metadata', {})
+        item_data['romanization'] = metadata.get('romanization')
+
+    class Meta:
+        # Ensure fields are serialized in a consistent order
+        ordered = True
 
 class DefinitionSchema(Schema):
     """Schema for word definitions."""
@@ -113,14 +172,14 @@ class DefinitionSchema(Schema):
     standardized_pos_id = fields.Integer()
     standardized_pos = fields.Nested("PartOfSpeechSchema", dump_only=True)
     notes = fields.String()
-    examples = fields.List(fields.Dict(), dump_default=[])
+    examples = fields.List(fields.Nested(ExampleSchema), dump_default=[])
     usage_notes = fields.String()
     cultural_notes = fields.String()
     etymology_notes = fields.String()
     scientific_name = fields.String()
     verified = fields.Boolean(dump_default=False)
     verification_notes = fields.String()
-    tags = MetadataField(dump_default={})
+    tags = fields.List(fields.String(), dump_default=[])
     metadata = MetadataField(dump_default={})
     popularity_score = fields.Float(dump_default=0.0)
     links = fields.List(fields.Nested(DefinitionLinkSchema), dump_default=[])
@@ -179,7 +238,8 @@ class PartOfSpeechSchema(Schema):
     """Schema for parts of speech."""
     id = fields.Integer(dump_only=True)
     code = fields.String(required=True, validate=Length(min=1, max=10))
-    name = fields.String(required=True, validate=Length(min=1, max=100))
+    name_en = fields.String(required=True, validate=Length(min=1, max=100))
+    name_tl = fields.String(required=True, validate=Length(min=1, max=100))
     description = fields.String()
 
 class PronunciationType(Schema):
@@ -188,11 +248,38 @@ class PronunciationType(Schema):
     word_id = fields.Integer(dump_only=True)
     type = fields.String(required=True, validate=Length(min=1, max=50))
     value = fields.String(required=True)
-    tags = fields.List(fields.String(), dump_default=[])
-    pronunciation_metadata = MetadataField(dump_default={})
-    sources = fields.String(allow_none=True)
+    tags = MetadataField(dump_default={}) # Changed from List[String] to MetadataField to handle JSONB
+    pronunciation_metadata = MetadataField(dump_default={}) # Includes source info
+    # sources = fields.String(allow_none=True) # Removed as column doesn't exist; stored in pronunciation_metadata
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
+
+    # Adjust pre_dump/post_dump if needed to handle tags/metadata format conversion
+    # Example: Convert list from DB tags back to list for API if needed
+    @pre_dump
+    def process_tags(self, data, **kwargs):
+        # Handle tags conversion if stored differently in model vs API representation
+        # e.g., if tags is stored as {"tags": [...]} in DB but API expects just [...]
+        if hasattr(data, 'tags') and isinstance(data.tags, dict) and 'tags' in data.tags:
+            # Store the list temporarily if needed for post_dump
+            data._processed_tags_list = data.tags['tags']
+        elif hasattr(data, 'tags') and isinstance(data.tags, list): # If model already has list
+            data._processed_tags_list = data.tags
+        else:
+            data._processed_tags_list = []
+        return data
+
+    @post_dump
+    def format_output(self, data, **kwargs):
+        # Assign the processed list to the final 'tags' field in the output
+        data['tags'] = getattr(data, '_processed_tags_list', [])
+        if hasattr(data, '_processed_tags_list'):
+            delattr(data, '_processed_tags_list') # Clean up temp attribute
+        
+        # Optionally extract sources from metadata if needed for API response
+        # metadata = data.get('pronunciation_metadata', {})
+        # data['sources'] = metadata.get('sources', [])
+        return data
 
 class RelationSchema(Schema):
     """Schema for relations."""
@@ -200,26 +287,52 @@ class RelationSchema(Schema):
     from_word_id = fields.Integer(required=True)
     to_word_id = fields.Integer(required=True)
     relation_type = fields.String(required=True)
-    sources = fields.List(fields.String(), dump_default=[])
-    metadata = MetadataField(dump_default={})
-    source_word = fields.Nested("WordSimpleSchema", dump_only=True)
-    target_word = fields.Nested("WordSimpleSchema", dump_only=True)
+    sources = fields.List(fields.String(), dump_only=True) # Kept as List[String] as model's to_dict handles conversion
+    # metadata = MetadataField() # Removed as column doesn't exist in Relation model
+    
+    # Fields for nested data (dump_only)
+    source_word = fields.Nested(lambda: WordSchema(only=('id', 'lemma', 'language_code', 'has_baybayin', 'baybayin_form')), dump_only=True)
+    target_word = fields.Nested(lambda: WordSchema(only=('id', 'lemma', 'language_code', 'has_baybayin', 'baybayin_form')), dump_only=True)
+    target_gloss = fields.String(dump_only=True) # Added based on analysis, likely from target_word
+
+    # Timestamps
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
-    
+
     @pre_dump
     def process_sources(self, data, **kwargs):
         """Convert sources from string to list if needed."""
-        if hasattr(data, 'sources') and isinstance(data.sources, str):
-            data._sources_list = data.sources.split(', ') if data.sources else []
+        # Use getattr to safely access sources, handle None
+        source_value = getattr(data, 'sources', None)
+        if source_value and isinstance(source_value, str):
+            # Split by comma and strip whitespace
+            data._sources_list = [s.strip() for s in source_value.split(',') if s.strip()]
+        elif isinstance(source_value, list):
+            data._sources_list = source_value
+        else:
+            data._sources_list = []
         return data
-    
-    @post_dump
-    def format_sources(self, data, **kwargs):
-        """Ensure sources is a list in output."""
-        if isinstance(data.get('sources'), str):
-            data['sources'] = data['sources'].split(', ') if data['sources'] else []
+
+    @post_dump(pass_many=True)
+    def format_output(self, data, many, **kwargs):
+        """Ensure sources is a list and extract target_gloss."""
+        if many:
+            for item in data:
+                self._format_single_item(item)
+        else:
+            self._format_single_item(data)
         return data
+
+    def _format_single_item(self, item_data):
+        """Helper to format sources and extract gloss for a single item."""
+        # Format sources
+        item_data['sources'] = getattr(item_data, '_sources_list', [])
+        if hasattr(item_data, '_sources_list'):
+            delattr(item_data, '_sources_list') # Clean up temporary attribute
+
+        # Extract target_gloss from metadata
+        metadata = item_data.get('metadata', {})
+        item_data['target_gloss'] = metadata.get('target_gloss', None) # Get gloss, default to None
 
 class AffixationSchema(Schema):
     """Schema for affixations."""
@@ -426,7 +539,7 @@ class WordSchema(Schema):
         
         return data
 
-# --- Add Schemas retrieved from routes.py.bak ---
+# --- Schemas moved from routes.py ---
 
 class SearchQuerySchema(Schema):
     """Schema for search query parameters."""
@@ -515,7 +628,6 @@ class StatisticsSchema(Schema):
     quality_distribution = fields.Dict(keys=fields.Str(), values=fields.Int())
     update_frequency = fields.Dict(keys=fields.Str(), values=fields.Int())
 
-# Add schema for export/import filters
 class ExportFilterSchema(Schema):
     """Schema for export filter parameters."""
     language_code = fields.Str(dump_default=None, load_default=None)
@@ -552,4 +664,6 @@ class QualityAssessmentFilterSchema(Schema):
     updated_before = fields.DateTime(dump_default=None, load_default=None)
     include_issues = fields.Bool(dump_default=True, load_default=True)
     issue_severity = fields.Str(validate=validate.OneOf(['all', 'critical', 'warning', 'info']), dump_default='all', load_default='all')
-    max_results = fields.Int(validate=validate.Range(min=1, max=1000), dump_default=100, load_default=100) 
+    max_results = fields.Int(validate=validate.Range(min=1, max=1000), dump_default=100, load_default=100)
+
+# --- Delete from here onwards --- 

@@ -222,50 +222,6 @@ def setup_search_trigger(session):
             session.rollback()
             raise
 
-def setup_parts_of_speech(session):
-    """Set up standard parts of speech."""
-    with feature_lock('parts_of_speech') as needs_init:
-        if not needs_init:
-            logger.info("Parts of speech already initialized")
-            return
-            
-        if not check_tables_exist(session):
-            logger.warning("Tables not ready for parts of speech")
-            return
-            
-        try:
-            # Import here to avoid circular imports
-            from .part_of_speech import PartOfSpeech
-            
-            standard_pos = [
-                {'code': 'n', 'name_en': 'Noun', 'name_tl': 'Pangngalan'},
-                {'code': 'v', 'name_en': 'Verb', 'name_tl': 'Pandiwa'},
-                {'code': 'adj', 'name_en': 'Adjective', 'name_tl': 'Pang-uri'},
-                {'code': 'adv', 'name_en': 'Adverb', 'name_tl': 'Pang-abay'},
-                {'code': 'pron', 'name_en': 'Pronoun', 'name_tl': 'Panghalip'},
-                {'code': 'prep', 'name_en': 'Preposition', 'name_tl': 'Pang-ukol'},
-                {'code': 'conj', 'name_en': 'Conjunction', 'name_tl': 'Pangatnig'},
-                {'code': 'intj', 'name_en': 'Interjection', 'name_tl': 'Pandamdam'},
-                {'code': 'det', 'name_en': 'Determiner', 'name_tl': 'Pantukoy'},
-                {'code': 'affix', 'name_en': 'Affix', 'name_tl': 'Panlapi'}
-            ]
-            
-            # Get existing codes
-            existing = {pos.code for pos in session.query(PartOfSpeech).all()}
-            
-            # Add missing parts of speech
-            for pos_data in standard_pos:
-                if pos_data['code'] not in existing:
-                    pos = PartOfSpeech(**pos_data)
-                    session.add(pos)
-            
-            session.commit()
-            logger.info("Standard parts of speech initialized successfully")
-        except Exception as e:
-            logger.error(f"Failed to initialize parts of speech: {str(e)}")
-            session.rollback()
-            raise
-
 def init_app(app: Flask) -> None:
     """Initialize the models with the Flask app."""
     try:
@@ -298,7 +254,6 @@ def init_app(app: Flask) -> None:
                 setup_timestamp_trigger(db.session)
                 setup_indexes(db.session)
                 setup_search_trigger(db.session)
-                setup_parts_of_speech(db.session)
                 
                 # Final commit
                 db.session.commit()

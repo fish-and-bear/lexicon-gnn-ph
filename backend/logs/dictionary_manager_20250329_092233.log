@@ -1,1 +1,0 @@
-2025-03-29 09:22:33,168 - ERROR - Failed to start transaction: set_session cannot be used inside a transaction

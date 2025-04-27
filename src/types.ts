@@ -63,7 +63,7 @@ export interface Definition
   }>; // Ensure sources is array
 
   // Add definition metadata (metadata in DB but definition_metadata in API)
-  definition_metadata?: Record<string, any> | null;
+  metadata?: Record<string, any> | null;
 
   // ADD: Definition Categories, Links, and Relations
   categories?: DefinitionCategory[];
@@ -121,6 +121,7 @@ export interface CleanPronunciation
 export interface Credit {
   id: number;
   credit: string;
+  sources: string[]; // Added to match schema output
   created_at?: string;
   updated_at?: string;
 }
@@ -139,13 +140,13 @@ export interface BasicWord {
 export interface Relation {
   id: number;
   relation_type: string;
-  relation_data?: Record<string, any>; // Use relation_data to match backed property name
-  metadata?: Record<string, any>;
-  sources?: string | string[]; // Can be string or array
+  metadata?: Record<string, any> | null; // Main metadata object from backend (includes source, confidence, etc.)
+  target_gloss?: string | null; // Derived field added in backend schema
+  sources: string[]; // Schema outputs array
   source_word?: BasicWord;
   target_word?: BasicWord;
-  // Allow string indexing for dynamic property access
-  [key: string]: any;
+  created_at?: string; // Keep existing fields if present
+  updated_at?: string; // Keep existing fields if present
 }
 
 export interface CleanRelation extends Omit<Relation, "sources"> {
@@ -155,7 +156,7 @@ export interface CleanRelation extends Omit<Relation, "sources"> {
 export interface Affixation {
   id: number;
   affix_type: string;
-  sources?: string | string[]; // Can be string or array
+  sources: string[]; // Schema outputs array
   created_at?: string;
   updated_at?: string;
   root_word?: BasicWord;
@@ -261,30 +262,32 @@ export interface WordInfo {
   etymologies?: Etymology[] | null;
   pronunciations?: Pronunciation[] | null; // Array from backend
   credits?: Credit[] | null;
-  root_word?: RelatedWord | null;
-  derived_words?: RelatedWord[] | null;
+  root_word?: BasicWord | null; // Changed from RelatedWord for consistency
+  derived_words?: BasicWord[] | null; // Changed from RelatedWord
   outgoing_relations?: Relation[] | null; // Array from backend
   incoming_relations?: Relation[] | null; // Array from backend
   root_affixations?: Affixation[] | null;
   affixed_affixations?: Affixation[] | null;
 
-  // ADDED Missing Fields
+  // ADDED: Combined affixations array from schema post_dump
+  affixations?: Affixation[] | null;
+
+  // ADDED/UPDATED Missing Fields
   forms?: WordForm[] | null;
   templates?: WordTemplate[] | null;
-  idioms?: Idiom[] | Record<string, any> | null; // Backend might send array or object
+  idioms?: Record<string, any> | null; // Matches schema MetadataField
   badlit_form?: string | null;
   hyphenation?: Record<string, any> | null;
   is_proper_noun?: boolean | null;
   is_abbreviation?: boolean | null;
   is_initialism?: boolean | null;
-  word_metadata?: Record<string, any> | null; // Add word_metadata if backend provides it
-  source_info?: Record<string, any> | null; // Add source_info if backend provides it
+  // Use generic Record type matching MetadataField
+  word_metadata?: Record<string, any> | null;
+  source_info?: Record<string, any> | null;
 
-  // NEW fields from API improvements
-  pronunciation_data?: Record<string, any> | null; // Added for API improvements
+  // Fields from API improvements/backend
+  pronunciation_data?: Record<string, any> | null;
   is_root?: boolean | null; // Computed property based on root_word_id
-
-  // Added backend fields
   data_completeness?: Record<string, boolean> | null;
   relation_summary?: Record<string, number> | null;
 
@@ -296,6 +299,14 @@ export interface WordInfo {
 
   // Added server error field for error handling
   server_error?: string | null;
+
+  // Add definition metadata (metadata in DB but definition_metadata in API)
+  metadata?: Record<string, any> | null;
+
+  // ADD: Definition Categories, Links, and Relations
+  categories?: DefinitionCategory[];
+  links?: DefinitionLink[];
+  definition_relations?: DefinitionRelation[];
 }
 
 // Search Result Types
@@ -526,21 +537,24 @@ export interface DefinitionCategory {
   id: number;
   definition_id: number;
   category_name: string;
-  category_kind?: string;
-  parents?: string[];
-  category_metadata?: Record<string, any>;
-  definition?: BasicDefinition;
+  category_kind?: string | null;
+  parents?: string[] | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface DefinitionLink {
   id: number;
   definition_id: number;
   link_text: string;
-  target_url: string;
-  display_text?: string | null;
+  link_metadata?: Record<string, any> | null; // Main metadata object from backend
+  target_url: string; // Should always be present after post_dump
   is_external?: boolean;
-  tags?: Record<string, any> | null;
-  link_metadata?: Record<string, any> | null;
+  is_wikipedia?: boolean;
+  tags?: string | null; // Added to match schema
+  sources: string[]; // Added to match schema
+  created_at?: string; // Keep existing fields if present
+  updated_at?: string; // Keep existing fields if present
 }
 
 export interface DefinitionRelation {
@@ -548,8 +562,11 @@ export interface DefinitionRelation {
   definition_id: number;
   word_id: number; // ID of the related word
   relation_type: string;
-  relation_data?: Record<string, any> | null;
-  related_word?: BasicWord; // Include basic info of the related word
+  sources?: string | null; // Added to match schema
+  definition?: Definition | null; // Added to match nested schema (adjust if only basic is sent)
+  word?: BasicWord | null; // Added to match nested schema (WordSimpleSchema)
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface WordForm {
@@ -558,6 +575,8 @@ export interface WordForm {
   tags?: Record<string, any> | null;
   is_canonical?: boolean;
   is_primary?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface WordTemplate {
@@ -565,6 +584,8 @@ export interface WordTemplate {
   template_name: string;
   args?: Record<string, any> | null;
   expansion?: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface WordSuggestion {

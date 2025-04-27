@@ -1,7 +1,0 @@
-2025-01-18 00:13:14,403 - INFO - Attempting database connection...
-2025-01-18 00:13:14,403 - INFO - Database configuration:
-2025-01-18 00:13:14,403 - INFO -   Database Name: fil_dict_db
-2025-01-18 00:13:14,403 - INFO -   User: postgres
-2025-01-18 00:13:14,403 - INFO -   Host: localhost
-2025-01-18 00:13:14,404 - INFO -   Password: ********
-2025-01-18 00:13:14,438 - INFO - Successfully established database connection

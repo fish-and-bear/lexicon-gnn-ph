@@ -1,2 +1,0 @@
-2025-03-30 14:29:15,641 - ERROR - Unexpected error getting database connection: set_session cannot be used inside a transaction
-2025-03-30 14:29:15,641 - ERROR - Error looking up word: Unexpected error: set_session cannot be used inside a transaction

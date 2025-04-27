@@ -38,3 +38,33 @@ tsconfig.json
 # Database Dumps
 fil_dict_db_dump.sql
 fil_dict_db_dump_dir/
+
+# Logs
+backend/logs/
+logs/
+*.log
+
+# Editor History
+.history/
+
+# Backups
+*.backup
+
+# Analysis Output
+kaikki_analysis.txt
+kaikki_detailed_analysis.txt
+kaikki_sense_analysis.txt
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/

@@ -1,5 +1,0 @@
-2025-04-04 12:49:44,197 - ERROR - Error generating relationship statistics: Transaction aborted in previous step. Cannot proceed.
-Traceback (most recent call last):
-  File "C:\fil-relex\backend\dictionary_manager.py", line 11118, in display_leaderboard
-    raise Exception("Transaction aborted in previous step. Cannot proceed.")
-Exception: Transaction aborted in previous step. Cannot proceed.

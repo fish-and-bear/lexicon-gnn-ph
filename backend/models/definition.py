@@ -23,15 +23,9 @@ class Definition(BaseModel, BasicColumnsMixin):
     original_pos = db.Column(db.Text)
     standardized_pos_id = db.Column(db.Integer, db.ForeignKey('parts_of_speech.id', ondelete='SET NULL'), index=True)
     usage_notes = db.Column(db.Text)
-    examples = db.Column(db.JSON, default=lambda: [])
     tags = db.Column(db.Text)
     sources = db.Column(db.Text, nullable=True)
-    # Check if these columns exist - if errors occur, they'll be handled via properties
-    try:
-        definition_metadata = db.Column(db.JSON, default=lambda: {})
-    except:
-        # If the column doesn't exist in the database, we'll handle it in code
-        pass
+    json_metadata = Column(JSONB, nullable=True, comment="Flexible JSON field for additional, unstructured metadata specific to this definition.")
     
     # Optimized relationships with proper cascade rules
     word = db.relationship('Word', 
@@ -73,12 +67,18 @@ class Definition(BaseModel, BasicColumnsMixin):
                           primaryjoin="Definition.id == DefinitionLink.definition_id",
                           foreign_keys="DefinitionLink.definition_id")
     
+    # One-to-many relationship to DefinitionExample (NEW)
+    examples = db.relationship('DefinitionExample', 
+                             back_populates='definition',
+                             lazy='selectin',
+                             cascade='all, delete-orphan',
+                             order_by='DefinitionExample.id') # Optional: Order examples
+    
     __table_args__ = (
         db.UniqueConstraint('word_id', 'definition_text', 'standardized_pos_id', name='definitions_unique'),
         db.Index('idx_definitions_word', 'word_id'),
         db.Index('idx_definitions_pos', 'standardized_pos_id'),
         db.Index('idx_definitions_text_trgm', 'definition_text', postgresql_using='gin', postgresql_ops={'definition_text': 'gin_trgm_ops'}),
-        db.Index('idx_definitions_examples', 'examples', postgresql_using='gin'),
         db.Index('idx_definitions_tags', 'tags', postgresql_using='gin', postgresql_ops={'tags': 'gin_trgm_ops'}),
     )
     
@@ -127,45 +127,32 @@ class Definition(BaseModel, BasicColumnsMixin):
         self._is_modified = True
         return value
     
-    @validates('examples')
-    def validate_examples(self, key: str, value: Any) -> Any:
-        """Validate examples field."""
+    @validates('json_metadata')
+    def validate_json_metadata(self, key: str, value: Any) -> Any:
+        """Validate json_metadata field."""
         if value is not None:
             if isinstance(value, str):
                 try:
                     value = json.loads(value)
                 except json.JSONDecodeError:
                     raise ValueError(f"{key} must be valid JSON")
-            elif not isinstance(value, (dict, list)):
-                raise ValueError(f"{key} must be a dict or list")
+            # Ensure it's a dictionary after potential loading
+            if not isinstance(value, dict):
+                raise ValueError(f"{key} must be a dict or valid JSON string representing a dict")
+            # Optional: Validate specific keys/values within the json_metadata dict if needed
+            # if 'expected_key' not in value:
+            #     raise ValueError("json_metadata missing 'expected_key'")
             self._is_modified = True
-        return value
-        
-    # Separate validator for definition_metadata to avoid errors if column doesn't exist
-    @validates('definition_metadata')
-    def validate_metadata(self, key: str, value: Any) -> Any:
-        """Validate definition_metadata field if it exists."""
-        # Check if the attribute exists before validating
-        if hasattr(self, 'definition_metadata'):
-            if value is not None:
-                if isinstance(value, str):
-                    try:
-                        value = json.loads(value)
-                    except json.JSONDecodeError:
-                        raise ValueError(f"{key} must be valid JSON")
-                elif not isinstance(value, (dict, list)):
-                    raise ValueError(f"{key} must be a dict or list")
-                self._is_modified = True
-            return value
-        return {}
+            return value # Return the processed dictionary
+        return {} # Default to empty dict if input is None
     
     @property
     def popularity_score(self):
-        """Return the popularity score from metadata or default."""
-        # Try to get from metadata first
-        if hasattr(self, 'definition_metadata') and self.definition_metadata and 'popularity_score' in self.definition_metadata:
+        """Return the popularity score from json_metadata or default."""
+        # Try to get from json_metadata first
+        if hasattr(self, 'json_metadata') and self.json_metadata and 'popularity_score' in self.json_metadata:
             try:
-                return float(self.definition_metadata['popularity_score'])
+                return float(self.json_metadata['popularity_score'])
             except (ValueError, TypeError):
                 return 0.0
         # Otherwise return default
@@ -173,15 +160,15 @@ class Definition(BaseModel, BasicColumnsMixin):
 
     @popularity_score.setter
     def popularity_score(self, value):
-        """Set the popularity score in metadata."""
-        # Make sure definition_metadata exists
-        if not hasattr(self, 'definition_metadata') or not self.definition_metadata:
-            self.definition_metadata = {}
+        """Set the popularity score in json_metadata."""
+        # Make sure json_metadata exists and is a dict
+        if not hasattr(self, 'json_metadata') or not isinstance(self.json_metadata, dict):
+            self.json_metadata = {}
         
         try:
-            self.definition_metadata['popularity_score'] = float(value)
+            self.json_metadata['popularity_score'] = float(value)
         except (ValueError, TypeError):
-            self.definition_metadata['popularity_score'] = 0.0
+            self.json_metadata['popularity_score'] = 0.0
     
     def __repr__(self) -> str:
         pos_name = self.standardized_pos.name_en if self.standardized_pos else "None"
@@ -220,10 +207,10 @@ class Definition(BaseModel, BasicColumnsMixin):
             'standardized_pos_id': self.standardized_pos_id,
             'part_of_speech': self.standardized_pos.to_dict() if self.standardized_pos else None,
             'usage_notes': self.usage_notes,
-            'examples': self.examples or [],
+            'examples': [ex.to_dict() for ex in self.examples] if hasattr(self, 'examples') and self.examples else [],
             'tags': self.tags.split(',') if self.tags else [],
             'sources': self.sources.split(', ') if self.sources else [],
-            'metadata': getattr(self, 'definition_metadata', {}) or {},
+            'json_metadata': getattr(self, 'json_metadata', {}) or {},
             'popularity_score': popularity,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None,
@@ -241,10 +228,6 @@ class Definition(BaseModel, BasicColumnsMixin):
         if hasattr(self, 'definition_relations') and self.definition_relations:
             result['definition_relations'] = [r.to_dict() for r in self.definition_relations]
             
-        # Add related words
-        if hasattr(self, 'related_words') and self.related_words:
-            result['related_words'] = [{'id': w.id, 'lemma': w.lemma, 'language_code': w.language_code} for w in self.related_words]
-        
         return result
     
     @classmethod
@@ -286,33 +269,6 @@ class Definition(BaseModel, BasicColumnsMixin):
     def has_examples(self) -> bool:
         """Check if definition has examples."""
         return bool(self.examples and len(self.examples) > 0)
-    
-    # Add property for definition_metadata compatibility
-    @property
-    def definition_metadata(self):
-        """Provide compatibility for definition_metadata when the column doesn't exist."""
-        # This property is used when the column doesn't exist in the database
-        # If the actual column exists, SQLAlchemy will use that instead
-        if hasattr(self, '_definition_metadata'):
-            return self._definition_metadata
-        # Fallback to empty dict or parse from sources
-        if self.sources and self.sources.startswith('{'):
-            try:
-                return json.loads(self.sources)
-            except:
-                pass
-        return {}
-        
-    @definition_metadata.setter
-    def definition_metadata(self, value):
-        """Set definition metadata appropriately based on what's available."""
-        # This setter is only used when the column doesn't exist
-        # If the column exists, SQLAlchemy will use that directly
-        self._definition_metadata = value
-        # Optionally serialize to sources as a fallback
-        if value and isinstance(value, dict):
-            if not self.sources:
-                self.sources = json.dumps(value)
     
     @classmethod
     def get_most_popular_definitions(cls, limit: int = 10) -> List['Definition']:

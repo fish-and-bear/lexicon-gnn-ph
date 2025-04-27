@@ -1,5 +1,0 @@
-2025-03-30 09:20:02,741 - INFO - Looking up word: Namespace(command='lookup', word='agran', debug=False, format='rich')
-2025-03-30 09:20:02,741 - INFO - Word argument value: 'agran'
-2025-03-30 09:20:02,771 - INFO - Normalized word: agran
-2025-03-30 09:20:02,785 - INFO - Database connection test successful
-2025-03-30 09:20:02,837 - INFO - Word data fetched: False

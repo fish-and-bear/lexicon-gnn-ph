@@ -1,8 +1,0 @@
-2025-03-24 19:01:10,375 - ERROR - Error fixing constraint violations: relation "word_relations" does not exist
-LINE 2:                 DELETE FROM word_relations
-                                    ^
-
-2025-03-24 19:01:10,400 - ERROR - Failed to repair sequence for word_relations: relation "word_relations" does not exist
-LINE 1: SELECT MAX(id) FROM word_relations
-                            ^
-

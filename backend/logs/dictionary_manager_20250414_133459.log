@@ -1,8 +1,0 @@
-2025-04-14 13:35:00,007 - INFO - Starting table creation/update process.
-2025-04-14 13:35:00,505 - INFO - Tables created or updated successfully.
-2025-04-14 13:35:00,509 - INFO - Starting processing for Tagalog Words from ..\data\tagalog-words.json
-2025-04-14 13:35:00,510 - INFO - Processing Tagalog words file: ..\data\tagalog-words.json with entry-level transactions.
-2025-04-14 13:35:00,510 - INFO - Using standardized source identifier: 'diksiyonaryo.ph'
-2025-04-14 13:35:00,554 - WARNING - Schema Check: Table 'examples' is missing required columns: example, definition_id, id. Some features might not work.
-2025-04-14 13:35:00,556 - WARNING - Schema Check: Table 'word_tags' is missing required columns: word_id, tag, id, source_identifier. Some features might not work.
-2025-04-14 13:35:01,003 - INFO - Database connection closed.
