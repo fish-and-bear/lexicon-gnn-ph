@@ -714,4 +714,76 @@ class Word(BaseModel, TextSearchMixin, GINIndexMixin, TrigramSearchMixin):
         if language_code:
             query = query.filter(cls.language_code == language_code)
             
-        return query.order_by(cls.completeness_score.desc()).limit(limit).all() 
+        return query.order_by(cls.completeness_score.desc()).limit(limit).all()
+    
+    @property
+    def completeness_score(self):
+        """Virtual property for completeness_score that might not exist in the database."""
+        # Try to get from the attribute if already set
+        if hasattr(self, '_completeness_score'):
+            return self._completeness_score
+            
+        # Try to get from word_metadata if it exists
+        if hasattr(self, 'word_metadata') and self.word_metadata:
+            if isinstance(self.word_metadata, dict) and 'completeness_score' in self.word_metadata:
+                return self.word_metadata.get('completeness_score', 0.0)
+                
+        # Calculate dynamically based on available properties
+        score = 0.0
+        total_factors = 4
+        
+        # Add 0.25 for each significant property that exists
+        if hasattr(self, 'definitions') and self.definitions:
+            score += 0.25
+        if hasattr(self, 'etymologies') and self.etymologies:
+            score += 0.25
+        if hasattr(self, 'pronunciations') and self.pronunciations:
+            score += 0.25
+        if hasattr(self, 'has_baybayin') and self.has_baybayin:
+            score += 0.25
+            
+        return score
+        
+    @completeness_score.setter
+    def completeness_score(self, value):
+        """Setter for completeness_score."""
+        try:
+            value = float(value)
+            if value < 0.0:
+                value = 0.0
+            elif value > 1.0:
+                value = 1.0
+        except (ValueError, TypeError):
+            value = 0.0
+            
+        self._completeness_score = value
+        
+        # Also store in word_metadata for persistence
+        if hasattr(self, 'word_metadata'):
+            if self.word_metadata is None:
+                self.word_metadata = {}
+            
+            # Make sure it's a dict
+            if isinstance(self.word_metadata, dict):
+                self.word_metadata['completeness_score'] = value 
+    
+    @classmethod
+    def get_random_word_with_baybayin(cls, limit=50, language_code=None):
+        """Get random words with baybayin, optionally filtered by language code.
+        
+        Args:
+            limit: Maximum number of words to return
+            language_code: Optional language code to filter by
+            
+        Returns:
+            List of Word objects with Baybayin representation
+        """
+        query = cls.query.filter(cls.has_baybayin == True)
+        
+        if language_code:
+            query = query.filter(cls.language_code == language_code)
+        
+        # Use created_at for ordering instead of completeness_score
+        query = query.order_by(cls.created_at.desc()).limit(limit)
+        
+        return query.all() 

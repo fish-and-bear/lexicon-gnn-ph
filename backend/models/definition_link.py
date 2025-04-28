@@ -207,14 +207,17 @@ class DefinitionLink(BaseModel, BasicColumnsMixin):
     @classmethod
     def get_external_links(cls) -> list:
         """Get all external links."""
-        return cls.query.filter_by(is_external=True).all()
+        # Modified to use link_metadata to check for external links
+        links = cls.query.all()
+        return [link for link in links if link.is_external]
     
     def validate_link(self) -> bool:
         """Validate if the link is accessible."""
-        if self.is_external and self.target_url.startswith(('http://', 'https://')):
+        target_url = self.target_url  # Get via property instead of direct column access
+        if self.is_external and target_url and target_url.startswith(('http://', 'https://')):
             try:
                 import requests
-                response = requests.head(self.target_url, timeout=5)
+                response = requests.head(target_url, timeout=5)
                 return response.status_code == 200
             except:
                 return False

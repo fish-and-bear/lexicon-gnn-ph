@@ -23,6 +23,7 @@ import traceback
 from datetime import datetime, timedelta
 from functools import wraps
 import re
+import psycopg2
 
 # Fix imports to work both as a module and standalone script
 # try:
@@ -50,6 +51,156 @@ try:
     has_prometheus = True
 except ImportError:
     has_prometheus = False
+
+# Function to ensure parts_of_speech table exists without dropping data
+def ensure_parts_of_speech_table_exists(db_uri):
+    """
+    Ensure the parts_of_speech table exists without dropping any existing data.
+    Only creates the table if it doesn't already exist.
+    """
+    try:
+        # Extract connection parameters from SQLAlchemy URI
+        # Format: postgresql://username:password@host:port/dbname
+        if '://' in db_uri:
+            db_uri = db_uri.split('://', 1)[1]
+        if '@' in db_uri:
+            auth, conn_str = db_uri.split('@', 1)
+            if ':' in auth:
+                user, password = auth.split(':', 1)
+            else:
+                user, password = auth, ''
+        else:
+            user, password = 'postgres', ''
+            conn_str = db_uri
+            
+        if '/' in conn_str:
+            host_port, dbname = conn_str.split('/', 1)
+            if ':' in host_port:
+                host, port = host_port.split(':', 1)
+                port = int(port)
+            else:
+                host, port = host_port, 5432
+        else:
+            host, port = conn_str, 5432
+            dbname = 'postgres'
+            
+        # Connect to the database
+        conn = psycopg2.connect(
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            dbname=dbname
+        )
+        conn.autocommit = False
+        cur = conn.cursor()
+        
+        # Check if parts_of_speech table exists
+        cur.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'parts_of_speech'
+            );
+        """)
+        table_exists = cur.fetchone()[0]
+        
+        if not table_exists:
+            logger.info("Creating parts_of_speech table as it doesn't exist")
+            # Create the parts_of_speech table if it doesn't exist
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS parts_of_speech (
+                    id SERIAL PRIMARY KEY,
+                    code VARCHAR(32) NOT NULL UNIQUE,
+                    name_en VARCHAR(64) NOT NULL,
+                    name_tl VARCHAR(64) NOT NULL,
+                    description TEXT,
+                    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                    CONSTRAINT parts_of_speech_code_uniq UNIQUE (code)
+                );
+                CREATE INDEX IF NOT EXISTS idx_parts_of_speech_code ON parts_of_speech(code);
+                CREATE INDEX IF NOT EXISTS idx_parts_of_speech_name ON parts_of_speech(name_en, name_tl);
+            """)
+            
+            # Insert standard parts of speech
+            pos_entries = [
+                # --- Core Grammatical Categories ---
+                (
+                    "n",
+                    "Noun",
+                    "Pangngalan",
+                    "Word that refers to a person, place, thing, or idea",
+                ),
+                ("v", "Verb", "Pandiwa", "Word that expresses action or state of being"),
+                ("adj", "Adjective", "Pang-uri", "Word that describes or modifies a noun"),
+                (
+                    "adv",
+                    "Adverb",
+                    "Pang-abay",
+                    "Word that modifies verbs, adjectives, or other adverbs",
+                ),
+                ("pron", "Pronoun", "Panghalip", "Word that substitutes for a noun"),
+                (
+                    "prep",
+                    "Preposition",
+                    "Pang-ukol",
+                    "Word that shows relationship between words",
+                ),
+                (
+                    "conj",
+                    "Conjunction",
+                    "Pangatnig",
+                    "Word that connects words, phrases, or clauses",
+                ),
+                ("intj", "Interjection", "Pandamdam", "Word expressing emotion"),
+                ("det", "Determiner", "Pantukoy", "Word that modifies nouns"),
+                ("affix", "Affix", "Panlapi", "Word element attached to base or root"),
+                # Other important categories
+                ("lig", "Ligature", "Pang-angkop", "Word that links modifiers to modified words"),
+                ("part", "Particle", "Kataga", "Function word that doesn't fit other categories"),
+                ("num", "Number", "Pamilang", "Word representing a number"),
+                ("unc", "Uncategorized", "Hindi Tiyak", "Part of speech not yet determined"),
+            ]
+
+            for code, name_en, name_tl, desc in pos_entries:
+                cur.execute("""
+                    INSERT INTO parts_of_speech (code, name_en, name_tl, description)
+                    VALUES (%s, %s, %s, %s)
+                    ON CONFLICT (code) DO UPDATE 
+                    SET name_en = EXCLUDED.name_en,
+                        name_tl = EXCLUDED.name_tl,
+                        description = EXCLUDED.description
+                """, (code, name_en, name_tl, desc))
+                
+            conn.commit()
+            logger.info("parts_of_speech table created and populated with standard entries")
+        else:
+            # Table exists, check if we have records
+            cur.execute("SELECT COUNT(*) FROM parts_of_speech")
+            count = cur.fetchone()[0]
+            if count == 0:
+                logger.warning("parts_of_speech table exists but is empty, adding standard entries")
+                # Add standard entries
+                cur.execute("""
+                    INSERT INTO parts_of_speech (code, name_en, name_tl, description)
+                    VALUES 
+                    ('n', 'Noun', 'Pangngalan', 'Word that refers to a person, place, thing, or idea'),
+                    ('v', 'Verb', 'Pandiwa', 'Word that expresses action or state of being'),
+                    ('adj', 'Adjective', 'Pang-uri', 'Word that describes or modifies a noun'),
+                    ('unc', 'Uncategorized', 'Hindi Tiyak', 'Part of speech not yet determined')
+                    ON CONFLICT (code) DO NOTHING
+                """)
+                conn.commit()
+                logger.info("Added basic entries to empty parts_of_speech table")
+            else:
+                logger.info(f"parts_of_speech table exists with {count} entries")
+                
+        cur.close()
+        conn.close()
+        return True
+    except Exception as e:
+        logger.error(f"Error ensuring parts_of_speech table: {str(e)}")
+        return False
 
 # Add health metrics
 # if has_prometheus:
@@ -216,6 +367,17 @@ def create_app(testing=False):
             # This just sets up the rate limit - the actual route is defined elsewhere
             pass
     
+    # Only run setup in the main worker process when reloading
+    if not testing and os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        # Check if we should skip database setup
+        skip_db_setup = os.environ.get('SKIP_DB_SETUP', 'false').lower() == 'true'
+        
+        if not skip_db_setup:
+            # Ensure the parts_of_speech table exists before initializing SQLAlchemy
+            # This safely creates only that table if needed without dropping existing data
+            db_uri = app.config['SQLALCHEMY_DATABASE_URI']
+            ensure_parts_of_speech_table_exists(db_uri)
+            
     # Initialize database
     db.init_app(app)
     # Revert to standard initialization, relying on alembic.ini for directory
@@ -229,26 +391,30 @@ def create_app(testing=False):
     if not testing and os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
         try:
             # Execute database migrations
-            with app.app_context():
-                logger.info("Running database migrations...")
-                # Execute migrations through code rather than command
-                # This assumes alembic is properly configured
-                try:
-                    alembic_ini_path = "alembic.ini"
-                    if os.path.exists(alembic_ini_path):
-                        from alembic import command
-                        from alembic.config import Config
-                        alembic_cfg = Config(alembic_ini_path)
-                        command.upgrade(alembic_cfg, "head")
-                        logger.info("Database migrations completed successfully.")
-                    else:
-                        logger.warning(f"Alembic config file '{alembic_ini_path}' not found. Skipping migrations.")
-                except Exception as e:
-                    logger.error(f"Error running migrations: {str(e)}")
+            skip_db_setup = os.environ.get('SKIP_DB_SETUP', 'false').lower() == 'true'
+            if not skip_db_setup:
+                with app.app_context():
+                    logger.info("Running database migrations...")
+                    # Execute migrations through code rather than command
+                    # This assumes alembic is properly configured
+                    try:
+                        alembic_ini_path = "alembic.ini"
+                        if os.path.exists(alembic_ini_path):
+                            from alembic import command
+                            from alembic.config import Config
+                            alembic_cfg = Config(alembic_ini_path)
+                            command.upgrade(alembic_cfg, "head")
+                            logger.info("Database migrations completed successfully.")
+                        else:
+                            logger.warning(f"Alembic config file '{alembic_ini_path}' not found. Skipping migrations.")
+                    except Exception as e:
+                        logger.error(f"Error running migrations: {str(e)}")
+            else:
+                logger.info("Database migrations and setup skipped (SKIP_DB_SETUP=true)")
                 
-                # Initialize GraphQL
-                # schema, context = init_graphql()  # Comment out or replace with proper initialization
-                schema, context = gql_module.init_graphql()  # Use the module reference
+            # Initialize GraphQL
+            # schema, context = init_graphql()  # Comment out or replace with proper initialization
+            schema, context = gql_module.init_graphql()  # Use the module reference
         except Exception as e:
             logger.error(f"Error initializing GraphQL: {str(e)}")
     

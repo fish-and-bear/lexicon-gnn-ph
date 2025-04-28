@@ -8,7 +8,12 @@ from flask import Flask, current_app
 from typing import Dict, Any
 from datetime import datetime
 import time
-from database import feature_lock, is_feature_initialized, mark_feature_initialized, db
+from sqlalchemy.orm import relationship, backref, validates
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import event
+from sqlalchemy.sql import func
+from sqlalchemy.exc import SQLAlchemyError
+from backend.database import is_feature_initialized, mark_feature_initialized, feature_lock, db
 
 # Configure logging
 logger = logging.getLogger(__name__)

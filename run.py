@@ -5,6 +5,9 @@ Run the Flask app for the dictionary API
 import os
 import sys
 
+# Set environment variable to skip migrations before importing any modules
+os.environ["SKIP_DB_SETUP"] = "true"
+
 # Import our inline source_standardization module first
 # This ensures the module is available to all other modules that need it
 import backend.inline_source_standardization
@@ -25,8 +28,9 @@ if __name__ == "__main__":
     # Print startup message
     print(f"\n📚 Filipino Dictionary API starting on http://{host}:{port}")
     print(f"✅ Debug mode: {'enabled' if debug else 'disabled'}")
+    print(f"🔄 Database migrations: disabled")
     print(f"💻 Press CTRL+C to stop\n")
     
-    # Run the application - REMOVE THIS LINE for Gunicorn
-    # app.run(host=host, port=port, debug=debug)
-    pass # Add pass if the block becomes empty 
+    # Run the application - Uncommented for local development
+    app.run(host=host, port=port, debug=debug)
+    # pass # pass is no longer needed as app.run blocks 

@@ -2,19 +2,19 @@ import axios, { AxiosError, AxiosInstance } from 'axios';
 import { 
   WordInfo, 
   SearchOptions, 
-  SearchResult, 
+  SearchResults, 
   Etymology,
   PartOfSpeech,
   Statistics,
   EtymologyTree,
-  Definition,
+  RawDefinition,
   Credit,
-  SearchWordResult,
+  SearchResultItem,
   RawWordComprehensiveData,
   Pronunciation,
   Relation,
   Affixation,
-  RelatedWord,
+  BasicWord,
   WordNetwork as ImportedWordNetwork,
   WordSuggestion // Import the correct type
 } from "../types";
@@ -437,7 +437,7 @@ interface NetworkMetadata {
   language_code: string;
   depth: number;
   total_nodes: number;
-  total_edges: number;
+  total_links: number;
   query_time?: number | null;
   filters_applied?: {
     depth: number;
@@ -461,7 +461,7 @@ interface NetworkNode {
   main: boolean;
 }
 
-interface NetworkEdge {
+interface NetworkLink {
   id: string;
   source: string;
   target: string;
@@ -472,7 +472,7 @@ interface NetworkEdge {
 
 interface LocalWordNetwork {
   nodes: NetworkNode[];
-  edges: NetworkEdge[];
+  links: NetworkLink[];
   metadata: NetworkMetadata;
 }
 
@@ -570,7 +570,7 @@ export async function fetchWordNetwork(
     });
 
     // Normalize and validate each edge
-    const edges = response.data.links.map((e: any) => {
+    const links = response.data.links.map((e: any) => {
       if (!e.source || !e.target) {
         console.warn('Edge missing source or target:', e);
         throw new Error('Invalid edge data: missing source or target');
@@ -588,14 +588,14 @@ export async function fetchWordNetwork(
 
     const wordNetwork: LocalWordNetwork = {
       nodes,
-      edges,
+      links,
       metadata: {
         root_word: word,
         normalized_lemma: sanitizedWord,
         language_code: response.data.metadata?.language_code || 'tl',
         depth: sanitizedDepth,
         total_nodes: nodes.length,
-        total_edges: edges.length,
+        total_links: links.length,
         query_time: response.data.metadata?.execution_time || null,
         filters_applied: {
           depth: sanitizedDepth,
@@ -702,12 +702,10 @@ function normalizeWordData(rawData: any): WordInfo {
     preferred_spelling: wordData.preferred_spelling || null,
     tags: wordData.tags || null, // Keep as string or null from backend
     data_hash: wordData.data_hash || null,
-    search_text: wordData.search_text || null,
     created_at: wordData.created_at || null,
     updated_at: wordData.updated_at || null,
     
     // New fields from API improvements
-    pronunciation_data: wordData.pronunciation_data || null,
     word_metadata: wordData.word_metadata || null, 
     source_info: wordData.source_info || null,
     idioms: wordData.idioms || null,
@@ -716,6 +714,7 @@ function normalizeWordData(rawData: any): WordInfo {
     is_proper_noun: wordData.is_proper_noun || false,
     is_abbreviation: wordData.is_abbreviation || false,
     is_initialism: wordData.is_initialism || false,
+    completeness_score: wordData.completeness_score ?? null, // Add mapping for completeness score
     
     // Compute is_root based on root_word_id
     is_root: !wordData.root_word_id,
@@ -731,120 +730,86 @@ function normalizeWordData(rawData: any): WordInfo {
     incoming_relations: [],
     root_affixations: [],
     affixed_affixations: [],
-    data_completeness: wordData.data_completeness || null,
-    relation_summary: wordData.relation_summary || null,
+    // data_completeness: wordData.data_completeness || null, // Removed: Not in RawWordComprehensiveData
+    // relation_summary: wordData.relation_summary || null, // Removed: Not in RawWordComprehensiveData
   };
 
-  // Normalize Definitions - Revert to ': any'
+  // Normalize Definitions
   if (wordData.definitions && Array.isArray(wordData.definitions)) {
     console.log(`Processing ${wordData.definitions.length} definitions`);
-    normalizedWord.definitions = wordData.definitions.map((def: any): Definition => ({ // Changed back to any
-      // Raw fields needed by Omit base (RawDefinition)
+    // Map to RawDefinition, but keep splitting logic for convenience if WordInfo needs arrays later
+    normalizedWord.definitions = wordData.definitions.map((def: any): RawDefinition => ({
       id: def.id,
-      definition_text: def.definition_text || '', 
+      definition_text: def.definition_text || '',
       original_pos: def.original_pos || null,
+      standardized_pos_id: def.standardized_pos_id || null,
       standardized_pos: def.standardized_pos || null,
-      created_at: def.created_at || null, // Reverted to null
-      updated_at: def.updated_at || null, // Reverted to null
-      // Fields required by the cleaned Definition type
-      text: def.definition_text || '', 
-      part_of_speech: def.standardized_pos || null, 
-      examples: splitSemicolonSeparated(def.examples), 
-      usage_notes: splitSemicolonSeparated(def.usage_notes), 
-      tags: splitCommaSeparated(def.tags), 
-      sources: splitCommaSeparated(def.sources), 
-      relations: [],
-      // Process definition_metadata (which is called 'metadata' in DB)
-      definition_metadata: def.definition_metadata || def.metadata || null,
-      // Process categories if available
-      categories: Array.isArray(def.categories) 
-        ? def.categories.map((cat: any) => ({
-            id: cat.id,
-            definition_id: cat.definition_id,
-            category_name: cat.category_name,
-            description: cat.description || null,
-            category_kind: cat.category_kind || null,
-            tags: cat.tags || null,
-            category_metadata: cat.category_metadata || cat.metadata || null,
-            parents: Array.isArray(cat.parents) ? cat.parents : splitCommaSeparated(cat.parents)
-          }))
-        : [],
-      // Process definition_relations if available
-      definition_relations: Array.isArray(def.definition_relations)
-        ? def.definition_relations.map((rel: any) => ({
-            id: rel.id,
-            definition_id: rel.definition_id,
-            word_id: rel.word_id,
-            relation_type: rel.relation_type,
-            relation_data: rel.relation_data || rel.metadata || null,
-            related_word: rel.related_word ? {
-              id: rel.related_word.id,
-              lemma: rel.related_word.lemma,
-              language_code: rel.related_word.language_code || null,
-              has_baybayin: rel.related_word.has_baybayin || false,
-              baybayin_form: rel.related_word.baybayin_form || null
-            } : null
-          }))
-        : [],
-      // Other optional fields from RawDefinition if needed
-      confidence_score: def.confidence_score,
-      is_verified: def.is_verified,
-      verified_by: def.verified_by,
-      verified_at: def.verified_at,
+      usage_notes: def.usage_notes || null, // Keep as string from raw
+      tags: def.tags || null, // Keep as string from raw
+      sources: def.sources || null, // Keep as string from raw
+      metadata: def.metadata || def.definition_metadata || null, // Use metadata primarily
+      // weight: def.weight || null, // Remove invalid 'weight' property
+      created_at: def.created_at || null,
+      updated_at: def.updated_at || null,
+      // Keep nested arrays as they are (assuming they match Example[], DefinitionLink[], etc.)
+      examples: def.examples || null,
+      links: def.links || null,
+      categories: def.categories || null,
+      definition_relations: def.definition_relations || null,
     }));
   } else {
     console.warn("No definitions found in word data");
   }
 
-  // Normalize Etymologies - Revert to ': any' and add cast
+  // Normalize Etymologies
   if (wordData.etymologies && Array.isArray(wordData.etymologies)) {
     console.log(`Processing ${wordData.etymologies.length} etymologies`);
-    normalizedWord.etymologies = wordData.etymologies.map((etym: any): Etymology => ({ // Changed back to any
-      // Raw fields needed by Omit base (RawEtymology)
+    normalizedWord.etymologies = wordData.etymologies.map((etym: any): Etymology => ({
       id: etym.id,
-      etymology_text: etym.etymology_text || '', 
+      word_id: etym.word_id || wordData.id, // Ensure word_id is present
+      etymology_text: etym.etymology_text || null,
+      normalized_components: etym.normalized_components || null,
+      // Use etymology_structure (assuming it's the correct field)
       etymology_structure: etym.etymology_structure || null,
-      created_at: etym.created_at || null, // Reverted to null
-      updated_at: etym.updated_at || null, // Reverted to null
-      // Fields required by the cleaned Etymology type
-      text: etym.etymology_text || '', 
-      languages: splitCommaSeparated(etym.language_codes), 
-      // Explicit cast to silence persistent linter error
-      components: splitCommaSeparated(etym.components as string | undefined), 
-      sources: splitCommaSeparated(etym.sources), 
-      // Other optional fields from RawEtymology if needed
-      confidence_level: etym.confidence_level,
-      verification_status: etym.verification_status,
-      verification_notes: etym.verification_notes,
+      language_codes: etym.language_codes || null, // Keep as string
+      sources: etym.sources || null, // Keep as string
+      created_at: etym.created_at || null,
+      updated_at: etym.updated_at || null,
     }));
   } else {
     console.warn("No etymologies found in word data");
   }
 
-  // Normalize Pronunciations - Revert to ': any'
+  // Normalize Pronunciations
   if (wordData.pronunciations && Array.isArray(wordData.pronunciations)) {
     console.log(`Processing ${wordData.pronunciations.length} pronunciations`);
-    normalizedWord.pronunciations = wordData.pronunciations.map((pron: any): Pronunciation => ({ // Changed back to any
+    normalizedWord.pronunciations = wordData.pronunciations.map((pron: any): Pronunciation => ({
       id: pron.id,
+      word_id: pron.word_id || wordData.id,
       type: pron.type || '',
       value: pron.value || '',
-      tags: pron.tags || null, 
-      sources: pron.sources || null, 
-      created_at: pron.created_at || null, // Reverted to null
-      updated_at: pron.updated_at || null, // Reverted to null
+      // Use the correct fields based on Pronunciation type
+      tags: pron.tags || null, // Expects Record<string, any> | null
+      pronunciation_metadata: pron.pronunciation_metadata || null, // Expects Record<string, any> | null
+      // weight: pron.weight || null, // Remove invalid 'weight' property
+      created_at: pron.created_at || null,
+      updated_at: pron.updated_at || null,
     }));
   } else {
     console.warn("No pronunciations found in word data");
   }
 
-  // Normalize Credits - Revert to ': any'
+  // Normalize Credits
   if (wordData.credits && Array.isArray(wordData.credits)) {
     console.log(`Processing ${wordData.credits.length} credits`);
-    normalizedWord.credits = wordData.credits.map((cred: any): Credit => ({ // Changed back to any
+    normalizedWord.credits = wordData.credits.map((cred: any): Credit => ({
       id: cred.id,
+      word_id: cred.word_id || wordData.id,
+      // role: cred.role || '', // Remove invalid 'role' property
       credit: cred.credit || '',
-      created_at: cred.created_at || null, // Reverted to null
-      updated_at: cred.updated_at || null, // Reverted to null
+      sources: cred.sources || null, // Add sources
+      created_at: cred.created_at || null,
+      updated_at: cred.updated_at || null,
     }));
   } else {
     console.warn("No credits found in word data");
@@ -866,7 +831,7 @@ function normalizeWordData(rawData: any): WordInfo {
   // Normalize Derived Words - Revert to ': any'
   if (wordData.derived_words && Array.isArray(wordData.derived_words)) {
     console.log(`Processing ${wordData.derived_words.length} derived words`);
-    normalizedWord.derived_words = wordData.derived_words.map((dw: any): RelatedWord => ({ // Changed back to any
+    normalizedWord.derived_words = wordData.derived_words.map((dw: any): BasicWord => ({ // Changed back to any
       id: dw.id,
       lemma: dw.lemma || '',
       normalized_lemma: dw.normalized_lemma || null,
@@ -914,7 +879,7 @@ function normalizeWordData(rawData: any): WordInfo {
         return {
           id: rel.id || 0,
           relation_type: rel.relation_type || 'related',
-          relation_data: rel.relation_data || rel.metadata || null,
+          metadata: rel.metadata || null, // Use metadata directly
           target_word: fixedTargetWord
         };
       }
@@ -923,7 +888,7 @@ function normalizeWordData(rawData: any): WordInfo {
       return {
         id: rel.id || 0,
         relation_type: rel.relation_type || 'related',
-        relation_data: rel.relation_data || rel.metadata || null,
+        metadata: rel.metadata || null, // Use metadata directly
         target_word: {
           id: rel.target_word.id || 0,
           lemma: rel.target_word.lemma,
@@ -973,7 +938,7 @@ function normalizeWordData(rawData: any): WordInfo {
         return {
           id: rel.id || 0,
           relation_type: rel.relation_type || 'related',
-          relation_data: rel.relation_data || rel.metadata || null,
+          metadata: rel.metadata || null, // Use metadata directly
           source_word: fixedSourceWord
         };
       }
@@ -982,7 +947,7 @@ function normalizeWordData(rawData: any): WordInfo {
       return {
         id: rel.id || 0,
         relation_type: rel.relation_type || 'related',
-        relation_data: rel.relation_data || rel.metadata || null,
+        metadata: rel.metadata || null, // Use metadata directly
         source_word: {
           id: rel.source_word.id || 0,
           lemma: rel.source_word.lemma,
@@ -1191,10 +1156,41 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
           const partialWordInfo: WordInfo = {
             id: basicData.id,
             lemma: basicData.lemma || word,
-            server_error: `Server database error: ${errorMessage}`,
+            // Initialize other required fields to avoid type errors, even if empty
+            normalized_lemma: basicData.lemma || word,
+            language_code: 'tl', 
+            has_baybayin: false,
+            is_root: !basicData.root_word_id,
+            definitions: [],
+            etymologies: [],
+            pronunciations: [],
+            credits: [],
+            root_word: null,
+            derived_words: [],
+            outgoing_relations: [],
             incoming_relations: [],
-            outgoing_relations: []
+            root_affixations: [],
+            affixed_affixations: [],
+            // Add other optional fields as null or default
+            baybayin_form: null,
+            romanized_form: null,
+            root_word_id: null,
+            preferred_spelling: null,
+            tags: null,
+            data_hash: null,
+            created_at: null,
+            updated_at: null,
+            word_metadata: null,
+            source_info: null,
+            idioms: null,
+            badlit_form: null,
+            hyphenation: null,
+            is_proper_noun: false,
+            is_abbreviation: false,
+            is_initialism: false,
           };
+          
+          console.warn(`Returning partial word info for '${word}' due to database error.`);
           
           // Try to fetch semantic network data as fallback
           try {
@@ -1202,12 +1198,8 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
               const idOrWord = basicData.id ? `id:${basicData.id}` : basicData.lemma;
               const networkData = await fetchWordNetwork(idOrWord);
               
-              if (networkData && networkData.nodes && networkData.edges) {
-                partialWordInfo.semantic_network = {
-                  nodes: networkData.nodes,
-                  links: networkData.edges
-                };
-                console.log('Successfully added semantic network fallback data');
+              if (networkData && networkData.nodes && networkData.links) {
+                console.log('Successfully fetched semantic network fallback data (but not added to WordInfo)');
               }
             }
           } catch (networkError) {
@@ -1224,8 +1216,7 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
       if (!isIdRequest && (
         errorMessage.includes('Database error') || 
         errorMessage.includes('SqliteError') ||
-        errorMessage.includes('SQL error')
-      )) {
+        errorMessage.includes('SQL error'))) {
         console.log('General database error detected. Creating partial word info with error flag.');
         
         // Try to fetch the semantic network for fallback
@@ -1234,21 +1225,48 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
           const partialWordInfo: WordInfo = {
             id: isIdRequest ? parseInt(word.replace('id:', ''), 10) : 0,
             lemma: word,
-            server_error: `Database error: ${errorMessage}`,
+            // Initialize other required fields to avoid type errors, even if empty
+            normalized_lemma: word,
+            language_code: 'tl', 
+            has_baybayin: false,
+            is_root: false, // Default value when basicData is unavailable
+            definitions: [],
+            etymologies: [],
+            pronunciations: [],
+            credits: [],
+            root_word: null,
+            derived_words: [],
+            outgoing_relations: [],
             incoming_relations: [],
-            outgoing_relations: []
+            root_affixations: [],
+            affixed_affixations: [],
+            // Add other optional fields as null or default
+            baybayin_form: null,
+            romanized_form: null,
+            root_word_id: null,
+            preferred_spelling: null,
+            tags: null,
+            data_hash: null,
+            created_at: null,
+            updated_at: null,
+            word_metadata: null,
+            source_info: null,
+            idioms: null,
+            badlit_form: null,
+            hyphenation: null,
+            is_proper_noun: false,
+            is_abbreviation: false,
+            is_initialism: false,
           };
+          
+          console.warn(`Returning partial word info for '${word}' due to database error.`);
           
           // Try to fetch semantic network data as fallback
           try {
             const networkData = await fetchWordNetwork(word);
             
-            if (networkData && networkData.nodes && networkData.edges) {
-              partialWordInfo.semantic_network = {
-                nodes: networkData.nodes,
-                links: networkData.edges
-              };
-              console.log('Successfully added semantic network fallback data for general database error');
+            if (networkData && networkData.nodes && networkData.links) {
+              console.log('Successfully fetched semantic network fallback data for general database error (but not added to WordInfo)');
             }
           } catch (networkError) {
             console.error('Failed to fetch semantic network fallback:', networkError);
@@ -1281,11 +1299,11 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
 
 // --- Search Functionality --- 
 
-export async function searchWords(query: string, options: SearchOptions): Promise<SearchResult> {
+export async function searchWords(query: string, options: SearchOptions): Promise<SearchResults> {
   console.log(`[DEBUG] searchWords called with query: "${query}" and options:`, options);
   
   const cacheKey = `cache:search:${query}:${JSON.stringify(options)}`;
-  const cachedData = getCachedData<SearchResult>(cacheKey);
+  const cachedData = getCachedData<SearchResults>(cacheKey);
 
   if (cachedData) {
     console.log(`Cache hit for search: ${query}`);
@@ -1362,7 +1380,7 @@ export async function searchWords(query: string, options: SearchOptions): Promis
     console.log(`[DEBUG] Making search API request with params:`, apiParams);
     
     // Try with direct fetch first for improved reliability
-    let searchResult: SearchResult | null = null;
+    let searchResult: SearchResults | null = null;
     let fetchError: any = null;
     
     try {
@@ -1382,20 +1400,20 @@ export async function searchWords(query: string, options: SearchOptions): Promis
         
         // Format the response like standard searchResult
         searchResult = {
-          words: (data.results || []).map((result: any): SearchWordResult => ({
-            id: result.id,
+          results: (data.results || []).map((result: any): SearchResultItem => ({
+            word_id: result.id, // FIX: Map id to word_id
             lemma: result.lemma,
-            normalized_lemma: result.normalized_lemma,
-            language_code: result.language_code,
-            has_baybayin: result.has_baybayin,
-            baybayin_form: result.baybayin_form,
-            romanized_form: result.romanized_form,
-            definitions: []
+            lang_code: result.language_code, // Use result.language_code
+            lang_name: result.lang_name || '', // Add lang_name
+            gloss: result.gloss || '', // Add gloss
+            pos: result.pos || '', // Add pos
+            score: result.score || 0, // Add score
+            word: result.word || null, // Add optional full word data
           })),
           page: options.page || 1,
-          perPage: options.per_page || (data.results?.length || 0), 
-          total: data.count || 0,
-          query: query 
+          per_page: options.per_page || (data.results?.length || 0), // FIX: Use per_page
+          total: data.total || data.count || 0, // Use total or count
+          query_details: data.query_details || null // Add query_details
         };
       } else {
         console.log(`Direct fetch failed with status: ${directResponse.status}`);
@@ -1427,25 +1445,19 @@ export async function searchWords(query: string, options: SearchOptions): Promis
       
       // Transform the response into SearchResult format
       searchResult = {
-        words: (data.words || []).map((result: any): SearchWordResult => ({
-          id: result.id,
+        results: (data.results || []).map((result: any): SearchResultItem => ({
+          word_id: result.id, // FIX: Map id to word_id
           lemma: result.lemma,
-          normalized_lemma: result.normalized_lemma,
-          language_code: result.language_code,
-          has_baybayin: result.has_baybayin,
-          baybayin_form: result.baybayin_form,
-          romanized_form: result.romanized_form,
-          // Search results usually have simpler definition structures
-          definitions: (result.definitions || []).map((def: any) => ({ 
-              id: def.id || 0,
-              definition_text: def.definition_text || '',
-              part_of_speech: def.part_of_speech || null
-          }))
+          lang_code: result.language_code, // Use result.language_code
+          lang_name: result.lang_name || '', // Add lang_name
+          gloss: result.gloss || '', // Add gloss
+          pos: result.pos || '', // Add pos
+          score: result.score || 0, // Add score
+          word: result.word || null, // Add optional full word data
         })),
         page: options.page || 1,
-        perPage: options.per_page || (data.words?.length || 0), 
+        per_page: options.per_page || (data.results?.length || 0), 
         total: data.total || 0,
-        query: query 
       };
       
       console.log(`[DEBUG] Transformed search result:`, searchResult);
@@ -1476,12 +1488,11 @@ export async function searchWords(query: string, options: SearchOptions): Promis
         console.error('Database schema error detected:', errorMessage);
         
         // Create a minimal result with an error message
-        const errorResult: SearchResult = {
-          words: [],
+        const errorResult: SearchResults = {
+          results: [],
           page: options.page || 1,
-          perPage: options.per_page || 10,
+          per_page: options.per_page || 10,
           total: 0,
-          query: query,
           error: 'Database schema error: The database schema doesn\'t match what the application expects. Please contact the administrator.'
         };
         
@@ -1503,11 +1514,11 @@ export async function searchWords(query: string, options: SearchOptions): Promis
 /**
  * Advanced search with additional filtering capabilities
  */
-export async function advancedSearch(query: string, options: SearchOptions): Promise<SearchResult> {
+export async function advancedSearch(query: string, options: SearchOptions): Promise<SearchResults> {
   console.log(`[DEBUG] advancedSearch called with query: "${query}" and options:`, options);
   
   const cacheKey = `cache:advanced_search:${query}:${JSON.stringify(options)}`;
-  const cachedData = getCachedData<SearchResult>(cacheKey);
+  const cachedData = getCachedData<SearchResults>(cacheKey);
 
   if (cachedData) {
     console.log(`Cache hit for advanced search: ${query}`);
@@ -1567,22 +1578,24 @@ export async function advancedSearch(query: string, options: SearchOptions): Pro
     console.log(`[DEBUG] Advanced search API raw response data:`, data);
     
     // Transform the response into SearchResult format
-    const searchResult: SearchResult = {
-      words: (data.results || []).map((result: any): SearchWordResult => ({
-        id: result.id,
+    const searchResult: SearchResults = {
+      // Handle both 'results' and legacy 'words' key from API response
+      results: (data.results || data.words || []).map((result: any): SearchResultItem => ({
+        word_id: result.word_id || result.id, // Ensure this line maps id or word_id to word_id
         lemma: result.lemma,
-        normalized_lemma: result.normalized_lemma,
-        language_code: result.language_code,
-        has_baybayin: result.has_baybayin,
-        baybayin_form: result.baybayin_form,
-        romanized_form: result.romanized_form,
-        completeness_score: result.completeness_score,
-        definitions: result.definitions || []
+        lang_code: result.lang_code || result.language_code,
+        lang_name: result.lang_name || '',
+        gloss: result.gloss || '',
+        pos: result.pos || '',
+        score: result.score || 0,
+        word: result.word || null,
       })),
       page: options.page || 1,
-      perPage: options.per_page || (data.results?.length || 0), 
-      total: data.count || 0,
-      query: query 
+      // Use per_page from options, or API's limit, or fallback to results length
+      per_page: options.per_page || data.limit || (data.results || data.words || []).length,
+      // Use total or count from API response
+      total: data.total || data.count || 0,
+      query_details: data.query_details || null // Include query details if provided
     };
     
     console.log(`[DEBUG] Transformed advanced search result:`, searchResult);
@@ -1710,7 +1723,7 @@ export async function getEtymologyTree(
       // Return empty tree structure instead of throwing error
       const emptyTree: EtymologyTree = { 
         nodes: [], 
-        edges: [],
+        links: [],
         word: '',
         etymology_tree: {},
         complete: false
@@ -1719,7 +1732,7 @@ export async function getEtymologyTree(
       return emptyTree;
     }
     
-    console.log(`Etymology tree data received with ${treeData.nodes.length} nodes and ${treeData.edges?.length || 0} edges`);
+    console.log(`Etymology tree data received with ${treeData.nodes.length} nodes and ${treeData.links?.length || 0} links`);
     setCachedData(cacheKey, treeData);
     return treeData;
   } catch (error) {
@@ -1727,7 +1740,7 @@ export async function getEtymologyTree(
     // Return empty tree structure instead of throwing error
     const emptyTree: EtymologyTree = { 
       nodes: [], 
-      edges: [],
+      links: [],
       word: '',
       etymology_tree: {},
       complete: false

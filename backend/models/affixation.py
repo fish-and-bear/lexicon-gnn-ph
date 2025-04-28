@@ -94,7 +94,7 @@ class Affixation(BaseModel, BasicColumnsMixin):
             'root_word_id': self.root_word_id,
             'affixed_word_id': self.affixed_word_id,
             'affix_type': self.affix_type,
-            'sources': self.sources.split(', ') if self.sources else [],
+            'sources': self.sources,
             'metadata': self.affixation_metadata or {},
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None,

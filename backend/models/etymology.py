@@ -135,8 +135,8 @@ class Etymology(BaseModel, BasicColumnsMixin):
             'etymology_text': self.etymology_text,
             'normalized_components': self.normalized_components,
             'etymology_structure': self.etymology_structure,
-            'language_codes': self.language_codes.split(',') if self.language_codes else [],
-            'sources': self.sources.split(', ') if self.sources else [],
+            'language_codes': self.language_codes,
+            'sources': self.sources,
             'metadata': self.etymology_metadata or {},
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None

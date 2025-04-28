@@ -20,6 +20,7 @@ class WordForm(BaseModel, BasicColumnsMixin):
     tags = Column(JSONB, default=lambda: {})
     is_canonical = Column(Boolean, default=False, nullable=False)
     is_primary = Column(Boolean, default=False, nullable=False)
+    sources = Column(Text, nullable=True)
     
     # Relationships
     word = relationship('Word', back_populates='forms', lazy='selectin')
@@ -43,6 +44,7 @@ class WordForm(BaseModel, BasicColumnsMixin):
             'tags': self.tags or {},
             'is_canonical': self.is_canonical,
             'is_primary': self.is_primary,
+            'sources': self.sources,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         } 

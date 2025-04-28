@@ -1,4 +1,4 @@
-import { WordNetwork, WordInfo, Statistics, PartOfSpeech, EtymologyTree, SearchResult } from "../types";
+import { WordNetwork, WordInfo, Statistics, PartOfSpeech, EtymologyTree, SearchResults } from "../types";
 
 const CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes
 const MAX_CACHE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -12,7 +12,7 @@ interface CacheItem<T> {
   size: number;
 }
 
-export type CacheableData = WordInfo | WordNetwork | Statistics | SearchResult | EtymologyTree | PartOfSpeech[];
+export type CacheableData = WordInfo | WordNetwork | Statistics | SearchResults | EtymologyTree | PartOfSpeech[];
 
 interface CacheStats {
   totalItems: number;
@@ -175,7 +175,7 @@ function isWordNetwork(data: any): data is WordNetwork {
     data &&
     typeof data === 'object' &&
     'nodes' in data && Array.isArray(data.nodes) &&
-    'edges' in data && Array.isArray(data.edges) &&
+    'links' in data && Array.isArray(data.links) &&
     'metadata' in data && typeof data.metadata === 'object'
   );
 }
@@ -220,7 +220,7 @@ function isEtymologyTree(data: any): data is EtymologyTree {
     typeof data === 'object' &&
     'word' in data && typeof data.word === 'string' &&
     'nodes' in data && Array.isArray(data.nodes) &&
-    'edges' in data && Array.isArray(data.edges) &&
+    'links' in data && Array.isArray(data.links) &&
     'etymology_tree' in data &&
     'complete' in data
   );

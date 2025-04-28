@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import * as d3 from "d3";
 import "./WordGraph.css";
-import { WordNetwork } from "../types";
+import { WordNetwork, NetworkNode as RawNetworkNode, NetworkLink as RawNetworkLink } from "../types";
 import { useAppTheme } from "../contexts/ThemeContext";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
@@ -327,7 +327,7 @@ const WordGraph: React.FC<WordGraphProps> = ({
 
   useEffect(() => {
     if (!wordNetwork || !wordNetwork.nodes || !Array.isArray(wordNetwork.nodes) || 
-        !wordNetwork.edges || !Array.isArray(wordNetwork.edges)) {
+        !wordNetwork.links || !Array.isArray(wordNetwork.links)) {
       console.error("Invalid wordNetwork structure:", wordNetwork);
       setIsValidNetwork(false);
     } else {
@@ -336,24 +336,28 @@ const WordGraph: React.FC<WordGraphProps> = ({
   }, [wordNetwork]);
 
   const baseLinks = useMemo<{ source: string; target: string; relationship: string }[]>(() => {
-    if (!wordNetwork?.nodes || !wordNetwork.edges) return [];
-    
-    console.log("[BASE] Processing wordNetwork edges:", wordNetwork.edges.length);
-    
-    const links = wordNetwork.edges
-      .map(edge => {
-        const sourceNode = wordNetwork.nodes.find(n => n.id === edge.source);
-        const targetNode = wordNetwork.nodes.find(n => n.id === edge.target);
+    // FIX: Use .links
+    if (!wordNetwork?.nodes || !wordNetwork.links) return [];
+
+    // FIX: Use .links
+    console.log("[BASE] Processing wordNetwork links:", wordNetwork.links.length);
+
+    // FIX: Use .links
+    // FIX: Add explicit type for edge
+    const links = wordNetwork.links
+      .map((link: RawNetworkLink): { source: string; target: string; relationship: string } | null => { // Rename edge to link
+        const sourceNode = wordNetwork.nodes.find(n => n.id === link.source); // Use link.
+        const targetNode = wordNetwork.nodes.find(n => n.id === link.target); // Use link.
         
         if (!sourceNode || !targetNode) {
-          console.warn(`Could not find nodes for edge: ${edge.source} -> ${edge.target}`);
+          console.warn(`Could not find nodes for link: ${link.source} -> ${link.target}`); // Use link.
           return null;
         }
         
         return {
           source: sourceNode.label,
           target: targetNode.label,
-          relationship: edge.type
+          relationship: link.type // Use link.
         };
       })
       .filter((link): link is { source: string; target: string; relationship: string; } => link !== null);
@@ -405,10 +409,10 @@ const WordGraph: React.FC<WordGraphProps> = ({
         group: calculatedGroup,
         connections: connections, // Store connection count
         originalId: node.id,
-        language: node.language,
-        definitions: node.definitions,
-        path: node.path,
-        has_baybayin: node.has_baybayin,
+        language: node.language ?? undefined,
+        definitions: node.definitions ?? undefined,
+        path: node.path ?? undefined,
+        has_baybayin: node.has_baybayin ?? undefined,
         baybayin_form: node.baybayin_form,
         index: undefined, x: undefined, y: undefined, vx: undefined, vy: undefined, fx: undefined, fy: undefined
       };

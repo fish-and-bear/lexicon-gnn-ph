@@ -691,7 +691,7 @@ CREATE TABLE IF NOT EXISTS definitions (
     usage_notes TEXT,
     tags TEXT,
     sources TEXT,
-    metadata JSONB,
+    definition_metadata JSONB,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT definitions_unique UNIQUE (word_id, definition_text, standardized_pos_id)

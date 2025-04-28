@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
-import { Definition, WordInfo, WordForm, WordTemplate, Idiom, Affixation, Credit, BasicWord, EtymologyTree, WordSuggestion } from '../types'; // Added EtymologyTree and WordSuggestion
+import { RawDefinition, WordInfo, WordForm, WordTemplate, Affixation, Credit, BasicWord, EtymologyTree, WordSuggestion, Example, WordNetwork, NetworkLink, NetworkNode } from '../types'; // Added EtymologyTree and WordSuggestion
 // import { convertToBaybayin } from '../api/wordApi';
 import './WordDetails.css';
 // Import color utility functions needed
@@ -35,6 +35,7 @@ import Button from '@mui/material/Button';
 
 interface WordDetailsProps {
   wordData: WordInfo; // Use wordData
+  semanticNetworkData: WordNetwork | null; // Add prop for network data
   etymologyTree: EtymologyTree | null; // Use EtymologyTree type
   isLoadingEtymology: boolean;
   etymologyError: string | null;
@@ -179,6 +180,7 @@ const stripLeadingNumber = (text: string): string => {
 const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>((
   {
     wordData,
+    semanticNetworkData,
     etymologyTree,
     isLoadingEtymology,
     etymologyError,
@@ -194,6 +196,11 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   const [activeTab, setActiveTab] = useState<string>('definitions');
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
+  
+  // Import NetworkLink and NetworkNode for typing
+  // (Assuming they are exported from ../types)
+  type NetworkLink = import('../types').NetworkLink;
+  type NetworkNode = import('../types').NetworkNode;
   
   // Effect to setup audio element
   useEffect(() => {
@@ -361,10 +368,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       return <Alert severity="info">No definitions available for this word.</Alert>;
     }
 
-    const definitionsByPosThenSource: { [pos: string]: { [source: string]: Definition[] } } = {};
-    wordData.definitions.forEach((def: Definition) => {
-      const posKey = def.part_of_speech?.name_en || def.part_of_speech?.code || 'Other';
-      const sourceKey = (def.sources && def.sources.length > 0) ? def.sources[0] : 'Unknown Source'; 
+    const definitionsByPosThenSource: { [pos: string]: { [source: string]: RawDefinition[] } } = {};
+    wordData.definitions.forEach((def: RawDefinition) => {
+      // Use standardized_pos object for POS info
+      const posKey = def.standardized_pos?.name_en || def.standardized_pos?.code || def.original_pos || 'Other';
+      // Ensure def.sources is treated as string based on type
+      const sourceKey = def.sources || 'Unknown Source'; 
       if (!definitionsByPosThenSource[posKey]) {
         definitionsByPosThenSource[posKey] = {};
       }
@@ -404,7 +413,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               // Filtering logic
               const seenBaseDefinitions = new Set<string>();
               const filteredDefs = defs.filter((def) => {
-                const baseText = stripLeadingNumber(def.text);
+                // Use definition_text
+                const baseText = stripLeadingNumber(def.definition_text);
                 if (seenBaseDefinitions.has(baseText)) {
                   return false; 
                 }
@@ -417,10 +427,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               return (
               <Box key={sourceName} sx={{ mb: 2, width: '100%', maxWidth: '100%' }}>
                 <List disablePadding>
-                  {filteredDefs.map((def: Definition, index: number) => {
+                  {filteredDefs.map((def: RawDefinition, index: number) => {
                     const isLastDefinitionForSource = index === filteredDefs.length - 1;
-                    const tagalogPos = def.part_of_speech?.name_tl;
-                    const showTagalogPos = tagalogPos && tagalogPos !== posName;
+                    // Use standardized_pos object for Tagalog name
+                    const tagalogPos = def.standardized_pos?.name_tl;
+                    // Check against standardized_pos.name_en or code used for posKey
+                    const showTagalogPos = tagalogPos && tagalogPos !== (def.standardized_pos?.name_en || def.standardized_pos?.code);
 
                     return (
                     <ListItem 
@@ -445,7 +457,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           pl: 0.5, 
                           lineHeight: isMobile ? 1.5 : 1.6 // Increased lineHeight
                         }}
-                        primary={def.text}
+                        primary={def.definition_text}
                       />
 
                       {/* Display Tagalog POS if available and different */}
@@ -467,7 +479,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                       {/* Examples */}
                       {def.examples && def.examples.length > 0 && (
                         <Box sx={{ pl: 2, mb: 1 }}>
-                          {def.examples.map((example, exIndex) => (
+                          {/* Use non-null assertion if optional chaining isn't enough */} 
+                          {def.examples!.map((example: Example, exIndex: number) => ( 
                             <Typography 
                               key={exIndex} 
                               variant="body2" 
@@ -475,7 +488,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                 fontStyle: 'italic', 
                                 color: 'text.secondary',
                                 fontSize: isMobile ? '0.8rem' : '0.875rem', // Reduced font size
-                                mb: exIndex < def.examples.length - 1 ? 0.5 : 0,
+                                mb: exIndex < def.examples!.length - 1 ? 0.5 : 0,
                                 position: 'relative',
                                 pl: 3,
                                 lineHeight: isMobile ? 1.4 : 1.5, // Increased lineHeight
@@ -490,14 +503,15 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                 }
                               }}
                             >
-                              {example}
+                              {example.example_text} {/* Use example_text */} 
+                              {example.translation && ` - ${example.translation}`} {/* Show translation */} 
                             </Typography>
                           ))}
                         </Box>
                       )}
                       
                       {/* Usage notes */}
-                      {def.usage_notes && def.usage_notes.length > 0 && (
+                      {def.usage_notes && (
                         <Box sx={{ pl: 1, mb: 1 }}>
                           <Typography 
                             variant="caption" 
@@ -506,20 +520,18 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           >
                             Usage Notes:
                           </Typography>
-                          {def.usage_notes.map((note, noteIndex) => (
-                            <Typography 
-                              key={noteIndex} 
+                          {/* Render string directly, no map */} 
+                          <Typography 
                               variant="body2" 
                               sx={{ color: 'text.secondary', fontSize: isMobile ? '0.8rem' : '0.875rem' }}
                             >
-                              {note}
+                              {def.usage_notes}
                             </Typography>
-                          ))}
                         </Box>
                       )}
                       
                       {/* Definition tags */}
-                      {def.tags && def.tags.length > 0 && (
+                      {def.tags && def.tags.trim().length > 0 && (
                         <Stack 
                           direction="row" 
                           spacing={0.5} 
@@ -527,7 +539,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           flexWrap="wrap" 
                           sx={{ mt: 0.5 }}
                         >
-                          {def.tags.map((tag, tagIndex) => (
+                          {/* Split tags string and map with type */} 
+                          {def.tags.split(',').map(tag => tag.trim()).filter(tag => tag).map((tag: string, tagIndex: number) => (
                             <Chip
                               key={tagIndex}
                               label={tag}
@@ -594,49 +607,45 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     const incoming_relations = wordData.incoming_relations || [];
     const outgoing_relations = wordData.outgoing_relations || [];
     
-    // Get semantic network data safely
-    const semanticNetworkNodes = wordData.semantic_network?.nodes || [];
-    const semanticNetworkLinks = wordData.semantic_network?.links || [];
+    // Use the semanticNetworkData prop
+    const semanticNetworkNodes = semanticNetworkData?.nodes || [];
+    const semanticNetworkLinks = semanticNetworkData?.links || [];
     
-    // Enhanced fallback logic: Use semantic network if regular relations are empty OR there's an error message
-    // This handles the case where the backend returns an error due to the missing relation_data column
-    const hasError = typeof wordData.server_error === 'string' && wordData.server_error.includes('database error');
+    // Determine if semantic network fallback should be used
     const useSemanticNetwork = 
-      ((incoming_relations.length === 0 && outgoing_relations.length === 0) || hasError) && 
+      (incoming_relations.length === 0 && outgoing_relations.length === 0) && 
       semanticNetworkLinks.length > 0;
     
-    // Log the fallback status
-    if (hasError) {
-      console.log("Using semantic network fallback due to server error:", wordData.server_error);
-    }
-      
     // Helper function to create relation objects from semantic network data
-    function createRelationsFromNetwork() {
+    function createRelationsFromNetwork(): any[] { // Return type can be refined if needed
       console.log("Creating relations from semantic network as fallback");
       const mainWord = wordData.lemma;
       const relations: any[] = [];
       
-      semanticNetworkLinks.forEach(link => {
+      semanticNetworkLinks.forEach((link: NetworkLink) => { // Type link
         // Find the connected node
         const targetNode = semanticNetworkNodes.find(
-          n => n.id === (typeof link.target === 'object' ? link.target.id : link.target)
+          (n: NetworkNode) => n.id === (typeof link.target === 'object' ? link.target.id : link.target) // Type n
         );
         
         if (!targetNode) return;
         
         // Calculate degree/distance (default to 1 for direct connections)
-        const degree = link.distance || link.degree || 1;
+        // Check if link object itself has degree/distance, otherwise default to 1
+        const degree = (link as any).distance || (link as any).degree || 1; 
         
-        // Create a relation object
+        // Create a relation object mimicking standard Relation structure + degree
         relations.push({
           id: `semantic-${targetNode.id}`,
           relation_type: link.type || 'related',
-          degree: degree,
+          degree: degree, // Include degree
+          // Create a wordObj similar to target_word/source_word in Relation
           wordObj: {
             id: targetNode.id,
             lemma: targetNode.label || targetNode.word || String(targetNode.id),
             has_baybayin: targetNode.has_baybayin || false,
             baybayin_form: targetNode.baybayin_form || null
+            // Add other BasicWord fields if needed (e.g., language_code, gloss, pos)
           }
         });
       });
@@ -649,7 +658,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     const semanticRelations = useSemanticNetwork ? createRelationsFromNetwork() : [];
     
     // Check if there are any standard relations or fallback relations
-    const hasStandardRelations = (incoming_relations.length > 0 || outgoing_relations.length > 0) && !hasError;
+    const hasStandardRelations = (incoming_relations.length > 0 || outgoing_relations.length > 0);
     const hasAnyRelations = hasStandardRelations || semanticRelations.length > 0 || (wordData.root_affixations && wordData.root_affixations.length > 0) || (wordData.affixed_affixations && wordData.affixed_affixations.length > 0);
       
     if (!hasAnyRelations) {
@@ -875,13 +884,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         {/* ADDED Call to render Affixations */} 
         {renderAffixations()}
 
-        {/* Show error banner if using fallback due to server error */}
-        {hasError && (
-          <Alert severity="warning" sx={{ mb: theme.spacing(2), width: '100%' }}>
-            {wordData.server_error || 'Server database error. Using semantic network relationships as fallback.'}
-          </Alert>
-        )}
-        
         {/* Elegant relationship summary */}
         <Box 
           sx={{ 
@@ -1157,23 +1159,23 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         </Box>
         
         {/* Display completeness info if available */}
-        {wordData.data_completeness && (
+        {typeof wordData.completeness_score === 'number' && (
           <Box sx={{ mt: theme.spacing(3), pt: theme.spacing(2), borderTop: `1px solid ${theme.palette.divider}` }}>
             <Typography variant="subtitle2" sx={{ mb: theme.spacing(1) }}>
-              Data Completeness
+              Completeness Score
             </Typography>
-            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 1 }}>
-              {Object.entries(wordData.data_completeness).map(([key, value]) => (
-                <Chip
-                  key={key}
-                  label={key.replace(/_/g, ' ')}
-                  color={value ? "success" : "default"}
-                  variant={value ? "filled" : "outlined"}
-                  size="small"
-                  sx={{ justifyContent: 'flex-start' }}
-                />
-              ))}
-            </Box>
+            {/* Display the score directly */} 
+            <Chip 
+                label={`${(wordData.completeness_score * 100).toFixed(0)}%`} 
+                color="success" 
+                variant="filled"
+                size="small"
+                sx={{ justifyContent: 'flex-start' }}
+            />
+            {/* Remove iteration over old data_completeness object */}
+            {/* <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 1 }}>
+              {Object.entries(wordData.data_completeness).map(([key, value]) => (...))}
+            </Box> */}
           </Box>
         )}
       </Box>
@@ -1367,11 +1369,11 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           fontSize: isMobile ? '0.85rem' : '0.875rem'
                         }}
                       >
-                        {etym.text || etym.etymology_text}
+                        {etym.etymology_text}
                       </Typography>
                       
                       {/* Components with improved clickable styling */}
-                      {etym.components && etym.components.length > 0 && (
+                      {etym.normalized_components && etym.normalized_components.trim().length > 0 && (
                         <Box sx={{ mt: isMobile ? 0.5 : 1 }}>
                           <Typography 
                             variant="caption" 
@@ -1386,7 +1388,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                             Components:
                           </Typography>
                           <Stack direction="row" spacing={isMobile ? 0.5 : 1} useFlexGap flexWrap="wrap">
-                            {etym.components.map((comp, i) => (
+                            {/* Split normalized_components string (assume space-separated) and type comp */} 
+                            {etym.normalized_components.split(/\s+/).filter(c => c.trim()).map((comp: string, i: number) => (
                               <Chip 
                                 key={i}
                                 label={comp}
@@ -1410,7 +1413,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                       )}
                       
                       {/* Languages with distinct styling */}
-                      {etym.languages && etym.languages.length > 0 && (
+                      {etym.language_codes && etym.language_codes.trim().length > 0 && (
                         <Box sx={{ mt: 1 }}>
                           <Typography 
                             variant="caption" 
@@ -1424,7 +1427,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                             Languages:
                           </Typography>
                           <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                            {etym.languages.map((lang, i) => (
+                            {etym.language_codes.split(',').map(l => l.trim()).filter(l => l).map((lang: string, i: number) => ( // Type lang
                               <Chip 
                                 key={i}
                                 label={lang}
@@ -1443,7 +1446,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                       )}
                       
                       {/* Sources with distinctive styling */}
-                      {etym.sources && etym.sources.length > 0 && (
+                      {etym.sources && etym.sources.trim().length > 0 && (
                         <Box sx={{ mt: 1 }}>
                           <Typography 
                             variant="caption" 
@@ -1457,7 +1460,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                             Sources:
                         </Typography>
                           <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
-                            {etym.sources.map((source, i) => (
+                            {etym.sources.split(',').map(s => s.trim()).filter(s => s).map((source: string, i: number) => ( // Type source
                               <Chip 
                                 key={i}
                                 label={source}
@@ -1508,22 +1511,23 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   
   // Helper function to render the etymology tree visualization
   const renderEtymologyTreeVisualization = () => {
-    // *** ADD NULL CHECKS ***
-    if (!etymologyTree || !etymologyTree.nodes || !etymologyTree.edges) {
+    // Use links instead of edges
+    if (!etymologyTree || !etymologyTree.nodes || !etymologyTree.links) {
       // Optionally return a loading state or an informative message
       return <Alert severity="info">Etymology tree data is not available or is loading.</Alert>;
     }
   
-    // Type definitions remain the same
-    type EtymologyNode = { id: number; label: string; language?: string; [key: string]: any };
-    type EtymologyEdge = { source: number; target: number; [key: string]: any };
-    type EtymologyTreeMap = { [id: number]: EtymologyNode };
+    // Remove local EtymologyNode/Edge types, use NetworkNode/Link from import
+    // type EtymologyNode = { id: number; label: string; language?: string; [key: string]: any };
+    // type EtymologyEdge = { source: number; target: number; [key: string]: any };
+    type EtymologyTreeMap = { [id: number]: NetworkNode }; // Use NetworkNode
   
-    const renderNode = (nodeId: number, nodes: EtymologyTreeMap, edges: EtymologyEdge[], level = 0): React.ReactNode => {
+    const renderNode = (nodeId: number, nodes: EtymologyTreeMap, links: NetworkLink[], level = 0): React.ReactNode => { // Use NetworkLink
       const node = nodes[nodeId];
       if (!node) return null;
   
-      const childrenEdges = edges.filter(edge => edge.source === nodeId);
+      // Use links instead of edges
+      const childrenLinks = links.filter(link => (typeof link.source === 'number' ? link.source : link.source.id) === nodeId);
   
       return (
         <Box key={node.id} sx={{ ml: level * 2.5, mb: 1.5 }}>
@@ -1547,32 +1551,38 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               {node.label}
             </Link>
           </Paper>
-          {childrenEdges.length > 0 && (
+          {childrenLinks.length > 0 && (
             <Box sx={{ 
               mt: isMobile ? 0.5 : 1, 
               pl: isMobile ? 1.5 : 2, 
               // Refine borderLeft for visual connection
               borderLeft: `1px solid ${alpha(theme.palette.divider, isMobile ? 0.7 : 0.5)}` 
             }}>
-              {childrenEdges.map(edge => renderNode(edge.target, nodes, edges, level + 1))}
+              {/* Use links instead of edges */} 
+              {childrenLinks.map(link => renderNode( // Use link variable
+                  (typeof link.target === 'number' ? link.target : link.target.id), // Get target ID from link
+                  nodes, 
+                  links, // Pass links down recursively
+                  level + 1))}
             </Box>
           )}
         </Box>
       );
     };
     
-    // *** Use etymologyTree safely after null check ***
+    // Use links instead of edges, type edge as NetworkLink
     const rootNodes = etymologyTree.nodes.filter(node => 
-      !etymologyTree.edges.some(edge => edge.target === node.id)
+      !etymologyTree.links!.some((link: NetworkLink) => (typeof link.target === 'number' ? link.target : link.target.id) === node.id)
     );
     const nodeMap = etymologyTree.nodes.reduce((map, node) => {
-      map[node.id] = node;
+      map[node.id] = node; // node should be compatible with NetworkNode now
       return map;
     }, {} as EtymologyTreeMap);
     
     return (
       <Box sx={{ fontFamily: 'system-ui, sans-serif' }}>
-        {rootNodes.map(rootNode => renderNode(rootNode.id, nodeMap, etymologyTree.edges))}
+        {/* Use links instead of edges */} 
+        {rootNodes.map(rootNode => renderNode(rootNode.id, nodeMap, etymologyTree.links!))}
       </Box>
     );
   };
@@ -1581,14 +1591,16 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   const renderSourcesInfoTab = () => {
      const credits = wordData.credits || [];
      const sourceInfo = wordData.source_info || {};
-     const completeness = wordData.data_completeness || {};
+     // Use completeness_score instead of data_completeness
+     const score = wordData.completeness_score; 
 
      const hasCredits = credits.length > 0;
      const hasSourceInfo = Object.keys(sourceInfo).length > 0;
-     const hasCompleteness = Object.keys(completeness).length > 0;
+     // Check if score is a valid number
+     const hasScore = typeof score === 'number' && !isNaN(score);
      const hasEntryInfo = wordData.created_at || wordData.updated_at;
 
-     if (!hasCredits && !hasSourceInfo && !hasCompleteness && !hasEntryInfo) {
+     if (!hasCredits && !hasSourceInfo && !hasScore && !hasEntryInfo) {
        return <Alert severity="info" sx={{ m: 2 }}>No source, metadata, or entry information available.</Alert>;
      }
 
@@ -1639,28 +1651,24 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
          {/* Source Info JSON */}
          {renderJsonData('Source Info', sourceInfo)}
 
-         {/* Completeness Info */}
-         {hasCompleteness && (
+         {/* Completeness Info - Use score */} 
+         {hasScore && (
             <Box sx={{ mt: 3 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Data Completeness</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 1 }}>
-                {Object.entries(completeness).map(([key, value]) => (
-                  <Chip
-                    key={key}
-                    label={key.replace(/_/g, ' ')}
-                    color={value ? "success" : "default"}
-                    variant={value ? "filled" : "outlined"}
-                    size="small"
-                    sx={{ justifyContent: 'flex-start' }}
-                  />
-                ))}
-              </Box>
+              <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Completeness Score</Typography>
+              <Chip 
+                label={`${(score * 100).toFixed(0)}%`} 
+                color="success" 
+                variant="filled"
+                size="small"
+                sx={{ justifyContent: 'flex-start' }}
+              />
+              {/* Remove old data_completeness iteration */}
             </Box>
          )}
 
          {/* Entry Timestamps */}
          {hasEntryInfo && (
-           <Box sx={{ mt: 3, pt: 2, borderTop: hasCredits || hasSourceInfo || hasCompleteness ? `1px solid ${theme.palette.divider}` : 'none' }}>
+           <Box sx={{ mt: 3, pt: 2, borderTop: hasCredits || hasSourceInfo || hasScore ? `1px solid ${theme.palette.divider}` : 'none' }}>
              <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Entry Information</Typography>
              <Stack spacing={1}>
                {wordData.created_at && (

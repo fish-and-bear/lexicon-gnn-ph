@@ -44,27 +44,6 @@ class WordTemplate(BaseModel, BasicColumnsMixin):
                  return None
         return value
     
-    @validates('template_name')
-    def validate_template_name(self, key: str, value: str) -> str:
-        if not value:
-            raise ValueError("Template name cannot be empty.")
-        if len(value) > 255:
-            raise ValueError("Template name exceeds 255 characters.")
-        return value.strip()
-    
-    @validates('args')
-    def validate_args(self, key: str, value: Any) -> Dict:
-        if value is None:
-            return {}
-        if isinstance(value, str):
-            try:
-                value = json.loads(value)
-            except json.JSONDecodeError:
-                raise ValueError("Invalid JSON format for args")
-        if not isinstance(value, dict):
-            raise ValueError("Args must be a dictionary")
-        return value
-    
     def __repr__(self) -> str:
         return f'<WordTemplate {self.id}: {self.template_name} for word {self.word_id}>'
     

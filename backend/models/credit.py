@@ -58,7 +58,7 @@ class Credit(BaseModel, BasicColumnsMixin):
             'id': self.id,
             'word_id': self.word_id,
             'credit': self.credit,
-            'sources': self.sources.split(', ') if self.sources else [],
+            'sources': self.sources,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }

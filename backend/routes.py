@@ -4016,20 +4016,17 @@ def _fetch_word_details(word_id,
                         category_results = db.session.execute(text(sql_categories), {"ids": definition_ids}).fetchall()
                         
                         # Define allowed kinds (consider moving this to a config or enum)
-                        allowed_kinds = {'semantic', 'usage', 'dialect', 'grammar', 'topic', 'register', 'style', 'etymology', 'custom', None} # Added None as a valid kind
+                        # allowed_kinds = {'semantic', 'usage', 'dialect', 'grammar', 'topic', 'register', 'style', 'etymology', 'custom', None} # Added None as a valid kind
                         
                         for c_row in category_results:
-                            # Validate category_kind before creating the object
+                            # No need to validate category_kind - all values are valid
                             kind = c_row.category_kind
-                            if kind not in allowed_kinds:
-                                logger.warning(f"Invalid category kind '{kind}' found for definition_id {c_row.definition_id} (category ID {c_row.id}). Skipping category.")
-                                continue # Skip this category
-                                
+                            
                             category = DefinitionCategory()
                             category.id = c_row.id
                             category.definition_id = c_row.definition_id
                             category.category_name = c_row.category_name
-                            category.category_kind = kind # Assign validated kind
+                            category.category_kind = kind
 
                             if c_row.definition_id not in categories_by_def_id:
                                 categories_by_def_id[c_row.definition_id] = []
@@ -4044,7 +4041,7 @@ def _fetch_word_details(word_id,
                     try:
                         # Modified SQL to only select columns that definitely exist
                         sql_links = """
-                        SELECT id, definition_id, link_text, is_wikipedia -- Select is_wikipedia instead of is_external
+                        SELECT id, definition_id, link_text, tags, link_metadata, sources
                         FROM definition_links
                         WHERE definition_id = ANY(:ids)
                         """
@@ -4054,12 +4051,10 @@ def _fetch_word_details(word_id,
                             link.id = l_row.id
                             link.definition_id = l_row.definition_id
                             link.link_text = l_row.link_text
-                            link.target_url = None # Set to None as column doesn't exist
-                            link.display_text = None # Default value as column removed
-                            link.is_wikipedia = l_row.is_wikipedia # Use is_wikipedia
-                            # Assign default values for removed fields
-                            link.tags = {}
-                            link.link_metadata = {}
+                            link.tags = l_row.tags
+                            link.link_metadata = l_row.link_metadata
+                            link.sources = l_row.sources
+                            # No need to set target_url, display_text, is_external as they're properties
 
                             if l_row.definition_id not in links_by_def_id:
                                 links_by_def_id[l_row.definition_id] = []
@@ -4202,7 +4197,7 @@ def _fetch_word_details(word_id,
         if include_pronunciations:
             try:
                 sql_pron = """
-                SELECT id, type, value, tags, pronunciation_metadata, sources
+                SELECT id, type, value, tags, pronunciation_metadata
                 FROM pronunciations 
                 WHERE word_id = :word_id
                 """
@@ -4212,9 +4207,9 @@ def _fetch_word_details(word_id,
                     try:
                         pronunciation = Pronunciation()
                         pronunciation.id = p_row.id
-                        # Validate type
-                        pronunciation.type = p_row.type if p_row.type in ['ipa', 'x-sampa', 'pinyin', 'jyutping', 'romaji', 'audio', 'respelling', 'phonemic', 'rhyme'] else 'ipa'
+                        pronunciation.type = p_row.type if p_row.type in ['ipa', 'x-sampa', 'pinyin', 'jyutping', 'romaji', 'audio', 'respelling', 'phonemic'] else 'respelling'
                         pronunciation.value = p_row.value
+                        pronunciation.tags = p_row.tags if isinstance(p_row.tags, dict) else {}
                         
                         # --- Corrected Tags Handling ---
                         tags_value = p_row.tags
@@ -4249,7 +4244,7 @@ def _fetch_word_details(word_id,
             try:
                 # Outgoing relations
                 sql_out_rel = """
-                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type,
+                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type, r.sources,
                        w.id as target_id, w.lemma as target_lemma, w.language_code as target_language_code,
                        w.has_baybayin as target_has_baybayin, w.baybayin_form as target_baybayin_form
                   FROM relations r
@@ -4259,42 +4254,31 @@ def _fetch_word_details(word_id,
                 out_rel_result = db.session.execute(text(sql_out_rel), {"word_id": word_id}).fetchall()
                 word.outgoing_relations = []
                 for r in out_rel_result:
-                    try: # Added inner try-except
+                    try:
                         relation = Relation()
-                        # Manually set attributes to avoid issues with potential missing columns
-                        relation.id = getattr(r, 'id', None)
-                        relation.from_word_id = getattr(r, 'from_word_id', None)
-                        relation.to_word_id = getattr(r, 'to_word_id', None)
-                        relation.relation_type = getattr(r, 'relation_type', None)
-                        relation.relation_data = {} # Default to empty dict as column doesn't exist
-
-                        target_word = Word()
-                        target_word.id = getattr(r, 'target_id', None)
-                        target_word.lemma = getattr(r, 'target_lemma', None)
-                        target_word.language_code = getattr(r, 'target_language_code', None)
-                        target_word.has_baybayin = getattr(r, 'target_has_baybayin', None)
+                        relation.id = r.id
+                        relation.from_word_id = r.from_word_id
+                        relation.to_word_id = r.to_word_id
+                        relation.relation_type = r.relation_type
+                        relation.sources = r.sources
                         
-                        # Safe handling for baybayin form in relations
-                        try:
-                            baybayin_form = getattr(r, 'target_baybayin_form', None)
-                            if baybayin_form and len(baybayin_form.strip()) > 0:
-                                target_word.baybayin_form = baybayin_form
-                            else:
-                                target_word.baybayin_form = None
-                                target_word.has_baybayin = False
-                        except ValueError:
-                            # Invalid baybayin form, set to None
-                            target_word.baybayin_form = None
-                            target_word.has_baybayin = False
+                        # Create target word
+                        target = Word()
+                        target.id = r.target_id
+                        target.lemma = r.target_lemma
+                        target.language_code = r.target_language_code
+                        target.has_baybayin = r.target_has_baybayin
+                        target.baybayin_form = r.target_baybayin_form
+                        relation.target_word = target
                         
-                        relation.target_word = target_word
                         word.outgoing_relations.append(relation)
                     except Exception as inner_e:
-                        logger.warning(f"Error processing outgoing relation ID {getattr(r, 'id', 'UNKNOWN')} for word {word_id}: {inner_e}")
-
-                # Incoming relations
+                        logger.warning(f"Error processing outgoing relation for word {word_id}: {inner_e}")
+                        continue
+                        
+                # Incoming relations - similar update
                 sql_in_rel = """
-                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type,
+                SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type, r.sources,
                        w.id as source_id, w.lemma as source_lemma, w.language_code as source_language_code,
                        w.has_baybayin as source_has_baybayin, w.baybayin_form as source_baybayin_form
                   FROM relations r
@@ -4304,29 +4288,36 @@ def _fetch_word_details(word_id,
                 in_rel_result = db.session.execute(text(sql_in_rel), {"word_id": word_id}).fetchall()
                 word.incoming_relations = []
                 for r in in_rel_result:
-                    try: # Added inner try-except
+                    try:
                         relation = Relation()
-                        relation.id = getattr(r, 'id', None)
-                        relation.from_word_id = getattr(r, 'from_word_id', None)
-                        relation.to_word_id = getattr(r, 'to_word_id', None)
-                        relation.relation_type = getattr(r, 'relation_type', None)
-                        relation.relation_data = {} # Default to empty dict as column doesn't exist
-
-                        source_word = Word()
-                        source_word.id = getattr(r, 'source_id', None)
-                        source_word.lemma = r.source_lemma
-                        source_word.language_code = r.source_language_code
-                        source_word.has_baybayin = r.source_has_baybayin
-                        source_word.baybayin_form = r.source_baybayin_form
-                        relation.source_word = source_word
+                        relation.id = r.id
+                        relation.from_word_id = r.from_word_id
+                        relation.to_word_id = r.to_word_id
+                        relation.relation_type = r.relation_type
+                        relation.sources = r.sources
+                        
+                        # Create source word
+                        source = Word()
+                        source.id = r.source_id
+                        source.lemma = r.source_lemma
+                        source.language_code = r.source_language_code
+                        source.has_baybayin = r.source_has_baybayin
+                        source.baybayin_form = r.source_baybayin_form
+                        relation.source_word = source
+                        
                         word.incoming_relations.append(relation)
                     except Exception as inner_e:
-                         logger.warning(f"Error processing incoming relation ID {r.id} for word {word_id}: {inner_e}")
-
+                        logger.warning(f"Error processing incoming relation for word {word_id}: {inner_e}")
+                        continue
             except Exception as e:
                 logger.error(f"Error loading relations for word {word_id}: {e}", exc_info=False)
+                # Rollback just this query to keep transaction alive
+                db.session.rollback()
                 word.outgoing_relations = []
                 word.incoming_relations = []
+        else:
+            word.outgoing_relations = []
+            word.incoming_relations = []
 
         # Load root word if requested and exists
         if include_root and word.root_word_id:
@@ -4532,6 +4523,29 @@ def _fetch_word_details(word_id,
         # Preserve original error context for easier debugging
         raise Exception(f"Failed to retrieve details for word ID {word_id}") from e
 
+    # Fix for examples collection initialization
+    try:
+        if word and include_definitions:
+            for definition in word.definitions:
+                # Ensure examples is always a list, even if None
+                if not hasattr(definition, 'examples') or definition.examples is None:
+                    definition.examples = []
+    except Exception as ex:
+        logger.warning(f"Error ensuring examples is a list for word {word_id}: {ex}")
+    
+    # Process relations safely
+    try:
+        if word and include_relations:
+            # Process outgoing relations
+            for relation in word.outgoing_relations:
+                relation.process_relation()
+            
+            # Process incoming relations
+            for relation in word.incoming_relations:
+                relation.process_relation()
+    except Exception as ex:
+        logger.warning(f"Error processing relations for word {word_id}: {ex}")
+
 # Add Baybayin-specific endpoints
 @bp.route("/baybayin/search", methods=["GET"])
 def search_baybayin():
@@ -4631,106 +4645,54 @@ def search_baybayin():
 
 @bp.route("/baybayin/statistics", methods=["GET"])
 def get_baybayin_statistics():
-    """
-    Get detailed statistics about Baybayin usage in the dictionary.
-    Includes character frequency, language distribution, and completeness metrics.
-    """
-    API_REQUESTS.labels(endpoint="get_baybayin_statistics", method="GET").inc()
-    start_time = time.time()
-    
+    """Get statistics about Baybayin script usage in the dictionary."""
     try:
-        # 1. Overall Baybayin statistics
-        sql_overview = """
-        SELECT 
-            COUNT(*) as total_words,
-            SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) as with_baybayin,
-            SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as percentage
+        # Get total words with Baybayin
+        total_words_query = """
+        SELECT COUNT(*) as total_words,
+               SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) as with_baybayin,
+               (SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) as percentage
         FROM words
         """
         
-        # 2. Baybayin by language
-        sql_by_language = """
-        SELECT 
-            language_code,
-            COUNT(*) as total_words,
-            SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) as with_baybayin,
-            SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as percentage
+        total = db.session.execute(text(total_words_query)).fetchone()
+        
+        # Instead of using completeness_score which doesn't exist, use simpler statistics
+        sql_language = """
+        SELECT language_code, 
+               COUNT(*) as total,
+               SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) as with_baybayin,
+               (SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) as percentage
         FROM words
         GROUP BY language_code
-        ORDER BY with_baybayin DESC
+        HAVING COUNT(*) > 50 AND SUM(CASE WHEN has_baybayin = TRUE THEN 1 ELSE 0 END) > 0
+        ORDER BY percentage DESC
+        LIMIT 10
         """
         
-        # 3. Baybayin character frequency
-        sql_char_frequency = """
-        WITH characters AS (
-            SELECT w.id, w.language_code, 
-                   regexp_split_to_table(w.baybayin_form, '') as character
-            FROM words w
-            WHERE w.has_baybayin = TRUE AND w.baybayin_form IS NOT NULL
-        )
-        SELECT 
-            character, 
-            COUNT(*) as frequency,
-            language_code
-        FROM characters
-        WHERE character ~ '[\u1700-\u171F]'
-        GROUP BY character, language_code
-        ORDER BY frequency DESC
-        """
+        by_language = db.session.execute(text(sql_language)).fetchall()
         
-        # 4. Average completeness score for words with Baybayin
-        sql_completeness = """
-        SELECT 
-            AVG(completeness_score) as avg_score_with_baybayin,
-            (SELECT AVG(completeness_score) FROM words WHERE has_baybayin = FALSE) as avg_score_without_baybayin
-        FROM words
-        WHERE has_baybayin = TRUE
-        """
+        # Skip completeness score queries as the column doesn't exist
         
-        # Execute all queries
-        overview = db.session.execute(text(sql_overview)).fetchone()
-        by_language = db.session.execute(text(sql_by_language)).fetchall()
-        char_frequency = db.session.execute(text(sql_char_frequency)).fetchall()
-        completeness = db.session.execute(text(sql_completeness)).fetchone()
-        
-        # Format results
         result = {
-            "overview": {
-                "total_words": overview.total_words,
-                "with_baybayin": overview.with_baybayin,
-                "percentage": float(overview.percentage) if overview.percentage else 0
-            },
-            "by_language": [
+            'total_words': total[0] if total else 0,
+            'with_baybayin': total[1] if total else 0,
+            'percentage': round(total[2], 2) if total and total[2] else 0,
+            'by_language': [
                 {
-                    "language_code": row.language_code,
-                    "total_words": row.total_words,
-                    "with_baybayin": row.with_baybayin,
-                    "percentage": float(row.percentage) if row.percentage else 0
-                }
-                for row in by_language
+                    'language_code': row[0],
+                    'total': row[1],
+                    'with_baybayin': row[2],
+                    'percentage': round(row[3], 2)
+                } for row in by_language
             ],
-            "character_frequency": {
-                row.language_code: {
-                    row.character: row.frequency
-                    for char_row in char_frequency if char_row.language_code == row.language_code
-                }
-                for row in by_language if row.with_baybayin > 0
-            },
-            "completeness": {
-                "with_baybayin": float(completeness.avg_score_with_baybayin) if completeness.avg_score_with_baybayin else 0,
-                "without_baybayin": float(completeness.avg_score_without_baybayin) if completeness.avg_score_without_baybayin else 0
-            }
+            'timestamp': datetime.now().isoformat()
         }
         
-        execution_time = time.time() - start_time
-        REQUEST_LATENCY.labels(endpoint="get_baybayin_statistics").observe(execution_time)
-        
         return jsonify(result)
-        
     except Exception as e:
-        logger.error(f"Error generating Baybayin statistics: {str(e)}", exc_info=True)
-        API_ERRORS.labels(endpoint="get_baybayin_statistics", error_type=type(e).__name__).inc()
-        return jsonify({"error": "An error occurred while generating statistics"}), 500
+        logger.error(f"Error generating Baybayin statistics: {e}", exc_info=True)
+        return jsonify({'error': str(e)}), 500
 
 
 @bp.route("/baybayin/convert", methods=["POST"])
@@ -5114,4 +5076,190 @@ def api_suggestions():
         logger = current_app.logger if current_app else logging.getLogger(__name__)
         logger.error(f"Error fetching suggestions for query '{query}': {e}", exc_info=True)
         return jsonify({"error": "Failed to fetch suggestions"}), 500
+        
+@bp.route("/words/<path:word>/definitions", methods=["GET"])
+def get_word_definitions(word: str):
+    """Get definitions for a specific word."""
+    try:
+        from sqlalchemy import desc
+        
+        logger.info(f"Fetching definitions for word: {word}")
+        
+        # Try to find the word
+        normalized_word = normalize_query(word)
+        
+        # Check if it's just "word/definitions" pattern by removing "definitions" part
+        if normalized_word.endswith('definitions'):
+            possible_word = normalized_word[:-len('definitions')]
+            word_obj = Word.query.filter(
+                func.lower(Word.normalized_lemma) == possible_word
+            ).first()
+        else:
+            word_obj = Word.query.filter(
+                func.lower(Word.normalized_lemma) == normalized_word
+            ).first()
+        
+        if not word_obj:
+            logger.warning(f"Word '{word}' (normalized: '{normalized_word}') not found.")
+            return jsonify({
+                "error": "Word not found",
+                "message": f"No word found matching '{word}'",
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }), 404
+            
+        # Get definitions with joined data
+        definitions = Definition.query.filter_by(word_id=word_obj.id).order_by(
+            Definition.standardized_pos_id,
+            desc("created_at") # Use string for compatibility with missing popularity_score
+        ).options(
+            joinedload(Definition.standardized_pos),
+            joinedload(Definition.categories),
+            joinedload(Definition.links),
+            joinedload(Definition.examples)
+        ).all()
+        
+        # Convert to dict format - handle missing definition_metadata
+        definitions_data = []
+        for definition in definitions:
+            try:
+                def_dict = definition.to_dict()
+                definitions_data.append(def_dict)
+            except Exception as e:
+                # If to_dict fails due to missing column, build manually
+                logger.warning(f"Error converting definition {definition.id} to dict: {str(e)}")
+                def_dict = {
+                    'id': definition.id,
+                    'word_id': definition.word_id,
+                    'definition_text': definition.definition_text,
+                    'original_pos': definition.original_pos,
+                    'standardized_pos_id': definition.standardized_pos_id,
+                    'usage_notes': definition.usage_notes,
+                    'tags': definition.tags,
+                    'sources': definition.sources,
+                    'created_at': definition.created_at.isoformat() if definition.created_at else None,
+                    'updated_at': definition.updated_at.isoformat() if definition.updated_at else None,
+                }
+                
+                # Add standardized_pos if available
+                if definition.standardized_pos:
+                    def_dict['standardized_pos'] = {
+                        'id': definition.standardized_pos.id,
+                        'code': definition.standardized_pos.code,
+                        'name_en': definition.standardized_pos.name_en,
+                        'name_tl': definition.standardized_pos.name_tl,
+                    }
+                
+                # Add examples if available
+                if hasattr(definition, 'examples') and definition.examples:
+                    def_dict['examples'] = [
+                        {
+                            'id': ex.id,
+                            'example_text': ex.example_text,
+                            'translation': ex.translation
+                        } for ex in definition.examples
+                    ]
+                    
+                definitions_data.append(def_dict)
+        
+        return jsonify({
+            "word_id": word_obj.id,
+            "lemma": word_obj.lemma,
+            "definitions": definitions_data,
+            "count": len(definitions_data),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Error retrieving definitions for word '{word}': {str(e)}")
+        return jsonify({
+            "error": "Internal server error",
+            "message": "An error occurred while retrieving definitions",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 500
+
+@bp.route("/definitions", methods=["GET"])
+def get_definitions():
+    """Get definitions based on query parameters."""
+    try:
+        word_id = request.args.get('word_id', type=int)
+        definition_id = request.args.get('id', type=int)
+        pos_code = request.args.get('pos', type=str)
+        limit = request.args.get('limit', 50, type=int)
+        offset = request.args.get('offset', 0, type=int)
+        
+        # Build query
+        query = Definition.query
+        
+        # Apply filters
+        if word_id:
+            query = query.filter_by(word_id=word_id)
+        if definition_id:
+            query = query.filter_by(id=definition_id)
+        if pos_code:
+            # Join with part of speech to filter by code
+            pos = PartOfSpeech.query.filter_by(code=pos_code.lower()).first()
+            if pos:
+                query = query.filter_by(standardized_pos_id=pos.id)
+        
+        # Apply pagination
+        total = query.count()
+        query = query.order_by(Definition.id).limit(limit).offset(offset)
+        
+        # Include related data
+        query = query.options(
+            joinedload(Definition.standardized_pos),
+            joinedload(Definition.categories),
+            joinedload(Definition.links),
+            joinedload(Definition.examples)
+        )
+        
+        definitions = query.all()
+        
+        # Convert to dict format - handle missing definition_metadata
+        definitions_data = []
+        for definition in definitions:
+            try:
+                def_dict = definition.to_dict()
+                definitions_data.append(def_dict)
+            except Exception as e:
+                # If to_dict fails due to missing column, build manually
+                logger.warning(f"Error converting definition {definition.id} to dict: {str(e)}")
+                def_dict = {
+                    'id': definition.id,
+                    'word_id': definition.word_id,
+                    'definition_text': definition.definition_text,
+                    'original_pos': definition.original_pos,
+                    'standardized_pos_id': definition.standardized_pos_id,
+                    'usage_notes': definition.usage_notes,
+                    'tags': definition.tags,
+                    'sources': definition.sources,
+                    'created_at': definition.created_at.isoformat() if definition.created_at else None,
+                    'updated_at': definition.updated_at.isoformat() if definition.updated_at else None,
+                }
+                
+                # Add standardized_pos if available
+                if definition.standardized_pos:
+                    def_dict['standardized_pos'] = {
+                        'id': definition.standardized_pos.id,
+                        'code': definition.standardized_pos.code,
+                        'name_en': definition.standardized_pos.name_en,
+                        'name_tl': definition.standardized_pos.name_tl,
+                    }
+                
+                definitions_data.append(def_dict)
+        
+        return jsonify({
+            "definitions": definitions_data,
+            "count": len(definitions_data),
+            "total": total,
+            "limit": limit,
+            "offset": offset,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Error retrieving definitions: {str(e)}")
+        return jsonify({
+            "error": "Internal server error",
+            "message": "An error occurred while retrieving definitions",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 500
         

@@ -4,13 +4,17 @@ Relation model definition.
 
 from backend.database import db
 from datetime import datetime
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 from .base_model import BaseModel
 from .mixins.basic_columns import BasicColumnsMixin
 import json
 from enum import Enum
 from sqlalchemy.dialects.postgresql import JSONB
 from typing import Dict, Any, Optional
+import logging
+
+# Add a logger
+logger = logging.getLogger(__name__)
 
 class RelationType(Enum):
     """Enumeration of valid relation types."""
@@ -52,7 +56,7 @@ class Relation(BaseModel, BasicColumnsMixin):
     to_word_id = db.Column(db.Integer, db.ForeignKey('words.id', ondelete='CASCADE'), nullable=False, index=True)
     relation_type = db.Column(db.String(64), nullable=False, index=True)
     sources = db.Column(db.Text)
-    relation_metadata = db.Column(JSONB, default=lambda: {})
+    # relation_metadata = db.Column(JSONB, default=lambda: {})  # This column doesn't exist in the database
     
     # Relationships
     source_word = db.relationship('Word', foreign_keys=[from_word_id], back_populates='outgoing_relations', lazy='selectin')
@@ -63,9 +67,39 @@ class Relation(BaseModel, BasicColumnsMixin):
         db.Index('idx_relations_from', 'from_word_id'),
         db.Index('idx_relations_to', 'to_word_id'),
         db.Index('idx_relations_type', 'relation_type'),
-        db.Index('idx_relations_metadata', 'relation_metadata', postgresql_using='gin'),
-        db.Index('idx_relations_metadata_strength', db.text("(relation_metadata->>'strength')"))
+        # Remove these indexes as they reference a column that doesn't exist
+        # db.Index('idx_relations_metadata', 'relation_metadata', postgresql_using='gin'),
+        # db.Index('idx_relations_metadata_strength', db.text("(relation_metadata->>'strength')"))
     )
+    
+    # Add instance variable to store relation_metadata for the current session
+    _relation_metadata = {}
+    
+    @property
+    def relation_metadata(self):
+        """Compatibility property for the missing column."""
+        # Return instance variable if set
+        if hasattr(self, '_relation_metadata'):
+            return self._relation_metadata
+        
+        # Try to parse from sources
+        if self.sources and self.sources.startswith('{'):
+            try:
+                return json.loads(self.sources)
+            except:
+                pass
+        return {}
+    
+    @relation_metadata.setter
+    def relation_metadata(self, value):
+        """Store relation_metadata in instance variable."""
+        if not isinstance(value, dict) and value is not None:
+            value = {}
+        self._relation_metadata = value
+        
+        # Optionally serialize to sources as a fallback
+        if value and isinstance(value, dict):
+            self.sources = json.dumps(value)
     
     @validates('relation_type')
     def validate_relation_type(self, key, value):
@@ -108,7 +142,7 @@ class Relation(BaseModel, BasicColumnsMixin):
             'relation_type': self.relation_type,
             'from_word_id': self.from_word_id,
             'to_word_id': self.to_word_id,
-            'sources': self.sources.split(', ') if self.sources else [],
+            'sources': self.sources,
             'relation_data': self.relation_data or {},
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
@@ -160,32 +194,34 @@ class Relation(BaseModel, BasicColumnsMixin):
             from_word_id=self.to_word_id,
             to_word_id=self.from_word_id,
             relation_type=self.get_inverse_type(),
-            sources=self.sources,
-            relation_metadata=self.relation_metadata.copy() if self.relation_metadata else {}
+            sources=self.sources
         )
     
     # Add property for relation_data compatibility
     @property
     def relation_data(self):
-        """Provide compatibility for relation_data when the column doesn't exist."""
-        if hasattr(self, 'relation_metadata'):
-            return self.relation_metadata
-        # Fallback to empty dict or parse from sources
-        if self.sources and self.sources.startswith('{'):
-            try:
-                return json.loads(self.sources)
-            except:
-                pass
-        return {}
+        """Provide compatibility for relation_data."""
+        return self.relation_metadata
         
     @relation_data.setter
     def relation_data(self, value):
-        """Set relation data appropriately based on what's available."""
-        if hasattr(self, 'relation_metadata'):
-            self.relation_metadata = value
-        else:
-            # Store in instance variable for this session
-            self._relation_data = value
-            # Optionally serialize to sources as a fallback
-            if value and isinstance(value, dict):
-                self.sources = json.dumps(value) 
+        """Set relation data by updating relation_metadata."""
+        self.relation_metadata = value
+    
+    # Fix language code validation issues
+    def process_relation(self):
+        """Process relation data safely with fallbacks for missing information."""
+        try:
+            if hasattr(self, 'source_word') and self.source_word:
+                if not self.source_word.language_code or not isinstance(self.source_word.language_code, str):
+                    # Set a default language code if missing or invalid
+                    logger.warning(f"Missing language code for source_word {self.from_word_id}, using 'tl' as default")
+                    self.source_word.language_code = 'tl'
+            
+            if hasattr(self, 'target_word') and self.target_word:
+                if not self.target_word.language_code or not isinstance(self.target_word.language_code, str):
+                    # Set a default language code if missing or invalid
+                    logger.warning(f"Missing language code for target_word {self.to_word_id}, using 'tl' as default")
+                    self.target_word.language_code = 'tl'
+        except Exception as ex:
+            logger.warning(f"Error during relation processing: {ex}") 

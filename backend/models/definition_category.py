@@ -20,6 +20,7 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
     category_name = db.Column(db.Text, nullable=False)
     category_kind = db.Column(db.Text, nullable=True)
     parents = db.Column(JSONB, default=lambda: [])
+    sources = db.Column(db.Text, nullable=True)
     
     # Relationships
     definition = db.relationship('Definition', back_populates='categories', lazy='selectin')
@@ -38,10 +39,14 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
         'dialect': 'Dialectal or regional category',
         'grammar': 'Grammatical category',
         'topic': 'Topic or subject area',
+        'topical': 'Topic or subject area',
         'register': 'Language register',
         'style': 'Style or formality level',
         'etymology': 'Etymology-based category',
-        'custom': 'Custom category'
+        'custom': 'Custom category',
+        'lifeform': 'Biological organism classification',
+        'other': 'Other category type'
+        # All values should be considered valid
     }
     
     @validates('category_name')
@@ -64,8 +69,9 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
         if not isinstance(value, str):
             raise ValueError("Category kind must be a string")
         value = value.strip().lower()
-        if value and value not in self.VALID_KINDS:
-            raise ValueError(f"Invalid category kind. Must be one of: {', '.join(self.VALID_KINDS.keys())}")
+        # Allow any value, removing the validation against VALID_KINDS
+        # if value and value not in self.VALID_KINDS:
+        #     raise ValueError(f"Invalid category kind. Must be one of: {', '.join(self.VALID_KINDS.keys())}")
         return value
     
     @validates('parents')
@@ -93,6 +99,7 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
             'category_name': self.category_name,
             'category_kind': self.category_kind,
             'parents': self.parents or [],
+            'sources': self.sources,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }

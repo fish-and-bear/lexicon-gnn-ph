@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { searchWords } from '../api/wordApi';
-import { SearchOptions, SearchResult } from '../types';
+import { SearchOptions, SearchResults, SearchResultItem } from '../types';
 
-interface SearchResults {
-  words: { id: number; word: string; }[];
+// Define the specific return type for this hook
+interface UseWordSearchReturn {
+  words: { id: number; word: string }[];
   total: number;
   page: number;
   perPage: number;
@@ -15,7 +16,7 @@ export function useWordSearch(initialQuery: string = '') {
   const [page, setPage] = useState(1);
   const perPage = 20;
 
-  const { data, isLoading, error } = useQuery<SearchResults, Error>(
+  const { data, isLoading, error } = useQuery<UseWordSearchReturn, Error>(
     ['wordSearch', query, page],
     async () => {
       const apiResult = await searchWords(query, {
@@ -24,14 +25,14 @@ export function useWordSearch(initialQuery: string = '') {
         exclude_baybayin: true,
       });
       
-      const mappedData: SearchResults = {
-        words: (apiResult.words || []).map(wordResult => ({
-          id: wordResult.id,
+      const mappedData: UseWordSearchReturn = {
+        words: (apiResult.results || []).map((wordResult: SearchResultItem) => ({
+          id: wordResult.word_id,
           word: wordResult.lemma
         })),
         total: apiResult.total || 0,
         page: apiResult.page || page,
-        perPage: apiResult.perPage || perPage
+        perPage: apiResult.per_page || perPage
       };
       
       return mappedData;
@@ -41,6 +42,9 @@ export function useWordSearch(initialQuery: string = '') {
       enabled: query.length > 1
     }
   );
+
+  // Update the type annotation for the destructured data variable
+  const typedData: UseWordSearchReturn | undefined = data;
 
   const handleSearch = useCallback((newQuery: string) => {
     setQuery(newQuery);
@@ -52,7 +56,7 @@ export function useWordSearch(initialQuery: string = '') {
     setQuery: handleSearch,
     page,
     setPage,
-    data,
+    data: typedData, // Return the correctly typed data
     isLoading,
     error,
   };

@@ -6,17 +6,24 @@ This package contains all SQLAlchemy models for the dictionary database.
 from backend.database import db
 
 # Import all models - handle possible import errors gracefully
+# Ensure models are imported in an order that respects foreign key dependencies
+# Import reference tables first (like PartOfSpeech)
 try:
+    # Import PartOfSpeech first (it has no dependencies)
+    from .part_of_speech import PartOfSpeech
+    
+    # Then import core models
     from .word import Word
     from .definition import Definition
     from .etymology import Etymology
     from .relation import Relation
     from .affixation import Affixation
-    from .part_of_speech import PartOfSpeech
     from .pronunciation import Pronunciation
     from .credit import Credit
     from .word_form import WordForm
     from .word_template import WordTemplate 
+    
+    # Then import models linking definitions/words to others
     from .definition_category import DefinitionCategory
     from .definition_link import DefinitionLink
     from .definition_relation import DefinitionRelation
@@ -30,7 +37,7 @@ except ImportError as e:
     class Etymology: pass
     class Relation: pass
     class Affixation: pass
-    class PartOfSpeech: pass
+    class PartOfSpeech: pass # Keep stub definition here too
     class Pronunciation: pass
     class Credit: pass
     class WordForm: pass
@@ -42,6 +49,9 @@ except ImportError as e:
 
 # Export all models
 __all__ = [
+    # Reference models
+    'PartOfSpeech', # List POS first
+    
     # Core models
     'Word',
     'Definition',
@@ -56,8 +66,6 @@ __all__ = [
     'DefinitionRelation',
     'DefinitionLink',
     
-    # Reference models
-    'PartOfSpeech',
     'DefinitionCategory',
     
     # Utility models

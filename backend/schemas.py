@@ -19,6 +19,11 @@ class MetadataField(fields.Dict):
             return {}
 
         try:
+            # Check if it's SQLAlchemy MetaData object - handle this first
+            if hasattr(value, '__class__') and value.__class__.__name__ == 'MetaData':
+                logger.debug(f"Detected SQLAlchemy MetaData object for field '{attr}', returning empty dict")
+                return {}
+                
             # Priority 1: If it's already a dict, try creating a new dict from it
             # This validates that it behaves like a standard dict for the constructor.
             if isinstance(value, dict):
@@ -58,6 +63,11 @@ class MetadataField(fields.Dict):
             return {}
         
         try:
+            # Check if it's SQLAlchemy MetaData object
+            if hasattr(value, '__class__') and value.__class__.__name__ == 'MetaData':
+                logger.debug(f"Detected SQLAlchemy MetaData object for field '{attr}', returning empty dict")
+                return {}
+                
             if isinstance(value, dict):
                 processed_value = dict(value) # Ensure it's a standard dict
             elif isinstance(value, str) and value.strip():
@@ -127,6 +137,7 @@ class DefinitionCategorySchema(Schema):
     category_name = fields.String(required=True)
     category_kind = fields.String(allow_none=True) # Matches DB (TEXT)
     parents = fields.List(fields.String(), allow_none=True) # Matches DB (JSONB assumed to store list of strings)
+    sources = fields.String(allow_none=True) # Added sources field (TEXT)
     # Removed tags, description, and category_metadata as they are not in the final DB schema
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
@@ -140,7 +151,7 @@ class ExampleSchema(Schema):
     reference = fields.String(allow_none=True)
     example_type = fields.String(dump_default="example")
     metadata = MetadataField(dump_default={})
-    sources = fields.List(fields.String(), dump_default=[])
+    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -170,63 +181,44 @@ class DefinitionSchema(Schema):
     standardized_pos_id = fields.Integer()
     standardized_pos = fields.Nested("PartOfSpeechSchema", dump_only=True)
     notes = fields.String()
-    examples = fields.List(fields.Nested(ExampleSchema), dump_default=[])
-    examples_text = fields.String(allow_none=True)
+    examples = fields.Nested(ExampleSchema, many=True, dump_only=True)
     usage_notes = fields.String()
     cultural_notes = fields.String()
     etymology_notes = fields.String()
     scientific_name = fields.String()
     verified = fields.Boolean(dump_default=False)
     verification_notes = fields.String()
-    tags = fields.List(fields.String(), dump_default=[])
-    metadata = MetadataField(dump_default={})
+    tags = fields.String(allow_none=True)
+    # Handle missing definition_metadata column gracefully
+    definition_metadata = fields.Dict(dump_default={}, load_default={})
     popularity_score = fields.Float(dump_default=0.0)
     links = fields.List(fields.Nested(DefinitionLinkSchema), dump_default=[])
     categories = fields.List(fields.Nested(DefinitionCategorySchema), dump_default=[])
-    sources = fields.List(fields.String(), dump_default=[])
+    sources = fields.String(allow_none=True)
     
     # Track timestamps
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
     
     @pre_dump
-    def process_sources(self, data, **kwargs):
-        """Convert sources from string to list if needed."""
-        # Use getattr to safely access sources, returning None if not present
-        source_value = getattr(data, 'sources', None)
-        if source_value and isinstance(source_value, str):
-            # Split by comma and strip whitespace
-            data._sources_list = [s.strip() for s in source_value.split(',') if s.strip()]
-        elif isinstance(source_value, list):
-            # If it's already a list (e.g., from previous processing), use it directly
-            data._sources_list = source_value
-        else:
-            # Handle None or other types by defaulting to empty list
-            data._sources_list = []
+    def ensure_metadata(self, data, **kwargs):
+        """Ensure definition_metadata is available before serialization."""
+        # If the object doesn't have definition_metadata attribute or it's None,
+        # add an empty dict to prevent serialization errors
+        if not hasattr(data, 'definition_metadata') or data.definition_metadata is None:
+            data.definition_metadata = {}
         return data
-
+    
     @post_dump(pass_many=True)
     def format_standardized_pos(self, data, many, **kwargs):
         """Format the standardized part of speech into a string representation."""
         if many:
             for item in data:
-                # Assign the processed list to the final output field
-                item['sources'] = getattr(item, '_sources_list', [])
-                # Remove the temporary attribute if it exists
-                if hasattr(item, '_sources_list'):
-                    delattr(item, '_sources_list')
-                    
                 if item.get('standardized_pos'):
                     pos = item['standardized_pos']
                     item['standardized_pos_code'] = pos.get('code')
                     item['standardized_pos_name'] = pos.get('name')
         else:
-            # Assign the processed list to the final output field
-            data['sources'] = getattr(data, '_sources_list', [])
-            # Remove the temporary attribute if it exists
-            if hasattr(data, '_sources_list'):
-                delattr(data, '_sources_list')
-
             if data.get('standardized_pos'):
                 pos = data['standardized_pos']
                 data['standardized_pos_code'] = pos.get('code')
@@ -249,7 +241,6 @@ class PronunciationType(Schema):
     value = fields.String(required=True)
     tags = MetadataField(dump_default={})  # Changed to JSONB
     pronunciation_metadata = MetadataField(dump_default={}) # Includes source info
-    sources = fields.String(allow_none=True) # Added sources field (TEXT)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -275,12 +266,6 @@ class PronunciationType(Schema):
         if hasattr(data, '_processed_tags_list'):
             delattr(data, '_processed_tags_list') # Clean up temp attribute
         
-        # Optionally extract sources from metadata if needed for API response
-        # metadata = data.get('pronunciation_metadata', {})
-        # data['sources'] = metadata.get('sources', [])
-        # Ensure the added 'sources' text field is included if it exists
-        if hasattr(data, 'sources'):
-             data['sources'] = data.sources # Use the direct attribute value
         return data
 
 class RelationSchema(Schema):
@@ -289,7 +274,7 @@ class RelationSchema(Schema):
     from_word_id = fields.Integer(required=True)
     to_word_id = fields.Integer(required=True)
     relation_type = fields.String(required=True)
-    sources = fields.List(fields.String(), dump_only=True) # Kept as List[String] as model's to_dict handles conversion
+    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
     metadata = MetadataField(dump_default={}) # Added metadata field
     
     # Fields for nested data (dump_only)
@@ -301,23 +286,9 @@ class RelationSchema(Schema):
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
-    @pre_dump
-    def process_sources(self, data, **kwargs):
-        """Convert sources from string to list if needed."""
-        # Use getattr to safely access sources, handle None
-        source_value = getattr(data, 'sources', None)
-        if source_value and isinstance(source_value, str):
-            # Split by comma and strip whitespace
-            data._sources_list = [s.strip() for s in source_value.split(',') if s.strip()]
-        elif isinstance(source_value, list):
-            data._sources_list = source_value
-        else:
-            data._sources_list = []
-        return data
-
     @post_dump(pass_many=True)
     def format_output(self, data, many, **kwargs):
-        """Ensure sources is a list and extract target_gloss."""
+        """Extract target_gloss."""
         if many:
             for item in data:
                 self._format_single_item(item)
@@ -326,12 +297,7 @@ class RelationSchema(Schema):
         return data
 
     def _format_single_item(self, item_data):
-        """Helper to format sources and extract gloss for a single item."""
-        # Format sources
-        item_data['sources'] = getattr(item_data, '_sources_list', [])
-        if hasattr(item_data, '_sources_list'):
-            delattr(item_data, '_sources_list') # Clean up temporary attribute
-
+        """Helper to extract gloss for a single item."""
         # Extract target_gloss from metadata - CHECK IF METADATA EXISTS
         metadata = item_data.get('metadata', {})
         item_data['target_gloss'] = metadata.get('target_gloss', None) # Get gloss, default to None
@@ -342,25 +308,11 @@ class AffixationSchema(Schema):
     root_word_id = fields.Integer(required=True)
     affixed_word_id = fields.Integer(required=True)
     affix_type = fields.String(required=True)
-    sources = fields.List(fields.String(), dump_default=[])
+    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
     root_word = fields.Nested("WordSimpleSchema", dump_only=True)
     affixed_word = fields.Nested("WordSimpleSchema", dump_only=True)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
-    
-    @pre_dump
-    def process_sources(self, data, **kwargs):
-        """Convert sources from string to list if needed."""
-        if hasattr(data, 'sources') and isinstance(data.sources, str):
-            data._sources_list = data.sources.split(', ') if data.sources else []
-        return data
-    
-    @post_dump
-    def format_sources(self, data, **kwargs):
-        """Ensure sources is a list in output."""
-        if isinstance(data.get('sources'), str):
-            data['sources'] = data['sources'].split(', ') if data['sources'] else []
-        return data
 
 class EtymologySchema(Schema):
     """Schema for etymologies."""
@@ -369,56 +321,19 @@ class EtymologySchema(Schema):
     etymology_text = fields.String(required=True)
     normalized_components = fields.String()
     etymology_structure = fields.String()
-    language_codes = fields.List(fields.String(), dump_default=[])
-    sources = fields.List(fields.String(), dump_default=[])
+    language_codes = fields.String(allow_none=True) # Changed to String to match DB TEXT
+    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
-    
-    @pre_dump
-    def process_fields(self, data, **kwargs):
-        """Preprocess language_codes and sources from strings to lists."""
-        if hasattr(data, 'language_codes') and isinstance(data.language_codes, str):
-            data._language_codes_list = data.language_codes.split(',') if data.language_codes else []
-            
-        if hasattr(data, 'sources') and isinstance(data.sources, str):
-            data._sources_list = data.sources.split(', ') if data.sources else []
-        return data
-    
-    @post_dump
-    def format_fields(self, data, **kwargs):
-        """Ensure fields are properly formatted in output."""
-        # Format language_codes as a list
-        if isinstance(data.get('language_codes'), str):
-            data['language_codes'] = data['language_codes'].split(',') if data['language_codes'] else []
-            
-        # Format sources as a list
-        if isinstance(data.get('sources'), str):
-            data['sources'] = data['sources'].split(', ') if data['sources'] else []
-            
-        return data
 
 class CreditSchema(Schema):
     """Schema for credits."""
     id = fields.Integer(dump_only=True)
     word_id = fields.Integer(required=True)
     credit = fields.String(required=True)
-    sources = fields.List(fields.String(), dump_default=[])
+    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
-    
-    @pre_dump
-    def process_sources(self, data, **kwargs):
-        """Convert sources from string to list if needed."""
-        if hasattr(data, 'sources') and isinstance(data.sources, str):
-            data._sources_list = data.sources.split(', ') if data.sources else []
-        return data
-    
-    @post_dump
-    def format_sources(self, data, **kwargs):
-        """Ensure sources is a list in output."""
-        if isinstance(data.get('sources'), str):
-            data['sources'] = data['sources'].split(', ') if data['sources'] else []
-        return data
 
 class DefinitionRelationSchema(Schema):
     """Schema for definition relations."""
@@ -442,6 +357,7 @@ class WordFormSchema(Schema):
     is_canonical = fields.Boolean(dump_default=False)
     is_primary = fields.Boolean(dump_default=False)
     tags = MetadataField(dump_default={})
+    sources = fields.String(allow_none=True) # Added sources field (TEXT)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -487,7 +403,7 @@ class WordSchema(Schema):
     root_word_id = fields.Integer(allow_none=True)
     is_root = fields.Boolean(dump_only=True)
     preferred_spelling = fields.String(allow_none=True)
-    tags = fields.String(allow_none=True)
+    tags = fields.String(allow_none=True) # Changed to String to match DB TEXT
     idioms = MetadataField(dump_default={})
     pronunciation_data = MetadataField(dump_default={})
     source_info = MetadataField(dump_default={})

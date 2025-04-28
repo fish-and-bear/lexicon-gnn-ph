@@ -3,7 +3,7 @@ import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
 import { useAppTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
-import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchWordResult, Relation, WordSuggestion, BasicWord } from "../types";
+import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchResultItem, Relation, WordSuggestion, BasicWord } from "../types";
 import unidecode from "unidecode";
 import { 
   fetchWordNetwork, 
@@ -64,7 +64,7 @@ const WordExplorer: React.FC = () => {
   type HistoryEntry = { identifier: string; lemma: string; depth: number; breadth: number };
   const [wordHistory, setWordHistory] = useState<HistoryEntry[]>([]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState<number>(-1);
-  const [searchResults, setSearchResults] = useState<SearchWordResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState<boolean>(false);
   const [apiConnected, setApiConnected] = useState<boolean | null>(null);
@@ -168,9 +168,9 @@ const WordExplorer: React.FC = () => {
         cluster_threshold: 0.3
       });
       
-      if (data && data.nodes && data.edges) {
+      if (data && data.nodes && data.links) {
         console.log('Word network data received:', data);
-        console.log(`Network has ${data.nodes.length} nodes and ${data.edges.length} edges`);
+        console.log(`Network has ${data.nodes.length} nodes and ${data.links.length} links`);
         setWordNetwork(data);
         
         if (wordData && wordData.id) {
@@ -182,15 +182,15 @@ const WordExplorer: React.FC = () => {
             const incomingRelations: Relation[] = [];
             const outgoingRelations: Relation[] = [];
             
-            data.edges.forEach(edge => {
-              const sourceNode = data.nodes.find(n => n.id === edge.source);
-              const targetNode = data.nodes.find(n => n.id === edge.target);
+            data.links.forEach(link => {
+              const sourceNode = data.nodes.find(n => n.id === link.source);
+              const targetNode = data.nodes.find(n => n.id === link.target);
               
               if (sourceNode && targetNode) {
                 if (targetNode.id === mainNode.id) {
                   incomingRelations.push({
                     id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
+                    relation_type: link.type,
                     source_word: {
                       id: Number(sourceNode.id) || 0,
                       lemma: sourceNode.word || sourceNode.label,
@@ -202,7 +202,7 @@ const WordExplorer: React.FC = () => {
                 else if (sourceNode.id === mainNode.id) {
                   outgoingRelations.push({
                     id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
+                    relation_type: link.type,
                     target_word: {
                       id: Number(targetNode.id) || 0,
                       lemma: targetNode.word || targetNode.label,
@@ -334,11 +334,11 @@ const WordExplorer: React.FC = () => {
                 language: '' // Search all languages in fallback
               });
 
-              if (searchResults.words && searchResults.words.length > 0) {
+              if (searchResults.results && searchResults.results.length > 0) {
                 console.log(`Fallback search successful`);
-                const firstResult = searchResults.words[0];
+                const firstResult = searchResults.results[0];
                 // Fetch details using the ID from search result
-                wordData = await fetchWordDetails(`id:${firstResult.id}`);
+                wordData = await fetchWordDetails(`id:${firstResult.word_id}`);
                 fallbackToSearch = false; // Success
               } else {
                 // If fallback search finds nothing, throw the original error
@@ -576,7 +576,7 @@ const WordExplorer: React.FC = () => {
       // Fetch network data (don't await)
       fetchWordNetworkData(networkIdentifier, depth, breadth)
         .then(networkData => {
-          if (networkData && networkData.nodes && networkData.edges) {
+          if (networkData && networkData.nodes && networkData.links) {
             setWordNetwork(networkData);
           }
         })
@@ -669,7 +669,7 @@ const WordExplorer: React.FC = () => {
         setWordNetwork(networkData);
         
         // Sync network relations with word data
-        if (networkData && networkData.nodes && networkData.edges && wordData) {
+        if (networkData && networkData.nodes && networkData.links && wordData) {
           const mainNode = networkData.nodes.find(node => 
             node.type === 'main' || node.word === detailsIdentifier || node.label === detailsIdentifier
           );
@@ -678,15 +678,15 @@ const WordExplorer: React.FC = () => {
             const incomingRelations: Relation[] = [];
             const outgoingRelations: Relation[] = [];
             
-            networkData.edges.forEach(edge => {
-              const sourceNode = networkData.nodes.find(n => n.id === edge.source);
-              const targetNode = networkData.nodes.find(n => n.id === edge.target);
+            networkData.links.forEach(link => {
+              const sourceNode = networkData.nodes.find(n => n.id === link.source);
+              const targetNode = networkData.nodes.find(n => n.id === link.target);
               
               if (sourceNode && targetNode) {
                 if (targetNode.id === mainNode.id) {
                   incomingRelations.push({
                     id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
+                    relation_type: link.type,
                     source_word: {
                       id: Number(sourceNode.id) || 0,
                       lemma: sourceNode.word || sourceNode.label,
@@ -698,7 +698,7 @@ const WordExplorer: React.FC = () => {
                 else if (sourceNode.id === mainNode.id) {
                   outgoingRelations.push({
                     id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
+                    relation_type: link.type,
                     target_word: {
                       id: Number(targetNode.id) || 0,
                       lemma: targetNode.word || targetNode.label,
@@ -720,11 +720,6 @@ const WordExplorer: React.FC = () => {
               ...wordData,
               incoming_relations: incomingRelations.length > 0 ? incomingRelations : wordData.incoming_relations,
               outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations,
-              semantic_network: {
-                nodes: networkData.nodes || [],
-                links: networkData.edges || [],
-                mainWord: detailsIdentifier
-              }
             };
             
             setWordData(updatedWordData);
@@ -800,7 +795,7 @@ const WordExplorer: React.FC = () => {
         setWordNetwork(networkData);
         
         // Sync network relations with word data
-        if (networkData && networkData.nodes && networkData.edges && wordData) {
+        if (networkData && networkData.nodes && networkData.links && wordData) {
           const mainNode = networkData.nodes.find(node => 
             node.type === 'main' || node.word === detailsIdentifier || node.label === detailsIdentifier
           );
@@ -809,15 +804,15 @@ const WordExplorer: React.FC = () => {
             const incomingRelations: Relation[] = [];
             const outgoingRelations: Relation[] = [];
             
-            networkData.edges.forEach(edge => {
-              const sourceNode = networkData.nodes.find(n => n.id === edge.source);
-              const targetNode = networkData.nodes.find(n => n.id === edge.target);
+            networkData.links.forEach(link => {
+              const sourceNode = networkData.nodes.find(n => n.id === link.source);
+              const targetNode = networkData.nodes.find(n => n.id === link.target);
               
               if (sourceNode && targetNode) {
                 if (targetNode.id === mainNode.id) {
                   incomingRelations.push({
                     id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
+                    relation_type: link.type,
                     source_word: {
                       id: Number(sourceNode.id) || 0,
                       lemma: sourceNode.word || sourceNode.label,
@@ -829,7 +824,7 @@ const WordExplorer: React.FC = () => {
                 else if (sourceNode.id === mainNode.id) {
                   outgoingRelations.push({
                     id: Math.floor(Math.random() * 1000000),
-                    relation_type: edge.type,
+                    relation_type: link.type,
                     target_word: {
                       id: Number(targetNode.id) || 0,
                       lemma: targetNode.word || targetNode.label,
@@ -851,11 +846,6 @@ const WordExplorer: React.FC = () => {
               ...wordData,
               incoming_relations: incomingRelations.length > 0 ? incomingRelations : wordData.incoming_relations,
               outgoing_relations: outgoingRelations.length > 0 ? outgoingRelations : wordData.outgoing_relations,
-              semantic_network: {
-                nodes: networkData.nodes || [],
-                links: networkData.edges || [],
-                mainWord: detailsIdentifier
-              }
             };
             
             setWordData(updatedWordData);
@@ -1022,23 +1012,6 @@ const WordExplorer: React.FC = () => {
       console.error('Error reading saved API endpoint from localStorage on mount:', e);
     }
   }, []);
-
-  // Synchronize wordNetwork with wordData
-  useEffect(() => {
-    if (wordNetwork && wordData) {
-      setWordData(prev => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          semantic_network: {
-            nodes: wordNetwork.nodes || [],
-            links: wordNetwork.edges || [],
-            mainWord: prev.lemma
-          }
-        };
-      });
-    }
-  }, [wordNetwork, wordData?.id]);
 
   const muiTheme = useMuiTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md')); // Check for mobile/tablet
@@ -1572,6 +1545,7 @@ const WordExplorer: React.FC = () => {
                      <WordDetails
                        wordData={wordData}
                        isLoading={isLoadingDetails}
+                       semanticNetworkData={wordNetwork}
                        etymologyTree={etymologyTree}
                        isLoadingEtymology={isLoadingEtymology}
                        etymologyError={etymologyError}
