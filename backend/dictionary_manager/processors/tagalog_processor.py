@@ -233,10 +233,10 @@ def _process_single_tagalog_word_entry(
                     # Use a sensible default relationship like RELATED or DERIVED_FROM
                     relations_batch.append(
                         {
-                            "word_id": word_id,
-                            "related_word": related_word.strip(),
-                            "rel_type": "derived_from",  # Assume terms are sources
-                            "source_identifier": source_identifier,
+                            "from_word": word_id,  # Changed from "word_id" to "from_word"
+                            "to_word": related_word.strip(),  # Changed from "related_word" to "to_word"
+                            "relation_type": "derived_from",  # FIXED: Changed from rel_type to relation_type
+                            "source": source_identifier,  # FIXED: Changed from source_identifier to source
                             "metadata": (
                                 {"context": "etymology", "lang": rel_lang}
                                 if rel_lang
@@ -252,10 +252,10 @@ def _process_single_tagalog_word_entry(
         # Assume derivative is a word derived FROM the current word
         relations_batch.append(
             {
-                "word_id": word_id,  # Current word
-                "related_word": derivative.strip(),  # The derived word
-                "rel_type": "root_of",  # Current word is root_of the derivative
-                "source_identifier": source_identifier,
+                "from_word": word_id,  # Changed from "word_id" to "from_word"
+                "to_word": derivative.strip(),  # Changed from "related_word" to "to_word"
+                "relation_type": "root_of",  # FIXED: Changed from rel_type to relation_type
+                "source": source_identifier,  # FIXED: Changed from source_identifier to source
                 "metadata": {"context": "derivative"},
                 "def_id": None,
             }
@@ -323,9 +323,9 @@ def _process_single_tagalog_word_entry(
                 word_id,
                 definition_text,
                 part_of_speech=pos_code_to_use,
-                source_identifier=source_identifier,
                 usage_notes=usage_notes_str if usage_notes_str else None,
                 metadata=metadata_dict if metadata_dict else None,
+                sources=source_identifier,  # Changed from source_identifier to sources
             )
 
             if not definition_id:
@@ -370,16 +370,16 @@ def _process_single_tagalog_word_entry(
                 for ref_text in references:
                     if ref_text and isinstance(ref_text, str) and ref_text.strip():
                          # Add to relations batch (treat as related term?)
-                         relations_batch.append(
-                             {
-                                 "word_id": word_id,
-                                 "related_word": ref_text.strip(),
-                                 "rel_type": "related", # Or maybe cross_reference?
-                                 "source_identifier": source_identifier,
-                                 "metadata": {"context": "reference"},
-                                 "def_id": definition_id, # Link to this definition
-                             }
-                         )
+                        relations_batch.append(
+                            {
+                                "from_word": word_id,  # Changed from "word_id" to "from_word"
+                                "to_word": ref_text.strip(),  # Changed from "related_word" to "to_word"
+                                "relation_type": "related", # FIXED: Changed from rel_type to relation_type
+                                "source": source_identifier, # FIXED: Changed from source_identifier to source
+                                "metadata": {"context": "reference"},
+                                "def_id": definition_id, # Link to this definition
+                            }
+                        )
 
             # --- Process Sense Domains ---
             # Add sense domains to definition tags or metadata if needed
@@ -598,4 +598,4 @@ def process_tagalog_words(
     logger.info(f"Finished processing {source_identifier}. Processed: {stats['processed']}, Errors: {stats['errors']}, Skipped: {stats['skipped']}")
     if error_types:
         stats["error_details"] = error_types
-    return stats 
+    return stats

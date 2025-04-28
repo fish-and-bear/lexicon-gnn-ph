@@ -1,227 +1,4 @@
 {
-  "definition_categories": {
-    "comment": null,
-    "columns": [
-      {
-        "name": "id",
-        "type": "integer",
-        "nullable": false,
-        "default": "nextval('definition_categories_id_seq'::regclass)",
-        "primary_key": true,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "definition_id",
-        "type": "integer",
-        "nullable": true,
-        "default": null,
-        "primary_key": false,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "category_name",
-        "type": "text",
-        "nullable": false,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "category_kind",
-        "type": "text",
-        "nullable": true,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "parents",
-        "type": "jsonb",
-        "nullable": true,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "created_at",
-        "type": "timestamp without time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      },
-      {
-        "name": "updated_at",
-        "type": "timestamp without time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      }
-    ],
-    "constraints": [
-      {
-        "name": "definition_categories_definition_id_category_name_key",
-        "type": "UNIQUE",
-        "columns": [
-          "category_name",
-          "definition_id"
-        ]
-      },
-      {
-        "name": "definition_categories_pkey",
-        "type": "PRIMARY KEY",
-        "columns": [
-          "id"
-        ]
-      }
-    ],
-    "indexes": [
-      {
-        "name": "definition_categories_definition_id_category_name_key",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
-      },
-      {
-        "name": "definition_categories_definition_id_category_name_key",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
-      },
-      {
-        "name": "definition_categories_definition_id_category_name_key",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
-      },
-      {
-        "name": "definition_categories_definition_id_category_name_key",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
-      },
-      {
-        "name": "definition_categories_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
-      },
-      {
-        "name": "definition_categories_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
-      },
-      {
-        "name": "definition_categories_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
-      },
-      {
-        "name": "definition_categories_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
-      },
-      {
-        "name": "idx_def_categories_def",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
-      },
-      {
-        "name": "idx_def_categories_def",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
-      },
-      {
-        "name": "idx_def_categories_def",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
-      },
-      {
-        "name": "idx_def_categories_def",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
-      },
-      {
-        "name": "idx_def_categories_name",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
-      },
-      {
-        "name": "idx_def_categories_name",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
-      },
-      {
-        "name": "idx_def_categories_name",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
-      },
-      {
-        "name": "idx_def_categories_name",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_categories"
-        ],
-        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
-      }
-    ]
-  },
   "languages": {
     "comment": null,
     "columns": [
@@ -318,15 +95,6 @@
     "indexes": [
       {
         "name": "idx_languages_code",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.languages"
-        ],
-        "definition": "CREATE INDEX idx_languages_code ON public.languages USING btree (code)"
-      },
-      {
-        "name": "idx_languages_code",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -344,6 +112,24 @@
         "definition": "CREATE UNIQUE INDEX languages_code_key ON public.languages USING btree (code)"
       },
       {
+        "name": "idx_languages_code",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.languages"
+        ],
+        "definition": "CREATE INDEX idx_languages_code ON public.languages USING btree (code)"
+      },
+      {
+        "name": "languages_code_key",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.languages"
+        ],
+        "definition": "CREATE INDEX idx_languages_code ON public.languages USING btree (code)"
+      },
+      {
         "name": "languages_code_key",
         "unique": true,
         "method": "btree",
@@ -362,24 +148,6 @@
         "definition": "CREATE UNIQUE INDEX languages_code_key ON public.languages USING btree (code)"
       },
       {
-        "name": "languages_code_key",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.languages"
-        ],
-        "definition": "CREATE INDEX idx_languages_code ON public.languages USING btree (code)"
-      },
-      {
-        "name": "languages_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.languages"
-        ],
-        "definition": "CREATE INDEX idx_languages_code ON public.languages USING btree (code)"
-      },
-      {
         "name": "languages_pkey",
         "unique": true,
         "method": "btree",
@@ -396,786 +164,15 @@
           "public.languages"
         ],
         "definition": "CREATE UNIQUE INDEX languages_pkey ON public.languages USING btree (id)"
-      }
-    ]
-  },
-  "word_forms": {
-    "comment": null,
-    "columns": [
-      {
-        "name": "id",
-        "type": "integer",
-        "nullable": false,
-        "default": "nextval('word_forms_id_seq'::regclass)",
-        "primary_key": true,
-        "precision": 32,
-        "scale": 0
       },
       {
-        "name": "word_id",
-        "type": "integer",
-        "nullable": true,
-        "default": null,
-        "primary_key": false,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "form",
-        "type": "text",
-        "nullable": false,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "is_canonical",
-        "type": "boolean",
-        "nullable": true,
-        "default": "false",
-        "primary_key": false
-      },
-      {
-        "name": "is_primary",
-        "type": "boolean",
-        "nullable": true,
-        "default": "false",
-        "primary_key": false
-      },
-      {
-        "name": "tags",
-        "type": "jsonb",
-        "nullable": true,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "created_at",
-        "type": "timestamp without time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      },
-      {
-        "name": "updated_at",
-        "type": "timestamp without time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      }
-    ],
-    "constraints": [
-      {
-        "name": "word_forms_pkey",
-        "type": "PRIMARY KEY",
-        "columns": [
-          "id"
-        ]
-      },
-      {
-        "name": "word_forms_word_id_form_key",
-        "type": "UNIQUE",
-        "columns": [
-          "form",
-          "word_id"
-        ]
-      }
-    ],
-    "indexes": [
-      {
-        "name": "idx_word_forms_form",
+        "name": "languages_pkey",
         "unique": false,
         "method": "btree",
         "columns": [
-          "public.word_forms"
+          "public.languages"
         ],
-        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
-      },
-      {
-        "name": "idx_word_forms_form",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
-      },
-      {
-        "name": "idx_word_forms_form",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
-      },
-      {
-        "name": "idx_word_forms_form",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
-      },
-      {
-        "name": "idx_word_forms_word",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
-      },
-      {
-        "name": "idx_word_forms_word",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
-      },
-      {
-        "name": "idx_word_forms_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
-      },
-      {
-        "name": "idx_word_forms_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
-      },
-      {
-        "name": "word_forms_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
-      },
-      {
-        "name": "word_forms_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
-      },
-      {
-        "name": "word_forms_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
-      },
-      {
-        "name": "word_forms_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
-      },
-      {
-        "name": "word_forms_word_id_form_key",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
-      },
-      {
-        "name": "word_forms_word_id_form_key",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
-      },
-      {
-        "name": "word_forms_word_id_form_key",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
-      },
-      {
-        "name": "word_forms_word_id_form_key",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_forms"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
-      }
-    ]
-  },
-  "word_templates": {
-    "comment": null,
-    "columns": [
-      {
-        "name": "id",
-        "type": "integer",
-        "nullable": false,
-        "default": "nextval('word_templates_id_seq'::regclass)",
-        "primary_key": true,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "word_id",
-        "type": "integer",
-        "nullable": true,
-        "default": null,
-        "primary_key": false,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "template_name",
-        "type": "text",
-        "nullable": false,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "args",
-        "type": "jsonb",
-        "nullable": true,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "expansion",
-        "type": "text",
-        "nullable": true,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "created_at",
-        "type": "timestamp without time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      },
-      {
-        "name": "updated_at",
-        "type": "timestamp without time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      }
-    ],
-    "constraints": [
-      {
-        "name": "word_templates_pkey",
-        "type": "PRIMARY KEY",
-        "columns": [
-          "id"
-        ]
-      },
-      {
-        "name": "word_templates_word_id_template_name_key",
-        "type": "UNIQUE",
-        "columns": [
-          "template_name",
-          "word_id"
-        ]
-      }
-    ],
-    "indexes": [
-      {
-        "name": "idx_word_templates_name",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
-      },
-      {
-        "name": "idx_word_templates_name",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
-      },
-      {
-        "name": "idx_word_templates_name",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
-      },
-      {
-        "name": "idx_word_templates_name",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
-      },
-      {
-        "name": "idx_word_templates_word",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
-      },
-      {
-        "name": "idx_word_templates_word",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
-      },
-      {
-        "name": "idx_word_templates_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
-      },
-      {
-        "name": "idx_word_templates_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
-      },
-      {
-        "name": "word_templates_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
-      },
-      {
-        "name": "word_templates_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
-      },
-      {
-        "name": "word_templates_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
-      },
-      {
-        "name": "word_templates_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
-      },
-      {
-        "name": "word_templates_word_id_template_name_key",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
-      },
-      {
-        "name": "word_templates_word_id_template_name_key",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
-      },
-      {
-        "name": "word_templates_word_id_template_name_key",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
-      },
-      {
-        "name": "word_templates_word_id_template_name_key",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.word_templates"
-        ],
-        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
-      }
-    ]
-  },
-  "definition_links": {
-    "comment": null,
-    "columns": [
-      {
-        "name": "id",
-        "type": "integer",
-        "nullable": false,
-        "default": "nextval('definition_links_id_seq'::regclass)",
-        "primary_key": true,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "definition_id",
-        "type": "integer",
-        "nullable": true,
-        "default": null,
-        "primary_key": false,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "link_text",
-        "type": "text",
-        "nullable": false,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "link_target",
-        "type": "text",
-        "nullable": false,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "is_wikipedia",
-        "type": "boolean",
-        "nullable": true,
-        "default": "false",
-        "primary_key": false
-      },
-      {
-        "name": "created_at",
-        "type": "timestamp without time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      },
-      {
-        "name": "updated_at",
-        "type": "timestamp without time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      }
-    ],
-    "constraints": [
-      {
-        "name": "definition_links_definition_id_link_text_link_target_key",
-        "type": "UNIQUE",
-        "columns": [
-          "definition_id",
-          "link_target",
-          "link_text"
-        ]
-      },
-      {
-        "name": "definition_links_pkey",
-        "type": "PRIMARY KEY",
-        "columns": [
-          "id"
-        ]
-      }
-    ],
-    "indexes": [
-      {
-        "name": "definition_links_definition_id_link_text_link_target_key",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_links_definition_id_link_text_link_target_key ON public.definition_links USING btree (definition_id, link_text, link_target)"
-      },
-      {
-        "name": "definition_links_definition_id_link_text_link_target_key",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_links_pkey ON public.definition_links USING btree (id)"
-      },
-      {
-        "name": "definition_links_definition_id_link_text_link_target_key",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE INDEX idx_def_links_def ON public.definition_links USING btree (definition_id)"
-      },
-      {
-        "name": "definition_links_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE INDEX idx_def_links_def ON public.definition_links USING btree (definition_id)"
-      },
-      {
-        "name": "definition_links_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_links_definition_id_link_text_link_target_key ON public.definition_links USING btree (definition_id, link_text, link_target)"
-      },
-      {
-        "name": "definition_links_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_links_pkey ON public.definition_links USING btree (id)"
-      },
-      {
-        "name": "idx_def_links_def",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_links_pkey ON public.definition_links USING btree (id)"
-      },
-      {
-        "name": "idx_def_links_def",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_links_definition_id_link_text_link_target_key ON public.definition_links USING btree (definition_id, link_text, link_target)"
-      },
-      {
-        "name": "idx_def_links_def",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_links"
-        ],
-        "definition": "CREATE INDEX idx_def_links_def ON public.definition_links USING btree (definition_id)"
-      }
-    ]
-  },
-  "credits": {
-    "comment": null,
-    "columns": [
-      {
-        "name": "id",
-        "type": "integer",
-        "nullable": false,
-        "default": "nextval('credits_id_seq'::regclass)",
-        "primary_key": true,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "word_id",
-        "type": "integer",
-        "nullable": false,
-        "default": null,
-        "primary_key": false,
-        "precision": 32,
-        "scale": 0
-      },
-      {
-        "name": "credit",
-        "type": "text",
-        "nullable": false,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "sources",
-        "type": "text",
-        "nullable": true,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "created_at",
-        "type": "timestamp with time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      },
-      {
-        "name": "updated_at",
-        "type": "timestamp with time zone",
-        "nullable": true,
-        "default": "CURRENT_TIMESTAMP",
-        "primary_key": false,
-        "datetime_precision": 6
-      }
-    ],
-    "constraints": [
-      {
-        "name": "credits_pkey",
-        "type": "PRIMARY KEY",
-        "columns": [
-          "id"
-        ]
-      },
-      {
-        "name": "credits_unique",
-        "type": "UNIQUE",
-        "columns": [
-          "credit",
-          "word_id"
-        ]
-      },
-      {
-        "name": "credits_word_id_fkey",
-        "type": "FOREIGN KEY",
-        "columns": [
-          "word_id"
-        ],
-        "referred_table": "words",
-        "referred_columns": [
-          "id"
-        ],
-        "on_update": "NO ACTION",
-        "on_delete": "CASCADE"
-      }
-    ],
-    "indexes": [
-      {
-        "name": "credits_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE UNIQUE INDEX credits_unique ON public.credits USING btree (word_id, credit)"
-      },
-      {
-        "name": "credits_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE INDEX idx_credits_word ON public.credits USING btree (word_id)"
-      },
-      {
-        "name": "credits_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE UNIQUE INDEX credits_pkey ON public.credits USING btree (id)"
-      },
-      {
-        "name": "credits_unique",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE UNIQUE INDEX credits_unique ON public.credits USING btree (word_id, credit)"
-      },
-      {
-        "name": "credits_unique",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE UNIQUE INDEX credits_pkey ON public.credits USING btree (id)"
-      },
-      {
-        "name": "credits_unique",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE INDEX idx_credits_word ON public.credits USING btree (word_id)"
-      },
-      {
-        "name": "idx_credits_word",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE UNIQUE INDEX credits_unique ON public.credits USING btree (word_id, credit)"
-      },
-      {
-        "name": "idx_credits_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE INDEX idx_credits_word ON public.credits USING btree (word_id)"
-      },
-      {
-        "name": "idx_credits_word",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.credits"
-        ],
-        "definition": "CREATE UNIQUE INDEX credits_pkey ON public.credits USING btree (id)"
+        "definition": "CREATE INDEX idx_languages_code ON public.languages USING btree (code)"
       }
     ]
   },
@@ -1389,6 +386,33 @@
     "indexes": [
       {
         "name": "idx_words_baybayin",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
+      },
+      {
+        "name": "idx_words_baybayin",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
+      },
+      {
+        "name": "idx_words_baybayin",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
+      },
+      {
+        "name": "idx_words_baybayin",
         "unique": false,
         "method": "gin",
         "columns": [
@@ -1421,43 +445,16 @@
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
-      },
-      {
-        "name": "idx_words_baybayin",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
-      },
-      {
-        "name": "idx_words_baybayin",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
         "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
       },
       {
         "name": "idx_words_baybayin",
-        "unique": true,
+        "unique": false,
         "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
-      },
-      {
-        "name": "idx_words_baybayin",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
+        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
       },
       {
         "name": "idx_words_baybayin",
@@ -1470,33 +467,6 @@
       },
       {
         "name": "idx_words_baybayin",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
-      },
-      {
-        "name": "idx_words_language",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
-      },
-      {
-        "name": "idx_words_language",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
-      },
-      {
-        "name": "idx_words_language",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -1511,34 +481,7 @@
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_lemma ON public.words USING btree (lemma)"
-      },
-      {
-        "name": "idx_words_language",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
         "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
-      },
-      {
-        "name": "idx_words_language",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
-      },
-      {
-        "name": "idx_words_language",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
       },
       {
         "name": "idx_words_language",
@@ -1547,7 +490,7 @@
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
+        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
       },
       {
         "name": "idx_words_language",
@@ -1565,7 +508,70 @@
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
+        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
+      },
+      {
+        "name": "idx_words_language",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
+      },
+      {
+        "name": "idx_words_language",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_lemma ON public.words USING btree (lemma)"
+      },
+      {
+        "name": "idx_words_language",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
+      },
+      {
+        "name": "idx_words_language",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
+      },
+      {
+        "name": "idx_words_language",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+      },
+      {
+        "name": "idx_words_language",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
+      },
+      {
+        "name": "idx_words_lemma",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
       },
       {
         "name": "idx_words_lemma",
@@ -1601,6 +607,42 @@
         "columns": [
           "public.words"
         ],
+        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
+      },
+      {
+        "name": "idx_words_lemma",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
+      },
+      {
+        "name": "idx_words_lemma",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
+      },
+      {
+        "name": "idx_words_lemma",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
+      },
+      {
+        "name": "idx_words_lemma",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
         "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
       },
       {
@@ -1610,61 +652,16 @@
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
-      },
-      {
-        "name": "idx_words_lemma",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
         "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
       },
       {
-        "name": "idx_words_lemma",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
-      },
-      {
-        "name": "idx_words_lemma",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
-      },
-      {
-        "name": "idx_words_lemma",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
-      },
-      {
-        "name": "idx_words_lemma",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
-      },
-      {
         "name": "idx_words_metadata",
-        "unique": false,
-        "method": "gin",
+        "unique": true,
+        "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
+        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
       },
       {
         "name": "idx_words_metadata",
@@ -1683,33 +680,6 @@
           "public.words"
         ],
         "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
-      },
-      {
-        "name": "idx_words_metadata",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
-      },
-      {
-        "name": "idx_words_metadata",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
-      },
-      {
-        "name": "idx_words_metadata",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
       },
       {
         "name": "idx_words_metadata",
@@ -1731,6 +701,33 @@
       },
       {
         "name": "idx_words_metadata",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
+      },
+      {
+        "name": "idx_words_metadata",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+      },
+      {
+        "name": "idx_words_metadata",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
+      },
+      {
+        "name": "idx_words_metadata",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -1740,48 +737,12 @@
       },
       {
         "name": "idx_words_metadata",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
-      },
-      {
-        "name": "idx_words_normalized",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
-      },
-      {
-        "name": "idx_words_normalized",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
-      },
-      {
-        "name": "idx_words_normalized",
         "unique": false,
-        "method": "btree",
+        "method": "gin",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_lemma ON public.words USING btree (lemma)"
-      },
-      {
-        "name": "idx_words_normalized",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
+        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
       },
       {
         "name": "idx_words_normalized",
@@ -1795,29 +756,11 @@
       {
         "name": "idx_words_normalized",
         "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
-      },
-      {
-        "name": "idx_words_normalized",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
-      },
-      {
-        "name": "idx_words_normalized",
-        "unique": false,
         "method": "gin",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
+        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
       },
       {
         "name": "idx_words_normalized",
@@ -1835,10 +778,28 @@
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
+        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
       },
       {
-        "name": "idx_words_romanized",
+        "name": "idx_words_normalized",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
+      },
+      {
+        "name": "idx_words_normalized",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+      },
+      {
+        "name": "idx_words_normalized",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -1847,40 +808,31 @@
         "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
       },
       {
-        "name": "idx_words_romanized",
+        "name": "idx_words_normalized",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+        "definition": "CREATE INDEX idx_words_lemma ON public.words USING btree (lemma)"
       },
       {
-        "name": "idx_words_romanized",
-        "unique": false,
+        "name": "idx_words_normalized",
+        "unique": true,
         "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
+        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
       },
       {
-        "name": "idx_words_romanized",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
-      },
-      {
-        "name": "idx_words_romanized",
-        "unique": false,
+        "name": "idx_words_normalized",
+        "unique": true,
         "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
+        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
       },
       {
         "name": "idx_words_romanized",
@@ -1902,12 +854,57 @@
       },
       {
         "name": "idx_words_romanized",
-        "unique": true,
+        "unique": false,
         "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
+        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
+      },
+      {
+        "name": "idx_words_romanized",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
+      },
+      {
+        "name": "idx_words_romanized",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
+      },
+      {
+        "name": "idx_words_romanized",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+      },
+      {
+        "name": "idx_words_romanized",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
+      },
+      {
+        "name": "idx_words_romanized",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
       },
       {
         "name": "idx_words_romanized",
@@ -1920,39 +917,12 @@
       },
       {
         "name": "idx_words_romanized",
-        "unique": false,
+        "unique": true,
         "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
-      },
-      {
-        "name": "idx_words_root",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
-      },
-      {
-        "name": "idx_words_root",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
-      },
-      {
-        "name": "idx_words_root",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
+        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
       },
       {
         "name": "idx_words_root",
@@ -2018,6 +988,51 @@
         "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
       },
       {
+        "name": "idx_words_root",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+      },
+      {
+        "name": "idx_words_root",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
+      },
+      {
+        "name": "idx_words_root",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
+      },
+      {
+        "name": "idx_words_search",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+      },
+      {
+        "name": "idx_words_search",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
+      },
+      {
         "name": "idx_words_search",
         "unique": false,
         "method": "gin",
@@ -2060,6 +1075,24 @@
         "columns": [
           "public.words"
         ],
+        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
+      },
+      {
+        "name": "idx_words_search",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
+      },
+      {
+        "name": "idx_words_search",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
         "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
       },
       {
@@ -2072,51 +1105,6 @@
         "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
       },
       {
-        "name": "idx_words_search",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
-      },
-      {
-        "name": "idx_words_search",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
-      },
-      {
-        "name": "idx_words_search",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
-      },
-      {
-        "name": "idx_words_search",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
-      },
-      {
-        "name": "words_lang_lemma_uniq",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
-      },
-      {
         "name": "words_lang_lemma_uniq",
         "unique": false,
         "method": "btree",
@@ -2133,24 +1121,6 @@
           "public.words"
         ],
         "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
-      },
-      {
-        "name": "words_lang_lemma_uniq",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
-      },
-      {
-        "name": "words_lang_lemma_uniq",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.words"
-        ],
-        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
       },
       {
         "name": "words_lang_lemma_uniq",
@@ -2168,16 +1138,34 @@
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
+        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
       },
       {
         "name": "words_lang_lemma_uniq",
-        "unique": false,
+        "unique": true,
         "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
+        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
+      },
+      {
+        "name": "words_lang_lemma_uniq",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
+      },
+      {
+        "name": "words_lang_lemma_uniq",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
       },
       {
         "name": "words_lang_lemma_uniq",
@@ -2190,15 +1178,15 @@
       },
       {
         "name": "words_lang_lemma_uniq",
-        "unique": true,
+        "unique": false,
         "method": "btree",
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
+        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
       },
       {
-        "name": "words_pkey",
+        "name": "words_lang_lemma_uniq",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -2213,7 +1201,7 @@
         "columns": [
           "public.words"
         ],
-        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
       },
       {
         "name": "words_pkey",
@@ -2286,6 +1274,15 @@
           "public.words"
         ],
         "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
+      },
+      {
+        "name": "words_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.words"
+        ],
+        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
       }
     ]
   },
@@ -2335,13 +1332,6 @@
       {
         "name": "pronunciation_metadata",
         "type": "jsonb",
-        "nullable": true,
-        "default": null,
-        "primary_key": false
-      },
-      {
-        "name": "sources",
-        "type": "text",
         "nullable": true,
         "default": null,
         "primary_key": false
@@ -2402,7 +1392,7 @@
         "columns": [
           "public.pronunciations"
         ],
-        "definition": "CREATE INDEX idx_pronunciations_word ON public.pronunciations USING btree (word_id)"
+        "definition": "CREATE INDEX idx_pronunciations_value ON public.pronunciations USING btree (value)"
       },
       {
         "name": "idx_pronunciations_type",
@@ -2429,7 +1419,7 @@
         "columns": [
           "public.pronunciations"
         ],
-        "definition": "CREATE INDEX idx_pronunciations_type ON public.pronunciations USING btree (type)"
+        "definition": "CREATE INDEX idx_pronunciations_word ON public.pronunciations USING btree (word_id)"
       },
       {
         "name": "idx_pronunciations_type",
@@ -2438,24 +1428,6 @@
         "columns": [
           "public.pronunciations"
         ],
-        "definition": "CREATE INDEX idx_pronunciations_value ON public.pronunciations USING btree (value)"
-      },
-      {
-        "name": "idx_pronunciations_value",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.pronunciations"
-        ],
-        "definition": "CREATE UNIQUE INDEX pronunciations_unique ON public.pronunciations USING btree (word_id, type, value)"
-      },
-      {
-        "name": "idx_pronunciations_value",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.pronunciations"
-        ],
         "definition": "CREATE INDEX idx_pronunciations_type ON public.pronunciations USING btree (type)"
       },
       {
@@ -2478,6 +1450,15 @@
       },
       {
         "name": "idx_pronunciations_value",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.pronunciations"
+        ],
+        "definition": "CREATE UNIQUE INDEX pronunciations_unique ON public.pronunciations USING btree (word_id, type, value)"
+      },
+      {
+        "name": "idx_pronunciations_value",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -2486,25 +1467,7 @@
         "definition": "CREATE INDEX idx_pronunciations_word ON public.pronunciations USING btree (word_id)"
       },
       {
-        "name": "idx_pronunciations_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.pronunciations"
-        ],
-        "definition": "CREATE INDEX idx_pronunciations_word ON public.pronunciations USING btree (word_id)"
-      },
-      {
-        "name": "idx_pronunciations_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.pronunciations"
-        ],
-        "definition": "CREATE INDEX idx_pronunciations_value ON public.pronunciations USING btree (value)"
-      },
-      {
-        "name": "idx_pronunciations_word",
+        "name": "idx_pronunciations_value",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -2519,7 +1482,25 @@
         "columns": [
           "public.pronunciations"
         ],
-        "definition": "CREATE UNIQUE INDEX pronunciations_unique ON public.pronunciations USING btree (word_id, type, value)"
+        "definition": "CREATE UNIQUE INDEX pronunciations_pkey ON public.pronunciations USING btree (id)"
+      },
+      {
+        "name": "idx_pronunciations_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.pronunciations"
+        ],
+        "definition": "CREATE INDEX idx_pronunciations_type ON public.pronunciations USING btree (type)"
+      },
+      {
+        "name": "idx_pronunciations_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.pronunciations"
+        ],
+        "definition": "CREATE INDEX idx_pronunciations_word ON public.pronunciations USING btree (word_id)"
       },
       {
         "name": "idx_pronunciations_word",
@@ -2528,7 +1509,25 @@
         "columns": [
           "public.pronunciations"
         ],
-        "definition": "CREATE UNIQUE INDEX pronunciations_pkey ON public.pronunciations USING btree (id)"
+        "definition": "CREATE UNIQUE INDEX pronunciations_unique ON public.pronunciations USING btree (word_id, type, value)"
+      },
+      {
+        "name": "idx_pronunciations_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.pronunciations"
+        ],
+        "definition": "CREATE INDEX idx_pronunciations_value ON public.pronunciations USING btree (value)"
+      },
+      {
+        "name": "pronunciations_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.pronunciations"
+        ],
+        "definition": "CREATE INDEX idx_pronunciations_value ON public.pronunciations USING btree (value)"
       },
       {
         "name": "pronunciations_pkey",
@@ -2567,22 +1566,13 @@
         "definition": "CREATE INDEX idx_pronunciations_type ON public.pronunciations USING btree (type)"
       },
       {
-        "name": "pronunciations_pkey",
+        "name": "pronunciations_unique",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.pronunciations"
         ],
         "definition": "CREATE INDEX idx_pronunciations_value ON public.pronunciations USING btree (value)"
-      },
-      {
-        "name": "pronunciations_unique",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.pronunciations"
-        ],
-        "definition": "CREATE UNIQUE INDEX pronunciations_pkey ON public.pronunciations USING btree (id)"
       },
       {
         "name": "pronunciations_unique",
@@ -2613,12 +1603,178 @@
       },
       {
         "name": "pronunciations_unique",
-        "unique": false,
+        "unique": true,
         "method": "btree",
         "columns": [
           "public.pronunciations"
         ],
-        "definition": "CREATE INDEX idx_pronunciations_value ON public.pronunciations USING btree (value)"
+        "definition": "CREATE UNIQUE INDEX pronunciations_pkey ON public.pronunciations USING btree (id)"
+      }
+    ]
+  },
+  "credits": {
+    "comment": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "integer",
+        "nullable": false,
+        "default": "nextval('credits_id_seq'::regclass)",
+        "primary_key": true,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "word_id",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "primary_key": false,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credit",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "sources",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": [
+      {
+        "name": "credits_pkey",
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ]
+      },
+      {
+        "name": "credits_unique",
+        "type": "UNIQUE",
+        "columns": [
+          "credit",
+          "word_id"
+        ]
+      },
+      {
+        "name": "credits_word_id_fkey",
+        "type": "FOREIGN KEY",
+        "columns": [
+          "word_id"
+        ],
+        "referred_table": "words",
+        "referred_columns": [
+          "id"
+        ],
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE"
+      }
+    ],
+    "indexes": [
+      {
+        "name": "credits_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE INDEX idx_credits_word ON public.credits USING btree (word_id)"
+      },
+      {
+        "name": "credits_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE UNIQUE INDEX credits_unique ON public.credits USING btree (word_id, credit)"
+      },
+      {
+        "name": "credits_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE UNIQUE INDEX credits_pkey ON public.credits USING btree (id)"
+      },
+      {
+        "name": "credits_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE UNIQUE INDEX credits_pkey ON public.credits USING btree (id)"
+      },
+      {
+        "name": "credits_unique",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE INDEX idx_credits_word ON public.credits USING btree (word_id)"
+      },
+      {
+        "name": "credits_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE UNIQUE INDEX credits_unique ON public.credits USING btree (word_id, credit)"
+      },
+      {
+        "name": "idx_credits_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE INDEX idx_credits_word ON public.credits USING btree (word_id)"
+      },
+      {
+        "name": "idx_credits_word",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE UNIQUE INDEX credits_unique ON public.credits USING btree (word_id, credit)"
+      },
+      {
+        "name": "idx_credits_word",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.credits"
+        ],
+        "definition": "CREATE UNIQUE INDEX credits_pkey ON public.credits USING btree (id)"
       }
     ]
   },
@@ -2765,15 +1921,6 @@
     "indexes": [
       {
         "name": "definitions_pkey",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.definitions"
-        ],
-        "definition": "CREATE INDEX idx_definitions_text ON public.definitions USING gin (to_tsvector('english'::regconfig, definition_text))"
-      },
-      {
-        "name": "definitions_pkey",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -2809,6 +1956,42 @@
         "definition": "CREATE INDEX idx_definitions_pos ON public.definitions USING btree (standardized_pos_id)"
       },
       {
+        "name": "definitions_pkey",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.definitions"
+        ],
+        "definition": "CREATE INDEX idx_definitions_text ON public.definitions USING gin (to_tsvector('english'::regconfig, definition_text))"
+      },
+      {
+        "name": "definitions_unique",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definitions"
+        ],
+        "definition": "CREATE INDEX idx_definitions_word ON public.definitions USING btree (word_id)"
+      },
+      {
+        "name": "definitions_unique",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definitions"
+        ],
+        "definition": "CREATE INDEX idx_definitions_pos ON public.definitions USING btree (standardized_pos_id)"
+      },
+      {
+        "name": "definitions_unique",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.definitions"
+        ],
+        "definition": "CREATE INDEX idx_definitions_text ON public.definitions USING gin (to_tsvector('english'::regconfig, definition_text))"
+      },
+      {
         "name": "definitions_unique",
         "unique": true,
         "method": "btree",
@@ -2827,25 +2010,7 @@
         "definition": "CREATE UNIQUE INDEX definitions_unique ON public.definitions USING btree (word_id, definition_text, standardized_pos_id)"
       },
       {
-        "name": "definitions_unique",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.definitions"
-        ],
-        "definition": "CREATE INDEX idx_definitions_text ON public.definitions USING gin (to_tsvector('english'::regconfig, definition_text))"
-      },
-      {
-        "name": "definitions_unique",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definitions"
-        ],
-        "definition": "CREATE INDEX idx_definitions_pos ON public.definitions USING btree (standardized_pos_id)"
-      },
-      {
-        "name": "definitions_unique",
+        "name": "idx_definitions_pos",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -2855,6 +2020,15 @@
       },
       {
         "name": "idx_definitions_pos",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definitions"
+        ],
+        "definition": "CREATE UNIQUE INDEX definitions_pkey ON public.definitions USING btree (id)"
+      },
+      {
+        "name": "idx_definitions_pos",
         "unique": false,
         "method": "gin",
         "columns": [
@@ -2864,12 +2038,12 @@
       },
       {
         "name": "idx_definitions_pos",
-        "unique": true,
+        "unique": false,
         "method": "btree",
         "columns": [
           "public.definitions"
         ],
-        "definition": "CREATE UNIQUE INDEX definitions_pkey ON public.definitions USING btree (id)"
+        "definition": "CREATE INDEX idx_definitions_pos ON public.definitions USING btree (standardized_pos_id)"
       },
       {
         "name": "idx_definitions_pos",
@@ -2881,16 +2055,7 @@
         "definition": "CREATE UNIQUE INDEX definitions_unique ON public.definitions USING btree (word_id, definition_text, standardized_pos_id)"
       },
       {
-        "name": "idx_definitions_pos",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definitions"
-        ],
-        "definition": "CREATE INDEX idx_definitions_word ON public.definitions USING btree (word_id)"
-      },
-      {
-        "name": "idx_definitions_pos",
+        "name": "idx_definitions_text",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -2906,33 +2071,6 @@
           "public.definitions"
         ],
         "definition": "CREATE INDEX idx_definitions_word ON public.definitions USING btree (word_id)"
-      },
-      {
-        "name": "idx_definitions_text",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.definitions"
-        ],
-        "definition": "CREATE INDEX idx_definitions_text ON public.definitions USING gin (to_tsvector('english'::regconfig, definition_text))"
-      },
-      {
-        "name": "idx_definitions_text",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definitions"
-        ],
-        "definition": "CREATE INDEX idx_definitions_pos ON public.definitions USING btree (standardized_pos_id)"
-      },
-      {
-        "name": "idx_definitions_text",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definitions"
-        ],
-        "definition": "CREATE UNIQUE INDEX definitions_pkey ON public.definitions USING btree (id)"
       },
       {
         "name": "idx_definitions_text",
@@ -2944,7 +2082,7 @@
         "definition": "CREATE UNIQUE INDEX definitions_unique ON public.definitions USING btree (word_id, definition_text, standardized_pos_id)"
       },
       {
-        "name": "idx_definitions_word",
+        "name": "idx_definitions_text",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -2953,7 +2091,7 @@
         "definition": "CREATE UNIQUE INDEX definitions_pkey ON public.definitions USING btree (id)"
       },
       {
-        "name": "idx_definitions_word",
+        "name": "idx_definitions_text",
         "unique": false,
         "method": "gin",
         "columns": [
@@ -2973,11 +2111,20 @@
       {
         "name": "idx_definitions_word",
         "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.definitions"
+        ],
+        "definition": "CREATE INDEX idx_definitions_text ON public.definitions USING gin (to_tsvector('english'::regconfig, definition_text))"
+      },
+      {
+        "name": "idx_definitions_word",
+        "unique": true,
         "method": "btree",
         "columns": [
           "public.definitions"
         ],
-        "definition": "CREATE INDEX idx_definitions_word ON public.definitions USING btree (word_id)"
+        "definition": "CREATE UNIQUE INDEX definitions_pkey ON public.definitions USING btree (id)"
       },
       {
         "name": "idx_definitions_word",
@@ -2987,6 +2134,15 @@
           "public.definitions"
         ],
         "definition": "CREATE UNIQUE INDEX definitions_unique ON public.definitions USING btree (word_id, definition_text, standardized_pos_id)"
+      },
+      {
+        "name": "idx_definitions_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definitions"
+        ],
+        "definition": "CREATE INDEX idx_definitions_word ON public.definitions USING btree (word_id)"
       }
     ]
   },
@@ -3069,6 +2225,15 @@
     "indexes": [
       {
         "name": "idx_parts_of_speech_code",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.parts_of_speech"
+        ],
+        "definition": "CREATE INDEX idx_parts_of_speech_name ON public.parts_of_speech USING btree (name_en, name_tl)"
+      },
+      {
+        "name": "idx_parts_of_speech_code",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -3083,15 +2248,6 @@
         "columns": [
           "public.parts_of_speech"
         ],
-        "definition": "CREATE INDEX idx_parts_of_speech_name ON public.parts_of_speech USING btree (name_en, name_tl)"
-      },
-      {
-        "name": "idx_parts_of_speech_code",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.parts_of_speech"
-        ],
         "definition": "CREATE INDEX idx_parts_of_speech_code ON public.parts_of_speech USING btree (code)"
       },
       {
@@ -3105,12 +2261,12 @@
       },
       {
         "name": "idx_parts_of_speech_name",
-        "unique": true,
+        "unique": false,
         "method": "btree",
         "columns": [
           "public.parts_of_speech"
         ],
-        "definition": "CREATE UNIQUE INDEX parts_of_speech_code_uniq ON public.parts_of_speech USING btree (code)"
+        "definition": "CREATE INDEX idx_parts_of_speech_code ON public.parts_of_speech USING btree (code)"
       },
       {
         "name": "idx_parts_of_speech_name",
@@ -3123,12 +2279,12 @@
       },
       {
         "name": "idx_parts_of_speech_name",
-        "unique": false,
+        "unique": true,
         "method": "btree",
         "columns": [
           "public.parts_of_speech"
         ],
-        "definition": "CREATE INDEX idx_parts_of_speech_code ON public.parts_of_speech USING btree (code)"
+        "definition": "CREATE UNIQUE INDEX parts_of_speech_pkey ON public.parts_of_speech USING btree (id)"
       },
       {
         "name": "idx_parts_of_speech_name",
@@ -3137,7 +2293,7 @@
         "columns": [
           "public.parts_of_speech"
         ],
-        "definition": "CREATE UNIQUE INDEX parts_of_speech_pkey ON public.parts_of_speech USING btree (id)"
+        "definition": "CREATE UNIQUE INDEX parts_of_speech_code_uniq ON public.parts_of_speech USING btree (code)"
       },
       {
         "name": "parts_of_speech_code_uniq",
@@ -3146,16 +2302,7 @@
         "columns": [
           "public.parts_of_speech"
         ],
-        "definition": "CREATE UNIQUE INDEX parts_of_speech_pkey ON public.parts_of_speech USING btree (id)"
-      },
-      {
-        "name": "parts_of_speech_code_uniq",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.parts_of_speech"
-        ],
-        "definition": "CREATE INDEX idx_parts_of_speech_name ON public.parts_of_speech USING btree (name_en, name_tl)"
+        "definition": "CREATE UNIQUE INDEX parts_of_speech_code_uniq ON public.parts_of_speech USING btree (code)"
       },
       {
         "name": "parts_of_speech_code_uniq",
@@ -3168,30 +2315,39 @@
       },
       {
         "name": "parts_of_speech_code_uniq",
-        "unique": true,
+        "unique": false,
         "method": "btree",
         "columns": [
           "public.parts_of_speech"
         ],
-        "definition": "CREATE UNIQUE INDEX parts_of_speech_code_uniq ON public.parts_of_speech USING btree (code)"
+        "definition": "CREATE INDEX idx_parts_of_speech_name ON public.parts_of_speech USING btree (name_en, name_tl)"
       },
       {
-        "name": "parts_of_speech_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.parts_of_speech"
-        ],
-        "definition": "CREATE UNIQUE INDEX parts_of_speech_code_uniq ON public.parts_of_speech USING btree (code)"
-      },
-      {
-        "name": "parts_of_speech_pkey",
+        "name": "parts_of_speech_code_uniq",
         "unique": true,
         "method": "btree",
         "columns": [
           "public.parts_of_speech"
         ],
         "definition": "CREATE UNIQUE INDEX parts_of_speech_pkey ON public.parts_of_speech USING btree (id)"
+      },
+      {
+        "name": "parts_of_speech_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.parts_of_speech"
+        ],
+        "definition": "CREATE UNIQUE INDEX parts_of_speech_code_uniq ON public.parts_of_speech USING btree (code)"
+      },
+      {
+        "name": "parts_of_speech_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.parts_of_speech"
+        ],
+        "definition": "CREATE INDEX idx_parts_of_speech_name ON public.parts_of_speech USING btree (name_en, name_tl)"
       },
       {
         "name": "parts_of_speech_pkey",
@@ -3204,12 +2360,12 @@
       },
       {
         "name": "parts_of_speech_pkey",
-        "unique": false,
+        "unique": true,
         "method": "btree",
         "columns": [
           "public.parts_of_speech"
         ],
-        "definition": "CREATE INDEX idx_parts_of_speech_name ON public.parts_of_speech USING btree (name_en, name_tl)"
+        "definition": "CREATE UNIQUE INDEX parts_of_speech_pkey ON public.parts_of_speech USING btree (id)"
       }
     ]
   },
@@ -3329,15 +2485,6 @@
     "indexes": [
       {
         "name": "idx_relations_from",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
-      },
-      {
-        "name": "idx_relations_from",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -3388,37 +2535,10 @@
         "columns": [
           "public.relations"
         ],
-        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
+        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
       },
       {
-        "name": "idx_relations_metadata",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
-      },
-      {
-        "name": "idx_relations_metadata",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
-      },
-      {
-        "name": "idx_relations_metadata",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
-      },
-      {
-        "name": "idx_relations_metadata",
+        "name": "idx_relations_from",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -3446,6 +2566,60 @@
       },
       {
         "name": "idx_relations_metadata",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
+      },
+      {
+        "name": "idx_relations_metadata",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
+      },
+      {
+        "name": "idx_relations_metadata",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
+      },
+      {
+        "name": "idx_relations_metadata",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
+      },
+      {
+        "name": "idx_relations_metadata",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
+      },
+      {
+        "name": "idx_relations_metadata_strength",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
+      },
+      {
+        "name": "idx_relations_metadata_strength",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -3461,6 +2635,15 @@
           "public.relations"
         ],
         "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
+      },
+      {
+        "name": "idx_relations_metadata_strength",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
       },
       {
         "name": "idx_relations_metadata_strength",
@@ -3482,15 +2665,6 @@
       },
       {
         "name": "idx_relations_metadata_strength",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
-      },
-      {
-        "name": "idx_relations_metadata_strength",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -3499,7 +2673,25 @@
         "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
       },
       {
-        "name": "idx_relations_metadata_strength",
+        "name": "idx_relations_to",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
+      },
+      {
+        "name": "idx_relations_to",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
+      },
+      {
+        "name": "idx_relations_to",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -3508,22 +2700,13 @@
         "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
       },
       {
-        "name": "idx_relations_metadata_strength",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
-      },
-      {
         "name": "idx_relations_to",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.relations"
         ],
-        "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
+        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
       },
       {
         "name": "idx_relations_to",
@@ -3545,93 +2728,12 @@
       },
       {
         "name": "idx_relations_to",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
-      },
-      {
-        "name": "idx_relations_to",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
-      },
-      {
-        "name": "idx_relations_to",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
-      },
-      {
-        "name": "idx_relations_to",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
-      },
-      {
-        "name": "idx_relations_type",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.relations"
         ],
         "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
-      },
-      {
-        "name": "idx_relations_type",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
-      },
-      {
-        "name": "idx_relations_type",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
-      },
-      {
-        "name": "idx_relations_type",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
-      },
-      {
-        "name": "idx_relations_type",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
-      },
-      {
-        "name": "idx_relations_type",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
       },
       {
         "name": "idx_relations_type",
@@ -3643,34 +2745,16 @@
         "definition": "CREATE INDEX idx_relations_metadata ON public.relations USING gin (metadata)"
       },
       {
-        "name": "relations_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
-      },
-      {
-        "name": "relations_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
-      },
-      {
-        "name": "relations_pkey",
+        "name": "idx_relations_type",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.relations"
         ],
-        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
+        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
       },
       {
-        "name": "relations_pkey",
+        "name": "idx_relations_type",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -3679,13 +2763,40 @@
         "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
       },
       {
-        "name": "relations_pkey",
+        "name": "idx_relations_type",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.relations"
         ],
-        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
+        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
+      },
+      {
+        "name": "idx_relations_type",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
+      },
+      {
+        "name": "idx_relations_type",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
+      },
+      {
+        "name": "idx_relations_type",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
       },
       {
         "name": "relations_pkey",
@@ -3703,6 +2814,51 @@
         "columns": [
           "public.relations"
         ],
+        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
+      },
+      {
+        "name": "relations_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
+      },
+      {
+        "name": "relations_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
+      },
+      {
+        "name": "relations_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
+      },
+      {
+        "name": "relations_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
+      },
+      {
+        "name": "relations_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
         "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
       },
       {
@@ -3712,7 +2868,25 @@
         "columns": [
           "public.relations"
         ],
-        "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
+        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
+      },
+      {
+        "name": "relations_unique",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
+      },
+      {
+        "name": "relations_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
       },
       {
         "name": "relations_unique",
@@ -3734,30 +2908,12 @@
       },
       {
         "name": "relations_unique",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
-      },
-      {
-        "name": "relations_unique",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.relations"
         ],
-        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
-      },
-      {
-        "name": "relations_unique",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.relations"
-        ],
-        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
+        "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
       },
       {
         "name": "relations_unique",
@@ -3876,15 +3032,6 @@
     "indexes": [
       {
         "name": "etymologies_pkey",
-        "unique": false,
-        "method": "gin",
-        "columns": [
-          "public.etymologies"
-        ],
-        "definition": "CREATE INDEX idx_etymologies_langs ON public.etymologies USING gin (to_tsvector('simple'::regconfig, language_codes))"
-      },
-      {
-        "name": "etymologies_pkey",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -3903,6 +3050,24 @@
       },
       {
         "name": "etymologies_pkey",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.etymologies"
+        ],
+        "definition": "CREATE INDEX idx_etymologies_langs ON public.etymologies USING gin (to_tsvector('simple'::regconfig, language_codes))"
+      },
+      {
+        "name": "etymologies_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.etymologies"
+        ],
+        "definition": "CREATE UNIQUE INDEX etymologies_wordid_etymtext_uniq ON public.etymologies USING btree (word_id, etymology_text)"
+      },
+      {
+        "name": "etymologies_wordid_etymtext_uniq",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -3935,10 +3100,28 @@
         "columns": [
           "public.etymologies"
         ],
+        "definition": "CREATE UNIQUE INDEX etymologies_pkey ON public.etymologies USING btree (id)"
+      },
+      {
+        "name": "idx_etymologies_langs",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.etymologies"
+        ],
+        "definition": "CREATE INDEX idx_etymologies_word ON public.etymologies USING btree (word_id)"
+      },
+      {
+        "name": "idx_etymologies_langs",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.etymologies"
+        ],
         "definition": "CREATE UNIQUE INDEX etymologies_wordid_etymtext_uniq ON public.etymologies USING btree (word_id, etymology_text)"
       },
       {
-        "name": "etymologies_wordid_etymtext_uniq",
+        "name": "idx_etymologies_langs",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -3956,60 +3139,6 @@
         "definition": "CREATE INDEX idx_etymologies_langs ON public.etymologies USING gin (to_tsvector('simple'::regconfig, language_codes))"
       },
       {
-        "name": "idx_etymologies_langs",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.etymologies"
-        ],
-        "definition": "CREATE UNIQUE INDEX etymologies_pkey ON public.etymologies USING btree (id)"
-      },
-      {
-        "name": "idx_etymologies_langs",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.etymologies"
-        ],
-        "definition": "CREATE UNIQUE INDEX etymologies_wordid_etymtext_uniq ON public.etymologies USING btree (word_id, etymology_text)"
-      },
-      {
-        "name": "idx_etymologies_langs",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.etymologies"
-        ],
-        "definition": "CREATE INDEX idx_etymologies_word ON public.etymologies USING btree (word_id)"
-      },
-      {
-        "name": "idx_etymologies_word",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.etymologies"
-        ],
-        "definition": "CREATE UNIQUE INDEX etymologies_pkey ON public.etymologies USING btree (id)"
-      },
-      {
-        "name": "idx_etymologies_word",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.etymologies"
-        ],
-        "definition": "CREATE UNIQUE INDEX etymologies_wordid_etymtext_uniq ON public.etymologies USING btree (word_id, etymology_text)"
-      },
-      {
-        "name": "idx_etymologies_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.etymologies"
-        ],
-        "definition": "CREATE INDEX idx_etymologies_word ON public.etymologies USING btree (word_id)"
-      },
-      {
         "name": "idx_etymologies_word",
         "unique": false,
         "method": "gin",
@@ -4017,6 +3146,33 @@
           "public.etymologies"
         ],
         "definition": "CREATE INDEX idx_etymologies_langs ON public.etymologies USING gin (to_tsvector('simple'::regconfig, language_codes))"
+      },
+      {
+        "name": "idx_etymologies_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.etymologies"
+        ],
+        "definition": "CREATE INDEX idx_etymologies_word ON public.etymologies USING btree (word_id)"
+      },
+      {
+        "name": "idx_etymologies_word",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.etymologies"
+        ],
+        "definition": "CREATE UNIQUE INDEX etymologies_wordid_etymtext_uniq ON public.etymologies USING btree (word_id, etymology_text)"
+      },
+      {
+        "name": "idx_etymologies_word",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.etymologies"
+        ],
+        "definition": "CREATE UNIQUE INDEX etymologies_pkey ON public.etymologies USING btree (id)"
       }
     ]
   },
@@ -4035,7 +3191,7 @@
       {
         "name": "definition_id",
         "type": "integer",
-        "nullable": false,
+        "nullable": true,
         "default": null,
         "primary_key": false,
         "precision": 32,
@@ -4044,7 +3200,7 @@
       {
         "name": "word_id",
         "type": "integer",
-        "nullable": false,
+        "nullable": true,
         "default": null,
         "primary_key": false,
         "precision": 32,
@@ -4129,15 +3285,6 @@
     "indexes": [
       {
         "name": "definition_relations_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_relations_unique ON public.definition_relations USING btree (definition_id, word_id, relation_type)"
-      },
-      {
-        "name": "definition_relations_pkey",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -4156,12 +3303,39 @@
       },
       {
         "name": "definition_relations_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_relations_unique ON public.definition_relations USING btree (definition_id, word_id, relation_type)"
+      },
+      {
+        "name": "definition_relations_pkey",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.definition_relations"
         ],
         "definition": "CREATE INDEX idx_def_relations_def ON public.definition_relations USING btree (definition_id)"
+      },
+      {
+        "name": "definition_relations_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_relations"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_relations_pkey ON public.definition_relations USING btree (id)"
+      },
+      {
+        "name": "definition_relations_unique",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_relations"
+        ],
+        "definition": "CREATE INDEX idx_def_relations_word ON public.definition_relations USING btree (word_id)"
       },
       {
         "name": "definition_relations_unique",
@@ -4182,16 +3356,7 @@
         "definition": "CREATE UNIQUE INDEX definition_relations_unique ON public.definition_relations USING btree (definition_id, word_id, relation_type)"
       },
       {
-        "name": "definition_relations_unique",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.definition_relations"
-        ],
-        "definition": "CREATE UNIQUE INDEX definition_relations_pkey ON public.definition_relations USING btree (id)"
-      },
-      {
-        "name": "definition_relations_unique",
+        "name": "idx_def_relations_def",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -4227,7 +3392,7 @@
         "definition": "CREATE UNIQUE INDEX definition_relations_pkey ON public.definition_relations USING btree (id)"
       },
       {
-        "name": "idx_def_relations_def",
+        "name": "idx_def_relations_word",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -4242,7 +3407,7 @@
         "columns": [
           "public.definition_relations"
         ],
-        "definition": "CREATE INDEX idx_def_relations_word ON public.definition_relations USING btree (word_id)"
+        "definition": "CREATE INDEX idx_def_relations_def ON public.definition_relations USING btree (definition_id)"
       },
       {
         "name": "idx_def_relations_word",
@@ -4261,15 +3426,6 @@
           "public.definition_relations"
         ],
         "definition": "CREATE UNIQUE INDEX definition_relations_pkey ON public.definition_relations USING btree (id)"
-      },
-      {
-        "name": "idx_def_relations_word",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.definition_relations"
-        ],
-        "definition": "CREATE INDEX idx_def_relations_def ON public.definition_relations USING btree (definition_id)"
       }
     ]
   },
@@ -4387,15 +3543,6 @@
         "columns": [
           "public.affixations"
         ],
-        "definition": "CREATE INDEX idx_affixations_root ON public.affixations USING btree (root_word_id)"
-      },
-      {
-        "name": "affixations_pkey",
-        "unique": false,
-        "method": "btree",
-        "columns": [
-          "public.affixations"
-        ],
         "definition": "CREATE INDEX idx_affixations_affixed ON public.affixations USING btree (affixed_word_id)"
       },
       {
@@ -4409,15 +3556,6 @@
       },
       {
         "name": "affixations_pkey",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.affixations"
-        ],
-        "definition": "CREATE UNIQUE INDEX affixations_unique ON public.affixations USING btree (root_word_id, affixed_word_id, affix_type)"
-      },
-      {
-        "name": "affixations_unique",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -4426,16 +3564,7 @@
         "definition": "CREATE INDEX idx_affixations_root ON public.affixations USING btree (root_word_id)"
       },
       {
-        "name": "affixations_unique",
-        "unique": true,
-        "method": "btree",
-        "columns": [
-          "public.affixations"
-        ],
-        "definition": "CREATE UNIQUE INDEX affixations_pkey ON public.affixations USING btree (id)"
-      },
-      {
-        "name": "affixations_unique",
+        "name": "affixations_pkey",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -4453,7 +3582,16 @@
         "definition": "CREATE INDEX idx_affixations_affixed ON public.affixations USING btree (affixed_word_id)"
       },
       {
-        "name": "idx_affixations_affixed",
+        "name": "affixations_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.affixations"
+        ],
+        "definition": "CREATE UNIQUE INDEX affixations_pkey ON public.affixations USING btree (id)"
+      },
+      {
+        "name": "affixations_unique",
         "unique": false,
         "method": "btree",
         "columns": [
@@ -4462,7 +3600,7 @@
         "definition": "CREATE INDEX idx_affixations_root ON public.affixations USING btree (root_word_id)"
       },
       {
-        "name": "idx_affixations_affixed",
+        "name": "affixations_unique",
         "unique": true,
         "method": "btree",
         "columns": [
@@ -4486,16 +3624,25 @@
         "columns": [
           "public.affixations"
         ],
-        "definition": "CREATE INDEX idx_affixations_affixed ON public.affixations USING btree (affixed_word_id)"
+        "definition": "CREATE INDEX idx_affixations_root ON public.affixations USING btree (root_word_id)"
       },
       {
-        "name": "idx_affixations_root",
+        "name": "idx_affixations_affixed",
         "unique": false,
         "method": "btree",
         "columns": [
           "public.affixations"
         ],
-        "definition": "CREATE INDEX idx_affixations_root ON public.affixations USING btree (root_word_id)"
+        "definition": "CREATE INDEX idx_affixations_affixed ON public.affixations USING btree (affixed_word_id)"
+      },
+      {
+        "name": "idx_affixations_affixed",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.affixations"
+        ],
+        "definition": "CREATE UNIQUE INDEX affixations_unique ON public.affixations USING btree (root_word_id, affixed_word_id, affix_type)"
       },
       {
         "name": "idx_affixations_root",
@@ -4523,6 +3670,1144 @@
           "public.affixations"
         ],
         "definition": "CREATE INDEX idx_affixations_affixed ON public.affixations USING btree (affixed_word_id)"
+      },
+      {
+        "name": "idx_affixations_root",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.affixations"
+        ],
+        "definition": "CREATE INDEX idx_affixations_root ON public.affixations USING btree (root_word_id)"
+      }
+    ]
+  },
+  "definition_examples": {
+    "comment": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "integer",
+        "nullable": false,
+        "default": "nextval('definition_examples_id_seq'::regclass)",
+        "primary_key": true,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "definition_id",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "primary_key": false,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "example_text",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "translation",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "example_type",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "primary_key": false,
+        "length": 50
+      },
+      {
+        "name": "reference",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "metadata",
+        "type": "jsonb",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "sources",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": [
+      {
+        "name": "definition_examples_definition_id_fkey",
+        "type": "FOREIGN KEY",
+        "columns": [
+          "definition_id"
+        ],
+        "referred_table": "definitions",
+        "referred_columns": [
+          "id"
+        ],
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE"
+      },
+      {
+        "name": "definition_examples_pkey",
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ]
+      },
+      {
+        "name": "definition_examples_unique",
+        "type": "UNIQUE",
+        "columns": [
+          "definition_id",
+          "example_text"
+        ]
+      }
+    ],
+    "indexes": [
+      {
+        "name": "definition_examples_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_examples_pkey ON public.definition_examples USING btree (id)"
+      },
+      {
+        "name": "definition_examples_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE INDEX idx_def_examples_def ON public.definition_examples USING btree (definition_id)"
+      },
+      {
+        "name": "definition_examples_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_examples_unique ON public.definition_examples USING btree (definition_id, example_text)"
+      },
+      {
+        "name": "definition_examples_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_examples_pkey ON public.definition_examples USING btree (id)"
+      },
+      {
+        "name": "definition_examples_unique",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE INDEX idx_def_examples_def ON public.definition_examples USING btree (definition_id)"
+      },
+      {
+        "name": "definition_examples_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_examples_unique ON public.definition_examples USING btree (definition_id, example_text)"
+      },
+      {
+        "name": "idx_def_examples_def",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE INDEX idx_def_examples_def ON public.definition_examples USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_examples_def",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_examples_unique ON public.definition_examples USING btree (definition_id, example_text)"
+      },
+      {
+        "name": "idx_def_examples_def",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_examples"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_examples_pkey ON public.definition_examples USING btree (id)"
+      }
+    ]
+  },
+  "definition_links": {
+    "comment": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "integer",
+        "nullable": false,
+        "default": "nextval('definition_links_id_seq'::regclass)",
+        "primary_key": true,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "definition_id",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "primary_key": false,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "link_text",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "link_url",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "tags",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "link_metadata",
+        "type": "jsonb",
+        "nullable": true,
+        "default": "'{}'::jsonb",
+        "primary_key": false
+      },
+      {
+        "name": "sources",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": [
+      {
+        "name": "definition_links_pkey",
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ]
+      },
+      {
+        "name": "definition_links_unique",
+        "type": "UNIQUE",
+        "columns": [
+          "definition_id",
+          "link_text"
+        ]
+      }
+    ],
+    "indexes": [
+      {
+        "name": "definition_links_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_links_pkey ON public.definition_links USING btree (id)"
+      },
+      {
+        "name": "definition_links_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE INDEX idx_def_links_def ON public.definition_links USING btree (definition_id)"
+      },
+      {
+        "name": "definition_links_pkey",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE INDEX idx_def_links_type_trgm ON public.definition_links USING gin (link_text gin_trgm_ops)"
+      },
+      {
+        "name": "definition_links_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_links_unique ON public.definition_links USING btree (definition_id, link_text)"
+      },
+      {
+        "name": "definition_links_unique",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE INDEX idx_def_links_type_trgm ON public.definition_links USING gin (link_text gin_trgm_ops)"
+      },
+      {
+        "name": "definition_links_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_links_pkey ON public.definition_links USING btree (id)"
+      },
+      {
+        "name": "definition_links_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_links_unique ON public.definition_links USING btree (definition_id, link_text)"
+      },
+      {
+        "name": "definition_links_unique",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE INDEX idx_def_links_def ON public.definition_links USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_links_def",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_links_unique ON public.definition_links USING btree (definition_id, link_text)"
+      },
+      {
+        "name": "idx_def_links_def",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_links_pkey ON public.definition_links USING btree (id)"
+      },
+      {
+        "name": "idx_def_links_def",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE INDEX idx_def_links_type_trgm ON public.definition_links USING gin (link_text gin_trgm_ops)"
+      },
+      {
+        "name": "idx_def_links_def",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE INDEX idx_def_links_def ON public.definition_links USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_links_type_trgm",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_links_pkey ON public.definition_links USING btree (id)"
+      },
+      {
+        "name": "idx_def_links_type_trgm",
+        "unique": false,
+        "method": "gin",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE INDEX idx_def_links_type_trgm ON public.definition_links USING gin (link_text gin_trgm_ops)"
+      },
+      {
+        "name": "idx_def_links_type_trgm",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_links_unique ON public.definition_links USING btree (definition_id, link_text)"
+      },
+      {
+        "name": "idx_def_links_type_trgm",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_links"
+        ],
+        "definition": "CREATE INDEX idx_def_links_def ON public.definition_links USING btree (definition_id)"
+      }
+    ]
+  },
+  "definition_categories": {
+    "comment": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "integer",
+        "nullable": false,
+        "default": "nextval('definition_categories_id_seq'::regclass)",
+        "primary_key": true,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "definition_id",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "primary_key": false,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "category_name",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "category_kind",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "parents",
+        "type": "jsonb",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "sources",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": [
+      {
+        "name": "definition_categories_definition_id_category_name_key",
+        "type": "UNIQUE",
+        "columns": [
+          "category_name",
+          "definition_id"
+        ]
+      },
+      {
+        "name": "definition_categories_pkey",
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ]
+      }
+    ],
+    "indexes": [
+      {
+        "name": "definition_categories_definition_id_category_name_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
+      },
+      {
+        "name": "definition_categories_definition_id_category_name_key",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
+      },
+      {
+        "name": "definition_categories_definition_id_category_name_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
+      },
+      {
+        "name": "definition_categories_definition_id_category_name_key",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
+      },
+      {
+        "name": "definition_categories_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
+      },
+      {
+        "name": "definition_categories_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
+      },
+      {
+        "name": "definition_categories_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
+      },
+      {
+        "name": "definition_categories_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_categories_def",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
+      },
+      {
+        "name": "idx_def_categories_def",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_categories_def",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
+      },
+      {
+        "name": "idx_def_categories_def",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
+      },
+      {
+        "name": "idx_def_categories_name",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
+      },
+      {
+        "name": "idx_def_categories_name",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
+      },
+      {
+        "name": "idx_def_categories_name",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_categories_name",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.definition_categories"
+        ],
+        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
+      }
+    ]
+  },
+  "word_templates": {
+    "comment": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "integer",
+        "nullable": false,
+        "default": "nextval('word_templates_id_seq'::regclass)",
+        "primary_key": true,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "word_id",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "primary_key": false,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "template_name",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "args",
+        "type": "jsonb",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "expansion",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "sources",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": [
+      {
+        "name": "word_templates_pkey",
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ]
+      },
+      {
+        "name": "word_templates_word_id_template_name_key",
+        "type": "UNIQUE",
+        "columns": [
+          "template_name",
+          "word_id"
+        ]
+      }
+    ],
+    "indexes": [
+      {
+        "name": "idx_word_templates_name",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
+      },
+      {
+        "name": "idx_word_templates_name",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
+      },
+      {
+        "name": "idx_word_templates_name",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
+      },
+      {
+        "name": "idx_word_templates_name",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
+      },
+      {
+        "name": "idx_word_templates_word",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
+      },
+      {
+        "name": "idx_word_templates_word",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
+      },
+      {
+        "name": "idx_word_templates_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
+      },
+      {
+        "name": "idx_word_templates_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
+      },
+      {
+        "name": "word_templates_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
+      },
+      {
+        "name": "word_templates_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
+      },
+      {
+        "name": "word_templates_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
+      },
+      {
+        "name": "word_templates_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
+      },
+      {
+        "name": "word_templates_word_id_template_name_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
+      },
+      {
+        "name": "word_templates_word_id_template_name_key",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
+      },
+      {
+        "name": "word_templates_word_id_template_name_key",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
+      },
+      {
+        "name": "word_templates_word_id_template_name_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_templates"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
+      }
+    ]
+  },
+  "word_forms": {
+    "comment": null,
+    "columns": [
+      {
+        "name": "id",
+        "type": "integer",
+        "nullable": false,
+        "default": "nextval('word_forms_id_seq'::regclass)",
+        "primary_key": true,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "word_id",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "primary_key": false,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "form",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "is_canonical",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "primary_key": false
+      },
+      {
+        "name": "is_primary",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "primary_key": false
+      },
+      {
+        "name": "tags",
+        "type": "jsonb",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "sources",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "primary_key": false
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "primary_key": false,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": [
+      {
+        "name": "word_forms_pkey",
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ]
+      },
+      {
+        "name": "word_forms_word_id_form_key",
+        "type": "UNIQUE",
+        "columns": [
+          "form",
+          "word_id"
+        ]
+      }
+    ],
+    "indexes": [
+      {
+        "name": "idx_word_forms_form",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
+      },
+      {
+        "name": "idx_word_forms_form",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
+      },
+      {
+        "name": "idx_word_forms_form",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
+      },
+      {
+        "name": "idx_word_forms_form",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
+      },
+      {
+        "name": "idx_word_forms_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
+      },
+      {
+        "name": "idx_word_forms_word",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
+      },
+      {
+        "name": "idx_word_forms_word",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
+      },
+      {
+        "name": "idx_word_forms_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
+      },
+      {
+        "name": "word_forms_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
+      },
+      {
+        "name": "word_forms_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
+      },
+      {
+        "name": "word_forms_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
+      },
+      {
+        "name": "word_forms_pkey",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
+      },
+      {
+        "name": "word_forms_word_id_form_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
+      },
+      {
+        "name": "word_forms_word_id_form_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
+      },
+      {
+        "name": "word_forms_word_id_form_key",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
+      },
+      {
+        "name": "word_forms_word_id_form_key",
+        "unique": false,
+        "method": "btree",
+        "columns": [
+          "public.word_forms"
+        ],
+        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
       }
     ]
   }

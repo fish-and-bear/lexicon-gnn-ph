@@ -1323,62 +1323,111 @@ def cleanup_dictionary_data(cur):
 
 # --- End Inserted Functions ---
 
-@with_transaction(commit=False) # Assume commit=False as it's likely part of larger transaction
-def process_relations_batch(cur, relations_batch, stats, word_id_cache):
-    """Process a batch of relation entries."""
-    for relation in relations_batch:
+def process_relations_batch(cur, relations_batch, stats, word_id_cache=None):
+    """
+    Process a batch of relations collected during word processing.
+    
+    Args:
+        cur: Database cursor
+        relations_batch: List of relation dictionaries
+        stats: Statistics dictionary to update
+        word_id_cache: Cache of word IDs (optional, no longer required)
+    """
+    if not relations_batch:
+        logger.debug("No relations to process in batch")
+        return
+        
+    # Initialize stats if not present
+    stats["relations_processed"] = stats.get("relations_processed", 0) + len(relations_batch)
+    stats["relations_failed"] = stats.get("relations_failed", 0) 
+    stats["relations_inserted"] = stats.get("relations_inserted", 0)
+    
+    logger.info(f"Processing {len(relations_batch)} relations from batch")
+    
+    # Process each relation in the batch
+    for relation_data in relations_batch:
         try:
-            from_word = relation["from_word"]
-            to_word = relation["to_word"]
-            relation_type = relation["relation_type"]
-            relation_category = relation.get("relation_category", None) # Use .get for safety
-            source = relation["source"]
-
-            if from_word not in word_id_cache:
-                logger.warning(f"Skipping relation: From word '{from_word}' not found in cache.")
+            # Validate required keys
+            required_keys = ["from_word", "to_word", "relation_type", "source"]
+            missing_keys = [key for key in required_keys if key not in relation_data]
+            if missing_keys:
+                logger.error(f"Missing keys in relation data: {missing_keys} (Data: {relation_data})")
+                stats["relations_failed"] += 1
                 continue
-            if to_word not in word_id_cache:
-                logger.warning(f"Skipping relation: To word '{to_word}' not found in cache.")
+                    
+            from_word_id = relation_data["from_word"]
+            to_word = relation_data["to_word"]
+            relation_type = relation_data["relation_type"]
+            source = relation_data["source"]
+            metadata = relation_data.get("metadata", {})
+            def_id = relation_data.get("def_id")
+            
+            # First verify from_word_id exists in the database, don't rely on cache
+            cur.execute("SELECT id FROM words WHERE id = %s", (from_word_id,))
+            if cur.fetchone() is None:
+                logger.warning(f"From word ID {from_word_id} not found in database, skipping relation")
+                stats["relations_failed"] += 1
                 continue
-
-            from_word_id = word_id_cache[from_word]
-            to_word_id = word_id_cache[to_word]
-
-            # Check if the relation already exists
-            cur.execute(
-                """
-                SELECT id FROM relations
-                WHERE from_word_id = %s AND to_word_id = %s AND relation_type = %s
-                """,
-                (from_word_id, to_word_id, relation_type),
-            )
-            existing_relation = cur.fetchone()
-
-            if existing_relation:
-                logger.debug(f"Relation already exists: {from_word} -> {to_word} ({relation_type})")
-                stats["relations_skipped"] += 1
+                
+            # If to_word is a string (lemma), try to find or create its ID
+            to_word_id = None
+            if isinstance(to_word, int):
+                to_word_id = to_word
+                # Verify that the to_word_id actually exists
+                cur.execute("SELECT id FROM words WHERE id = %s", (to_word_id,))
+                if cur.fetchone() is None:
+                    logger.warning(f"To word ID {to_word_id} not found in database, skipping relation")
+                    stats["relations_failed"] += 1
+                    continue
+            elif isinstance(to_word, str) and to_word.strip():
+                # First check directly in the database
+                clean_to_word = to_word.strip()
+                normalized = normalize_lemma(clean_to_word)
+                cur.execute(
+                    "SELECT id FROM words WHERE lemma = %s OR normalized_lemma = %s LIMIT 1",
+                    (clean_to_word, normalized)
+                )
+                result = cur.fetchone()
+                if result:
+                    to_word_id = result[0]
+                else:
+                    # Not found, create new word
+                    try:
+                        to_word_id = get_or_create_word_id(cur, clean_to_word, "tl", source)
+                    except Exception as word_err:
+                        logger.error(f"Error creating to_word '{clean_to_word}': {word_err}")
+                        stats["relations_failed"] += 1
+                        continue
+            
+            if not to_word_id:
+                logger.warning(f"Could not resolve to_word: {to_word}")
+                stats["relations_failed"] += 1
                 continue
-
-            # Insert the new relation
-            cur.execute(
-                """
-                INSERT INTO relations (from_word_id, to_word_id, relation_type, relation_category, sources)
-                VALUES (%s, %s, %s, %s, %s)
-                """,
-                (from_word_id, to_word_id, relation_type, relation_category, Json([source])),
-            )
-            stats["relations_inserted"] += 1
-
-            # Propagate source info
-            propagate_source_info(cur, from_word_id, source)
-            propagate_source_info(cur, to_word_id, source)
-        except KeyError as e: # Catch potential missing keys
-            logger.error(f"Missing key in relation data: {e} (Data: {relation})")
-        except Exception as e: # Catch other potential errors
-            logger.error(f"Error processing relation in batch: {e} (Data: {relation})", exc_info=True)
-
-    logger.info(f"Processed {len(relations_batch)} relations")
-
+                
+            # Insert the relation using the correct parameter names for insert_relation
+            try:
+                relation_id = insert_relation(
+                    cur,
+                    from_word_id,
+                    to_word_id,
+                    relation_type,
+                    source_identifier=source,  # Using the parameter name expected by insert_relation
+                    metadata=metadata
+                )
+                
+                if relation_id:
+                    stats["relations_inserted"] += 1
+                else:
+                    logger.error(f"insert_relation returned None for {from_word_id}->{to_word_id} ({relation_type})")
+                    stats["relations_failed"] += 1
+            except Exception as rel_err:
+                logger.error(f"Error inserting relation {from_word_id}->{to_word_id} ({relation_type}): {rel_err}")
+                stats["relations_failed"] += 1
+                
+        except Exception as e:
+            logger.error(f"Error processing relation data: {relation_data}. Error: {e}", exc_info=True)
+            stats["relations_failed"] += 1
+            
 @with_transaction(commit=True)
 def insert_etymology(
     cur,
