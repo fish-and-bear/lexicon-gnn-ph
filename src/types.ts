@@ -28,7 +28,7 @@ export interface Example {
   translation?: string | null;
   reference?: string | null;
   example_type?: string | null; // dump_default="example"
-  example_metadata?: Record<string, any> | null; // Changed from metadata to example_metadata
+  metadata?: Record<string, any> | null; // Changed to match backend schema naming
   sources?: string | null; // TEXT column
   // Derived fields from post_dump
   romanization?: string | null; // Extracted from metadata
@@ -104,22 +104,22 @@ export interface RawDefinition {
   standardized_pos_id?: number | null; // FK to parts_of_speech
   standardized_pos?: PartOfSpeech | null; // Nested PartOfSpeechSchema (dump_only)
   usage_notes?: string | null; // TEXT column
-  // notes?: string | null; // Present in schema but potentially unused/removed in inserts
-  // cultural_notes?: string | null; // Present in schema but potentially unused/removed in inserts
-  // etymology_notes?: string | null; // Present in schema but potentially unused/removed in inserts
-  // scientific_name?: string | null; // Present in schema but potentially unused/removed in inserts
-  // verified?: boolean | null; // Present in schema but potentially unused/removed in inserts
-  // verification_notes?: string | null; // Present in schema but potentially unused/removed in inserts
+  notes?: string | null; // Present in schema
+  cultural_notes?: string | null; // Present in schema
+  etymology_notes?: string | null; // Present in schema
+  scientific_name?: string | null; // Present in schema
+  verified?: boolean | null; // Present in schema
+  verification_notes?: string | null; // Present in schema
   tags?: string | null; // TEXT column
-  metadata?: Record<string, any> | null; // From MetadataField
-  // popularity_score?: number | null; // Present in schema but potentially unused/removed in inserts
+  definition_metadata?: Record<string, any> | null; // Changed to match backend naming
+  popularity_score?: number | null; // Present in schema
   sources?: string | null; // TEXT column
 
   // Nested lists (dump_only, populated based on includes/query)
   examples?: Example[] | null;
   links?: DefinitionLink[] | null;
   categories?: DefinitionCategory[] | null;
-  definition_relations?: DefinitionRelation[] | null; // Added, was missing
+  definition_relations?: DefinitionRelation[] | null;
 
   // Timestamps (dump_only)
   created_at?: string | null;
@@ -146,6 +146,7 @@ export interface Pronunciation {
   value: string; // IPA text or URL
   tags?: Record<string, any> | null; // From MetadataField
   pronunciation_metadata?: Record<string, any> | null; // From MetadataField (can include source info)
+  sources?: string | null; // Added to match backend schema
   // Timestamps (dump_only)
   created_at?: string | null;
   updated_at?: string | null;
@@ -456,10 +457,12 @@ export interface WordNetwork {
     language_code?: LangCode | null;
     depth?: number | null;
     total_nodes?: number | null;
-    total_edges?: number | null; // Use total_edges for consistency if backend uses it
+    total_links?: number | null; // Use total_links for consistency with backend
+    query_time?: number | null; // Added to match backend response
     include_affixes?: boolean | null;
     include_etymology?: boolean | null;
     cluster_threshold?: number | null;
+    filters_applied?: Record<string, any> | null; // Added to match backend metadata
   };
 }
 
@@ -489,7 +492,7 @@ export interface SearchOptions {
   q?: string | null; // Query string (required by schema, but optional here for flexibility)
   page?: number | null; // Corresponds to 'offset' calculation: offset = (page - 1) * per_page
   per_page?: number | null; // Corresponds to 'limit' in schema
-  mode?: "all" | "exact" | "prefix" | "suffix" | "fuzzy" | null; // 'fuzzy' might not be in schema
+  mode?: "all" | "exact" | "prefix" | "suffix" | null; // Remove "fuzzy" which isn't in schema
   sort?: "relevance" | "alphabetical" | "created" | "updated" | "completeness" | null;
   order?: "asc" | "desc" | null;
   language?: LangCode | null;
@@ -503,7 +506,7 @@ export interface SearchOptions {
   has_forms?: boolean | null;
   has_templates?: boolean | null;
 
-  // Direct boolean filters (may require specific backend query logic)
+  // Direct boolean filters 
   is_root?: boolean | null;
   is_proper_noun?: boolean | null;
   is_abbreviation?: boolean | null;
@@ -524,6 +527,10 @@ export interface SearchOptions {
   // Score filters
   min_completeness?: number | null;
   max_completeness?: number | null;
+
+  // Tags and categories (added to match backend)
+  tags?: string[] | null;
+  categories?: string[] | null;
 
   // Include options (control nested data in response)
   include_full?: boolean | null; // Load full RawWordComprehensiveData in results
@@ -546,6 +553,7 @@ export interface WordNetworkOptions {
   include_affixes?: boolean | null;
   include_etymology?: boolean | null;
   cluster_threshold?: number | null;
+  relation_types?: string[] | null; // Added to match backend parameters
 }
 
 // --- Structures for Editing ---

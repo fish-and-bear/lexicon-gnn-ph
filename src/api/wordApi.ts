@@ -441,7 +441,6 @@ interface NetworkMetadata {
   query_time?: number | null;
   filters_applied?: {
     depth: number;
-    breadth: number;
     include_affixes: boolean;
     include_etymology: boolean;
     relation_types: string[];
@@ -484,7 +483,6 @@ export async function fetchWordNetwork(
   const sanitizedWord = word.toLowerCase();
   const {
     depth = 2,
-    breadth = 10,
     include_affixes = true,
     include_etymology = true,
     cluster_threshold = 0.3,
@@ -492,9 +490,8 @@ export async function fetchWordNetwork(
   } = options;
   
   const sanitizedDepth = Math.min(Math.max(1, depth), 4); // Max depth 4
-  const sanitizedBreadth = Math.min(Math.max(5, breadth), 50); // Between 5 and 50
   
-  const cacheKey = `cache:wordNetwork:${sanitizedWord}-${sanitizedDepth}-${sanitizedBreadth}-${include_affixes}-${include_etymology}-${relation_types?.join(',')}`;
+  const cacheKey = `cache:wordNetwork:${sanitizedWord}-${sanitizedDepth}-${include_affixes}-${include_etymology}-${cluster_threshold}-${relation_types?.join(',')}`;
     
   const cachedData = getCachedData<ImportedWordNetwork>(cacheKey);
   if (cachedData) {
@@ -515,7 +512,6 @@ export async function fetchWordNetwork(
     
     const params: Record<string, any> = {
       depth: sanitizedDepth,
-      breadth: sanitizedBreadth,
       include_affixes,
       include_etymology,
       cluster_threshold
@@ -599,7 +595,6 @@ export async function fetchWordNetwork(
         query_time: response.data.metadata?.execution_time || null,
         filters_applied: {
           depth: sanitizedDepth,
-          breadth: sanitizedBreadth,
           include_affixes,
           include_etymology,
           relation_types: relation_types || []
@@ -1112,6 +1107,10 @@ export async function searchWords(query: string, options: SearchOptions): Promis
     if (options.min_completeness !== undefined) apiParams.min_completeness = options.min_completeness;
     if (options.max_completeness !== undefined) apiParams.max_completeness = options.max_completeness;
     
+    // Tags and categories
+    if (options.tags && options.tags.length > 0) apiParams.tags = options.tags.join(',');
+    if (options.categories && options.categories.length > 0) apiParams.categories = options.categories.join(',');
+    
     // Include options
     if (options.include_full !== undefined) apiParams.include_full = options.include_full;
     if (options.include_definitions !== undefined) apiParams.include_definitions = options.include_definitions;
@@ -1285,7 +1284,7 @@ export async function advancedSearch(query: string, options: SearchOptions): Pro
   try {
     // Use snake_case for API parameters to match backend expectations
     const apiParams: Record<string, any> = {
-        query: encodeURIComponent(query), // Explicitly encode the query parameter
+        q: encodeURIComponent(query), // Explicitly encode the query parameter
         limit: options.per_page || 50, // Default limit
         offset: options.page ? (options.page - 1) * (options.per_page || 50) : 0, 
         include_details: options.include_full || false,
@@ -1294,11 +1293,15 @@ export async function advancedSearch(query: string, options: SearchOptions): Pro
     // Advanced filters
     if (options.language) apiParams.language = options.language;
     if (options.pos) apiParams.pos = options.pos;
+    if (options.sort) apiParams.sort = options.sort;
+    if (options.order) apiParams.order = options.order;
     
     // Feature filters
     if (options.has_baybayin !== undefined) apiParams.has_baybayin = options.has_baybayin;
     if (options.has_etymology !== undefined) apiParams.has_etymology = options.has_etymology;
     if (options.has_pronunciation !== undefined) apiParams.has_pronunciation = options.has_pronunciation;
+    if (options.has_forms !== undefined) apiParams.has_forms = options.has_forms;
+    if (options.has_templates !== undefined) apiParams.has_templates = options.has_templates;
     
     // Date range filters
     if (options.date_added_from) apiParams.date_added_from = options.date_added_from;
@@ -1315,6 +1318,10 @@ export async function advancedSearch(query: string, options: SearchOptions): Pro
     // Completeness score range
     if (options.min_completeness !== undefined) apiParams.min_completeness = options.min_completeness;
     if (options.max_completeness !== undefined) apiParams.max_completeness = options.max_completeness;
+    
+    // Tags and categories
+    if (options.tags && options.tags.length > 0) apiParams.tags = options.tags.join(',');
+    if (options.categories && options.categories.length > 0) apiParams.categories = options.categories.join(',');
     
     console.log(`[DEBUG] Making advanced search API request with params:`, apiParams);
     
