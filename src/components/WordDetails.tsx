@@ -503,8 +503,13 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                 }
                               }}
                             >
-                              {example.example_text} {/* Use example_text */} 
-                              {example.translation && ` - ${example.translation}`} {/* Show translation */} 
+                              {example.example_text}
+                              {example.translation && ` - ${example.translation}`}
+                              {example.example_metadata?.romanization && 
+                                <span style={{ color: 'text.disabled', marginLeft: '0.5em' }}>
+                                  ({example.example_metadata.romanization})
+                                </span>
+                              }
                             </Typography>
                           ))}
                         </Box>

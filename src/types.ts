@@ -28,7 +28,7 @@ export interface Example {
   translation?: string | null;
   reference?: string | null;
   example_type?: string | null; // dump_default="example"
-  metadata?: Record<string, any> | null; // From MetadataField
+  example_metadata?: Record<string, any> | null; // Changed from metadata to example_metadata
   sources?: string | null; // TEXT column
   // Derived fields from post_dump
   romanization?: string | null; // Extracted from metadata

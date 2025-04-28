@@ -666,327 +666,78 @@ function splitCommaSeparated(value: string | undefined): string[] { // Use strin
 // --- Main Data Normalization Function --- 
 
 function normalizeWordData(rawData: any): WordInfo {
-  console.log("Starting normalizeWordData with raw data:", {
-    id: rawData?.id || (rawData?.data?.id),
-    lemma: rawData?.lemma || (rawData?.data?.lemma),
-    hasIncoming: Boolean(rawData?.incoming_relations || rawData?.data?.incoming_relations),
-    hasOutgoing: Boolean(rawData?.outgoing_relations || rawData?.data?.outgoing_relations),
-  });
-
-  const wordData: RawWordComprehensiveData = rawData?.data || rawData;
-
-  if (!wordData || typeof wordData !== 'object' || !wordData.id) {
-    if (Array.isArray(wordData)) {
-         console.warn("normalizeWordData received an array, expected object. Using first element.", wordData);
-         if (wordData.length > 0 && wordData[0] && wordData[0].id) {
-             return normalizeWordData(wordData[0]);
-         } else {
-             throw new Error('Invalid API response: Expected single word data object, received array with invalid content.');
-         }
-    }
-    throw new Error('Invalid API response: Missing essential word data or ID.');
-  }
-
-  console.log("Normalizing word data:", JSON.stringify(wordData.id), wordData.lemma);
-
-  // Create base normalized word structure
-  const normalizedWord: WordInfo = {
-    id: wordData.id,
-    lemma: wordData.lemma || '',
-    normalized_lemma: wordData.normalized_lemma || wordData.lemma || '',
-    language_code: wordData.language_code || 'tl',
-    has_baybayin: wordData.has_baybayin || false,
-    baybayin_form: wordData.baybayin_form || null,
-    romanized_form: wordData.romanized_form || null,
-    root_word_id: wordData.root_word_id || null,
-    preferred_spelling: wordData.preferred_spelling || null,
-    tags: wordData.tags || null, // Keep as string or null from backend
-    data_hash: wordData.data_hash || null,
-    created_at: wordData.created_at || null,
-    updated_at: wordData.updated_at || null,
-    
-    // New fields from API improvements
-    word_metadata: wordData.word_metadata || null, 
-    source_info: wordData.source_info || null,
-    idioms: wordData.idioms || null,
-    badlit_form: wordData.badlit_form || null,
-    hyphenation: wordData.hyphenation || null,
-    is_proper_noun: wordData.is_proper_noun || false,
-    is_abbreviation: wordData.is_abbreviation || false,
-    is_initialism: wordData.is_initialism || false,
-    completeness_score: wordData.completeness_score ?? null, // Add mapping for completeness score
-    
-    // Compute is_root based on root_word_id
-    is_root: !wordData.root_word_id,
-    
-    // Arrays that will be populated later
-    definitions: [],
-    etymologies: [],
-    pronunciations: [],
-    credits: [],
-    root_word: null,
-    derived_words: [],
-    outgoing_relations: [],
-    incoming_relations: [],
-    root_affixations: [],
-    affixed_affixations: [],
-    // data_completeness: wordData.data_completeness || null, // Removed: Not in RawWordComprehensiveData
-    // relation_summary: wordData.relation_summary || null, // Removed: Not in RawWordComprehensiveData
+  // Replace undefined/null arrays with empty arrays for consistency
+  const data = {
+    ...rawData,
+    definitions: rawData.definitions || [],
+    etymologies: rawData.etymologies || [],
+    pronunciations: rawData.pronunciations || [],
+    forms: rawData.forms || [],
+    templates: rawData.templates || [],
+    credits: rawData.credits || [],
+    outgoing_relations: rawData.outgoing_relations || [],
+    incoming_relations: rawData.incoming_relations || [],
+    root_affixations: rawData.root_affixations || [],
+    affixed_affixations: rawData.affixed_affixations || [],
+    definition_relations: rawData.definition_relations || [],
+    related_definitions: rawData.related_definitions || [],
   };
 
-  // Normalize Definitions
-  if (wordData.definitions && Array.isArray(wordData.definitions)) {
-    console.log(`Processing ${wordData.definitions.length} definitions`);
-    // Map to RawDefinition, but keep splitting logic for convenience if WordInfo needs arrays later
-    normalizedWord.definitions = wordData.definitions.map((def: any): RawDefinition => ({
-      id: def.id,
-      definition_text: def.definition_text || '',
-      original_pos: def.original_pos || null,
-      standardized_pos_id: def.standardized_pos_id || null,
-      standardized_pos: def.standardized_pos || null,
-      usage_notes: def.usage_notes || null, // Keep as string from raw
-      tags: def.tags || null, // Keep as string from raw
-      sources: def.sources || null, // Keep as string from raw
-      metadata: def.metadata || def.definition_metadata || null, // Use metadata primarily
-      // weight: def.weight || null, // Remove invalid 'weight' property
-      created_at: def.created_at || null,
-      updated_at: def.updated_at || null,
-      // Keep nested arrays as they are (assuming they match Example[], DefinitionLink[], etc.)
-      examples: def.examples || null,
-      links: def.links || null,
-      categories: def.categories || null,
-      definition_relations: def.definition_relations || null,
-    }));
-  } else {
-    console.warn("No definitions found in word data");
-  }
-
-  // Normalize Etymologies
-  if (wordData.etymologies && Array.isArray(wordData.etymologies)) {
-    console.log(`Processing ${wordData.etymologies.length} etymologies`);
-    normalizedWord.etymologies = wordData.etymologies.map((etym: any): Etymology => ({
-      id: etym.id,
-      word_id: etym.word_id || wordData.id, // Ensure word_id is present
-      etymology_text: etym.etymology_text || null,
-      normalized_components: etym.normalized_components || null,
-      // Use etymology_structure (assuming it's the correct field)
-      etymology_structure: etym.etymology_structure || null,
-      language_codes: etym.language_codes || null, // Keep as string
-      sources: etym.sources || null, // Keep as string
-      created_at: etym.created_at || null,
-      updated_at: etym.updated_at || null,
-    }));
-  } else {
-    console.warn("No etymologies found in word data");
-  }
-
-  // Normalize Pronunciations
-  if (wordData.pronunciations && Array.isArray(wordData.pronunciations)) {
-    console.log(`Processing ${wordData.pronunciations.length} pronunciations`);
-    normalizedWord.pronunciations = wordData.pronunciations.map((pron: any): Pronunciation => ({
-      id: pron.id,
-      word_id: pron.word_id || wordData.id,
-      type: pron.type || '',
-      value: pron.value || '',
-      // Use the correct fields based on Pronunciation type
-      tags: pron.tags || null, // Expects Record<string, any> | null
-      pronunciation_metadata: pron.pronunciation_metadata || null, // Expects Record<string, any> | null
-      // weight: pron.weight || null, // Remove invalid 'weight' property
-      created_at: pron.created_at || null,
-      updated_at: pron.updated_at || null,
-    }));
-  } else {
-    console.warn("No pronunciations found in word data");
-  }
-
-  // Normalize Credits
-  if (wordData.credits && Array.isArray(wordData.credits)) {
-    console.log(`Processing ${wordData.credits.length} credits`);
-    normalizedWord.credits = wordData.credits.map((cred: any): Credit => ({
-      id: cred.id,
-      word_id: cred.word_id || wordData.id,
-      // role: cred.role || '', // Remove invalid 'role' property
-      credit: cred.credit || '',
-      sources: cred.sources || null, // Add sources
-      created_at: cred.created_at || null,
-      updated_at: cred.updated_at || null,
-    }));
-  } else {
-    console.warn("No credits found in word data");
-  }
-
-  // Normalize Root Word
-  if (wordData.root_word && typeof wordData.root_word === 'object') {
-    console.log("Processing root word:", wordData.root_word.lemma);
-    normalizedWord.root_word = {
-      id: wordData.root_word.id,
-      lemma: wordData.root_word.lemma || '',
-      normalized_lemma: wordData.root_word.normalized_lemma || null,
-      language_code: wordData.root_word.language_code || null,
-      has_baybayin: wordData.root_word.has_baybayin || false,
-      baybayin_form: wordData.root_word.baybayin_form || null,
-    };
-  }
-
-  // Normalize Derived Words - Revert to ': any'
-  if (wordData.derived_words && Array.isArray(wordData.derived_words)) {
-    console.log(`Processing ${wordData.derived_words.length} derived words`);
-    normalizedWord.derived_words = wordData.derived_words.map((dw: any): BasicWord => ({ // Changed back to any
-      id: dw.id,
-      lemma: dw.lemma || '',
-      normalized_lemma: dw.normalized_lemma || null,
-      language_code: dw.language_code || null,
-      has_baybayin: dw.has_baybayin || false,
-      baybayin_form: dw.baybayin_form || null,
-    }));
-  } else {
-    console.warn("No derived words found in word data");
-  }
-
-  // Normalize Outgoing Relations
-  if (wordData.outgoing_relations && Array.isArray(wordData.outgoing_relations)) {
-    console.log(`Processing ${wordData.outgoing_relations.length} outgoing relations`);
-    normalizedWord.outgoing_relations = wordData.outgoing_relations.map((rel: any): Relation => {
-      // Ensure the relation has a valid target_word
-      if (!rel.target_word || !rel.target_word.lemma) {
-        console.warn("Outgoing relation missing target_word:", rel);
-        // Create a minimal target_word if possible
-        let fixedTargetWord = null;
-        if (typeof rel === 'object' && rel !== null) {
-          // Try to extract from different possible fields
-          const candidateFields = ['target', 'to', 'to_word', 'word'];
-          for (const field of candidateFields) {
-            if (rel[field]) {
-              if (typeof rel[field] === 'string') {
-                fixedTargetWord = { id: 0, lemma: rel[field] };
-                break;
-              } else if (typeof rel[field] === 'object' && rel[field].lemma) {
-                fixedTargetWord = { 
-                  id: rel[field].id || 0, 
-                  lemma: rel[field].lemma 
-                };
-                break;
-              }
-            }
+  // Ensure examples have consistent structure in all definitions
+  if (data.definitions && Array.isArray(data.definitions)) {
+    data.definitions = data.definitions.map((def: any) => {
+      if (!def) return def;
+      
+      // Handle examples - ensure examples exist and has proper metadata
+      if (def.examples && Array.isArray(def.examples)) {
+        def.examples = def.examples.map((example: any) => {
+          if (!example) return example;
+          
+          // Convert example_metadata to example_metadata if needed
+          if (example.metadata && !example.example_metadata) {
+            example.example_metadata = example.metadata;
+            // Keep the old property to avoid breaking changes during transition
+            // delete example.metadata; // Uncomment later when all code is updated
           }
-        }
-        
-        // If we still couldn't create a target word, use a placeholder
-        if (!fixedTargetWord) {
-          fixedTargetWord = { id: 0, lemma: 'Unknown' };
-        }
-        
-        return {
-          id: rel.id || 0,
-          relation_type: rel.relation_type || 'related',
-          metadata: rel.metadata || null, // Use metadata directly
-          target_word: fixedTargetWord
-        };
+          
+          // Ensure romanization is accessible
+          if (example.example_metadata && example.example_metadata.romanization && !example.romanization) {
+            example.romanization = example.example_metadata.romanization;
+          }
+          
+          return example;
+        });
+      } else {
+        def.examples = [];
       }
       
-      // Regular case - relation has target_word
-      return {
-        id: rel.id || 0,
-        relation_type: rel.relation_type || 'related',
-        metadata: rel.metadata || null, // Use metadata directly
-        target_word: {
-          id: rel.target_word.id || 0,
-          lemma: rel.target_word.lemma,
-          has_baybayin: rel.target_word.has_baybayin,
-          baybayin_form: rel.target_word.baybayin_form
-        }
-      };
+      return def;
     });
-  } else {
-    console.warn("No outgoing relations found in word data");
-    normalizedWord.outgoing_relations = [];
+  }
+  
+  // Convert properties with special handling needs
+  // Ensure proper relations structure by combining incoming/outgoing
+  if (!data.relations) {
+    data.relations = [
+      ...(data.outgoing_relations || []),
+      ...(data.incoming_relations || [])
+    ];
   }
 
-  // Normalize Incoming Relations
-  if (wordData.incoming_relations && Array.isArray(wordData.incoming_relations)) {
-    console.log(`Processing ${wordData.incoming_relations.length} incoming relations`);
-    normalizedWord.incoming_relations = wordData.incoming_relations.map((rel: any): Relation => {
-      // Ensure the relation has a valid source_word
-      if (!rel.source_word || !rel.source_word.lemma) {
-        console.warn("Incoming relation missing source_word:", rel);
-        // Create a minimal source_word if possible
-        let fixedSourceWord = null;
-        if (typeof rel === 'object' && rel !== null) {
-          // Try to extract from different possible fields
-          const candidateFields = ['source', 'from', 'from_word', 'word'];
-          for (const field of candidateFields) {
-            if (rel[field]) {
-              if (typeof rel[field] === 'string') {
-                fixedSourceWord = { id: 0, lemma: rel[field] };
-                break;
-              } else if (typeof rel[field] === 'object' && rel[field].lemma) {
-                fixedSourceWord = { 
-                  id: rel[field].id || 0, 
-                  lemma: rel[field].lemma 
-                };
-                break;
-              }
-            }
-          }
-        }
-        
-        // If we still couldn't create a source word, use a placeholder
-        if (!fixedSourceWord) {
-          fixedSourceWord = { id: 0, lemma: 'Unknown' };
-        }
-        
-        return {
-          id: rel.id || 0,
-          relation_type: rel.relation_type || 'related',
-          metadata: rel.metadata || null, // Use metadata directly
-          source_word: fixedSourceWord
-        };
-      }
-      
-      // Regular case - relation has source_word
-      return {
-        id: rel.id || 0,
-        relation_type: rel.relation_type || 'related',
-        metadata: rel.metadata || null, // Use metadata directly
-        source_word: {
-          id: rel.source_word.id || 0,
-          lemma: rel.source_word.lemma,
-          has_baybayin: rel.source_word.has_baybayin,
-          baybayin_form: rel.source_word.baybayin_form
-        }
-      };
-    });
-  } else {
-    console.warn("No incoming relations found in word data");
-    normalizedWord.incoming_relations = [];
+  // Ensure proper affixations structure by combining
+  if (!data.affixations) {
+    data.affixations = [
+      ...(data.root_affixations || []),
+      ...(data.affixed_affixations || [])
+    ];
   }
 
-  // Normalize Root Affixations - Revert to ': any'
-  if (wordData.root_affixations && Array.isArray(wordData.root_affixations)) {
-    console.log(`Processing ${wordData.root_affixations.length} root affixations`);
-    normalizedWord.root_affixations = wordData.root_affixations.map((aff: any): Affixation => ({ // Changed back to any
-        ...aff,
-        affixed_word: aff.affixed_word ? { ...aff.affixed_word } : undefined,
-        root_word: aff.root_word ? { ...aff.root_word } : undefined,
-    }));
-  } else {
-    console.warn("No root affixations found in word data");
+  // Ensure is_root property
+  if (typeof data.is_root !== 'boolean') {
+    data.is_root = !data.root_word_id;
   }
 
-  // Normalize Affixed Affixations - Revert to ': any'
-  if (wordData.affixed_affixations && Array.isArray(wordData.affixed_affixations)) {
-    console.log(`Processing ${wordData.affixed_affixations.length} affixed affixations`);
-    normalizedWord.affixed_affixations = wordData.affixed_affixations.map((aff: any): Affixation => ({ // Changed back to any
-      ...aff,
-      affixed_word: aff.affixed_word ? { ...aff.affixed_word } : undefined,
-      root_word: aff.root_word ? { ...aff.root_word } : undefined,
-    }));
-  } else {
-    console.warn("No affixed affixations found in word data");
-  }
-
-  console.log("Word data normalization complete");
-  return normalizedWord;
+  return data as WordInfo;
 }
 
 // --- Word Details Fetching --- 
