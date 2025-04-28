@@ -62,6 +62,9 @@ def process_marayum_json(
     )
 
     conn = cur.connection
+    if conn.closed:
+        logger.error("Connection is closed. Cannot proceed with processing.")
+        return 0, 1  # Indicate 0 processed, 1 issue (connection error)
 
     try:
         with open(filename, "r", encoding="utf-8", errors="replace") as f:
@@ -89,12 +92,10 @@ def process_marayum_json(
             f"Marayum file {filename} dictionary does not contain a 'words' list."
         )
         return 0, 1  # Indicate 0 processed, 1 issue (format error)
-    # --- End Adjustment ---
 
     entries_in_file = len(word_entries_list)  # Get length from the 'words' list
     if entries_in_file == 0:
         logger.info(f"Found 0 word entries in {filename}. Skipping file.")
-        # No commit needed, just return
         return 0, 0  # 0 processed, 0 issues
 
     logger.info(f"Found {entries_in_file} word entries in {filename}")
@@ -104,24 +105,17 @@ def process_marayum_json(
     base_language_name = dict_info.get("base_language", "")
     language_code = "unk"  # Default before mapping attempt
     if base_language_name:
-        # Normalize the language name slightly before lookup (lowercase, strip)
         normalized_lang_name = base_language_name.lower().strip()
-        language_code = get_language_code(normalized_lang_name)  # Use helper function
-        # get_language_code logs warning if mapping fails and returns a safe code ('unk' or derived)
-        if (
-            not language_code
-        ):  # Should not happen if get_language_code is robust, but check anyway
+        language_code = get_language_code(normalized_lang_name)
+        if not language_code:
             logger.warning(
                 f"get_language_code returned empty for '{base_language_name}' (normalized: '{normalized_lang_name}') in {filename}. Defaulting to 'unk'."
             )
             language_code = "unk"
-        elif language_code != "unk":  # Only log success if a specific code was found
+        elif language_code != "unk":
             logger.info(
                 f"Determined language code '{language_code}' for {filename} from base language '{base_language_name}'."
             )
-        # If language_code is 'unk', consider if processing should stop or continue
-        # For now, we proceed, but 'unk' will be used for word entries.
-    # --- End Language Code Determination ---
 
     # Initialize counters for this file's processing run
     stats = {
@@ -130,12 +124,12 @@ def process_marayum_json(
         "relations": 0,
         "pronunciations": 0,
         "etymologies": 0,
-        "credits": 0,  # Added counter for credits
+        "credits": 0,
         "skipped": 0,
         "errors": 0,
         "examples": 0,
     }
-    error_types = {}  # Dictionary to track types of errors encountered
+    error_types = {}
 
     # Iterate over the extracted list of word entries
     with tqdm(
@@ -145,14 +139,10 @@ def process_marayum_json(
         leave=False,
     ) as pbar:
         try:
-            for entry_index, entry in enumerate(
-                word_entries_list
-            ):  # <-- Iterate over word_entries_list
-                # Create a unique savepoint name for each entry
-                savepoint_name = f"marayum_{entry_index}_{abs(hash(str(entry)) % 1000000)}"  # Limit hash part length
-
-                lemma = ""  # Initialize lemma outside try block for use in error logging if needed
-                word_id = None  # Initialize word_id
+            for entry_index, entry in enumerate(word_entries_list):
+                savepoint_name = f"marayum_{entry_index}_{abs(hash(str(entry)) % 1000000)}"
+                lemma = ""
+                word_id = None
 
                 try:
                     cur.execute(f"SAVEPOINT {savepoint_name}")
@@ -162,21 +152,17 @@ def process_marayum_json(
                             f"Skipping non-dictionary item at index {entry_index} in {filename}"
                         )
                         stats["skipped"] += 1
-                        cur.execute(
-                            f"RELEASE SAVEPOINT {savepoint_name}"
-                        )  # Release savepoint for skipped item
+                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                         pbar.update(1)
                         continue
 
                     lemma = entry.get("word", "").strip()
                     if not lemma:
                         logger.warning(
-                            f"Skipping entry at index {entry_index} due to missing or empty 'word' field in {filename}"
+                            f"Skipping entry at index {entry_index} due to missing or empty 'word' field"
                         )
                         stats["skipped"] += 1
-                        cur.execute(
-                            f"RELEASE SAVEPOINT {savepoint_name}"
-                        )  # Release savepoint for skipped item
+                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                         pbar.update(1)
                         continue
 
@@ -207,7 +193,7 @@ def process_marayum_json(
                             lemma,
                             language_code=language_code,  # Use file-level language code
                             source_identifier=effective_source_identifier,
-                            word_metadata=(Json(word_metadata) if word_metadata else None), # Wrap metadata
+                            word_metadata=word_metadata,
                         )
                         if not word_id:
                             # This case should ideally be handled within get_or_create_word_id by raising an error
@@ -306,14 +292,16 @@ def process_marayum_json(
                                 # def_order = def_item.get("definition_id", def_idx + 1)
                                 # Extract entry-level part of speech (also stored in word_metadata)
                                 part_of_speech = entry.get("pos", "")
+                                usage_notes = None
                                 def_id = insert_definition(
                                     cur,
                                     word_id,
                                     definition_text,
-                                    sources=effective_source_identifier,  # CORRECTED ARGUMENT NAME
-                                    part_of_speech=part_of_speech,  # Pass the part of speech
-                                    # REMOVED examples=(Json(examples_processed) if examples_processed else None),
-                                    metadata=(Json(def_metadata) if def_metadata else None), # Wrap metadata
+                                    part_of_speech=part_of_speech,
+                                    usage_notes=usage_notes,
+                                    tags=None,
+                                    sources=source_identifier,
+                                    metadata=def_metadata,
                                 )
                                 if def_id:
                                     stats["definitions"] += 1
@@ -508,196 +496,56 @@ def process_marayum_json(
                     cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                     stats["processed"] += 1
 
-                    # Commit periodically within the file processing loop
-                    if not conn.closed and stats["processed"] % 500 == 0:
-                        try:
-                            conn.commit()
-                            logger.info(
-                                f"Committed batch after {stats['processed']} entries processed for {filename}"
-                            )
-                        except (
-                            psycopg2.InterfaceError,
-                            psycopg2.OperationalError,
-                        ) as conn_err:
-                            logger.error(
-                                f"Connection error during batch commit for {filename} at entry {entry_index}: {conn_err}. Attempting to reconnect/rollback is complex here. Stopping file processing.",
-                                exc_info=True,
-                            )
-                            remaining_entries = entries_in_file - entry_index - 1
-                            stats["errors"] += remaining_entries
-                            error_types["BatchCommitConnectionError"] = (
-                                error_types.get("BatchCommitConnectionError", 0) + 1
-                            )
-                            pbar.update(remaining_entries)  # Update progress bar fully
-                            total_issues = stats["skipped"] + stats["errors"]
-                            return stats["processed"], total_issues  # Return counts so far
-                        except Exception as batch_commit_err:
-                            logger.error(
-                                f"Error committing batch for {filename} at entry {entry_index}: {batch_commit_err}. Rolling back current transaction...",
-                                exc_info=True,
-                            )
-                            try:
-                                conn.rollback()
-                                logger.info(
-                                    "Transaction rolled back after batch commit error."
-                                )
-                            except Exception as rb_err:
-                                logger.critical(
-                                    f"CRITICAL: Failed to rollback after batch commit error for {filename}: {rb_err}. Stopping file processing.",
-                                    exc_info=True,
-                                )
-                                remaining_entries = entries_in_file - entry_index - 1
-                                stats["errors"] += remaining_entries
-                                error_types["BatchCommitRollbackError"] = (
-                                    error_types.get("BatchCommitRollbackError", 0) + 1
-                                )
-                                pbar.update(remaining_entries)
-                                total_issues = stats["skipped"] + stats["errors"]
-                                return (
-                                    stats["processed"],
-                                    total_issues,
-                                )  # Return counts so far
-                            # After rollback, the loop continues with the next entry in a fresh transaction state
-                            error_types["BatchCommitError"] = (
-                                error_types.get("BatchCommitError", 0) + 1
-                            )
+                    # Commit every 100 entries to avoid transaction bloat
+                    if stats["processed"] % 100 == 0:
+                        conn.commit()
+                        logger.debug(f"Committed after processing {stats['processed']} entries")
 
                 except Exception as entry_err:
-                    # General catch-all for unexpected errors during the processing of a single entry
                     logger.error(
-                        f"UNEXPECTED error processing entry #{entry_index} ('{lemma or 'unknown'}') in {filename}: {entry_err}",
+                        f"Failed processing entry #{entry_index} ('{lemma}') in {filename}: {entry_err}",
                         exc_info=True,
                     )
                     stats["errors"] += 1
-                    error_key = f"UnexpectedEntryError: {type(entry_err).__name__}"
+                    error_key = f"EntryProcessingError: {type(entry_err).__name__}"
                     error_types[error_key] = error_types.get(error_key, 0) + 1
                     try:
-                        # Rollback the specific entry that failed
                         cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
+                        cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                     except Exception as rb_err:
                         logger.critical(
-                            f"CRITICAL: Failed to rollback to savepoint {savepoint_name} after entry error in {filename}: {rb_err}. Attempting full transaction rollback.",
+                            f"Failed to rollback/release savepoint {savepoint_name} after entry error: {rb_err}",
                             exc_info=True,
                         )
                         try:
-                            if not conn.closed:
-                                conn.rollback()
-                                logger.info(
-                                    "Full transaction rolled back due to savepoint rollback failure."
-                                )
-                            else:
-                                logger.warning(
-                                    "Connection was already closed before full rollback attempt."
-                                )
+                            conn.rollback()
+                            logger.info("Performed full transaction rollback after savepoint failure")
                         except Exception as full_rb_err:
-                            logger.critical(
-                                f"CRITICAL: Failed even full transaction rollback for {filename}: {full_rb_err}. Stopping file processing.",
-                                exc_info=True,
-                            )
-                            remaining_entries = entries_in_file - entry_index - 1
-                            stats["errors"] += remaining_entries  # Mark remaining as issues
-                            error_types["CriticalRollbackFailure"] = (
-                                error_types.get("CriticalRollbackFailure", 0) + 1
-                            )
-                            pbar.update(remaining_entries)  # Update progress bar fully
-                            total_issues = stats["skipped"] + stats["errors"]
-                            return stats["processed"], total_issues  # Exit function
-
+                            logger.critical(f"CRITICAL: Failed both savepoint and full rollback: {full_rb_err}")
+                            raise  # Re-raise to stop processing
                 finally:
-                    # Ensure the progress bar is always updated, even if an error occurred
                     pbar.update(1)
 
-        finally:
-            # Ensure progress bar is closed even if loop errors out
-            if pbar:
-                pbar.close()
-
-    # --- Final Commit for the file ---
-    final_commit_success = False
-    try:
-        # First check if we have a valid connection
-        if conn is None:
-            # Connection doesn't exist at all
-            logger.error(
-                f"No valid connection available for final commit for {filename}. Data might be lost."
-            )
-            stats["errors"] += 1  # Count as an error state
-            error_types["NoConnectionForFinalCommit"] = (
-                error_types.get("NoConnectionForFinalCommit", 0) + 1
-            )
-        elif conn.closed:
-            # Connection exists but is closed
-            logger.error(
-                f"Connection was closed before final commit for {filename}. Some data might be lost."
-            )
-            stats["errors"] += 1  # Count as an error state
-            error_types["ConnectionClosedBeforeFinalCommit"] = (
-                error_types.get("ConnectionClosedBeforeFinalCommit", 0) + 1
-            )
-        else:
-            # We have a valid, open connection - proceed with commit
+        except Exception as e:
+            logger.critical(f"Critical error during processing: {e}", exc_info=True)
+            error_types["CriticalProcessingError"] = error_types.get("CriticalProcessingError", 0) + 1
             try:
-                conn.commit()
-                final_commit_success = True
-                logger.info(f"Finished processing {filename}. Final commit successful.")
-                logger.info(
-                    f"Stats for {filename}: Processed: {stats['processed']}, Definitions: {stats['definitions']}, Relations: {stats['relations']}, Pronunciations: {stats['pronunciations']}, Etymologies: {stats['etymologies']}, Credits: {stats['credits']}, Skipped: {stats['skipped']}, Errors: {stats['errors']}"
-                )
-                if error_types:
-                    logger.warning(f"Error summary for {filename}: {error_types}")
-            except (psycopg2.InterfaceError, psycopg2.OperationalError) as conn_err:
-                logger.error(
-                    f"Connection error during final commit for {filename}: {conn_err}. Changes might be lost.",
-                    exc_info=True,
-                )
-                stats["errors"] += 1  # Count final commit failure as an error
-                error_types["FinalCommitConnectionError"] = (
-                    error_types.get("FinalCommitConnectionError", 0) + 1
-                )
-            except Exception as final_commit_err:
-                logger.error(
-                    f"Error during final commit for {filename}: {final_commit_err}. Rolling back changes...",
-                    exc_info=True,
-                )
-                stats["errors"] += 1  # Count final commit failure as an error
-                error_types["FinalCommitError"] = (
-                    error_types.get("FinalCommitError", 0) + 1
-                )
-                try:
-                    # Only attempt rollback if connection is still valid
-                    if not conn.closed:
-                        conn.rollback()
-                        logger.info("Transaction rolled back after final commit error.")
-                except Exception as rb_err:
-                    logger.error(
-                        f"Failed to rollback after final commit error for {filename}: {rb_err}",
-                        exc_info=True,
-                    )
-                    error_types["RollbackError"] = (
-                        error_types.get("RollbackError", 0) + 1
-                    )
-    except Exception as e:
-        # Handle any unexpected errors when checking connection state
-        logger.error(
-            f"Unexpected error during final transaction handling for {filename}: {e}",
-            exc_info=True,
-        )
-        stats["errors"] += 1
-        error_types["UnexpectedFinalCommitError"] = (
-            error_types.get("UnexpectedFinalCommitError", 0) + 1
-        )
+                conn.rollback()
+                logger.info("Rolled back transaction after critical error")
+            except Exception as rb_error:
+                logger.critical(f"CRITICAL: Failed to rollback after critical error: {rb_error}")
 
-    # Aggregate total issues from errors and skips
+    # Log final stats
+    logger.info(
+        f"Finished processing {filename}. Processed: {stats['processed']}, Skipped: {stats['skipped']}, Errors: {stats['errors']}"
+    )
+    logger.info(
+        f"  Stats => Defs: {stats['definitions']}, Examples: {stats['examples']}, Etys: {stats['etymologies']}, Relations: {stats['relations']}"
+    )
+    if error_types:
+        logger.warning(f"Error summary for {filename}: {error_types}")
+
     total_issues = stats["skipped"] + stats["errors"]
-
-    # Add a warning if no entries were successfully processed despite the file having entries
-    if (
-        entries_in_file > 0 and stats["processed"] == 0 and final_commit_success
-    ):  # Only warn if commit succeeded but nothing processed
-        logger.warning(
-            f"No entries were successfully processed from {filename}, although {entries_in_file} were found. Issues encountered: {total_issues}"
-        )
-
     return stats["processed"], total_issues
 
 

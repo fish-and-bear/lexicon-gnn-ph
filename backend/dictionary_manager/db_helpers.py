@@ -659,7 +659,7 @@ CREATE TABLE IF NOT EXISTS pronunciations (
     value TEXT NOT NULL,
     tags JSONB,
     pronunciation_metadata JSONB,
-    sources TEXT,
+    -- sources TEXT, -- Removed, stored in pronunciation_metadata
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pronunciations_unique UNIQUE(word_id, type, value)
@@ -837,15 +837,24 @@ END $$;
 CREATE TABLE IF NOT EXISTS word_templates (
     id SERIAL PRIMARY KEY,
     word_id INTEGER REFERENCES words(id) ON DELETE CASCADE,
-    template_name TEXT NOT NULL,
-    args JSONB,
+    template_name VARCHAR(255) NOT NULL,
+    args JSONB DEFAULT '{}'::jsonb,
     expansion TEXT,
+    sources TEXT, -- Changed from source_identifier based on other tables
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (word_id, template_name)
+    CONSTRAINT word_templates_unique UNIQUE (word_id, template_name)
 );
 CREATE INDEX IF NOT EXISTS idx_word_templates_word ON word_templates(word_id);
 CREATE INDEX IF NOT EXISTS idx_word_templates_name ON word_templates(template_name);
+-- Trigger for updated_at (copying pattern from other tables)
+DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'trigger_update_word_templates_timestamp') THEN
+        CREATE TRIGGER trigger_update_word_templates_timestamp
+        BEFORE UPDATE ON word_templates
+        FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
+    END IF;
+END $$;
 
 -- Create word_forms table
 CREATE TABLE IF NOT EXISTS word_forms (
@@ -1589,8 +1598,10 @@ def insert_pronunciation(
         "word_id": word_id,
         "type": pron_type,
         "value": value.strip(),
-        "tags": tags_json,  # Pass None if serialization failed or data was empty
-        "metadata": metadata_json,  # Pass None if serialization failed or data was empty
+        # "tags": tags_json,  # Pass None if serialization failed or data was empty
+        "tags": Json(tags_data) if tags_data else None, # Use Json adapter
+        # "metadata": metadata_json,  # Pass None if serialization failed or data was empty
+        "metadata": Json(pronunciation_metadata) if pronunciation_metadata else None, # Use Json adapter
         # "sources": source_identifier, # Removed: Stored in metadata
     }
 
@@ -1601,15 +1612,15 @@ def insert_pronunciation(
             INSERT INTO pronunciations (word_id, type, value, tags, pronunciation_metadata)
             VALUES (
                 %(word_id)s, %(type)s, %(value)s,
-                NULLIF(%(tags)s, NULL)::jsonb,
-                NULLIF(%(metadata)s, NULL)::jsonb
+                %(tags)s,
+                %(metadata)s
                 -- sources column removed
             )
             ON CONFLICT (word_id, type, value) DO UPDATE SET
                 -- Merge tags and metadata JSONB fields using || operator
                 -- Handles cases where existing or excluded values might be NULL
-                tags = COALESCE(pronunciations.tags, '{}'::jsonb) || COALESCE(NULLIF(%(tags)s, NULL)::jsonb, '{}'::jsonb),
-                pronunciation_metadata = COALESCE(pronunciations.pronunciation_metadata, '{}'::jsonb) || COALESCE(NULLIF(%(metadata)s, NULL)::jsonb, '{}'::jsonb),
+                tags = COALESCE(pronunciations.tags, '{}'::jsonb) || COALESCE(EXCLUDED.tags, '{}'::jsonb),
+                pronunciation_metadata = COALESCE(pronunciations.pronunciation_metadata, '{}'::jsonb) || COALESCE(EXCLUDED.pronunciation_metadata, '{}'::jsonb),
                 -- sources update removed
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id
@@ -1808,8 +1819,7 @@ def insert_definition(
 
     # Prepare data, ensuring None is passed for empty optional fields
     tags_string = ",".join(tags) if tags else None # Corrected: join tags, not empty string
-    metadata_json = json.dumps(metadata) if metadata else None
-    # examples_json = json.dumps(examples) if examples else None # Removed
+
 
     params = {
         "word_id": word_id,
@@ -1822,24 +1832,24 @@ def insert_definition(
         # "cult_notes": cultural_notes.strip() if cultural_notes else None, # Removed
         # "etym_notes": etymology_notes.strip() if etymology_notes else None, # Removed
         # "sci_name": scientific_name.strip() if scientific_name else None, # Removed
-        # "verified": verified if isinstance(verified, bool) else False, # REMOVED key
         # "verif_notes": verification_notes.strip() if verification_notes else None, # REMOVED key
         "tags": tags_string,
-        "metadata": metadata_json,
+        "metadata": Json(metadata) if metadata else None, # Wrap metadata in Json
         # "pop_score": float(popularity_score) if popularity_score is not None else 0.0, # REMOVED - column doesn't exist
         "sources": sources.strip() if sources else None,
     }
 
     sql_insert = """
         INSERT INTO definitions (
-            word_id, definition_text, original_pos, standardized_pos_id, -- Removed notes
-            usage_notes, -- cultural_notes removed below
-            -- etymology_notes removed below
-            -- scientific_name removed
-            -- verified, verification_notes, -- REMOVED
-            tags, metadata, sources
-            -- popularity_score removed - doesn't exist in schema
-            -- examples column removed
+            word_id, definition_text, original_pos, standardized_pos_id, -- notes,
+            usage_notes, -- cultural_notes,
+            -- etymology_notes,
+            -- scientific_name,
+            tags,
+            metadata,
+            sources
+            -- popularity_score,
+            -- examples
         )
         VALUES (
             %(word_id)s, %(def_text)s, %(orig_pos)s, %(std_pos_id)s, -- Removed notes placeholder
@@ -1847,34 +1857,25 @@ def insert_definition(
             -- etymology_notes removed below
             -- sci_name removed
             %(tags)s,
-            CASE WHEN %(metadata)s IS NOT NULL THEN %(metadata)s::jsonb ELSE NULL END,
+            %(metadata)s,
             %(sources)s
             -- popularity_score removed
             -- examples value removed
         )
         ON CONFLICT (word_id, definition_text, standardized_pos_id) DO UPDATE SET
-            original_pos = COALESCE(EXCLUDED.original_pos, definitions.original_pos),
-            -- notes = COALESCE(EXCLUDED.notes, definitions.notes), # Already removed
-            usage_notes = COALESCE(EXCLUDED.usage_notes, definitions.usage_notes),
-            -- cultural_notes = COALESCE(EXCLUDED.cultural_notes, definitions.cultural_notes), # Removed
-            -- etymology_notes = COALESCE(EXCLUDED.etymology_notes, definitions.etymology_notes), # Removed
-            -- scientific_name = COALESCE(EXCLUDED.scientific_name, definitions.scientific_name), # Removed
-            -- REMOVED -> verified = EXCLUDED.verified,
-            -- REMOVED -> verification_notes = COALESCE(EXCLUDED.verification_notes, definitions.verification_notes),
-            tags = COALESCE(EXCLUDED.tags, definitions.tags),
-            metadata = definitions.metadata || EXCLUDED.metadata, -- Merge metadata
-            -- popularity_score = EXCLUDED.popularity_score, -- REMOVED - column doesn't exist
-            sources = CASE
-                          WHEN definitions.sources IS NULL THEN EXCLUDED.sources
-                          WHEN EXCLUDED.sources IS NULL THEN definitions.sources
-                          -- Check if all new sources are already present in the existing list
-                          WHEN string_to_array(definitions.sources, ', ') @> string_to_array(EXCLUDED.sources, ', ') THEN definitions.sources
-                          ELSE definitions.sources || ', ' || EXCLUDED.sources
-                      END,
-            -- examples update removed
-            updated_at = CURRENT_TIMESTAMP
-        RETURNING id
-    """
+            original_pos = EXCLUDED.original_pos,
+            -- notes = EXCLUDED.notes,
+            usage_notes = EXCLUDED.usage_notes,
+            -- cultural_notes = EXCLUDED.cultural_notes,
+            -- etymology_notes = EXCLUDED.etymology_notes,
+            -- scientific_name = EXCLUDED.scientific_name,
+            tags = EXCLUDED.tags,
+            metadata = EXCLUDED.metadata,
+            sources = EXCLUDED.sources
+            -- popularity_score = EXCLUDED.popularity_score,
+            -- examples = EXCLUDED.examples
+        RETURNING id;
+        """
 
     try:
         cur.execute(sql_insert, params)
@@ -2214,7 +2215,7 @@ def insert_relation(
             "to_id": to_word_id,
             "rel_type": relation_type,
             "sources": source_identifier,
-            "metadata": Json(metadata) if metadata else None # Adapt metadata for SQL
+            "metadata": Json(metadata) if metadata else None # Wrap dict in Json() adapter
         }
 
         cur.execute(
@@ -2580,6 +2581,11 @@ def get_or_create_word_id(
     new_source_json_str = update_word_source_info(None, standardized_source)
 
     # --- Prepare Data for Insertion (including JSON adaptation) ---
+    # Ensure word_metadata is always a dict before adding to params
+    if not isinstance(word_metadata, dict):
+        logger.warning(f"word_metadata for '{lemma_final}' was not a dict ({type(word_metadata)}), resetting to empty dict.")
+        word_metadata = {}
+        
     params = {
         "lemma": lemma_final,
         "normalized": normalized,
@@ -2593,7 +2599,7 @@ def get_or_create_word_id(
         "source_info": Json(json.loads(new_source_json_str)),
         "idioms": Json(idioms_data) if isinstance(idioms_data, list) else None,
         "pronunciation_data": Json(pronunciation_data) if isinstance(pronunciation_data, (dict, list)) else None,
-        "word_metadata": Json(word_metadata) if word_metadata else None,
+        "word_metadata": Json(word_metadata) if word_metadata else Json({}), # Ensure JSON object even if empty
         "badlit_form": badlit_form,
         "hyphenation": Json(hyphenation_data) if isinstance(hyphenation_data, list) else None,
         "is_proper_noun": is_proper_noun,
@@ -2604,23 +2610,28 @@ def get_or_create_word_id(
 
     # Calculate data hash
     try:
-        hash_input = "|".join(map(str, [
-            params["lemma"], params["language_code"],
-            params["baybayin_form"], params["romanized_form"],
-            params["badlit_form"], params["tags"],
-            params["root_word_id"], params["preferred_spelling"],
-            params["is_proper_noun"], params["is_abbreviation"], params["is_initialism"]
-        ]))
+        hash_input_parts = [
+            str(params["lemma"]), str(params["language_code"]),
+            str(params["baybayin_form"]), str(params["romanized_form"]),
+            str(params["badlit_form"]), str(params["tags"]),
+            str(params["root_word_id"]), str(params["preferred_spelling"]),
+            str(params["is_proper_noun"]), str(params["is_abbreviation"]), str(params["is_initialism"])
+        ]
+        # Log individual parts if needed for debugging hash issues
+        # logger.debug(f"Hashing input parts for '{lemma_final}': {hash_input_parts}")
+        hash_input = "|".join(hash_input_parts)
         params["data_hash"] = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
+        # logger.debug(f"Calculated data hash for '{lemma_final}': {params['data_hash']}")
     except Exception as hash_e:
-        logger.debug(f"Error generating data hash for '{lemma_final}': {hash_e}")
+        logger.error(f"Error generating data hash for '{lemma_final}': {hash_e}", exc_info=True) # Log full traceback
         params["data_hash"] = None
 
+    # --- DEBUG: Log before main try block ---
+    logger.debug(f"Entering main try block for get_or_create_word_id('{lemma_final}')")
     try:
         # --- Use INSERT ... ON CONFLICT for UPSERT ---
         # Note: search_text update happens via trigger or separate process usually
-        cur.execute(
-            """
+        sql_upsert = """
             INSERT INTO words (
                 lemma, normalized_lemma, language_code,
                 has_baybayin, baybayin_form, romanized_form, root_word_id,
@@ -2658,22 +2669,55 @@ def get_or_create_word_id(
                 data_hash = EXCLUDED.data_hash,
                 -- search_text = to_tsvector('simple', EXCLUDED.lemma || ' ' || words.normalized_lemma), -- Update search text (removed as it should be handled by trigger)
                 updated_at = CURRENT_TIMESTAMP
+            WHERE words.data_hash IS DISTINCT FROM EXCLUDED.data_hash -- Only update if data_hash changes
             RETURNING id
-            """,
-            params,
-        )
-        word_id = cur.fetchone()[0]
-        logger.debug(f"Upserted word '{lemma_final}' ({language_code}), ID: {word_id}")
-        return word_id
+        """
+        # --- DEBUG: Log parameters before execute ---
+        # Be careful logging sensitive data in production
+        log_params = {k: (str(v)[:100] + '...' if isinstance(v, (str, bytes)) and len(v) > 100 else v) for k, v in params.items()}
+        logger.debug(f"Executing UPSERT for '{lemma_final}'. Params (truncated): {log_params}")
+    
+            
+        cur.execute(sql_upsert, params)
+        
+        # --- DEBUG: Log after execute ---
+        logger.debug(f"UPSERT execution completed for '{lemma_final}'")
+
+        word_id_result = cur.fetchone()
+        
+        if word_id_result:
+            word_id = word_id_result[0]
+            logger.debug(f"Upserted word '{lemma_final}' ({language_code}), ID: {word_id}")
+            return word_id
+        else:
+            # This case happens if the ON CONFLICT...WHERE condition was false (data_hash matched)
+            # We still need to get the existing word ID
+            logger.debug(f"Word '{lemma_final}' ({language_code}) already exists with identical data hash. Fetching existing ID.")
+            cur.execute(
+                "SELECT id FROM words WHERE normalized_lemma = %s AND language_code = %s",
+                (normalized, language_code)
+            )
+            existing_id_result = cur.fetchone()
+            if existing_id_result:
+                 word_id = existing_id_result[0]
+                 logger.debug(f"Found existing ID for '{lemma_final}': {word_id}")
+                 return word_id
+            else:
+                 # This should theoretically not happen if ON CONFLICT matched but RETURNING was empty
+                 logger.error(f"Failed to retrieve existing ID for '{lemma_final}' after UPSERT conflict with no changes.")
+                 return None
+
 
     # Removed specific UniqueViolation check - rely on general error handling
     except psycopg2.Error as db_err:
-        logger.error(f"Database error getting/creating word '{lemma_final}': {db_err.pgcode} {db_err.pgerror}", exc_info=True)
-        # Rollback is likely handled by the @with_transaction decorator (commit=False)
+        # --- DEBUG: Log database error ---
+        logger.error(f"Database error in get_or_create_word_id for '{lemma_final}': {db_err.pgcode} {db_err.pgerror}", exc_info=True)
+        # Rollback is likely handled by the @with_transaction decorator if it started the transaction
         return None
     except Exception as e:
-        logger.error(f"Unexpected error getting/creating word '{lemma_final}': {e}", exc_info=True)
-        # Rollback handled by decorator
+        # --- DEBUG: Log unexpected error ---
+        logger.error(f"Unexpected error in get_or_create_word_id for '{lemma_final}': {e}", exc_info=True)
+        # Rollback handled by decorator if it started the transaction
         return None
 
 def batch_get_or_create_word_ids(
@@ -2704,41 +2748,48 @@ def batch_get_or_create_word_ids(
     error_count = 0
     error_types = {}
 
-    # Pre-normalize lemmas and check for existing words in a larger batch if possible
-    # This reduces individual lookups inside the loop
-    normalized_map = { (lemma, lang): normalize_lemma(lemma) for lemma, lang in unique_entries }
-    existing_words_cache = {}
-    try:
-        # Fetch existing words based on normalized lemma and language code
-        if unique_entries:
-            query_params = []
-            placeholders = []
-            for (lemma, lang) in unique_entries:
-                norm_lemma = normalized_map[(lemma, lang)]
-                query_params.extend([norm_lemma, lang])
-                placeholders.append("(%s, %s)")
+    # --- MODIFICATION: Use DictCursor for pre-fetch --- 
+    from psycopg2.extras import DictCursor # Import DictCursor
+    # Create a new cursor with DictCursor factory for this specific operation
+    with cur.connection.cursor(cursor_factory=DictCursor) as dict_cur:
+        # Pre-normalize lemmas and check for existing words in a larger batch if possible
+        # This reduces individual lookups inside the loop
+        normalized_map = { (lemma, lang): normalize_lemma(lemma) for lemma, lang in unique_entries }
+        existing_words_cache = {}
+        try:
+            # Fetch existing words based on normalized lemma and language code
+            if unique_entries:
+                query_params = []
+                placeholders = []
+                for (lemma, lang) in unique_entries:
+                    norm_lemma = normalized_map[(lemma, lang)]
+                    query_params.extend([norm_lemma, lang])
+                    placeholders.append("(%s, %s)")
 
-            if placeholders:
-                fetch_query = f"""
-                    SELECT id, lemma, language_code, normalized_lemma, source_info
-                    FROM words
-                    WHERE (normalized_lemma, language_code) IN ({', '.join(placeholders)})
-                """
-                cur.execute(fetch_query, query_params)
-                for row in cur.fetchall():
-                    # Cache by (original_lemma, lang_code) using the retrieved lemma for mapping back
-                    # Note: This assumes the original lemma used for lookup is the same as stored lemma if normalized matches
-                    # A more robust approach might cache by normalized_lemma+lang if conflicts are possible.
-                    existing_words_cache[(row['lemma'], row['language_code'])] = {
-                        'id': row['id'],
-                        'source_info': row['source_info']
-                    }
-        logger.info(f"Cached {len(existing_words_cache)} existing words from the batch.")
-    except Exception as e:
-        logger.error(f"Error pre-fetching existing words: {e}", exc_info=True)
-        # Proceed without cache, will rely on individual lookups
+                if placeholders:
+                    fetch_query = f"""
+                        SELECT id, lemma, language_code, normalized_lemma, source_info
+                        FROM words
+                        WHERE (normalized_lemma, language_code) IN ({', '.join(placeholders)})
+                    """
+                    # Use the DictCursor for execution
+                    dict_cur.execute(fetch_query, query_params)
+                    for row in dict_cur.fetchall():
+                        # Cache by (original_lemma, lang_code) using the retrieved lemma for mapping back
+                        # Note: This assumes the original lemma used for lookup is the same as stored lemma if normalized matches
+                        # A more robust approach might cache by normalized_lemma+lang if conflicts are possible.
+                        existing_words_cache[(row['lemma'], row['language_code'])] = {
+                            'id': row['id'],
+                            'source_info': row['source_info']
+                        }
+            logger.info(f"Cached {len(existing_words_cache)} existing words from the batch.")
+        except Exception as e:
+            logger.error(f"Error pre-fetching existing words: {e}", exc_info=True)
+            # Proceed without cache, will rely on individual lookups
+    # --- END MODIFICATION ---
 
     # Process entries, potentially using the cache
+    # Continue using the original cursor (cur) for subsequent operations like get_or_create_word_id
     for lemma, lang_code in tqdm(unique_entries, desc="Batch Get/Create Words", unit="word"):
         processed_count += 1
         entry_key = (lemma, lang_code)
@@ -3803,117 +3854,70 @@ def insert_word_template(
     template_name: str,
     args: Optional[Dict] = None,
     expansion: Optional[str] = None,  # Added expansion based on model
-    source_identifier: Optional[str] = None,  # Include source if needed
+    source_identifier: Optional[str] = None,  # This name is used by the CALLER
 ) -> Optional[int]:
     """
-    Insert or update a word template record.
-
-    Uses ON CONFLICT to update args and expansion if the template already exists
-    for the given word_id and template_name.
+    Inserts or updates a word template entry associated with a word_id.
+    Handles JSONB conversion for arguments.
+    Uses 'sources' column in the table.
 
     Args:
         cur: Database cursor.
-        word_id: ID of the associated word.
-        template_name: Name of the template (e.g., 'tl-infl-i').
-        args: Dictionary of arguments for the template (stored as JSONB).
-        expansion: Optional expansion text associated with the template.
-        source_identifier: Optional identifier for the data source. (Note: 'sources' column assumed not present in SQL below)
+        word_id: The ID of the word this template belongs to.
+        template_name: The name of the template (e.g., \'tl-infl-noun\').
+        args: A dictionary of template arguments (will be stored as JSONB).
+        expansion: The expanded form of the template (e.g., the resulting word).
+        source_identifier: The source identifier for tracking data origin (mapped to 'sources' column).
 
     Returns:
-        The ID of the inserted/updated word template record, or None if failed.
+        The ID of the inserted or updated template entry, or None on error.
     """
-    if not template_name:
+    if not all([word_id, template_name]):
         logger.warning(
-            f"Skipping template insertion for word ID {word_id}: Missing template name."
+            "Skipping insert_word_template: Missing required word_id or template_name."
         )
         return None
 
-    # Default args to None if empty or not provided, to store as NULL in DB if preferred
-    template_args = args if args else None
-    args_json = None
-    if template_args:
-        try:
-            # Use default=str for complex objects that might not be directly serializable
-            args_json = json.dumps(template_args, default=str)
-        except TypeError as e:
-            logger.error(
-                f"Could not serialize args for template '{template_name}' (Word ID {word_id}): {e}. Args: {template_args}",
-                exc_info=True,
-            )
-            # Decide handling: Skip insertion if args cannot be serialized
-            return None
-
-    params = {
-        "word_id": word_id,
-        "template_name": template_name.strip(),
-        "args": args_json,  # Pass JSON string or None
-        "expansion": expansion.strip() if expansion else None,
-        # "sources": source_identifier # Uncomment if 'sources' column exists
-    }
-
+    # --- Database Operation ---
     try:
-        # Modified SQL assumes NO 'sources' column exists in 'word_templates' table.
-        # If it exists, add 'sources' to INSERT columns and VALUES (%(sources)s)
-        # and add 'sources = CASE WHEN EXCLUDED.sources ...' to the DO UPDATE SET clause.
-        cur.execute(
-            """
-            INSERT INTO word_templates (word_id, template_name, args, expansion)
-            VALUES (
-                %(word_id)s,
-                %(template_name)s,
-                CASE WHEN %(args)s IS NOT NULL THEN %(args)s::jsonb ELSE NULL END,
-                %(expansion)s
-            )
-            ON CONFLICT (word_id, template_name) DO UPDATE
-            SET
-                args = CASE WHEN EXCLUDED.args IS NOT NULL THEN EXCLUDED.args ELSE word_templates.args END,
-                expansion = CASE WHEN EXCLUDED.expansion IS NOT NULL THEN EXCLUDED.expansion ELSE word_templates.expansion END,
+        # Ensure the SQL uses %(...)s placeholders for dictionary substitution
+        # and references the correct 'sources' column.
+        insert_query = """
+            INSERT INTO word_templates (word_id, template_name, args, expansion, sources)
+            VALUES (%(word_id)s, %(template_name)s, %(args)s, %(expansion)s, %(sources)s)
+            ON CONFLICT (word_id, template_name) DO UPDATE SET
+                args = EXCLUDED.args,
+                expansion = EXCLUDED.expansion,
+                sources = EXCLUDED.sources,
                 updated_at = CURRENT_TIMESTAMP
-            RETURNING id
-            """,
-            params,
-        )
-        template_id_tuple = cur.fetchone()
-        if template_id_tuple:
-            template_id = template_id_tuple[0]
-            logger.debug(
-                f"Inserted/Updated word template (ID: {template_id}, Name: {template_name}) for word ID {word_id}."
-            )
+            RETURNING id;
+        """
+        # Prepare arguments dictionary, mapping the input parameter name
+        # 'source_identifier' to the dictionary key 'sources' which matches the SQL placeholder.
+        args_json = Json(args) if args is not None else None
+        params_dict = {
+            'word_id': word_id,
+            'template_name': template_name.strip(), # Ensure name is stripped
+            'args': args_json,
+            'expansion': expansion.strip() if expansion else None, # Ensure expansion is stripped
+            'sources': source_identifier # Map input parameter to the 'sources' key
+        }
+
+        # Execute the insert/update query using the dictionary
+        cur.execute(insert_query, params_dict)
+        result = cur.fetchone()
+
+        if result:
+            template_id = result[0]
+            # Corrected log message format
+            logger.info(f"Inserted/Updated word template ID {template_id} for word {word_id}.")
             return template_id
         else:
-            logger.error(
-                f"Failed to get template ID after upsert for word ID {word_id}, Template: {template_name}."
-            )
-            # Attempt rollback, but avoid errors during error handling
-            try:
-                cur.connection.rollback()
-            except Exception:
-                pass
+            logger.error(f"Failed to get template ID for word {word_id} and template {template_name}.")
             return None
-
-    except psycopg2.Error as e:
-        logger.error(
-            f"Database error inserting word template '{template_name}' for word ID {word_id}: {e.pgcode} {e.pgerror}",
-            exc_info=True,
-        )
-        # Rollback should be handled by @with_transaction, but attempt anyway
-        try:
-            cur.connection.rollback()
-        except Exception as rb_e:
-            logger.warning(f"Rollback attempt failed after DB error: {rb_e}")
-        return None
     except Exception as e:
-        logger.error(
-            f"Unexpected error inserting word template '{template_name}' for word ID {word_id}: {e}",
-            exc_info=True,
-        )
-        try:
-            cur.connection.rollback()
-        except Exception as rb_e:
-            logger.error(
-                f"Failed to rollback transaction after unexpected error: {rb_e}"
-            )
-        return None
+        logger.error(f"Error inserting/updating word template for word_id {word_id}, template {template_name}: {e}", exc_info=True)
+        raise  # Re-raise the exception after logging
 
 @with_transaction(commit=True)
 def cleanup_relations(cur):

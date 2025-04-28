@@ -424,6 +424,10 @@ def migrate_data(args):
                     # Handlers might use @with_transaction, but they operate within the larger transaction managed here
                     source["handler"](cur, filepath)
                     logger.info(f"Successfully processed source: {source_name}")
+                    # --- MODIFICATION: Commit after each successful handler --- 
+                    logger.info(f"Committing transaction after successful processing of {source_name}...")
+                    conn.commit()
+                    logger.info(f"Commit successful for {source_name}.")
                 except Exception as handler_error:
                     # Log error and rollback the entire migration if a handler fails
                     logger.error(
@@ -438,8 +442,9 @@ def migrate_data(args):
                     progress.update(main_task, advance=1)
 
         # --- If all sources processed without error, commit the transaction ---
-        logger.info("All sources processed successfully. Committing transaction...")
-        conn.commit()  # Commit all changes made by handlers
+        # --- MODIFICATION: Commit is now handled after each processor ---
+        # logger.info("All sources processed successfully. Committing transaction...")
+        # conn.commit()  # Commit all changes made by handlers
         console.print("[bold green]Migration completed successfully.[/]")
         migration_successful = True # Flag success
 
@@ -2527,4 +2532,5 @@ def main():
 
 
 if __name__ == "__main__":
+    setup_logging() # Activate logging configuration
     main()

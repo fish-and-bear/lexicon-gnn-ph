@@ -52,58 +52,40 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
     """
     # Standardize source identifier consistently
     raw_source_identifier = os.path.basename(filename)
-    # Explicitly map this filename to a clear source name
     source_identifier_map = {
         "gay-slang.json": "Philippine Slang and Gay Dictionary (2023)"
     }
     source_identifier = source_identifier_map.get(
         raw_source_identifier,
-        standardize_source_identifier(
-            raw_source_identifier
-        ),  # Fallback if not specific match
+        standardize_source_identifier(raw_source_identifier)
     )
-    # Ensure we have a valid source identifier, providing a default if needed
     if not source_identifier:
         source_identifier = "Gay Slang Dictionary"  # Default fallback
 
     logger.info(f"Processing Gay Slang file: {filename}")
     logger.info(f"Using standardized source identifier: '{source_identifier}'")
 
-    conn = cur.connection  # Get the connection for savepoint management
-
-    # Statistics tracking for this file
-    stats = {
-        "processed": 0,
-        "definitions": 0,
-        "relations": 0,
-        "synonyms": 0,  # Count Filipino synonyms specifically
-        "eng_synonyms": 0,  # Count English synonyms specifically
-        "variants": 0,  # Count variations specifically
-        "etymologies": 0,
-        "examples": 0,  # Count examples stored
-        "skipped_invalid": 0,  # Entries skipped due to format issues
-        "errors": 0,  # Entries skipped due to processing errors
-    }
-    error_types = {}  # Track specific error types encountered
+    conn = cur.connection
+    if conn.closed:
+        logger.error("Connection is closed. Cannot proceed with processing.")
+        return 0, 1  # Indicate 0 processed, 1 issue (connection error)
 
     try:
         with open(filename, "r", encoding="utf-8", errors="replace") as f:
             data = json.load(f)
     except FileNotFoundError:
         logger.error(f"File not found: {filename}")
-        return 0, 1  # 0 processed, 1 issue (file error)
+        return 0, 1
     except json.JSONDecodeError as e:
         logger.error(f"Invalid JSON in file {filename}: {e}")
-        # Raise exception to make the outer migrate_data function rollback
         raise RuntimeError(f"Invalid JSON in file {filename}: {e}") from e
     except Exception as e:
         logger.error(f"Error reading file {filename}: {e}", exc_info=True)
-        # Raise exception to make the outer migrate_data function rollback
         raise RuntimeError(f"Error reading file {filename}: {e}") from e
 
     if not isinstance(data, list):
         logger.error(f"File {filename} does not contain a list of entries as expected.")
-        return 0, 1  # Indicate format error
+        return 0, 1
 
     entries_in_file = len(data)
     if entries_in_file == 0:
@@ -112,16 +94,33 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
 
     logger.info(f"Found {entries_in_file} entries in {filename}")
 
-    # --- Process Entries ---
-    with tqdm(
-        total=entries_in_file,
-        desc=f"Processing {source_identifier}",
-        unit="entry",
-        leave=False,
-    ) as pbar:
+    # Statistics tracking
+    stats = {
+        "processed": 0,
+        "definitions": 0,
+        "relations": 0,
+        "synonyms": 0,
+        "eng_synonyms": 0,
+        "variants": 0,
+        "etymologies": 0,
+        "examples": 0,
+        "skipped_invalid": 0,
+        "errors": 0,
+    }
+    error_types = {}
+
+    pbar = None
+    try:
+        pbar = tqdm(
+            total=entries_in_file,
+            desc=f"Processing {source_identifier}",
+            unit="entry",
+            leave=False,
+        )
+
         for entry_index, entry in enumerate(data):
             savepoint_name = f"gayslang_entry_{entry_index}"
-            lemma = ""  # Initialize for error logging
+            lemma = ""
             word_id = None
 
             try:
@@ -139,7 +138,7 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
                 lemma = entry.get("headword", "").strip()
                 if not lemma:
                     logger.warning(
-                        f"Skipping entry at index {entry_index} due to missing/empty 'headword' field."
+                        f"Skipping entry at index {entry_index} due to missing/empty 'headword' field"
                     )
                     stats["skipped_invalid"] += 1
                     cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
@@ -165,7 +164,7 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
                         lemma=lemma,
                         language_code=language_code,
                         source_identifier=source_identifier,
-                        word_metadata=(Json(word_metadata_to_store) if word_metadata_to_store else None),
+                        word_metadata=word_metadata_to_store,
                     )
                     if not word_id:
                         raise ValueError("get_or_create_word_id returned None")
@@ -245,8 +244,6 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
 
                             if not def_meaning:
                                 continue  # Skip empty definitions
-
-                            # REMOVED: Logic to append English synonyms to definition text
 
                             def_id = None  # Reset def_id for each definition attempt
                             try:
@@ -456,6 +453,11 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
                 cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                 stats["processed"] += 1
 
+                # Commit every 100 entries to avoid transaction bloat
+                if stats["processed"] % 100 == 0:
+                    conn.commit()
+                    logger.debug(f"Committed after processing {stats['processed']} entries")
+
             except Exception as entry_err:
                 logger.error(
                     f"Failed processing entry #{entry_index} ('{lemma}') in {filename}: {entry_err}",
@@ -466,27 +468,39 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
                 error_types[error_key] = error_types.get(error_key, 0) + 1
                 try:
                     cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    logger.info(
-                        f"Rolled back changes for failed entry '{lemma}' (Index: {entry_index})."
-                    )
+                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                 except Exception as rb_err:
                     logger.critical(
-                        f"CRITICAL: Failed rollback to savepoint {savepoint_name} after entry error: {rb_err}. Raising original error.",
+                        f"Failed to rollback/release savepoint {savepoint_name} after entry error: {rb_err}",
                         exc_info=True,
                     )
-                    # Re-raise the original error to abort the whole file processing if rollback fails
-                    raise entry_err from rb_err
+                    try:
+                        conn.rollback()
+                        logger.info("Performed full transaction rollback after savepoint failure")
+                    except Exception as full_rb_err:
+                        logger.critical(f"CRITICAL: Failed both savepoint and full rollback: {full_rb_err}")
+                        raise  # Re-raise to stop processing
             finally:
-                pbar.update(1)  # Ensure progress bar updates
+                pbar.update(1)
 
-    # --- Final Commit/Rollback handled by migrate_data ---
-    # Log final stats for this file
+    except Exception as e:
+        logger.critical(f"Critical error during processing: {e}", exc_info=True)
+        error_types["CriticalProcessingError"] = error_types.get("CriticalProcessingError", 0) + 1
+        try:
+            conn.rollback()
+            logger.info("Rolled back transaction after critical error")
+        except Exception as rb_error:
+            logger.critical(f"CRITICAL: Failed to rollback after critical error: {rb_error}")
+    finally:
+        if pbar:
+            pbar.close()
+
+    # Log final stats
     logger.info(
         f"Finished processing {filename}. Processed: {stats['processed']}, Skipped: {stats['skipped_invalid']}, Errors: {stats['errors']}"
     )
-    # Add new stats to log
     logger.info(
-        f"  Stats => Defs: {stats['definitions']}, Examples: {stats['examples']}, Etys: {stats['etymologies']}, Relations: {stats['relations']} (Vars: {stats['variants']}, FilSyns: {stats['synonyms']}, EngSyns: {stats['eng_synonyms']})"
+        f"  Stats => Defs: {stats['definitions']}, Examples: {stats['examples']}, Etys: {stats['etymologies']}, Relations: {stats['relations']}"
     )
     if error_types:
         logger.warning(f"Error summary for {filename}: {error_types}")

@@ -18,10 +18,7 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
     id = db.Column(db.Integer, primary_key=True)
     definition_id = db.Column(db.Integer, db.ForeignKey('definitions.id', ondelete='CASCADE'), nullable=False, index=True)
     category_name = db.Column(db.Text, nullable=False)
-    description = db.Column(db.Text)
-    category_kind = db.Column(db.String(50))
-    tags = db.Column(JSONB, default=lambda: {})
-    category_metadata = db.Column(JSONB, default=lambda: {})
+    category_kind = db.Column(db.Text, nullable=True)
     parents = db.Column(JSONB, default=lambda: [])
     
     # Relationships
@@ -32,7 +29,6 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
         db.Index('idx_def_categories_def', 'definition_id'),
         db.Index('idx_def_categories_name', 'category_name'),
         db.Index('idx_def_categories_kind', 'category_kind'),
-        db.Index('idx_def_categories_tags', 'tags', postgresql_using='gin'),
         db.Index('idx_def_categories_parents', 'parents', postgresql_using='gin')
     )
     
@@ -60,18 +56,6 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
             raise ValueError("Category name cannot be empty after stripping")
         return value
     
-    @validates('description')
-    def validate_description(self, key: str, value: Optional[str]) -> Optional[str]:
-        """Validate description."""
-        if value is None:
-            return None
-        if not isinstance(value, str):
-            raise ValueError("Description must be a string")
-        value = value.strip()
-        if not value:
-            return None
-        return value
-    
     @validates('category_kind')
     def validate_category_kind(self, key, value):
         """Validate category kind."""
@@ -82,34 +66,6 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
         value = value.strip().lower()
         if value and value not in self.VALID_KINDS:
             raise ValueError(f"Invalid category kind. Must be one of: {', '.join(self.VALID_KINDS.keys())}")
-        return value
-    
-    @validates('tags')
-    def validate_tags(self, key, value):
-        """Validate tags JSON."""
-        if value is None:
-            return {}
-        if isinstance(value, str):
-            try:
-                value = json.loads(value)
-            except json.JSONDecodeError:
-                raise ValueError("Invalid JSON format for tags")
-        if not isinstance(value, dict):
-            raise ValueError("Tags must be a dictionary")
-        return value
-    
-    @validates('category_metadata')
-    def validate_category_metadata(self, key, value):
-        """Validate category metadata JSON."""
-        if value is None:
-            return {}
-        if isinstance(value, str):
-            try:
-                value = json.loads(value)
-            except json.JSONDecodeError:
-                raise ValueError("Invalid JSON format for category metadata")
-        if not isinstance(value, dict):
-            raise ValueError("Category metadata must be a dictionary")
         return value
     
     @validates('parents')
@@ -135,10 +91,7 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
             'id': self.id,
             'definition_id': self.definition_id,
             'category_name': self.category_name,
-            'description': self.description,
             'category_kind': self.category_kind,
-            'tags': self.tags or {},
-            'category_metadata': self.category_metadata or {},
             'parents': self.parents or [],
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
@@ -169,9 +122,7 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
         """Get the full category hierarchy."""
         hierarchy = {
             'name': self.category_name,
-            'description': self.description,
             'kind': self.category_kind,
-            'tags': self.tags or {},
             'parents': self.parents or [],
             'children': []
         }

@@ -2,7 +2,7 @@
 Model for word forms.
 """
 
-from sqlalchemy import Column, Integer, String, ForeignKey, JSON, Boolean, UniqueConstraint, Index
+from sqlalchemy import Column, Integer, String, ForeignKey, JSON, Boolean, UniqueConstraint, Index, Text
 from sqlalchemy.orm import relationship
 from backend.database import db
 from .base_model import BaseModel
@@ -16,7 +16,7 @@ class WordForm(BaseModel, BasicColumnsMixin):
     
     id = Column(Integer, primary_key=True)
     word_id = Column(Integer, ForeignKey('words.id', ondelete='CASCADE'), nullable=False, index=True)
-    form = Column(String(255), nullable=False)
+    form = Column(Text, nullable=False)
     tags = Column(JSONB, default=lambda: {})
     is_canonical = Column(Boolean, default=False, nullable=False)
     is_primary = Column(Boolean, default=False, nullable=False)
@@ -26,10 +26,9 @@ class WordForm(BaseModel, BasicColumnsMixin):
     
     # Added table args based on schema
     __table_args__ = (
-        UniqueConstraint('word_id', 'form', name='word_forms_unique'),
+        UniqueConstraint('word_id', 'form'),
         Index('idx_word_forms_word', 'word_id'),
-        Index('idx_word_forms_tags', 'tags', postgresql_using='gin'),
-        Index('idx_word_forms_form_trgm', 'form', postgresql_using='gin', postgresql_ops={'form': 'gin_trgm_ops'})
+        Index('idx_word_forms_form', 'form')
     )
     
     def __repr__(self):

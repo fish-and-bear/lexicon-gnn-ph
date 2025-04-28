@@ -1,696 +1,288 @@
 #!/usr/bin/env python3
 """
-kaikki_processor.py
-
-Processes dictionary entries from Kaikki.org JSONL files.
+Process Wiktionary dump from Kaikki.org into the dictionary database format.
 """
 
 import json
 import logging
 import os
 import re
-import traceback
-from typing import Dict, List, Optional, Tuple
+import time
+from typing import Dict, List, Tuple, Any, Optional, Set, Union
+from collections import defaultdict
 
+try:
+    from tqdm import tqdm
+except ImportError:
+    tqdm = None  # Optional dependency
+
+# Third-party imports
 import psycopg2
 from psycopg2.extras import Json
-from tqdm import tqdm
 
-# Absolute imports from dictionary_manager
+# Project-specific imports
 from backend.dictionary_manager.db_helpers import (
-    DEFAULT_LANGUAGE_CODE,  # Assuming DEFAULT_LANGUAGE_CODE is here
-    Json,
-    RelationshipType,  # Assuming RelationshipType enum is exposed here or in enums directly
-    add_linguistic_note,
-    get_standardized_pos_id, # Added correct function
-    get_uncategorized_pos_id, # Needed as fallback
+    DBConnection,
     get_or_create_word_id,
+    batch_get_or_create_word_ids,
     insert_definition,
-    insert_definition_category,
-    insert_definition_example,
-    insert_definition_link,
     insert_etymology,
     insert_pronunciation,
     insert_relation,
     insert_word_form,
     insert_word_template,
+    add_linguistic_note,
+    get_standardized_pos_id,
     with_transaction,
+    get_connection,
+    insert_definition_link,
+    insert_definition_category,
+    insert_definition_example,
 )
 from backend.dictionary_manager.text_helpers import (
-    NON_WORD_STRINGS,
-    VALID_BAYBAYIN_REGEX,
-    BaybayinRomanizer,
     clean_html,
-    extract_script_info, # Add missing import
-    get_non_word_note_type,
+    extract_parenthesized_text,
+    normalize_lemma,
     standardize_source_identifier,
-    # process_kaikki_lemma, # Moved to text_helpers, should be imported if needed, but seems unused now
+    BaybayinRomanizer
 )
-# Import enums directly (if RelationshipType isn't in db_helpers)
-# from backend.dictionary_manager.enums import RelationshipType
+from backend.dictionary_manager.enums import RelationshipType
 
 logger = logging.getLogger(__name__)
 
-# -------------------------------------------------------------------
-# Relationship Processing Logic (Moved from dictionary_manager.py)
-# -------------------------------------------------------------------
-@with_transaction(commit=True)
-def process_relationships(cur, word_id, data, sources):
-    """Process relationship data for a word."""
-    if not data or not word_id:
-        return
+# Default language code for Tagalog entries
+DEFAULT_LANGUAGE_CODE = "tl"
 
-    try:
-        # Extract relationships from definitions
-        definitions = []
-        if "definitions" in data and isinstance(data["definitions"], list):
-            definitions = [
-                d.get("text") if isinstance(d, dict) else d for d in data["definitions"]
-            ]
-        elif "definition" in data and data["definition"]:
-            definitions = [data["definition"]]
+# For simple Baybayin validation
+VALID_BAYBAYIN_REGEX = re.compile(r'^[\u1700-\u171F\s\u1735]+$')
 
-        # Process each definition for relationships
-        for definition in definitions:
-            if not definition or not isinstance(definition, str):
-                continue
+# List of strings to consider as "non-words" that shouldn't be stored as words
+NON_WORD_STRINGS = [
+    "obsolete",
+    "archaic",
+    "dialectal",
+    "uncommon",
+    "inclusive",
+    "regional",
+    "formal",
+    "informal",
+    "slang",
+    "colloquial",
+    "figurative",
+    "literal",
+    "standard",
+    "nonstandard",
+    "proscribed",
+    "dated",
+    "rare",
+    "poetic",
+    "historical",
+    "spanish-based orthography",
+]
 
-            # Look for synonyms in definitions
-            syn_patterns = [
-                r"ka(singkahulugan|tulad) ng\s+(\w+)",  # Tagalog
-                r"syn(onym)?[\.:]?\s+(\w+)",  # English
-                r"same\s+as\s+(\w+)",  # English
-                r"another\s+term\s+for\s+(\w+)",  # English
-                r"another\s+word\s+for\s+(\w+)",  # English
-                r"also\s+called\s+(\w+)",  # English
-                r"also\s+known\s+as\s+(\w+)",  # English
-            ]
+# --- NEW HELPER FUNCTION ---
+# Replaced with adapted logic from dictionary_manager_orig.py.backup
+def extract_script_info(
+    entry: Dict[str, Any], script_name_in_template: str, script_tag: str
+) -> Tuple[Optional[str], Optional[str]]:
+    """
+    Extracts specific script form and explicit romanization if available,
+    primarily by checking the 'forms' array for a matching script tag.
+    NOTE: The head_templates fallback logic was removed due to unreliability based on data analysis.
 
-            for pattern in syn_patterns:
-                matches = re.findall(pattern, definition, re.IGNORECASE)
-                for match in matches:
-                    synonym = (
-                        match[1]
-                        if isinstance(match, tuple) and len(match) > 1
-                        else match
-                    )
-                    if synonym and isinstance(synonym, str):
-                        # Get or create the synonym word
-                        lang_code = data.get("language_code", "tl")
-                        syn_id = get_or_create_word_id(
-                            cur, synonym.strip(), language_code=lang_code
-                        )
+    Args:
+        entry: The dictionary entry dictionary.
+        script_name_in_template: (Currently unused after removing head_template logic) The name for potential future use.
+        script_tag: The tag used to identify the script in the 'forms' array (e.g., "Baybayin", "Badlit").
 
-                        # Insert the synonym relationship
-                        insert_relation(
-                            cur, word_id, syn_id, "synonym", sources=sources
-                        )
+    Returns:
+        A tuple containing the script form (str or None) and its romanization (str or None).
+    """
+    script_form: Optional[str] = None
+    romanized: Optional[str] = None # Use 'romanized' as in backup logic
 
-                        # For bidirectional synonyms
-                        insert_relation(
-                            cur, syn_id, word_id, "synonym", sources=sources
-                        )
+    # Add warning if trying to extract Badlit, as data format seems inconsistent/problematic
+    if script_tag == "Badlit":
+        logger.debug("Attempting to extract Badlit script. Note: Data format for Badlit in Kaikki dump appears inconsistent.")
 
-            # Look for antonyms in definitions
-            ant_patterns = [
-                r"(kasalungat|kabaligtaran) ng\s+(\w+)",  # Tagalog
-                r"ant(onym)?[\.:]?\s+(\w+)",  # English
-                r"opposite\s+of\s+(\w+)",  # English
-                r"contrary\s+to\s+(\w+)",  # English
-            ]
+    # Try 'forms' array first (Logic from backup)
+    if "forms" in entry and isinstance(entry["forms"], list):
+        for form_data in entry["forms"]:
+            if (
+                isinstance(form_data, dict)
+                and "tags" in form_data
+                and script_tag in form_data.get("tags", [])
+            ):
+                form_text = form_data.get("form", "").strip()
+                if form_text:
+                    # Remove common prefixes sometimes added by Wiktionary processing
+                    prefixes = ["spelling ", "script ", script_tag.lower() + " "]
+                    cleaned_form = form_text
+                    for prefix in prefixes:
+                        if cleaned_form.lower().startswith(prefix):
+                            cleaned_form = cleaned_form[len(prefix) :].strip()
 
-            for pattern in ant_patterns:
-                matches = re.findall(pattern, definition, re.IGNORECASE)
-                for match in matches:
-                    antonym = (
-                        match[1]
-                        if isinstance(match, tuple) and len(match) > 1
-                        else match
-                    )
-                    if antonym and isinstance(antonym, str):
-                        # Get or create the antonym word
-                        lang_code = data.get("language_code", "tl")
-                        ant_id = get_or_create_word_id(
-                            cur, antonym.strip(), language_code=lang_code
-                        )
-
-                        # Insert the antonym relationship
-                        insert_relation(
-                            cur, word_id, ant_id, "antonym", sources=sources
-                        )
-
-                        # For bidirectional antonyms
-                        insert_relation(
-                            cur, ant_id, word_id, "antonym", sources=sources
-                        )
-
-            # Look for hypernyms (broader terms) in definitions
-            hyper_patterns = [
-                r"uri ng\s+(\w+)",  # Tagalog
-                r"type of\s+(\w+)",  # English
-                r"kind of\s+(\w+)",  # English
-                r"form of\s+(\w+)",  # English
-                r"variety of\s+(\w+)",  # English
-                r"species of\s+(\w+)",  # English
-                r"member of\s+the\s+(\w+)\s+family",  # English
-            ]
-
-            for pattern in hyper_patterns:
-                matches = re.findall(pattern, definition, re.IGNORECASE)
-                for match in matches:
-                    hypernym = match
-                    if hypernym and isinstance(hypernym, str):
-                        # Get or create the hypernym word
-                        lang_code = data.get("language_code", "tl")
-                        hyper_id = get_or_create_word_id(
-                            cur, hypernym.strip(), language_code=lang_code
-                        )
-
-                        # Insert the hypernym relationship
-                        insert_relation(
-                            cur, word_id, hyper_id, "hyponym_of", sources=sources
-                        )
-
-                        # Add the inverse relationship
-                        insert_relation(
-                            cur, hyper_id, word_id, "hypernym_of", sources=sources
-                        )
-
-            # Look for variations in definitions
-            var_patterns = [
-                r"(iba\'t ibang|ibang) (anyo|baybay|pagsulat|bigkas) ng\s+(\w+)",  # Tagalog: different form/spelling/pronunciation of
-                r"(alternatibo|alternativ|kahalili) ng\s+(\w+)",  # Tagalog: alternative of
-                r"(variant|variation|alt(ernative)?) (form|spelling) of\s+(\w+)",  # English
-                r"alternative (to|for)\s+(\w+)",  # English
-                r"also (written|spelled) as\s+(\w+)",  # English
-                r"(var\.|variant)\s+(\w+)",  # English abbreviated
-                r"(regional|dialectal) form of\s+(\w+)",  # English regional variant
-                r"(slang|informal) for\s+(\w+)",  # English slang variant
-                r"commonly (misspelled|written) as\s+(\w+)",  # English common misspelling
-                r"(baryant|lokal na anyo) ng\s+(\w+)",  # Tagalog regional variant
-            ]
-
-            for pattern in var_patterns:
-                matches = re.findall(pattern, definition, re.IGNORECASE)
-                for match in matches:
-                    # Different patterns have target word in different positions
-                    variant = None
-                    if len(match) == 3 and isinstance(
-                        match, tuple
-                    ):  # For patterns with 3 capture groups
-                        variant = match[2]
-                    elif len(match) == 2 and isinstance(
-                        match, tuple
-                    ):  # For patterns with 2 capture groups
-                        variant = match[1]
-                    elif isinstance(match, str):  # For patterns with 1 capture group
-                        variant = match
-
-                    if variant and isinstance(variant, str):
-                        # Get or create the variant word
-                        lang_code = data.get("language_code", "tl")
-                        var_id = get_or_create_word_id(
-                            cur, variant.strip(), language_code=lang_code
-                        )
-
-                        # Insert the variant relationship
-                        insert_relation(
-                            cur, word_id, var_id, "variant", sources=sources
-                        )
-
-                        # For bidirectional variant relationship
-                        insert_relation(
-                            cur, var_id, word_id, "variant", sources=sources
-                        )
-
-        # Process derivative information
-        derivative = data.get("derivative", "")
-        if derivative and isinstance(derivative, str):
-            # This indicates the word is derived from another root
-            mula_sa_patterns = [
-                r"mula sa\s+(.+?)(?:\s+na|\s*$)",  # Tagalog
-                r"derived from\s+(?:the\s+)?(\w+)",  # English
-                r"comes from\s+(?:the\s+)?(\w+)",  # English
-                r"root word(?:\s+is)?\s+(\w+)",  # English
-            ]
-
-            for pattern in mula_sa_patterns:
-                root_match = re.search(pattern, derivative, re.IGNORECASE)
-                if root_match:
-                    root_word = root_match.group(1).strip()
-                    if root_word:
-                        # Get or create the root word
-                        lang_code = data.get("language_code", "tl")
-                        root_id = get_or_create_word_id(
-                            cur, root_word, language_code=lang_code
-                        )
-
-                        # Insert the derived_from relationship
-                        insert_relation(
-                            cur, word_id, root_id, "derived_from", sources=sources
-                        )
-
-                        # Add the inverse relationship
-                        insert_relation(
-                            cur, root_id, word_id, "root_of", sources=sources
-                        )
-
-        # Process etymology information for potential language relationships
-        etymology = data.get("etymology", "")
-        if etymology and isinstance(etymology, str):
-            # Try to extract language information from etymology
-            lang_patterns = {
-                r"(?:from|borrowed from)\s+(?:the\s+)?(?:Spanish|Esp)[\.:]?\s+(\w+)": "es",  # Spanish
-                r"(?:from|borrowed from)\s+(?:the\s+)?(?:English|Eng)[\.:]?\s+(\w+)": "en",  # English
-                r"(?:from|borrowed from)\s+(?:the\s+)?(?:Chinese|Ch|Tsino)[\.:]?\s+(\w+)": "zh",  # Chinese
-                r"(?:from|borrowed from)\s+(?:the\s+)?(?:Japanese|Jap)[\.:]?\s+(\w+)": "ja",  # Japanese
-                r"(?:from|borrowed from)\s+(?:the\s+)?(?:Sanskrit|San)[\.:]?\s+(\w+)": "sa",  # Sanskrit
-            }
-
-            for pattern, lang_code in lang_patterns.items():
-                lang_matches = re.findall(pattern, etymology, re.IGNORECASE)
-                for lang_word in lang_matches:
-                    if lang_word and isinstance(lang_word, str):
-                        # Get or create the foreign word
-                        foreign_id = get_or_create_word_id(
-                            cur, lang_word.strip(), language_code=lang_code
-                        )
-
-                        # Insert the etymology relationship
-                        insert_relation(
-                            cur, word_id, foreign_id, "borrowed_from", sources=sources
-                        )
-
-        # Process alternate forms and variations
-        # Check if there's variations data in metadata
-        variations = data.get("variations", [])
-        if variations and isinstance(variations, list):
-            for variant in variations:
-                if isinstance(variant, str) and variant.strip():
-                    # Add this explicit variation
-                    var_id = get_or_create_word_id(
-                        cur,
-                        variant.strip(),
-                        language_code=data.get("language_code", "tl"),
-                    )
-                    insert_relation(cur, word_id, var_id, "variant", sources=sources)
-                    insert_relation(cur, var_id, word_id, "variant", sources=sources)
-                elif isinstance(variant, dict) and "form" in variant:
-                    var_form = variant.get("form", "").strip()
-                    if var_form:
-                        var_type = variant.get("type", "variant")
-                        var_id = get_or_create_word_id(
-                            cur, var_form, language_code=data.get("language_code", "tl")
-                        )
-
-                        # Use specific relationship type if provided, otherwise default to "variant"
-                        rel_type = (
-                            var_type
-                            if var_type
-                            in [
-                                "abbreviation",
-                                "misspelling",
-                                "regional",
-                                "alternate",
-                                "dialectal",
-                            ]
-                            else "variant"
-                        )
-                        insert_relation(cur, word_id, var_id, rel_type, sources=sources)
-                        insert_relation(cur, var_id, word_id, rel_type, sources=sources)
-
-        # Look for variations by checking spelling differences
-        # This will detect common spelling variations in Filipino like f/p, e/i, o/u substitutions
-        word = data.get("word", "")
-        if word and isinstance(word, str) and len(word) > 3:
-            # Common letter substitutions in Filipino
-            substitutions = [
-                ("f", "p"),
-                ("p", "f"),  # Filipino/Pilipino
-                ("e", "i"),
-                ("i", "e"),  # like in leeg/liig (neck)
-                ("o", "u"),
-                ("u", "o"),  # like in puso/poso (heart)
-                ("k", "c"),
-                ("c", "k"),  # like in karera/carera (race)
-                ("w", "u"),
-                ("u", "w"),  # like in uwi/uwi (go home)
-                ("j", "h"),
-                ("h", "j"),  # like in jahit/hahit
-                ("s", "z"),
-                ("z", "s"),  # like in kasoy/kazoy
-                ("ts", "ch"),
-                ("ch", "ts"),  # like in tsaa/chaa (tea)
-            ]
-
-            # Generate possible variations
-            potential_variations = []
-            for i, char in enumerate(word):
-                for orig, repl in substitutions:
-                    if char.lower() == orig:
-                        var = word[:i] + repl + word[i + 1 :]
-                        potential_variations.append(var)
-                    elif (
-                        char.lower() == orig[0]
-                        and i < len(word) - 1
-                        and word[i + 1].lower() == orig[1]
+                    # Basic validation: Check if the result likely contains non-Latin script characters
+                    # This helps filter out accidental matches like "Baybayin script" itself.
+                    if cleaned_form and any(
+                        ord(char) > 127 for char in cleaned_form # Simple check for non-ASCII
+                        # A more robust check might involve specific Unicode ranges if needed
+                        # e.g., not ("a" <= char.lower() <= "z")
                     ):
-                        var = word[:i] + repl + word[i + 2 :]
-                        potential_variations.append(var)
+                        script_form = cleaned_form
+                        # Get explicit romanization if provided in the same form entry
+                        romanized = form_data.get("roman") or form_data.get("romanization")
+                        # Return immediately if found in forms
+                        return script_form, romanized
 
-            # Check if these variations actually exist in the database
-            for var in potential_variations:
-                # Skip if the variation is the same as the original word
-                if var.lower() == word.lower():
-                    continue
+    # If not found in forms, return None, None (head_templates fallback removed)
+    return None, None
+# --- END NEW HELPER FUNCTION ---
 
-                cur.execute(
-                    """
-                    SELECT id FROM words 
-                    WHERE normalized_lemma = %s AND language_code = %s
-                """,
-                    (normalize_lemma(var), data.get("language_code", "tl")),
-                )
-
-                result = cur.fetchone()
-                if result:
-                    # Found a real variation in the database
-                    var_id = result[0]
-                    insert_relation(
-                        cur, word_id, var_id, "spelling_variant", sources=sources
-                    )
-                    insert_relation(
-                        cur, var_id, word_id, "spelling_variant", sources=sources
-                    )
-
-    except Exception as e:
-        logger.error(f"Error processing relationships for word_id {word_id}: {str(e)}")
-        if hasattr(e, "__traceback__"):
-            import traceback
-
-            tb_str = "".join(traceback.format_tb(e.__traceback__))
-            logger.error(f"Traceback: {tb_str}")
-
-
-@with_transaction(commit=True)
-def process_direct_relations(cur, word_id, entry, lang_code, source):
-    """Process direct relationships specified in the entry."""
-    relationship_mappings = {
-        "synonyms": ("synonym", True),  # bidirectional
-        "antonyms": ("antonym", True),  # bidirectional
-        "derived": ("derived_from", False),  # not bidirectional, direction is important
-        "related": ("related", True),  # bidirectional
-    }
-
-    for rel_key, (rel_type, bidirectional) in relationship_mappings.items():
-        if rel_key in entry and isinstance(entry[rel_key], list):
-            for rel_item in entry[rel_key]:
-                # Initialize metadata
-                metadata = {}
-
-                # Handle both string words and dictionary objects with word property
-                if isinstance(rel_item, dict) and "word" in rel_item:
-                    rel_word = rel_item["word"]
-
-                    # Extract metadata fields if available
-                    if "strength" in rel_item:
-                        metadata["strength"] = rel_item["strength"]
-
-                    if "tags" in rel_item and rel_item["tags"]:
-                        metadata["tags"] = rel_item["tags"]
-
-                    if "english" in rel_item and rel_item["english"]:
-                        metadata["english"] = rel_item["english"]
-
-                    # Extract any other useful fields
-                    for field in ["sense", "extra", "notes"]:
-                        if field in rel_item and rel_item[field]:
-                            metadata[field] = rel_item[field]
-
-                elif isinstance(rel_item, str):
-                    rel_word = rel_item
-                else:
-                    continue
-
-                # Skip empty strings
-                if not rel_word or not isinstance(rel_word, str):
-                    continue
-
-                # For derived words, the entry word is derived from the related word
-                if rel_type == "derived_from":
-                    from_id = word_id
-                    to_id = get_or_create_word_id(
-                        cur, rel_word, language_code=lang_code
-                    )
-                    # Only include metadata if it's not empty
-                    if metadata:
-                        insert_relation(
-                            cur,
-                            from_id,
-                            to_id,
-                            rel_type,
-                            sources=source,
-                            metadata=metadata,
-                        )
-                    else:
-                        insert_relation(cur, from_id, to_id, rel_type, sources=source)
-                else:
-                    to_id = get_or_create_word_id(
-                        cur, rel_word, language_code=lang_code
-                    )
-                    # Only include metadata if it's not empty
-                    if metadata:
-                        insert_relation(
-                            cur,
-                            word_id,
-                            to_id,
-                            rel_type,
-                            sources=source,
-                            metadata=metadata,
-                        )
-                    else:
-                        insert_relation(cur, word_id, to_id, rel_type, sources=source)
-
-                    # Add bidirectional relationship if needed
-                    if bidirectional:
-                        # For bidirectional relationships, we might want to copy the metadata
-                        if metadata:
-                            insert_relation(
-                                cur,
-                                to_id,
-                                word_id,
-                                rel_type,
-                                sources=source,
-                                metadata=metadata,
-                            )
-                        else:
-                            insert_relation(
-                                cur, to_id, word_id, rel_type, sources=source
-                            )
-
-
-@with_transaction(commit=True)
-def process_relations(
-    cur,
-    from_word_id: int,
-    relations_dict: Dict[str, List[str]],
-    lang_code: str,
-    source: str,
-):
+# Helper function to normalize relation types
+def normalize_relation_type(rel_type_str):
     """
-    Process relationship data from dictionary.
-    Convert each raw Kaikki relation key using normalize_relation_type,
-    then create appropriate relations in the database.
+    Normalize a relationship type string into proper enum value and properties.
+    
+    Args:
+        rel_type_str: String representation of relationship type
+        
+    Returns:
+        Tuple of (relation_type, bidirectional, inverse_type)
     """
-    for raw_key, related_list in relations_dict.items():
-        if not related_list:
-            continue
-        # Normalize relation key
-        relation_type, bidirectional, inverse_type = normalize_relation_type(raw_key)
+    rel_enum = RelationshipType.from_string(rel_type_str)
+    bidirectional = rel_enum.bidirectional
+    inverse_rel = rel_enum.inverse
+    
+    return rel_enum.value, bidirectional, inverse_rel.value if inverse_rel else None
 
-        for rel_item in related_list:
-            metadata = {}
-
-            # Handle both string values and dictionary objects
-            if isinstance(rel_item, dict) and "word" in rel_item:
-                rel_word_lemma = rel_item["word"]
-
-                # Extract metadata fields if available
-                if "strength" in rel_item:
-                    metadata["strength"] = rel_item["strength"]
-
-                if "tags" in rel_item and rel_item["tags"]:
-                    metadata["tags"] = rel_item["tags"]
-
-                if "english" in rel_item and rel_item["english"]:
-                    metadata["english"] = rel_item["english"]
-
-                # Extract any other useful fields
-                for field in ["sense", "extra", "notes", "context"]:
-                    if field in rel_item and rel_item[field]:
-                        metadata[field] = rel_item[field]
-            elif isinstance(rel_item, str):
-                rel_word_lemma = rel_item
-            else:
+# New helper function to batch collect words for relation processing
+def collect_related_words_batch(entry, language_code, word_cache):
+    """
+    Collects all related words from an entry in a single pass for batch lookup.
+    This significantly reduces the number of individual get_or_create_word_id calls.
+    
+    Args:
+        entry: The dictionary entry to process
+        language_code: The language code of the main entry
+        word_cache: Existing word cache dictionary to check first
+        
+    Returns:
+        set of (lemma, language_code) tuples for batch lookup
+    """
+    # Set to collect unique (lemma, lang_code) tuples
+    words_to_lookup = set()
+    
+    # Skip if entry doesn't exist or isn't a dict
+    if not entry or not isinstance(entry, dict):
+        return words_to_lookup
+        
+    # Get the main word from entry (for skipping self-references)
+    main_word = entry.get('word', '').lower()
+    
+    # 1. Check etymology templates
+    if 'etymology_templates' in entry and isinstance(entry['etymology_templates'], list):
+        for template in entry['etymology_templates']:
+            if not isinstance(template, dict) or 'name' not in template:
                 continue
+                
+            template_name = template['name'].lower()
+            args = template.get('args', {})
+            
+            # Handle different template types
+            if template_name == 'blend':
+                # Extract components (usually args 2, 3, etc.)
+                for i in range(2, 6):  # Check args 2, 3, 4, 5
+                    comp = args.get(str(i))
+                    if comp and isinstance(comp, str):
+                        comp_clean = clean_html(comp)
+                        if comp_clean and comp_clean.lower() != main_word and comp_clean.lower() not in NON_WORD_STRINGS:
+                            # For blends, same language
+                            words_to_lookup.add((comp_clean, language_code))
+                            
+            elif template_name == 'inh' or template_name == 'inherited':
+                proto_lang = args.get('2', '')
+                proto_word = args.get('3', '')
+                if proto_lang and proto_word and isinstance(proto_word, str):
+                    proto_word_clean = clean_html(proto_word).lstrip('*')
+                    if proto_word_clean and proto_word_clean.lower() != main_word and proto_word_clean.lower() not in NON_WORD_STRINGS:
+                        words_to_lookup.add((proto_word_clean, proto_lang))
+                        
+            elif template_name == 'cog' or template_name == 'cognate':
+                cog_lang = args.get('1', '')
+                cog_word = args.get('2', '')
+                if cog_lang and cog_word and isinstance(cog_word, str):
+                    cog_clean = clean_html(cog_word)
+                    if cog_clean and cog_clean.lower() != main_word and cog_clean.lower() not in NON_WORD_STRINGS:
+                        words_to_lookup.add((cog_clean, cog_lang))
+                        
+            elif template_name == 'doublet':
+                doublet_lang = args.get('1', '') or language_code
+                doublet_word = args.get('2', '')
+                if doublet_word and isinstance(doublet_word, str):
+                    doublet_clean = clean_html(doublet_word)
+                    if doublet_clean and doublet_clean.lower() != main_word and doublet_clean.lower() not in NON_WORD_STRINGS:
+                        words_to_lookup.add((doublet_clean, doublet_lang))
+                        
+            elif template_name in ['derived', 'borrowing', 'derived from', 'borrowed from', 'bor', 'der', 'bor+']:
+                # Extract source language and word
+                source_lang = ''
+                source_word = ''
 
-            to_word_id = get_or_create_word_id(
-                cur, rel_word_lemma, language_code=lang_code
-            )
+                if template_name in ['bor', 'bor+', 'borrowing', 'borrowed from']:
+                    source_lang = args.get('2', '') or args.get('1', '')
+                    source_word = args.get('3', '')
+                elif template_name in ['der', 'derived', 'derived from']:
+                    source_lang = args.get('1', '')
+                    source_word = args.get('2', '')
 
-            # Only include metadata if it's not empty
-            if metadata:
-                insert_relation(
-                    cur,
-                    from_word_id,
-                    to_word_id,
-                    relation_type,
-                    sources=source,
-                    metadata=metadata,
-                )
-            else:
-                insert_relation(
-                    cur, from_word_id, to_word_id, relation_type, sources=source
-                )
+                if not source_lang:
+                    source_lang = language_code
 
-            if bidirectional and inverse_type:
-                # For bidirectional relationships, we might want to copy the metadata
-                if metadata:
-                    insert_relation(
-                        cur,
-                        to_word_id,
-                        from_word_id,
-                        inverse_type,
-                        sources=source,
-                        metadata=metadata,
-                    )
-                else:
-                    insert_relation(
-                        cur, to_word_id, from_word_id, inverse_type, sources=source
-                    )
-
-
-@with_transaction(commit=True)
-def extract_sense_relations(cur, word_id, sense, lang_code, source):
-    """Extract and process relationship data from a word sense."""
-    for rel_type in ["synonyms", "antonyms", "derived", "related"]:
-        if rel_type in sense and isinstance(sense[rel_type], list):
-            relation_items = sense[rel_type]
-            relationship_type = (
-                "synonym"
-                if rel_type == "synonyms"
-                else (
-                    "antonym"
-                    if rel_type == "antonyms"
-                    else "derived_from" if rel_type == "derived" else "related"
-                )
-            )
-            bidirectional = (
-                rel_type != "derived"
-            )  # derived relationships are not bidirectional
-
-            for item in relation_items:
-                # Initialize metadata
-                metadata = {}
-
-                # Handle both string words and dictionary objects with word property
-                if isinstance(item, dict) and "word" in item:
-                    rel_word = item["word"]
-
-                    # Extract metadata fields if available
-                    if "strength" in item:
-                        metadata["strength"] = item["strength"]
-
-                    if "tags" in item and item["tags"]:
-                        metadata["tags"] = item["tags"]
-
-                    if "english" in item and item["english"]:
-                        metadata["english"] = item["english"]
-
-                    # Extract sense-specific context if available
-                    if "sense" in item and item["sense"]:
-                        metadata["sense"] = item["sense"]
-
-                    # Extract any other useful fields
-                    for field in ["extra", "notes", "context"]:
-                        if field in item and item[field]:
-                            metadata[field] = item[field]
-                elif isinstance(item, str):
-                    rel_word = item
-                else:
-                    continue
-
-                # Skip empty strings
-                if not rel_word or not isinstance(rel_word, str):
-                    continue
-
-                # For derived words, the entry word is derived from the related word
-                if relationship_type == "derived_from":
-                    from_id = word_id
-                    to_id = get_or_create_word_id(
-                        cur, rel_word, language_code=lang_code
-                    )
-                    # Only include metadata if it's not empty
-                    if metadata:
-                        insert_relation(
-                            cur,
-                            from_id,
-                            to_id,
-                            relationship_type,
-                            sources=source,
-                            metadata=metadata,
-                        )
-                    else:
-                        insert_relation(
-                            cur, from_id, to_id, relationship_type, sources=source
-                        )
-                else:
-                    to_id = get_or_create_word_id(
-                        cur, rel_word, language_code=lang_code
-                    )
-                    # Only include metadata if it's not empty
-                    if metadata:
-                        insert_relation(
-                            cur,
-                            word_id,
-                            to_id,
-                            relationship_type,
-                            sources=source,
-                            metadata=metadata,
-                        )
-                    else:
-                        insert_relation(
-                            cur, word_id, to_id, relationship_type, sources=source
-                        )
-
-                    # Add bidirectional relationship if needed
-                    if bidirectional:
-                        # For bidirectional relationships, we might want to copy the metadata
-                        if metadata:
-                            insert_relation(
-                                cur,
-                                to_id,
-                                word_id,
-                                relationship_type,
-                                sources=source,
-                                metadata=metadata,
-                            )
-                        else:
-                            insert_relation(
-                                cur, to_id, word_id, relationship_type, sources=source
-                            )
+                if source_word and isinstance(source_word, str):
+                    source_clean = clean_html(source_word)
+                    if source_clean and source_clean.lower() != main_word and source_clean.lower() not in NON_WORD_STRINGS:
+                        words_to_lookup.add((source_clean, source_lang))
+                        
+    # 2. Process senses for semantic relations
+    if 'senses' in entry and isinstance(entry['senses'], list):
+        for sense_idx, sense in enumerate(entry['senses']):
+            if not isinstance(sense, dict):
+                continue
+                
+            # Extract related terms from sense
+            for rel_key in ['synonyms', 'antonyms', 'coordinate_terms', 'hypernyms', 'hyponyms', 'meronyms', 'holonyms']:
+                rel_items = sense.get(rel_key, [])
+                
+                if isinstance(rel_items, list):
+                    for rel_item in rel_items:
+                        rel_word = None
+                        rel_lang = language_code  # Default same language
+                        
+                        if isinstance(rel_item, str):
+                            rel_word = rel_item
+                        elif isinstance(rel_item, dict) and 'word' in rel_item:
+                            rel_word = rel_item.get('word')
+                            # Check if language is specified
+                            if 'lang' in rel_item:
+                                rel_lang = rel_item.get('lang') or language_code
+                                
+                        if rel_word:
+                            rel_word_clean = clean_html(rel_word)
+                            if rel_word_clean and rel_word_clean.lower() != main_word and rel_word_clean.lower() not in NON_WORD_STRINGS:
+                                words_to_lookup.add((rel_word_clean, rel_lang))
+    
+    # Return the set of collected words for batch processing
+    return words_to_lookup
 
 # -------------------------------------------------------------------
 # Main Kaikki Processing Function (Moved from dictionary_manager.py)
 # -------------------------------------------------------------------
 
-@with_transaction(
-    commit=True
-)  # Changed to commit=True to follow process_tagalog_words pattern
 def process_kaikki_jsonl(cur, filename: str):
     """Process Kaikki.org dictionary entries with optimized transaction handling."""
     # Configurable parameters for performance tuning
-    CHUNK_SIZE = 50  # Process in chunks of 50 entries
+    CHUNK_SIZE = 20  # Reduce from 50 to 20 to prevent database overload
     MAX_RETRIES = 3  # Retry failed chunks up to 3 times
     PROGRESS_REPORT_INTERVAL = 100  # Report progress every 100 entries
     
@@ -753,103 +345,218 @@ def process_kaikki_jsonl(cur, filename: str):
         logger.warning(f"Could not initialize BaybayinRomanizer: {rom_err}")
 
     # --- Process entries in chunks for better performance ---
-    def process_entry_chunk(entries_chunk, chunk_idx, retry_count=0):
-        """Process a chunk of entries to reduce overhead."""
-        processed_ok = 0
-        processed_with_errors = 0
-        failed_entries = 0
-        error_details = {}
-        chunk_stats = {k: 0 for k in entry_stats.keys()}
+    def process_entry_chunk(entries_chunk, chunk_idx):
+        """Process a chunk of entries with transaction handling and retries."""
+        # --- REVISED CHUNK STATS INITIALIZATION ---
+        chunk_stats = {
+            "processed_ok": 0,
+            "processed_with_errors": 0, # Count entries processed but had minor issues logged within process_single_entry
+            "failed_entries": 0, # Count entries that caused a rollback within the chunk
+            "error_details": defaultdict(int), # Track specific error types within the chunk
+            "stats": defaultdict(int) # Aggregate detailed stats (definitions, relations, etc.)
+        }
         
-        try:
-            # Start a transaction for the entire chunk
-            cur.execute("BEGIN;")
+        # Reduce number of entries per transaction to avoid overloading PostgreSQL
+        SUB_CHUNK_SIZE = 5  # Process 5 entries per database transaction
+        
+        # Split entries_chunk into smaller transaction batches
+        for sub_chunk_idx in range(0, len(entries_chunk), SUB_CHUNK_SIZE):
+            sub_chunk = entries_chunk[sub_chunk_idx:sub_chunk_idx + SUB_CHUNK_SIZE]
+            sub_stats, error = process_sub_chunk(sub_chunk, chunk_idx, sub_chunk_idx)
             
-            for entry in entries_chunk:
-                result, error = process_single_entry(entry)
+            # Aggregate statistics
+            if sub_stats:
+                chunk_stats["processed_ok"] += sub_stats.get("processed_ok", 0)
+                chunk_stats["processed_with_errors"] += sub_stats.get("processed_with_errors", 0)
+                chunk_stats["failed_entries"] += sub_stats.get("failed_entries", 0)
                 
-                if result:
-                    # Count success or partial success
-                    if error:
-                        processed_with_errors += 1
-                        error_key = error[:100] if error else "Unknown error"
-                        error_details[error_key] = error_details.get(error_key, 0) + 1
-                    else:
-                        processed_ok += 1
-                else:
-                    # Count complete failure
-                    failed_entries += 1
-                    error_key = error[:100] if error else "Unknown critical failure"
-                    error_details[error_key] = error_details.get(error_key, 0) + 1
-                    
-                # Accumulate stats from successful processing
-                for stat_key, stat_value in result.get('stats', {}).items():
-                    if stat_key in chunk_stats:
-                        chunk_stats[stat_key] += stat_value
+                # Merge error details
+                for error_key, count in sub_stats.get("error_details", {}).items():
+                    chunk_stats["error_details"][error_key] += count
+                
+                # Merge detailed stats
+                for stat_key, count in sub_stats.get("stats", {}).items():
+                    chunk_stats["stats"][stat_key] += count
+            
+            if error:
+                # Non-fatal error occurred but we'll continue with next sub-chunk
+                chunk_stats["error_details"][f"SubChunkError-{sub_chunk_idx}"] += 1
+        
+        return chunk_stats, None  # No critical error message
+        
+    def process_sub_chunk(entries_sub_chunk, chunk_idx, sub_chunk_idx):
+        """Process a small batch of entries within a single transaction."""
+        sub_chunk_stats = {
+            "processed_ok": 0,
+            "processed_with_errors": 0,
+            "failed_entries": 0,
+            "error_details": defaultdict(int),
+            "stats": defaultdict(int)
+        }
+        
+        conn = None
+        transaction_aborted = False # Flag to track transaction state
+        # --- GET CONNECTION OUTSIDE CURSOR CONTEXT MANAGER ---
+        try:
+            # Implement connection retry logic
+            conn = get_connection_with_retry(max_retries=3, delay=1.0)
+            if not conn:
+                logger.error(f"Failed to get DB connection for sub-chunk {chunk_idx}-{sub_chunk_idx}. Skipping sub-chunk.")
+                sub_chunk_stats["failed_entries"] = len(entries_sub_chunk)
+                sub_chunk_stats["error_details"]["DBConnectionFailed"] += 1
+                return sub_chunk_stats, f"DB connection failed for sub-chunk {chunk_idx}-{sub_chunk_idx}"
+
+            # --- PROCESS ENTRIES WITH PER-ENTRY SAVEPOINTS ---
+            with conn.cursor() as cur:
+                for entry_index, entry in enumerate(entries_sub_chunk):
+                    # If the transaction is already known to be aborted, skip processing remaining entries
+                    if transaction_aborted:
+                        logger.warning(f"Skipping entry {entry_index} ('{entry.get('word', 'N/A')}') in sub-chunk {chunk_idx}-{sub_chunk_idx} because transaction is aborted.")
+                        sub_chunk_stats["failed_entries"] += 1
+                        sub_chunk_stats["error_details"]["SkippedDueToAbortedTxn"] += 1
+                        continue # Move to the next entry
                         
-            # If we reach here without exceptions, commit the chunk
-            cur.execute("COMMIT;")
-            logger.debug(f"Successfully committed chunk {chunk_idx} with {len(entries_chunk)} entries")
+                    entry_savepoint_name = f"entry_{chunk_idx}_{sub_chunk_idx}_{entry_index}_{int(time.time())}"
+                    try:
+                        cur.execute(f"SAVEPOINT {entry_savepoint_name}")
+
+                        # Call the single entry processor
+                        # Ensure process_single_entry now accepts and uses the cursor
+                        result, error_msg = process_single_entry(cur, entry) # Pass cursor
+
+                        if result and result.get("success"):
+                            # Entry processed successfully (potentially with minor logged errors)
+                            cur.execute(f"RELEASE SAVEPOINT {entry_savepoint_name}")
+                            sub_chunk_stats["processed_ok"] += 1
+                            # Aggregate detailed stats
+                            for stat_key, stat_value in result.get('stats', {}).items():
+                                sub_chunk_stats["stats"][stat_key] += stat_value
+                            if error_msg: # If there were minor errors logged
+                                sub_chunk_stats["processed_with_errors"] += 1
+                                # Optionally log/track minor error messages here if needed
+                                sub_chunk_stats["error_details"]["MinorEntryError"] += 1
+                        else:
+                            # Entry processing failed critically, rollback this entry
+                            logger.warning(f"Rolling back entry {entry_index} in sub-chunk {chunk_idx}-{sub_chunk_idx} due to error: {error_msg or 'Unknown critical failure'}. Word: '{entry.get('word', 'N/A')}'")
+                            try:
+                                cur.execute(f"ROLLBACK TO SAVEPOINT {entry_savepoint_name}")
+                                # RELEASE only if rollback succeeded
+                                cur.execute(f"RELEASE SAVEPOINT {entry_savepoint_name}") 
+                            except Exception as rb_err:
+                                logger.error(f"Error during savepoint rollback/release for entry {entry_index}: {rb_err}. Transaction might be aborted.")
+                                transaction_aborted = True # Mark transaction as aborted
+                            
+                            sub_chunk_stats["failed_entries"] += 1
+                            error_type_key = f"EntryProcessingFailure: {error_msg or 'Unknown'}"
+                            sub_chunk_stats["error_details"][error_type_key[:100]] += 1 # Limit key length
+
+                    except Exception as single_entry_err:
+                        # Catch unexpected errors from process_single_entry or this loop structure
+                        logger.error(f"Unexpected error processing entry {entry_index} ('{entry.get('word', 'N/A')}') in sub-chunk {chunk_idx}-{sub_chunk_idx}: {single_entry_err}", exc_info=True)
+                        # Don't try to rollback to savepoint if transaction is already aborted
+                        if not transaction_aborted:
+                           try:
+                               cur.execute(f"ROLLBACK TO SAVEPOINT {entry_savepoint_name}")
+                               # RELEASE only if rollback succeeded 
+                               cur.execute(f"RELEASE SAVEPOINT {entry_savepoint_name}")
+                           except Exception as rb_err:
+                               logger.error(f"Error during savepoint rollback/release after unexpected error for entry {entry_index}: {rb_err}. Transaction likely aborted.")
+                               # Mark transaction as aborted if rollback fails
+                               transaction_aborted = True
+                        else:
+                            logger.warning(f"Skipping savepoint rollback for entry {entry_index} as transaction was already marked aborted.")
+                            
+                        sub_chunk_stats["failed_entries"] += 1
+                        error_type_key = f"UnexpectedEntryError: {type(single_entry_err).__name__}"
+                        sub_chunk_stats["error_details"][error_type_key] += 1
+                        transaction_aborted = True # Ensure transaction is marked aborted after any exception
+
+                # --- COMMIT or ROLLBACK THE SUB-CHUNK ---
+                if transaction_aborted:
+                    # If any entry caused the transaction to abort, rollback the whole sub-chunk
+                    logger.warning(f"Rolling back sub-chunk {chunk_idx}-{sub_chunk_idx} due to aborted transaction state.")
+                    try:
+                        conn.rollback()
+                    except Exception as final_rb_err:
+                        logger.error(f"Error during final rollback for aborted sub-chunk {chunk_idx}-{sub_chunk_idx}: {final_rb_err}")
+                        # Update stats to reflect all entries failed if rollback itself fails
+                        sub_chunk_stats["failed_entries"] = len(entries_sub_chunk)
+                        sub_chunk_stats["processed_ok"] = 0
+                        sub_chunk_stats["processed_with_errors"] = 0
+                        sub_chunk_stats["error_details"]["FinalRollbackError"] += 1
+                        return sub_chunk_stats, f"Final rollback error in sub-chunk {chunk_idx}-{sub_chunk_idx}"
+                else:
+                    # If transaction wasn't aborted, commit the successful entries
+                    try:
+                        conn.commit()
+                        processed_count = sub_chunk_stats['processed_ok'] # Count only fully successful ones
+                        logger.info(f"Sub-chunk {chunk_idx}-{sub_chunk_idx} committed ({processed_count} OK, {sub_chunk_stats['processed_with_errors']} with minor errors, {sub_chunk_stats['failed_entries']} failed).")
+                    except Exception as commit_err:
+                        logger.error(f"Error committing sub-chunk {chunk_idx}-{sub_chunk_idx}: {commit_err}", exc_info=True)
+                        try:
+                            conn.rollback()
+                        except Exception as rb_err:
+                             logger.error(f"Error during rollback after commit error: {rb_err}")
+                             pass # Ignore errors during rollback after commit failure
+                        # Update stats to reflect all entries failed if commit fails
+                        sub_chunk_stats["failed_entries"] = len(entries_sub_chunk)
+                        sub_chunk_stats["processed_ok"] = 0
+                        sub_chunk_stats["processed_with_errors"] = 0
+                        sub_chunk_stats["error_details"]["CommitError"] += 1
+                        return sub_chunk_stats, f"Commit error in sub-chunk {chunk_idx}-{sub_chunk_idx}"
+                
+                return sub_chunk_stats, None # Return stats and no critical error message
+
+        except Exception as e: # Handle other unexpected errors during sub-chunk setup/teardown
+            logger.error(f"Unexpected error processing sub-chunk {chunk_idx}-{sub_chunk_idx}: {e}", exc_info=True)
+            sub_chunk_stats["failed_entries"] = len(entries_sub_chunk)
+            sub_chunk_stats["error_details"][f"UnexpectedChunkError: {type(e).__name__}"] += 1
             
-            return {
-                "processed_ok": processed_ok,
-                "processed_with_errors": processed_with_errors,
-                "failed_entries": failed_entries,
-                "error_details": error_details,
-                "stats": chunk_stats
-            }
+            # Attempt to rollback if connection exists
+            if conn and not conn.closed:
+                try:
+                    conn.rollback()
+                except Exception as rb_err:
+                     logger.error(f"Failed to rollback connection during sub-chunk error handling: {rb_err}")
             
-        except psycopg2.Error as db_err:
-            # Database error handling
-            cur.execute("ROLLBACK;")
-            
-            if retry_count < MAX_RETRIES:
-                logger.warning(f"Database error in chunk {chunk_idx}, attempt {retry_count+1}/{MAX_RETRIES}: {db_err}")
-                logger.warning(f"Retrying chunk {chunk_idx}...")
-                # Recursive retry with incremented retry counter
-                return process_entry_chunk(entries_chunk, chunk_idx, retry_count + 1)
-            else:
-                logger.error(f"Failed to process chunk {chunk_idx} after {MAX_RETRIES} attempts: {db_err}")
-                # Return integer counts for failed entries
-                failed_entry_count = len(entries_chunk)
-                return {
-                    "processed_ok": 0,
-                    "processed_with_errors": 0,
-                    "failed_entries": failed_entry_count,
-                    "error_details": {
-                        f"Database Error ({type(db_err).__name__})": failed_entry_count
-                    },
-                    "stats": {k: 0 for k in entry_stats.keys()},
-                }
-        except Exception as e:
-            # Other exception handling
-            cur.execute("ROLLBACK;")
-            logger.error(f"Unexpected error in chunk {chunk_idx}: {e}", exc_info=True)
-            
-            if retry_count < MAX_RETRIES:
-                logger.warning(f"Retrying chunk {chunk_idx} after error...")
-                return process_entry_chunk(entries_chunk, chunk_idx, retry_count + 1)
-            else:
-                logger.error(f"Failed to process chunk {chunk_idx} after {MAX_RETRIES} attempts: {e}")
-                # Return integer counts for failed entries
-                failed_entry_count = len(entries_chunk)
-                return {
-                    "processed_ok": 0,
-                    "processed_with_errors": 0,
-                    "failed_entries": failed_entry_count,
-                    "error_details": {
-                        f"Unexpected Error ({type(e).__name__})": failed_entry_count
-                    },
-                    "stats": {k: 0 for k in entry_stats.keys()},
-                }
+            return sub_chunk_stats, f"Unexpected error processing sub-chunk {chunk_idx}-{sub_chunk_idx}: {e}"
+
+        finally:
+            # Ensure connection is closed if it was opened (important for connection pooling)
+            if conn:
+                 conn.close()
+                 logger.debug(f"Closed DB connection for sub-chunk {chunk_idx}-{sub_chunk_idx}")
+
+    def get_connection_with_retry(max_retries=3, delay=1.0):
+        """Get database connection with retry logic"""
+        attempt = 0
+        while attempt < max_retries:
+            try:
+                conn = get_connection()
+                if conn:
+                    return conn
+            except Exception as e:
+                logger.warning(f"Connection attempt {attempt+1}/{max_retries} failed: {e}")
+                
+            # Exponential backoff for retry
+            time.sleep(delay * (2 ** attempt))
+            attempt += 1
+        
+        logger.error(f"Failed to get database connection after {max_retries} attempts")
+        return None
 
     # --- Single entry processor ---
-    def process_single_entry(entry):
+    def process_single_entry(cur, entry):
         """Process a single dictionary entry with optimized data handling."""
-        if "word" not in entry or not entry["word"]:
+        word = entry.get("word") # Use get to avoid KeyError if 'word' is missing
+        if not word:
+            logger.warning("Skipping entry due to missing 'word' field.")
+            # Return structure indicating failure, matching the original logic
             return {"word_id": None, "stats": {}, "success": False}, "No word field"
 
-        word = entry["word"]
+        # --- Log entry start ---
+        logger.debug(f"--- Starting processing for entry: '{word}' ---")
+
         # Apply special Kaikki lemma processing to preserve parenthesized variants and handle numbers
         # processed_word = process_kaikki_lemma(word)
         processed_word = word
@@ -859,46 +566,65 @@ def process_kaikki_jsonl(cur, filename: str):
 
         try:
             # Get language code and validate
+            logger.debug(f"[{word}] Getting language code...")
             pos = entry.get("pos", "unc")
             language_code = entry.get("lang_code", DEFAULT_LANGUAGE_CODE)
             if not language_code or len(language_code) > 10:
                 language_code = DEFAULT_LANGUAGE_CODE
+            logger.debug(f"[{word}] Language code set to: {language_code}")
 
             # Extract Baybayin and other script info
+            logger.debug(f"[{word}] Extracting script info...")
             baybayin_form, baybayin_romanized = extract_script_info(
                 entry, "Baybayin", "Baybayin"
             )
             badlit_form, badlit_romanized = extract_script_info(
                 entry, "Badlit", "Badlit"
             )
+            logger.debug(f"[{word}] Script info extracted. Baybayin: '{baybayin_form}', Badlit: '{badlit_form}'")
 
             # --- Baybayin Validation ---
+            logger.debug(f"[{word}] Starting Baybayin validation...")
             validated_baybayin_form = None
             has_baybayin = False
             # --- BEGIN IMPROVED BAYBAYIN EXTRACTION ---
             original_baybayin_for_log = baybayin_form  # Store original for logging if needed
-            if isinstance(baybayin_form, str) and baybayin_form:
-                # Attempt to extract pure Baybayin script from potentially mixed strings
-                # Find all sequences of Baybayin characters (U+1700-U+171F) and punctuation (U+1735)
-                # Use a slightly more specific pattern to capture contiguous blocks
-                baybayin_matches = re.findall(r"([\u1700-\u171F\u1735]+)", baybayin_form)
-                if baybayin_matches:
-                    # Join all found sequences, separated by space, as the intended script
-                    extracted_script = " ".join(baybayin_matches)
-                    # Check if this extracted script is different from the original potentially mixed string
-                    if extracted_script != original_baybayin_for_log:  # Compare with original
-                        # Log the original and the extracted version
-                        logger.info(f"Extracted Baybayin '{extracted_script}' from mixed string '{original_baybayin_for_log}' for word '{word}'.")
-                    baybayin_form = extracted_script  # Replace the original with the extracted pure script
-                # If no Baybayin characters were found, baybayin_form remains as it was (possibly invalid)
+            if baybayin_form and isinstance(baybayin_form, str):
+                # Use BaybayinRomanizer's validation method directly
+                # --- FIX: Apply cleaning directly here --- 
+                cleaned_baybayin_form = baybayin_form
+                # Remove punctuation
+                cleaned_baybayin_form = cleaned_baybayin_form.replace('᜵', '').replace('᜶', '')
+                # Remove extra spaces (leading/trailing/multiple internal)
+                cleaned_baybayin_form = ' '.join(cleaned_baybayin_form.split())
+
+                # Validate the *cleaned* form using the romanizer's character knowledge
+                if romanizer and romanizer.validate_text(cleaned_baybayin_form):
+                    validated_baybayin_form = cleaned_baybayin_form
+                    has_baybayin = True
+                    logger.debug(f"[{word}] Baybayin validated: '{validated_baybayin_form}'")
+                else:
+                    # Log if the original form was non-empty but became invalid/empty after cleaning
+                    if baybayin_form:
+                        logger.warning(f"Invalid or problematic Baybayin form found for '{word}': '{baybayin_form}' (cleaned: '{cleaned_baybayin_form}'). Ignoring Baybayin for this entry.")
+                        error_messages.append(f"Invalid Baybayin form '{baybayin_form}' ignored")
+                    # Ensure validated form is None if cleaning/validation failed
+                    validated_baybayin_form = None 
+                    has_baybayin = False
+            else:
+                # Ensure validated form is None if original was missing or not string
+                validated_baybayin_form = None 
+                has_baybayin = False
             # --- END IMPROVED BAYBAYIN EXTRACTION ---
             if baybayin_form:
+                logger.debug(f"[{word}] Baybayin form present, cleaning and validating...")
                 # Check if the form contains only valid characters
                 # Stripping the problematic dotted circle U+25CC proactively
                 cleaned_baybayin_form = baybayin_form.replace("\u25cc", "").strip()
                 if cleaned_baybayin_form and VALID_BAYBAYIN_REGEX.match(cleaned_baybayin_form):
                     validated_baybayin_form = cleaned_baybayin_form
                     has_baybayin = True
+                    logger.debug(f"[{word}] Baybayin validated: '{validated_baybayin_form}'")
                 else:
                     # Log if the original form was non-empty but became invalid/empty after cleaning
                     if baybayin_form:
@@ -906,6 +632,7 @@ def process_kaikki_jsonl(cur, filename: str):
                         error_messages.append(f"Invalid Baybayin form '{baybayin_form}' ignored")
 
             # Generate romanization if needed, using the validated form
+            logger.debug(f"[{word}] Starting romanization check...")
             romanized_form = None
             if (
                 validated_baybayin_form
@@ -914,7 +641,9 @@ def process_kaikki_jsonl(cur, filename: str):
                 and romanizer.validate_text(validated_baybayin_form)
             ):
                 try:
+                    logger.debug(f"[{word}] Attempting to romanize: '{validated_baybayin_form}'")
                     romanized_form = romanizer.romanize(validated_baybayin_form)
+                    logger.debug(f"[{word}] Romanization successful: '{romanized_form}'")
                 except Exception as rom_err:
                     # Log the romanization error instead of passing silently
                     logger.warning(
@@ -933,10 +662,13 @@ def process_kaikki_jsonl(cur, filename: str):
                 local_stats["scripts"] += 1
 
             # Check cache for existing word
+            logger.debug(f"[{word}] Checking word cache...")
             cache_key = f"{processed_word.lower()}|{language_code}"
             if cache_key in word_cache:
                 word_id = word_cache[cache_key]
+                logger.debug(f"[{word}] Found in cache. Word ID: {word_id}")
             else:
+                logger.debug(f"[{word}] Not in cache. Preparing to get/create word ID...")
                 # Prepare word attributes - MOVED OUTSIDE THE CONDITIONAL BLOCK
                 is_proper_noun = entry.get("proper", False) or pos in [
                     "prop",
@@ -967,7 +699,29 @@ def process_kaikki_jsonl(cur, filename: str):
                 )
 
                 # Create or get word ID - use processed_word instead of original word
-                # Create or get word ID - use processed_word instead of original word
+                logger.debug(f"[{word}] Calling get_or_create_word_id...")
+                # --- DEBUG: Log arguments before calling get_or_create_word_id ---
+                log_get_or_create_args = {
+                    "lemma": processed_word,
+                    "language_code": language_code,
+                    "source_identifier": source_identifier,
+                    "preserve_numbers": True,
+                    "has_baybayin": has_baybayin,
+                    "baybayin_form": validated_baybayin_form,
+                    "romanized_form": romanized_form,
+                    "badlit_form": badlit_form,
+                    "hyphenation": hyphenation, # Pass the original list/None
+                    "is_proper_noun": is_proper_noun,
+                    "is_abbreviation": is_abbreviation,
+                    "is_initialism": is_initialism,
+                    "tags": word_tags_str,
+                    "word_metadata": word_metadata,
+                }
+                # Truncate long strings for logging clarity
+                truncated_log_args = {k: (str(v)[:100] + '...' if isinstance(v, str) and len(v) > 100 else v) 
+                                      for k, v in log_get_or_create_args.items()}
+                logger.debug(f"[{word}] Args for get_or_create_word_id (truncated): {truncated_log_args}")
+                # --- END DEBUG LOG ---
                 word_id = get_or_create_word_id(
                     cur,
                     lemma=processed_word,  # Use the specially processed word
@@ -985,6 +739,7 @@ def process_kaikki_jsonl(cur, filename: str):
                     tags=word_tags_str,
                     word_metadata=word_metadata,
                 )
+                logger.debug(f"[{word}] get_or_create_word_id returned ID: {word_id}")
 
                 # Add to cache for potential reuse
                 if word_id:
@@ -993,8 +748,55 @@ def process_kaikki_jsonl(cur, filename: str):
             if not word_id:
                 return None, f"Failed to get/create word ID for '{word}'"
 
+            # --- BATCH PROCESSING FOR RELATED WORDS ---
+            # Collect all related words from this entry for batch processing
+            logger.debug(f"[{word}] Collecting related words for batch lookup...")
+            
+            try:
+                related_words_batch = collect_related_words_batch(entry, language_code, word_cache)
+                if related_words_batch is None:
+                    logger.warning(f"[{word}] collect_related_words_batch returned None, using empty set instead")
+                    related_words_batch = set()
+                
+                batch_size = len(related_words_batch)
+                
+                if batch_size > 0:
+                    logger.debug(f"[{word}] Found {batch_size} related words for batch lookup")
+                    
+                    # Convert set to list for batch_get_or_create_word_ids
+                    related_words_list = list(related_words_batch)
+                    
+                    try:
+                        # Use batch lookup function
+                        batch_result = batch_get_or_create_word_ids(
+                            cur, 
+                            related_words_list, 
+                            source=source_identifier,
+                            batch_size=1000  # Keep default or adjust as needed
+                        )
+                        
+                        # Update word cache with batch results
+                        for (lemma, lang_code), word_id in batch_result.items():
+                            if word_id:  # Only cache valid IDs
+                                word_cache[f"{lemma.lower()}|{lang_code}"] = word_id
+                        
+                        logger.debug(f"[{word}] Successfully looked up {len(batch_result)} related words in batch")
+                    except Exception as batch_err:
+                        logger.error(f"[{word}] Error in batch word lookup: {batch_err}")
+                        error_messages.append(f"Batch word lookup error: {batch_err}")
+                        # Continue processing without related words
+                else:
+                    logger.debug(f"[{word}] No additional related words to batch lookup")
+            except Exception as batch_collect_err:
+                logger.error(f"[{word}] Error collecting related words: {batch_collect_err}")
+                error_messages.append(f"Related word collection error: {batch_collect_err}")
+                # Continue processing without related words
+            # --- END BATCH PROCESSING ---
+
             # Process related data in properly grouped operations
 
+            # --- Log before pronunciations ---
+            logger.debug(f"[{word}] Processing pronunciations...")
             # 1. Process pronunciations
             if "sounds" in entry and isinstance(entry["sounds"], list):
                 for sound in entry.get("sounds", []):
@@ -1029,6 +831,10 @@ def process_kaikki_jsonl(cur, filename: str):
                                 f"Pronunciation error ({pron_type}): {str(e)}"
                             )
 
+            logger.debug(f"[{word}] Finished pronunciations.")
+
+            # --- Log before forms ---
+            logger.debug(f"[{word}] Processing forms...")
             # 2. Process word forms and relationships together
             if "forms" in entry and isinstance(entry["forms"], list):
                 # First collect canonical forms identified in the data
@@ -1137,6 +943,10 @@ def process_kaikki_jsonl(cur, filename: str):
                         error_messages.append(error_msg)
                     # --- MODIFICATION END ---
 
+            logger.debug(f"[{word}] Finished forms.")
+
+            # --- Log before inflection templates ---
+            logger.debug(f"[{word}] Processing inflection templates...")
             # --- MODIFICATION START: Process and store inflection templates ---
             if "inflection_templates" in entry and isinstance(
                 entry["inflection_templates"], list
@@ -1219,8 +1029,10 @@ def process_kaikki_jsonl(cur, filename: str):
                         error_msg = f"Error storing inflection template '{template_name}' for word ID {word_id}: {str(template_e)}. Args: {template_args}"
                         logger.error(error_msg, exc_info=True)
                         error_messages.append(error_msg)
-            # --- MODIFICATION END ---
+            logger.debug(f"[{word}] Finished inflection templates.")
 
+            # --- Log before etymology ---
+            logger.debug(f"[{word}] Processing etymology...")
             # 3. Process etymology
             if "etymology_text" in entry and entry["etymology_text"]:
                 try:
@@ -1877,23 +1689,24 @@ def process_kaikki_jsonl(cur, filename: str):
                                                 local_stats["relations"] += 1
 
                                             # Add inverse relation
-                                            inverse_rel = rel_type.get_inverse()
+                                            inverse_rel = rel_type.inverse # Corrected: Use property instead of method
                                             if inverse_rel:
                                                 insert_relation(
                                                     cur,
                                                     related_word_id,
                                                     word_id,
-                                                    inverse_rel.value, # Use .value here
+                                                    inverse_rel.value, # <-- Use .value of the enum
                                                     source_identifier,
                                                     metadata,
                                                 )
                 except Exception as e:
                     error_messages.append(f"Etymology error: {str(e)}")
+                    logger.error(f"[{word}] Error processing etymology: {e}", exc_info=True) # Added word context
+            logger.debug(f"[{word}] Finished etymology.")
 
-                    # --- Improvement 3: Process Top-Level Relation Fields ---
-
-            # --- Improvement 3: Process Top-Level Relation Fields ---
-
+            # --- Log before top-level relations ---
+            logger.debug(f"[{word}] Processing top-level relations...")
+            # Process Top-Level Relation Fields
             top_level_relations_map = {
                 "derived": RelationshipType.ROOT_OF,  # Word is ROOT_OF the derived term
                 "related": RelationshipType.RELATED,
@@ -1903,7 +1716,7 @@ def process_kaikki_jsonl(cur, filename: str):
 
             for field, rel_type in top_level_relations_map.items():
                 if field in entry and isinstance(entry[field], list):
-                    for related_item in entry[field]:
+                    for related_item_idx, related_item in enumerate(entry[field]): # Added index for logging
                         related_word_str = None
                         item_metadata = {}  # Store metadata from the item itself
 
@@ -2092,158 +1905,12 @@ def process_kaikki_jsonl(cur, filename: str):
                                     elif rel_type.bidirectional:
                                         insert_relation(cur, related_word_id, word_id, rel_type.value, source_identifier, relation_metadata) # Use .value
 
-            # --- End Improvement 3 ---
+                                logger.debug(f"[{word}] Processing top-level relation {field} item {related_item_idx}: {related_word_clean if 'related_word_clean' in locals() else related_item}")
 
-            for field, rel_type in top_level_relations_map.items():
-                if field in entry and isinstance(entry[field], list):
-                    for related_item in entry[field]:
-                        related_word_str = None
-                        if isinstance(related_item, str):
-                            related_word_str = related_item
-                        elif (
-                            isinstance(related_item, dict)
-                            and "word" in related_item
-                            and isinstance(related_item["word"], str)
-                        ):
-                            related_word_str = related_item["word"]
+            logger.debug(f"[{word}] Finished top-level relations.")
 
-                        if related_word_str:
-                            related_word_clean = clean_html(related_word_str)
-                            if related_word_clean.lower() in NON_WORD_STRINGS:
-                                logger.debug(
-                                    f"Found non-word string '{related_word_clean}' for word '{word}'"
-                                )
-
-                                # Store as linguistic note in the word_metadata JSONB column directly
-                                try:
-                                    # Determine what type of information this is
-                                    note_type = "Language Code"
-                                    if (
-                                        len(related_word_clean) <= 3
-                                        and related_word_clean.isalpha()
-                                    ):
-                                        note_type = "Language Code"
-                                    elif (
-                                        related_word_clean.lower()
-                                        == "spanish-based orthography"
-                                    ):
-                                        note_type = "Orthography"
-                                    elif related_word_clean.lower() in [
-                                        "obsolete",
-                                        "archaic",
-                                        "dialectal",
-                                    ]:
-                                        note_type = "Usage"
-
-                                    # Simple SQL to update the word's metadata directly
-                                    # This adds to the existing metadata without replacing it
-                                    cur.execute(
-                                        """
-                                        UPDATE words
-                                        SET word_metadata = CASE
-                                            WHEN word_metadata IS NULL THEN 
-                                                jsonb_build_object('linguistic_notes', jsonb_build_array(jsonb_build_object('type', %s, 'value', %s, 'source', %s)))
-                                            WHEN word_metadata ? 'linguistic_notes' THEN
-                                                jsonb_set(
-                                                    word_metadata,
-                                                    '{linguistic_notes}',
-                                                    word_metadata->'linguistic_notes' || 
-                                                    jsonb_build_array(jsonb_build_object('type', %s, 'value', %s, 'source', %s))
-                                                )
-                                            ELSE
-                                                word_metadata || 
-                                                jsonb_build_object('linguistic_notes', jsonb_build_array(jsonb_build_object('type', %s, 'value', %s, 'source', %s)))
-                                        END
-                                        WHERE id = %s
-                                    """,
-                                        (
-                                            note_type,
-                                            related_word_clean,
-                                            field,
-                                            note_type,
-                                            related_word_clean,
-                                            field,
-                                            note_type,
-                                            related_word_clean,
-                                            field,
-                                            word_id,
-                                        ),
-                                    )
-
-                                    logger.info(
-                                        f"Added {note_type} '{related_word_clean}' to word_metadata for '{word}'"
-                                    )
-                                except Exception as e:
-                                    logger.error(
-                                        f"Error storing metadata for '{related_word_clean}': {e}"
-                                    )
-
-                                # Skip creating relationship for this non-word
-                                continue
-                            if (
-                                related_word_clean
-                                and related_word_clean.lower() != word.lower()
-                            ):
-                                # Skip entries that are likely language codes or descriptive phrases
-                                # Assume related words are in the same language unless specified otherwise (which Kaikki rarely does here)
-                                related_lang = language_code
-                                related_cache_key = (
-                                    f"{related_word_clean.lower()}|{related_lang}"
-                                )
-
-                                if related_cache_key in word_cache:
-                                    related_word_id = word_cache[related_cache_key]
-                                else:
-                                    related_word_id = get_or_create_word_id(
-                                        cur,
-                                        related_word_clean,
-                                        related_lang,
-                                        source_identifier,
-                                    )
-                                    if related_word_id:
-                                        word_cache[related_cache_key] = related_word_id
-
-                                if related_word_id and related_word_id != word_id:
-                                    metadata = {
-                                        "source": f"top_level_{field}",
-                                        "confidence": rel_type.strength,
-                                    }
-                                    # Insert relation
-                                    rel_id = insert_relation(
-                                        cur,
-                                        word_id,
-                                        related_word_id,
-                                        rel_type.value, # Use .value here
-                                        source_identifier,
-                                        metadata,
-                                    )
-                                    if rel_id:
-                                        local_stats[
-                                            "relations"
-                                        ] += 1  # Increment general relations count
-                                        # Approximate contribution to sense relations for stats
-                                        if field in ["synonyms", "antonyms", "related"]:
-                                            local_stats["sense_relations"] += 1
-                                        elif field == "derived":
-                                            local_stats["ety_relations"] += 1
-
-                                    # Add inverse relation if applicable (insert_relation should ideally handle bidirectionality)
-                                    # If insert_relation doesn't handle it automatically based on rel_type.bidirectional:
-                                    if not rel_type.bidirectional:
-                                        inverse_rel_enum = rel_type.inverse # <-- Use .inverse
-                                        if inverse_rel_enum:
-                                            insert_relation(
-                                                cur,
-                                                related_word_id,
-                                                word_id,
-                                                inverse_rel_enum.value, # <-- Use .value of the enum
-                                                source_identifier,
-                                                relation_metadata,
-                                            )
-                                    # If insert_relation DOES handle bidirectionality, the inverse logic is not needed here.
-                                    # Let's assume insert_relation needs explicit inverse insertion for non-bidirectional types for safety.
-
-            # --- End Improvement 3 ---
+            # --- Log before head templates ---
+            logger.debug(f"[{word}] Processing head templates...")
             # 4. Process templates
             if "head_templates" in entry and entry["head_templates"]:
                 try:
@@ -2255,35 +1922,58 @@ def process_kaikki_jsonl(cur, filename: str):
                         args = template.get("args")
                         expansion = template.get("expansion")
 
-                        cur.execute(
-                            """
-                            INSERT INTO word_templates (word_id, template_name, args, expansion) 
-                            VALUES (%s, %s, %s, %s) 
-                            ON CONFLICT (word_id, template_name) DO UPDATE 
-                            SET args = EXCLUDED.args, 
-                                expansion = EXCLUDED.expansion, 
-                                updated_at = CURRENT_TIMESTAMP
-                            """,
-                            (
-                                word_id,
-                                template_name,
-                                Json(args) if args else None,
-                                expansion,
-                            ),
-                        )
+                        # --- MODIFICATION: Use insert_word_template helper --- 
+                        try:
+                            if "insert_word_template" in globals() and callable(globals()["insert_word_template"]):
+                                template_id = insert_word_template(
+                                    cur,
+                                    word_id,
+                                    template_name,
+                                    args=args if isinstance(args, dict) else {},
+                                    expansion=expansion,
+                                    source_identifier=source_identifier,
+                                )
+                                if template_id:
+                                    local_stats["templates"] += 1
+                                else:
+                                     logger.warning(
+                                        f"insert_word_template returned non-ID for head template '{template_name}' (Word ID: {word_id}). Args: {args}"
+                                    )
+                                     error_messages.append(
+                                        f"Failed to store head template '{template_name}'"
+                                    )
+                            else:
+                                if "insert_word_template_missing_logged" not in locals():
+                                    logger.error(
+                                        f"Function 'insert_word_template' not defined. Cannot store head templates for word ID {word_id}."
+                                    )
+                                    error_messages.append(
+                                        f"Missing function: insert_word_template"
+                                    )
+                                    insert_word_template_missing_logged = True
+                        except Exception as template_e:
+                            error_msg = f"Error storing head template '{template_name}' for word ID {word_id}: {str(template_e)}. Args: {args}"
+                            logger.error(error_msg, exc_info=True)
+                            error_messages.append(error_msg)
+                        # --- END MODIFICATION ---
 
-                        if cur.rowcount > 0:
-                            local_stats["templates"] += 1
                 except Exception as e:
-                    error_messages.append(f"Template error: {str(e)}")
+                    error_messages.append(f"Head template processing error: {str(e)}")
+                    logger.error(f"[{word}] Error processing head templates block: {e}", exc_info=True)
 
+            logger.debug(f"[{word}] Finished head templates.")
+
+            # --- Log before senses ---
+            logger.debug(f"[{word}] Processing senses...")
             # 5. Process senses/definitions
-            # 3. Process senses (definitions) and their nested data
             if "senses" in entry and isinstance(entry["senses"], list):
-                # Track if we have successfully processed at least one sense
                 processed_sense_count = 0
-                
+                num_senses = len(entry["senses"])
+                logger.debug(f"[{word}] Found {num_senses} senses.")
+
                 for sense_idx, sense in enumerate(entry["senses"]):
+                    # --- Log sense start ---
+                    logger.debug(f"[{word}] Processing sense {sense_idx + 1}/{num_senses}...")
                     if not isinstance(sense, dict):
                         error_messages.append(f"Non-dictionary sense at index {sense_idx}. Skipping.")
                         continue
@@ -2304,7 +1994,7 @@ def process_kaikki_jsonl(cur, filename: str):
                         raw_glosses = [g for g in sense["raw_glosses"] if g and isinstance(g, str)]
                         if raw_glosses:
                             definition_text = "; ".join(clean_html(g) for g in raw_glosses)
-                    
+
                     if not definition_text:
                         # Try definition field as final fallback
                         definition = sense.get("definition")
@@ -2500,15 +2190,15 @@ def process_kaikki_jsonl(cur, filename: str):
                                                  logger.debug(f"Skipping empty or invalid link data for def ID {def_id}: {link_data}")
                                                  continue
                                                  
-                                            # Pass the link_item (string or dict) directly to the insert function
-                                            link_db_id = insert_definition_link(
-                                                cur,
-                                                def_id,
+                                        # Pass the link_item (string or dict) directly to the insert function
+                                        link_db_id = insert_definition_link(
+                                            cur,
+                                            def_id,
                                                 link_data,  # Pass the normalized link data
-                                                source_identifier=source_identifier,
-                                            )
-                                            if link_db_id:
-                                                local_stats["links"] += 1
+                                            source_identifier=source_identifier,
+                                        )
+                                        if link_db_id:
+                                            local_stats["links"] += 1
                                                 
                                     except Exception as link_e:
                                         # Log error but continue processing other links/categories
@@ -2616,7 +2306,8 @@ def process_kaikki_jsonl(cur, filename: str):
                             }
                             for field, rel_type in sense_relations_map.items():
                                 if field in sense and isinstance(sense[field], list):
-                                    for related_item in sense[field]:
+                                    for rel_item_idx, related_item in enumerate(sense[field]): # Added index
+                                        logger.debug(f"[{word}] Processing sense relation {field} item {rel_item_idx}: {related_item}")
                                         # ... (Your existing sense relation processing logic, including non-word checks) ...
                                         # Ensure insert_relation is called correctly
                                         related_word_str = None
@@ -2746,95 +2437,7 @@ def process_kaikki_jsonl(cur, filename: str):
                         # Optionally, rollback this specific definition's changes if possible,
                         # but the main transaction handles overall rollback on failure.
 
-            # --- End Sense Processing ---
-            # 6. Process top-level relations
-            try:
-                top_level_rels = {
-                    "derived": RelationshipType.ROOT_OF,
-                    "related": RelationshipType.RELATED,
-                }
-
-                for rel_key, rel_enum in top_level_rels.items():
-                    if rel_key in entry and isinstance(entry[rel_key], list):
-                        for item in entry[rel_key]:
-                            related_word = None
-
-                            if isinstance(item, dict) and "word" in item:
-                                related_word = item["word"]
-                            elif isinstance(item, str):
-                                related_word = item
-                            else:
-                                continue
-
-                            related_word_clean = clean_html(related_word)
-                            if (
-                                not related_word_clean
-                                or related_word_clean.lower() == word.lower()
-                            ):
-                                continue
-
-                            # Get or create related word
-                            related_cache_key = (
-                                f"{related_word_clean.lower()}|{language_code}"
-                            )
-                            if related_cache_key in word_cache:
-                                related_word_id = word_cache[related_cache_key]
-                            else:
-                                related_word_id = get_or_create_word_id(
-                                    cur,
-                                    related_word_clean,
-                                    language_code,
-                                    source_identifier=source_identifier,
-                                )
-                                if related_word_id:
-                                    word_cache[related_cache_key] = related_word_id
-
-                            if related_word_id and related_word_id != word_id:
-                                metadata = {
-                                    "confidence": rel_enum.strength,
-                                    "from_sense": False,
-                                }
-
-                                if isinstance(item, dict) and "tags" in item:
-                                    metadata["tags"] = ",".join(item["tags"])
-
-                                # Insert relation
-                                rel_id = insert_relation(
-                                    cur,
-                                    word_id,
-                                    related_word_id,
-                                    rel_enum.value,
-                                    source_identifier,
-                                    metadata,
-                                )
-
-                                if rel_id:
-                                    local_stats["relations"] += 1
-
-                                # Add inverse/bidirectional relation if needed
-                                if rel_enum.bidirectional:
-                                    insert_relation(
-                                        cur,
-                                        related_word_id,
-                                        word_id,
-                                        rel_enum.value,
-                                        source_identifier,
-                                        metadata,
-                                    )
-                                else:
-                                    # Correctly access the inverse enum member
-                                    inv_enum = rel_enum.inverse 
-                                    if inv_enum:
-                                        insert_relation(
-                                            cur,
-                                            related_word_id,
-                                            word_id,
-                                            inv_enum.value, # Use the value of the inverse enum member
-                                            source_identifier,
-                                            metadata,
-                                        )
-            except Exception as e:
-                error_messages.append(f"Top-level relation error: {str(e)}")
+            logger.debug(f"[{word}] Finished senses.")
 
             # Update global statistics
             for key, value in local_stats.items():
@@ -2844,6 +2447,9 @@ def process_kaikki_jsonl(cur, filename: str):
             if len(entry["senses"]) > 0 and processed_sense_count == 0:
                 logger.warning(f"Failed to process any senses for entry '{word}'")
                 error_messages.append(f"No senses processed for '{word}'")
+
+            # --- Log entry end ---
+            logger.debug(f"--- Finished processing for entry: '{word}' ---")
 
             return {
                 "word_id": word_id,
@@ -2888,84 +2494,101 @@ def process_kaikki_jsonl(cur, filename: str):
             # Prepare for chunked processing
             current_chunk = []
             chunk_index = 0
-            
-            for line in f:
-                if not line.strip():
-                    continue  # Skip empty lines
-                
-                entry_count += 1
-                stats["total_entries"] = entry_count
-                
+
+            try:
+                for line_num, line in enumerate(f): # Use enumerate for better error context
+                    if not line.strip():
+                        continue  # Skip empty lines
+                    
+                    entry_count += 1
+                    # stats["total_entries"] = entry_count # This might be inaccurate if file size was used
+                    
+                    if progress_bar:
+                        progress_bar.update(1)
+                    elif entry_count % PROGRESS_REPORT_INTERVAL == 0:
+                        logger.info(f"Processed {entry_count} entries...")
+                    
+                    # Add to current chunk
+                    current_chunk.append(line.strip())
+                    
+                    # Process chunk when it reaches the desired size
+                    if len(current_chunk) >= CHUNK_SIZE:
+                        # Parse JSON entries since we're receiving text lines
+                        parsed_entries = []
+                        # --- Corrected JSON parsing loop ---
+                        for json_line in current_chunk: # Use different variable name to avoid confusion
+                            try:
+                                entry = json.loads(json_line)
+                                parsed_entries.append(entry)
+                            except json.JSONDecodeError:
+                                # Handle error for this specific line
+                                logger.warning(f"Invalid JSON in chunk {chunk_index}, line approx {line_num}: {json_line[:100]}...")
+                                stats["skipped_json_errors"] += 1
+                        # --- End corrected loop ---
+                        
+                        if parsed_entries:
+                            chunk_stats, chunk_error = process_entry_chunk(parsed_entries, chunk_index)
+
+                            if chunk_stats: # Check if stats dict is not None
+                                stats["processed_ok"] += chunk_stats.get("processed_ok", 0)
+                                stats["processed_with_errors"] += chunk_stats.get("processed_with_errors", 0)
+                                stats["failed_entries"] += chunk_stats.get("failed_entries", 0)
+
+                                chunk_error_details = chunk_stats.get("error_details", {})
+                                for error_key, error_count in chunk_error_details.items():
+                                    error_summary[error_key] = error_summary.get(error_key, 0) + error_count
+
+                                for stat_key in entry_stats.keys():
+                                    entry_stats[stat_key] += chunk_stats.get(stat_key, 0)
+                            elif chunk_error:
+                                 logger.error(f"Chunk {chunk_index} failed entirely: {chunk_error}")
+                                 stats["failed_entries"] += len(parsed_entries)
+                                 error_summary["ChunkProcessingFailed"] = error_summary.get("ChunkProcessingFailed", 0) + 1
+
+                            # Reset for next chunk (only inside the loop)
+                            current_chunk = []
+                            chunk_index += 1
+
                 if progress_bar:
-                    progress_bar.update(1)
-                elif entry_count % PROGRESS_REPORT_INTERVAL == 0:
-                    logger.info(f"Processed {entry_count} entries...")
-                
-                # Add to current chunk
-                current_chunk.append(line.strip())
-                
-                # Process chunk when it reaches the desired size
-                if len(current_chunk) >= CHUNK_SIZE:
+                    progress_bar.close()
+
+                # Process any remaining entries in the final chunk
+                if current_chunk:
                     # Parse JSON entries since we're receiving text lines
                     parsed_entries = []
-                    for line in current_chunk:
+                    # --- Corrected final JSON parsing loop ---
+                    for json_line in current_chunk: # Use different variable name
                         try:
-                            entry = json.loads(line)
+                            entry = json.loads(json_line)
                             parsed_entries.append(entry)
                         except json.JSONDecodeError:
-                            logger.warning(f"Invalid JSON in chunk {chunk_index}: {line[:100]}...")
+                            # Handle error for this specific line
+                            logger.warning(f"Invalid JSON in final chunk: {json_line[:100]}...")
                             stats["skipped_json_errors"] += 1
+                    # --- End corrected loop ---
                     
                     if parsed_entries:
-                        chunk_result = process_entry_chunk(parsed_entries, chunk_index)
-                        
-                        # Update statistics
-                        stats["processed_ok"] += chunk_result["processed_ok"]
-                        stats["processed_with_errors"] += chunk_result["processed_with_errors"]
-                        stats["failed_entries"] += chunk_result["failed_entries"]
-                        
-                        # Update error summary
-                        for error_key, error_count in chunk_result["error_details"].items():
-                            error_summary[error_key] = error_summary.get(error_key, 0) + error_count
-                        
-                        # Update entry stats
-                        for stat_key, stat_value in chunk_result["stats"].items():
-                            entry_stats[stat_key] += stat_value
-                        
-                        # Reset for next chunk
-                        current_chunk = []
-                        chunk_index += 1
+                        chunk_stats, chunk_error = process_entry_chunk(parsed_entries, chunk_index)
 
-            if progress_bar:
-                progress_bar.close()
+                        if chunk_stats: # Check if stats dict is not None
+                            stats["processed_ok"] += chunk_stats.get("processed_ok", 0)
+                            stats["processed_with_errors"] += chunk_stats.get("processed_with_errors", 0)
+                            stats["failed_entries"] += chunk_stats.get("failed_entries", 0)
 
-            # Process any remaining entries in the final chunk
-            if current_chunk:
-                # Parse JSON entries since we're receiving text lines
-                parsed_entries = []
-                for line in current_chunk:
-                    try:
-                        entry = json.loads(line)
-                        parsed_entries.append(entry)
-                    except json.JSONDecodeError:
-                        logger.warning(f"Invalid JSON in final chunk: {line[:100]}...")
-                        stats["skipped_json_errors"] += 1
-                
-                if parsed_entries:
-                    chunk_result = process_entry_chunk(parsed_entries, chunk_index)
-                    
-                    # Update statistics 
-                    stats["processed_ok"] += chunk_result["processed_ok"]
-                    stats["processed_with_errors"] += chunk_result["processed_with_errors"]
-                    stats["failed_entries"] += chunk_result["failed_entries"]
-                    
-                    # Update error summary
-                    for error_key, error_count in chunk_result["error_details"].items():
-                        error_summary[error_key] = error_summary.get(error_key, 0) + error_count
-                    
-                    # Update entry stats
-                    for stat_key, stat_value in chunk_result["stats"].items():
-                        entry_stats[stat_key] += stat_value
+                            chunk_error_details = chunk_stats.get("error_details", {})
+                            for error_key, error_count in chunk_error_details.items():
+                                error_summary[error_key] = error_summary.get(error_key, 0) + error_count
+
+                            for stat_key in entry_stats.keys():
+                                entry_stats[stat_key] += chunk_stats.get(stat_key, 0)
+                        elif chunk_error:
+                                logger.error(f"Final chunk failed entirely: {chunk_error}")
+                                stats["failed_entries"] += len(parsed_entries)
+                                error_summary["ChunkProcessingFailed"] = error_summary.get("ChunkProcessingFailed", 0) + 1
+
+            finally:
+                if progress_bar:
+                    progress_bar.close()
 
     except FileNotFoundError:
         logger.error(f"File not found: {filename}")

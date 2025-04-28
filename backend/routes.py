@@ -50,9 +50,7 @@ from backend.dictionary_manager.db_helpers import (
     Json,
     RelationshipType,  # Assuming RelationshipType enum is exposed here or in enums directly
     add_linguistic_note,
-    get_standardized_pos_id, # Corrected import name
     get_or_create_word_id,
-    insert_definition,
     insert_definition_category,
     insert_definition_example,
     insert_definition_link,

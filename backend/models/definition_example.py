@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .base_model import BaseModel
 import datetime
+from sqlalchemy.dialects.postgresql import JSONB
 
 class DefinitionExample(BaseModel):
     __tablename__ = 'definition_examples'
@@ -19,20 +20,19 @@ class DefinitionExample(BaseModel):
     example_type = Column(String(50), nullable=True) # e.g., 'quotation', 'proverb', 'usage'
     reference = Column(Text, nullable=True) # Source/reference for the example
 
-    # Additional structured data - Renamed column
-    json_metadata = Column(JSON, nullable=True)
+    # Additional structured data - Renamed column and type corrected
+    example_metadata = Column(JSONB, nullable=True)
 
     # Provenance and Timestamps
     sources = Column(Text, nullable=True) # Comma-separated list of source identifiers
-    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    # created_at and updated_at likely handled by BaseModel
 
     # Relationships (back reference to the definition)
     definition = relationship("Definition", back_populates="examples")
 
     # Constraints
     __table_args__ = (
-        UniqueConstraint('definition_id', 'example_text', name='uq_definition_examples_unique'),
+        UniqueConstraint('definition_id', 'example_text', name='definition_examples_unique'),
         # Add other constraints if needed
     )
 

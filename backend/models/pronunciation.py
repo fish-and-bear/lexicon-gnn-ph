@@ -24,6 +24,7 @@ class Pronunciation(BaseModel, BasicColumnsMixin):
     value = db.Column(db.Text, nullable=False)
     tags = db.Column(JSONB, default=lambda: {})  # Changed to JSONB
     pronunciation_metadata = db.Column(JSONB, default=lambda: {})
+    sources = db.Column(db.Text) # Added sources column to match schema
     
     # Optimized relationship with Word
     word = db.relationship('Word', back_populates='pronunciations', lazy='selectin')

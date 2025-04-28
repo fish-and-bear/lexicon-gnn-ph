@@ -10,6 +10,7 @@ from .base_model import BaseModel
 from .mixins.basic_columns import BasicColumnsMixin
 from typing import Dict, Any, Optional
 from sqlalchemy.dialects.postgresql import JSONB
+import json
 
 class WordTemplate(BaseModel, BasicColumnsMixin):
     """Model for word templates (e.g., for conjugation patterns)."""
@@ -17,9 +18,10 @@ class WordTemplate(BaseModel, BasicColumnsMixin):
     
     id = db.Column(db.Integer, primary_key=True)
     word_id = db.Column(db.Integer, db.ForeignKey('words.id', ondelete='CASCADE'), nullable=False, index=True)
-    template_name = db.Column(db.Text, nullable=False)
+    template_name = db.Column(db.String(255), nullable=False)
     args = db.Column(JSONB, default=lambda: {})
     expansion = db.Column(db.Text)
+    sources = db.Column(db.Text, nullable=True)
     
     # Optimized relationship with Word
     word = db.relationship('Word', back_populates='templates', lazy='selectin')
@@ -29,14 +31,38 @@ class WordTemplate(BaseModel, BasicColumnsMixin):
         db.UniqueConstraint('word_id', 'template_name', name='word_templates_unique'),
         db.Index('idx_word_templates_word', 'word_id'),
         db.Index('idx_word_templates_name', 'template_name'),
-        db.Index('idx_word_templates_args', 'args', postgresql_using='gin')
     )
     
-    @validates('expansion')
+    @validates('expansion', 'sources')
     def validate_text_field(self, key: str, value: Optional[str]) -> Optional[str]:
         """Validate text fields."""
+        if value is not None and not isinstance(value, str):
+             raise ValueError(f"{key} must be a string or None")
+        if value is not None:
+             value = value.strip()
+             if not value:
+                 return None
+        return value
+    
+    @validates('template_name')
+    def validate_template_name(self, key: str, value: str) -> str:
+        if not value:
+            raise ValueError("Template name cannot be empty.")
+        if len(value) > 255:
+            raise ValueError("Template name exceeds 255 characters.")
+        return value.strip()
+    
+    @validates('args')
+    def validate_args(self, key: str, value: Any) -> Dict:
         if value is None:
-            raise ValueError(f"{key} cannot be None")
+            return {}
+        if isinstance(value, str):
+            try:
+                value = json.loads(value)
+            except json.JSONDecodeError:
+                raise ValueError("Invalid JSON format for args")
+        if not isinstance(value, dict):
+            raise ValueError("Args must be a dictionary")
         return value
     
     def __repr__(self) -> str:

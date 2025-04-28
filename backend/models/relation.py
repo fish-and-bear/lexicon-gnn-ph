@@ -52,6 +52,7 @@ class Relation(BaseModel, BasicColumnsMixin):
     to_word_id = db.Column(db.Integer, db.ForeignKey('words.id', ondelete='CASCADE'), nullable=False, index=True)
     relation_type = db.Column(db.String(64), nullable=False, index=True)
     sources = db.Column(db.Text)
+    relation_metadata = db.Column(JSONB, default=lambda: {})
     
     # Relationships
     source_word = db.relationship('Word', foreign_keys=[from_word_id], back_populates='outgoing_relations', lazy='selectin')
@@ -62,9 +63,8 @@ class Relation(BaseModel, BasicColumnsMixin):
         db.Index('idx_relations_from', 'from_word_id'),
         db.Index('idx_relations_to', 'to_word_id'),
         db.Index('idx_relations_type', 'relation_type'),
-        # Only add these indexes if the column exists
-        # db.Index('idx_relations_metadata', 'relation_metadata', postgresql_using='gin'),
-        # db.Index('idx_relations_metadata_strength', 'relation_metadata', postgresql_using='gin', postgresql_ops={'relation_metadata': 'jsonb_path_ops'})
+        db.Index('idx_relations_metadata', 'relation_metadata', postgresql_using='gin'),
+        db.Index('idx_relations_metadata_strength', db.text("(relation_metadata->>'strength')"))
     )
     
     @validates('relation_type')

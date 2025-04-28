@@ -23,6 +23,7 @@ from backend.dictionary_manager.db_helpers import (
     insert_pronunciation,
     insert_definition_example,
     insert_relation, # Needed for inline relation processing
+    process_relations_batch, # <-- ADDED import
     get_standardized_pos_id,
     with_transaction,
 )
@@ -31,7 +32,6 @@ from backend.dictionary_manager.text_helpers import normalize_lemma, SourceStand
 logger = logging.getLogger(__name__)
 
 # Moved from dictionary_manager.py (originally around line 97 in old structure)
-@with_transaction(commit=True)
 def process_definition_relations(cur, word_id: int, definition: str, source: str):
     """Process and create relationships from definition text."""
     synonym_patterns = [
@@ -112,7 +112,7 @@ def _process_single_tagalog_word_entry(
         lemma,
         language_code,
         source_identifier,
-        word_metadata=Json(word_creation_metadata) if word_creation_metadata else None,  # Wrap collected metadata
+        word_metadata=word_creation_metadata, # Pass dict directly, Json() is handled internally
         # Pass other flags if extracted: has_baybayin, baybayin_form, etc.
     )
     if not word_id:
@@ -169,7 +169,7 @@ def _process_single_tagalog_word_entry(
         # Assume simple IPA string for now, could be enhanced to parse structure if needed
         # Use dict format for insert_pronunciation consistency
         pron_id = insert_pronunciation(
-            cur, word_id, main_pron.strip(), "ipa", source_identifier=source_identifier
+            cur, word_id, "ipa", main_pron.strip(), source_identifier=source_identifier
         )
         if pron_id:
             stats["pronunciations_added"] += 1
@@ -177,7 +177,7 @@ def _process_single_tagalog_word_entry(
     if alt_pron and isinstance(alt_pron, str) and alt_pron.strip():
         # Treat alternate as a separate entry, maybe tag it?
         pron_id = insert_pronunciation(
-            cur, word_id, alt_pron.strip(), "ipa", tags=["alternate"], source_identifier=source_identifier
+            cur, word_id, "ipa", alt_pron.strip(), tags=["alternate"], source_identifier=source_identifier
         )
         if pron_id:
             stats["pronunciations_added"] += 1
@@ -301,8 +301,7 @@ def _process_single_tagalog_word_entry(
             # Get standardized POS ID
             standardized_pos_id = get_standardized_pos_id(cur, pos_code_to_use)
 
-            # --- Insert Definition ---
-            # Extract other sense data for definition insertion
+            # --- Extract Usage Notes ---
             sense_notes = sense.get("notes") # Could be list or string
             usage_notes_str = None
             if isinstance(sense_notes, list):
@@ -310,17 +309,23 @@ def _process_single_tagalog_word_entry(
             elif isinstance(sense_notes, str):
                  usage_notes_str = sense_notes.strip()
 
+            # Create metadata dictionary
+            metadata_dict = {}
+            if pos_code_to_use:
+                metadata_dict["original_pos"] = pos_code_to_use
+            if usage_notes_str:
+                 metadata_dict["usage_notes"] = usage_notes_str
+            # Add other sense-level data if available (e.g., domains, tags)
+
             # Pass sense data to insert_definition
             definition_id = insert_definition(
                 cur,
                 word_id,
                 definition_text,
-                original_pos=pos_code_to_use,
-                standardized_pos_id=standardized_pos_id,
-                usage_notes=usage_notes_str,
+                part_of_speech=pos_code_to_use,
                 source_identifier=source_identifier,
-                # tags=None, # Can add sense-level tags if needed
-                metadata=None, # Can add sense-level metadata if needed
+                usage_notes=usage_notes_str if usage_notes_str else None,
+                metadata=metadata_dict if metadata_dict else None,
             )
 
             if not definition_id:
@@ -453,11 +458,6 @@ def process_tagalog_words(
     try:
         with open(filename, "r", encoding="utf-8", errors="replace") as f:
             data = json.load(f)
-        if not isinstance(data, dict):
-            logger.error(f"File {filename} does not contain a top-level dictionary.")
-            stats["errors"] += 1
-            error_types["InvalidFileFormat"] = 1
-            return stats
     except FileNotFoundError:
         logger.error(f"File not found: {filename}")
         stats["errors"] += 1
@@ -474,118 +474,50 @@ def process_tagalog_words(
         error_types["FileReadError"] = 1
         return stats # Cannot proceed
 
-    num_entries = len(data)
-    logger.info(f"Found {num_entries} entries in {filename}")
+    if not isinstance(data, dict):
+        logger.error(f"File {filename} does not contain a top-level dictionary.")
+        # Return stats indicating format error; caller should handle transaction
+        stats["errors"] += 1
+        error_types["InvalidFormat"] = 1
+        return {**stats, "error_details": error_types}
 
-    # --- Define Inline Relation Batch Processing Function ---
-    def _process_relations_batch_inline(
-        cur, batch, stats_dict, cache, error_types_dict
-    ):
-        """Processes a batch of relation data within the main loop's transaction."""
-        inserted_count = 0
-        failed_count = 0
-        processed_count = len(batch)
-        logger.info(f"Processing batch of {processed_count} potential relations...")
+    # --- Optional: Extract top-level metadata if needed ---
+    dictionary_metadata = data.pop("__metadata__", {}) # Remove metadata if key exists
+    entries_in_file = len(data) # Count actual word entries
 
-        # Pre-fetch IDs for related words if not already cached
-        related_words_to_fetch = set()
-        for rel in batch:
-            related_lemma = rel.get("related_word")
-            rel_lang = rel.get("metadata", {}).get("lang", "tl") # Default to 'tl' if lang missing
-            normalized_rel_lemma = normalize_lemma(related_lemma)
-            cache_key = f"{normalized_rel_lemma}|{rel_lang}"
-            if cache_key not in cache:
-                related_words_to_fetch.add((related_lemma, rel_lang))
+    if entries_in_file == 0:
+        logger.info(f"Found 0 word entries in {filename}. Skipping file.")
+        # No commit needed, just return stats
+        return stats # Return empty stats
 
-        if related_words_to_fetch:
-            logger.info(f"Fetching/Creating IDs for {len(related_words_to_fetch)} related words...")
-            # This assumes get_or_create_word_id handles transactions correctly internally
-            # or runs within the same transaction provided by `cur`
-            for rel_lemma, rel_lang in related_words_to_fetch:
-                 try:
-                      # Get/create the related word ID using the same source identifier
-                      rel_id = get_or_create_word_id(cur, rel_lemma, rel_lang, source_identifier=rel["source_identifier"])
-                      normalized_rel_lemma_cache = normalize_lemma(rel_lemma)
-                      cache_key = f"{normalized_rel_lemma_cache}|{rel_lang}"
-                      cache[cache_key] = rel_id # Cache the result
-                 except Exception as e:
-                      logger.error(f"Failed to get/create ID for related word '{rel_lemma}' ({rel_lang}): {e}")
-                      error_types_dict["RelatedWordIDError"] = error_types_dict.get("RelatedWordIDError", 0) + 1
-                      # Add to cache with None to prevent repeated attempts for this word in this batch
-                      normalized_rel_lemma_cache = normalize_lemma(rel_lemma)
-                      cache_key = f"{normalized_rel_lemma_cache}|{rel_lang}"
-                      cache[cache_key] = None
+    logger.info(f"Found {entries_in_file} word entries in {filename}")
 
-
-        # Process each relation in the batch
-        for rel_data in batch:
-            from_word_id = rel_data.get("word_id")
-            related_lemma = rel_data.get("related_word")
-            rel_type = rel_data.get("rel_type")
-            rel_source = rel_data.get("source_identifier")
-            rel_lang = rel_data.get("metadata", {}).get("lang", "tl") # Default to 'tl'
-
-            if not all([from_word_id, related_lemma, rel_type, rel_source]):
-                logger.warning(f"Skipping relation due to missing data: {rel_data}")
-                failed_count += 1
-                continue
-
-            # Get cached target word ID
-            normalized_rel_lemma = normalize_lemma(related_lemma)
-            cache_key = f"{normalized_rel_lemma}|{rel_lang}"
-            to_word_id = cache.get(cache_key)
-
-            if to_word_id is None:
-                # ID wasn't fetched or creation failed previously
-                logger.warning(f"Skipping relation to '{related_lemma}' ({rel_lang}) - target word ID not found/created.")
-                failed_count += 1
-                continue
-
-            # Insert the relation
-            # Assuming insert_relation handles transactions appropriately (e.g., using @with_transaction(commit=True))
-            # or runs within the provided cursor's transaction context.
-            try:
-                relation_id = insert_relation(
-                    cur, from_word_id, to_word_id, rel_type, rel_source
-                )
-                if relation_id:
-                    inserted_count += 1
-                else:
-                    # Error logged by insert_relation
-                    failed_count += 1
-                    error_types_dict["RelationInsertionFailed"] = error_types_dict.get("RelationInsertionFailed", 0) + 1
-            except Exception as e:
-                 logger.error(f"Unexpected error inserting relation {from_word_id}->{to_word_id} ({rel_type}): {e}")
-                 failed_count += 1
-                 error_types_dict["RelationInsertionError"] = error_types_dict.get("RelationInsertionError", 0) + 1
-
-        logger.info(f"Relation batch processing finished: {inserted_count} inserted, {failed_count} failed.")
-        stats_dict["relations_processed"] += processed_count
-        stats_dict["relations_inserted"] += inserted_count
-        stats_dict["relations_failed"] += failed_count
-        return # Modify stats in place
+    # --- Get connection for savepoints ---
+    conn = cur.connection
+    if conn.closed:
+        logger.error("Connection is closed. Cannot proceed with processing.")
+        stats["errors"] += 1
+        error_types["ConnectionClosed"] = 1
+        return {**stats, "error_details": error_types}
 
     # --- Process Entries ---
+    iterator = data.items()
+    pbar = None
     if tqdm:
-        pbar = tqdm(data.items(), total=num_entries, desc=f"Processing {source_identifier}", unit="word")
-        iterator = pbar
-    else:
-        iterator = data.items()
+        pbar = tqdm(iterator, total=entries_in_file, desc=f"Processing {source_identifier}", unit="entry", leave=False)
 
-    # Main processing loop wrapped in try...finally for pbar cleanup
     try:
-        for word_key, entry_data in iterator:
-            if not isinstance(entry_data, dict):
-                logger.warning(f"Skipping non-dictionary entry with key: {word_key}")
-                stats["skipped"] += 1
-                continue
+        # --- Iterate using data.items() directly, handle tqdm update manually ---
+        for entry_index, (word_key, entry_data) in enumerate(data.items()):
+            # --- Savepoint logic ---
+            savepoint_name = f"tagalog_entry_{entry_index}"
+            lemma_for_log = entry_data.get("word", word_key) # Get lemma for logging
 
-            savepoint_name = f"tagalog_word_{stats['processed']}"
             try:
-                # Create savepoint for the entry
+                # Create savepoint for this entry
                 cur.execute(f"SAVEPOINT {savepoint_name}")
 
-                # Process the single entry using the helper function
+                # Call the single entry processor
                 _process_single_tagalog_word_entry(
                     cur,
                     entry_data,
@@ -594,52 +526,76 @@ def process_tagalog_words(
                     "tl", # Hardcoded language code for this processor
                     add_etymology,
                     word_id_cache,
-                    stats,
-                    error_types,
-                    table_column_map, # Pass placeholders
-                    relations_batch, # Pass batch list
-                    required_columns, # Pass placeholders
+                    stats, # Pass stats dict for updates
+                    error_types, # Pass error_types for updates
+                    table_column_map,
+                    relations_batch,
+                    required_columns,
                 )
-                stats["processed"] += 1
-                cur.execute(f"RELEASE SAVEPOINT {savepoint_name}") # Commit entry changes
+                # If _process_single_tagalog_word_entry doesn't raise an exception, release savepoint
+                cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+                stats["processed"] += 1 # Increment processed count only on success
 
-            except Exception as e:
-                logger.error(
-                    f"Error processing entry (key: {word_key}): {e}", exc_info=True
-                )
+                # Commit every 100 entries to avoid transaction bloat
+                if stats["processed"] % 100 == 0:
+                    conn.commit()
+                    logger.debug(f"Committed after processing {stats['processed']} entries")
+
+            except Exception as entry_error:
+                logger.error(f"Error processing entry \'{lemma_for_log}\' (key: {word_key}, index: {entry_index}): {entry_error}", exc_info=True)
+                stats["errors"] += 1
+                error_key = f"EntryProcessingError: {type(entry_error).__name__}"
+                error_types[error_key] = error_types.get(error_key, 0) + 1
+
+                # Rollback to the savepoint to discard changes for this entry
                 try:
                     cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
-                    logger.info(f"Rolled back changes for entry (key: {word_key})")
-                except Exception as rb_err:
-                    logger.error(f"Failed to rollback to savepoint {savepoint_name}: {rb_err}")
-                    # If rollback fails, the main transaction might be compromised
-                    # Returning stats reflects current state, but DB might be inconsistent
-                    return stats
-                stats["errors"] += 1
-                # Log specific error type if possible
-                error_type = type(e).__name__
-                error_types[error_type] = error_types.get(error_type, 0) + 1
+                    cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
+                except Exception as rb_error:
+                    logger.error(f"Failed to rollback/release savepoint {savepoint_name} for entry \'{lemma_for_log}\': {rb_error}")
+                    # If we can't rollback to savepoint, try to rollback the whole transaction
+                    try:
+                        conn.rollback()
+                        logger.info("Performed full transaction rollback after savepoint failure")
+                    except Exception as full_rb_error:
+                        logger.critical(f"CRITICAL: Failed both savepoint and full rollback: {full_rb_error}")
+                        raise # Re-raise to stop processing
+
             finally:
-                 # Clean up released savepoint just in case (no harm if already released/rolled back)
-                 try: cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                 except: pass
+                # --- Update tqdm manually inside the loop ---
+                if pbar:
+                    pbar.update(1)
 
-        # Process any remaining relations
+        # Process the relations batch *after* iterating through all entries
         if relations_batch:
-            _process_relations_batch_inline(cur, relations_batch, stats, word_id_cache, error_types)
-            # print(f"Processed final relation batch {len(relations_batch)} items")
+            try:
+                process_relations_batch(cur, relations_batch, stats, word_id_cache)
+                conn.commit()
+                logger.info("Successfully processed and committed relations batch")
+            except Exception as batch_error:
+                logger.error(f"Error processing relations batch: {batch_error}", exc_info=True)
+                error_types["RelationsBatchError"] = error_types.get("RelationsBatchError", 0) + 1
+                try:
+                    conn.rollback()
+                    logger.info("Rolled back failed relations batch")
+                except Exception as rb_error:
+                    logger.critical(f"CRITICAL: Failed to rollback relations batch: {rb_error}")
+                    raise # Re-raise to stop processing
 
-    finally: # Corresponds to the try block starting before the loop
+    except Exception as e:
+        logger.critical(f"Critical error during processing: {e}", exc_info=True)
+        error_types["CriticalProcessingError"] = error_types.get("CriticalProcessingError", 0) + 1
+        try:
+            conn.rollback()
+            logger.info("Rolled back transaction after critical error")
+        except Exception as rb_error:
+            logger.critical(f"CRITICAL: Failed to rollback after critical error: {rb_error}")
+    finally:
         if pbar:
             pbar.close()
-
-    # Calculate total issues
-    total_issues = stats["errors"] + stats["skipped"]
-
-    # --- Final Logging ---
-    logger.info(f"Finished processing {filename}: {stats['processed']} processed, {stats['skipped']} skipped, {stats['errors']} errors.")
-    if stats["errors"] > 0:
-        logger.warning(f"Error summary for {filename}: {error_types}")
-    logger.info(f"Stats for {filename}: {stats}")
-
+            
+    # --- Final Stats ---
+    logger.info(f"Finished processing {source_identifier}. Processed: {stats['processed']}, Errors: {stats['errors']}, Skipped: {stats['skipped']}")
+    if error_types:
+        stats["error_details"] = error_types
     return stats 

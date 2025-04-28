@@ -92,7 +92,7 @@ class DefinitionLinkSchema(Schema):
     link_text = fields.String(required=True) # The visible text of the link
     link_metadata = MetadataField(dump_default={}) # Stores target_url, is_external, sources etc.
     tags = fields.String(allow_none=True) # Added from DB schema (TEXT)
-    # sources = fields.List(fields.String(), dump_default=[]) # Removed as column doesn't exist; source info is in link_metadata
+    sources = fields.String(allow_none=True) # Added sources TEXT column
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -125,11 +125,9 @@ class DefinitionCategorySchema(Schema):
     id = fields.Integer(dump_only=True)
     definition_id = fields.Integer(required=True)
     category_name = fields.String(required=True)
-    category_kind = fields.String(allow_none=True) # Matches DB
+    category_kind = fields.String(allow_none=True) # Matches DB (TEXT)
     parents = fields.List(fields.String(), allow_none=True) # Matches DB (JSONB assumed to store list of strings)
-    # Removed tags and category_metadata as they are not in the final DB schema
-    # tags = fields.String(allow_none=True)
-    # category_metadata = MetadataField(dump_default={})
+    # Removed tags, description, and category_metadata as they are not in the final DB schema
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -173,6 +171,7 @@ class DefinitionSchema(Schema):
     standardized_pos = fields.Nested("PartOfSpeechSchema", dump_only=True)
     notes = fields.String()
     examples = fields.List(fields.Nested(ExampleSchema), dump_default=[])
+    examples_text = fields.String(allow_none=True)
     usage_notes = fields.String()
     cultural_notes = fields.String()
     etymology_notes = fields.String()
@@ -248,9 +247,9 @@ class PronunciationType(Schema):
     word_id = fields.Integer(dump_only=True)
     type = fields.String(required=True, validate=Length(min=1, max=50))
     value = fields.String(required=True)
-    tags = MetadataField(dump_default={}) # Changed from List[String] to MetadataField to handle JSONB
+    tags = MetadataField(dump_default={})  # Changed to JSONB
     pronunciation_metadata = MetadataField(dump_default={}) # Includes source info
-    # sources = fields.String(allow_none=True) # Removed as column doesn't exist; stored in pronunciation_metadata
+    sources = fields.String(allow_none=True) # Added sources field (TEXT)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -279,6 +278,9 @@ class PronunciationType(Schema):
         # Optionally extract sources from metadata if needed for API response
         # metadata = data.get('pronunciation_metadata', {})
         # data['sources'] = metadata.get('sources', [])
+        # Ensure the added 'sources' text field is included if it exists
+        if hasattr(data, 'sources'):
+             data['sources'] = data.sources # Use the direct attribute value
         return data
 
 class RelationSchema(Schema):
@@ -288,7 +290,7 @@ class RelationSchema(Schema):
     to_word_id = fields.Integer(required=True)
     relation_type = fields.String(required=True)
     sources = fields.List(fields.String(), dump_only=True) # Kept as List[String] as model's to_dict handles conversion
-    # metadata = MetadataField() # Removed as column doesn't exist in Relation model
+    metadata = MetadataField(dump_default={}) # Added metadata field
     
     # Fields for nested data (dump_only)
     source_word = fields.Nested(lambda: WordSchema(only=('id', 'lemma', 'language_code', 'has_baybayin', 'baybayin_form')), dump_only=True)
@@ -330,7 +332,7 @@ class RelationSchema(Schema):
         if hasattr(item_data, '_sources_list'):
             delattr(item_data, '_sources_list') # Clean up temporary attribute
 
-        # Extract target_gloss from metadata
+        # Extract target_gloss from metadata - CHECK IF METADATA EXISTS
         metadata = item_data.get('metadata', {})
         item_data['target_gloss'] = metadata.get('target_gloss', None) # Get gloss, default to None
 
@@ -450,6 +452,7 @@ class WordTemplateSchema(Schema):
     template_name = fields.String(required=True)
     args = MetadataField(dump_default={})
     expansion = fields.String(allow_none=True)
+    sources = fields.String(allow_none=True) # Added sources field
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 

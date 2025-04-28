@@ -22,10 +22,11 @@ class Definition(BaseModel, BasicColumnsMixin):
     definition_text = db.Column(db.Text, nullable=False)
     original_pos = db.Column(db.Text)
     standardized_pos_id = db.Column(db.Integer, db.ForeignKey('parts_of_speech.id', ondelete='SET NULL'), index=True)
+    examples = db.Column(db.Text)
     usage_notes = db.Column(db.Text)
     tags = db.Column(db.Text)
     sources = db.Column(db.Text, nullable=True)
-    json_metadata = Column(JSONB, nullable=True, comment="Flexible JSON field for additional, unstructured metadata specific to this definition.")
+    definition_metadata = Column(JSONB, nullable=True, comment="Flexible JSON field for additional, unstructured metadata specific to this definition.")
     
     # Optimized relationships with proper cascade rules
     word = db.relationship('Word', 
@@ -127,9 +128,9 @@ class Definition(BaseModel, BasicColumnsMixin):
         self._is_modified = True
         return value
     
-    @validates('json_metadata')
-    def validate_json_metadata(self, key: str, value: Any) -> Any:
-        """Validate json_metadata field."""
+    @validates('definition_metadata')
+    def validate_metadata(self, key: str, value: Any) -> Any:
+        """Validate metadata field."""
         if value is not None:
             if isinstance(value, str):
                 try:
@@ -139,20 +140,17 @@ class Definition(BaseModel, BasicColumnsMixin):
             # Ensure it's a dictionary after potential loading
             if not isinstance(value, dict):
                 raise ValueError(f"{key} must be a dict or valid JSON string representing a dict")
-            # Optional: Validate specific keys/values within the json_metadata dict if needed
-            # if 'expected_key' not in value:
-            #     raise ValueError("json_metadata missing 'expected_key'")
             self._is_modified = True
             return value # Return the processed dictionary
         return {} # Default to empty dict if input is None
     
     @property
     def popularity_score(self):
-        """Return the popularity score from json_metadata or default."""
-        # Try to get from json_metadata first
-        if hasattr(self, 'json_metadata') and self.json_metadata and 'popularity_score' in self.json_metadata:
+        """Return the popularity score from metadata or default."""
+        # Try to get from metadata first
+        if hasattr(self, 'definition_metadata') and self.definition_metadata and 'popularity_score' in self.definition_metadata:
             try:
-                return float(self.json_metadata['popularity_score'])
+                return float(self.definition_metadata['popularity_score'])
             except (ValueError, TypeError):
                 return 0.0
         # Otherwise return default
@@ -160,15 +158,15 @@ class Definition(BaseModel, BasicColumnsMixin):
 
     @popularity_score.setter
     def popularity_score(self, value):
-        """Set the popularity score in json_metadata."""
-        # Make sure json_metadata exists and is a dict
-        if not hasattr(self, 'json_metadata') or not isinstance(self.json_metadata, dict):
-            self.json_metadata = {}
+        """Set the popularity score in metadata."""
+        # Make sure metadata exists and is a dict
+        if not hasattr(self, 'definition_metadata') or not isinstance(self.definition_metadata, dict):
+            self.definition_metadata = {}
         
         try:
-            self.json_metadata['popularity_score'] = float(value)
+            self.definition_metadata['popularity_score'] = float(value)
         except (ValueError, TypeError):
-            self.json_metadata['popularity_score'] = 0.0
+            self.definition_metadata['popularity_score'] = 0.0
     
     def __repr__(self) -> str:
         pos_name = self.standardized_pos.name_en if self.standardized_pos else "None"
@@ -210,7 +208,7 @@ class Definition(BaseModel, BasicColumnsMixin):
             'examples': [ex.to_dict() for ex in self.examples] if hasattr(self, 'examples') and self.examples else [],
             'tags': self.tags.split(',') if self.tags else [],
             'sources': self.sources.split(', ') if self.sources else [],
-            'json_metadata': getattr(self, 'json_metadata', {}) or {},
+            'definition_metadata': getattr(self, 'definition_metadata', {}) or {},
             'popularity_score': popularity,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None,

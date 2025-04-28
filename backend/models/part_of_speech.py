@@ -5,25 +5,30 @@ Part of speech model definition.
 from backend.database import db
 from datetime import datetime
 from sqlalchemy.orm import validates
+from sqlalchemy import (
+    Column, Integer, String, Text, UniqueConstraint, Index
+)
+from sqlalchemy.orm import relationship
+from .base import Base, TimestampMixin # Assuming TimestampMixin provides created_at, updated_at
 
-class PartOfSpeech(db.Model):
+class PartOfSpeech(Base, TimestampMixin):
     """Model for parts of speech."""
     __tablename__ = 'parts_of_speech'
     
-    id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(32), unique=True, nullable=False, index=True)
-    name_en = db.Column(db.String(64), nullable=False)
-    name_tl = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.Text)
+    id = Column(Integer, primary_key=True)
+    code = Column(String(32), unique=True, nullable=False)
+    name_en = Column(String(64), nullable=False)
+    name_tl = Column(String(64), nullable=False)
+    description = Column(Text)
     
     # Relationships
-    definitions = db.relationship('Definition', 
-                                back_populates='standardized_pos',
-                                lazy='dynamic')
+    definitions = relationship("Definition", back_populates="standardized_pos")
     
     __table_args__ = (
-        db.Index('idx_parts_of_speech_name', 'name_en', 'name_tl'),
-        db.UniqueConstraint('code', name='parts_of_speech_code_uniq'),
+        Index('idx_parts_of_speech_code', 'code'),
+        Index('idx_parts_of_speech_name', 'name_en', 'name_tl'),
+        UniqueConstraint('code', name='parts_of_speech_code_uniq'),
+        {'schema': 'public'}
     )
     
     @validates('code')

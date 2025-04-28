@@ -25,6 +25,7 @@ class DefinitionLink(BaseModel, BasicColumnsMixin):
     # tags column is likely a text field, not JSON
     tags = db.Column(db.Text, nullable=True)
     link_metadata = db.Column(db.JSON, default=lambda: {})
+    sources = db.Column(db.Text, nullable=True)
     
     # Add property for tags to handle JSON conversion
     @property

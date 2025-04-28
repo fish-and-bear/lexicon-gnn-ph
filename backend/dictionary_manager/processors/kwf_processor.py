@@ -172,7 +172,7 @@ def process_kwf_dictionary(cur, filename: str) -> Tuple[int, int]:
                         lemma=lemma_with_markers, # Use the version with markers
                         language_code=language_code,
                         source_identifier=source_identifier,
-                        word_metadata=(Json(word_metadata_to_store) if word_metadata_to_store else None),
+                        word_metadata=word_metadata_to_store, # Pass dict directly
                     )
                     if not word_id:
                         raise ValueError("get_or_create_word_id returned None")
@@ -282,7 +282,6 @@ def process_kwf_dictionary(cur, filename: str) -> Tuple[int, int]:
                             definition_id = None
                             # Pre-serialize metadata to string to avoid TypeError in db_helpers.py
                             metadata_dict = {"examples": examples_processed} if examples_processed else None
-                            metadata_arg = json.dumps(metadata_dict) if metadata_dict else None
                             try:
                                 # Updated to match current insert_definition signature
                                 def_id = insert_definition(
@@ -292,7 +291,7 @@ def process_kwf_dictionary(cur, filename: str) -> Tuple[int, int]:
                                     part_of_speech=raw_pos,  # Changed from original_pos
                                     usage_notes=usage_note_text,
                                     tags=def_tags_list,
-                                    metadata=metadata_arg, # Pass pre-serialized string or None
+                                    metadata=metadata_dict, # Pass dictionary or None directly
                                     sources=source_identifier
                                 )
                                 if def_id:
@@ -401,15 +400,6 @@ def process_kwf_dictionary(cur, filename: str) -> Tuple[int, int]:
                 cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                 stats["processed"] += 1
 
-                # --- Periodic Commit --- (Copied from original)
-                if stats["processed"] % 500 == 0:
-                    try:
-                        conn.commit()
-                        logger.info(f"Committed batch after {stats['processed']} KWF entries.")
-                    except Exception as commit_err:
-                        logger.error(f"Error during batch commit for KWF: {commit_err}. Rolling back...", exc_info=True)
-                        conn.rollback()
-
             except Exception as entry_err:
                 logger.error(f"Failed processing KWF entry #{entry_index} ('{original_key}' -> '{lemma}'): {entry_err}", exc_info=True)
                 stats["errors"] += 1
@@ -434,7 +424,8 @@ def process_kwf_dictionary(cur, filename: str) -> Tuple[int, int]:
         if pbar:
             pbar.close()
 
-    # --- Final Commit handled by migrate_data --- (Comment copied)
+    # --- Final Commit handled by migrate_data ---
+    # No transaction management here - the calling function (migrate_data) handles commits
     logger.info(f"Finished processing {filename}. Stats: {stats}")
     if error_types:
         logger.warning(f"Error summary for {filename}: {error_types}")
