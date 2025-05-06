@@ -41,22 +41,23 @@ export const mapRelationshipToGroup = (relationship?: string): string => {
       case 'kahulugan':
       case 'similar':
       case 'associated': group = 'related'; break;
+      // Add translation types to the 'related' group for color consistency
+      case 'has_translation':
+      case 'translation_of': group = 'related'; break;
       case 'variant':
       case 'spelling_variant':
       case 'regional_variant':
       case 'atapat':
       case 'inatapat':
       case 'itapat': group = 'variant'; break;
-      // Consolidate root/origin types
+      // Consolidate root/origin types - SEPARATE root_of and derived_from
       case 'derived': 
-      case 'derived_from':
+      case 'derivative':
       case 'sahod':
-      case 'root':
-      case 'root_of':
-      case 'isahod': group = 'root'; break;
-      // Consolidate derivation types (can use 'derived' or 'root' group color)
-      case 'affix':
-      case 'derivative': group = 'derived'; break; 
+      case 'isahod': group = 'derived'; break; // Keep general 'derived' group
+      case 'root': 
+      case 'root_of': group = 'root_of'; break; // Consolidated group for root/root_of
+      case 'derived_from': group = 'derived_from'; break; // Specific group for derived_from
       // Taxonomic hierarchy
       case 'hypernym':
       case 'hyponym': group = 'taxonomic'; break;
@@ -69,10 +70,13 @@ export const mapRelationshipToGroup = (relationship?: string): string => {
       // Etymological relationships
       case 'etymology': group = 'etymology'; break;
       case 'cognate': group = 'cognate'; break;
-      // Usage/Comparison
+      // Usage/Comparison - Consolidate under usage_info -> NOW under related
       case 'see_also':
       case 'compare_with':
-      case 'usage': group = 'usage'; break;
+      case 'usage': 
+      case 'associated': 
+      // Also map 'other' here if consolidating fully
+      case 'other': group = 'related'; break; // Map to related
       // Default fallback group
       default: group = 'related'; 
     }
@@ -92,7 +96,8 @@ export const getNodeColor = (group: string): string => {
       case "main": return "#0e4a86"; // Deep blue
       
       // Origin Group (Root/Etymology/Cognate)
-      case "root": return "#e63946"; // Bright red
+      case "root_of": return "#e63946"; // Bright red for 'root_of' (consolidated root)
+      case "derived_from": return "#f77f00"; // Orange for 'derived_from'
       case "etymology": return "#d00000"; // Dark red
       case "cognate": return "#ff5c39"; // Light orange
       
@@ -111,8 +116,8 @@ export const getNodeColor = (group: string): string => {
       // Derivation Group (Derived/Affix)
       case "derived": return "#2a9d8f"; // Teal (Same as Taxonomic for visual consistency)
       
-      // Info Group (Usage)
-      case "usage": return "#fca311"; // Gold/Yellow, matching light mode accent color
+      // Info Group (Usage) - REMOVED as it maps to related
+      // case "usage_info": return "#fca311"; 
       
       // Fallback Color
       default: return "#adb5bd"; // Neutral gray
@@ -125,13 +130,19 @@ export const getNodeColor = (group: string): string => {
  * @returns An object containing the group name and a display-friendly label.
  */
 export const getRelationshipTypeLabel = (type: string): { group: string, label: string } => {
+  // Handle specific translation labels first
+  if (type.toLowerCase() === 'has_translation' || type.toLowerCase() === 'translation_of') {
+    return { group: 'Meaning', label: 'Translation' };
+  }
+
   // Map the specific type to its broader group first
   const group = mapRelationshipToGroup(type);
 
   // Define labels based on the group name
   switch (group.toLowerCase()) {
     case 'main': return { group: 'Core', label: 'Main Word' };
-    case 'root': return { group: 'Origin', label: 'Root/Origin' };
+    case 'root_of': return { group: 'Origin', label: 'Root Of' }; // Consolidated label
+    case 'derived_from': return { group: 'Origin', label: 'Derived From' }; // Specific label
     case 'etymology': return { group: 'Origin', label: 'Etymology' };
     case 'cognate': return { group: 'Origin', label: 'Cognate' };
     case 'synonym': return { group: 'Meaning', label: 'Synonym' };
@@ -140,8 +151,8 @@ export const getRelationshipTypeLabel = (type: string): { group: string, label: 
     case 'variant': return { group: 'Form', label: 'Variant' };
     case 'taxonomic': return { group: 'Structure', label: 'Taxonomic' };
     case 'part_whole': return { group: 'Structure', label: 'Component/Part' };
-    case 'derived': return { group: 'Derivation', label: 'Derived' };
-    case 'usage': return { group: 'Info', label: 'Usage Note' };
+    case 'derived': return { group: 'Derivation', label: 'Derivatives / Affixes' };
+    // case 'usage_info': return { group: 'Info', label: 'Usage / Info' }; // REMOVED consolidated label
     // Fallback: Format the original type if no specific group label is defined
     default: 
       const formattedLabel = type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());

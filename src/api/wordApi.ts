@@ -1,3 +1,6 @@
+// Add immediate logging
+console.log("[INIT] wordApi.ts loading");
+
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { 
   WordInfo, 
@@ -19,6 +22,8 @@ import {
   WordSuggestion // Import the correct type
 } from "../types";
 import { getCachedData, setCachedData, clearCache, clearOldCache } from '../utils/caching';
+
+console.log("[INIT] wordApi.ts imports completed");
 
 // --- Simple Rate Limiter --- 
 function rateLimit(axiosInstance: AxiosInstance, { maxRequests, perMilliseconds }: { maxRequests: number; perMilliseconds: number }): AxiosInstance {
@@ -101,6 +106,7 @@ if (!CONFIG.baseURL) {
 }
 
 // --- Lazy Initialized Circuit Breaker ---
+console.log("[INIT] Creating PersistentCircuitBreaker class");
 class PersistentCircuitBreaker {
   private static readonly STORAGE_KEY = 'circuit_breaker_state';
   private static readonly STATE_TTL = 60 * 60 * 1000; // 1 hour
@@ -111,34 +117,76 @@ class PersistentCircuitBreaker {
   private isInitialized: boolean = false; // Flag to track initialization
 
   constructor() {
+    console.log("[INIT] PersistentCircuitBreaker constructor called");
     // Defer initialization
   }
 
   private initializeIfNeeded() {
     if (this.isInitialized) return;
+    console.log("[INIT] Circuit breaker initializing...");
 
-    const savedState = this.loadState();
-    if (savedState && Date.now() - savedState.timestamp < PersistentCircuitBreaker.STATE_TTL) {
-      this.failures = savedState.failures;
-      this.lastFailureTime = savedState.lastFailureTime;
-      this.state = savedState.state;
-      console.log('Circuit breaker initialized from saved state:', this.getState());
-    } else {
-      this.resetState(); // Reset internal state variables
-      console.log('Circuit breaker initialized with default state.');
+    try {
+      const savedState = this.loadState();
+      if (savedState && Date.now() - savedState.timestamp < PersistentCircuitBreaker.STATE_TTL) {
+        this.failures = savedState.failures;
+        this.lastFailureTime = savedState.lastFailureTime;
+        this.state = savedState.state;
+        console.log('[INIT] Circuit breaker initialized from saved state:', this.getState());
+      } else {
+        this.resetState(); // Reset internal state variables
+        console.log('[INIT] Circuit breaker initialized with default state.');
+      }
+    } catch (error) {
+      // Ensure we have a valid state even if loading fails
+      console.error('[INIT] Error initializing circuit breaker, using default state:', error);
+      this.resetState();
+    } finally {
+      // Always mark as initialized, even if we had to use default state
+      this.isInitialized = true;
     }
-    this.isInitialized = true;
   }
 
   private loadState() {
     try {
       // Check if localStorage is available
-      if (typeof localStorage === 'undefined') {
+      if (typeof localStorage === 'undefined' || localStorage === null) {
         console.warn('localStorage not available for circuit breaker state.');
         return null;
       }
-      const state = localStorage.getItem(PersistentCircuitBreaker.STORAGE_KEY);
-      return state ? JSON.parse(state) : null;
+      
+      const stateStr = localStorage.getItem(PersistentCircuitBreaker.STORAGE_KEY);
+      if (!stateStr) {
+        return null;
+      }
+      
+      // Parse the state with extra validation
+      const state = JSON.parse(stateStr);
+      
+      // Validate the state structure
+      if (!state || typeof state !== 'object') {
+        console.warn('Invalid circuit breaker state format, resetting');
+        return null;
+      }
+      
+      // Validate required properties
+      if (state.state !== 'closed' && state.state !== 'open' && state.state !== 'half-open') {
+        console.warn('Invalid circuit breaker state value:', state.state);
+        state.state = 'closed'; // Default to closed if invalid
+      }
+      
+      // Ensure failures is a number
+      if (typeof state.failures !== 'number' || isNaN(state.failures)) {
+        console.warn('Invalid failures value in circuit breaker state');
+        state.failures = 0;
+      }
+      
+      // Ensure timestamp is a number
+      if (!state.timestamp || typeof state.timestamp !== 'number') {
+        console.warn('Invalid timestamp in circuit breaker state');
+        state.timestamp = Date.now();
+      }
+      
+      return state;
     } catch (e) {
       console.error('Error loading circuit breaker state:', e);
       return null;
@@ -147,18 +195,28 @@ class PersistentCircuitBreaker {
 
   private saveState() {
     if (!this.isInitialized) return; // Don't save if not initialized
+    
     try {
       // Check if localStorage is available
-      if (typeof localStorage === 'undefined') return;
-
-      localStorage.setItem(PersistentCircuitBreaker.STORAGE_KEY, JSON.stringify({
-        failures: this.failures,
+      if (typeof localStorage === 'undefined' || localStorage === null) {
+        console.warn('localStorage not available, cannot save circuit breaker state');
+        return;
+      }
+      
+      // Create state object with validation
+      const stateToSave = {
+        failures: Math.max(0, this.failures), // Ensure non-negative
         lastFailureTime: this.lastFailureTime,
-        state: this.state,
+        state: ['closed', 'open', 'half-open'].includes(this.state) ? this.state : 'closed', // Validate state
         timestamp: Date.now()
-      }));
+      };
+      
+      // Serialize and save
+      const stateStr = JSON.stringify(stateToSave);
+      localStorage.setItem(PersistentCircuitBreaker.STORAGE_KEY, stateStr);
     } catch (e) {
       console.error('Error saving circuit breaker state:', e);
+      // Silent failure - just log the error
     }
   }
 
@@ -220,8 +278,8 @@ class PersistentCircuitBreaker {
 
   // Public reset function also clears storage
   reset() {
-    this.resetState();
-    this.isInitialized = true; // Mark as initialized after reset
+    this.initializeIfNeeded(); // Initialize first (reads state if needed)
+    this.resetState(); // Reset internal state variables
     try {
        if (typeof localStorage !== 'undefined') {
          localStorage.removeItem(PersistentCircuitBreaker.STORAGE_KEY);
@@ -229,45 +287,79 @@ class PersistentCircuitBreaker {
     } catch (e) {
         console.error('Error removing circuit breaker state from storage:', e);
     }
-    this.saveState(); // Save the reset state
+    this.saveState(); // Save the reset state (now guaranteed to be initialized)
     console.log('Circuit breaker has been reset. New state:', this.getState());
   }
 }
 
-// Instantiate the circuit breaker (constructor does nothing now)
-const circuitBreaker = new PersistentCircuitBreaker(); 
+console.log("[INIT] Creating circuitBreaker instance");
+const circuitBreaker = new PersistentCircuitBreaker();
+console.log("[INIT] circuitBreaker instance created");
 
 // Function to reset the circuit breaker state (adjust to handle lazy init)
 export function resetCircuitBreaker() {
-  circuitBreaker.reset(); // Call the public reset method
+  console.log("[INIT] resetCircuitBreaker called");
   try {
-    // Check localStorage availability
-    if (typeof localStorage === 'undefined') {
-        console.warn('localStorage not available, cannot clear related items.');
-        return;
+    // First reset the circuit breaker itself
+    circuitBreaker.reset();
+    
+    // Then handle localStorage
+    if (typeof localStorage === 'undefined' || localStorage === null) {
+      console.warn('localStorage not available, cannot clear related items.');
+      return;
     }
-    localStorage.removeItem('successful_api_endpoint');
-    const keysToRemove = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      // More specific check to avoid removing unrelated items
-      if (key && (key.startsWith('cache:') || key === 'circuit_breaker_state' || key === 'successful_api_endpoint')) {
-        keysToRemove.push(key);
+    
+    // First remove the successful API endpoint marker
+    try {
+      localStorage.removeItem('successful_api_endpoint');
+      console.log('[RESET CB] Removed API endpoint marker');
+    } catch (e) {
+      console.error('Error removing successful_api_endpoint:', e);
+    }
+
+    // Safely collect all cache keys to remove
+    const keysToRemove: string[] = [];
+
+    try {
+      // Create a snapshot of the keys to avoid modification during iteration
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('cache_')) {
+          keysToRemove.push(key);
+        }
       }
+    } catch (e) {
+      console.error('Error collecting cache keys:', e);
     }
-    keysToRemove.forEach(key => localStorage.removeItem(key));
-    // Reset base URL lazily if needed, or ensure Axios instance is updated
-    // This might require making `api` mutable or providing a function to update it.
-    // For now, let's assume the initial creation uses the default.
-    console.log(`Circuit breaker reset. Cleared ${keysToRemove.length} cache/state items.`);
-    // Re-test connection after a delay
-    setTimeout(() => {
-      testApiConnection().then(connected => {
-        console.log(`Connection test after reset: ${connected ? 'successful' : 'failed'}`);
-      });
-    }, 500);
-  } catch (e) {
-    console.error('Error clearing localStorage during circuit breaker reset:', e);
+
+    // Remove all collected keys in a separate operation
+    if (keysToRemove.length > 0) {
+      console.log(`[RESET CB] Found ${keysToRemove.length} cache items to remove`);
+
+      for (const key of keysToRemove) {
+        try {
+          localStorage.removeItem(key);
+          console.log(`[RESET CB] Removed cache item: ${key}`);
+        } catch (removeError) {
+          console.error(`[RESET CB] Error removing localStorage key ${key}:`, removeError);
+        }
+      }
+    } else {
+      console.log('[RESET CB] No cache items to remove');
+    }
+    
+    // Reset any API connection flags as well
+    try {
+      localStorage.removeItem('api_connection_status');
+      localStorage.removeItem('last_api_error');
+      console.log('[RESET CB] Reset API connection flags');
+    } catch (flagError) {
+      console.error('[RESET CB] Error resetting API flags:', flagError);
+    }
+    
+    console.log('[RESET CB] Circuit breaker reset complete');
+  } catch (error) {
+    console.error('Fatal error in resetCircuitBreaker:', error);
   }
 }
 
@@ -276,30 +368,55 @@ let apiBaseURL = CONFIG.baseURL; // Start with default
 let endpointChecked = false;
 
 function getApiBaseURL(): string {
-  if (!endpointChecked && typeof localStorage !== 'undefined') {
-    try {
-      const savedEndpoint = localStorage.getItem('successful_api_endpoint');
-      if (savedEndpoint) {
-        console.log('Using saved API endpoint:', savedEndpoint);
-        // Basic validation
-        if (savedEndpoint.startsWith('http')) {
-             if (savedEndpoint.includes('/api/v2')) {
-               apiBaseURL = savedEndpoint;
-             } else {
-               apiBaseURL = `${savedEndpoint}/api/v2`; // Append /api/v2 if missing
-             }
-        } else {
-             console.warn('Saved endpoint looks invalid, using default:', savedEndpoint);
-             localStorage.removeItem('successful_api_endpoint'); // Remove invalid endpoint
-             apiBaseURL = CONFIG.baseURL;
-        }
-      }
-    } catch (e) {
-      console.error('Error reading saved API endpoint from localStorage:', e);
-      apiBaseURL = CONFIG.baseURL; // Fallback to default
-    }
-    endpointChecked = true;
+  // If we've already checked, just return the cached value
+  if (endpointChecked) {
+    return apiBaseURL;
   }
+  
+  try {
+    // Check if localStorage is available
+    if (typeof localStorage === 'undefined' || localStorage === null) {
+      console.warn('localStorage not available, using default API URL');
+      endpointChecked = true;
+      return CONFIG.baseURL;
+    }
+    
+    const savedEndpoint = localStorage.getItem('successful_api_endpoint');
+    if (savedEndpoint && typeof savedEndpoint === 'string') {
+      console.log('Using saved API endpoint:', savedEndpoint);
+      
+      // Basic validation - must be a valid URL
+      if (savedEndpoint.startsWith('http')) {
+        if (savedEndpoint.includes('/api/v2')) {
+          apiBaseURL = savedEndpoint;
+        } else {
+          apiBaseURL = `${savedEndpoint}/api/v2`; // Append /api/v2 if missing
+        }
+      } else {
+        console.warn('Saved endpoint looks invalid, using default:', savedEndpoint);
+        try {
+          localStorage.removeItem('successful_api_endpoint'); // Remove invalid endpoint
+        } catch (e) {
+          console.error('Error removing invalid endpoint:', e);
+        }
+        apiBaseURL = CONFIG.baseURL;
+      }
+    } else {
+      // No saved endpoint, use default
+      apiBaseURL = CONFIG.baseURL;
+    }
+  } catch (e) {
+    console.error('Error reading saved API endpoint from localStorage:', e);
+    apiBaseURL = CONFIG.baseURL; // Fallback to default
+  }
+  
+  // Ensure the URL is valid and has a trailing slash if needed
+  if (!apiBaseURL.startsWith('http')) {
+    console.error('Invalid API URL detected, reverting to default');
+    apiBaseURL = CONFIG.baseURL;
+  }
+  
+  endpointChecked = true;
   return apiBaseURL;
 }
 
@@ -438,7 +555,7 @@ interface NetworkMetadata {
   depth: number;
   total_nodes: number;
   total_links: number;
-  query_time?: number | null;
+  execution_time?: number | null; // Changed from query_time
   filters_applied?: {
     depth: number;
     include_affixes: boolean;
@@ -467,6 +584,7 @@ interface NetworkLink {
   type: string;
   directed: boolean;
   weight: number;
+  metadata?: any; // Add metadata field
 }
 
 interface LocalWordNetwork {
@@ -521,13 +639,10 @@ export async function fetchWordNetwork(
       params.relation_types = relation_types.join(',');
     }
     
-    const response = await api.get(endpoint, {
+    const response = await api.get<ImportedWordNetwork>(endpoint, {
       params,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      signal // Pass signal to axios
+      signal: signal,
+      timeout: 30000 // Increased timeout to 30 seconds
     });
 
     if (!response.data) {
@@ -578,64 +693,64 @@ export async function fetchWordNetwork(
         target: String(e.target),
         type: e.type || 'related',
         directed: e.directed ?? false,
-        weight: typeof e.weight === 'number' ? e.weight : 1
+        weight: typeof e.weight === 'number' ? e.weight : 1,
+        metadata: e.metadata || null // Add metadata field
       };
     });
 
-    const wordNetwork: LocalWordNetwork = {
-      nodes,
-      links,
-      metadata: {
-        root_word: word,
-        normalized_lemma: sanitizedWord,
-        language_code: response.data.metadata?.language_code || 'tl',
-        depth: sanitizedDepth,
-        total_nodes: nodes.length,
-        total_links: links.length,
-        query_time: response.data.metadata?.execution_time || null,
-        filters_applied: {
-          depth: sanitizedDepth,
-          include_affixes,
-          include_etymology,
-          relation_types: relation_types || []
-        }
-      }
-    };
-
-    // Validate network connectivity
-    const hasMainNode = nodes.some((n: NetworkNode) => n.main || n.type === 'main');
-    if (!hasMainNode) {
-      console.warn('Network missing main node');
-      throw new Error('Invalid network: missing main node');
+    // --- MAP language_code to language IN PLACE before returning/caching ---
+    if (response.data && Array.isArray(response.data.nodes)) {
+      response.data.nodes = response.data.nodes.map((node: any) => ({
+        ...node,
+        language: node.language_code || 'und' // Map language_code to language, default to 'und'
+      }));
+    } else {
+      // Handle case where nodes array is missing or invalid
+      console.error("Invalid nodes data received from /semantic_network");
+      response.data.nodes = []; // Default to empty array
     }
-
-    // Record success and cache the data
-    circuitBreaker.recordSuccess();
-    setCachedData(cacheKey, wordNetwork as unknown as ImportedWordNetwork);
-
-    return wordNetwork as unknown as ImportedWordNetwork;
-  } catch (error) {
-    console.error('Error in fetchWordNetwork:', error);
-    
-    // Record failure for circuit breaker
-    circuitBreaker.recordFailure();
-    
-    if (error instanceof Error) {
-      if (error.message.includes('404')) {
-        throw new Error(`Word '${word}' not found in the dictionary.`);
+    // Ensure metadata reflects correct node/link counts AFTER potential mapping/validation
+    const finalNodes = response.data.nodes;
+    const finalLinks = response.data.links || []; // Default links to empty array
+    const finalMetadata: NetworkMetadata = {
+      root_word: response.data.metadata?.root_word || word,
+      normalized_lemma: response.data.metadata?.normalized_lemma || normalizeLemma(word), // Requires normalizeLemma helper
+      language_code: response.data.metadata?.language_code || 'und', 
+      depth: response.data.metadata?.depth ?? options.depth ?? 2,
+      total_nodes: finalNodes.length,
+      total_links: finalLinks.length,
+      // Cast metadata to any to bypass type checking for execution_time
+      execution_time: (response.data.metadata as any)?.execution_time || null, 
+      filters_applied: {
+        depth: options.depth ?? 2,
+        include_affixes: options.include_affixes ?? false,
+        include_etymology: options.include_etymology ?? false,
+        relation_types: options.relation_types ?? [],
       }
-      if (error.message.includes('Failed to fetch') || 
-          error.message.includes('Network Error') || 
-          error.message.includes('ECONNREFUSED')) {
-        throw new Error(
-          'Cannot connect to the dictionary server. Please check your internet connection and try again.'
-        );
-      }
-      throw new Error(`Failed to fetch word network: ${error.message}`);
-    }
-    
-    throw new Error('An unexpected error occurred while fetching the word network');
+    };    
+
+    // Store in cache (using the modified response data)
+    const cacheKey = `word_network:${encodedWord}:${JSON.stringify(options)}`;
+    // Use the final validated/mapped nodes and links for caching
+    setCachedData(cacheKey, { nodes: finalNodes, links: finalLinks, metadata: finalMetadata }); 
+
+    // Return the modified response data
+    return { nodes: finalNodes, links: finalLinks, metadata: finalMetadata };
+
+  } catch (error: unknown) {
+    await handleApiError(error, `fetching word network for ${word}`);
+    // Ensure function returns a promise that resolves to the correct type even on error
+    // Or re-throws in a way the caller expects. handleApiError throws, so this is okay.
+    // Adding a redundant return to satisfy strict checks, although handleApiError throws.
+    throw error; // Re-throw after handling
   }
+}
+
+// Helper function to normalize lemma (add if not already present)
+function normalizeLemma(text: string): string {
+    if (!text) return "";
+    // Basic normalization, replace with your actual logic if different
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
 // --- Data Normalization Helpers --- 
@@ -1842,3 +1957,23 @@ export const fetchSuggestions = async (query: string, limit: number = 10): Promi
     return []; // Return empty array on error
   }
 };
+
+// Log exports to verify they're defined - AFTER all declarations
+console.log("[INIT] wordApi.ts exports check:", {
+  fetchWordNetwork: typeof fetchWordNetwork,
+  fetchWordDetails: typeof fetchWordDetails, 
+  searchWords: typeof searchWords,
+  getRandomWord: typeof getRandomWord,
+  testApiConnection: typeof testApiConnection,
+  resetCircuitBreaker: typeof resetCircuitBreaker,
+  getPartsOfSpeech: typeof getPartsOfSpeech,
+  getStatistics: typeof getStatistics,
+  getEtymologyTree: typeof getEtymologyTree,
+  fetchSuggestions: typeof fetchSuggestions
+});
+
+// Add a helper to normalize network data if needed (optional)
+// function normalizeWordNetwork(data: any): LocalWordNetwork { ... }
+// const normalizedData = normalizeWordNetwork(response.data);
+
+// Helper function to check if an object is a plain object

@@ -21,6 +21,7 @@ class DefinitionCategory(BaseModel, BasicColumnsMixin):
     category_kind = db.Column(db.Text, nullable=True)
     parents = db.Column(JSONB, default=lambda: [])
     sources = db.Column(db.Text, nullable=True)
+    category_metadata = db.Column(JSONB, default=lambda: {})
     
     # Relationships
     definition = db.relationship('Definition', back_populates='categories', lazy='selectin')

@@ -1,0 +1,11 @@
+/**
+ * Components
+ * This file imports all shared component styles
+ * It acts as a single entry point for component styles
+ */
+
+/* Component styles */
+@import './components/_word-details.css';
+@import './components/_tabs.css';
+
+/* Add additional component imports as needed */ 

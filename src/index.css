@@ -1,24 +1,31 @@
 :root {
-  /* Light Theme */
-  --background-color: #ffffff;
-  --text-color: #212529;
+  /* Light Theme - Matched with old_src_2 */
+  --background-color: #f8f9fa;
+  --text-color: #1d3557;
   --text-color-secondary: #6c757d;
-  --primary-color: #0d6efd; /* Example Blue */
-  --primary-color-rgb: 13, 110, 253;
-  --secondary-color: #6c757d; /* Example Gray */
-  --accent-color: #fd7e14; /* Example Orange */
-  --accent-color-rgb: 253, 126, 20;
+  --primary-color: #1d3557;
+  --primary-color-rgb: 29, 53, 87;
+  --secondary-color: #e63946; /* Match old_src_2 */
+  --accent-color: #fca311; /* Match old_src_2 */
+  --accent-color-rgb: 252, 163, 17;
   --card-bg-color: #ffffff;
-  --card-bg-color-elevated: #f8f9fa;
-  --card-bg-light: rgba(0, 0, 0, 0.03); /* Specific for word details */
-  --card-border-color: #dee2e6;
+  --card-bg-color-rgb: 255, 255, 255;
+  --card-bg-color-elevated: #ffffff;
+  --card-bg-light: rgba(0, 0, 0, 0.03);
+  --card-border-color: #e6e8eb; /* Match old_src_2 */
   --input-bg-color: #ffffff;
-  --input-border-color: #ced4da;
-  --button-color: #0d6efd;
+  --input-border-color: #d1d5db; /* Match old_src_2 */
+  --button-color: #1d3557;
   --button-text-color: #ffffff;
   --shadow-color: rgba(0, 0, 0, 0.1);
+  --graph-bg-color: #f1f5f9; /* Match old_src_2 */
+  --footer-height: 2.5rem;
 
-  /* Graph Colors (can be overridden in dark) */
+  /* Controls variables - match with old_src_2 */
+  --controls-background-color: rgba(255, 255, 255, 0.85);
+  --controls-background-color-hover: rgba(255, 255, 255, 0.95);
+
+  /* Graph Node Colors (Light) - Match exactly with old_src_2 */
   --color-main: #5d9cec;
   --color-root: #ff7088;
   --color-synonym: #64b5f6;
@@ -29,41 +36,45 @@
   --color-associated: #90a4ae;
   --color-etymology: #d00000;
   --color-derivative: #606c38;
-  --color-default: #78909c;
+  --color-default: #546e7a; /* Darkened grey for better edge visibility */
 }
 
 .dark {
-  /* Dark Theme */
-  --background-color: #0b132b; /* Dark Navy */
-  --text-color: #e0e0e0; /* Lighter text */
-  --text-color-secondary: #a0a0a0; /* Lighter secondary text */
-  --primary-color: #4dabf7; /* Lighter Blue */
-  --primary-color-rgb: 77, 171, 247;
-  --secondary-color: #adb5bd; /* Lighter Gray */
-  --accent-color: #ff922b; /* Lighter Orange */
-  --accent-color-rgb: 255, 146, 43;
-  --card-bg-color: #1c2541; /* Navy for cards */
-  --card-bg-color-elevated: #2a3657; /* Lighter Navy for elevated */
-  --card-bg-light: rgba(255, 255, 255, 0.05); /* Specific for word details - Keep this subtle */
-  --card-border-color: #3a4b71; /* Adjusted border for navy */
-  --input-bg-color: #2a3657; /* Use elevated navy for inputs */
-  --input-border-color: #4a5c85; /* Adjusted input border */
-  --button-color: #4dabf7;
-  --button-text-color: #0b132b; /* Use main bg for contrast on light blue buttons */
-  --shadow-color: rgba(0, 0, 0, 0.3); /* Make shadow darker for contrast */
+  /* Dark Theme - Based on old_src_2/WordExplorer.css */
+  --bg-color: #0a0d16;
+  --header-color: #131826;
+  --footer-color: #131826;
+  --text-color: #e0e0e0;
+  --text-color-secondary: #a0a0a0;
+  --text-color-white: #f0f0f0;
+  --primary-color: #ffd166; /* Yellowish primary from WordExplorer.css */
+  --primary-color-rgb: 255, 209, 102;
+  --secondary-color: #e63946; /* Red from WordExplorer.css */
+  --accent-color: #e09f3e; /* Orange from WordExplorer.css */
+  --accent-color-rgb: 224, 159, 62;
+  --card-bg-color: #131826; /* Darker card bg from WordExplorer.css */
+  --card-bg-color-rgb: 19, 24, 38;
+  --card-bg-color-elevated: #1a202e;
+  --card-border-color: #2e3a4e;
+  --input-bg-color: #1a202e;
+  --definition-bg-color: #1a202e; /* ADDED from WordExplorer.css */
+  --input-border-color: #2e3a4e;
+  --button-color: #3e4e66; /* Greyish blue button from WordExplorer.css */
+  --button-text-color: #ffffff; /* White button text from WordExplorer.css */
+  --graph-bg-color: #161c2c; /* Darker graph bg from WordExplorer.css */
+  --link-color: #7ea3cc;
+  --node-text-color: #f0f0f0;
+  --selected-node-border-color: var(--text-color);
+  --shadow-color: rgba(0, 0, 0, 0.25);
+  --focus-ring-color: rgba(255, 209, 102, 0.3);
 
-  /* Graph Colors (adjust if needed for dark bg) */
-  --color-main: #6ba7ff;
-  --color-root: #ff8ba0;
-  --color-synonym: #7cc1ff;
-  --color-antonym: #8e99f3;
-  --color-derived: #6ffbff;
-  --color-variant: #b39ddb;
-  --color-related: #77d3ff;
-  --color-associated: #b0bec5;
-  --color-etymology: #ff5252;
-  --color-derivative: #a5d6a7;
-  --color-default: #a0a0a0;
+  /* Graph Colors (Node colors seem consistent) */
+  --color-main: #5d9cec;
+  --color-derivative: #64b5f6;
+  --color-etymology: #4dd0e1;
+  --color-root: #ff7088;
+  --color-associated: #ffc107;
+  --color-default: #90a4ae;
 }
 
 /* Reset and Base Styles */
@@ -87,6 +98,8 @@ body {
   background-color: var(--background-color); /* Apply theme background */
   color: var(--text-color); /* Apply theme text color */
   transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative; /* Add positioning context */
+  min-height: 100vh; /* Ensure full viewport height */
 }
 
 code {
@@ -125,14 +138,16 @@ code {
 }
 */
 
+/*
 .baybayin-text {
-  /* Use BadlitScript first, then fallbacks */
+  // Use BadlitScript first, then fallbacks *
   font-family: 'BadlitScript', 'Noto Sans Tagalog', sans-serif !important;
   letter-spacing: 0.05em;
   line-height: 1.5;
   font-size: 1.2em;
   color: var(--text-color-secondary);
 }
+*/
 
 .word-details .baybayin-text {
   /* Use BadlitScript first, then fallbacks */
@@ -159,4 +174,17 @@ code {
   /* Use BadlitScript first, then fallbacks */
   font-family: 'BadlitScript', 'Noto Sans Tagalog', sans-serif !important;
   background: var(--card-bg-color-elevated);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  :root {
+    --footer-height: 2rem; /* Smaller footer on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --footer-height: 1.5rem; /* Even smaller footer on mobile */
+  }
 }

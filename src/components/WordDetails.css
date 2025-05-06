@@ -14,6 +14,8 @@
 
 .dark .word-details-container {
   box-shadow: -2px 0 12px var(--shadow-color);
+  /* Add subtle gradient */
+  background: linear-gradient(180deg, var(--card-bg-color-elevated) 0%, var(--card-bg-color) 20%);
 }
 
 .word-details {
@@ -643,6 +645,19 @@
   border-left: 2px solid rgba(0, 0, 0, 0.1);
 }
 
+/* Add styles for the example text using the new class */
+.definition-example-text {
+  font-style: italic;
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+  position: relative;
+  padding-left: 1.5em;
+  line-height: 1.6;
+  margin: 0;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
 /* Empty state */
 .empty-state {
   display: flex;
@@ -1228,6 +1243,8 @@
 }
 
 /* Dark mode styles for source chips */
+/* REMOVE Dark mode styles for source chips (handled in component) */
+/*
 .dark .MuiChip-root {
   background-color: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.1);
@@ -1236,6 +1253,7 @@
 .dark .MuiChip-label {
   color: var(--text-color);
 }
+*/
 
 /* Dark mode styles for accordions */
 .dark .MuiAccordion-root {

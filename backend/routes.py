@@ -1543,7 +1543,9 @@ def get_semantic_network(word: str):
                         "has_baybayin": rel.source_has_baybayin,
                         "baybayin_form": rel.source_baybayin_form,
                         "normalized_lemma": rel.source_normalized_lemma
-                    }
+                    } # Add missing closing brace
+                    # The helper function get_or_add_direct_link_type already adds the edge if found.
+                    # No need to call check_and_add_link_to_main here.
 
                 edge_id = f"{source_id}-{current_id}-{rel.relation_type}"
                 if edge_id not in edges:
@@ -3367,22 +3369,24 @@ def get_statistics():
             "total_definitions": "SELECT COUNT(*) FROM definitions",
             "total_etymologies": "SELECT COUNT(*) FROM etymologies",
             "total_relations": "SELECT COUNT(*) FROM relations",
+            "descendant_relations": "SELECT COUNT(*) FROM relations WHERE relation_type = 'related' AND metadata->>'relation_subtype' = 'derived_into'", # Added query
+            "homophone_relations": "SELECT COUNT(*) FROM relations WHERE relation_type = 'related' AND metadata->>'relation_subtype' = 'homophone'", # Added query
             "words_with_baybayin": "SELECT COUNT(*) FROM words WHERE has_baybayin = true",
             "languages": "SELECT language_code, COUNT(*) FROM words GROUP BY language_code",
             "pos": "SELECT standardized_pos_id, COUNT(*) FROM definitions GROUP BY standardized_pos_id"
         }
-        
+
         # Execute each query and build the result
         result = {
             "timestamp": datetime.now().isoformat()
         }
-        
+
         # Get total counts
         for key, query in stats_queries.items():
             if key not in ["languages", "pos"]:
                 count = db.session.execute(text(query)).scalar() or 0
                 result[key] = count
-        
+
         # Get languages distribution
         languages = {}
         lang_results = db.session.execute(text(stats_queries["languages"])).fetchall()
@@ -4197,11 +4201,14 @@ def _fetch_word_details(word_id,
         if include_pronunciations:
             try:
                 sql_pron = """
-                SELECT id, type, value, tags, pronunciation_metadata
+                SELECT id, type, value, pronunciation_metadata
                 FROM pronunciations 
                 WHERE word_id = :word_id
                 """
                 pron_result = db.session.execute(text(sql_pron), {"word_id": word_id}).fetchall()
+                # --- ADDED DEBUG LOG ---
+                # logger.debug(f"Pronunciation query result for word_id {word_id}: {pron_result}")
+                # --- END DEBUG LOG ---
                 word.pronunciations = []
                 for p_row in pron_result:
                     try:
@@ -4209,26 +4216,8 @@ def _fetch_word_details(word_id,
                         pronunciation.id = p_row.id
                         pronunciation.type = p_row.type if p_row.type in ['ipa', 'x-sampa', 'pinyin', 'jyutping', 'romaji', 'audio', 'respelling', 'phonemic'] else 'respelling'
                         pronunciation.value = p_row.value
-                        pronunciation.tags = p_row.tags if isinstance(p_row.tags, dict) else {}
-                        
-                        # --- Corrected Tags Handling ---
-                        tags_value = p_row.tags
-                        if isinstance(tags_value, str) and tags_value.strip():
-                            try:
-                                loaded_tags = json.loads(tags_value)
-                                # Ensure it's a list
-                                pronunciation.tags = loaded_tags if isinstance(loaded_tags, list) else []
-                            except json.JSONDecodeError:
-                                logger.warning(f"Invalid JSON in tags for pronunciation {p_row.id}, word {word_id}: {tags_value}")
-                                pronunciation.tags = [] # Default to empty list on parse error
-                        elif isinstance(tags_value, list):
-                            pronunciation.tags = tags_value # Already a list
-                        else:
-                            pronunciation.tags = [] # Default for None or other types
-                        # --- End Corrected Tags Handling ---
-
                         pronunciation.pronunciation_metadata = p_row.pronunciation_metadata if isinstance(p_row.pronunciation_metadata, dict) else {}
-                        pronunciation.sources = p_row.sources
+                        # REMOVED: pronunciation.sources = p_row.sources
                         pronunciation.word_id = word_id
                         word.pronunciations.append(pronunciation)
                     except Exception as inner_e:
@@ -4245,6 +4234,7 @@ def _fetch_word_details(word_id,
                 # Outgoing relations
                 sql_out_rel = """
                 SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type, r.sources,
+                       r.metadata, -- Added r.metadata
                        w.id as target_id, w.lemma as target_lemma, w.language_code as target_language_code,
                        w.has_baybayin as target_has_baybayin, w.baybayin_form as target_baybayin_form
                   FROM relations r
@@ -4261,6 +4251,7 @@ def _fetch_word_details(word_id,
                         relation.to_word_id = r.to_word_id
                         relation.relation_type = r.relation_type
                         relation.sources = r.sources
+                        relation.metadata = r.metadata # Assign fetched metadata
                         
                         # Create target word
                         target = Word()
@@ -4279,6 +4270,7 @@ def _fetch_word_details(word_id,
                 # Incoming relations - similar update
                 sql_in_rel = """
                 SELECT r.id, r.from_word_id, r.to_word_id, r.relation_type, r.sources,
+                       r.metadata, -- Added r.metadata
                        w.id as source_id, w.lemma as source_lemma, w.language_code as source_language_code,
                        w.has_baybayin as source_has_baybayin, w.baybayin_form as source_baybayin_form
                   FROM relations r
@@ -4295,6 +4287,7 @@ def _fetch_word_details(word_id,
                         relation.to_word_id = r.to_word_id
                         relation.relation_type = r.relation_type
                         relation.sources = r.sources
+                        relation.metadata = r.metadata # Assign fetched metadata
                         
                         # Create source word
                         source = Word()

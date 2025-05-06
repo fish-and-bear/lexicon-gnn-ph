@@ -39,6 +39,10 @@ class RelationshipType(enum.Enum):
     RELATED = ("related", RelationshipCategory.SEMANTIC, True, None, False, 70)
     SIMILAR = ("similar", RelationshipCategory.SEMANTIC, True, None, False, 60)
 
+    # Translation relationships
+    HAS_TRANSLATION = ("has_translation", RelationshipCategory.SEMANTIC, False, "TRANSLATION_OF", False, 98)
+    TRANSLATION_OF = ("translation_of", RelationshipCategory.SEMANTIC, False, "HAS_TRANSLATION", False, 98)
+
     # Hierarchical/taxonomic relationships
     HYPERNYM = ("hypernym", RelationshipCategory.TAXONOMIC, False, "HYPONYM", True, 85)
     HYPONYM = ("hyponym", RelationshipCategory.TAXONOMIC, False, "HYPERNYM", True, 85)

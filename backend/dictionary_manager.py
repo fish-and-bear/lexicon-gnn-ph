@@ -47,6 +47,8 @@ from backend.dictionary_manager.processors.kwf_processor import process_kwf_dict
 from backend.dictionary_manager.processors.gay_slang_processor import process_gay_slang_json
 from backend.dictionary_manager.processors.kaikki_processor import process_kaikki_jsonl
 from backend.dictionary_manager.processors.marayum_processor import process_marayum_json, process_marayum_directory
+from backend.dictionary_manager.processors.tagalog_processor import process_tagalog_words
+from backend.dictionary_manager.processors.calderon_processor import process_calderon_json
 
 # Utils
 # from backend.utils.logging_config import setup_logging # Removed redundant import
@@ -281,6 +283,18 @@ def migrate_data(args):
             "name": "Tagalog Words",
             "file": "tagalog-words.json",
             "handler": process_tagalog_words,
+            "required": False,
+        },
+        {
+            "name": "Tagalog Words",
+            "file": "..\\data\\tagalog-words.json",
+            "handler": process_tagalog_words, # <-- Make sure it's this name
+            "required": False,
+        },
+        {
+            "name": "Calderon Diccionario 1915",
+            "file": "..\\data\\calderon_dictionary.json",
+            "handler": process_calderon_json,
             "required": False,
         },
     ]

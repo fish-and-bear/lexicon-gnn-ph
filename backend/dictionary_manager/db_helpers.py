@@ -24,7 +24,8 @@ import hashlib
 from datetime import datetime
 import re # Add re import
 from tqdm import tqdm # Import tqdm for progress bars
-
+import psycopg2.errorcodes
+import json # Also ensure this is imported for the next fix
 # Try to import url maker for DATABASE_URL parsing
 try:
     from sqlalchemy.engine.url import make_url
@@ -44,6 +45,8 @@ from backend.dictionary_manager.text_helpers import (
     BaybayinRomanizer,
     process_baybayin_text,
     clean_html,
+    clean_baybayin_text, # <-- Import the correct helper
+    get_language_code,
 )
 
 logger = logging.getLogger(__name__)
@@ -51,6 +54,10 @@ logger = logging.getLogger(__name__)
 # Moved from dictionary_manager.py
 # Define default language code
 DEFAULT_LANGUAGE_CODE = "tl"
+# VALID_BAYBAYIN_REGEX = re.compile(r'^[\u1700-\u171F\u1735\u1736\s]+$') # Original with +
+VALID_BAYBAYIN_REGEX = re.compile(r'^[\u1700-\u171F\u1735\u1736\s]*$') # Use * to match SQL constraint
+# Generate the negative regex pattern from the valid one for easier use in SQL queries
+INVALID_BAYBAYIN_CHARS_SQL_PATTERN = r'[^\\u1700-\\u171F\\u1735\\u1736\\s]'
 
 # Custom exceptions
 class DatabaseError(Exception):
@@ -95,6 +102,7 @@ def get_connection():
                  password=os.getenv("DB_PASSWORD", DB_CONFIG['password']),
                  host=os.getenv("DB_HOST", DB_CONFIG['host']),
                  port=os.getenv("DB_PORT", DB_CONFIG['port']),
+                 client_encoding='UTF8' # <<< Explicitly set encoding
              )
         except psycopg2.OperationalError as e:
              logger.error(f"Failed to connect using DB_* variables: {e}")
@@ -109,6 +117,7 @@ def get_connection():
             conn_args = url.translate_connect_args(database_driver="psycopg2")
             if "username" in conn_args:
                 conn_args["user"] = conn_args.pop("username")
+            conn_args['client_encoding'] = 'UTF8' # <<< Explicitly set encoding
             conn = psycopg2.connect(**conn_args)
             logger.debug("Connection successful using DATABASE_URL.")
         except Exception as e:
@@ -638,7 +647,8 @@ CREATE TABLE IF NOT EXISTS words (
         (has_baybayin = FALSE AND baybayin_form IS NULL) OR
          (has_baybayin = TRUE AND baybayin_form IS NOT NULL)
     ),
-    CONSTRAINT baybayin_form_regex CHECK (baybayin_form ~ '^[\u1700-\u171F\s]*$' OR baybayin_form IS NULL)
+    -- Updated regex to match Python VALID_BAYBAYIN_REGEX (U+1700–U+171F, U+1735, U+1736, spaces)
+    CONSTRAINT baybayin_form_regex CHECK (baybayin_form ~ '^[\\u1700-\\u171F\\u1735\\u1736\\s]*$' OR baybayin_form IS NULL)
 );
 
 -- Create indexes for words table
@@ -687,11 +697,11 @@ CREATE TABLE IF NOT EXISTS definitions (
     definition_text TEXT NOT NULL,
     original_pos TEXT,
     standardized_pos_id INT REFERENCES parts_of_speech(id) ON DELETE SET NULL,
-    examples TEXT,
+    examples TEXT, -- Consider moving to definition_examples table
     usage_notes TEXT,
-    tags TEXT,
-    sources TEXT,
-    definition_metadata JSONB,
+    tags TEXT, -- Should probably be normalized
+    sources TEXT, -- Should probably be normalized or JSONB
+    definition_metadata JSONB DEFAULT '{}', -- Added missing metadata column
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT definitions_unique UNIQUE (word_id, definition_text, standardized_pos_id)
@@ -799,13 +809,18 @@ CREATE TABLE IF NOT EXISTS definition_categories (
    category_name TEXT NOT NULL,
    category_kind TEXT,
    parents JSONB,
+   sources TEXT, -- Added based on analysis
+   -- category_metadata JSONB DEFAULT '{}'::jsonb, -- Column definition moved to ALTER TABLE
    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
    UNIQUE (definition_id, category_name)
 );
-CREATE INDEX IF NOT EXISTS idx_def_categories_def ON definition_categories(definition_id);
-CREATE INDEX IF NOT EXISTS idx_def_categories_name ON definition_categories(category_name);
 
+-- Add category_metadata column if it doesn't exist (handles existing tables)
+ALTER TABLE definition_categories ADD COLUMN IF NOT EXISTS category_metadata JSONB DEFAULT '{}'::jsonb;
+
+-- Indices for definition_categories
+CREATE INDEX IF NOT EXISTS idx_definition_categories_definition_id ON definition_categories(definition_id);
 
 -- Create definition_examples table
 CREATE TABLE IF NOT EXISTS definition_examples (
@@ -868,6 +883,8 @@ CREATE TABLE IF NOT EXISTS word_forms (
    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
    UNIQUE (word_id, form)
 );
+-- Drop potentially corrupted index before recreating
+DROP INDEX IF EXISTS idx_word_forms_form;
 CREATE INDEX IF NOT EXISTS idx_word_forms_word ON word_forms(word_id);
 CREATE INDEX IF NOT EXISTS idx_word_forms_form ON word_forms(form);
 
@@ -953,12 +970,13 @@ def check_baybayin_consistency(cur):
                     f"Inconsistent Baybayin flags for word ID {word_id}: {lemma}"
                 )
 
-        # Check for invalid Baybayin characters
+        # Check for invalid Baybayin characters using the SQL pattern derived from VALID_BAYBAYIN_REGEX
+        # The regex checks if the string contains *any* character NOT in the allowed set.
         cur.execute(
-            r"""
+            f"""
             SELECT id, lemma, baybayin_form
             FROM words
-            WHERE baybayin_form ~ '[^\u1700-\u171F\s]'  -- Corrected regex: removed extra backslash before s
+            WHERE baybayin_form IS NOT NULL AND baybayin_form ~ '{INVALID_BAYBAYIN_CHARS_SQL_PATTERN}'
             """
         )
         invalid_chars = cur.fetchall()
@@ -1072,11 +1090,11 @@ def cleanup_baybayin_data(cur):
         "removed_empty": 0,
     }
     try:
-        # 1. Remove non-Baybayin characters (excluding space) from baybayin_form
-        cur.execute(r"""
+        # 1. Remove non-Baybayin characters using the SQL pattern derived from VALID_BAYBAYIN_REGEX
+        cur.execute(f"""
             UPDATE words
-            SET baybayin_form = regexp_replace(baybayin_form, '[^ᜀ-ᜟ\s]', '', 'g')
-            WHERE baybayin_form IS NOT NULL AND baybayin_form ~ '[^ᜀ-ᜟ\s]';
+            SET baybayin_form = regexp_replace(baybayin_form, '{INVALID_BAYBAYIN_CHARS_SQL_PATTERN}', '', 'g')
+            WHERE baybayin_form IS NOT NULL AND baybayin_form ~ '{INVALID_BAYBAYIN_CHARS_SQL_PATTERN}';
         """)
         stats["removed_invalid_chars"] = cur.rowcount
         logger.info(f"Removed invalid characters from {stats['removed_invalid_chars']} baybayin forms.")
@@ -1084,8 +1102,8 @@ def cleanup_baybayin_data(cur):
         # 2. Trim whitespace
         cur.execute(r"""
             UPDATE words
-            SET baybayin_form = trim(baybayin_form)
-            WHERE baybayin_form LIKE ' %' OR baybayin_form LIKE '% ';
+            SET baybayin_form = trim(regexp_replace(baybayin_form, '\\s+', ' ', 'g')) -- Also collapse multiple spaces
+            WHERE baybayin_form LIKE ' %' OR baybayin_form LIKE '% ' OR baybayin_form LIKE '%  %';
         """)
 
         # 3. Set baybayin_form to NULL if it becomes empty after cleaning
@@ -1119,15 +1137,18 @@ def cleanup_baybayin_data(cur):
             missing_romanization = cur.fetchall()
             updated_count = 0
             for word_id, bb_form in missing_romanization:
+                # Add specific try-except around romanization call
                 try:
                     romanized = romanizer.romanize(bb_form)
                     if romanized:
                         cur.execute("UPDATE words SET romanized_form = %s WHERE id = %s", (romanized, word_id))
                         updated_count += 1
-                except Exception as rom_err:
+                except ValueError as rom_val_err: # Catch specific romanizer error
+                    logger.warning(f"Romanizer validation error for word ID {word_id}, Baybayin: '{bb_form}': {rom_val_err}")
+                except Exception as rom_err: # Catch other errors during romanization
                     logger.warning(f"Could not generate romanization for word ID {word_id}, Baybayin: '{bb_form}': {rom_err}")
             stats["generated_romanization"] = updated_count
-            logger.info(f"Generated missing romanized forms for {stats['generated_romanization']} entries.")
+            logger.info(f"Attempted to generate missing romanized forms for {len(missing_romanization)} entries, succeeded for {stats['generated_romanization']}.")
         except ImportError:
             logger.warning("BaybayinRomanizer not found in text_helpers. Skipping romanization generation.")
         except Exception as gen_err:
@@ -1895,7 +1916,7 @@ def insert_definition(
             -- etymology_notes,
             -- scientific_name,
             tags,
-            metadata,
+            definition_metadata, -- Corrected column name
             sources
             -- popularity_score,
             -- examples
@@ -1906,7 +1927,7 @@ def insert_definition(
             -- etymology_notes removed below
             -- sci_name removed
             %(tags)s,
-            %(metadata)s,
+            %(metadata)s, -- Parameter name is still metadata
             %(sources)s
             -- popularity_score removed
             -- examples value removed
@@ -1919,7 +1940,7 @@ def insert_definition(
             -- etymology_notes = EXCLUDED.etymology_notes,
             -- scientific_name = EXCLUDED.scientific_name,
             tags = EXCLUDED.tags,
-            metadata = EXCLUDED.metadata,
+            definition_metadata = EXCLUDED.definition_metadata, -- Corrected column name
             sources = EXCLUDED.sources
             -- popularity_score = EXCLUDED.popularity_score,
             -- examples = EXCLUDED.examples
@@ -2075,252 +2096,129 @@ def get_uncategorized_pos_id(cur) -> int:
 
 # --- Add functions from backup --- 
 def create_or_update_tables(conn):
-    """Create or update the database tables."""
+    """Create or update tables based on the TABLE_CREATION_SQL string."""
     logger.info("Starting table creation/update process.")
-
-    cur = conn.cursor()
     try:
-        # Create required PostgreSQL extensions
-        logger.info("Creating required PostgreSQL extensions...")
-        cur.execute(
-            """
-            CREATE EXTENSION IF NOT EXISTS unaccent;
-            CREATE EXTENSION IF NOT EXISTS pg_trgm;
-            CREATE EXTENSION IF NOT EXISTS btree_gin;
-            CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
-        """
-        )
+        with conn.cursor() as cur:
+            logger.info("Creating required PostgreSQL extensions...") # Indent this line
+            cur.execute("CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;")
+            cur.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
+            # Add pg_vector extension creation if needed
+            # cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
 
-        # Drop existing tables in correct order
-        cur.execute(
-            """
-            DROP TABLE IF EXISTS 
-                credits, pronunciations, definition_relations, affixations, 
-                relations, etymologies, definition_examples, definitions, words, parts_of_speech CASCADE;
-        """ # Added definition_examples here
-        )
+            # *** FIX: Explicitly drop the potentially outdated constraint first ***
+            try:
+                logger.info("Dropping existing baybayin_form_regex constraint on words table (if it exists)...")
+                cur.execute("ALTER TABLE words DROP CONSTRAINT IF EXISTS baybayin_form_regex;")
+                logger.info("Constraint baybayin_form_regex dropped successfully or did not exist.")
+            except psycopg2.Error as drop_err:
+                 # Log error if dropping fails for reasons other than 'does not exist' (which is handled by IF EXISTS)
+                 # Note: UndefinedTable error might occur if 'words' doesn't exist yet, which is fine here.
+                if drop_err.pgcode != psycopg2.errorcodes.UNDEFINED_TABLE:
+                     logger.warning(f"Could not drop constraint baybayin_form_regex (may be expected if table doesn't exist): {drop_err}")
+                else:
+                    logger.info("Words table doesn't exist yet, skipping constraint drop.")
 
-        # Create tables
-        cur.execute(TABLE_CREATION_SQL)
 
-        # Insert standard parts of speech
-        pos_entries = [
-            # --- Core Grammatical Categories ---
-            (
-                "n",
-                "Noun",
-                "Pangngalan",
-                "Word that refers to a person, place, thing, or idea",
-            ),
-            ("v", "Verb", "Pandiwa", "Word that expresses action or state of being"),
-            ("adj", "Adjective", "Pang-uri", "Word that describes or modifies a noun"),
-            (
-                "adv",
-                "Adverb",
-                "Pang-abay",
-                "Word that modifies verbs, adjectives, or other adverbs",
-            ),
-            ("pron", "Pronoun", "Panghalip", "Word that substitutes for a noun"),
-            (
-                "prep",
-                "Preposition",
-                "Pang-ukol",
-                "Word that shows relationship between words",
-            ),
-            (
-                "conj",
-                "Conjunction",
-                "Pangatnig",
-                "Word that connects words, phrases, or clauses",
-            ),
-            ("intj", "Interjection", "Pandamdam", "Word expressing emotion"),
-            ("det", "Determiner", "Pantukoy", "Word that modifies nouns"),
-            ("affix", "Affix", "Panlapi", "Word element attached to base or root"),
-            # --- Added/Ensured based on POS_MAPPING and Daglat ---
-            (
-                "lig",
-                "Ligature",
-                "Pang-angkop",
-                "Word that links modifiers to modified words",
-            ),  # For 'pnk'
-            (
-                "part",
-                "Particle",
-                "Kataga",
-                "Function word that doesn't fit other categories",
-            ),  # From mapping
-            ("num", "Number", "Pamilang", "Word representing a number"),  # From mapping
-            (
-                "expr",
-                "Expression",
-                "Pahayag",
-                "Common phrase or expression",
-            ),  # From mapping
-            ("punc", "Punctuation", "Bantas", "Punctuation mark"),  # From mapping
-            # --- Other Categories from original code ---
-            ("idm", "Idiom", "Idyoma", "Fixed expression with non-literal meaning"),
-            ("col", "Colloquial", "Kolokyal", "Informal or conversational usage"),
-            (
-                "syn",
-                "Synonym",
-                "Singkahulugan",
-                "Word with similar meaning",
-            ),  # Note: Relationships preferred over POS tags for this
-            (
-                "ant",
-                "Antonym",
-                "Di-kasingkahulugan",
-                "Word with opposite meaning",
-            ),  # Note: Relationships preferred over POS tags for this
-            (
-                "eng",
-                "English",
-                "Ingles",
-                "English loanword or translation",
-            ),  # Note: Etymology preferred over POS tags for this
-            (
-                "spa",
-                "Spanish",
-                "Espanyol",
-                "Spanish loanword or origin",
-            ),  # Note: Etymology preferred over POS tags for this
-            ("tx", "Texting", "Texting", "Text messaging form"),
-            (
-                "var",
-                "Variant",
-                "Varyant",
-                "Alternative form or spelling",
-            ),  # Note: Relationships preferred over POS tags for this
-            (
-                "unc",
-                "Uncategorized",
-                "Hindi Tiyak",
-                "Part of speech not yet determined",
-            ),
-        ]
-
-        for code, name_en, name_tl, desc in pos_entries:
-            cur.execute(
-                """
-                INSERT INTO parts_of_speech (code, name_en, name_tl, description)
-                VALUES (%s, %s, %s, %s)
-                ON CONFLICT (code) DO UPDATE 
-                SET name_en = EXCLUDED.name_en,
-                    name_tl = EXCLUDED.name_tl,
-                    description = EXCLUDED.description
-            """,
-                (code, name_en, name_tl, desc),
-            )
-
+            logger.info("Executing main table creation SQL...")
+            cur.execute(TABLE_CREATION_SQL)
+            logger.info("Main table creation SQL executed.")
         conn.commit()
         logger.info("Tables created or updated successfully.")
-
+    except psycopg2.Error as e:
+        logger.error(f"Database error during table creation: {e}", exc_info=True)
+        conn.rollback() # Rollback on error
+        raise DatabaseError(f"Failed to create/update tables: {e}") from e
     except Exception as e:
-        conn.rollback()
-        logger.error(f"Schema creation error: {str(e)}")
-        raise
-    finally:
-        cur.close()
+        logger.error(f"Unexpected error during table creation: {e}", exc_info=True)
+        conn.rollback() # Rollback on error
+        raise DatabaseError(f"Unexpected error during table creation: {e}") from e
 
 @with_transaction(commit=True)
 def insert_relation(
-    cur, from_word_id: int, to_word_id: int, relation_type: str, source_identifier: str,
-    metadata: Optional[Dict] = None # Add optional metadata parameter
+    cur,
+    from_word_id: int,
+    to_word_id: int,
+    relation_type: str,
+    source_identifier: str,
+    metadata: Optional[Dict] = None,
 ) -> Optional[int]:
     """
-    Insert a word-to-word relationship (e.g., synonym, antonym).
-    Stores source_identifier in the 'sources' Text column and merges provided metadata.
-    Uses ON CONFLICT to append sources and merge metadata if the relation already exists.
+    Create (or merge) a relation row in `relations`.
+    – `source_identifier` is appended to the comma‑separated `sources` column.
+    – `metadata` is kept as JSONB and deep‑merged on conflict.
 
-    Args:
-        cur: Database cursor.
-        from_word_id: ID of the source word.
-        to_word_id: ID of the target word.
-        relation_type: Type of relationship.
-        source_identifier: Identifier for the data source (e.g., filename).
-        metadata: Optional dictionary to store in the metadata JSONB column.
-
-    Returns:
-        The ID of the inserted/updated relation record, or None if failed.
+    Returns the relation's id, or None on failure/skip.
     """
+    # ---------- quick guards -------------------------------------------------
     if not source_identifier:
-        logger.warning(
-            f"Skipping relation insert {from_word_id}->{to_word_id} ({relation_type}): Missing source identifier."
-        )
+        logger.warning("insert_relation‑skip: source_identifier is required")
         return None
     if from_word_id == to_word_id:
-        logger.warning(
-            f"Skipping self-relation for word ID {from_word_id}, type '{relation_type}', source '{source_identifier}'."
-        )
+        logger.debug("insert_relation‑skip: self‑relation")
+        return None
+    if not relation_type or not isinstance(relation_type, str):
+        logger.warning("insert_relation‑skip: empty relation_type")
         return None
 
     relation_type = relation_type.strip().lower()
     source_identifier = source_identifier.strip()
 
-    try:
-        # Prepare parameters
-        params = {
-            "from_id": from_word_id,
-            "to_id": to_word_id,
-            "rel_type": relation_type,
-            "sources": source_identifier,
-            "metadata": Json(metadata) if metadata else None # Wrap dict in Json() adapter
-        }
+    # ---------- build params -------------------------------------------------
+    json_metadata = Json(metadata or {})          # never NULL → avoids jsonb || NULL
+    params = dict(
+        from_id=from_word_id,
+        to_id=to_word_id,
+        rel_type=relation_type,
+        sources=source_identifier,
+        metadata=json_metadata,
+    )
 
-        cur.execute(
-            """
+    # ---------- upsert -------------------------------------------------------
+    upsert_sql = """
             INSERT INTO relations (from_word_id, to_word_id, relation_type, sources, metadata)
             VALUES (%(from_id)s, %(to_id)s, %(rel_type)s, %(sources)s, %(metadata)s)
-            ON CONFLICT (from_word_id, to_word_id, relation_type)
-            DO UPDATE SET
-                -- Append new source if it's not already present in the comma-separated list
+    ON CONFLICT (from_word_id, to_word_id, relation_type) DO UPDATE
+    SET
+        -- append source if it is new
                 sources = CASE
-                              WHEN relations.sources IS NULL THEN EXCLUDED.sources
-                              WHEN string_to_array(relations.sources, ', ') @> ARRAY[EXCLUDED.sources] THEN relations.sources
+                    WHEN relations.sources IS NULL
+                         OR relations.sources = '' THEN EXCLUDED.sources
+                    WHEN string_to_array(relations.sources, ', ')
+                         @> ARRAY[EXCLUDED.sources] THEN relations.sources
                               ELSE relations.sources || ', ' || EXCLUDED.sources
                           END,
-                -- Merge metadata: Combine existing and new metadata
-                metadata = relations.metadata || EXCLUDED.metadata,
+        -- deep‑merge JSONB safely even when either side is NULL
+        metadata = COALESCE(relations.metadata, '{}'::jsonb)
+                   || COALESCE(EXCLUDED.metadata, '{}'::jsonb),
                 updated_at = CURRENT_TIMESTAMP
-            RETURNING id
-            """,
-            params,
-        )
-        relation_id_tuple = cur.fetchone()
-        if relation_id_tuple:
-            relation_id = relation_id_tuple[0]
-            logger.debug(
-                f"Inserted/Updated relation (ID: {relation_id}) {from_word_id}->{to_word_id} [{relation_type}] from source '{source_identifier}'."
-            )
-            return relation_id
-        else:
-            logger.error(
-                f"Failed to get relation ID after upsert for {from_word_id}->{to_word_id} ({relation_type})."
-            )
-            # Attempt to fetch existing if update failed to return ID
-            # cur.execute("SELECT id FROM relations WHERE from_word_id = %s AND to_word_id = %s AND relation_type = %s", (from_word_id, to_word_id, relation_type))
-            # existing_id = cur.fetchone()
-            # if existing_id: return existing_id[0]
-            cur.connection.rollback()  # Rollback if ID wasn't returned
-            return None
+    RETURNING id;
+    """
 
-    except psycopg2.IntegrityError as e:
-        logger.error(
-            f"Integrity error inserting relation {from_word_id}->{to_word_id} ({relation_type}) from '{source_identifier}'. Word ID might not exist. Error: {e.pgcode} {e.pgerror}"
+    try:
+        cur.execute(upsert_sql, params)
+        rid = cur.fetchone()[0]
+        # Indent the logger call correctly under the try block where rid is available
+        logger.debug(
+            "relation %s → %s [%s] (id %s) recorded from " "%s",
+            from_word_id,
+            to_word_id,
+            relation_type,
+            rid,
+            source_identifier,
         )
-        return None
-    except psycopg2.Error as e:
-        logger.error(
-            f"Database error inserting relation {from_word_id}->{to_word_id} ({relation_type}) from '{source_identifier}': {e.pgcode} {e.pgerror}",
-            exc_info=True,
-        )
-        return None
-    except Exception as e:
-        logger.error(
-            f"Unexpected error inserting relation {from_word_id}->{to_word_id} ({relation_type}) from '{source_identifier}': {e}",
-            exc_info=True,
-        )
-        return None
+        return rid
+
+    except psycopg2.IntegrityError as e:            # FK problems etc.
+        logger.error("insert_relation FK/unique failure: %s", e.pgerror.strip())
+    except psycopg2.Error as e:                     # any other PG error
+        logger.error("insert_relation PG error: %s", e.pgerror.strip(), exc_info=True)
+    except Exception as e:                          # python‑side
+        logger.exception("insert_relation unexpected error: %s", e)
+
+    # Ensure None is returned if any exception occurred
+    return None
+
 
 @with_transaction(commit=True)
 def insert_definition_example(
@@ -2492,282 +2390,259 @@ def insert_definition_example(
             )
         return None
 
-@with_transaction(commit=True) # Needs transaction to handle insert/update safely
+@with_transaction(commit=True)          # keep same decorator
 def get_or_create_word_id(
     cur,
     lemma: str,
     language_code: str = DEFAULT_LANGUAGE_CODE,
-    source_identifier: Optional[str] = None,  # Optional, but recommended
-    # check_exists: bool = False,  # Note: check_exists logic removed below in favor of direct insert/update approach
-    preserve_numbers: bool = False,  # NEW: Add this flag to skip trailing number removal for certain cases
+    source_identifier: Optional[str] = None,
+    preserve_numbers: bool = False,
     **kwargs,
-) -> Optional[int]: # Changed return type hint to Optional[int]
+) -> Optional[int]:
     """
     Get the ID of a word by lemma and language, creating it if it doesn't exist.
-    Handles normalization, Baybayin processing, source tracking, and updates via ON CONFLICT.
-    Uses ON CONFLICT for UPSERT.
-    Updates the word's source_info JSONB field with the provided identifier.
-    Runs within the caller's transaction (commit=False).
+    Updates source_info for existing words.
 
     Args:
         cur: Database cursor.
         lemma: The word lemma.
-        language_code: Language code (e.g., 'tl').
-        source_identifier: Source identifier (e.g., filename). Recommended.
-        preserve_numbers: Set to True to keep trailing numbers in special cases like
-                         standalone numbers or numbers with separators.
-        **kwargs: Additional word attributes (has_baybayin, baybayin_form, romanized_form,
-                  root_word_id, preferred_spelling, tags, idioms, pronunciation_data,
-                  word_metadata, badlit_form, hyphenation, is_proper_noun,
-                  is_abbreviation, is_initialism). Values intended for JSONB
-                  should be passed as Python dicts/lists or None.
+        language_code: ISO language code (default: 'tl').
+        source_identifier: Identifier for the data source (used for tracking).
+        preserve_numbers: If True, don't remove trailing numbers from the lemma.
+        **kwargs: Additional fields for the words table if creating a new word.
 
     Returns:
-        The integer word ID, or None if an error occurs.
-
-    Raises:
-        ValueError: If lemma is empty.
-        DatabaseError: If the operation fails.
+        The integer ID of the word, or None if an error occurred.
     """
-    if not lemma:
-        logger.error(f"get_or_create_word_id: Received empty lemma.")
-        # raise ValueError("Lemma cannot be empty") # Avoid raising here, return None instead
+    if not lemma or not isinstance(lemma, str):
+        logger.warning("get_or_create_word_id called with empty or invalid lemma")
         return None
 
-    # 1. Clean and normalize lemma (HTML cleaning first)
-    cleaned_lemma = clean_html(lemma).strip()
-    if not cleaned_lemma:
-        logger.warning(f"Skipping word creation for empty lemma after cleaning: original '{lemma}'")
+    original_lemma = lemma.strip()
+    if not original_lemma:
+        logger.warning("get_or_create_word_id called with empty lemma after stripping")
         return None
 
-    original_cleaned_lemma = cleaned_lemma # Keep original after cleaning for logging
+    # Normalize lemma and language code
+    processed_lemma = original_lemma if preserve_numbers else remove_trailing_numbers(original_lemma)
+    normalized = normalize_lemma(processed_lemma)
+    # Safeguard: Ensure language_code defaults correctly if None is passed
+    lang_code_input = language_code or DEFAULT_LANGUAGE_CODE
+    # --- CHANGE HERE: Use get_language_code instead of get_standard_code ---
+    # lang_code = get_standard_code(lang_code_input, code_type='language') or DEFAULT_LANGUAGE_CODE
+    lang_code = get_language_code(lang_code_input) or DEFAULT_LANGUAGE_CODE # Use the specific language helper
 
-    # SPECIAL CASE CHECKS FOR NUMBERS - PRESERVE THEM
-    should_preserve = preserve_numbers
-    # Auto-detect number preservation cases if not explicitly set
-    if not preserve_numbers:
-        if cleaned_lemma.isdigit(): should_preserve = True
-        elif "/" in cleaned_lemma and any(c.isdigit() for c in cleaned_lemma): should_preserve = True
-        elif any(c in cleaned_lemma for c in [",", "-", "–", ".", "/"]): should_preserve = True
-        elif re.search(r"\s\d+$", cleaned_lemma): should_preserve = True
+    # Check cache first (optional)
+    # cache_key = f"word_id:{normalized}:{lang_code}"
+    # cached_id = cache.get(cache_key)
+    # if cached_id:
+    #     logger.debug(f"Cache hit for {normalized} ({lang_code}): {cached_id}")
+    #     return cached_id
 
-    # Only remove trailing numbers if not preserving (and not special case like bitamina)
-    if not should_preserve and not cleaned_lemma.startswith("bitamína "):
-        lemma_no_trailing = remove_trailing_numbers(cleaned_lemma)
-        if lemma_no_trailing != cleaned_lemma:
-            logger.info(
-                f"Removed trailing number(s) from lemma: '{cleaned_lemma}' → '{lemma_no_trailing}'"
-            )
-            cleaned_lemma = lemma_no_trailing
-
-    # Safety check - don't allow empty lemmas after processing
-    if not cleaned_lemma:
-        logger.warning(
-            f"Processing would result in empty lemma, preserving original cleaned: '{original_cleaned_lemma}'"
-        )
-        cleaned_lemma = original_cleaned_lemma
-
-    # Extract parenthesized text
-    parenthesized_text = None
-    # Use the extract_parenthesized_text from text_helpers.py (assuming it's the correct one)
-    lemma_final, parenthesized_text = extract_parenthesized_text(cleaned_lemma)
-    if parenthesized_text and parenthesized_text != cleaned_lemma: # Log only if something was actually extracted
-        logger.info(
-            f"Extracted parenthesized text from lemma: original='{cleaned_lemma}' → lemma='{lemma_final}', note='{parenthesized_text}'"
-        )
-
-    # Ensure lemma is not empty after all processing
-    if not lemma_final:
-        logger.warning(
-            f"All processing resulted in empty lemma, using original cleaned: '{original_cleaned_lemma}'"
-        )
-        lemma_final = original_cleaned_lemma
-
-    normalized = normalize_lemma(lemma_final)
-
-    # --- Extract all relevant fields from kwargs ---
-    has_baybayin = kwargs.get("has_baybayin", False)
-    baybayin_form = kwargs.get("baybayin_form")
-    romanized_form = kwargs.get("romanized_form")
-    root_word_id = kwargs.get("root_word_id")
-    preferred_spelling = kwargs.get("preferred_spelling")
-    tags = kwargs.get("tags")
-    badlit_form = kwargs.get("badlit_form")
-    hyphenation_data = kwargs.get("hyphenation")
-    is_proper_noun = kwargs.get("is_proper_noun", False)
-    is_abbreviation = kwargs.get("is_abbreviation", False)
-    is_initialism = kwargs.get("is_initialism", False)
-    idioms_data = kwargs.get("idioms")
-    pronunciation_data = kwargs.get("pronunciation_data")
-    word_metadata_input = kwargs.get("word_metadata", {})
-
-    # Prepare word_metadata
-    word_metadata = word_metadata_input.copy() if isinstance(word_metadata_input, dict) else {}
-    if parenthesized_text and parenthesized_text != cleaned_lemma:
-        word_metadata["parenthesized_note"] = parenthesized_text
-
-    # --- Clean up Baybayin if inconsistent ---
-    if has_baybayin is False:
-        baybayin_form = None
-    elif has_baybayin is True and not baybayin_form:
-        logger.warning(
-            f"Word '{lemma_final}' ({language_code}, source: {source_identifier}) marked as has_baybayin but no form provided. Setting has_baybayin to False."
-        )
-        has_baybayin = False
-        baybayin_form = None
-
-    # --- Standardize source and prepare initial source_info JSON ---
-    standardized_source = None
-    if source_identifier:
-        try:
-            standardized_source = standardize_source_identifier(source_identifier)
-            if not standardized_source:
-                standardized_source = source_identifier # Use original if standardization fails
-        except Exception as e:
-            logger.warning(f"Error standardizing source '{source_identifier}': {e}")
-            standardized_source = source_identifier
-
-    new_source_json_str = update_word_source_info(None, standardized_source)
-
-    # --- Prepare Data for Insertion (including JSON adaptation) ---
-    # Ensure word_metadata is always a dict before adding to params
-    if not isinstance(word_metadata, dict):
-        logger.warning(f"word_metadata for '{lemma_final}' was not a dict ({type(word_metadata)}), resetting to empty dict.")
-        word_metadata = {}
-        
-    params = {
-        "lemma": lemma_final,
-        "normalized": normalized,
-        "language_code": language_code,
-        "has_baybayin": has_baybayin,
-        "baybayin_form": baybayin_form,
-        "romanized_form": romanized_form,
-        "root_word_id": root_word_id,
-        "preferred_spelling": preferred_spelling,
-        "tags": tags,
-        "source_info": Json(json.loads(new_source_json_str)),
-        "idioms": Json(idioms_data) if isinstance(idioms_data, list) else None,
-        "pronunciation_data": Json(pronunciation_data) if isinstance(pronunciation_data, (dict, list)) else None,
-        "word_metadata": Json(word_metadata) if word_metadata else Json({}), # Ensure JSON object even if empty
-        "badlit_form": badlit_form,
-        "hyphenation": Json(hyphenation_data) if isinstance(hyphenation_data, list) else None,
-        "is_proper_noun": is_proper_noun,
-        "is_abbreviation": is_abbreviation,
-        "is_initialism": is_initialism,
-        "data_hash": None, # Regenerate hash below
-    }
-
-    # Calculate data hash
+    # Query database
     try:
-        hash_input_parts = [
-            str(params["lemma"]), str(params["language_code"]),
-            str(params["baybayin_form"]), str(params["romanized_form"]),
-            str(params["badlit_form"]), str(params["tags"]),
-            str(params["root_word_id"]), str(params["preferred_spelling"]),
-            str(params["is_proper_noun"]), str(params["is_abbreviation"]), str(params["is_initialism"])
-        ]
-        # Log individual parts if needed for debugging hash issues
-        # logger.debug(f"Hashing input parts for '{lemma_final}': {hash_input_parts}")
-        hash_input = "|".join(hash_input_parts)
-        params["data_hash"] = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
-        # logger.debug(f"Calculated data hash for '{lemma_final}': {params['data_hash']}")
-    except Exception as hash_e:
-        logger.error(f"Error generating data hash for '{lemma_final}': {hash_e}", exc_info=True) # Log full traceback
-        params["data_hash"] = None
+        # Prioritize exact normalized match
+        cur.execute(
+            "SELECT id, source_info FROM words WHERE normalized_lemma = %s AND language_code = %s",
+            (normalized, lang_code),
+        )
+        result = cur.fetchone()
 
-    # --- DEBUG: Log before main try block ---
-    logger.debug(f"Entering main try block for get_or_create_word_id('{lemma_final}')")
-    try:
-        # --- Use INSERT ... ON CONFLICT for UPSERT ---
-        # Note: search_text update happens via trigger or separate process usually
-        sql_upsert = """
-            INSERT INTO words (
-                lemma, normalized_lemma, language_code,
-                has_baybayin, baybayin_form, romanized_form, root_word_id,
-                preferred_spelling, tags, source_info,
-                idioms, pronunciation_data, word_metadata,
-                badlit_form, hyphenation, is_proper_noun, is_abbreviation, is_initialism,
-                data_hash -- search_text removed, assumed handled by trigger/update
+        if result:
+            word_id, current_source_info = result
+            logger.debug(
+                f"Found existing word '{processed_lemma}' ({lang_code}) with ID: {word_id}"
             )
-            VALUES (
-                %(lemma)s, %(normalized)s, %(language_code)s,
-                %(has_baybayin)s, %(baybayin_form)s, %(romanized_form)s, %(root_word_id)s,
-                %(preferred_spelling)s, %(tags)s, %(source_info)s,
-                %(idioms)s, %(pronunciation_data)s, %(word_metadata)s,
-                %(badlit_form)s, %(hyphenation)s, %(is_proper_noun)s, %(is_abbreviation)s, %(is_initialism)s,
-                %(data_hash)s
-            )
-            ON CONFLICT (normalized_lemma, language_code) DO UPDATE SET
-                lemma = EXCLUDED.lemma,
-                -- Update Baybayin fields carefully based on has_baybayin
-                has_baybayin = COALESCE(EXCLUDED.has_baybayin, words.has_baybayin),
-                baybayin_form = CASE WHEN COALESCE(EXCLUDED.has_baybayin, words.has_baybayin) = FALSE THEN NULL ELSE COALESCE(EXCLUDED.baybayin_form, words.baybayin_form) END,
-                romanized_form = CASE WHEN COALESCE(EXCLUDED.has_baybayin, words.has_baybayin) = FALSE THEN NULL ELSE COALESCE(EXCLUDED.romanized_form, words.romanized_form) END,
-                root_word_id = COALESCE(EXCLUDED.root_word_id, words.root_word_id),
-                preferred_spelling = COALESCE(EXCLUDED.preferred_spelling, words.preferred_spelling),
-                tags = COALESCE(EXCLUDED.tags, words.tags),
-                source_info = words.source_info || EXCLUDED.source_info, -- Merge source info
-                idioms = COALESCE(EXCLUDED.idioms, words.idioms),
-                pronunciation_data = COALESCE(EXCLUDED.pronunciation_data, words.pronunciation_data),
-                word_metadata = COALESCE(words.word_metadata, '{}'::jsonb) || COALESCE(EXCLUDED.word_metadata, '{}'::jsonb), -- Merge metadata
-                badlit_form = COALESCE(EXCLUDED.badlit_form, words.badlit_form),
-                hyphenation = COALESCE(EXCLUDED.hyphenation, words.hyphenation),
-                is_proper_noun = COALESCE(EXCLUDED.is_proper_noun, words.is_proper_noun),
-                is_abbreviation = COALESCE(EXCLUDED.is_abbreviation, words.is_abbreviation),
-                is_initialism = COALESCE(EXCLUDED.is_initialism, words.is_initialism),
-                data_hash = EXCLUDED.data_hash,
-                -- search_text = to_tsvector('simple', EXCLUDED.lemma || ' ' || words.normalized_lemma), -- Update search text (removed as it should be handled by trigger)
-                updated_at = CURRENT_TIMESTAMP
-            WHERE words.data_hash IS DISTINCT FROM EXCLUDED.data_hash -- Only update if data_hash changes
-            RETURNING id
-        """
-        # --- DEBUG: Log parameters before execute ---
-        # Be careful logging sensitive data in production
-        log_params = {k: (str(v)[:100] + '...' if isinstance(v, (str, bytes)) and len(v) > 100 else v) for k, v in params.items()}
-        logger.debug(f"Executing UPSERT for '{lemma_final}'. Params (truncated): {log_params}")
-    
-            
-        cur.execute(sql_upsert, params)
-        
-        # --- DEBUG: Log after execute ---
-        logger.debug(f"UPSERT execution completed for '{lemma_final}'")
-
-        word_id_result = cur.fetchone()
-        
-        if word_id_result:
-            word_id = word_id_result[0]
-            logger.debug(f"Upserted word '{lemma_final}' ({language_code}), ID: {word_id}")
+            # Update source info if a new source is provided
+            if source_identifier:
+                updated_source_info_json = update_word_source_info(
+                    current_source_info, source_identifier
+                )
+                # Check if update is needed
+                if updated_source_info_json != (current_source_info if isinstance(current_source_info, str) else json.dumps(current_source_info)):
+                    cur.execute(
+                        "UPDATE words SET source_info = %s::jsonb, updated_at = CURRENT_TIMESTAMP WHERE id = %s",
+                        (updated_source_info_json, word_id),
+                    )
+                    logger.debug(f"Updated source info for word ID {word_id}")
+            # Update cache (optional)
+            # cache.set(cache_key, word_id, timeout=3600)
             return word_id
         else:
-            # This case happens if the ON CONFLICT...WHERE condition was false (data_hash matched)
-            # We still need to get the existing word ID
-            logger.debug(f"Word '{lemma_final}' ({language_code}) already exists with identical data hash. Fetching existing ID.")
-            cur.execute(
-                "SELECT id FROM words WHERE normalized_lemma = %s AND language_code = %s",
-                (normalized, language_code)
+            # Word not found, create it
+            logger.debug(f"Word '{processed_lemma}' ({lang_code}) not found. Creating new entry...")
+            # --- Prepare Baybayin, Romanized, etc. from kwargs --- #
+            has_baybayin = bool(kwargs.get("has_baybayin")) # Default to False
+            if not has_baybayin and "has_baybayin" in kwargs: # Allow explicit False
+                has_baybayin = bool(kwargs.get("has_baybayin"))
+
+            baybayin_form_input = kwargs.get("baybayin_form") # Get the raw input
+            baybayin_form_to_store = None # Initialize variable for storing validated form
+
+            if has_baybayin and baybayin_form_input and isinstance(baybayin_form_input, str):
+                # Clean the input form first using the correct helper
+                # Ensure clean_baybayin_text is imported from text_helpers
+                cleaned_bb_string = clean_baybayin_text(baybayin_form_input)
+
+                if cleaned_bb_string: # Check if cleaning resulted in non-empty string
+                    # Now validate the cleaned string with the regex
+                    if not VALID_BAYBAYIN_REGEX.match(cleaned_bb_string):
+                        logger.warning(f"Provided baybayin_form '{baybayin_form_input}' for lemma '{processed_lemma}' is invalid after cleaning/regex check ('{cleaned_bb_string}'). Setting to NULL.")
+                        # baybayin_form_to_store remains None
+                        has_baybayin = False
+                    else:
+                        # Validation passed, store the cleaned string
+                        baybayin_form_to_store = cleaned_bb_string
+                        logger.debug(f"Validated Baybayin form '{baybayin_form_to_store}' for '{processed_lemma}'")
+                else: # Cleaning resulted in empty string
+                    logger.warning(f"Provided baybayin_form '{baybayin_form_input}' for lemma '{processed_lemma}' became empty after cleaning. Setting flag to FALSE.")
+                    # baybayin_form_to_store remains None
+                    has_baybayin = False
+
+            elif has_baybayin: # has_baybayin=True but no form provided or invalid type
+                logger.warning(f"has_baybayin=True but no valid string baybayin_form provided for '{processed_lemma}'. Setting flag to FALSE.")
+                has_baybayin = False # Corrected typo, ensure aligned with logger
+                # baybayin_form_to_store remains None
+            # else: # has_baybayin=False, baybayin_form_to_store remains None
+
+            # Prepare Romanized form (uses baybayin_form_to_store)
+            # --- FIX Indentation START --- #
+            romanized_form = kwargs.get("romanized_form")
+            if has_baybayin and not romanized_form and baybayin_form_to_store: # Check against the validated form to store
+                try:
+                    # Ensure BaybayinRomanizer is imported from text_helpers
+                    romanizer = BaybayinRomanizer()
+                    romanized_form = romanizer.romanize(baybayin_form_to_store) # Romanize the cleaned, validated form
+                    logger.debug(f"Generated romanized form '{romanized_form}' for '{baybayin_form_to_store}'")
+                except Exception as rom_err:
+                    logger.warning(f"Could not generate romanized form for '{baybayin_form_to_store}': {rom_err}")
+            # --- FIX Indentation END --- #
+
+            # --- Prepare other fields --- #
+            # --- Aggressive Final Cleaning for DB --- #
+            if baybayin_form_to_store:
+                allowed_chars = set(chr(i) for i in range(0x1700, 0x171F + 1)) | {chr(0x1735), chr(0x1736), ' '}
+                original_len = len(baybayin_form_to_store)
+                baybayin_form_to_store = ''.join(c for c in baybayin_form_to_store if c in allowed_chars)
+                if len(baybayin_form_to_store) != original_len:
+                    logger.warning(f"Aggressive cleaning removed characters from Baybayin form for '{processed_lemma}'. Original len: {original_len}, New len: {len(baybayin_form_to_store)}. Storing: '{baybayin_form_to_store}'")
+                # If cleaning makes it empty, nullify it and the flag
+                if not baybayin_form_to_store:
+                    logger.warning(f"Baybayin form for '{processed_lemma}' became empty after aggressive cleaning. Setting to NULL.")
+                    baybayin_form_to_store = None
+                    has_baybayin = False
+
+            # Ensure update_word_source_info is defined/imported
+            source_info_json = update_word_source_info(None, source_identifier) # Initial source info
+            # Ensure Json is imported from psycopg2.extras
+            word_metadata_json = json.dumps(kwargs.get("word_metadata", {}), default=str)
+
+            insert_params = {
+                "lemma": processed_lemma,
+                "norm_lemma": normalized,
+                "lang": lang_code,
+                "has_bb": has_baybayin,
+                "bb_form": baybayin_form_to_store, # Use the validated/cleaned form
+                "rom_form": romanized_form,
+                "root_id": kwargs.get("root_word_id"),
+                "pref_spell": kwargs.get("preferred_spelling"),
+                "tags": kwargs.get("tags"),
+                "idioms": Json(kwargs.get("idioms", [])),
+                "pron_data": Json(kwargs.get("pronunciation_data", {})),
+                "source_info": source_info_json,
+                "metadata": word_metadata_json,
+                "badlit": kwargs.get("badlit_form"),
+                "hyphen": Json(kwargs.get("hyphenation", {})),
+                "is_proper": kwargs.get("is_proper_noun", False),
+                "is_abbr": kwargs.get("is_abbreviation", False),
+                "is_init": kwargs.get("is_initialism", False),
+            }
+
+            insert_sql = """
+            INSERT INTO words (
+                    lemma, normalized_lemma, language_code, has_baybayin,
+                    baybayin_form, romanized_form, root_word_id,
+                    preferred_spelling, tags, idioms, pronunciation_data,
+                    source_info, word_metadata, badlit_form, hyphenation,
+                    is_proper_noun, is_abbreviation, is_initialism,
+                    search_text -- Added search_text column
             )
-            existing_id_result = cur.fetchone()
-            if existing_id_result:
-                 word_id = existing_id_result[0]
-                 logger.debug(f"Found existing ID for '{lemma_final}': {word_id}")
-                 return word_id
-            else:
-                 # This should theoretically not happen if ON CONFLICT matched but RETURNING was empty
-                 logger.error(f"Failed to retrieve existing ID for '{lemma_final}' after UPSERT conflict with no changes.")
-                 return None
+            VALUES (
+                    %(lemma)s, %(norm_lemma)s, %(lang)s, %(has_bb)s,
+                    %(bb_form)s, %(rom_form)s, %(root_id)s,
+                    %(pref_spell)s, %(tags)s, %(idioms)s, %(pron_data)s,
+                    %(source_info)s::jsonb, %(metadata)s::jsonb, %(badlit)s, %(hyphen)s,
+                    %(is_proper)s, %(is_abbr)s, %(is_init)s,
+                    -- Generate search_text on insert
+                    to_tsvector('english', COALESCE(%(lemma)s, '') || ' ' || COALESCE(%(norm_lemma)s, '') || ' ' || COALESCE(%(bb_form)s, '') || ' ' || COALESCE(%(rom_form)s, ''))
+                )
+                RETURNING id;
+            """
+            cur.execute(insert_sql, insert_params)
+            new_word_id = cur.fetchone()[0]
+            logger.info(
+                f"Created new word '{processed_lemma}' ({lang_code}) with ID: {new_word_id} from source '{source_identifier}'"
+            )
+            # Update cache (optional)
+            # cache.set(cache_key, new_word_id, timeout=3600)
+            return new_word_id
 
+    except psycopg2.IntegrityError as e:
+        # Specific handling for unique constraint violation
+        # Ensure psycopg2.errorcodes is imported
+        if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION: # Correct check
+            logger.warning(f"Unique constraint violation during insert attempt for '{normalized}' ({lang_code}). Retrying fetch. Error: {e.pgerror}")
+            # Rollback the failed insert attempt before retrying fetch
+            try:
+                cur.connection.rollback()
+            except Exception as rb_err:
+                logger.error(f"Rollback failed after unique violation for '{normalized}': {rb_err}")
+                return None # Cannot safely proceed
 
-    # Removed specific UniqueViolation check - rely on general error handling
-    except psycopg2.Error as db_err:
-        # --- DEBUG: Log database error ---
-        logger.error(f"Database error in get_or_create_word_id for '{lemma_final}': {db_err.pgcode} {db_err.pgerror}", exc_info=True)
-        # Rollback is likely handled by the @with_transaction decorator if it started the transaction
+            # --- FIX Indentation START --- #
+            # Retry fetching the ID
+            try:
+                cur.execute(
+                    "SELECT id FROM words WHERE normalized_lemma = %s AND language_code = %s",
+                    (normalized, lang_code),
+                )
+                result = cur.fetchone()
+                if result:
+                    # TODO: Consider updating source_info here as well if needed after failed insert
+                    logger.info(f"Successfully fetched ID {result[0]} for '{normalized}' ({lang_code}) after unique violation.")
+                    return result[0]
+                else:
+                    logger.error(f"Could not fetch ID for '{normalized}' ({lang_code}) even after unique violation. Data inconsistency suspected.")
+                    return None
+            except Exception as fetch_err:
+                logger.error(f"Error fetching ID for '{normalized}' ({lang_code}) after unique violation: {fetch_err}", exc_info=True)
+                return None
+            # --- FIX Indentation END --- #
+        else:
+            # Handle other integrity errors (e.g., check constraints, FK violations)
+            logger.error(
+                f"Database integrity error processing word '{original_lemma}' ({lang_code}): {e.pgcode} {e.pgerror}",
+                exc_info=True, # Include traceback for DB errors
+            )
+            # Rollback handled by decorator
+            return None
+    except psycopg2.Error as e:
+        # Handle other database errors
+        logger.error(
+            f"Database error processing word '{original_lemma}' ({lang_code}): {e.pgcode} {e.pgerror}",
+            exc_info=True,
+        )
+        # Rollback handled by decorator
         return None
     except Exception as e:
-        # --- DEBUG: Log unexpected error ---
-        logger.error(f"Unexpected error in get_or_create_word_id for '{lemma_final}': {e}", exc_info=True)
-        # Rollback handled by decorator if it started the transaction
+        # Handle unexpected errors
+        logger.error(
+            f"Unexpected error processing word '{original_lemma}' ({lang_code}): {e}",
+            exc_info=True,
+        )
+        # Rollback handled by decorator
         return None
+
 
 def batch_get_or_create_word_ids(
     cur, entries: List[Tuple[str, str]], source: str = None, batch_size: int = 1000
@@ -2947,7 +2822,7 @@ def insert_word_entry(cur, entry: Dict, source_identifier: str) -> Dict:
 
         # --- Get or Create Word ID --- (Using the enhanced function)
         # Pass the full entry data if available for potential use during creation
-        word_id = get_or_create_word_id(cur, lemma, language_code, source_identifier, word_data=entry)
+        word_id = get_or_create_word_id(cur, lemma, language_code, source_identifier)
         if word_id is None:
             logger.error(f"Failed to get or create word ID for '{lemma}' ({language_code}) from source '{source_identifier}'. Skipping entry.")
             stats["errors"] += 1
@@ -3091,7 +2966,6 @@ def insert_word_entry(cur, entry: Dict, source_identifier: str) -> Dict:
                             word_id=word_id,
                             definition_text=definition_text,
                             part_of_speech=raw_pos, # Pass raw POS
-                            examples=None, # Handled separately
                             usage_notes=usage_notes,
                             category=None, # Use tags parameter instead
                             sources=source_identifier,
@@ -3253,7 +3127,12 @@ def verify_database_schema(conn):
     """Verify the database schema matches expected columns."""
     logger.info("Verifying database schema...")
     cur = conn.cursor()
+    # Define the complete expected schema based on TABLE_CREATION_SQL
     expected_schema = {
+        "parts_of_speech": {
+            "id", "code", "name_en", "name_tl", "description",
+            "created_at", "updated_at"
+        },
         "words": {
             "id", "lemma", "normalized_lemma", "has_baybayin", "baybayin_form",
             "romanized_form", "language_code", "root_word_id", "preferred_spelling",
@@ -3262,53 +3141,58 @@ def verify_database_schema(conn):
             "is_abbreviation", "is_initialism", "search_text",
             "created_at", "updated_at"
         },
-        "definitions": {
-            "id", "word_id", "definition_text", "original_pos", "standardized_pos_id",
-            "examples", "usage_notes", "tags", "sources", "metadata",
+        "pronunciations": {
+            "id", "word_id", "type", "value", "tags",
+            "pronunciation_metadata", # 'sources' column removed, now in metadata
             "created_at", "updated_at"
         },
-        "etymologies": {
-            "id", "word_id", "etymology_text", "normalized_components",
-            "etymology_structure", "language_codes", "sources",
+        "credits": {
+            "id", "word_id", "credit", "sources", "created_at", "updated_at"
+        },
+        "definitions": {
+            "id", "word_id", "definition_text", "original_pos", "standardized_pos_id",
+            "examples", "usage_notes", "tags", "sources", "definition_metadata",
             "created_at", "updated_at"
         },
         "relations": {
             "id", "from_word_id", "to_word_id", "relation_type", "sources",
             "metadata", "created_at", "updated_at"
         },
-        # Add expected columns for NEW tables
-        "definition_examples": {
-            "id", "definition_id", "example_text", "translation", "example_type",
-            "reference", "metadata", "sources", "created_at", "updated_at"
-        },
-        "definition_categories": {
-            "id", "definition_id", "category_name", "category_kind", "parents",
+        "etymologies": {
+            "id", "word_id", "etymology_text", "normalized_components",
+            "etymology_structure", "language_codes", "sources",
             "created_at", "updated_at"
         },
         "definition_links": {
             "id", "definition_id", "link_text", "tags", "link_metadata",
             "sources", "created_at", "updated_at"
         },
-        "word_forms": {
-            "id", "word_id", "form", "is_canonical", "is_primary", "tags",
-            "created_at", "updated_at"
-        },
-        "word_templates": {
-            "id", "word_id", "template_name", "args", "expansion",
+        "definition_relations": {
+            "id", "definition_id", "word_id", "relation_type", "sources",
             "created_at", "updated_at"
         },
         "affixations": {
              "id", "root_word_id", "affixed_word_id", "affix_type", "sources",
              "created_at", "updated_at"
         },
-        "pronunciations": {
-            "id", "word_id", "type", "value", "tags",
-            "pronunciation_metadata", "sources", "created_at", "updated_at"
+        "definition_categories": {
+           "id", "definition_id", "category_name", "category_kind", "parents",
+           "sources", "category_metadata", # Added category_metadata
+           "created_at", "updated_at"
         },
-        "credits": {
-            "id", "word_id", "credit", "sources", "created_at", "updated_at"
+        "definition_examples": {
+            "id", "definition_id", "example_text", "translation", "example_type",
+            "reference", "metadata", "sources", "created_at", "updated_at"
+        },
+        "word_templates": {
+            "id", "word_id", "template_name", "args", "expansion",
+            "sources", # Added sources column based on TABLE_CREATION_SQL
+            "created_at", "updated_at"
+        },
+        "word_forms": {
+           "id", "word_id", "form", "is_canonical", "is_primary", "tags",
+           "created_at", "updated_at"
         }
-        # Add other tables like parts_of_speech if needed
     }
     issues_found = False
 
@@ -3346,190 +3230,157 @@ def verify_database_schema(conn):
 
 @with_transaction(commit=True)
 def insert_definition_category(
-    cur, definition_id: int, category_data: Union[str, Dict], source_identifier: str
+    cur: psycopg2.extensions.cursor,
+    definition_id: int,
+    category_data: Union[str, Dict],
+    source_identifier: str,
 ) -> Optional[int]:
     """
-    Insert a category associated with a definition. Handles string or dictionary input.
-    Uses ON CONFLICT to update existing categories based on (definition_id, category_name).
-
-    Args:
-        cur: Database cursor.
-        definition_id: ID of the definition this category belongs to.
-        category_data: Category string or dictionary (e.g., {"name": "...", "kind": "...", "parents": [...]}).
-                       Expected keys in dict: 'name' (required), 'kind', 'parents'.
-                       Wiktionary might use '1' as key for category name.
-        source_identifier: Identifier for the data source (e.g., filename). Used for logging.
-
-    Returns:
-        The ID of the inserted/updated definition category record, or None if failed.
+    Upserts a category link for a definition.
+    Handles string category names or dictionary structures.
+    Merges metadata and appends unique sources on conflict.
     """
-    # Source identifier isn't strictly in the table but useful for logging/provenance
     if not source_identifier:
-        logger.warning(  # Warning instead of error, as source isn't stored in this table
-            f"Definition category insert for def ID {definition_id}: Missing source identifier for logging purposes."
-        )
-        # Don't return None here, proceed but log the missing info.
+        logger.warning("insert_definition_category skipped: source_identifier missing.")
+        return None
 
-    category_name = None
-    category_kind = None
-    parents_list = []
+    cat_name: Optional[str] = None
+    cat_kind: Optional[str] = None
+    cat_parents: Optional[List[str]] = None
+    cat_source: Optional[str] = None
+    cat_metadata: Optional[Dict] = None
 
-    # --- Data Extraction ---
+    # --- Type Handling & Extraction ---
     if isinstance(category_data, str):
-        category_name = category_data.strip()
-        # No kind or parents from simple string
-        logger.debug(
-            f"Processing definition category (string) for def ID {definition_id}: '{category_name}'"
-        )
-
+        cat_name = category_data.strip()
+        cat_metadata = {} # Initialize empty metadata for string input
     elif isinstance(category_data, dict):
-        # Extract required category name
-        category_name = category_data.get("name")
-        if not category_name or not isinstance(category_name, str):
-            # Wiktionary often uses '1' as key for category name, try fallback
-            category_name = category_data.get("1")
-            if not category_name or not isinstance(category_name, str):
-                logger.warning(
-                    f"Definition category dict for def ID {definition_id} (source '{source_identifier}') missing required 'name' (or '1') key or not a string. Skipping. Data: {category_data}"
-                )
-                return None
-        category_name = category_name.strip()
-
-        # Extract optional kind
-        kind_input = category_data.get("kind")
-        if isinstance(kind_input, str) and kind_input.strip():
-            category_kind = kind_input.strip()
-
-        # Extract optional parents
-        parents_input = category_data.get("parents")
-        if isinstance(parents_input, list):
-            # Parents might be simple strings or dicts, store as JSON list of strings for now
-            parents_list = [
-                str(p).strip()
-                for p in parents_input
-                if p and isinstance(p, (str, int, float))
-            ]
-        elif isinstance(parents_input, str) and parents_input.strip():
-            parents_list = [p.strip() for p in parents_input.split(",") if p.strip()]
-
-        # Log extracted data
-        logger.debug(
-            f"Processing definition category (dict) for def ID {definition_id}: '{category_name}', Kind: {category_kind}, Parents: {parents_list}"
-        )
-
+        cat_name = category_data.get("name")
+        cat_kind = category_data.get("kind")
+        cat_parents = category_data.get("parents") # Should be a list or None
+        cat_source = category_data.get("source")
+        cat_metadata = category_data.copy() # Work on a copy
+        # Remove core fields from metadata if they exist
+        cat_metadata.pop("name", None)
+        cat_metadata.pop("kind", None)
+        cat_metadata.pop("parents", None)
+        cat_metadata.pop("source", None)
     else:
-        logger.warning(
-            f"Invalid category_data type for definition ID {definition_id} (source '{source_identifier}'): {type(category_data)}. Skipping."
-        )
-        return None
+        logger.warning(f"Invalid category_data type for Def ID {definition_id}: {type(category_data)}. Skipping category.")
+        # --- FIX Indentation START --- #
+        return None # Align this with the logger.warning above
+        # --- FIX Indentation END --- #
 
-    # --- Validation ---
-    if not category_name:
-        logger.warning(
-            f"Empty category name after processing for definition ID {definition_id} (source '{source_identifier}'). Skipping category insertion."
-        )
-        return None
+    if not cat_name:
+        logger.warning(f"Category name missing for Def ID {definition_id}. Skipping category. Data: {category_data}")
 
-    # --- Data Preparation for DB ---
-    # Safely dump parents list to JSON string or NULL
-    parents_json = None
-    try:
-        # Filter out empty strings/None before dumping
-        valid_parents = [p for p in parents_list if p]
-        if valid_parents:
-            parents_json = json.dumps(valid_parents)
-    except TypeError as e:
-        logger.warning(
-            f"Could not serialize parents for definition category (def ID {definition_id}, source '{source_identifier}'): {e}. Parents: {parents_list}"
-        )
-        parents_json = None  # Store as NULL on error
+    # --- Validation & Preparation ---
+    if cat_parents is not None and not isinstance(cat_parents, list):
+        logger.warning(f"Category 'parents' for '{cat_name}' (Def ID {definition_id}) is not a list: {cat_parents}. Converting to list.")
+        # Attempt conversion, default to empty list on failure
+        try:
+            cat_parents = list(cat_parents) if hasattr(cat_parents, '__iter__') and not isinstance(cat_parents, str) else [str(cat_parents)]
+        except Exception:
+            logger.error(f"Could not convert category parents to list for '{cat_name}'. Setting to empty.", exc_info=True)
+            cat_parents = []
 
-    # --- Database Operation ---
-    try:
-        cur.execute(
-            """
-            INSERT INTO definition_categories (definition_id, category_name, category_kind, parents)
-            VALUES (%(def_id)s, %(cat_name)s, %(cat_kind)s, %(parents)s::jsonb)
+    sources_str = source_identifier.strip()
+
+    # Ensure metadata is a dict
+    if cat_metadata is None:
+        cat_metadata = {}
+    elif not isinstance(cat_metadata, dict):
+        logger.warning(f"Category metadata for '{cat_name}' is not a dict: {cat_metadata}. Resetting to empty dict.")
+        cat_metadata = {}
+
+    # Add original source from category data to metadata if different
+    if cat_source and cat_source != source_identifier:
+        if 'original_sources' not in cat_metadata:
+            cat_metadata['original_sources'] = []
+        # Ensure original_sources is a list before appending
+        if isinstance(cat_metadata.get('original_sources'), list):
+            if cat_source not in cat_metadata['original_sources']:
+                 cat_metadata['original_sources'].append(cat_source)
+    else:
+            logger.warning(f"'original_sources' in metadata for '{cat_name}' was not a list. Overwriting with new source.")
+            cat_metadata['original_sources'] = [cat_source]
+
+    # --- Parameter Assembly (Using Json Adapter) ---
+    params = {
+        "def_id": definition_id,
+        "name": cat_name,
+        "kind": cat_kind, # Let DB handle NULL if None
+        "parents": Json(cat_parents or []), # Use Json adapter for list -> JSONB
+        "sources": sources_str,
+        "metadata": Json(cat_metadata or {}) # Use Json adapter for dict -> JSONB
+    }
+
+    # --- Detailed Type Logging --- #
+    param_types = {k: type(v).__name__ for k, v in params.items()}
+    logger.debug(f"Parameter types for insert_definition_category: {param_types}")
+    logger.debug(f"Parameter values (metadata truncated): def_id={params['def_id']}, name='{params['name']}', kind='{params['kind']}', sources='{params['sources']}'")
+    # Avoid logging potentially large JSON objects directly unless necessary
+    # logger.debug(f"Full Params: {params}")
+
+    # --- SQL Query (No ::jsonb casts in VALUES) ---
+    upsert_sql = r"""
+        INSERT INTO definition_categories (
+            definition_id, category_name, category_kind, parents, sources, category_metadata
+        )
+        VALUES (
+            %(def_id)s, %(name)s, %(kind)s, %(parents)s, %(sources)s, %(metadata)s
+        )
             ON CONFLICT (definition_id, category_name)
             DO UPDATE SET
-                -- Overwrite kind (last write wins)
-                category_kind = EXCLUDED.category_kind,
-                -- Update parents: Prefer new value if not NULL, else keep old
+            -- *** FIX: Use correct column name from EXCLUDED ***
+            category_kind = COALESCE(EXCLUDED.category_kind, definition_categories.category_kind),
                 parents = CASE
                               WHEN EXCLUDED.parents IS NOT NULL THEN EXCLUDED.parents
                               ELSE definition_categories.parents
                           END,
+            sources = CASE
+                        WHEN definition_categories.sources IS NULL
+                             OR definition_categories.sources = '' THEN EXCLUDED.sources
+                        -- Check if the source already exists as a whole word/item
+                        WHEN string_to_array(definition_categories.sources, '; ') @> ARRAY[EXCLUDED.sources] THEN
+                             definition_categories.sources
+                        ELSE definition_categories.sources || '; ' || EXCLUDED.sources
+                      END,
+            category_metadata =
+                   COALESCE(definition_categories.category_metadata,'{}'::jsonb)
+                   || COALESCE(EXCLUDED.category_metadata,'{}'::jsonb),
                 updated_at = CURRENT_TIMESTAMP
-            RETURNING id
-            """,
-            {
-                "def_id": definition_id,
-                "cat_name": category_name,
-                "cat_kind": category_kind,  # Pass None if category_kind is None
-                "parents": parents_json,  # Pass None if parents_json is None
-            },
-        )
-        category_id_tuple = cur.fetchone()
-        if category_id_tuple:
-            category_id = category_id_tuple[0]
-            logger.info(  # Changed to info for successful inserts/updates
-                f"Inserted/Updated definition category (ID: {category_id}) for def ID {definition_id} from source '{source_identifier}'. Category: '{category_name}'"
-            )
-            return category_id
+        RETURNING id;
+    """
+
+    # --- Execution --- ---
+    try:
+        cur.execute(upsert_sql, params)
+        cat_id_tuple = cur.fetchone()
+        if cat_id_tuple:
+            cat_id = cat_id_tuple[0]
+            logger.info(f"Inserted/Updated definition category (ID: {cat_id}) for def ID {definition_id} from source '{source_identifier}'. Name: '{cat_name}'")
+            return cat_id
         else:
-            logger.error(
-                f"Failed to get definition category ID after upsert for def ID {definition_id}, category: '{category_name}'. Check database logs."
-            )
-            # Attempt to fetch existing if update failed to return ID (less likely with DO UPDATE)
-            # cur.execute("SELECT id FROM definition_categories WHERE definition_id = %s AND category_name = %s", (definition_id, category_name))
-            # existing_id = cur.fetchone()
-            # if existing_id: return existing_id[0]
-            cur.connection.rollback()  # Rollback if ID wasn't returned
-            return None
+            logger.warning(f"Upsert for definition category '{cat_name}' (Def ID {definition_id}) did not return an ID.")
+            return None # Should not happen with RETURNING id, but safety check
 
-    except psycopg2.IntegrityError as e:
-        logger.error(
-            f"Database IntegrityError inserting definition category for def ID {definition_id} ('{category_name}') from '{source_identifier}': {e.pgcode} {e.pgerror}",
-            exc_info=True,
+    except psycopg2.Error as pg_err:
+        pg_error_msg = str(pg_err.pgerror).strip() if pg_err.pgerror else str(pg_err).strip()
+        # Log the formatted message and include SQL/params for context
+        log_message = (
+            f"definition_category PG-error [{pg_err.pgcode or 'No Code'}]: {pg_error_msg}\n\t" + 
+            f"SQL: {upsert_sql}\n\t" +
+            f"Params: {params}" # Show the params dict that caused the error
         )
-        try:
-            cur.connection.rollback()
-        except Exception as rb_e:
-            logger.warning(
-                f"Rollback failed after IntegrityError inserting category: {rb_e}"
-            )
-        return None
-    except psycopg2.Error as e:
-        logger.error(
-            f"Database error inserting definition category for def ID {definition_id} ('{category_name}') from '{source_identifier}': {e.pgcode} {e.pgerror}",
-            exc_info=True,
-        )
-        try:
-            cur.connection.rollback()
-        except Exception as rb_e:
-            logger.warning(
-                f"Rollback failed after DB error inserting definition category: {rb_e}"
-            )
-        return None
-    except json.JSONDecodeError as e:
-        logger.error(
-            f"JSON processing error related to definition category for def ID {definition_id} ('{category_name}') from '{source_identifier}': {e}",
-            exc_info=True,
-        )
-        return None  # Indicate failure
-    except Exception as e:
-        logger.error(
-            f"Unexpected error inserting definition category for def ID {definition_id} ('{category_name}') from '{source_identifier}': {e}",
-            exc_info=True,
-        )
-        try:
-            cur.connection.rollback()
-        except Exception as rb_e:
-            logger.error(
-                f"Failed to rollback transaction after unexpected error inserting category: {rb_e}"
-            )
-        return None
+        logger.error(log_message, exc_info=True)
 
+    except Exception as exc:
+        logger.exception(
+            f"definition_category unexpected error for def ID {definition_id}, cat '{cat_name}': {exc}"
+        )
+
+    return None # Return None on any error
 
 @with_transaction(commit=True)
 def insert_definition_link(

@@ -44,6 +44,7 @@ from backend.dictionary_manager.text_helpers import (
     extract_parenthesized_text,
     normalize_lemma,
     standardize_source_identifier,
+    get_language_code, # <-- Import the robust helper
     BaybayinRomanizer
 )
 from backend.dictionary_manager.enums import RelationshipType
@@ -168,110 +169,125 @@ def collect_related_words_batch(entry, language_code, word_cache):
         word_cache: Existing word cache dictionary to check first
         
     Returns:
-        set of (lemma, language_code) tuples for batch lookup
+        set of (lemma, language_code) tuples for batch lookup, or None if entry is invalid
     """
     # Set to collect unique (lemma, lang_code) tuples
     words_to_lookup = set()
     
     # Skip if entry doesn't exist or isn't a dict
     if not entry or not isinstance(entry, dict):
-        return words_to_lookup
+        logger.warning("collect_related_words_batch called with invalid entry.")
+        return None # Return None to indicate invalid input
         
     # Get the main word from entry (for skipping self-references)
     main_word = entry.get('word', '').lower()
-    
+    # Ensure language_code is valid, default if necessary
+    if not language_code:
+        language_code = DEFAULT_LANGUAGE_CODE
+
     # 1. Check etymology templates
-    if 'etymology_templates' in entry and isinstance(entry['etymology_templates'], list):
-        for template in entry['etymology_templates']:
+    # Ensure entry['etymology_templates'] exists and is a list before iterating
+    etymology_templates = entry.get('etymology_templates')
+    if isinstance(etymology_templates, list):
+        for template in etymology_templates:
+            # ... (rest of etymology template processing - ensure None checks within) ...
+            # Example check within loop:
             if not isinstance(template, dict) or 'name' not in template:
                 continue
-                
+
             template_name = template['name'].lower()
             args = template.get('args', {})
-            
-            # Handle different template types
+            if not isinstance(args, dict): # Ensure args is a dict
+                args = {}
+
+            # Handle different template types (ensure values are strings before cleaning)
             if template_name == 'blend':
-                # Extract components (usually args 2, 3, etc.)
-                for i in range(2, 6):  # Check args 2, 3, 4, 5
+                for i in range(2, 6):
                     comp = args.get(str(i))
-                    if comp and isinstance(comp, str):
-                        comp_clean = clean_html(comp)
+                    if comp and isinstance(comp, str): # Check type
+                        comp_clean = clean_html(comp).strip()
                         if comp_clean and comp_clean.lower() != main_word and comp_clean.lower() not in NON_WORD_STRINGS:
-                            # For blends, same language
                             words_to_lookup.add((comp_clean, language_code))
-                            
-            elif template_name == 'inh' or template_name == 'inherited':
+            # ... Add similar isinstance checks for other template types ...
+            elif template_name in ['inh', 'inherited']:
                 proto_lang = args.get('2', '')
                 proto_word = args.get('3', '')
-                if proto_lang and proto_word and isinstance(proto_word, str):
-                    proto_word_clean = clean_html(proto_word).lstrip('*')
+                # Check types before processing
+                if proto_lang and isinstance(proto_lang, str) and proto_word and isinstance(proto_word, str):
+                    proto_word_clean = clean_html(proto_word).lstrip('*').strip()
                     if proto_word_clean and proto_word_clean.lower() != main_word and proto_word_clean.lower() not in NON_WORD_STRINGS:
-                        words_to_lookup.add((proto_word_clean, proto_lang))
-                        
-            elif template_name == 'cog' or template_name == 'cognate':
+                        # Standardize proto_lang if needed
+                        proto_lang_std = get_language_code(proto_lang) or proto_lang # Attempt standardization
+                        words_to_lookup.add((proto_word_clean, proto_lang_std))
+
+            elif template_name in ['cog', 'cognate']:
                 cog_lang = args.get('1', '')
                 cog_word = args.get('2', '')
-                if cog_lang and cog_word and isinstance(cog_word, str):
-                    cog_clean = clean_html(cog_word)
-                    if cog_clean and cog_clean.lower() != main_word and cog_clean.lower() not in NON_WORD_STRINGS:
-                        words_to_lookup.add((cog_clean, cog_lang))
-                        
+                # Check types
+                if cog_lang and isinstance(cog_lang, str) and cog_word and isinstance(cog_word, str):
+                     cog_clean = clean_html(cog_word).strip()
+                     if cog_clean and cog_clean.lower() != main_word and cog_clean.lower() not in NON_WORD_STRINGS:
+                         cog_lang_std = get_language_code(cog_lang) or cog_lang
+                         words_to_lookup.add((cog_clean, cog_lang_std))
+
             elif template_name == 'doublet':
-                doublet_lang = args.get('1', '') or language_code
-                doublet_word = args.get('2', '')
-                if doublet_word and isinstance(doublet_word, str):
-                    doublet_clean = clean_html(doublet_word)
-                    if doublet_clean and doublet_clean.lower() != main_word and doublet_clean.lower() not in NON_WORD_STRINGS:
+                 doublet_lang_raw = args.get('1', '')
+                 doublet_word = args.get('2', '')
+                 # Check type
+                 if doublet_word and isinstance(doublet_word, str):
+                     doublet_clean = clean_html(doublet_word).strip()
+                     if doublet_clean and doublet_clean.lower() != main_word and doublet_clean.lower() not in NON_WORD_STRINGS:
+                        # Use entry language if specific lang isn't provided or invalid
+                        doublet_lang = get_language_code(doublet_lang_raw) or language_code
                         words_to_lookup.add((doublet_clean, doublet_lang))
-                        
+
             elif template_name in ['derived', 'borrowing', 'derived from', 'borrowed from', 'bor', 'der', 'bor+']:
-                # Extract source language and word
-                source_lang = ''
+                source_lang_raw = ''
                 source_word = ''
-
-                if template_name in ['bor', 'bor+', 'borrowing', 'borrowed from']:
-                    source_lang = args.get('2', '') or args.get('1', '')
-                    source_word = args.get('3', '')
-                elif template_name in ['der', 'derived', 'derived from']:
-                    source_lang = args.get('1', '')
-                    source_word = args.get('2', '')
-
-                if not source_lang:
-                    source_lang = language_code
-
+                # ... (existing extraction logic) ...
+                # Check type
                 if source_word and isinstance(source_word, str):
-                    source_clean = clean_html(source_word)
-                    if source_clean and source_clean.lower() != main_word and source_clean.lower() not in NON_WORD_STRINGS:
-                        words_to_lookup.add((source_clean, source_lang))
-                        
+                     source_clean = clean_html(source_word).strip()
+                     if source_clean and source_clean.lower() != main_word and source_clean.lower() not in NON_WORD_STRINGS:
+                         # Standardize and default language
+                         source_lang = get_language_code(source_lang_raw) or language_code
+                         words_to_lookup.add((source_clean, source_lang))
+
+
     # 2. Process senses for semantic relations
-    if 'senses' in entry and isinstance(entry['senses'], list):
-        for sense_idx, sense in enumerate(entry['senses']):
+    # Ensure entry['senses'] exists and is a list
+    senses = entry.get('senses')
+    if isinstance(senses, list):
+        for sense_idx, sense in enumerate(senses):
             if not isinstance(sense, dict):
                 continue
-                
+
             # Extract related terms from sense
             for rel_key in ['synonyms', 'antonyms', 'coordinate_terms', 'hypernyms', 'hyponyms', 'meronyms', 'holonyms']:
-                rel_items = sense.get(rel_key, [])
-                
-                if isinstance(rel_items, list):
+                rel_items = sense.get(rel_key) # Get potential related items
+
+                if isinstance(rel_items, list): # Check if it's a list
                     for rel_item in rel_items:
                         rel_word = None
-                        rel_lang = language_code  # Default same language
-                        
+                        # Default to the main entry's language code
+                        rel_lang = language_code
+
                         if isinstance(rel_item, str):
                             rel_word = rel_item
                         elif isinstance(rel_item, dict) and 'word' in rel_item:
                             rel_word = rel_item.get('word')
-                            # Check if language is specified
-                            if 'lang' in rel_item:
-                                rel_lang = rel_item.get('lang') or language_code
-                                
-                        if rel_word:
-                            rel_word_clean = clean_html(rel_word)
+                            # Check if language is specified and standardize it
+                            item_lang_raw = rel_item.get('lang')
+                            if item_lang_raw and isinstance(item_lang_raw, str):
+                                rel_lang = get_language_code(item_lang_raw) or language_code # Use standardized or default
+                            # If 'lang' key exists but is empty/None, rel_lang remains the default (language_code)
+
+                        # Check if rel_word is a non-empty string before cleaning
+                        if rel_word and isinstance(rel_word, str):
+                            rel_word_clean = clean_html(rel_word).strip()
                             if rel_word_clean and rel_word_clean.lower() != main_word and rel_word_clean.lower() not in NON_WORD_STRINGS:
                                 words_to_lookup.add((rel_word_clean, rel_lang))
-    
+
     # Return the set of collected words for batch processing
     return words_to_lookup
 
@@ -301,6 +317,9 @@ def process_kaikki_jsonl(cur, filename: str):
         "sense_relations": 0,
         "form_relations": 0,
         "examples": 0,
+        "descendant_relations": 0, # Added
+        "homophone_relations": 0, # Added
+        "synonym_relations": 0, # Added for sense-level synonyms
     }
 
     # Cache common lookups to reduce database queries
@@ -548,30 +567,36 @@ def process_kaikki_jsonl(cur, filename: str):
     # --- Single entry processor ---
     def process_single_entry(cur, entry):
         """Process a single dictionary entry with optimized data handling."""
-        word = entry.get("word") # Use get to avoid KeyError if 'word' is missing
+        # --- Basic Entry Validation ---
+        if not isinstance(entry, dict) or not entry.get("word"):
+            logger.warning("Skipping entry due to missing or invalid 'word' field or entry structure.")
+            return {"word_id": None, "stats": {}, "success": False}, "Invalid entry structure or missing word"
+
+        word = entry.get("word", "").strip()
         if not word:
-            logger.warning("Skipping entry due to missing 'word' field.")
-            # Return structure indicating failure, matching the original logic
-            return {"word_id": None, "stats": {}, "success": False}, "No word field"
+            logger.warning("Skipping entry due to empty 'word' field after stripping.")
+            return {"word_id": None, "stats": {}, "success": False}, "Empty word after stripping"
 
         # --- Log entry start ---
         logger.debug(f"--- Starting processing for entry: '{word}' ---")
 
-        # Apply special Kaikki lemma processing to preserve parenthesized variants and handle numbers
-        # processed_word = process_kaikki_lemma(word)
-        processed_word = word
+        # --- EARLY Language Code Determination ---
+        lang_raw = entry.get("lang", "") or entry.get("lang_code", "") # Check both common keys
+        language_code = get_language_code(lang_raw) or DEFAULT_LANGUAGE_CODE # Use imported helper
+        if not language_code: # Should not happen with default, but safety check
+             logger.critical(f"CRITICAL: Could not determine language code for entry '{word}' (lang: {lang_raw}). Using default '{DEFAULT_LANGUAGE_CODE}'.")
+             language_code = DEFAULT_LANGUAGE_CODE # Ensure it's set
+
+        logger.debug(f"[{word}] Language code determined: {language_code} (from raw: '{lang_raw}')")
+
+        # --- Initialize variables ---
         word_id = None
         error_messages = []
-        local_stats = {k: 0 for k in entry_stats.keys()}
+        local_stats = {k: 0 for k in entry_stats.keys()} # Initialize with all keys from entry_stats
+        pos = entry.get("pos", "unc") # Get Part of Speech early
 
         try:
-            # Get language code and validate
-            logger.debug(f"[{word}] Getting language code...")
-            pos = entry.get("pos", "unc")
-            language_code = entry.get("lang_code", DEFAULT_LANGUAGE_CODE)
-            if not language_code or len(language_code) > 10:
-                language_code = DEFAULT_LANGUAGE_CODE
-            logger.debug(f"[{word}] Language code set to: {language_code}")
+            # --- REMOVED: Language code section here (moved earlier) ---
 
             # Extract Baybayin and other script info
             logger.debug(f"[{word}] Extracting script info...")
@@ -583,78 +608,69 @@ def process_kaikki_jsonl(cur, filename: str):
             )
             logger.debug(f"[{word}] Script info extracted. Baybayin: '{baybayin_form}', Badlit: '{badlit_form}'")
 
-            # --- Baybayin Validation ---
+            # --- IMPROVED Baybayin Validation ---
             logger.debug(f"[{word}] Starting Baybayin validation...")
             validated_baybayin_form = None
             has_baybayin = False
-            # --- BEGIN IMPROVED BAYBAYIN EXTRACTION ---
-            original_baybayin_for_log = baybayin_form  # Store original for logging if needed
-            if baybayin_form and isinstance(baybayin_form, str):
-                # Use BaybayinRomanizer's validation method directly
-                # --- FIX: Apply cleaning directly here --- 
-                cleaned_baybayin_form = baybayin_form
-                # Remove punctuation
-                cleaned_baybayin_form = cleaned_baybayin_form.replace('᜵', '').replace('᜶', '')
-                # Remove extra spaces (leading/trailing/multiple internal)
-                cleaned_baybayin_form = ' '.join(cleaned_baybayin_form.split())
+            original_baybayin_for_log = baybayin_form # Store original for logging if needed
 
-                # Validate the *cleaned* form using the romanizer's character knowledge
+            if baybayin_form and isinstance(baybayin_form, str):
+                # Clean common issues (punctuation, extra spaces) *before* validation
+                cleaned_baybayin_form = baybayin_form.replace('᜵', '').replace('᜶', '') # Remove punctuation
+                cleaned_baybayin_form = ' '.join(cleaned_baybayin_form.split()) # Normalize spaces
+
+                # Validate the *cleaned* form using the romanizer's character knowledge if available
                 if romanizer and romanizer.validate_text(cleaned_baybayin_form):
                     validated_baybayin_form = cleaned_baybayin_form
                     has_baybayin = True
-                    logger.debug(f"[{word}] Baybayin validated: '{validated_baybayin_form}'")
+                    logger.debug(f"[{word}] Baybayin validated via Romanizer: '{validated_baybayin_form}'")
+                elif not romanizer and VALID_BAYBAYIN_REGEX.match(cleaned_baybayin_form):
+                     # Fallback to regex if romanizer not available but form seems valid after cleaning
+                     validated_baybayin_form = cleaned_baybayin_form
+                     has_baybayin = True
+                     logger.debug(f"[{word}] Baybayin validated via Regex Fallback: '{validated_baybayin_form}'")
                 else:
-                    # Log if the original form was non-empty but became invalid/empty after cleaning
-                    if baybayin_form:
-                        logger.warning(f"Invalid or problematic Baybayin form found for '{word}': '{baybayin_form}' (cleaned: '{cleaned_baybayin_form}'). Ignoring Baybayin for this entry.")
-                        error_messages.append(f"Invalid Baybayin form '{baybayin_form}' ignored")
+                    # Log if the original form was non-empty but became invalid/empty after cleaning or failed validation
+                    if baybayin_form: # Only log if there was something initially
+                        validation_method = "Romanizer" if romanizer else "Regex"
+                        logger.warning(f"Invalid or problematic Baybayin form found for '{word}' using {validation_method}. Original: '{original_baybayin_for_log}', Cleaned: '{cleaned_baybayin_form}'. Ignoring Baybayin for this entry.")
+                        error_messages.append(f"Invalid Baybayin form '{original_baybayin_for_log}' ignored")
                     # Ensure validated form is None if cleaning/validation failed
-                    validated_baybayin_form = None 
+                    validated_baybayin_form = None
                     has_baybayin = False
             else:
                 # Ensure validated form is None if original was missing or not string
-                validated_baybayin_form = None 
+                validated_baybayin_form = None
                 has_baybayin = False
-            # --- END IMPROVED BAYBAYIN EXTRACTION ---
-            if baybayin_form:
-                logger.debug(f"[{word}] Baybayin form present, cleaning and validating...")
-                # Check if the form contains only valid characters
-                # Stripping the problematic dotted circle U+25CC proactively
-                cleaned_baybayin_form = baybayin_form.replace("\u25cc", "").strip()
-                if cleaned_baybayin_form and VALID_BAYBAYIN_REGEX.match(cleaned_baybayin_form):
-                    validated_baybayin_form = cleaned_baybayin_form
-                    has_baybayin = True
-                    logger.debug(f"[{word}] Baybayin validated: '{validated_baybayin_form}'")
-                else:
-                    # Log if the original form was non-empty but became invalid/empty after cleaning
-                    if baybayin_form:
-                        logger.warning(f"Invalid or problematic Baybayin form found for '{word}': '{baybayin_form}'. Ignoring Baybayin for this entry.")
-                        error_messages.append(f"Invalid Baybayin form '{baybayin_form}' ignored")
+            # --- END IMPROVED BAYBAYIN VALIDATION ---
 
             # Generate romanization if needed, using the validated form
             logger.debug(f"[{word}] Starting romanization check...")
             romanized_form = None
-            if (
-                validated_baybayin_form
-                and not baybayin_romanized
-                and romanizer
-                and romanizer.validate_text(validated_baybayin_form)
-            ):
+            # Prioritize explicit romanization if provided alongside the script form
+            if baybayin_romanized and isinstance(baybayin_romanized, str) and baybayin_romanized.strip():
+                romanized_form = baybayin_romanized.strip()
+                logger.debug(f"[{word}] Using explicit Baybayin romanization: '{romanized_form}'")
+            elif badlit_romanized and isinstance(badlit_romanized, str) and badlit_romanized.strip():
+                romanized_form = badlit_romanized.strip()
+                logger.debug(f"[{word}] Using explicit Badlit romanization: '{romanized_form}'")
+            # Generate romanization only if validated Baybayin exists AND no explicit romanization was found AND romanizer is available
+            elif validated_baybayin_form and not romanized_form and romanizer:
                 try:
-                    logger.debug(f"[{word}] Attempting to romanize: '{validated_baybayin_form}'")
-                    romanized_form = romanizer.romanize(validated_baybayin_form)
-                    logger.debug(f"[{word}] Romanization successful: '{romanized_form}'")
+                    logger.debug(f"[{word}] Attempting to generate romanization for: '{validated_baybayin_form}'")
+                    generated_romanized = romanizer.romanize(validated_baybayin_form)
+                    if generated_romanized and isinstance(generated_romanized, str) and generated_romanized.strip():
+                       romanized_form = generated_romanized.strip()
+                       logger.debug(f"[{word}] Romanization generated successfully: '{romanized_form}'")
+                    else:
+                       logger.warning(f"[{word}] Romanizer generated empty or invalid result for '{validated_baybayin_form}'.")
+                       error_messages.append(f"Romanization generated empty result")
                 except Exception as rom_err:
                     # Log the romanization error instead of passing silently
                     logger.warning(
                         f"Could not romanize Baybayin '{validated_baybayin_form}' for word '{word}': {rom_err}"
                     )
                     error_messages.append(f"Romanization error: {rom_err}")
-
-            if not romanized_form and baybayin_romanized:
-                romanized_form = baybayin_romanized
-            elif not romanized_form and badlit_romanized:
-                romanized_form = badlit_romanized
 
             if (
                 has_baybayin or badlit_form
@@ -663,13 +679,14 @@ def process_kaikki_jsonl(cur, filename: str):
 
             # Check cache for existing word
             logger.debug(f"[{word}] Checking word cache...")
-            cache_key = f"{processed_word.lower()}|{language_code}"
+            # Use the original 'word' for the cache key and get_or_create, normalization happens inside get_or_create_word_id
+            cache_key = f"{word.lower()}|{language_code}"
             if cache_key in word_cache:
                 word_id = word_cache[cache_key]
                 logger.debug(f"[{word}] Found in cache. Word ID: {word_id}")
             else:
                 logger.debug(f"[{word}] Not in cache. Preparing to get/create word ID...")
-                # Prepare word attributes - MOVED OUTSIDE THE CONDITIONAL BLOCK
+                # Prepare word attributes
                 is_proper_noun = entry.get("proper", False) or pos in [
                     "prop",
                     "proper noun",
@@ -678,39 +695,39 @@ def process_kaikki_jsonl(cur, filename: str):
                 is_abbreviation = pos in ["abbrev", "abbreviation"]
                 is_initialism = pos in ["init", "initialism", "acronym"]
 
-                # Process tags
+                # Process tags (ensure it's a list)
                 tags_list = entry.get("tags", [])
-                if isinstance(tags_list, list):
-                    if any(t in ["abbreviation", "abbrev"] for t in tags_list):
-                        is_abbreviation = True
-                    if any(t in ["initialism", "acronym"] for t in tags_list):
-                        is_initialism = True
+                if not isinstance(tags_list, list):
+                    tags_list = [str(tags_list)] if tags_list else [] # Convert non-list to list
+
+                # Update boolean flags based on tags
+                if any(t in ["abbreviation", "abbrev"] for t in tags_list):
+                    is_abbreviation = True
+                if any(t in ["initialism", "acronym"] for t in tags_list):
+                    is_initialism = True
 
                 # Format tag string and prepare metadata
-                word_tags_str = ",".join(tags_list) if tags_list else None
+                word_tags_str = ",".join(filter(None, tags_list)) if tags_list else None # Filter out empty strings
                 word_metadata = {"source_file": raw_source_identifier}
 
-                # Handle hyphenation
+                # Handle hyphenation (ensure it's a list)
                 hyphenation = entry.get("hyphenation")
-                hyphenation_json = (
-                    Json(hyphenation)
-                    if hyphenation and isinstance(hyphenation, list)
-                    else None
-                )
+                if not isinstance(hyphenation, list):
+                    hyphenation = None # Discard if not a list
 
-                # Create or get word ID - use processed_word instead of original word
+                # Create or get word ID - use original 'word', normalization is internal
                 logger.debug(f"[{word}] Calling get_or_create_word_id...")
                 # --- DEBUG: Log arguments before calling get_or_create_word_id ---
                 log_get_or_create_args = {
-                    "lemma": processed_word,
+                    "lemma": word, # Use original word
                     "language_code": language_code,
                     "source_identifier": source_identifier,
-                    "preserve_numbers": True,
+                    "preserve_numbers": True, # Keep this if Kaikki lemmas need numbers preserved
                     "has_baybayin": has_baybayin,
                     "baybayin_form": validated_baybayin_form,
-                    "romanized_form": romanized_form,
-                    "badlit_form": badlit_form,
-                    "hyphenation": hyphenation, # Pass the original list/None
+                    "romanized_form": romanized_form, # Pass the determined romanization
+                    "badlit_form": badlit_form, # Pass Badlit form if found
+                    "hyphenation": hyphenation, # Pass the validated list/None
                     "is_proper_noun": is_proper_noun,
                     "is_abbreviation": is_abbreviation,
                     "is_initialism": is_initialism,
@@ -718,16 +735,16 @@ def process_kaikki_jsonl(cur, filename: str):
                     "word_metadata": word_metadata,
                 }
                 # Truncate long strings for logging clarity
-                truncated_log_args = {k: (str(v)[:100] + '...' if isinstance(v, str) and len(v) > 100 else v) 
+                truncated_log_args = {k: (str(v)[:100] + '...' if isinstance(v, str) and len(v) > 100 else v)
                                       for k, v in log_get_or_create_args.items()}
                 logger.debug(f"[{word}] Args for get_or_create_word_id (truncated): {truncated_log_args}")
                 # --- END DEBUG LOG ---
                 word_id = get_or_create_word_id(
                     cur,
-                    lemma=processed_word,  # Use the specially processed word
+                    lemma=word, # Use original word
                     language_code=language_code,
                     source_identifier=source_identifier,
-                    preserve_numbers=True,  # Add this parameter to prevent further number processing
+                    preserve_numbers=True, # Keep this if needed
                     has_baybayin=has_baybayin,
                     baybayin_form=validated_baybayin_form,
                     romanized_form=romanized_form,
@@ -746,51 +763,63 @@ def process_kaikki_jsonl(cur, filename: str):
                     word_cache[cache_key] = word_id
 
             if not word_id:
+                # Critical failure if word ID cannot be obtained
+                logger.error(f"[{word}] Failed to get or create word ID. Aborting processing for this entry.")
                 return None, f"Failed to get/create word ID for '{word}'"
 
             # --- BATCH PROCESSING FOR RELATED WORDS ---
-            # Collect all related words from this entry for batch processing
             logger.debug(f"[{word}] Collecting related words for batch lookup...")
-            
             try:
+                # Ensure language_code is passed correctly
                 related_words_batch = collect_related_words_batch(entry, language_code, word_cache)
+                # Check if the result is None (indicating an error in collection)
                 if related_words_batch is None:
-                    logger.warning(f"[{word}] collect_related_words_batch returned None, using empty set instead")
-                    related_words_batch = set()
-                
-                batch_size = len(related_words_batch)
-                
-                if batch_size > 0:
+                    logger.warning(f"[{word}] collect_related_words_batch returned None, possibly due to invalid entry data. Skipping batch lookup.")
+                    error_messages.append("Related word collection failed")
+                # Check if the result is an empty set (no related words found)
+                elif not related_words_batch: # Checks for empty set explicitly
+                    logger.debug(f"[{word}] No related words found for batch lookup.")
+                # Only proceed if we have a non-empty set
+                elif isinstance(related_words_batch, set) and related_words_batch:
+                    batch_size = len(related_words_batch)
                     logger.debug(f"[{word}] Found {batch_size} related words for batch lookup")
-                    
+
                     # Convert set to list for batch_get_or_create_word_ids
                     related_words_list = list(related_words_batch)
-                    
+
                     try:
                         # Use batch lookup function
                         batch_result = batch_get_or_create_word_ids(
-                            cur, 
-                            related_words_list, 
+                            cur,
+                            related_words_list,
                             source=source_identifier,
                             batch_size=1000  # Keep default or adjust as needed
                         )
-                        
+
                         # Update word cache with batch results
-                        for (lemma, lang_code), word_id in batch_result.items():
-                            if word_id:  # Only cache valid IDs
-                                word_cache[f"{lemma.lower()}|{lang_code}"] = word_id
-                        
-                        logger.debug(f"[{word}] Successfully looked up {len(batch_result)} related words in batch")
+                        cached_count = 0
+                        for (lemma, lang_code), related_id in batch_result.items():
+                            if related_id:  # Only cache valid IDs
+                                word_cache[f"{lemma.lower()}|{lang_code}"] = related_id
+                                cached_count += 1
+
+                        logger.debug(f"[{word}] Successfully looked up and cached {cached_count}/{len(batch_result)} related words in batch")
+                        if len(batch_result) != batch_size:
+                             logger.warning(f"[{word}] Batch lookup returned {len(batch_result)} results, expected {batch_size}.")
+
                     except Exception as batch_err:
-                        logger.error(f"[{word}] Error in batch word lookup: {batch_err}")
+                        logger.error(f"[{word}] Error during batch word lookup: {batch_err}", exc_info=True)
                         error_messages.append(f"Batch word lookup error: {batch_err}")
-                        # Continue processing without related words
+                        # Continue processing without related words from batch
                 else:
-                    logger.debug(f"[{word}] No additional related words to batch lookup")
+                     # This case should ideally not be reached due to the None/empty checks above, but log just in case.
+                     logger.warning(f"[{word}] Unexpected result from collect_related_words_batch: {type(related_words_batch)}. Skipping batch lookup.")
+
             except Exception as batch_collect_err:
-                logger.error(f"[{word}] Error collecting related words: {batch_collect_err}")
+                logger.error(f"[{word}] Error during related word collection step: {batch_collect_err}", exc_info=True)
                 error_messages.append(f"Related word collection error: {batch_collect_err}")
                 # Continue processing without related words
+
             # --- END BATCH PROCESSING ---
 
             # Process related data in properly grouped operations
@@ -830,6 +859,60 @@ def process_kaikki_jsonl(cur, filename: str):
                             error_messages.append(
                                 f"Pronunciation error ({pron_type}): {str(e)}"
                             )
+
+                    # --- Process Homophones within sound entry ---
+                    if "homophone" in sound and isinstance(sound["homophone"], str):
+                        homophone_str = sound["homophone"].strip()
+                        if homophone_str and homophone_str.lower() != word.lower():
+                            homophone_clean = clean_html(homophone_str)
+                            if homophone_clean.lower() in NON_WORD_STRINGS:
+                                logger.debug(f"Skipping non-word homophone '{homophone_clean}' for word '{word}'")
+                                continue
+
+                            if homophone_clean:
+                                # Assume homophone is in the same language
+                                homophone_lang = language_code
+                                homophone_cache_key = f"{homophone_clean.lower()}|{homophone_lang}"
+                                homophone_word_id = word_cache.get(homophone_cache_key)
+                                if not homophone_word_id:
+                                    homophone_word_id = get_or_create_word_id(
+                                        cur,
+                                        homophone_clean,
+                                        homophone_lang,
+                                        source_identifier,
+                                    )
+                                    if homophone_word_id:
+                                        word_cache[homophone_cache_key] = homophone_word_id
+
+                                if homophone_word_id and homophone_word_id != word_id:
+                                    # Use RELATED with metadata, as HOMOPHONE_OF might not exist
+                                    relation_metadata = {
+                                        "source": "sounds_field",
+                                        "relation_subtype": "homophone",
+                                        "confidence": RelationshipType.RELATED.strength, # Use RELATED strength
+                                    }
+                                    # HOMOPHONE_OF is bidirectional
+                                    rel_id = insert_relation(
+                                        cur,
+                                        word_id,
+                                        homophone_word_id,
+                                        RelationshipType.RELATED.value, # Use RELATED type
+                                        source_identifier,
+                                        relation_metadata,
+                                    )
+                                    if rel_id:
+                                        local_stats["homophone_relations"] += 1
+                                        local_stats["relations"] += 1 # Increment general relations too
+
+                                    # Insert inverse explicitly since we use RELATED
+                                    insert_relation(
+                                        cur,
+                                        homophone_word_id,
+                                        word_id,
+                                        RelationshipType.RELATED.value, # Use RELATED type
+                                        source_identifier,
+                                        relation_metadata,
+                                    )
 
             logger.debug(f"[{word}] Finished pronunciations.")
 
@@ -1564,11 +1647,11 @@ def process_kaikki_jsonl(cur, filename: str):
                                     "derived from",
                                 ]:  # Derivation templates
                                     source_lang = args.get(
-                                        "1", ""
-                                    )  # Language code is usually arg 1
+                                        "2", "" # Correct: Language code is arg 2 for 'der'
+                                    )
                                     source_word = args.get(
-                                        "2", ""
-                                    )  # Source word is usually arg 2
+                                        "3", "" # Correct: Source word is arg 3 for 'der'
+                                    )
 
                                 # Ensure source_lang has a reasonable default if empty
                                 if not source_lang:
@@ -1909,6 +1992,81 @@ def process_kaikki_jsonl(cur, filename: str):
 
             logger.debug(f"[{word}] Finished top-level relations.")
 
+            # --- Process Descendants ---
+            logger.debug(f"[{word}] Processing descendants...")
+            if "descendants" in entry and isinstance(entry["descendants"], list):
+                for desc_idx, descendant_item in enumerate(entry["descendants"]):
+                    try:
+                        if not isinstance(descendant_item, dict):
+                            continue
+
+                        desc_lang = descendant_item.get("lang")
+                        desc_word_str = descendant_item.get("word")
+                        # Sometimes the word is nested under 'templates' > 'args' > '2'
+                        if not desc_word_str and 'templates' in descendant_item and isinstance(descendant_item['templates'], list) and descendant_item['templates']:
+                             desc_template = descendant_item['templates'][0]
+                             if isinstance(desc_template, dict) and 'args' in desc_template and isinstance(desc_template['args'], dict):
+                                 desc_word_str = desc_template['args'].get('2')
+
+                        if desc_lang and desc_word_str and isinstance(desc_word_str, str):
+                            desc_word_clean = clean_html(desc_word_str)
+
+                            if desc_word_clean.lower() in NON_WORD_STRINGS:
+                                logger.debug(f"Skipping non-word descendant '{desc_word_clean}' for word '{word}'")
+                                continue
+
+                            if desc_word_clean and desc_word_clean.lower() != word.lower():
+                                # Get ID for descendant word
+                                desc_cache_key = f"{desc_word_clean.lower()}|{desc_lang}"
+                                descendant_word_id = word_cache.get(desc_cache_key)
+                                if not descendant_word_id:
+                                    descendant_word_id = get_or_create_word_id(
+                                        cur,
+                                        desc_word_clean,
+                                        desc_lang,
+                                        source_identifier,
+                                    )
+                                    if descendant_word_id:
+                                        word_cache[desc_cache_key] = descendant_word_id
+
+                                if descendant_word_id and descendant_word_id != word_id:
+                                    # Use RELATED with metadata, as DERIVED_INTO might not exist
+                                    # DERIVED_INTO is conceptually word -> descendant
+                                    relation_metadata = {
+                                        "source": "descendants_field",
+                                        "relation_subtype": "derived_into",
+                                        "confidence": RelationshipType.RELATED.strength, # Use RELATED strength
+                                        # Include other info from descendant_item if needed
+                                        "depth": descendant_item.get("depth"),
+                                        "tags": descendant_item.get("tags")
+                                    }
+                                    # Remove None values from metadata
+                                    relation_metadata = {k: v for k, v in relation_metadata.items() if v is not None}
+
+                                    rel_id = insert_relation(
+                                        cur,
+                                        word_id, # From this word
+                                        descendant_word_id, # To the descendant
+                                        RelationshipType.RELATED.value, # Use RELATED type
+                                        source_identifier,
+                                        relation_metadata,
+                                    )
+                                    if rel_id:
+                                        local_stats["descendant_relations"] += 1
+                                        local_stats["relations"] += 1 # Increment general relations too
+
+                                    # Optionally add inverse (RELATED is bidirectional, but subtype isn't)
+                                    # Maybe a ROOT_OF relation from descendant to word?
+                                    # inverse_metadata = relation_metadata.copy()
+                                    # inverse_metadata["relation_subtype"] = "derived_from"
+                                    # insert_relation(cur, descendant_word_id, word_id, RelationshipType.RELATED.value, source_identifier, inverse_metadata)
+
+                    except Exception as desc_e:
+                        error_msg = f"Error processing descendant item #{desc_idx} for word '{word}': {desc_e}. Data: {descendant_item}"
+                        logger.error(error_msg, exc_info=True)
+                        error_messages.append(error_msg)
+            logger.debug(f"[{word}] Finished descendants.")
+
             # --- Log before head templates ---
             logger.debug(f"[{word}] Processing head templates...")
             # 4. Process templates
@@ -2208,42 +2366,55 @@ def process_kaikki_jsonl(cur, filename: str):
                             # --- END: Process sense-level links ---
 
                             # --- BEGIN: Process sense-level categories ---
-                            if "categories" in sense and isinstance(
-                                sense["categories"], list
-                            ):
-                                for category_item_idx, category_item in enumerate(
-                                    sense["categories"]
-                                ):
+                            categories = sense.get("categories") # Get categories list/item
+                            if categories and isinstance(categories, list): # Ensure it's a list before iterating
+                                for category_item_idx, category_item in enumerate(categories):
                                     try:
                                         # Skip empty/null categories
                                         if not category_item:
                                             continue
-                                            
-                                        # Handle both string categories and object categories properly  
+
+                                        # --- FIX: Handle potential tuples and ensure dict format ---
                                         category_data = None
                                         if isinstance(category_item, str):
                                             category_data = {"name": category_item.strip()}
                                         elif isinstance(category_item, dict):
-                                            # Use the existing dictionary structure
-                                            category_data = category_item
-                                            # Ensure category name exists
-                                            if not category_data.get("name") and category_data.get("text"):
-                                                category_data["name"] = category_data["text"]
+                                            # Use the existing dictionary structure if valid
+                                            if category_item.get("name") or category_item.get("text"):
+                                                category_data = category_item.copy() # Use copy
+                                                # Standardize name/text
+                                                if "text" in category_data and "name" not in category_data:
+                                                    category_data["name"] = category_data.pop("text")
+                                                # Add wikipedia link if present
+                                                if "wikipedia" in category_item and category_item["wikipedia"]:
+                                                    category_data["wikipedia_link"] = category_item["wikipedia"]
+                                            else:
+                                                logger.warning(f"Category dictionary missing name/text for def ID {def_id} at index {category_item_idx}: {category_item}")
+                                        elif isinstance(category_item, tuple):
+                                             # Attempt to extract from tuple if structure is known/simple (e.g., first element is name)
+                                             if len(category_item) > 0 and isinstance(category_item[0], str) and category_item[0].strip():
+                                                 category_data = {"name": category_item[0].strip()}
+                                                 # Optionally log or extract other tuple elements if structure is consistent
+                                                 logger.warning(f"Category item for def ID {def_id} at index {category_item_idx} was a tuple. Extracted name: '{category_data['name']}'. Original tuple: {category_item}")
+                                             else:
+                                                 logger.warning(f"Cannot process category tuple for def ID {def_id} at index {category_item_idx}. Unexpected structure or empty name: {category_item}")
                                         else:
-                                            logger.warning(f"Unexpected category format at index {category_item_idx} for definition {def_id}: {type(category_item)}")
-                                            continue
-                                            
-                                        if not category_data or not category_data.get("name"):
-                                            continue
-                                        # Pass the category_item (string or dict) directly to the insert function
-                                        cat_db_id = insert_definition_category(
-                                            cur,
-                                            def_id,
-                                            category_data,  # Pass the normalized category data
-                                            source_identifier=source_identifier,
-                                        )
-                                        if cat_db_id:
-                                            local_stats["categories"] += 1
+                                            logger.warning(f"Unexpected category format at index {category_item_idx} for definition {def_id}: {type(category_item)}. Data: {category_item}")
+
+                                        # Only proceed if we have valid category_data (a dict with a name)
+                                        if isinstance(category_data, dict) and category_data.get("name"):
+                                            # Pass the processed category_data dictionary
+                                            cat_db_id = insert_definition_category(
+                                                cur,
+                                                def_id,
+                                                category_data,  # Pass the dictionary
+                                                source_identifier=source_identifier,
+                                            )
+                                            if cat_db_id:
+                                                local_stats["categories"] += 1
+                                        # else: # Log if category processing failed for this item (already logged above)
+                                        #    pass
+
                                     except Exception as cat_e:
                                         # Log error but continue processing other links/categories
                                         error_msg = f"Error storing sense category #{category_item_idx} for def ID {def_id} (Word: '{word}'): {str(cat_e)}. Data: {category_item}"
@@ -2436,6 +2607,59 @@ def process_kaikki_jsonl(cur, filename: str):
                         error_messages.append(error_msg)
                         # Optionally, rollback this specific definition's changes if possible,
                         # but the main transaction handles overall rollback on failure.
+
+                    logger.debug(f"[{word}] Finished categories for sense {sense_idx}.")
+
+                    # --- NEW: Process Sense-Level Synonyms ---
+                    sense_synonyms = sense.get("synonyms")
+                    if sense_synonyms and isinstance(sense_synonyms, list):
+                        logger.debug(f"[{word}] Processing {len(sense_synonyms)} synonyms for sense {sense_idx}...")
+                        for syn_item_idx, syn_item in enumerate(sense_synonyms):
+                            target_syn_word_raw = None
+                            syn_metadata = {"context": "definition_sense", "definition_id": def_id}
+                            if isinstance(syn_item, str):
+                                target_syn_word_raw = syn_item
+                            elif isinstance(syn_item, dict):
+                                target_syn_word_raw = syn_item.get("word") or syn_item.get("term")
+                                # Add other fields from syn_item dict to metadata
+                                for k, v in syn_item.items():
+                                    if k not in ["word", "term"]:
+                                        try: syn_metadata[k] = str(v)
+                                        except Exception: pass
+                            else:
+                                continue # Skip invalid synonym item type
+                            
+                            if target_syn_word_raw and isinstance(target_syn_word_raw, str):
+                                target_syn_cleaned = target_syn_word_raw.strip()
+                                if not target_syn_cleaned: continue
+
+                                # Apply the same "lemma — qualifier" split logic
+                                main_syn_lemma = target_syn_cleaned
+                                syn_qualifier = None
+                                if " — " in target_syn_cleaned and not target_syn_cleaned.startswith(" — ") and not target_syn_cleaned.endswith(" — "):
+                                    parts = target_syn_cleaned.split(" — ", 1)
+                                    if len(parts) == 2 and parts[0].strip() and parts[1].strip():
+                                        main_syn_lemma = parts[0].strip()
+                                        syn_qualifier = parts[1].strip()
+                                        syn_metadata["qualifier"] = syn_qualifier
+                                    # If split fails, main_syn_lemma remains target_syn_cleaned
+                                
+                                if not main_syn_lemma: continue # Skip if empty after potential split
+
+                                # Get ID for the main synonym lemma
+                                target_syn_id = get_or_create_word_id(cur, main_syn_lemma, lang_code, source_identifier)
+                                if target_syn_id:
+                                    # Insert relation using potentially updated metadata
+                                    insert_relation(cur, word_id, target_syn_id, RelationshipType.SYNONYM.value, source_identifier, syn_metadata)
+                                    local_stats["synonym_relations"] = local_stats.get("synonym_relations", 0) + 1
+                                    local_stats["relations"] += 1 # Increment general relations too
+                                    logger.debug(f"[{word}] Added sense synonym relation {syn_item_idx}: {main_syn_lemma}")
+                                else:
+                                    logger.warning(f"[{word}] Could not get/create word ID for sense synonym '{main_syn_lemma}' (from original '{target_syn_word_raw}')")
+                        logger.debug(f"[{word}] Finished synonyms for sense {sense_idx}.")
+                    # --- End Sense-Level Synonyms ---                    
+                            
+                    # --- Process Definition Templates --- (existing code)
 
             logger.debug(f"[{word}] Finished senses.")
 

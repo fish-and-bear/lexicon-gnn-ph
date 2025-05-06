@@ -1,16 +1,16 @@
 :root {
   --bg-color: #f8f9fa;
   --text-color: #1d3557;
-  --primary-color: #1d3557;
-  --secondary-color: #e63946;
-  --accent-color: #fca311;
-  --gold: #d4af37;
-  --card-bg-color: #ffffff;
-  --card-border-color: #e6e8eb;
+  --primary-color: #3d5a80;
+  --secondary-color: #ee6c4d;
+  --accent-color: #e09f3e;
+  --gold: #FFD700;
+  --card-bg-color: #fff;
+  --card-border-color: rgba(0, 0, 0, 0.05);
   --input-bg-color: #ffffff;
   --input-border-color: #d1d5db;
   --button-color: #1d3557;
-  --button-text-color: #ffffff;
+  --button-text-color: white;
   --graph-bg-color: #f1f5f9;
   --color-main: #1d3557;
   --color-derivative: #457b9d;
@@ -22,7 +22,7 @@
   --link-color: #1d3557;
   --selected-node-border-color: #e6e8eb;
   --card-bg-color-rgb: 255, 255, 255; /* for light theme */
-  --footer-height: 2.5rem; /* Adjust as needed based on final footer content/styling */
+  --footer-height: 2.5rem; /* Consistently defined footer height */
   --focus-ring-color: rgba(29, 53, 87, 0.3); /* Added based on --primary-color */
 }
 
@@ -38,15 +38,20 @@
   --accent-color: #e09f3e;
   --gold: #ffc940;
   --red: #e63946;
+  --green: #4ce0b3;
+  --blue: #3BACB6;
+  --purple: #9d4edd;
+  --pink: #ff8fa3;
+  --teal: #3BACB6;
   --source-color: #4a6fa5;
-  --card-bg-color: #131826;
+  --card-bg-color: #161726;
   --card-bg-color-elevated: #1a202e;
-  --card-border-color: #2e3a4e;
+  --card-border-color: rgba(255, 255, 255, 0.05);
   --input-bg-color: #1a202e;
   --definition-bg-color: #1a202e;
   --input-border-color: #2e3a4e;
   --button-color: #3e4e66;
-  --button-text-color: #ffffff;
+  --button-text-color: #0a0d16;
   --graph-bg-color: #161c2c;
   --link-color: #7ea3cc;
   --color-main: #5d9cec;
@@ -127,6 +132,7 @@ main {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: var(--graph-bg-color);
 }
 
 .graph-content {
@@ -135,6 +141,9 @@ main {
   height: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .details-container {
@@ -523,6 +532,15 @@ main {
   main [data-panel-resizer].resize-handle.horizontal {
        height: 3px !important;
    }
+
+  /* Adjust footer size on small screens */
+  :root {
+    --footer-height: 2rem;
+  }
+  .footer {
+    font-size: 0.7rem;
+    padding: 0 0.4rem;
+  }
 }
 
 .loading-indicator {
@@ -660,7 +678,7 @@ main {
   overflow: hidden;
 }
 
-/* Re-adding Footer Styles */
+/* Updated Footer Styles - Fixed at bottom with proper z-index */
 .footer {
   position: fixed;
   bottom: 0;
@@ -686,17 +704,6 @@ main {
   background-color: var(--footer-color);
   color: var(--text-color-secondary);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Adjust footer size on small screens */
-@media (max-width: 480px) {
-  :root {
-    --footer-height: 2rem;
-  }
-  .footer {
-    font-size: 0.7rem;
-    padding: 0 0.4rem;
-  }
 }
 
 /* Re-adding Theme Toggle Button Styles */
@@ -864,4 +871,9 @@ main [data-panel-group] {
 main [data-panel-group] {
     /* Ensure PanelGroup takes full height if not already handled by inline style */
     height: 100%; 
+}
+
+/* Add space at the bottom of the graph container for footer */
+.graph-wrapper {
+  margin-bottom: var(--footer-height);
 }

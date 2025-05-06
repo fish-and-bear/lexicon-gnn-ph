@@ -51,6 +51,9 @@ const formatRelationType = (type: string): string => {
   if (type === 'kaugnay') return 'Kaugnay';
   if (type === 'kasalungat') return 'Kasalungat';
   if (type === 'kahulugan') return 'Kahulugan';
+  if (type === 'has_translation' || type === 'translation_of') return 'Translation';
+  // Consolidate usage/info/other/associated into 'Related'
+  if (['usage', 'see_also', 'compare_with', 'associated', 'other'].includes(type.toLowerCase())) return 'Related';
   
   // Capitalize the first letter and replace underscores with spaces
   return type
@@ -70,7 +73,13 @@ const relationColors: { [key: string]: string } = {
   related: "#48cae4",   // Light blue
   similar: "#4cc9f0",   // Sky blue
   
+  // Add translation colors (using related color)
+  has_translation: "#48cae4", // Use related color
+  translation_of: "#48cae4",  // Use related color
+  
   // Origin group - Reds and oranges
+  root_of: "#e63946",       // Add color for root_of (same as root)
+  derived_from: "#f77f00",  // Add color for derived_from (orange)
   etymology: "#d00000", // Dark red
   cognate: "#ff5c39",   // Light orange
   
@@ -94,7 +103,7 @@ const relationColors: { [key: string]: string } = {
   derivative: "#606c38", // Dark olive
   
   // Info group - Yellows/Oranges
-  usage: "#fcbf49",     // Gold
+  usage: "#fcbf49",     // Gold - Keep color definition but won't be used directly
   
   // Specific Filipino relations - Oranges and pinks
   kaugnay: "#fb8500",   // Orange
@@ -103,8 +112,10 @@ const relationColors: { [key: string]: string } = {
   kasalungat: "#e63946", // Red
   
   // Fallback
-  associated: "#adb5bd", // Neutral gray
-  other: "#6c757d"      // Dark gray
+  // associated: "#adb5bd", // REMOVE - Mapped to related
+  see_also: "#fcbf49", // REMOVE - Mapped to related
+  compare_with: "#fcbf49", // REMOVE - Mapped to related
+  // other: "#6c757d"      // REMOVE - Mapped to related
 };
 
 // Define key graph colors locally for styling
@@ -122,45 +133,65 @@ const graphColors = {
 
 // --- Styled Components ---
 // Simplified Accordion Styling
-const StyledAccordion = styled(Accordion)(({ theme }: { theme: Theme }) => ({ // Add Theme type
-  border: 'none', // Remove explicit border
-  boxShadow: 'none', // Remove default shadow
-  backgroundColor: 'transparent',
+const StyledAccordion = styled(Accordion)(({ theme }: { theme: Theme }) => ({
+  border: 'none',
+  boxShadow: 'none',
+  // Use elevated background for the whole accordion in dark mode
+  backgroundColor: theme.palette.mode === 'dark' ? 'var(--card-bg-color-elevated)' : 'transparent',
+  borderRadius: theme.shape.borderRadius, // Add some rounding
+  marginBottom: theme.spacing(1), // Add some space between accordions
   '&:not(:last-child)': {
-    borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : theme.palette.divider}`, // Enhance dark mode divider
+    // borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : theme.palette.divider}`, // Remove individual bottom border
+    borderBottom: 'none',
   },
   '&::before': {
-    display: 'none', // Remove the default top border pseudo-element
+    display: 'none',
   },
+  // Ensure consistent background even when expanded
+  '&.Mui-expanded': {
+    margin: '0 0 8px 0', // Keep consistent margin
+    backgroundColor: theme.palette.mode === 'dark' ? 'var(--card-bg-color-elevated)' : 'transparent',
+  }
 }));
 
-const StyledAccordionSummary = styled(AccordionSummary)(({ theme }: { theme: Theme }) => ({ // Add Theme type
-  padding: theme.spacing(0, 1), // Adjust padding
+const StyledAccordionSummary = styled(AccordionSummary)(({ theme }: { theme: Theme }) => ({
+  padding: theme.spacing(0, 2), // Increase horizontal padding
   minHeight: 48,
+  // Make summary slightly lighter/different than details in dark mode
   backgroundColor:
     theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, .05)'
+      ? alpha(theme.palette.background.paper, 0.6) // Use paper bg with alpha
       : 'rgba(0, 0, 0, .02)',
+  borderRadius: 'inherit', // Inherit border radius
+  borderBottomLeftRadius: 0,
+  borderBottomRightRadius: 0,
   '&:hover': {
      backgroundColor:
         theme.palette.mode === 'dark'
-          ? 'rgba(255, 255, 255, .1)'
+          ? alpha(theme.palette.background.paper, 0.8)
           : 'rgba(0, 0, 0, .03)',
   },
   '& .MuiAccordionSummary-content': {
-    margin: theme.spacing(1.5, 0), // Adjust margin
-    alignItems: 'center', // Vertically align title and chip
+    margin: theme.spacing(1.5, 0),
+    alignItems: 'center',
   },
   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
     transform: 'rotate(180deg)',
   },
+  // Remove bottom radius when expanded to connect with details
+  '&.Mui-expanded': {
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  }
 }));
 
-const StyledAccordionDetails = styled(AccordionDetails)(({ theme }: { theme: Theme }) => ({ // Add Theme type
-  padding: theme.spacing(2, 2, 2, 2), // Consistent padding
-  borderTop: 'none', // Remove internal border
-  // Use elevated background color in dark mode for definition section
+const StyledAccordionDetails = styled(AccordionDetails)(({ theme }: { theme: Theme }) => ({
+  padding: theme.spacing(2, 2, 2, 2),
+  borderTop: 'none',
+  // Details bg should match the overall accordion bg in dark mode
   backgroundColor: theme.palette.mode === 'dark' ? 'var(--card-bg-color-elevated)' : 'transparent',
+  borderBottomLeftRadius: 'inherit',
+  borderBottomRightRadius: 'inherit'
 }));
 
 const ExpandMoreIcon = () => <Typography sx={{ transform: 'rotate(90deg)', lineHeight: 0, color: 'text.secondary' }}>▶</Typography>;
@@ -190,7 +221,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     isLoading
   },
   ref
-) => {
+): React.ReactElement | null => { // Specify return type here
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const [activeTab, setActiveTab] = useState<string>('definitions');
@@ -204,32 +235,51 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   
   // Effect to setup audio element
   useEffect(() => {
-    setIsAudioPlaying(false); // Stop previous audio on word change
-    const audioPronunciation = wordData?.pronunciations?.find(p => p.type === 'audio' && p.value);
-    let audio: HTMLAudioElement | null = null;
+    // Always reset audio playing state when word changes
+    setIsAudioPlaying(false);
+    setAudioElement(null);
 
-    if (audioPronunciation?.value) {
-      try {
-          audio = new Audio(audioPronunciation.value);
-          const onEnded = () => setIsAudioPlaying(false);
-          audio.addEventListener('ended', onEnded);
-          setAudioElement(audio);
-
-          return () => {
-            if (audio) {
-              audio.pause();
-              audio.removeEventListener('ended', onEnded);
-            }
-          };
-      } catch (error) {
-          console.error("Error creating audio element:", error);
-          setAudioElement(null); // Ensure state is cleared on error
-      }
-    } else {
-      setAudioElement(null); // Clear if no audio pron
+    // Safely check for audio pronunciations
+    if (!wordData || !wordData.pronunciations || !Array.isArray(wordData.pronunciations)) {
+      return; // Exit early if no valid pronunciation data
     }
-    
-    return undefined; // Add default return for useEffect
+
+    // Find audio pronunciation with careful null checking
+    const audioPronunciation = wordData.pronunciations.find(
+      p => p && p.type === 'audio' && typeof p.value === 'string' && p.value.trim() !== ''
+    );
+
+    // Only proceed if we have a valid audio URL
+    if (!audioPronunciation || !audioPronunciation.value) {
+      return; // No valid audio pronunciation found
+    }
+
+    try {
+      const audio = new Audio(audioPronunciation.value);
+      
+      if (!audio) {
+        console.error("Failed to create audio element");
+        return;
+      }
+      
+      const onEnded = () => setIsAudioPlaying(false);
+      audio.addEventListener('ended', onEnded);
+      setAudioElement(audio);
+
+      return () => {
+        try {
+          if (audio) {
+            audio.pause();
+            audio.removeEventListener('ended', onEnded);
+          }
+        } catch (cleanupError) {
+          console.error("Error cleaning up audio element:", cleanupError);
+        }
+      };
+    } catch (error) {
+      console.error("Error creating audio element:", error);
+      setAudioElement(null); // Ensure state is cleared on error
+    }
   }, [wordData]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -237,16 +287,27 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   };
 
   const playAudio = useCallback(() => {
-    if (!audioElement) return;
-    if (isAudioPlaying) {
-      audioElement.pause();
-      audioElement.currentTime = 0;
+    if (!audioElement) {
+      console.warn("Attempted to play audio, but no audio element available");
+      return;
+    }
+    
+    try {
+      if (isAudioPlaying) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        setIsAudioPlaying(false);
+      } else {
+        audioElement.play()
+          .then(() => setIsAudioPlaying(true))
+          .catch(err => {
+            console.error("Audio play failed:", err);
+            setIsAudioPlaying(false); // Reset state on error
+          });
+      }
+    } catch (error) {
+      console.error("Error controlling audio playback:", error);
       setIsAudioPlaying(false);
-    } else {
-      audioElement.play().then(() => setIsAudioPlaying(true)).catch(err => {
-        console.error("Audio play failed:", err);
-        setIsAudioPlaying(false); // Reset state on error
-      });
     }
   }, [audioElement, isAudioPlaying]);
 
@@ -256,6 +317,10 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     // Find ALL IPA pronunciations
     const ipaPronunciations = wordData.pronunciations?.filter(p => p.type?.toLowerCase() === 'ipa') || [];
     const audioPronunciation = wordData.pronunciations?.find(p => p.type === 'audio' && p.value);
+
+    // !!! ADDED DEBUG: Log pronunciation data
+    // console.log('WordDetails Pronunciations:', wordData.pronunciations);
+    // !!! END DEBUG
 
     return (
       <Paper 
@@ -288,10 +353,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             
             {/* IPA Pronunciation(s) Display */}
             {ipaPronunciations.length > 0 && (
-              <Stack direction="column" spacing={0.5} sx={{ mb: 1 }}>
+              // Changed Stack direction to 'row' and added wrapping + gap
+              <Stack direction="row" spacing={1} sx={{ mb: 1, flexWrap: 'wrap', gap: 0.5 }}>
                 {ipaPronunciations.map((pron, index) => (
-                  <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                    <Typography variant="body1" className="pronunciation-ipa" sx={{ color: 'text.secondary', fontStyle: 'italic' }}>
+                  // Removed the outer Box, relying on Stack spacing
+                  <React.Fragment key={index}>
+                    <Typography variant="body1" component="span" className="pronunciation-ipa" sx={{ color: 'text.secondary', fontStyle: 'italic', display: 'inline-block' }}>
                        /{pron.value}/
                     </Typography>
                     {pron.tags && pron.tags.length > 0 && (
@@ -299,10 +366,16 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         label={pron.tags.join(', ')} 
                         size="small" 
                         variant="outlined" 
-                        sx={{ height: 'auto', '& .MuiChip-label': { py: '1px', fontSize: '0.7rem' } }} 
+                        // Adjust chip styling for inline display
+                        sx={{ 
+                          height: 'auto', 
+                          verticalAlign: 'middle', // Align chip nicely with text
+                          ml: 0.5, // Add some space before the chip
+                          '& .MuiChip-label': { py: '1px', fontSize: '0.7rem' } 
+                        }} 
                       />
                     )}
-                  </Box>
+                  </React.Fragment>
                 ))}
               </Stack>
             )}
@@ -317,7 +390,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               />
             )}
             
-            {/* Baybayin Form (if available) */}
+            {/* Baybayin Form (if available) - Enhanced Styling */}
             {wordData.has_baybayin && wordData.baybayin_form && (
                <Typography 
                  variant="h5" 
@@ -325,11 +398,16 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                  className="baybayin-text" 
                  lang="tl-Tglg" // Specify language tag for Baybayin
                  sx={{ 
-                   // fontFamily: '"Noto Sans Tagalog", sans-serif', // Apply font via CSS
-                   marginBottom: theme.spacing(1),
-                   color: 'var(--accent-color)', // Use accent color for Baybayin
-                   fontSize: isMobile ? '1.8rem' : '2.2rem',
-                   lineHeight: 1.2,
+                   // Use the specific Baybayin font class defined in CSS
+                   // Apply margin top for spacing, adjust font size/color
+                   mt: 1.5, // Add space above
+                   mb: 1,   // Space below
+                   color: 'var(--accent-color)', // Use accent color for visibility
+                   fontSize: isMobile ? '1.8rem' : '2.5rem', // *** Slightly smaller on mobile ***
+                   lineHeight: 1.1,
+                   textAlign: 'left', // Align with lemma
+                   // Ensure background isn't interfering if set in CSS
+                   backgroundColor: 'transparent' 
                  }}
                >
                  {wordData.baybayin_form}
@@ -368,28 +446,32 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       return <Alert severity="info">No definitions available for this word.</Alert>;
     }
 
-    const definitionsByPosThenSource: { [pos: string]: { [source: string]: RawDefinition[] } } = {};
+    // Group by Combined POS (English + Tagalog if different) then Source
+    const definitionsByCombinedPosThenSource: { [combinedPosKey: string]: { [source: string]: RawDefinition[] } } = {};
     wordData.definitions.forEach((def: RawDefinition) => {
-      // Use standardized_pos object for POS info
-      const posKey = def.standardized_pos?.name_en || def.standardized_pos?.code || def.original_pos || 'Other';
-      // Ensure def.sources is treated as string based on type
+      const englishPos = def.standardized_pos?.name_en || def.standardized_pos?.code || def.original_pos || 'Other';
+      const tagalogPos = def.standardized_pos?.name_tl;
+      // Create a combined key for grouping
+      const combinedPosKey = tagalogPos && tagalogPos !== englishPos ? `${englishPos} (${tagalogPos})` : englishPos;
+      
       const sourceKey = def.sources || 'Unknown Source'; 
-      if (!definitionsByPosThenSource[posKey]) {
-        definitionsByPosThenSource[posKey] = {};
+      
+      if (!definitionsByCombinedPosThenSource[combinedPosKey]) {
+        definitionsByCombinedPosThenSource[combinedPosKey] = {};
       }
-      if (!definitionsByPosThenSource[posKey][sourceKey]) {
-        definitionsByPosThenSource[posKey][sourceKey] = [];
+      if (!definitionsByCombinedPosThenSource[combinedPosKey][sourceKey]) {
+        definitionsByCombinedPosThenSource[combinedPosKey][sourceKey] = [];
       }
-      definitionsByPosThenSource[posKey][sourceKey].push(def);
+      definitionsByCombinedPosThenSource[combinedPosKey][sourceKey].push(def);
     });
 
     return (
-      // Use pt instead of wrapping Box for top padding
       <Box sx={{ pt: isMobile ? 0.5 : 1, width: '100%', maxWidth: '100%' }}> 
-        {Object.entries(definitionsByPosThenSource).map(([posName, defsBySource]) => {
+        {/* Iterate using the new combined key */}
+        {Object.entries(definitionsByCombinedPosThenSource).map(([combinedPosKey, defsBySource]) => {
           return (
-          <Box key={posName} sx={{ mb: isMobile ? 2 : 3, width: '100%', maxWidth: '100%' }}>
-            {/* Part of Speech Header - English/Code Only */}
+          <Box key={combinedPosKey} sx={{ mb: isMobile ? 1.5 : 3, width: '100%', maxWidth: '100%' }}>
+            {/* Display the combined POS Key directly in the header */}
             <Typography 
               variant="subtitle1" 
               component="h3" 
@@ -397,7 +479,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                 color: graphColors.main, 
                 fontWeight: 600,
                 pb: isMobile ? 0.5 : 1,
-                fontSize: isMobile ? '0.9rem' : '1rem', // Reduced font size
+                fontSize: isMobile ? '0.85rem' : '1rem', // *** Reduced mobile font size ***
                 borderBottom: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
                 mb: isMobile ? 1 : 1.5,
                 width: '100%',
@@ -405,15 +487,13 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                 textOverflow: 'ellipsis'
               }}
             >
-              {posName} 
+              {combinedPosKey} {/* Display the combined key */}
             </Typography>
             
-            {/* Iterate through definitions grouped by source */}
             {Object.entries(defsBySource).map(([sourceName, defs]) => {
-              // Filtering logic
+              // Filtering logic remains the same
               const seenBaseDefinitions = new Set<string>();
               const filteredDefs = defs.filter((def) => {
-                // Use definition_text
                 const baseText = stripLeadingNumber(def.definition_text);
                 if (seenBaseDefinitions.has(baseText)) {
                   return false; 
@@ -429,105 +509,75 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                 <List disablePadding>
                   {filteredDefs.map((def: RawDefinition, index: number) => {
                     const isLastDefinitionForSource = index === filteredDefs.length - 1;
-                    // Use standardized_pos object for Tagalog name
-                    const tagalogPos = def.standardized_pos?.name_tl;
-                    // Check against standardized_pos.name_en or code used for posKey
-                    const showTagalogPos = tagalogPos && tagalogPos !== (def.standardized_pos?.name_en || def.standardized_pos?.code);
 
                     return (
                     <ListItem 
                       key={def.id || index} 
                       alignItems="flex-start" 
-                      sx={{ 
+                      sx={{ /* Existing ListItem sx */ 
                         flexDirection: 'column', 
                         gap: 0.5, 
                         py: isMobile ? 1 : 1.5, 
                         pl: 0, 
-                        pr: 0, // Ensure no right padding
+                        pr: 0, 
                         position: 'relative', 
                         pb: isLastDefinitionForSource && sourceName !== 'Unknown Source' ? (isMobile ? 2.5 : 3) : (isMobile ? 1 : 1.5), 
                       }}
                     >
-                      {/* Definition text */}
+                      {/* Definition text - REMOVE secondary TL display & strip trailing digits */}
                       <ListItemText
-                        primaryTypographyProps={{ 
-                          variant: 'body1', 
-                          fontWeight: 500, 
-                          fontSize: isMobile ? '0.85rem' : '1rem', // Reduced font size
-                          pl: 0.5, 
-                          lineHeight: isMobile ? 1.5 : 1.6 // Increased lineHeight
-                        }}
-                        primary={def.definition_text}
+                        primary={
+                          <Typography component="div" variant="body1" fontWeight={500} fontSize={isMobile ? '0.85rem' : '1rem'} pl={0.5} lineHeight={isMobile ? 1.5 : 1.6}>
+                            {def.definition_text.replace(/\d+$/, '').trim()} {/* Strip trailing digits */}
+                          </Typography>
+                        }
+                        // secondary={...} // REMOVED secondary prop
                       />
-
-                      {/* Display Tagalog POS if available and different */}
-                      {showTagalogPos && (
-                        <Typography 
-                          variant="caption" 
-                          sx={{ 
-                            pl: 0.5, // Indent slightly
-                            mt: 0.5, // Add space below definition text
-                            fontSize: isMobile ? '0.7rem' : '0.75rem', // Reduced font size
-                            color: 'text.secondary', 
-                            fontStyle: 'italic' 
-                          }}
-                        >
-                          (TL: {tagalogPos})
-                        </Typography>
-                      )}
                       
-                      {/* Examples */}
+                      {/* Examples (Keep as is) */}
                       {def.examples && def.examples.length > 0 && (
-                        <Box sx={{ pl: 2, mb: 1 }}>
-                          {/* Use non-null assertion if optional chaining isn't enough */} 
+                        <Box sx={{ pl: 1, mb: 1 }}> 
                           {def.examples!.map((example: Example, exIndex: number) => ( 
-                            <Typography 
+                            <Box 
                               key={exIndex} 
-                              variant="body2" 
-                              sx={{ 
-                                fontStyle: 'italic', 
-                                color: 'text.secondary',
-                                fontSize: isMobile ? '0.8rem' : '0.875rem', // Reduced font size
-                                mb: exIndex < def.examples!.length - 1 ? 0.5 : 0,
-                                position: 'relative',
-                                pl: 3,
-                                lineHeight: isMobile ? 1.4 : 1.5, // Increased lineHeight
-                                '&:before': {
-                                  content: '"""',
-                                  position: 'absolute',
-                                  left: 0,
-                                  color: alpha(theme.palette.text.primary, 0.4),
-                                  fontSize: '1.5rem',
-                                  lineHeight: 1,
-                                  top: -5,
-                                }
+                              className="definition-example-text" 
+                              sx={{ /* Existing example sx */ 
+                                mb: exIndex < def.examples!.length - 1 ? 1 : 0, 
+                                p: 1.5, 
+                                bgcolor: theme => alpha(theme.palette.grey[500], 0.05), 
+                                borderRadius: 1, 
+                                borderLeft: `3px solid ${alpha(theme.palette.primary.main, 0.3)}`, 
                               }}
                             >
-                              {example.example_text}
-                              {example.translation && ` - ${example.translation}`}
+                              <Typography component="div" sx={{ fontStyle: 'normal', color: 'text.primary', mb: 0.5 }}>
+                                {example.example_text}
+                              </Typography>
+                              {example.translation && (
+                                <Typography component="div" sx={{ fontStyle: 'italic', color: 'text.secondary', fontSize: '0.85em' }}>
+                                   - {example.translation}
+                                </Typography>
+                              )}
                               {example.example_metadata?.romanization && 
-                                <span style={{ color: 'text.disabled', marginLeft: '0.5em' }}>
+                                <Typography component="div" color="text.disabled" sx={{ fontStyle: 'italic', fontSize: '0.8em', mt: 0.5 }}>
                                   ({example.example_metadata.romanization})
-                                </span>
+                                </Typography>
                               }
-                            </Typography>
+                            </Box>
                           ))}
                         </Box>
                       )}
                       
-                      {/* Usage notes */}
+                      {/* Usage notes (Keep as is) */}
                       {def.usage_notes && (
                         <Box sx={{ pl: 1, mb: 1 }}>
                           <Typography 
-                            variant="caption" 
                             component="div" 
                             sx={{ fontWeight: 500, mb: 0.5, fontSize: isMobile ? '0.75rem' : '0.8rem' }}
                           >
                             Usage Notes:
                           </Typography>
-                          {/* Render string directly, no map */} 
                           <Typography 
-                              variant="body2" 
+                              component="div" 
                               sx={{ color: 'text.secondary', fontSize: isMobile ? '0.8rem' : '0.875rem' }}
                             >
                               {def.usage_notes}
@@ -535,7 +585,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         </Box>
                       )}
                       
-                      {/* Definition tags */}
+                      {/* Definition tags (Keep as is) */}
                       {def.tags && def.tags.trim().length > 0 && (
                         <Stack 
                           direction="row" 
@@ -544,21 +594,23 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                           flexWrap="wrap" 
                           sx={{ mt: 0.5 }}
                         >
-                          {/* Split tags string and map with type */} 
                           {def.tags.split(',').map(tag => tag.trim()).filter(tag => tag).map((tag: string, tagIndex: number) => (
                             <Chip
                               key={tagIndex}
                               label={tag}
                               size="small"
+                              variant="outlined" // Use outlined variant
                               sx={{
-                                fontSize: isMobile ? '0.65rem' : '0.7rem', // Reduced font size
+                                fontSize: isMobile ? '0.65rem' : '0.7rem', 
                                 height: 'auto',
-                                padding: theme.spacing(0.25, 0),
-                                bgcolor: alpha(theme.palette.primary.main, 0.1),
-                                color: theme.palette.primary.main,
+                                padding: theme.spacing(0.1, 0), // Adjust padding
+                                // Use neutral theme colors
+                                color: 'text.secondary',
+                                borderColor: 'action.disabledBackground',
+                                bgcolor: 'transparent', // Ensure no background override
                                 '& .MuiChip-label': { 
                                   px: 0.75, 
-                                  py: 0.2 
+                                  py: 0.25 // Adjust label padding
                                 }
                               }}
                             />
@@ -566,26 +618,26 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                         </Stack>
                       )}
 
-                      {/* Source Chip */}
+                      {/* Source Chip (Keep as is) */}
                       {isLastDefinitionForSource && sourceName !== 'Unknown Source' && (
                         <Chip
                           label={`${sourceName}`}
                           size="small"
                           variant="outlined"
-                          sx={{
-                            position: 'absolute', // Position relative to ListItem
+                          sx={{ /* Existing source chip sx */
+                            position: 'absolute', 
                             bottom: theme.spacing(isMobile ? 0.25 : 0.5),
                             right: theme.spacing(isMobile ? 0.25 : 0.5),
-                            fontSize: isMobile ? '0.65rem' : '0.7rem', // Reduced font size
+                            fontSize: isMobile ? '0.65rem' : '0.7rem', 
                             height: 'auto',
                             padding: theme.spacing(0.25, 0),
                             borderColor: alpha(graphColors.related, 0.4),
                             color: alpha(graphColors.related, 0.9),
                             bgcolor: alpha(graphColors.related, 0.04),
-                            maxWidth: 'calc(100% - 16px)', // Prevent overflow
+                            maxWidth: 'calc(100% - 16px)', 
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            zIndex: 1, // Ensure it's above other content if overlap occurs
+                            zIndex: 1, 
                             '& .MuiChip-label': { 
                               px: 1, 
                               py: 0.25 
@@ -627,32 +679,63 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       const mainWord = wordData.lemma;
       const relations: any[] = [];
       
+      if (!semanticNetworkLinks || !Array.isArray(semanticNetworkLinks) || !semanticNetworkNodes || !Array.isArray(semanticNetworkNodes)) {
+        console.warn("Invalid semantic network data structure");
+        return relations;
+      }
+      
       semanticNetworkLinks.forEach((link: NetworkLink) => { // Type link
-        // Find the connected node
-        const targetNode = semanticNetworkNodes.find(
-          (n: NetworkNode) => n.id === (typeof link.target === 'object' ? link.target.id : link.target) // Type n
-        );
+        if (!link) return; // Skip invalid links
         
-        if (!targetNode) return;
+        // Safely determine target ID with type checking
+        let targetId: number | string | null = null;
         
-        // Calculate degree/distance (default to 1 for direct connections)
-        // Check if link object itself has degree/distance, otherwise default to 1
-        const degree = (link as any).distance || (link as any).degree || 1; 
-        
-        // Create a relation object mimicking standard Relation structure + degree
-        relations.push({
-          id: `semantic-${targetNode.id}`,
-          relation_type: link.type || 'related',
-          degree: degree, // Include degree
-          // Create a wordObj similar to target_word/source_word in Relation
-          wordObj: {
-            id: targetNode.id,
-            lemma: targetNode.label || targetNode.word || String(targetNode.id),
-            has_baybayin: targetNode.has_baybayin || false,
-            baybayin_form: targetNode.baybayin_form || null
-            // Add other BasicWord fields if needed (e.g., language_code, gloss, pos)
+        try {
+          if (typeof link.target === 'object' && link.target && link.target.id) {
+            targetId = link.target.id;
+          } else if (typeof link.target === 'number' || typeof link.target === 'string') {
+            targetId = link.target;
           }
-        });
+          
+          if (targetId === null) {
+            console.warn("Could not determine target ID from link:", link);
+            return; // Skip this link
+          }
+          
+          // Find the connected node
+          const targetNode = semanticNetworkNodes.find(
+            (n: NetworkNode) => n && n.id === targetId
+          );
+          
+          if (!targetNode) {
+            console.warn(`Target node not found for ID: ${targetId}`);
+            return;
+          }
+          
+          // Calculate degree/distance (default to 1 for direct connections)
+          // Check if link object itself has degree/distance, otherwise default to 1
+          const degree = (link as any).distance || (link as any).degree || 1; 
+          
+          // Ensure targetNode has the required properties
+          const nodeLabel = targetNode.label || targetNode.word || String(targetNode.id);
+          
+          // Create a relation object mimicking standard Relation structure + degree
+          relations.push({
+            id: `semantic-${targetNode.id}`,
+            relation_type: link.type || 'related',
+            degree: degree, // Include degree
+            // Create a wordObj similar to target_word/source_word in Relation
+            wordObj: {
+              id: targetNode.id,
+              lemma: nodeLabel,
+              has_baybayin: targetNode.has_baybayin || false,
+              baybayin_form: targetNode.baybayin_form || null
+              // Add other BasicWord fields if needed (e.g., language_code, gloss, pos)
+            }
+          });
+        } catch (error) {
+          console.error("Error processing semantic network link:", error, link);
+        }
       });
       
       console.log(`Created ${relations.length} fallback relations from semantic network`);
@@ -690,10 +773,18 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                   {rootAffix.map((affix: Affixation, index: number) => (
                     <ListItem key={affix.id || index} disableGutters sx={{ py: 0.25 }}>
                       <ListItemText
-                        primary={affix.affixed_word?.lemma || 'Unknown'}
-                        secondary={`(as ${affix.affix_type})`}
-                        primaryTypographyProps={{ component: 'span', variant: 'body2', sx: { cursor: 'pointer', textDecoration: 'underline', color: theme.palette.primary.main, mr: 1 }, onClick: () => affix.affixed_word && onWordClick(affix.affixed_word) }}
-                        secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
+                        primary={
+                          <Typography component="div" variant="body2" sx={{ cursor: affix.affixed_word ? 'pointer' : 'default', textDecoration: affix.affixed_word ? 'underline' : 'none', color: affix.affixed_word ? theme.palette.primary.main : 'inherit', mr: 1 }}>
+                            {affix.affixed_word?.lemma || 'Unknown'}
+                          </Typography>
+                        }
+                        secondary={
+                          <Typography component="div" variant="caption" color="text.secondary">
+                            (as {affix.affix_type})
+                          </Typography>
+                        }
+                        primaryTypographyProps={{ component: 'span' }}
+                        secondaryTypographyProps={{ variant: 'caption' }}
                         sx={{ m: 0 }}
                       />
                     </ListItem>
@@ -708,10 +799,18 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                   {affixedAffix.map((affix: Affixation, index: number) => (
                     <ListItem key={affix.id || index} disableGutters sx={{ py: 0.25 }}>
                       <ListItemText
-                        primary={affix.root_word?.lemma || 'Unknown'}
-                        secondary={`(using ${affix.affix_type})`}
-                        primaryTypographyProps={{ component: 'span', variant: 'body2', sx: { cursor: 'pointer', textDecoration: 'underline', color: theme.palette.primary.main, mr: 1 }, onClick: () => affix.root_word && onWordClick(affix.root_word) }}
-                        secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
+                        primary={
+                          <Typography component="div" variant="body2" sx={{ cursor: affix.root_word ? 'pointer' : 'default', textDecoration: affix.root_word ? 'underline' : 'none', color: affix.root_word ? theme.palette.primary.main : 'inherit', mr: 1 }}>
+                            {affix.root_word?.lemma || 'Unknown'}
+                          </Typography>
+                        }
+                        secondary={
+                          <Typography component="div" variant="caption" color="text.secondary">
+                            (using {affix.affix_type})
+                          </Typography>
+                        }
+                        primaryTypographyProps={{ component: 'span' }}
+                        secondaryTypographyProps={{ variant: 'caption' }}
                         sx={{ m: 0 }}
                       />
                     </ListItem>
@@ -743,12 +842,22 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     const relationCategories = [
       {
         name: "Origin",
-        types: ["root", "etymology", "cognate", "root_of", "isahod", "derived", "derived_from", "sahod", "affix", "derivative"],
-        color: relationColors.root
+        types: ["root", "root_of", "derived_from", "etymology", "cognate"], 
+        color: relationColors.root 
+      },
+      {
+        name: "Derivation", 
+        types: ["derived", "derivative", "sahod", "isahod", "affix"], 
+        color: relationColors.derived 
       },
       {
         name: "Meaning",
-        types: ["synonym", "antonym", "related", "similar", "kaugnay", "kahulugan", "kasalungat"],
+        types: [
+          "synonym", "antonym", "related", "similar", "kaugnay", "kahulugan", "kasalungat", 
+          "has_translation", "translation_of", 
+          // Add previously Info/Other types
+          "usage", "see_also", "compare_with", "associated", "other" 
+        ], 
         color: relationColors.synonym
       },
       {
@@ -760,17 +869,18 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         name: "Hierarchy",
         types: ["hypernym", "hyponym", "meronym", "holonym", "taxonomic", "part_whole", "component", "component_of"],
         color: relationColors.hypernym
-      },
-      {
-        name: "Usage",
-        types: ["usage"],
-        color: relationColors.usage
-      },
-      {
-        name: "Other",
-        types: ["other", "associated"],
-        color: relationColors.other
       }
+      // REMOVE Info and Other categories
+      // {
+      //   name: "Info", 
+      //   types: ["usage", "see_also", "compare_with", "associated"], 
+      //   color: relationColors.usage 
+      // },
+      // {
+      //   name: "Other",
+      //   types: ["other"],
+      //   color: relationColors.other
+      // }
     ];
     
     // COMPLETE RESTRUCTURE: Deduplicate first, then categorize once
@@ -779,20 +889,24 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     const wordMap = new Map<string, any>();
     
     filteredRelations.forEach(relation => {
-      const wordLemma = relation.wordObj?.lemma;
-      if (!wordLemma) return;
+      // Use lemma, label, or word as the key for broader compatibility
+      const wordKey = relation.wordObj?.lemma || relation.wordObj?.label || relation.wordObj?.word;
+      if (!wordKey) {
+        console.warn("Skipping relation due to missing lemma/label/word in wordObj:", relation.wordObj);
+        return; // Skip if no usable key
+      }
       
-      if (!wordMap.has(wordLemma)) {
+      if (!wordMap.has(wordKey)) {
         // First time seeing this word, create a new entry
         const newRelation = { 
           ...relation,
           relationTypes: [relation.relation_type],
           originalRelation: relation
         };
-        wordMap.set(wordLemma, newRelation);
+        wordMap.set(wordKey, newRelation);
       } else {
         // Word exists, just add the relation type if new
-        const existingRelation = wordMap.get(wordLemma);
+        const existingRelation = wordMap.get(wordKey);
         if (!existingRelation.relationTypes.includes(relation.relation_type)) {
           existingRelation.relationTypes.push(relation.relation_type);
         }
@@ -1108,18 +1222,35 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                       )}
                                     </Box>
                                   }
-                                  onClick={() => onWordClick(wordObj.lemma || wordObj.word)}
+                                  onClick={() => {
+                                    if (typeof onWordClick === 'function' && (wordObj.lemma || wordObj.word)) {
+                                      onWordClick(wordObj.lemma || wordObj.word);
+                                    } else {
+                                      console.warn("Unable to navigate: onWordClick is not a function or word is undefined");
+                                    }
+                                  }}
                                   variant="outlined"
                                   sx={{
-                                    // Base styles (Light mode defaults)
-                                    borderColor: alpha(relColor, 0.5),
-                                    color: relColor,
+                                    // Base styles - Subtle background, colored text/border
                                     fontSize: '0.75rem',
                                     height: 'auto',
                                     padding: theme.spacing(0.25, 0),
-                                    bgcolor: alpha(relColor, 0.05),
                                     my: 0.5,
                                     maxWidth: '100%',
+                                    bgcolor: alpha(relColor, 0.08), // Subtle background always
+                                    color: relColor, // Text color always the relation color
+                                    borderColor: alpha(relColor, 0.5), // Border color always related to relation color
+                                    borderWidth: '1px',
+                                    borderStyle: 'solid',
+                                    
+                                    // Dark Mode Adjustments (if needed, but base might work)
+                                    ...(theme.palette.mode === 'dark' && {
+                                      // Keep subtle background, ensure text is bright enough if needed
+                                      color: alpha(relColor, 0.9), // Slightly brighter text in dark maybe?
+                                      borderColor: alpha(relColor, 0.6), // Slightly brighter border
+                                      bgcolor: alpha(relColor, 0.15), // Slightly more opaque bg in dark?
+                                    }),
+                                    
                                     '& .MuiChip-label': { 
                                       px: 1, 
                                       py: 0.25, 
@@ -1128,24 +1259,14 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                                       maxWidth: '100%',
                                       overflow: 'hidden'
                                     },
-                                    // Dark Mode Overrides
-                                    ...(theme.palette.mode === 'dark' && {
-                                      // Use full color background
-                                      bgcolor: relColor,
-                                      // Determine text color based on background
-                                      color: getTextColorForBackground(relColor),
-                                      // Keep border based on relColor 
-                                      borderColor: alpha(relColor, 0.7),
-                                    }),
-                                    // Hover styles
+                                    // Hover styles - Subtle brightness/alpha changes
                                     '&:hover': {
-                                      // Light mode hover
-                                      backgroundColor: alpha(relColor, 0.1),
-                                      borderColor: relColor,
-                                      // Dark Mode hover overrides
+                                      bgcolor: alpha(relColor, 0.15), // Slightly darken bg on hover
+                                      borderColor: alpha(relColor, 0.7),
                                       ...(theme.palette.mode === 'dark' && {
-                                        backgroundColor: alpha(relColor, 0.6), // Intensify background
-                                        borderColor: alpha(relColor, 0.9), // Intensify border
+                                        bgcolor: alpha(relColor, 0.25),
+                                        borderColor: alpha(relColor, 0.8),
+                                        color: relColor, // Ensure full color text on hover in dark
                                       }),
                                     }
                                   }}
@@ -1188,87 +1309,149 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   };
 
   const renderFormsAndTemplatesTab = () => {
-    const forms = wordData.forms || [];
-    const templates = wordData.templates || [];
-    const rhymes = wordData.pronunciations?.filter(p => p.type?.toLowerCase() === 'rhyme') || [];
+    const hasForms = wordData.forms && wordData.forms.length > 0;
+    const hasTemplates = wordData.templates && wordData.templates.length > 0;
 
-    if (forms.length === 0 && templates.length === 0 && rhymes.length === 0) {
-      return <Alert severity="info">No forms, templates, or rhyme information available.</Alert>;
+    if (!hasForms && !hasTemplates) {
+      return <Typography sx={{ p: 2, fontStyle: 'italic', color: 'text.secondary' }}>No forms or templates available for this word.</Typography>;
     }
 
+    // Helper to render tags object as chips
+    const renderTags = (tags: Record<string, any> | null | undefined, isCanonicalForm: boolean = false) => {
+      if (!tags || Object.keys(tags).length === 0) return null;
+
+      // Filter out redundant/unnecessary tags
+      const filteredTags = Object.entries(tags)
+        .filter(([key, value]) => {
+          // Always skip 'is_canonical' key, regardless of value
+          if (key === 'is_canonical') return false;
+          
+          // Skip 'tags: canonical' only if the form is canonical
+          if (isCanonicalForm && key === 'tags' && String(value).toLowerCase() === 'canonical') {
+              return false;
+          }
+          
+          // Keep all other tags
+          return true;
+        });
+        
+      if (filteredTags.length === 0) return null; // Return null if no tags remain after filtering
+
+      return (
+        <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 0.5 }}>
+          {filteredTags.map(([key, value]) => (
+                            <Chip 
+              key={key} 
+              label={`${key}: ${String(value)}`} 
+                              size="small" 
+              variant="outlined" 
+                              sx={{ 
+                fontSize: '0.75rem',
+                                height: 'auto', 
+                lineHeight: 1.2,
+                padding: '1px 4px',
+                borderColor: 'action.disabledBackground'
+                              }} 
+                            />
+          ))}
+                        </Stack>
+      );
+    };
+
     return (
-      // Adjust top padding for mobile
-      <Box sx={{ pt: isMobile ? theme.spacing(0.5) : theme.spacing(1) }}>
-        {/* Forms Section */}
-        {forms.length > 0 && (
-          <StyledAccordion defaultExpanded sx={{ mb: 2 }}>
-            <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500, fontSize: isMobile ? '0.85rem' : '0.875rem' }}>Word Forms</Typography>
-            </StyledAccordionSummary>
-            <StyledAccordionDetails sx={{ px: isMobile ? 1 : 2 }}>
-              <List dense={isMobile} disablePadding>
-                {forms.map((form: WordForm, index: number) => (
-                  <ListItem key={form.id || index} disableGutters sx={{ py: isMobile ? 0.1 : 0.25 }}>
-                    <ListItemText 
-                      primary={form.form} 
-                      primaryTypographyProps={{ sx: { fontSize: isMobile ? '0.8rem' : '0.875rem' }}}
-                    />
-                    <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
-                       {form.is_canonical && <Chip label="Canonical" size="small" color="primary" variant="outlined" sx={{ height: 'auto', fontSize: isMobile ? '0.6rem' : '0.65rem', py: 0.1, px: 0.25 }} />}
-                       {form.is_primary && <Chip label="Primary" size="small" color="secondary" variant="outlined" sx={{ height: 'auto', fontSize: isMobile ? '0.6rem' : '0.65rem', py: 0.1, px: 0.25 }} />}
-                       {form.tags && Object.entries(form.tags).map(([key, value]) => (
-                          <Chip key={key} label={`${key}: ${value}`} size="small" sx={{ height: 'auto', fontSize: isMobile ? '0.6rem' : '0.65rem', py: 0.1, px: 0.25 }} />
-                       ))}
-                    </Stack>
-                  </ListItem>
+      <Box sx={{ p: isMobile ? 1 : 2 }}>
+        {/* Word Forms Section */}
+        {hasForms && (
+          <Box mb={hasTemplates ? 3 : 0}>
+            <Typography variant="h6" gutterBottom sx={{ fontSize: '1.1rem', mb: 1.5 }}>
+              Word Forms
+            </Typography>
+            <Stack spacing={2}>
+              {wordData.forms?.map((form, index) => (
+                <Paper 
+                  key={form.id || `form-${index}`}
+                  variant="outlined"
+                        sx={{ 
+                    p: 1.5,
+                    borderRadius: '8px',
+                    borderColor: 'rgba(0, 0, 0, 0.08)',
+                    bgcolor: isDarkMode ? alpha(theme.palette.grey[900], 0.5) : alpha(theme.palette.grey[50], 0.7),
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <Typography variant="body1" sx={{ fontWeight: 500, flexGrow: 1 }}>
+                      {form.form}
+                      </Typography>
+                    {form.is_canonical && (
+                          <Chip 
+                        label="Canonical"
+                        color="primary" // Keep primary color association
+                        variant="outlined" // Change to outlined
+                            size="small" 
+                            sx={{ 
+                              height: 'auto', 
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          // bgcolor: isDarkMode ? alpha(graphColors.main, 0.8) : alpha(graphColors.main, 0.15), // Remove bgcolor
+                          // color: isDarkMode ? '#fff' : graphColors.main, // Let outlined handle color
+                          // border: `1px solid ${alpha(graphColors.main, 0.4)}` // Let outlined handle border
+                          borderColor: alpha(graphColors.main, 0.6), // Slightly adjust border alpha if needed
+                          color: graphColors.main // Ensure text color is primary
+                          }} 
+                        />
+                      )}
+                    </Box>
+                  {/* Pass is_canonical flag to renderTags, handling null */} 
+                  {renderTags(form.tags, form.is_canonical ?? false)}
+                  {form.sources && (
+                    <Typography variant="caption" display="block" sx={{ mt: 1, color: 'text.secondary', fontStyle: 'italic' }}>
+                      Source: {form.sources}
+                    </Typography>
+                  )}
+                </Paper>
                 ))}
-              </List>
-            </StyledAccordionDetails>
-          </StyledAccordion>
+            </Stack>
+              </Box>
         )}
 
-        {/* Templates Section */}
-        {templates.length > 0 && (
-          <StyledAccordion defaultExpanded>
-            <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 500, fontSize: isMobile ? '0.85rem' : '0.875rem' }}>Word Templates</Typography>
-            </StyledAccordionSummary>
-            <StyledAccordionDetails sx={{ px: isMobile ? 1 : 2 }}>
-              <List dense={isMobile} disablePadding>
-                {templates.map((template: WordTemplate, index: number) => (
-                  <ListItem key={template.id || index} disableGutters sx={{ py: isMobile ? 0.1 : 0.25, flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <ListItemText 
-                      primary={template.template_name} 
-                      primaryTypographyProps={{ sx: { fontSize: isMobile ? '0.8rem' : '0.875rem' }}}
-                    />
-                    {template.expansion && <Typography variant="caption" sx={{ fontFamily: 'monospace', color: 'text.secondary', fontSize: isMobile ? '0.7rem' : '0.75rem' }}>Expansion: {template.expansion}</Typography>}
-                    {template.args && <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: isMobile ? '0.7rem' : '0.75rem' }}>Args: {JSON.stringify(template.args)}</Typography>}
-                  </ListItem>
-                ))}
-              </List>
-            </StyledAccordionDetails>
-          </StyledAccordion>
-        )}
-
-        {/* Rhymes Section - Adjusted for mobile */}
-        {rhymes.length > 0 && (
-          <Box sx={{ 
-              mt: templates.length > 0 || forms.length > 0 ? (isMobile ? 2 : 3) : 0, 
-              pt: templates.length > 0 || forms.length > 0 ? (isMobile ? 1 : 2) : 0, 
-              borderTop: templates.length > 0 || forms.length > 0 ? `1px solid ${theme.palette.divider}` : 'none',
-              px: isMobile ? 1 : 0 // Add horizontal padding only on mobile for this box
-            }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: isMobile ? 1 : 1.5, fontSize: isMobile ? '0.85rem' : '0.875rem' }}>Rhymes</Typography>
-            <List dense={isMobile} disablePadding>
-              {rhymes.map((rhyme, index) => (
-                <ListItem key={`rhyme-${index}`} disableGutters sx={{ py: isMobile ? 0.1 : 0.25 }}>
-                  <ListItemText 
-                    primary={rhyme.value} 
-                    primaryTypographyProps={{ sx: { fontFamily: 'monospace', fontSize: isMobile ? '0.8rem' : '0.875rem'} }} 
-                  />
-                </ListItem>
-              ))}
-            </List>
+        {/* Word Templates Section (existing code) */}
+        {hasTemplates && (
+          <Box>
+            <Typography variant="h6" gutterBottom sx={{ fontSize: '1.1rem', mb: 1.5 }}>
+              Word Templates
+            </Typography>
+            {/* {wordData.templates?.map((template, index) => ( // <-- Re-comment this line and the closing parenthesis/brace
+              <Accordion key={template.id || `template-${index}`} defaultExpanded={index < 2}> 
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography sx={{ fontWeight: 500 }}>{template?.template_name || 'Unnamed Template'}</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ bgcolor: 'action.hover' }}>
+                  {template.expansion && (
+                    <Box mb={1}>
+                      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Expansion:</Typography>
+                      <Typography variant="body2" sx={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+                        {template.expansion}
+                      </Typography>
+                    </Box>
+                  )}
+                  {template.args && Object.keys(template.args).length > 0 && (
+                    <Box mb={1}>
+                      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Args:</Typography>
+                      <Paper variant="outlined" sx={{ p: 1, bgcolor: 'background.default' }}>
+                        <pre style={{ margin: 0, fontSize: '0.8rem', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+                          {JSON.stringify(template.args, null, 2)}
+                        </pre>
+                      </Paper>
+                    </Box>
+                  )}
+                  {template.sources && (
+                     <Typography variant="caption" display="block" sx={{ color: 'text.secondary', fontStyle: 'italic' }}>
+                      Source: {template.sources}
+                    </Typography>
+                  )}
+                </AccordionDetails>
+              </Accordion>
+            ))} */}
           </Box>
         )}
       </Box>
@@ -1334,164 +1517,134 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       );
     }
     
-    // If there's etymology data in the word itself, display it regardless of tree
-    if (hasWordEtymologies) {
+    // Helper function to render a single field (like Components, Languages, Sources)
+    const renderEtymologyField = (label: string, items: string[], chipColor: string, clickable: boolean = false) => {
+      if (!items || items.length === 0) return null;
+      
+      // Determine text color based on chip background for dark mode
+      const chipTextColor = isDarkMode ? getTextColorForBackground(chipColor) : chipColor;
+
       return (
-        // Adjust padding for mobile
-        <Box sx={{ p: isMobile ? 0 : theme.spacing(2) }}>
-          {/* Display direct etymology data from word */}
-          <List dense={isMobile}>
-            {wordData.etymologies!.map((etym, index) => (
-              <ListItem key={index} sx={{ 
-                display: 'block', 
-                py: isMobile ? 1 : 1.5,
-                px: 0,
-                borderBottom: index < wordData.etymologies!.length - 1 ? 
-                  `1px solid ${theme.palette.divider}` : 'none'
-              }}>
-                <ListItemText
-                  primary={
-                    <Typography variant="subtitle1" sx={{ 
-                      fontWeight: 600, 
-                      mb: 0.5,
-                      color: graphColors.main,
-                      fontSize: isMobile ? '0.9rem' : '1rem'
-                    }}>
-                      Etymology {index + 1}
-                    </Typography>
-                  }
-                  secondary={
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 0.5 : 1 }}>
-                      {/* Main text with improved styling */}
+        <Box sx={{ mt: 1.5 }}>
                       <Typography 
-                        variant="body1" 
-                        component="div" 
+            variant="subtitle2" 
                         sx={{ 
-                          whiteSpace: 'pre-wrap',
-                          wordBreak: 'break-word',
-                          lineHeight: isMobile ? 1.5 : 1.6, // Increased lineHeight
-                          py: theme.spacing(isMobile ? 0.5 : 1),
-                          fontSize: isMobile ? '0.85rem' : '0.875rem'
-                        }}
-                      >
-                        {etym.etymology_text}
-                      </Typography>
-                      
-                      {/* Components with improved clickable styling */}
-                      {etym.normalized_components && etym.normalized_components.trim().length > 0 && (
-                        <Box sx={{ mt: isMobile ? 0.5 : 1 }}>
-                          <Typography 
-                            variant="caption" 
-                            component="div" 
-                            color="text.secondary" 
-                            sx={{ 
-                              mb: 0.5,
+              mb: 0.75,
                               fontWeight: 500, 
-                              fontSize: isMobile ? '0.7rem' : '0.75rem'
+              fontSize: isMobile ? '0.75rem' : '0.8rem',
+              color: 'text.secondary'
                             }}
                           >
-                            Components:
+            {label}:
                           </Typography>
                           <Stack direction="row" spacing={isMobile ? 0.5 : 1} useFlexGap flexWrap="wrap">
-                            {/* Split normalized_components string (assume space-separated) and type comp */} 
-                            {etym.normalized_components.split(/\s+/).filter(c => c.trim()).map((comp: string, i: number) => (
+            {items.map((item: string, i: number) => (
                               <Chip 
                                 key={i}
-                                label={comp}
+                label={item}
                                 size="small"
-                                clickable
-                                onClick={() => onWordClick(comp)}
+                clickable={clickable}
+                onClick={clickable ? () => onWordClick(item) : undefined}
                                 sx={{ 
                                   fontSize: isMobile ? '0.7rem' : '0.75rem',
                                   height: isMobile ? 20 : 24,
-                                  bgcolor: alpha(graphColors.derived, 0.1),
-                                  color: graphColors.derived,
+                  // Base styles (Light mode defaults)
+                  bgcolor: alpha(chipColor, 0.08),
+                  color: chipColor, 
                                   fontWeight: 500,
+                  border: `1px solid ${alpha(chipColor, 0.4)}`,
+                  
+                  // Dark Mode Styles override base
+                  ...(isDarkMode && {
+                      bgcolor: alpha(chipColor, 0.15),
+                      color: alpha(chipColor, 0.9),
+                      borderColor: alpha(chipColor, 0.6),
+                  }),
+                  
+                  // Hover styles (applied over base/dark)
+                  ...(clickable && {
                                   '&:hover': {
-                                    bgcolor: alpha(graphColors.derived, 0.2),
-                                  }
+                      // Light mode hover defaults
+                      bgcolor: alpha(chipColor, 0.15), 
+                      borderColor: alpha(chipColor, 0.6),
+                      // Dark mode hover overrides
+                      ...(isDarkMode && { 
+                          bgcolor: alpha(chipColor, 0.25),
+                          borderColor: alpha(chipColor, 0.8),
+                          color: chipColor, // Keep full color text on dark hover
+                      })
+                    }
+                  })
                                 }}
                               />
                             ))}
                           </Stack>
                         </Box>
-                      )}
-                      
-                      {/* Languages with distinct styling */}
-                      {etym.language_codes && etym.language_codes.trim().length > 0 && (
-                        <Box sx={{ mt: 1 }}>
-                          <Typography 
-                            variant="caption" 
-                            component="div" 
-                            color="text.secondary" 
+      );
+    };
+
+    // If there's etymology data in the word itself, display it regardless of tree
+    if (hasWordEtymologies) {
+      return (
+        <Box sx={{ p: isMobile ? 1 : 2 }}>
+          <Stack spacing={isMobile ? 1.5 : 2}>
+            {wordData.etymologies!.map((etym, index) => {
+              const components = etym.normalized_components?.split(/\s+/).filter(c => c.trim()) || [];
+              const languages = etym.language_codes?.split(',').map(l => l.trim()).filter(l => l) || [];
+              const sources = etym.sources?.split(',').map(s => s.trim()).filter(s => s) || [];
+              
+              return (
+                <Paper 
+                  key={index} 
+                  variant="outlined" 
                             sx={{ 
-                              mb: 0.5,
-                              fontWeight: 500
-                            }}
-                          >
-                            Languages:
-                          </Typography>
-                          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                            {etym.language_codes.split(',').map(l => l.trim()).filter(l => l).map((lang: string, i: number) => ( // Type lang
-                              <Chip 
-                                key={i}
-                                label={lang}
-                                size="small"
-                                variant="outlined"
+                    p: isMobile ? 1.5 : 2,
+                    borderRadius: '8px',
+                    // Use elevated card background in dark mode
+                    borderColor: isDarkMode ? 'var(--card-border-color)' : theme.palette.divider, 
+                    bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : alpha(theme.palette.grey[50], 0.5),
+                  }}
+                >
+                  {/* Title */}
+                  <Typography 
+                    variant="subtitle1" 
                                 sx={{ 
-                                  fontSize: '0.75rem',
-                                  height: 24,
-                                  borderColor: alpha(graphColors.variant, 0.6),
-                                  color: graphColors.variant
-                                }}
-                              />
-                            ))}
-                          </Stack>
-                        </Box>
-                      )}
-                      
-                      {/* Sources with distinctive styling */}
-                      {etym.sources && etym.sources.trim().length > 0 && (
-                        <Box sx={{ mt: 1 }}>
+                      fontWeight: 600, 
+                      mb: 1.5, 
+                      pb: 0.5, 
+                      color: graphColors.main, 
+                      borderBottom: `1px solid ${alpha(graphColors.main, 0.2)}`,
+                      fontSize: isMobile ? '0.9rem' : '1rem' 
+                    }}
+                  >
+                    Etymology {index + 1}
+                  </Typography>
+
+                  {/* Main text */}
+                  {etym.etymology_text && (
                           <Typography 
-                            variant="caption" 
                             component="div" 
-                            color="text.secondary" 
                             sx={{ 
-                              mb: 0.5,
-                              fontWeight: 500
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-word',
+                        lineHeight: 1.6, 
+                        fontSize: isMobile ? '0.85rem' : '0.9rem',
+                        mb: (components.length > 0 || languages.length > 0 || sources.length > 0) ? 2 : 0 // Add margin if fields below exist
                             }}
                           >
-                            Sources:
+                      {etym.etymology_text}
                         </Typography>
-                          <Stack direction="row" spacing={0.5} useFlexGap flexWrap="wrap">
-                            {etym.sources.split(',').map(s => s.trim()).filter(s => s).map((source: string, i: number) => ( // Type source
-                              <Chip 
-                                key={i}
-                                label={source}
-                                size="small"
-                                sx={{ 
-                                  fontSize: '0.7rem',
-                                  height: 'auto',
-                                  padding: theme.spacing(0.25, 0),
-                                  bgcolor: alpha(graphColors.related, 0.1),
-                                  color: graphColors.related,
-                                  '& .MuiChip-label': { 
-                                    px: 1, 
-                                    py: 0.25 
-                                  }
-                                }}
-                              />
-                            ))}
+                  )}
+
+                  {/* Fields: Components, Languages, Sources */}
+                  {renderEtymologyField('Components', components, graphColors.derived, true)} 
+                  {renderEtymologyField('Languages', languages, graphColors.variant)} 
+                  {renderEtymologyField('Sources', sources, graphColors.related)} 
+                  
+                </Paper>
+              );
+            })}
                           </Stack>
-                        </Box>
-                      )}
-                    </Box>
-                  }
-                />
-              </ListItem>
-            ))}
-          </List>
           
           {/* Show etymology tree data if available */}
           {hasEtymologyTreeData && (
@@ -1517,9 +1670,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   // Helper function to render the etymology tree visualization
   const renderEtymologyTreeVisualization = () => {
     // Use links instead of edges
-    if (!etymologyTree || !etymologyTree.nodes || !etymologyTree.links) {
-      // Optionally return a loading state or an informative message
-      return <Alert severity="info">Etymology tree data is not available or is loading.</Alert>;
+    if (!etymologyTree || !etymologyTree.nodes || !etymologyTree.links || 
+        !Array.isArray(etymologyTree.nodes) || !Array.isArray(etymologyTree.links)) {
+      return <Alert severity="info">Etymology tree data is not available or has an invalid structure.</Alert>;
     }
   
     // Remove local EtymologyNode/Edge types, use NetworkNode/Link from import
@@ -1528,23 +1681,52 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     type EtymologyTreeMap = { [id: number]: NetworkNode }; // Use NetworkNode
   
     const renderNode = (nodeId: number, nodes: EtymologyTreeMap, links: NetworkLink[], level = 0): React.ReactNode => { // Use NetworkLink
+      // Safety check for valid nodeId
+      if (nodeId === undefined || nodeId === null) {
+        console.warn("Invalid nodeId provided to renderNode");
+        return null;
+      }
+      
       const node = nodes[nodeId];
-      if (!node) return null;
-  
-      // Use links instead of edges
-      const childrenLinks = links.filter(link => (typeof link.source === 'number' ? link.source : link.source.id) === nodeId);
+      if (!node) {
+        console.warn(`Node with ID ${nodeId} not found in node map`);
+        return null;
+      }
+
+      // Use links instead of edges - with careful null checking
+      const childrenLinks = links.filter(link => {
+        if (!link) return false;
+        
+        let sourceId: any;
+        try {
+          sourceId = typeof link.source === 'object' ? 
+            (link.source && link.source.id ? link.source.id : null) : 
+            link.source;
+          
+          return sourceId === nodeId;
+        } catch (error) {
+          console.error("Error filtering child links:", error);
+          return false;
+        }
+      });
   
       return (
         <Box key={node.id} sx={{ ml: level * 2.5, mb: 1.5 }}>
           <Paper elevation={1} sx={{ p: 1.5, display: 'flex', alignItems: 'center', gap: 1.5, borderRadius: '8px', bgcolor: alpha(getNodeColor(node.language || 'associated'), 0.1) }}>
             <Chip 
-              label={node.language?.toUpperCase() || 'UNK'} 
+              label={(node.language && typeof node.language === 'string') ? node.language.toUpperCase() : 'UNK'} 
               size="small" 
               sx={{ fontWeight: 600, bgcolor: getNodeColor(node.language || 'associated'), color: getTextColorForBackground(getNodeColor(node.language || 'associated')) }}
             />
             <Link
               component="button"
-              onClick={() => onWordClick(`id:${node.id}`)} 
+              onClick={() => {
+                if (typeof onWordClick === 'function') {
+                  onWordClick(`id:${node.id}`);
+                } else {
+                  console.warn("onWordClick is not a function");
+                }
+              }} 
               sx={{ 
                 fontWeight: 500, 
                 fontSize: '1rem', 
@@ -1553,7 +1735,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                 '&:hover': { color: 'primary.main' }
               }}
             >
-              {node.label}
+              {node.label || String(node.id)}
             </Link>
           </Paper>
           {childrenLinks.length > 0 && (
@@ -1564,32 +1746,87 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               borderLeft: `1px solid ${alpha(theme.palette.divider, isMobile ? 0.7 : 0.5)}` 
             }}>
               {/* Use links instead of edges */} 
-              {childrenLinks.map(link => renderNode( // Use link variable
-                  (typeof link.target === 'number' ? link.target : link.target.id), // Get target ID from link
-                  nodes, 
-                  links, // Pass links down recursively
-                  level + 1))}
+              {childrenLinks.map((link, index) => {
+                if (!link) return null;
+                
+                try {
+                  const targetId = typeof link.target === 'object' ? 
+                    (link.target && link.target.id ? link.target.id : null) : 
+                    link.target;
+                  
+                  if (targetId === null || targetId === undefined) {
+                    console.warn("Invalid target ID in link", link);
+                    return null;
+                  }
+                  
+                  return renderNode(targetId, nodes, links, level + 1);
+                } catch (error) {
+                  console.error("Error rendering child node:", error);
+                  return null;
+                }
+              })}
             </Box>
           )}
         </Box>
       );
     };
     
-    // Use links instead of edges, type edge as NetworkLink
-    const rootNodes = etymologyTree.nodes.filter(node => 
-      !etymologyTree.links!.some((link: NetworkLink) => (typeof link.target === 'number' ? link.target : link.target.id) === node.id)
-    );
-    const nodeMap = etymologyTree.nodes.reduce((map, node) => {
-      map[node.id] = node; // node should be compatible with NetworkNode now
-      return map;
-    }, {} as EtymologyTreeMap);
-    
-    return (
-      <Box sx={{ fontFamily: 'system-ui, sans-serif' }}>
-        {/* Use links instead of edges */} 
-        {rootNodes.map(rootNode => renderNode(rootNode.id, nodeMap, etymologyTree.links!))}
-      </Box>
-    );
+    try {
+      // Use links instead of edges, type edge as NetworkLink
+      // Create a more resilient filtering approach
+      const rootNodes = [];
+      
+      // Create a set of all target IDs for faster lookups
+      const targetIds = new Set();
+      
+      // Collect all target IDs from links
+      for (const link of etymologyTree.links) {
+        if (!link) continue;
+        
+        try {
+          const targetId = typeof link.target === 'object' ? 
+            (link.target && link.target.id ? link.target.id : null) : 
+            link.target;
+          
+          if (targetId !== null && targetId !== undefined) {
+            targetIds.add(targetId);
+          }
+        } catch (error) {
+          console.error("Error processing link target:", error);
+        }
+      }
+      
+      // Find nodes that aren't targets of any link
+      for (const node of etymologyTree.nodes) {
+        if (!node || node.id === undefined) continue;
+        
+        if (!targetIds.has(node.id)) {
+          rootNodes.push(node);
+        }
+      }
+      
+      // Build node map for quick lookup
+      const nodeMap: Record<number, NetworkNode> = {};
+      for (const node of etymologyTree.nodes) {
+        if (node && node.id !== undefined) {
+          nodeMap[node.id] = node;
+        }
+      }
+      
+      if (rootNodes.length === 0) {
+        return <Alert severity="info">Could not determine root nodes in the etymology tree.</Alert>;
+      }
+      
+      return (
+        <Box sx={{ fontFamily: 'system-ui, sans-serif' }}>
+          {/* Use links instead of edges */} 
+          {rootNodes.map(rootNode => rootNode ? renderNode(rootNode.id, nodeMap, etymologyTree.links!) : null)}
+        </Box>
+      );
+    } catch (error) {
+      console.error("Error rendering etymology tree:", error);
+      return <Alert severity="error">Error rendering etymology tree: {String(error)}</Alert>;
+    }
   };
 
   // *** START: Re-insert renderSourcesInfoTab ***
@@ -1609,9 +1846,9 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
        return <Alert severity="info" sx={{ m: 2 }}>No source, metadata, or entry information available.</Alert>;
      }
 
-     // Helper to render JSON data nicely
+     // Helper to render JSON data nicely (Keep for other potential JSON fields)
      const renderJsonData = (title: string, data: Record<string, any>) => {
-       if (Object.keys(data).length === 0) return null;
+       if (!data || Object.keys(data).length === 0) return null; // Added null check for data
        return (
          <StyledAccordion sx={{ mt: 2 }}>
            <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -1627,6 +1864,90 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
          </StyledAccordion>
        );
      };
+     
+     // --- NEW: Helper to render Source Info specifically ---
+     const renderStructuredSourceInfo = (info: Record<string, any>) => {
+        if (!info || Object.keys(info).length === 0) return null;
+
+        // const files = info.files && Array.isArray(info.files) ? info.files : []; // No longer rendering files list
+        const lastUpdated = info.last_updated && typeof info.last_updated === 'object' ? info.last_updated : {};
+        // Capture any other top-level keys
+        const otherInfo = Object.entries(info).filter(([key]) => key !== 'files' && key !== 'last_updated');
+        
+        // Don't render the section if only files were present (which we are now hiding)
+        if (Object.keys(lastUpdated).length === 0 && otherInfo.length === 0) return null;
+
+        return (
+            <Paper
+                variant="outlined"
+                sx={{
+                    p: isMobile ? 1.5 : 2,
+                    mb: 2, // Add margin bottom
+                    bgcolor: isDarkMode ? 'var(--card-bg-color-elevated)' : alpha(theme.palette.grey[50], 0.5),
+                    borderColor: theme.palette.divider,
+                    borderRadius: '8px' // Match other paper elements
+                }}
+            >
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, pb: 1, borderBottom: `1px solid ${theme.palette.divider}` }}>
+                    Source Details
+                </Typography>
+
+                {/* Files section completely removed */}
+
+                {Object.keys(lastUpdated).length > 0 && (
+                    <Box mb={otherInfo.length > 0 ? 2 : 0}> {/* Add margin if other info follows */}
+                        <Typography variant="subtitle2" sx={{ mb: 1, color: 'text.secondary' }}>
+                            Last Updated
+                        </Typography>
+                        <List dense disablePadding>
+                            {Object.entries(lastUpdated).map(([file, timestamp]) => (
+                                <ListItem 
+                                    key={file} 
+                                    disableGutters // Remove default padding
+                                    sx={{
+                                        py: 0.75, // Increase vertical padding slightly
+                                        px: 0, // No horizontal padding on item itself
+                                        display: 'flex', 
+                                        justifyContent: 'space-between', 
+                                        alignItems: 'center',
+                                        borderBottom: `1px dashed ${alpha(theme.palette.divider, 0.4)}`, // Make dashed border subtler
+                                        '&:last-child': { borderBottom: 'none' } 
+                                    }}
+                                >
+                                    {/* Remove colon, make filename slightly bolder */}
+                                    <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}> 
+                                        {file}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace', textAlign: 'right' }}>
+                                        {typeof timestamp === 'string' ? 
+                                            new Date(timestamp).toLocaleString() : 
+                                            String(timestamp)}
+                                    </Typography>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Box>
+                )}
+
+                {otherInfo.length > 0 && (
+                     <Box>
+                        <Typography variant="subtitle2" sx={{ mb: 0.5, color: 'text.secondary' }}>Other Info:</Typography>
+                        <List dense disablePadding>
+                           {otherInfo.map(([key, value]) => (
+                                <ListItem key={key} sx={{ py: 0.25, pl: 1, display: 'flex', justifyContent: 'space-between' }}>
+                                    <Typography variant="body2" sx={{ mr: 1, textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}:</Typography>
+                                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'right' }}>
+                                        {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                                    </Typography>
+                                </ListItem>
+                            ))}
+                        </List>
+                     </Box>
+                )}
+            </Paper>
+        );
+     };
+     // --- END NEW Helper ---
 
      return (
        <Box sx={{ p: theme.spacing(2) }}>
@@ -1645,7 +1966,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                    }}
                  >
                  <ListItemText
-                     primary={<Typography variant="body1">{credit.credit}</Typography>}
+                     primary={<Typography component="div">{credit.credit}</Typography>}
                  />
                </ListItem>
              ))}
@@ -1653,11 +1974,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           </>
          )}
 
-         {/* Source Info JSON */}
-         {renderJsonData('Source Info', sourceInfo)}
+         {/* Source Info (Use new renderer instead of Accordion) */}
+         {/* {renderJsonData('Source Info', sourceInfo)} */}
+         {hasSourceInfo && renderStructuredSourceInfo(sourceInfo)}
 
-         {/* Completeness Info - Use score */} 
-         {hasScore && (
+         {/* Completeness Info - Use score - ONLY IN DEV */}
+         {process.env.NODE_ENV === 'development' && hasScore && (
             <Box sx={{ mt: 3 }}>
               <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Completeness Score</Typography>
               <Chip 
@@ -1752,7 +2074,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
       </Box>
 
       {/* Main Content Area (Tabs + Panel) */}
-      {/* REMOVE flex direction change. Always use row for vertical tabs. */}
       <Box sx={{ 
           display: 'flex', 
           flexDirection: 'row', // Always row now
@@ -1770,7 +2091,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
               borderRight: 1,
               borderColor: 'divider',
               // Adjust minWidth for mobile
-              minWidth: isMobile ? 120 : 160, // Smaller width on mobile
+              minWidth: isMobile ? 100 : 160, // *** Reduced mobile minWidth ***
               bgcolor: 'background.paper',
               flexShrink: 0,
               // Adjust tab padding and font size for mobile if needed
@@ -1778,12 +2099,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
                     textTransform: 'none',
                     fontWeight: theme.typography.fontWeightRegular,
                     fontSize: theme.typography.pxToRem(isMobile ? 12 : 14), // Smaller font on mobile
-                    minHeight: 48, 
+                    minHeight: isMobile ? 40 : 48, // *** Reduced mobile minHeight ***
                     justifyContent: 'flex-start',
                     pl: isMobile ? 1 : 2, // Less padding on mobile
                     pr: isMobile ? 0.5 : 1, // Less padding on mobile
                     py: isMobile ? 0.5 : 1, // Adjust vertical padding if needed
-                    minWidth: isMobile ? 110 : 'auto', // Allow tabs to be smaller on mobile
+                    minWidth: isMobile ? 90 : 'auto', // *** Reduced mobile minWidth ***
                     '&.Mui-selected': { /* Existing inner sx */ },
                     '&:hover': { /* Existing inner sx */ },
                   },
@@ -1798,17 +2119,14 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             <Tab label="Sources" value="sources" />
           </Tabs>
 
-        {/* Horizontal Tabs (Mobile) - REMOVED */} 
-        {/* {isMobile && ( ... )} */}
-
-        {/* Tab Content Panel (Scrollable) */} 
+        {/* Tab Content Panel (Scrollable) */}
         <Box
           role="tabpanel"
           hidden={false} // Keep it always rendered for simplicity
           sx={{ /* Existing sx props */
             flexGrow: 1, 
             overflowY: 'auto', 
-            p: isMobile ? 1.5 : 2, // Keep responsive padding for now 
+            p: isMobile ? 1 : 2, // *** Reduced mobile padding ***
             width: '100%', 
             minWidth: 0, 
           }}

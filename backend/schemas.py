@@ -138,6 +138,7 @@ class DefinitionCategorySchema(Schema):
     category_kind = fields.String(allow_none=True) # Matches DB (TEXT)
     parents = fields.List(fields.String(), allow_none=True) # Matches DB (JSONB assumed to store list of strings)
     sources = fields.String(allow_none=True) # Added sources field (TEXT)
+    category_metadata = MetadataField(dump_default={}) # Added metadata field
     # Removed tags, description, and category_metadata as they are not in the final DB schema
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
@@ -190,7 +191,7 @@ class DefinitionSchema(Schema):
     verification_notes = fields.String()
     tags = fields.String(allow_none=True)
     # Handle missing definition_metadata column gracefully
-    definition_metadata = fields.Dict(dump_default={}, load_default={})
+    definition_metadata = MetadataField(dump_default={}, load_default={})
     popularity_score = fields.Float(dump_default=0.0)
     links = fields.List(fields.Nested(DefinitionLinkSchema), dump_default=[])
     categories = fields.List(fields.Nested(DefinitionCategorySchema), dump_default=[])
@@ -536,6 +537,8 @@ class StatisticsSchema(Schema):
     total_definitions = fields.Int()
     total_etymologies = fields.Int()
     total_relations = fields.Int()
+    descendant_relations = fields.Int() # Added
+    homophone_relations = fields.Int() # Added
     total_affixations = fields.Int()
     words_with_examples = fields.Int()
     words_with_etymology = fields.Int()

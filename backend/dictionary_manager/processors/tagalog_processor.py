@@ -88,6 +88,9 @@ def _process_single_tagalog_word_entry(
     # --- Extract Top-Level Word Information ---
     top_level_pos_code = None
     top_level_pos_list = entry_data.get("part_of_speech", [])
+    # --- ADDED: Set of known invalid codes mistakenly used as POS ---
+    INVALID_POS_CODES = {'tl', 'en', 'es', 'la'} # Add others if found
+
     if isinstance(top_level_pos_list, list) and top_level_pos_list:
         # Expects format like [["pnl"]] or [["png"]]
         if isinstance(top_level_pos_list[0], list) and top_level_pos_list[0]:
@@ -95,7 +98,12 @@ def _process_single_tagalog_word_entry(
                 isinstance(top_level_pos_list[0][0], str)
                 and top_level_pos_list[0][0].strip()
             ):
-                top_level_pos_code = top_level_pos_list[0][0].strip()
+                potential_pos_code = top_level_pos_list[0][0].strip()
+                # --- ADDED: Check if extracted code is invalid ---
+                if potential_pos_code.lower() not in INVALID_POS_CODES:
+                    top_level_pos_code = potential_pos_code
+                else:
+                    logger.warning(f"[Tagalog:{lemma}] Found invalid code '{potential_pos_code}' in top-level part_of_speech field. Treating as missing POS.")
 
     # --- Initial Word Insertion/Retrieval ---
     # Collect potential metadata to pass to get_or_create_word_id or update later
@@ -138,27 +146,21 @@ def _process_single_tagalog_word_entry(
             domains_str = ",".join(cleaned_domains)
             try:
                 # Use COALESCE to handle NULL tags and append with a comma
-                # Ensure target column 'tags' exists in the 'words' table
-                if "tags" in table_column_map.get("words", set()):
-                    cur.execute(
-                        """UPDATE words
-                            SET tags = COALESCE(tags || ',', '') || %s
-                            WHERE id = %s""",
-                        (domains_str, word_id),
-                    )
-                    logger.debug(
-                        f"Appended domains {cleaned_domains} to tags for word ID {word_id}"
-                    )
-                else:
-                    logger.warning(
-                        f"Cannot store domains: 'tags' column not found in 'words' table for word ID {word_id}."
-                    )
+                # Assume 'tags' column exists based on schema definition
+                cur.execute(
+                    """UPDATE words
+                        SET tags = COALESCE(tags || ',', '') || %s
+                        WHERE id = %s""",
+                    (domains_str, word_id),
+                )
+                logger.debug(
+                    f"Appended domains {cleaned_domains} to tags for word ID {word_id}"
+                )
 
             except Exception as tag_update_err:
                 logger.warning(
                     f"Failed to update tags with domains for word ID {word_id}: {tag_update_err}"
                 )
-                # Log error but don't stop processing the entry
 
     # --- Process Top-Level Pronunciations ---
     # Uses 'pronunciation' and 'alternate_pronunciation' keys
@@ -211,38 +213,50 @@ def _process_single_tagalog_word_entry(
         )
         if etymology_terms and isinstance(etymology_terms, list):
             for term_data in etymology_terms:
-                # Adapt based on actual structure of term_data (string? dict?)
-                related_word = None
-                rel_lang = None
-                if isinstance(term_data, str):
-                    related_word = term_data
-                    # Try to guess language from lang_codes if only one source lang?
-                    rel_lang = (
-                        lang_codes[0] if lang_codes and len(lang_codes) == 1 else None
-                    )
-                elif isinstance(term_data, dict):
-                    related_word = term_data.get("term")
-                    rel_lang = term_data.get("lang")
+                related_word_str = None
+                term_metadata = {"context": "etymology"} # Base metadata
 
-                if (
-                    related_word
-                    and isinstance(related_word, str)
-                    and related_word.strip()
-                ):
-                    # Add to batch (outside definition loop)
-                    # Use a sensible default relationship like RELATED or DERIVED_FROM
+                if isinstance(term_data, str) and term_data.strip():
+                    term_str_cleaned = term_data.strip()
+                    # --- NEW LOGIC: Check for affix+root pattern ---
+                    if term_str_cleaned.count('+') == 1:
+                        parts = term_str_cleaned.split('+')
+                        affix = parts[0].strip()
+                        root = parts[1].strip()
+                        if affix and root: # Both parts must be non-empty
+                            logger.debug(f"Detected affix+root pattern: {affix}+{root} from '{term_str_cleaned}'")
+                            # Relate main word to the ROOT word
+                            relations_batch.append({
+                                "from_word": word_id,
+                                "to_word": root, # Use the extracted root
+                                "relation_type": "derived_from",
+                                "source": source_identifier,
+                                "metadata": {"context": "etymology_affix", "affix": affix}, # Store affix in metadata
+                                "def_id": None,
+                            })
+                            continue # Skip further processing for this term_data
+
+                    # --- Fallback: Process as regular related term ---
+                    related_word_str = term_str_cleaned # Use the original cleaned string if pattern didn't match
+                    rel_type_to_use = "related" # Use 'related' for generic terms
+
+                elif isinstance(term_data, dict):
+                    related_word_str = term_data.get("term")
+                    rel_lang = term_data.get("lang")
+                    if rel_lang:
+                        term_metadata["lang"] = rel_lang # Add language if available
+                    rel_type_to_use = "related" # Assume 'related' for dict terms too
+
+                # --- Add to batch if a related word string was found ---
+                if related_word_str and isinstance(related_word_str, str) and related_word_str.strip():
                     relations_batch.append(
                         {
-                            "from_word": word_id,  # Changed from "word_id" to "from_word"
-                            "to_word": related_word.strip(),  # Changed from "related_word" to "to_word"
-                            "relation_type": "derived_from",  # FIXED: Changed from rel_type to relation_type
-                            "source": source_identifier,  # FIXED: Changed from source_identifier to source
-                            "metadata": (
-                                {"context": "etymology", "lang": rel_lang}
-                                if rel_lang
-                                else {"context": "etymology"}
-                            ),
-                            "def_id": None,  # Not linked to a specific definition
+                            "from_word": word_id,
+                            "to_word": related_word_str.strip(),
+                            "relation_type": rel_type_to_use, # Use determined relation type
+                            "source": source_identifier,
+                            "metadata": term_metadata, # Use collected metadata
+                            "def_id": None,
                         }
                     )
 
@@ -288,7 +302,12 @@ def _process_single_tagalog_word_entry(
                         isinstance(sense_pos_list[0][0], str)
                         and sense_pos_list[0][0].strip()
                     ):
-                        sense_pos_code = sense_pos_list[0][0].strip()
+                        potential_sense_pos = sense_pos_list[0][0].strip()
+                        # --- ADDED: Check if extracted code is invalid ---
+                        if potential_sense_pos.lower() not in INVALID_POS_CODES:
+                            sense_pos_code = potential_sense_pos
+                        else:
+                            logger.warning(f"[Tagalog:{lemma}] Found invalid code '{potential_sense_pos}' in sense {sense_idx} part_of_speech field. Treating as missing POS for this sense.")
 
             # Use sense POS if available, otherwise fallback to top-level POS
             pos_code_to_use = sense_pos_code if sense_pos_code else top_level_pos_code
@@ -316,6 +335,17 @@ def _process_single_tagalog_word_entry(
             if usage_notes_str:
                  metadata_dict["usage_notes"] = usage_notes_str
             # Add other sense-level data if available (e.g., domains, tags)
+
+            # --- NEW: Check for Sense-Level Etymology for Language Origin ---
+            sense_etymology_obj = sense.get("etymology")
+            if isinstance(sense_etymology_obj, dict) and sense_etymology_obj:
+                sense_langs = sense_etymology_obj.get("languages")
+                if isinstance(sense_langs, list) and sense_langs:
+                    # Store the first language code found (or join if multiple needed)
+                    first_lang = next((str(lang).strip() for lang in sense_langs if lang and isinstance(lang, str)), None)
+                    if first_lang:
+                        metadata_dict["sense_language_origin"] = first_lang
+                        logger.debug(f"Found sense language origin '{first_lang}' for '{lemma}', sense {sense_idx}")
 
             # Pass sense data to insert_definition
             definition_id = insert_definition(
@@ -376,10 +406,46 @@ def _process_single_tagalog_word_entry(
                                 "to_word": ref_text.strip(),  # Changed from "related_word" to "to_word"
                                 "relation_type": "related", # FIXED: Changed from rel_type to relation_type
                                 "source": source_identifier, # FIXED: Changed from source_identifier to source
-                                "metadata": {"context": "reference"},
+                                "metadata": {"context": "reference", "definition_id": definition_id},
                                 "def_id": definition_id, # Link to this definition
                             }
                         )
+
+            # --- NEW: Process Definition Synonyms ---
+            synonyms = sense.get("synonyms", [])
+            if isinstance(synonyms, list):
+                for syn_text in synonyms:
+                    if syn_text and isinstance(syn_text, str) and syn_text.strip():
+                        relations_batch.append({
+                            "from_word": word_id,
+                            "to_word": syn_text.strip(),
+                            "relation_type": "synonym",
+                            "source": source_identifier,
+                            "metadata": {"context": "definition_sense", "definition_id": definition_id},
+                            "def_id": definition_id,
+                        })
+
+            # --- NEW: Process Definition Affix Forms ---
+            affix_forms = sense.get("affix_forms", [])
+            # Optionally get types: affix_types = sense.get("affix_types", [])
+            if isinstance(affix_forms, list):
+                for idx, form_text in enumerate(affix_forms):
+                    if form_text and isinstance(form_text, str) and form_text.strip():
+                        form_metadata = {"context": "definition_sense_affix", "definition_id": definition_id}
+                        # Optional: Add affix type if available and lists align
+                        # try:
+                        #    if affix_types and isinstance(affix_types, list) and len(affix_types) > idx:
+                        #        form_metadata["pos_hint"] = affix_types[idx]
+                        # except IndexError: pass
+
+                        relations_batch.append({
+                            "from_word": word_id, # Link from the main word (root)
+                            "to_word": form_text.strip(), # To the derived form
+                            "relation_type": "derived", # Relationship is 'derived'
+                            "source": source_identifier,
+                            "metadata": form_metadata,
+                            "def_id": definition_id, # Link to the specific definition where it was mentioned
+                        })
 
             # --- Process Sense Domains ---
             # Add sense domains to definition tags or metadata if needed

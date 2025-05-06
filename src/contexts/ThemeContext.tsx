@@ -1,124 +1,98 @@
-import React, { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
-import { ThemeProvider as MuiThemeProvider, createTheme, CssBaseline, PaletteMode } from '@mui/material';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-// Define the types for your context
-interface AppThemeContextType {
-  themeMode: PaletteMode;
+// Add logging
+console.log("[INIT] ThemeContext.tsx loading");
+
+// Define the shape of our theme context
+interface ThemeContextType {
+  themeMode: 'light' | 'dark';
   toggleTheme: () => void;
 }
 
-// Create the context with default values
-const AppThemeContext = createContext<AppThemeContextType | undefined>(undefined);
+// Create the context with a default value
+const ThemeContext = createContext<ThemeContextType>({
+  themeMode: 'light',
+  toggleTheme: () => console.warn('No theme provider found')
+});
 
-export const AppThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Determine initial theme from localStorage or system preference
-  const getInitialTheme = (): PaletteMode => {
-    try {
-      const storedTheme = localStorage.getItem('appTheme') as PaletteMode;
-      if (storedTheme === 'light' || storedTheme === 'dark') {
-        return storedTheme;
-      }
-    } catch (e) {
-      console.error("Error reading theme from localStorage", e);
-    }
-    // Fallback to system preference
-    // const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    // return prefersDark ? 'dark' : 'light'; // Temporarily default to light
-    return 'light'; // Default to light for now
-  };
-
-  const [themeMode, setThemeMode] = useState<PaletteMode>(getInitialTheme);
-
-  // Update localStorage when theme changes
-  useEffect(() => {
-    try {
-      localStorage.setItem('appTheme', themeMode);
-      // Apply class to body for CSS variable scoping
-      document.body.classList.remove('light', 'dark');
-      document.body.classList.add(themeMode);
-    } catch (e) {
-      console.error("Error saving theme to localStorage", e);
-    }
-  }, [themeMode]);
-
-  const toggleTheme = () => {
-    setThemeMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-  };
-
-  // Create the MUI theme object based on the current mode
-  const muiTheme = useMemo(() => createTheme({
-    palette: {
-      mode: themeMode,
-      // You can customize MUI's default light/dark palettes here if needed
-      // For example:
-      // primary: {
-      //   main: themeMode === 'light' ? '#1d3557' : '#ffd166', // Match your CSS var --primary-color
-      // },
-      // background: {
-      //    default: themeMode === 'light' ? '#ffffff' : '#0a0d16', // Match --bg-color
-      //    paper: themeMode === 'light' ? '#ffffff' : '#131826', // Match --card-bg
-      // }
-      // ... other customizations
-    },
-    // You can also customize components, typography, etc.
-    components: {
-      // Example: Ensure Paper background respects theme
-      MuiPaper: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            backgroundColor: theme.palette.background.paper, // Use MUI theme background
-            color: theme.palette.text.primary, // Use MUI theme text color
-          }),
-        },
-      },
-      MuiButton: {
-        styleOverrides: {
-          // Ensure contained buttons use theme defaults unless overridden by sx
-          contained: ({ theme }) => ({
-            // Example: Set default contained button colors if needed
-            // backgroundColor: theme.palette.primary.main,
-            // color: theme.palette.primary.contrastText,
-          }),
-        }
-      }
-      // ... other component overrides
-    }
-  }), [themeMode]);
-
-  return (
-    <AppThemeContext.Provider value={{ themeMode, toggleTheme }}>
-      {/* Apply MUI Theme & Reset/Baseline */}
-      <MuiThemeProvider theme={muiTheme}>
-        <CssBaseline /> {/* Normalize styles and apply background color */} 
-        {/* Apply light/dark class to a wrapper if needed, but CssBaseline handles body bg */}
-        {/* <div className={themeMode}>{children}</div> */}
-        {children} 
-      </MuiThemeProvider>
-    </AppThemeContext.Provider>
-  );
-};
-
-// Custom hook to use the AppThemeContext
+// Hook to use the theme context
 export const useAppTheme = () => {
-  const context = useContext(AppThemeContext);
+  const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useAppTheme must be used within an AppThemeProvider');
+    throw new Error('useAppTheme must be used within a AppThemeProvider');
   }
   return context;
 };
 
-// Export the context for direct access if needed
-export { AppThemeContext };
+// Props for our theme provider
+interface AppThemeProviderProps {
+  children: ReactNode;
+}
 
-// Remove the old ThemeToggleButton as theme toggle is likely handled elsewhere (e.g., Header)
-/*
-export const ThemeToggleButton: React.FC = () => {
-  const { themeMode, toggleTheme } = useAppTheme();
+// Theme provider component
+export const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
+  // Get the preferred theme from localStorage or system preference
+  const getInitialTheme = (): 'light' | 'dark' => {
+    // Check if user has previously set a preference in localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      return savedTheme;
+    }
+    
+    // Check system preference using media query
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    
+    // Default to light theme
+    return 'light';
+  };
 
+  // Set up state for theme
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(getInitialTheme);
+
+  // Toggle theme function
+  const toggleTheme = () => {
+    setThemeMode(prevMode => {
+      const newMode = prevMode === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newMode);
+      return newMode;
+    });
+  };
+
+  // Apply theme class to body
+  useEffect(() => {
+    document.body.classList.remove('light', 'dark');
+    document.body.classList.add(themeMode);
+  }, [themeMode]);
+
+  // Effect for updating theme when system preference changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      // Only update if user hasn't set a preference in localStorage
+      if (!localStorage.getItem('theme')) {
+        setThemeMode(mediaQuery.matches ? 'dark' : 'light');
+      }
+    };
+
+    // Add event listener
+    mediaQuery.addEventListener('change', handleChange);
+
+    // Clean up
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
+
+  // Provide the theme context
   return (
-    <button onClick={toggleTheme}>
-      Switch to {themeMode === 'light' ? 'dark' : 'light'} mode
-    </button>
+    <ThemeContext.Provider value={{ themeMode, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
   );
 };
-*/
+
+export default ThemeContext;
+
+console.log("[INIT] ThemeContext.tsx loaded successfully");

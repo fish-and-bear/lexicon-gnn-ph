@@ -1,10 +1,18 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
+
+// Add immediate console log to track component loading
+console.log("[INIT] WordExplorer.tsx is being loaded");
+
 import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
 import { useAppTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchResultItem, Relation, WordSuggestion, BasicWord } from "../types";
 import unidecode from "unidecode";
+
+// Add logging for important dependencies
+console.log("[INIT] Loading API functions...");
+
 import { 
   fetchWordNetwork, 
   fetchWordDetails, 
@@ -20,6 +28,13 @@ import {
   getEtymologyTree,
   fetchSuggestions,
 } from "../api/wordApi";
+
+console.log("[INIT] API functions loaded:", {
+  fetchWordNetworkType: typeof fetchWordNetwork,
+  searchWordsType: typeof searchWords,
+  resetCircuitBreakerType: typeof resetCircuitBreaker
+});
+
 import { Button } from "@mui/material";
 import { Panel, PanelGroup, PanelResizeHandle, ImperativePanelHandle } from "react-resizable-panels";
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -27,7 +42,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Theme, useTheme as useMuiTheme } from '@mui/material/styles';
 import { Box } from "@mui/material";
 import { Autocomplete, TextField } from "@mui/material";
-import { debounce } from '@mui/material/utils';
 import Chip from '@mui/material/Chip';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -45,6 +59,9 @@ const isDevMode = () => {
 };
 
 const WordExplorer: React.FC = () => {
+  console.log("[INIT] WordExplorer component function starting");
+  
+  // State declarations with initialization logs
   const [wordData, setWordData] = useState<WordInfo | null>(null);
   const [wordNetwork, setWordNetwork] = useState<WordNetwork | null>(null);
   const [etymologyTree, setEtymologyTree] = useState<EtymologyTree | null>(null);
@@ -55,8 +72,13 @@ const WordExplorer: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [etymologyError, setEtymologyError] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  console.log("[INIT] Basic state variables initialized");
 
+  // Access theme context with logging
+  console.log("[INIT] About to access useAppTheme");
   const { themeMode, toggleTheme } = useAppTheme();
+  console.log("[INIT] useAppTheme successful:", { themeMode, hasToggleTheme: !!toggleTheme });
+  
   const [inputValue, setInputValue] = useState<string>("");
   const [depth, setDepth] = useState<number>(2);
   const [breadth, setBreadth] = useState<number>(10);
@@ -68,37 +90,56 @@ const WordExplorer: React.FC = () => {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState<boolean>(false);
   const [apiConnected, setApiConnected] = useState<boolean | null>(null);
+  console.log("[INIT] Secondary state variables initialized");
 
   const randomWordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
   const detailsContainerRef = useRef<ImperativePanelHandle>(null);
+  console.log("[INIT] Refs initialized");
 
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([]);
   const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref for debounce timer
+  console.log("[INIT] Autocomplete state initialized");
 
-  const fetchSuggestionsDebounced = React.useMemo(
-    () =>
-      debounce(
-        async (request: { input: string }, callback: (results: WordSuggestion[]) => void) => {
-          if (!request.input) {
-            callback([]);
-            return;
-          }
-          setIsSuggestionsLoading(true);
-          try {
-            const results = await fetchSuggestions(request.input);
-            callback(results);
-          } catch (error) {
-            console.error("Error fetching suggestions inside debounce:", error);
-            callback([]);
-          }
-          setIsSuggestionsLoading(false);
-        },
-        400,
-      ),
-    [fetchSuggestions],
-  );
+  // Custom debounce implementation within useCallback
+  const handleInputChangeDebounced = useCallback((inputValue: string) => {
+    // Clear existing timer on new input
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    if (!inputValue || inputValue.length < 2) {
+      setSuggestions([]); // Clear suggestions for short/empty input
+      setIsSuggestionsLoading(false); // Ensure loading is off
+      return;
+    }
+
+    setIsSuggestionsLoading(true); // Set loading true immediately before timer
+
+    // Set a new timer
+    debounceTimeoutRef.current = setTimeout(async () => {
+      try {
+        console.log(`Debounced fetch executing for: ${inputValue}`);
+        const results = await fetchSuggestions(inputValue);
+        setSuggestions(results);
+      } catch (error) {
+        console.error("Error fetching suggestions after debounce:", error);
+        setSuggestions([]); // Clear suggestions on error
+      } finally {
+        setIsSuggestionsLoading(false); // Set loading false after fetch completes/fails
+      }
+    }, 400); // 400ms delay
+  }, [fetchSuggestions]); // Dependency is stable fetchSuggestions import
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // Add null check
@@ -314,7 +355,15 @@ const WordExplorer: React.FC = () => {
 
       try {
         // Fetch using the determined identifier (lemma or "id:...")
-        wordData = await fetchWordDetails(wordToFetch);
+        wordData = await fetchWordDetails(wordToFetch, {
+          include_definitions: true, 
+          include_pronunciations: true,
+          include_etymologies: true, 
+          include_relations: true, 
+          include_forms: true,
+          include_templates: true,
+          include_related_words: true,
+        });
       } catch (error: any) {
         console.warn(`Initial fetch failed for '${wordToFetch}', error:`, error.message);
         fallbackToSearch = true;
@@ -338,7 +387,15 @@ const WordExplorer: React.FC = () => {
                 console.log(`Fallback search successful`);
                 const firstResult = searchResults.results[0];
                 // Fetch details using the ID from search result
-                wordData = await fetchWordDetails(`id:${firstResult.word_id}`);
+                wordData = await fetchWordDetails(`id:${firstResult.word_id}`, {
+                  include_definitions: true, 
+                  include_pronunciations: true,
+                  include_etymologies: true, 
+                  include_relations: true, 
+                  include_forms: true,
+                  include_templates: true,
+                  include_related_words: true,
+                });
                 fallbackToSearch = false; // Success
               } else {
                 // If fallback search finds nothing, throw the original error
@@ -388,7 +445,15 @@ const WordExplorer: React.FC = () => {
           const networkIdentifier = wordData.id ? `id:${wordData.id}` : wordData.lemma;
           console.log(`[handleNodeClick] Fetching network using identifier: ${networkIdentifier}`); 
           fetchWordNetworkData(networkIdentifier, depth, breadth) 
-              .then(networkData => setWordNetwork(networkData))
+              .then(networkData => {
+                  if (networkData) {
+                      console.log("[handleNodeClick] Network data retrieved successfully");
+                      setWordNetwork(networkData);
+                  } else {
+                      console.error("[handleNodeClick] Retrieved null network data");
+                      setError("Failed to retrieve word relationship data");
+                  }
+              })
               .catch(networkError => console.error("Error fetching word network:", networkError));
         } catch (networkError) {
           console.error("Error initiating word network fetch:", networkError);
@@ -461,7 +526,15 @@ const WordExplorer: React.FC = () => {
       let wordData: WordInfo | null = null;
       
       try {
-        wordData = await fetchWordDetails(word);
+        wordData = await fetchWordDetails(word, {
+          include_definitions: true, 
+          include_pronunciations: true,
+          include_etymologies: true, 
+          include_relations: true, 
+          include_forms: true,
+          include_templates: true,
+          include_related_words: true,
+        });
       } catch (error: any) {
         console.warn(`Failed to fetch details for selected word '${word}', error:`, error.message);
       }
@@ -662,7 +735,15 @@ const WordExplorer: React.FC = () => {
       setWordNetwork(null);
       
       Promise.all([
-        fetchWordDetails(detailsIdentifier), // Use ID or lemma string for details
+        fetchWordDetails(detailsIdentifier, {
+          include_definitions: true, 
+          include_pronunciations: true,
+          include_etymologies: true, 
+          include_relations: true, 
+          include_forms: true,
+          include_templates: true,
+          include_related_words: true,
+        }), // Use ID or lemma string for details
         fetchWordNetworkData(networkIdentifier, historyDepth, historyBreadth) // Use restored settings
       ])
       .then(([wordData, networkData]) => {
@@ -902,673 +983,681 @@ const WordExplorer: React.FC = () => {
     try {
       console.log("Manually testing API connection...");
       
-        const isConnected = await testApiConnection();
-        setApiConnected(isConnected);
-        
-        if (!isConnected) {
-        console.log("API connection test failed, showing error...");
-        setError(
-          "Cannot connect to the API server. Please ensure the backend server is running on port 10000 " +
-          "and the /api/v2/test endpoint is accessible. You can start the backend server by running:\n" +
-          "1. cd backend\n" +
-          "2. python app.py"
-        );
-      } else {
-        console.log("API connection successful!");
-        
-        const savedEndpoint = localStorage.getItem('successful_api_endpoint');
-        if (savedEndpoint) {
-          console.log('Loaded initial API endpoint from localStorage:', savedEndpoint);
-        }
-        
-        if (inputValue) {
-          console.log("Trying to search with the connected API...");
-          handleSearch(inputValue);
-                  } else {
-          console.log("Fetching a random word to test connection further...");
-          handleRandomWord();
-        }
-      }
-    } catch (e) {
-      console.error("Error testing API connection:", e);
-      setApiConnected(false);
-      setError(
-        "Error testing API connection. Please ensure the backend server is running and the " +
-        "/api/v2/test endpoint is accessible. Check the console for more details."
-      );
-    }
-  }, [inputValue, handleSearch, handleRandomWord]);
-
-  // Define fetchStatistics *before* the useEffect that uses it
-  const fetchStatistics = useCallback(async () => {
-    try {
-      const data = await getStatistics();
-      console.log('Statistics data:', data);
-    } catch (error) {
-      console.error('Error fetching statistics:', error);
-    }
-  }, []); // Removed stable getStatistics dependency
-
-  useEffect(() => {
-    console.log("Checking API connection... 2");
-    testApiConnection().then(connected => {
-      setApiConnected(connected);
-      if (connected) {
-        const fetchInitialData = async () => {
-          try {
-            fetchStatistics();
-          } catch (error) {
-            console.error("Error fetching initial data:", error);
-          }
-        };
-        
-        fetchInitialData();
-      }
-    }).catch(error => {
-      console.error("API connection error:", error);
-      setApiConnected(false);
-    });
-  }, [fetchStatistics]); // Now fetchStatistics is declared before this hook
-
-  const handleNetworkChange = useCallback((newDepth: number, newBreadth: number) => {
-    setDepth(newDepth);
-    setBreadth(newBreadth);
-    if (selectedNode) {
-      // Use word ID if available, otherwise fall back to selectedNode (lemma)
-      const identifier = wordData?.id ? `id:${wordData.id}` : normalizeInput(selectedNode);
-      setIsLoadingDetails(true);
-      setIsLoadingNetwork(true);
-      fetchWordNetworkData(identifier, newDepth, newBreadth)
-        .then(networkData => {
-          setWordNetwork(networkData);
-        })
-        .catch(error => {
-          console.error("Error updating network:", error);
-          setError("Failed to update network. Please try again.");
-        });
-    }
-  }, [selectedNode, fetchWordNetworkData]);
-
-  useEffect(() => {
-    if (wordData && wordData.id) {
-      const hasRelations = (
-        (wordData.incoming_relations && wordData.incoming_relations.length > 0) || 
-        (wordData.outgoing_relations && wordData.outgoing_relations.length > 0)
-      );
+      const isConnected = await testApiConnection();
+      setApiConnected(isConnected);
       
-      if (!hasRelations) {
-        console.log(`Word ${wordData.lemma} (ID: ${wordData.id}) loaded, but no relations found in the initial details fetch. Relations might be fetched separately by the network graph or may not exist.`);
-      }
-    }
-  }, [wordData]);
-
-  useEffect(() => {
-    try {
+      if (!isConnected) {
+      console.log("API connection test failed, showing error...");
+      setError(
+        "Cannot connect to the API server. Please ensure the backend server is running on port 10000 " +
+        "and the /api/v2/test endpoint is accessible. You can start the backend server by running:\n" +
+        "1. cd backend\n" +
+        "2. python app.py"
+      );
+    } else {
+      console.log("API connection successful!");
+      
       const savedEndpoint = localStorage.getItem('successful_api_endpoint');
       if (savedEndpoint) {
         console.log('Loaded initial API endpoint from localStorage:', savedEndpoint);
       }
-    } catch (e) {
-      console.error('Error reading saved API endpoint from localStorage on mount:', e);
+      
+      if (inputValue) {
+        console.log("Trying to search with the connected API...");
+        handleSearch(inputValue);
+      } else {
+        console.log("Fetching a random word to test connection further...");
+        handleRandomWord();
+      }
     }
-  }, []);
+  } catch (e) {
+    console.error("Error testing API connection:", e);
+    setApiConnected(false);
+    setError(
+      "Error testing API connection. Please ensure the backend server is running and the " +
+      "/api/v2/test endpoint is accessible. Check the console for more details."
+    );
+  }
+}, [inputValue, handleSearch, handleRandomWord]);
 
-  const muiTheme = useMuiTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md')); // Check for mobile/tablet
+// Define fetchStatistics *before* the useEffect that uses it
+const fetchStatistics = useCallback(async () => {
+  try {
+    const data = await getStatistics();
+    console.log('Statistics data:', data);
+  } catch (error) {
+    console.error('Error fetching statistics:', error);
+  }
+}, []); // Removed stable getStatistics dependency
 
-  const renderSearchBar = () => {
-    const muiTheme = useMuiTheme(); // Get the actual MUI theme object
-    return (
-      <Box className="search-container-desktop" sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', padding: muiTheme.spacing(1, 2), borderBottom: '1px solid var(--card-border-color)' }}>
-         <Box className="nav-buttons" sx={{ display: 'flex', gap: 0.5 }}>
-           <Button
-             className="nav-button back-button"
-             onClick={handleBack}
-             disabled={currentHistoryIndex <= 0}
-             title="Go back to previous word"
-             variant="contained"
-             sx={{
-               minWidth: 36, width: 36, height: 36,
-               borderRadius: '50%', p: 0,
-               bgcolor: 'var(--button-color)', color: 'var(--button-text-color)', boxShadow: 'none',
-               '&:hover': { bgcolor: 'var(--primary-color)' }, '&:active': { transform: 'scale(0.9)' },
-               '&.Mui-disabled': { bgcolor: 'var(--card-border-color)', color: 'var(--text-color)', opacity: 0.6 }
-             }}
-           >
-             <span>←</span>
-           </Button>
-           <Button
-             className="nav-button forward-button"
-             onClick={handleForward}
-             disabled={currentHistoryIndex >= wordHistory.length - 1}
-             title="Go forward to next word"
-             variant="contained"
-             sx={{
-               minWidth: 36, width: 36, height: 36,
-               borderRadius: '50%', p: 0,
-               bgcolor: 'var(--button-color)', color: 'var(--button-text-color)', boxShadow: 'none',
-               '&:hover': { bgcolor: 'var(--primary-color)' }, '&:active': { transform: 'scale(0.9)' },
-               '&.Mui-disabled': { bgcolor: 'var(--card-border-color)', color: 'var(--text-color)', opacity: 0.6 }
-             }}
-           >
-             <span>→</span>
-           </Button>
-         </Box>
+useEffect(() => {
+  console.log("Checking API connection... 2");
+  testApiConnection().then(connected => {
+    setApiConnected(connected);
+    if (connected) {
+      const fetchInitialData = async () => {
+        try {
+          fetchStatistics();
+        } catch (error) {
+          console.error("Error fetching initial data:", error);
+        }
+      };
+      
+      fetchInitialData();
+    }
+  }).catch(error => {
+    console.error("API connection error:", error);
+    setApiConnected(false);
+  });
+}, [fetchStatistics]); // Now fetchStatistics is declared before this hook
 
-         <Box className="search-input-container" sx={{ flexGrow: 1, position: 'relative' }}>
-           <Autocomplete<
-             WordSuggestion | string,
-             false, // Multiple
-             false, // DisableClearable
-             true   // FreeSolo
-           >
-             id="word-search-autocomplete"
-             sx={{ width: '100%' }}
-             open={autocompleteOpen}
-             onOpen={() => setAutocompleteOpen(true)}
-             onClose={() => setAutocompleteOpen(false)}
-             isOptionEqualToValue={(option, value) => 
-                typeof option === 'object' && typeof value === 'object' ? option.lemma === value.lemma : option === value
-             }
-             getOptionLabel={(option) => typeof option === 'string' ? option : option.lemma}
-             options={suggestions}
-             loading={isSuggestionsLoading}
-             filterOptions={(x) => x}
-             freeSolo
-             autoComplete
-             includeInputInList
-             value={inputValue}
-             onInputChange={(event, newInputValue, reason) => {
-               setInputValue(newInputValue);
-               if (reason === 'input' && newInputValue) {
-                 fetchSuggestionsDebounced({ input: newInputValue }, (results) => {
-                   setSuggestions(results);
-                 });
-               } else if (reason === 'clear' || !newInputValue) {
-                 setSuggestions([]);
-               }
-             }}
-             onChange={(event, newValue, reason) => {
-               if ((reason === 'selectOption' || reason === 'createOption') && newValue) {
-                 handleSearch(newValue);
-               }
-             }}
-             renderInput={(params) => (
-               <TextField
-                 {...params}
-                 placeholder="Search for a word..."
-                 variant="outlined"
-                 size="small"
-                 className="search-input"
-                 InputLabelProps={{ shrink: false, style: { display: 'none' } }}
-                 InputProps={{
-                   ...params.InputProps,
-                   notched: false,
-                   endAdornment: (
-                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                       {isSuggestionsLoading && (
-                         <CircularProgress color="inherit" size={20} />
-                       )}
-                       {params.InputProps.endAdornment}
-                     </Box>
-                   ),
-                 }}
-               />
-             )}
-             ListboxProps={{
-                className: 'search-suggestions',
-                sx: {
-                    // Add styles here to mimic .search-suggestions padding, etc.
-                    // Example:
-                    // padding: '0',
-                    // maxHeight: '300px'
-                }
-             }}
-             slotProps={{
-                popper: {
-                    className: 'search-suggestions-popper',
-                    sx: { zIndex: 1300 }
-                },
-                paper: {
-                    className: 'search-suggestions-paper',
-                    sx: {
-                        // Add styles here to mimic .search-suggestions background, border, etc.
-                    }
-                },
-                clearIndicator: {
-                  sx: {
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    '& .MuiSvgIcon-root': {
-                      fontSize: '1.1rem' 
-                    },
-                    marginRight: '6px',
-                    marginBottom: '5px'
-                  }
-                }
-             }}
-             renderOption={(props, option) => {
-               if (typeof option === 'string') {
-                 return <li {...props}>{option}</li>; 
-               }
-               return (
-                 <li {...props} key={option.lemma + option.language_code}>
-                   <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                     <span>{option.lemma}</span>
-                     <Chip 
-                       label={option.language_code?.toUpperCase() || 'N/A'}
-                       size="small" 
-                       variant="outlined"
-                       sx={{ 
-                         ml: 1, 
-                         height: 'auto',
-                         fontSize: '0.7rem',
-                         lineHeight: 1.2,
-                         padding: '1px 4px'
-                       }}
-                     />
-                   </Box>
-                 </li>
-               );
-             }}
-           />
-         </Box>
+const handleNetworkChange = useCallback((newDepth: number, newBreadth: number) => {
+  setDepth(newDepth);
+  setBreadth(newBreadth);
+  if (selectedNode) {
+    // Use word ID if available, otherwise fall back to selectedNode (lemma)
+    const identifier = wordData?.id ? `id:${wordData.id}` : normalizeInput(selectedNode);
+    setIsLoadingDetails(true);
+    setIsLoadingNetwork(true);
+    fetchWordNetworkData(identifier, newDepth, newBreadth)
+      .then(networkData => {
+        setWordNetwork(networkData);
+      })
+      .catch(error => {
+        console.error("Error updating network:", error);
+        setError("Failed to update network. Please try again.");
+      });
+  }
+}, [selectedNode, fetchWordNetworkData]);
 
+useEffect(() => {
+  if (wordData && wordData.id) {
+    const hasRelations = (
+      (wordData.incoming_relations && wordData.incoming_relations.length > 0) || 
+      (wordData.outgoing_relations && wordData.outgoing_relations.length > 0)
+    );
+    
+    if (!hasRelations) {
+      console.log(`Word ${wordData.lemma} (ID: ${wordData.id}) loaded, but no relations found in the initial details fetch. Relations might be fetched separately by the network graph or may not exist.`);
+    }
+  }
+}, [wordData]);
+
+useEffect(() => {
+  try {
+    const savedEndpoint = localStorage.getItem('successful_api_endpoint');
+    if (savedEndpoint) {
+      console.log('Loaded initial API endpoint from localStorage:', savedEndpoint);
+    }
+  } catch (e) {
+    console.error('Error reading saved API endpoint from localStorage on mount:', e);
+  }
+}, []);
+
+const muiTheme = useMuiTheme();
+const isMobile = useMediaQuery(muiTheme.breakpoints.down('md')); // Check for mobile/tablet
+
+const renderSearchBar = () => {
+  const muiTheme = useMuiTheme(); // Get the actual MUI theme object
+  return (
+    <Box className="search-container-desktop" sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', padding: muiTheme.spacing(1, 2), borderBottom: '1px solid var(--card-border-color)' }}>
+       <Box className="nav-buttons" sx={{ display: 'flex', gap: 0.5 }}>
          <Button
+           className="nav-button back-button"
+           onClick={handleBack}
+           disabled={currentHistoryIndex <= 0}
+           title="Go back to previous word"
            variant="contained"
-           className="search-button"
-           onClick={() => inputValue.trim() && handleSearch(inputValue)}
-           disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim()}
-           title="Search for this word"
            sx={{
-             height: '40px',
-             ml: 0.5,
-             whiteSpace: 'nowrap',
-             bgcolor: 'var(--button-color)', color: 'var(--button-text-color)',
-             borderRadius: '8px', boxShadow: 'none',
-             '&:hover': { bgcolor: 'var(--primary-color)', boxShadow: 'none' }
+             minWidth: 36, width: 36, height: 36,
+             borderRadius: '50%', p: 0,
+             bgcolor: 'var(--button-color)', color: 'var(--button-text-color)', boxShadow: 'none',
+             '&:hover': { bgcolor: 'var(--primary-color)' }, '&:active': { transform: 'scale(0.9)' },
+             '&.Mui-disabled': { bgcolor: 'var(--card-border-color)', color: 'var(--text-color)', opacity: 0.6 }
            }}
          >
-           {(isLoadingDetails || isLoadingNetwork) ? <CircularProgress size={20} color="inherit"/> : '🔍 Search'}
+           <span>←</span>
          </Button>
-
          <Button
+           className="nav-button forward-button"
+           onClick={handleForward}
+           disabled={currentHistoryIndex >= wordHistory.length - 1}
+           title="Go forward to next word"
            variant="contained"
-           className="random-button"
-           onClick={handleRandomWord}
-           disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork}
-           title="Get a random word"
            sx={{
-             height: '40px',
-             ml: 0.5,
-             whiteSpace: 'nowrap',
-             bgcolor: 'var(--accent-color)', 
-             color: 'var(--button-text-color)',
-             fontWeight: 'normal', 
-             borderRadius: '8px', 
-             boxShadow: 'none',
-             transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
-             '&:hover': {
-               bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9),
-               color: '#ffffff',
-               boxShadow: 'none' 
-             },
-             '&:active': {
-               transform: 'scale(0.95)'
-             },
-             '&.Mui-disabled': {
+             minWidth: 36, width: 36, height: 36,
+             borderRadius: '50%', p: 0,
+             bgcolor: 'var(--button-color)', color: 'var(--button-text-color)', boxShadow: 'none',
+             '&:hover': { bgcolor: 'var(--primary-color)' }, '&:active': { transform: 'scale(0.9)' },
+             '&.Mui-disabled': { bgcolor: 'var(--card-border-color)', color: 'var(--text-color)', opacity: 0.6 }
+           }}
+         >
+           <span>→</span>
+         </Button>
+       </Box>
+
+       <Box className="search-input-container" sx={{ flexGrow: 1, position: 'relative' }}>
+         <Autocomplete<
+           WordSuggestion | string,
+           false, // Multiple
+           false, // DisableClearable
+           true   // FreeSolo
+         >
+           id="word-search-autocomplete"
+           sx={{ width: '100%' }}
+           open={autocompleteOpen}
+           onOpen={() => setAutocompleteOpen(true)}
+           onClose={() => setAutocompleteOpen(false)}
+           isOptionEqualToValue={(option, value) => 
+              typeof option === 'object' && typeof value === 'object' ? option.lemma === value.lemma : option === value
+           }
+           getOptionLabel={(option) => typeof option === 'string' ? option : option.lemma}
+           options={suggestions}
+           loading={isSuggestionsLoading}
+           filterOptions={(x) => x}
+           freeSolo
+           autoComplete
+           includeInputInList
+           value={inputValue}
+           onInputChange={(event, newInputValue, reason) => {
+             setInputValue(newInputValue);
+             if (reason === 'input') {
+                // Call the custom debounced handler
+                handleInputChangeDebounced(newInputValue);
+             } else if (reason === 'clear' || !newInputValue) {
+                // Clear suggestions and cancel any pending fetch immediately
+                if (debounceTimeoutRef.current) {
+                  clearTimeout(debounceTimeoutRef.current);
+                }
+                setSuggestions([]);
+                setIsSuggestionsLoading(false);
+             }
+           }}
+           onChange={(event, newValue, reason) => {
+             if ((reason === 'selectOption' || reason === 'createOption') && newValue) {
+               handleSearch(newValue);
+             }
+           }}
+           renderInput={(params) => (
+             <TextField
+               {...params}
+               placeholder="Search for a word..."
+               variant="outlined"
+               size="small"
+               className="search-input"
+               InputLabelProps={{ shrink: false, style: { display: 'none' } }}
+               InputProps={{
+                 ...params.InputProps,
+                 notched: false,
+                 endAdornment: (
+                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                     {isSuggestionsLoading && (
+                       <CircularProgress color="inherit" size={20} />
+                     )}
+                     {params.InputProps.endAdornment}
+                   </Box>
+                 ),
+               }}
+             />
+           )}
+           ListboxProps={{
+              className: 'search-suggestions',
+              sx: {
+                  // Add styles here to mimic .search-suggestions padding, etc.
+                  // Example:
+                  // padding: '0',
+                  // maxHeight: '300px'
+              }
+           }}
+           slotProps={{
+              popper: {
+                  className: 'search-suggestions-popper',
+                  sx: { zIndex: 1300 }
+              },
+              paper: {
+                  className: 'search-suggestions-paper',
+                  sx: {
+                      // Add styles here to mimic .search-suggestions background, border, etc.
+                  }
+              },
+              clearIndicator: {
+                sx: {
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  '& .MuiSvgIcon-root': {
+                    fontSize: '1.1rem' 
+                  },
+                  marginRight: '6px',
+                  marginBottom: '5px'
+                }
+              }
+           }}
+           renderOption={(props, option) => {
+             if (typeof option === 'string') {
+               return <li {...props}>{option}</li>; 
+             }
+             return (
+               <li {...props} key={option.lemma + option.language_code}>
+                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                   <span>{option.lemma}</span>
+                   <Chip 
+                     label={option.language_code?.toUpperCase() || 'N/A'}
+                     size="small" 
+                     variant="outlined"
+                     sx={{ 
+                       ml: 1, 
+                       height: 'auto',
+                       fontSize: '0.7rem',
+                       lineHeight: 1.2,
+                       padding: '1px 4px'
+                     }}
+                   />
+                 </Box>
+               </li>
+             );
+           }}
+         />
+       </Box>
+
+       <Button
+         variant="contained"
+         className="search-button"
+         onClick={() => inputValue.trim() && handleSearch(inputValue)}
+         disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim()}
+         title="Search for this word"
+         sx={{
+           height: '40px',
+           ml: 0.5,
+           whiteSpace: 'nowrap',
+           bgcolor: 'var(--button-color)', color: 'var(--button-text-color)',
+           borderRadius: '8px', boxShadow: 'none',
+           '&:hover': { bgcolor: 'var(--primary-color)', boxShadow: 'none' }
+         }}
+       >
+         {(isLoadingDetails || isLoadingNetwork) ? <CircularProgress size={20} color="inherit"/> : '🔍 Search'}
+       </Button>
+
+       <Button
+         variant="contained"
+         className="random-button"
+         onClick={handleRandomWord}
+         disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork}
+         title="Get a random word"
+         sx={{
+           height: '40px',
+           ml: 0.5,
+           whiteSpace: 'nowrap',
+           bgcolor: 'var(--accent-color)', 
+           color: 'var(--button-text-color)',
+           fontWeight: 'normal', 
+           borderRadius: '8px', 
+           boxShadow: 'none',
+           transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
+           '&:hover': {
+             bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9),
+             color: '#ffffff',
+             boxShadow: 'none' 
+           },
+           '&:active': {
+             transform: 'scale(0.95)'
+           },
+           '&.Mui-disabled': {
+              bgcolor: 'action.disabledBackground',
+              color: 'action.disabled'
+           }
+         }}
+       >
+         {isRandomLoading ? <CircularProgress size={20} color="inherit"/> : '🎲 Random Word'}
+       </Button>
+    </Box>
+  );
+};
+
+// New function to render the mobile header using AppBar/Toolbar
+const renderMobileHeader = () => {
+  return (
+    <AppBar position="static" color="default" elevation={1} sx={{ pt: 0, pb: 0 }}>
+      <Toolbar variant="dense" sx={{ minHeight: 48, py: 0.5 }}>
+        {/* Optional: Add a title or back button */}
+        <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, fontSize: '1rem' }}>
+           Filipino Root Explorer
+        </Typography>
+
+        {/* Search Autocomplete */}
+        <Box sx={{ flexGrow: 0.9, flexShrink: 1, minWidth: '100px', px: theme => theme.spacing(1) }}> {/* Reduce flexGrow slightly */}
+          <Autocomplete<
+            WordSuggestion | string,
+            false, // Multiple
+            false, // DisableClearable
+            true   // FreeSolo
+          >
+            id="word-search-autocomplete-mobile"
+            size="small" // Make it smaller for mobile
+            open={autocompleteOpen}
+            onOpen={() => setAutocompleteOpen(true)}
+            onClose={() => setAutocompleteOpen(false)}
+            isOptionEqualToValue={(option, value) =>
+              typeof option === 'object' && typeof value === 'object' ? option.lemma === value.lemma : option === value
+            }
+            getOptionLabel={(option) => typeof option === 'string' ? option : option.lemma}
+            options={suggestions}
+            loading={isSuggestionsLoading}
+            filterOptions={(x) => x}
+            freeSolo
+            autoComplete
+            includeInputInList
+            value={inputValue}
+            onInputChange={(event, newInputValue, reason) => {
+              setInputValue(newInputValue);
+              if (reason === 'input') {
+                 // Call the custom debounced handler
+                 handleInputChangeDebounced(newInputValue);
+              } else if (reason === 'clear' || !newInputValue) {
+                 // Clear suggestions and cancel any pending fetch immediately
+                 if (debounceTimeoutRef.current) {
+                   clearTimeout(debounceTimeoutRef.current);
+                 }
+                 setSuggestions([]);
+                 setIsSuggestionsLoading(false);
+              }
+            }}
+            onChange={(event, newValue, reason) => {
+              if ((reason === 'selectOption' || reason === 'createOption') && newValue) {
+                handleSearch(newValue);
+              }
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Search..." // Shorter placeholder
+                variant="outlined"
+                className="search-input-mobile" // Add specific class
+                InputLabelProps={{ shrink: false, style: { display: 'none' } }}
+                InputProps={{
+                  ...params.InputProps,
+                  notched: false,
+                  endAdornment: (
+                    <React.Fragment>
+                      {isSuggestionsLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+              />
+            )}
+            renderOption={(props, option) => {
+              if (typeof option === 'string') {
+                return <li {...props}>{option}</li>;
+              }
+              return (
+                <li {...props} key={option.lemma + option.language_code}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                    <span>{option.lemma}</span>
+                    <Chip
+                      label={option.language_code?.toUpperCase() || 'N/A'}
+                      size="small"
+                      variant="outlined"
+                      sx={{
+                        ml: 1,
+                        height: 'auto',
+                        fontSize: '0.7rem',
+                        lineHeight: 1.2,
+                        padding: '1px 4px'
+                      }}
+                    />
+                  </Box>
+                </li>
+              );
+            }}
+          />
+        </Box> {/* Added missing closing tag */}
+
+        {/* Action Buttons */}
+        <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 1, flexGrow: 0 }}> {/* Ensure buttons don't grow but CAN shrink */}
+          <Button
+            variant="contained"
+            size="small" // Smaller button
+            className="search-button-mobile" // Add specific class
+            onClick={() => inputValue.trim() && handleSearch(inputValue)}
+            disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim()}
+            title="Search"
+            sx={{ 
+              minWidth: 'auto', px: 1, // Allow shrinking
+              height: 38, // Match TextField height
+              bgcolor: 'var(--button-color)', // Use theme variable
+              color: 'var(--button-text-color)', // Use theme variable
+              '&:hover': { 
+                bgcolor: 'var(--primary-color)' // Use theme variable for hover
+              },
+              '&.Mui-disabled': { // Keep consistent disabled style
+                bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)', // Use themeMode
+                color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)', // Use themeMode
+              }
+            }}
+          >
+            {(isLoadingDetails || isLoadingNetwork) ? <CircularProgress size={20} color="inherit" /> : '🔍'} {/* Icon only */}
+          </Button>
+          <Button
+            variant="contained"
+            size="small" // Smaller button
+            className="random-button-mobile" // Add specific class
+            onClick={handleRandomWord}
+            disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork}
+            title="Random Word"
+            sx={{ 
+              minWidth: 'auto', px: 1, // Allow shrinking
+              height: 38, // Match TextField height
+              bgcolor: 'var(--accent-color)', 
+              color: 'var(--button-text-color)',
+              transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
+              '&:hover': { 
+                bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9) // Use themeMode
+              },
+              '&:active': {
+                transform: 'scale(0.95)'
+              },
+              '&.Mui-disabled': {
                 bgcolor: 'action.disabledBackground',
                 color: 'action.disabled'
-             }
-           }}
-         >
-           {isRandomLoading ? <CircularProgress size={20} color="inherit"/> : '🎲 Random Word'}
-         </Button>
-      </Box>
-    );
-  };
-
-  // New function to render the mobile header using AppBar/Toolbar
-  const renderMobileHeader = () => {
-    return (
-      <AppBar position="static" color="default" elevation={1} sx={{ pt: 0, pb: 0 }}>
-        <Toolbar variant="dense" sx={{ minHeight: 48, py: 0.5 }}>
-          {/* Optional: Add a title or back button */}
-          <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, fontSize: '1rem' }}>
-             Filipino Root Explorer
-          </Typography>
-
-          {/* Search Autocomplete */}
-          <Box sx={{ flexGrow: 0.9, flexShrink: 1, minWidth: '100px', px: theme => theme.spacing(1) }}> {/* Reduce flexGrow slightly */}
-            <Autocomplete<
-              WordSuggestion | string,
-              false, // Multiple
-              false, // DisableClearable
-              true   // FreeSolo
-            >
-              id="word-search-autocomplete-mobile"
-              size="small" // Make it smaller for mobile
-              open={autocompleteOpen}
-              onOpen={() => setAutocompleteOpen(true)}
-              onClose={() => setAutocompleteOpen(false)}
-              isOptionEqualToValue={(option, value) =>
-                typeof option === 'object' && typeof value === 'object' ? option.lemma === value.lemma : option === value
               }
-              getOptionLabel={(option) => typeof option === 'string' ? option : option.lemma}
-              options={suggestions}
-              loading={isSuggestionsLoading}
-              filterOptions={(x) => x}
-              freeSolo
-              autoComplete
-              includeInputInList
-              value={inputValue}
-              onInputChange={(event, newInputValue, reason) => {
-                setInputValue(newInputValue);
-                if (reason === 'input' && newInputValue) {
-                  fetchSuggestionsDebounced({ input: newInputValue }, (results) => {
-                    setSuggestions(results);
-                  });
-                } else if (reason === 'clear' || !newInputValue) {
-                  setSuggestions([]);
-                }
-              }}
-              onChange={(event, newValue, reason) => {
-                if ((reason === 'selectOption' || reason === 'createOption') && newValue) {
-                  handleSearch(newValue);
-                }
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Search..." // Shorter placeholder
-                  variant="outlined"
-                  className="search-input-mobile" // Add specific class
-                  InputLabelProps={{ shrink: false, style: { display: 'none' } }}
-                  InputProps={{
-                    ...params.InputProps,
-                    notched: false,
-                    endAdornment: (
-                      <React.Fragment>
-                        {isSuggestionsLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                        {params.InputProps.endAdornment}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-              )}
-              renderOption={(props, option) => {
-                if (typeof option === 'string') {
-                  return <li {...props}>{option}</li>;
-                }
-                return (
-                  <li {...props} key={option.lemma + option.language_code}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                      <span>{option.lemma}</span>
-                      <Chip
-                        label={option.language_code?.toUpperCase() || 'N/A'}
-                        size="small"
-                        variant="outlined"
-                        sx={{
-                          ml: 1,
-                          height: 'auto',
-                          fontSize: '0.7rem',
-                          lineHeight: 1.2,
-                          padding: '1px 4px'
-                        }}
-                      />
-                    </Box>
-                  </li>
-                );
-              }}
-            />
-          </Box> {/* Added missing closing tag */}
-
-          {/* Action Buttons */}
-          <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 1, flexGrow: 0 }}> {/* Ensure buttons don't grow but CAN shrink */}
-            <Button
-              variant="contained"
-              size="small" // Smaller button
-              className="search-button-mobile" // Add specific class
-              onClick={() => inputValue.trim() && handleSearch(inputValue)}
-              disabled={isLoadingDetails || isLoadingNetwork || !inputValue.trim()}
-              title="Search"
-              sx={{ 
-                minWidth: 'auto', px: 1, // Allow shrinking
-                height: 38, // Match TextField height
-                bgcolor: 'var(--button-color)', // Use theme variable
-                color: 'var(--button-text-color)', // Use theme variable
-                '&:hover': { 
-                  bgcolor: 'var(--primary-color)' // Use theme variable for hover
-                },
-                '&.Mui-disabled': { // Keep consistent disabled style
-                  bgcolor: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)', // Use themeMode
-                  color: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.26)', // Use themeMode
-                }
-              }}
-            >
-              {(isLoadingDetails || isLoadingNetwork) ? <CircularProgress size={20} color="inherit" /> : '🔍'} {/* Icon only */}
-            </Button>
-            <Button
-              variant="contained"
-              size="small" // Smaller button
-              className="random-button-mobile" // Add specific class
-              onClick={handleRandomWord}
-              disabled={isRandomLoading || isLoadingDetails || isLoadingNetwork}
-              title="Random Word"
-              sx={{ 
-                minWidth: 'auto', px: 1, // Allow shrinking
-                height: 38, // Match TextField height
-                bgcolor: 'var(--accent-color)', 
-                color: 'var(--button-text-color)',
-                transition: 'background-color 0.2s ease-in-out, transform 0.1s ease-out',
-                '&:hover': { 
-                  bgcolor: themeMode === 'dark' ? 'var(--secondary-color)' : alpha(muiTheme.palette.warning.dark, 0.9) // Use themeMode
-                },
-                '&:active': {
-                  transform: 'scale(0.95)'
-                },
-                '&.Mui-disabled': {
-                  bgcolor: 'action.disabledBackground',
-                  color: 'action.disabled'
-                }
-              }}
-            >
-              {isRandomLoading ? <CircularProgress size={20} color="inherit" /> : '🎲'} {/* Icon only */}
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
-    );
-  };
-
-  return (
-    <div className={`word-explorer ${themeMode} ${(isLoadingDetails || isLoadingNetwork) ? 'loading' : ''}`}>
-      <header className="header-content" style={{ padding: isMobile ? '0.5rem 0.8rem' : '1rem 1.5rem' }}>
-        <h1 style={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}>Filipino Root Word Explorer</h1>
-        <div className="header-buttons">
-          {isDevMode() && (
-            <>
-              <button
-                onClick={handleResetCircuitBreaker}
-                className="debug-button"
-                title="Reset API connection"
-              >
-                <span>🔄</span> Reset API
-              </button>
-              <button
-                onClick={handleTestApiConnection}
-                className="debug-button"
-                title="Test API connection"
-              >
-                <span>🔌</span> Test API
-              </button>
-              <div className={`api-status ${
-                (apiConnected === null ? 'checking' : (apiConnected ? 'connected' : 'disconnected'))
-              }`}>
-                {apiConnected === null ? <span>⏳</span> : 
-                 apiConnected ? <span>✅</span> : <span>❌</span>}
-                 API
-              </div>
-            </>
-          )}
-          <button
-            onClick={toggleTheme}
-            className="theme-toggle"
-            aria-label="Toggle theme"
-            title="Toggle theme"
+            }}
           >
-            {themeMode === "light" ? "🌙" : "☀️"}
-          </button>
-        </div>
-      </header>
-      
-      {/* Conditionally render search bars */}
-      {!isMobile && renderSearchBar()} 
-      {isMobile && renderMobileHeader()}
-      
-      {error && (
-        <div className="error-message">
-          <p>{error}</p>
-          {error.includes('Circuit breaker') && (
-            <button onClick={handleResetCircuitBreaker} className="reset-button">
-                Reset Connection
-              </button>
-          )}
-          {error.includes('API connection') && (
-            <div className="error-actions">
-              <button onClick={handleResetCircuitBreaker} className="reset-button">
-                Reset Connection
-              </button>
-              <button 
-                onClick={handleTestApiConnection} 
-                className="retry-button"
-              >
-                Test API Connection
-              </button>
-            </div>
-          )}
-          {error.includes('backend server') && (
-            <div className="error-actions">
-              <div className="backend-instructions">
-                <p><strong>To start the backend server:</strong></p>
-                <ol>
-                  <li>Open a new terminal/command prompt</li>
-                  <li>Navigate to the project directory</li>
-                  <li>Run: <code>cd backend</code></li>
-                  <li>Run: <code>python app.py</code></li>
-                </ol>
-              </div>
-              <button 
-                onClick={handleTestApiConnection} 
-                className="retry-button"
-              >
-                Test API Connection
-              </button>
-            </div>
-          )}
-          {error.includes('Network error') && (
-            <div className="error-actions">
-              <button onClick={handleResetCircuitBreaker} className="reset-button">
-                Reset Connection
-              </button>
-              <button 
-                onClick={async () => {
-                  const isConnected = await testApiConnection();
-                  setApiConnected(isConnected);
-                  if (isConnected && inputValue) {
-                    handleSearch(inputValue);
-                  }
-                }} 
-                className="retry-button"
-              >
-                Test Connection & Retry
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      
-      <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}> {/* Ensure main takes remaining height and contains flex children */}
-        {/* Remove the conditional rendering and the Box-based mobile layout */}
-        {/* Always render PanelGroup, adjust direction based on isMobile */}
-        <PanelGroup 
-          direction={isMobile ? "vertical" : "horizontal"} 
-          className="explorer-panel-group" 
-          style={{ flexGrow: 1, minHeight: 0 }}
-        >
-            <Panel minSize={25} className="explorer-panel-main">
-              <div className="explorer-content" style={{ height: '100%', width: '100%', overflow: 'hidden' }}> {/* Ensure graph area fills panel */}
-                {/* Graph rendering logic - remains the same */}
-                {isLoadingNetwork && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
-                {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>}
-                {wordNetwork && !error && (
-                   <WordGraph
-                     wordNetwork={wordNetwork}
-                     onNodeClick={handleNodeClick}
-                     mainWord={selectedNode}
-                     isMobile={isMobile} // Pass isMobile to children if they need it
-                     onNetworkChange={handleNetworkChange}
-                     initialDepth={depth}
-                     initialBreadth={breadth}
-                     isLoading={isLoadingNetwork}
-                   />
-                 )}
-                 {/* Placeholders/Loading - remains the same */}
-                 {!wordNetwork && !isLoadingDetails && !isLoadingNetwork && !error && (
-                  <div className="details-placeholder">Select a node or search a word to see details.</div>
-                 )}
-                 {isLoadingDetails && !wordData && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
-              </div>
-            </Panel>
-            <PanelResizeHandle className={`resize-handle ${isMobile ? 'vertical' : 'horizontal'}`} /> {/* Add class for potentially different vertical/horizontal handle styling */}
-            <Panel 
-              minSize={20} 
-              id="details-panel" // ID used by ResizeObserver effect
-              className="details-panel-container" 
-              ref={detailsContainerRef} // Restore ref for Panel handle
-              order={2}
-              // Adjust default size based on orientation
-              defaultSize={isMobile ? 50 : parseInt(localStorage.getItem('wordDetailsWidthPercent') || '40', 10)}
-            >
-               <div 
-                 style={{ 
-                   height: '100%', 
-                   width: '100%', 
-                   overflowY: 'auto', 
-                   position: 'relative' 
-                 }}
-                 className="details-content"
-               >
-                 {/* WordDetails rendering - remains the same */}
-                 {wordData && (
-                     <WordDetails
-                       wordData={wordData}
-                       isLoading={isLoadingDetails}
-                       semanticNetworkData={wordNetwork}
-                       etymologyTree={etymologyTree}
-                       isLoadingEtymology={isLoadingEtymology}
-                       etymologyError={etymologyError}
-                       onFetchEtymology={fetchEtymologyTree}
-                       onWordClick={handleSearch}
-                       isMobile={isMobile} // Pass isMobile to children if they need it
-                     />
-                 )}
-                 {/* Placeholders/Loading - remains the same */}
-                 {!wordData && !isLoadingDetails && !isLoadingNetwork && !error && (
-                  <div className="details-placeholder">Select a node or search a word to see details.</div>
-                 )}
-                 {isLoadingDetails && !wordData && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
-               </div>
-            </Panel>
-          </PanelGroup>
-      </main>
-      
-      <footer className="footer">
-        © {new Date().getFullYear()} Filipino Root Word Explorer. All Rights Reserved.
-      </footer>
-    </div>
+            {isRandomLoading ? <CircularProgress size={20} color="inherit" /> : '🎲'} {/* Icon only */}
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
+};
+
+return (
+  <div className={`word-explorer ${themeMode} ${(isLoadingDetails || isLoadingNetwork) ? 'loading' : ''}`}>
+    <header className="header-content" style={{ padding: isMobile ? '0.5rem 0.8rem' : '1rem 1.5rem' }}>
+      <h1 style={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}>Filipino Root Word Explorer</h1>
+      <div className="header-buttons">
+        {isDevMode() && (
+          <>
+            <button
+              onClick={handleResetCircuitBreaker}
+              className="debug-button"
+              title="Reset API connection"
+            >
+              <span>🔄</span> Reset API
+            </button>
+            <button
+              onClick={handleTestApiConnection}
+              className="debug-button"
+              title="Test API connection"
+            >
+              <span>🔌</span> Test API
+            </button>
+            <div className={`api-status ${
+              (apiConnected === null ? 'checking' : (apiConnected ? 'connected' : 'disconnected'))
+            }`}>
+              {apiConnected === null ? <span>⏳</span> : 
+               apiConnected ? <span>✅</span> : <span>❌</span>}
+               API
+            </div>
+          </>
+        )}
+        <button
+          onClick={toggleTheme}
+          className="theme-toggle"
+          aria-label="Toggle theme"
+          title="Toggle theme"
+        >
+          {themeMode === "light" ? "🌙" : "☀️"}
+        </button>
+      </div>
+    </header>
+    
+    {/* Conditionally render search bars */}
+    {!isMobile && renderSearchBar()} 
+    {isMobile && renderMobileHeader()}
+    
+    {error && (
+      <div className="error-message">
+        <p>{error}</p>
+        {error.includes('Circuit breaker') && (
+          <button onClick={handleResetCircuitBreaker} className="reset-button">
+              Reset Connection
+            </button>
+        )}
+        {error.includes('API connection') && (
+          <div className="error-actions">
+            <button onClick={handleResetCircuitBreaker} className="reset-button">
+              Reset Connection
+            </button>
+            <button 
+              onClick={handleTestApiConnection} 
+              className="retry-button"
+            >
+              Test API Connection
+            </button>
+          </div>
+        )}
+        {error.includes('backend server') && (
+          <div className="error-actions">
+            <div className="backend-instructions">
+              <p><strong>To start the backend server:</strong></p>
+              <ol>
+                <li>Open a new terminal/command prompt</li>
+                <li>Navigate to the project directory</li>
+                <li>Run: <code>cd backend</code></li>
+                <li>Run: <code>python app.py</code></li>
+              </ol>
+            </div>
+            <button 
+              onClick={handleTestApiConnection} 
+              className="retry-button"
+            >
+              Test API Connection
+            </button>
+          </div>
+        )}
+        {error.includes('Network error') && (
+          <div className="error-actions">
+            <button onClick={handleResetCircuitBreaker} className="reset-button">
+              Reset Connection
+            </button>
+            <button 
+              onClick={async () => {
+                const isConnected = await testApiConnection();
+                setApiConnected(isConnected);
+                if (isConnected && inputValue) {
+                  handleSearch(inputValue);
+                }
+              }} 
+              className="retry-button"
+            >
+              Test Connection & Retry
+            </button>
+          </div>
+        )}
+      </div>
+    )}
+    
+    <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}> {/* Ensure main takes remaining height and contains flex children */}
+      {/* Remove the conditional rendering and the Box-based mobile layout */}
+      {/* Always render PanelGroup, adjust direction based on isMobile */}
+      <PanelGroup 
+        direction={isMobile ? "vertical" : "horizontal"} 
+        className="explorer-panel-group" 
+        style={{ flexGrow: 1, minHeight: 0 }}
+      >
+          <Panel minSize={25} className="explorer-panel-main">
+            <div className="explorer-content" style={{ height: '100%', width: '100%', overflow: 'hidden' }}> {/* Ensure graph area fills panel */}
+              {/* Graph rendering logic - remains the same */}
+              {isLoadingNetwork && !wordNetwork && !error && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}><CircularProgress /></Box>}
+              {error && !isLoadingDetails && !isLoadingNetwork && <div className="error-message">{error}</div>}
+              {wordNetwork && !error && (
+                 <WordGraph
+                   wordNetwork={wordNetwork}
+                   onNodeClick={handleNodeClick}
+                   mainWord={selectedNode}
+                   isMobile={isMobile} // Pass isMobile to children if they need it
+                   onNetworkChange={handleNetworkChange}
+                   initialDepth={depth}
+                   initialBreadth={breadth}
+                   isLoading={isLoadingNetwork}
+                 />
+               )}
+               {/* Placeholders/Loading - remains the same */}
+               {!wordNetwork && !isLoadingDetails && !isLoadingNetwork && !error && (
+                <div className="details-placeholder">Select a node or search a word to see details.</div>
+               )}
+               {isLoadingDetails && !wordData && !error && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
+            </div>
+          </Panel>
+          <PanelResizeHandle className={`resize-handle ${isMobile ? 'vertical' : 'horizontal'}`} /> {/* Add class for potentially different vertical/horizontal handle styling */}
+          <Panel 
+            minSize={20} 
+            id="details-panel" // ID used by ResizeObserver effect
+            className="details-panel-container" 
+            ref={detailsContainerRef} // Restore ref for Panel handle
+            order={2}
+            // Adjust default size based on orientation
+            defaultSize={isMobile ? 50 : parseInt(localStorage.getItem('wordDetailsWidthPercent') || '40', 10)}
+          >
+             <div 
+               style={{ 
+                 height: '100%', 
+                 width: '100%', 
+                 overflowY: 'auto', 
+                 position: 'relative' 
+               }}
+               className="details-content"
+             >
+               {/* WordDetails rendering - remains the same */}
+               {wordData && (
+                   <WordDetails
+                     wordData={wordData}
+                     isLoading={isLoadingDetails}
+                     semanticNetworkData={wordNetwork}
+                     etymologyTree={etymologyTree}
+                     isLoadingEtymology={isLoadingEtymology}
+                     etymologyError={etymologyError}
+                     onFetchEtymology={fetchEtymologyTree}
+                     onWordClick={handleSearch}
+                     isMobile={isMobile} // Pass isMobile to children if they need it
+                   />
+               )}
+               {/* Placeholders/Loading - remains the same */}
+               {!wordData && !isLoadingDetails && !isLoadingNetwork && !error && (
+                <div className="details-placeholder">Select a node or search a word to see details.</div>
+               )}
+               {isLoadingDetails && !wordData && <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}><CircularProgress /></Box>}
+             </div>
+          </Panel>
+        </PanelGroup>
+    </main>
+    
+    <footer className="footer">
+      © {new Date().getFullYear()} Filipino Root Word Explorer. All Rights Reserved.
+    </footer>
+  </div>
+);
 };
 
 export default WordExplorer;

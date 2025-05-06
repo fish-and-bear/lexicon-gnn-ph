@@ -13,32 +13,33 @@ interface NetworkControlsProps {
   className?: string;
 }
 
+// Styled components copied exactly from old_src_2
 const ControlContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
   padding: '6px 8px',
-  backgroundColor: 'var(--controls-background-color, rgba(255, 255, 255, 0.75))',
+  backgroundColor: 'transparent',
   borderRadius: '4px',
-  backdropFilter: 'blur(6px)',
+  backdropFilter: 'none',
   boxShadow: 'none',
   width: '100%',
   maxWidth: '100%',
   minHeight: '36px',
   transition: 'all 0.2s ease',
   '.dark &': {
-    backgroundColor: 'var(--graph-bg-color, rgba(22, 28, 44, 0.85))',
-    backdropFilter: 'blur(8px)',
+    backgroundColor: 'transparent',
+    backdropFilter: 'none',
     border: 'none',
   },
   '&:hover': {
     boxShadow: 'none',
     '.dark &': {
-      backgroundColor: 'var(--card-bg-color, rgba(19, 24, 38, 0.95))',
+      backgroundColor: 'transparent',
       border: 'none',
     },
     ':not(.dark) &': {
-      backgroundColor: 'var(--controls-background-color-hover, rgba(255, 255, 255, 0.85))',
+      backgroundColor: 'transparent',
     }
   },
   '@media (max-width: 768px)': {
@@ -66,14 +67,15 @@ const ControlLabel = styled(Typography)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   whiteSpace: 'nowrap',
-  color: 'var(--text-color, #333)',
+  color: 'var(--text-color)',
   fontSize: '0.75rem',
   fontWeight: '600',
   minWidth: '55px',
+  fontFamily: 'system-ui, -apple-system, sans-serif',
 }));
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
-  color: 'var(--primary-color, #3d5a80)',
+  color: 'var(--primary-color)',
   height: 3,
   padding: '8px 0',
   marginRight: '4px',
@@ -81,8 +83,7 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
   minWidth: 0,
   transition: 'opacity 0.2s ease',
   '.dark &': {
-    color: 'var(--primary-color)',
-    boxShadow: 'none',
+    // No need to override main color here, it's inherited via CSS variable
   },
   '&:hover': {
     opacity: 0.95,
@@ -90,19 +91,11 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
   '& .MuiSlider-thumb': {
     height: 12,
     width: 12,
-    backgroundColor: 'var(--primary-color, #3d5a80)',
+    backgroundColor: 'currentColor',
     boxShadow: 'none',
     transition: 'all 0.2s ease-out',
-    '.dark &': {
-      backgroundColor: 'var(--primary-color)',
-      boxShadow: 'none',
-    },
     '&:hover, &.Mui-focusVisible': {
       boxShadow: 'none',
-      '.dark &': {
-        backgroundColor: 'var(--primary-color)',
-        boxShadow: 'none',
-      }
     },
     '&:active': {
       boxShadow: 'none'
@@ -111,31 +104,36 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
   '& .MuiSlider-track': {
     height: 3,
     border: 'none',
+    backgroundColor: 'var(--accent-color)',
+    '.dark &': {
+      backgroundColor: 'currentColor',
+    }
   },
   '& .MuiSlider-rail': {
     height: 3,
-    opacity: 0.3,
-    backgroundColor: 'var(--text-color-light, #adb5bd)',
+    opacity: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
     '.dark &': {
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      backgroundColor: 'rgba(255, 255, 255, 0.15)',
       border: 'none',
     }
   },
   '& .MuiSlider-mark': {
-    backgroundColor: 'var(--text-color, #333)',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
     height: 4,
     width: 1,
     marginTop: -1,
-    opacity: 0.4,
     '.dark &': {
-      backgroundColor: 'var(--text-color, #e0e0e0)',
+      backgroundColor: 'rgba(255, 255, 255, 0.3)',
       boxShadow: 'none',
     }
   },
   '& .MuiSlider-markActive': {
-    backgroundColor: 'currentColor',
-    opacity: 0.7,
+    backgroundColor: 'var(--accent-color)',
+    opacity: 1,
     '.dark &': {
+      backgroundColor: 'currentColor',
+      opacity: 0.8,
       boxShadow: 'none',
     }
   },
@@ -143,14 +141,10 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
     fontSize: '0.7rem',
     padding: '2px 6px',
     borderRadius: '4px',
-    backgroundColor: 'var(--primary-color, #3d5a80)',
+    backgroundColor: 'var(--primary-color)',
+    color: 'var(--button-text-color)',
     fontWeight: 'bold',
     top: -6,
-    '.dark &': {
-      backgroundColor: 'var(--primary-color)',
-      color: 'var(--button-text-color, #0a0d16)',
-      boxShadow: 'none',
-    },
     '&:before': {
       display: 'none'
     }

@@ -1,1 +1,47 @@
- 
+/* Header.css */
+.header-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem;
+  display: inline-block;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+}
+
+.header-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
+
+.dark .header-link {
+  color: var(--text-color-white);
+}
+
+.dark .header-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .header-link.active {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.baybayin-menu {
+  min-width: 200px;
+}
+
+.baybayin-menu-item {
+  font-size: 0.9rem;
+  padding: 8px 16px;
+}
+
+.baybayin-menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .baybayin-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+} 

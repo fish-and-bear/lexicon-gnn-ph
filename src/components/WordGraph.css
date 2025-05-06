@@ -1,96 +1,137 @@
-.word-graph {
-  width: 100%;
-  height: 100%;
+/* 
+ * WordGraph Visualization - Glassmorphism Inspired Styling
+ */
+
+/* Base Graph Container */
+.graph-container {
   position: relative;
-  overflow: hidden;
-}
-
-.word-graph svg {
   width: 100%;
   height: 100%;
-  display: block;
+  overflow: hidden;
+  background-color: var(--graph-bg-color, #f1f5f9); /* Use graph-bg-color from old_src_2 */
 }
 
-.graph-svg {
+/* NEW: Wrapper to control max-width and centering */
+.graph-wrapper {
+  width: 100%;
+  height: 100%;
+  max-width: 1600px; /* Adjust this value as needed */
+  margin: 0 auto; /* Center the wrapper horizontally */
+  position: relative; /* Needed for absolute positioning inside if any */
+}
+
+.graph-svg-container {
   width: 100%;
   height: 100%;
   display: block;
   overflow: visible;
+  cursor: grab;
+  background-color: var(--graph-bg-color, #f1f5f9); /* Match with container */
 }
 
-.graph-container-g {
+.graph-svg {
+  display: block; /* Prevents extra space below SVG */
   width: 100%;
   height: 100%;
+  cursor: grab;
 }
 
-/* Make sure the graph takes the full available space */
-.graph-content {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
+.graph-svg:active {
+  cursor: grabbing;
 }
 
-.graph-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+/* Nodes - Remove Drop Shadow */
+.node {
+  cursor: pointer;
+  /* Opacity is now handled dynamically in JS */
+  /* opacity: 0.8; */
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out; /* Added transform */
 }
 
-.graph-svg-container {
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.graph-svg.loading {
-  opacity: 0.3;
-}
-
-.graph-svg.loaded {
+.node.main-node,
+.node[data-id="main"] {
   opacity: 1;
 }
 
-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: block; /* Prevents extra spacing */
+.node.main-node circle,
+.node[data-id="main"] circle {
+  stroke-width: 2.5px !important;
+  filter: brightness(1.15);
 }
 
+.node:hover circle {
+  filter: brightness(1.1);
+  stroke-width: 3px;
+  stroke-opacity: 1;
+}
+
+/* Labels */
+.node-label {
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.2s ease-out, font-weight 0.2s ease-out;
+  font-family: system-ui, -apple-system, sans-serif;
+  /* Font size/weight handled dynamically in JS */
+}
+
+/* Links */
+.link {
+  stroke: #ccc;
+  stroke-opacity: 0.6;
+  stroke-width: 1px;
+  transition: stroke-opacity 0.2s ease-out, 
+              stroke-width 0.2s ease-out, 
+              stroke 0.2s ease-out; 
+}
+
+.dark .link {
+  stroke: var(--link-color, #7ea3cc); /* Use variable from old_src_2 */
+}
+
+/* Highlighted links during hover */
+.link.highlighted {
+  stroke-opacity: 0.9;
+  stroke-width: 2.5px;
+}
+
+/* Controls Container - Align to parent bottom, ignoring footer height */
 .controls-container {
   position: absolute;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
-  display: flex;
+  bottom: 0; /* Changed from var(--footer-height) */
+  left: 0;
+  width: 100%;
+  z-index: 10001;
   align-items: center;
-  gap: 12px;
-  z-index: 10;
+  display: flex;
+  padding: 0.5rem 1rem;
+  background-color: rgba(var(--card-bg-color-rgb, 255, 255, 255), 0.85);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--card-border-color, #e6e8eb);
+  box-sizing: border-box;
+  pointer-events: auto;
 }
 
+.dark .controls-container {
+  background-color: rgba(var(--card-bg-color-rgb, 19, 24, 38), 0.9);
+  border-top: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.1));
+}
+
+/* Zoom Controls - Match old_src_2 */
 .zoom-controls {
   display: flex;
-  gap: 6px;
-  margin-right: auto;
+  flex-shrink: 0;
+  margin-right: 0;
+  pointer-events: auto;
 }
 
+/* Button styles directly from old_src_2 */
 .zoom-button {
   padding: 6px 12px;
   font-size: 13px;
   cursor: pointer;
-  background-color: var(--button-color, rgba(255, 255, 255, 0.8));
-  color: var(--button-text-color, #333);
+  background-color: var(--button-color, #1d3557);
+  color: var(--button-text-color, #ffffff);
   border: none;
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -98,227 +139,143 @@ svg {
   backdrop-filter: blur(6px);
   line-height: 1.2;
   font-weight: 500;
+  pointer-events: auto;
+}
+
+/* Add margin specifically to the first button (+) */
+.zoom-controls .zoom-button:first-of-type {
+  margin-right: 4px; /* Add small gap between +/- */
 }
 
 .zoom-button:hover {
-  background-color: var(--primary-color-light, rgba(70, 130, 180, 0.2));
+  background-color: #1b2f4c;
   transform: translateY(-1px);
 }
 
 .zoom-button:active {
   transform: translateY(0) scale(0.98);
+  background-color: #152540;
 }
 
 .reset-zoom-button {
   padding: 6px 12px;
   font-size: 13px;
-  background-color: var(--button-color, rgba(255, 255, 255, 0.8));
-  color: var(--button-text-color, #333);
+  background-color: var(--button-color, #1d3557);
+  color: var(--button-text-color, #ffffff);
   border: none;
   border-radius: 4px;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
   box-shadow: none;
-  backdrop-filter: blur(6px);
   line-height: 1.2;
   font-weight: 500;
   margin-left: 8px;
+  pointer-events: auto;
 }
 
 .reset-zoom-button:hover {
-  background-color: var(--primary-color-light, rgba(70, 130, 180, 0.2));
+  background-color: #1b2f4c;
   transform: translateY(-1px);
 }
 
 .reset-zoom-button:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.98);
+  transition-duration: 50ms;
+  background-color: #152540;
 }
 
+/* Network controls styling */
 .network-controls {
-  flex: 1;
-  max-width: calc(100% - 180px);
-}
-
-.graph-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
+  position: relative;
+  z-index: 1;
+  width: auto;
+  background-color: transparent;
+  padding: 0;
+  box-shadow: none;
+  border-top: none;
+  flex-grow: 1;
+  margin-left: 1rem;
+  max-width: none;
+  pointer-events: auto;
 }
 
-.slider-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 150px;
+.dark .network-controls {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
 }
 
-.MuiSlider-root {
-  width: 100% !important;
-  color: var(--accent-color) !important;
-}
-
-.MuiTypography-caption {
-  font-size: 0.9rem !important;
-  color: var(--text-color) !important;
-  min-width: 90px;
-}
-
-.node {
-  cursor: pointer;
-}
-
-.node circle {
-  stroke: var(--card-bg-color);
-  stroke-width: 2px;
-  transition: stroke-width 0.3s, stroke 0.3s, r 0.3s;
-}
-
-.node.selected circle {
-  stroke-width: 4px;
-  stroke: var(--selected-node-border-color);
-}
-
-.node text {
-  font-size: 9px;
-  font-weight: bold;
-  fill: var(--node-text-color);
+/* Tooltip & Peek Card styling - use hardcoded values */
+.node-tooltip, .peek-card {
+  position: fixed;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 1500;
   pointer-events: none;
-  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: opacity 200ms cubic-bezier(0.32, 0.72, 0, 1), 
+              transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+  opacity: 0;
+  transform: scale(0.95) translateY(5px);
+  max-width: 240px;
 }
 
-.link {
-  stroke-opacity: 0.6;
-  stroke-width: 1px;
-  transition: stroke-opacity 0.3s, stroke-width 0.3s;
+/* Show transition */
+.node-tooltip.visible, .peek-card.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
-.link:hover {
-  stroke-opacity: 1;
-  stroke-width: 2px;
+.tooltip-title, .peek-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #1d1d1f;
 }
 
-.node-tooltip {
-  position: absolute;
-  background-color: var(--card-bg-color);
-  border: 1px solid var(--card-border-color);
-  border-radius: 4px;
-  padding: 10px;
+.tooltip-relation, .peek-card-type {
+  font-size: 11px;
+  color: rgba(60, 60, 67, 0.7);
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+
+.tooltip-definition, .peek-card-definition {
   font-size: 12px;
-  pointer-events: none;
-  z-index: 10;
-  max-width: 200px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  color: var(--text-color);
+  line-height: 1.4;
+  color: #1d1d1f;
 }
 
-.legend {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: var(--card-bg-color);
-  border: 1px solid var(--card-border-color);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 12px;
-  max-width: 150px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+/* Dark mode tooltip overrides */
+.dark .node-tooltip, .dark .peek-card {
+  background-color: rgba(40, 40, 42, 0.75);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.legend-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
+.dark .tooltip-title, .dark .peek-card-title,
+.dark .tooltip-definition, .dark .peek-card-definition {
+  color: #f5f5f7;
 }
 
-.color-box {
-  width: 12px;
-  height: 12px;
-  margin-right: 5px;
-  border-radius: 2px;
+.dark .tooltip-relation, .dark .peek-card-type {
+  color: rgba(235, 235, 245, 0.6);
 }
 
-/* Responsive layout */
-@media (max-width: 768px) {
-  .controls-container {
-    position: absolute;
-    /* Keep bottom/left/right positioning if other elements rely on it */
-    /* bottom: 4px; */
-    /* left: 4px; */
-    /* right: 4px; */
-    display: flex;
-    /* Remove space-between if zoom controls are moved out */
-    /* justify-content: space-between; */
-    gap: 8px; /* Reduced gap */
-    /* Make container cover the area to position zoom controls top-left */
-    top: 4px;
-    left: 4px;
-    right: 4px;
-    bottom: 4px;
-    pointer-events: none; /* Allow clicks to pass through container */
-  }
-
-  .zoom-controls {
-    position: absolute; /* Change from default flex item */
-    top: 10px; /* Position from top */
-    left: 10px; /* Position from left */
-    margin-right: 0; /* Reset margin */
-    pointer-events: auto; /* Re-enable pointer events for buttons */
-    z-index: 11; /* Ensure they are above other elements if needed */
-    display: flex;
-    gap: 6px;
-  }
-
-  /* Ensure buttons are visible */
-  .zoom-button,
-  .reset-zoom-button {
-    pointer-events: auto; /* Ensure buttons inside are clickable */
-     /* Adjust padding/size if needed */
-     padding: 4px 8px;
-     font-size: 12px;
-  }
-
-  .reset-zoom-button {
-    margin-left: 6px; /* Adjust margin if needed */
-  }
-
-  /* Adjust network controls trigger positioning if needed */
-  /* .network-controls-trigger might need adjustment if container changed */
-
-  .graph-container {
-    /* Adjustments if needed */
-  }
-
-  /* ... other mobile styles ... */
-
-  .network-controls {
-    /* Ensure it doesn't push zoom controls */
-    max-width: 100%; /* Allow full width if needed when drawer is open */
-    margin-left: auto; /* Push to the right if needed */
-  }
-
-  /* ... */
+/* Peek Card specific */
+.peek-card {
+  pointer-events: auto;
+  z-index: 1600;
 }
 
-/* Further adjustments for smaller screens */
-@media (max-width: 480px) {
-  /* Inherits zoom-controls positioning from 768px block */
-  /* Fine-tune positions if necessary */
-  .zoom-controls {
-    top: 5px;
-    left: 5px;
-  }
-
-  .zoom-button,
-  .reset-zoom-button {
-    padding: 3px 6px;
-    font-size: 11px;
-  }
-
-  /* ... other 480px styles ... */
-}
-
+/* Loading / Error States - Hardcode colors */
 .loading-overlay, .error-overlay {
   position: absolute;
   top: 0;
@@ -329,93 +286,136 @@ svg {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 10;
+  background-color: rgba(240, 240, 245, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  color: #1d1d1f;
+}
+
+.dark .loading-overlay, .dark .error-overlay {
+  background-color: rgba(22, 22, 24, 0.6);
+  color: #f5f5f7;
 }
 
 .spinner {
-  border: 4px solid var(--accent-color);
-  border-top: 4px solid var(--background-color);
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(60, 60, 67, 0.7);
+  border-top-color: #0A84FF;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
+}
+
+.dark .spinner {
+  border: 3px solid rgba(235, 235, 245, 0.6);
+  border-top-color: #0A84FF;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
 
 .error-message {
-  color: var(--error-text-color);
-  font-size: 16px;
+  margin: 1rem 0;
+  max-width: 300px;
   text-align: center;
-  margin-bottom: 15px;
 }
 
 .retry-button {
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: var(--button-color);
-  color: var(--button-text-color);
+  padding: 6px 14px;
+  background-color: #0A84FF;
+  color: #fff;
   border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  margin-top: 10px;
 }
 
 .retry-button:hover {
-  background-color: var(--primary-color);
+  background-color: #0060df;
 }
 
-.graph-legend {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: var(--card-bg-color);
-  border: 1px solid var(--border-color, var(--card-border-color));
-  border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  max-width: 220px;
-  z-index: 1000;
-  font-size: 11px;
-  max-height: calc(100% - 120px);
-  overflow-y: auto;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
+/* Filtering Visuals */
+.node.filtered, .link.filtered {
+  opacity: 0.15 !important;
+  pointer-events: none;
+  transition: opacity 300ms ease-out;
 }
 
-.graph-legend:hover {
+/* Ensure non-filtered items are fully opaque */
+.node:not(.filtered), .link:not(.filtered) {
   opacity: 1;
+  pointer-events: auto;
+}
+.link:not(.filtered) {
+  stroke-opacity: 0.5;
 }
 
-.legend-title {
-  font-weight: 600;
-  font-size: 13px;
-  margin-bottom: 8px;
-  color: var(--text-color);
-  border-bottom: 1px solid var(--border-color, var(--card-border-color));
-  padding-bottom: 5px;
+/* Splash effect (Optional - add if desired) */
+.splash-circle {
+  fill: none;
+  stroke-width: 2px;
+  pointer-events: none;
 }
 
-.legend-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
+/* Update responsive behavior for controls and footer alignment */
+@media (max-width: 768px) {
+  .controls-container {
+    padding: 0.25rem 0.5rem;
+    min-height: 32px;
+  }
+  
+  .network-controls {
+    margin-left: 0.5rem;
+  }
+  
+  .zoom-button, .reset-zoom-button {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .reset-zoom-button {
+    margin-left: 6px;
+  }
 }
 
-.legend-color {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 8px;
+@media (max-width: 480px) {
+  .controls-container {
+    padding: 0.25rem 0.5rem;
+    min-height: 28px;
+  }
+  
+  .network-controls {
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  .zoom-controls {
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .zoom-button, .reset-zoom-button {
+    font-size: 12px;
+    padding: 3px 6px;
+  }
 }
 
-.legend-label {
-  font-size: 12px;
-  color: var(--text-color);
+/* Dark mode theme adjustments */
+.dark .node-label {
+  fill: var(--node-text-color, #f0f0f0); /* Use variable from old_src_2 */
+}
+
+.dark .node-label-halo {
+  stroke: rgba(0, 0, 0, 0.8);
+}
+
+/* Animation for tooltips */
+@keyframes fadeInTooltip {
+  from { opacity: 0; transform: scale(0.95) translateY(5px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 /* Update filtered nodes styles for better transitions */
@@ -449,129 +449,68 @@ svg {
               stroke 300ms ease-in-out;
 }
 
-/* Responsive styles for the legend */
-@media (max-width: 1200px) {
-  .graph-legend {
-    max-width: 200px;
-    font-size: 11px;
-  }
-
-  .legend-title {
-    font-size: 13px;
-  }
+/* Update filtered styles */
+.node.filtered {
+  opacity: 0.2 !important;
+  pointer-events: none !important;
 }
 
-@media (max-width: 768px) {
-  .legend-title {
-    font-size: 12px;
-    margin-bottom: 6px;
-    padding-bottom: 4px;
-  }
-
-  .legend-item {
-    margin-bottom: 3px;
-  }
-
-  .legend-color {
-    width: 10px;
-    height: 10px;
-  }
+.node:not(.filtered) {
+  opacity: 1;
+  pointer-events: all;
 }
 
-@media (max-width: 480px) {
-  .graph-legend {
-    right: 5px;
-    bottom: 70px;
-    max-width: 150px;
-    padding: 8px;
-    max-height: 160px;
-  }
-
-  .legend-title {
-    font-size: 11px;
-    margin-bottom: 5px;
-  }
-
-  .legend-item {
-    margin-bottom: 3px;
-  }
-
-  .legend-label {
-    font-size: 9px;
-  }
+.link.filtered {
+  opacity: 0.2 !important;
+  pointer-events: none !important;
 }
 
-.dark .graph-svg {
+.link:not(.filtered) {
+  opacity: 0.6;
+  pointer-events: all;
+}
+
+/* Dark theme button overrides - Use correct variables from WordExplorer.css */
+.dark .zoom-button,
+.dark .reset-zoom-button {
+  background-color: var(--button-color); /* Should be #3e4e66 */
+  color: var(--button-text-color); /* Should be #ffffff */
+  border: none;
+}
+
+.dark .zoom-button:hover,
+.dark .reset-zoom-button:hover {
+  filter: brightness(1.15); /* Slightly lighten hover */
+}
+
+.dark .zoom-button:active,
+.dark .reset-zoom-button:active {
+  filter: brightness(0.9); /* Slightly darken active */
+  transform: scale(0.98);
+}
+
+/* Ensure slider uses the correct primary color for dark mode */
+.dark .controls-container .network-controls .MuiSlider-root {
+  color: var(--primary-color); /* Should be #ffd166 */
+}
+
+/* Apply correct background to graph SVG */
+.dark .graph-svg-container {
   background-color: var(--graph-bg-color);
 }
 
-.dark .node {
-  stroke: rgba(255, 255, 255, 0.1);
-  stroke-width: 1.5;
+.dark .graph-container {
+  background-color: var(--graph-bg-color);
 }
 
-.dark .node.main {
-  stroke: rgba(255, 255, 255, 0.2);
-  stroke-width: 2;
+/* Ensure slider interactions work properly */
+.controls-container .network-controls .MuiSlider-root {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto !important;
 }
 
-.dark .node:hover {
-  stroke: rgba(255, 255, 255, 0.5);
-  stroke-width: 2;
-}
-
-.dark .node.selected {
-  stroke: var(--primary-color);
-  stroke-width: 2.5;
-  filter: drop-shadow(0 0 3px rgba(255, 209, 102, 0.3));
-}
-
-.dark .link {
-  stroke-opacity: 0.5;
-}
-
-.dark .graph-legend {
-  background-color: rgba(19, 24, 38, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.dark .legend-title {
-  color: var(--text-color-white);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dark .legend-label {
-  color: var(--text-color);
-}
-
-/* Network controls enhancement */
-.dark .network-controls {
-  background-color: rgba(19, 24, 38, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.dark .network-controls .label {
-  color: var(--text-color);
-}
-
-.dark .network-control-slider {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark .empty-graph {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.dark .node-label {
-  fill: var(--node-text-color);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.dark .tooltip {
-  background-color: rgba(19, 24, 38, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-color-white);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.controls-container .zoom-controls button:first-of-type {
+  /* Add margin to the right of the first button (-) */
+  margin-right: 6px; /* Adjust value as needed */
 }

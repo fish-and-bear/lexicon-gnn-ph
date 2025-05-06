@@ -1,0 +1,214 @@
+/* 
+  Modern CSS Reset
+  A minimal CSS reset that follows best practices and modern approaches
+*/
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Make images responsive by default */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations and transitions for people who prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Add accessible line-height */
+html {
+  line-height: 1.5;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* Default list padding reset */
+ul,
+ol {
+  padding: 0;
+  margin: 0;
+}
+
+/* Remove default list styles */
+ul {
+  list-style: none;
+}
+
+/* Set default link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Remove outline on focused elements for mouse users, keeping it for keyboard navigation */
+:focus:not(:focus-visible) {
+  outline: 0;
+}
+
+/* Keep outline for keyboard users */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Make sure textareas without a rows attribute are not tiny */
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+/* Form elements should have correct cursor */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  cursor: pointer;
+}
+
+/* Remove default button styles */
+button {
+  background-color: transparent;
+  border-width: 0;
+  padding: 0;
+}
+
+/* Remove all browser default form styles */
+input,
+button,
+textarea,
+select {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* Properly style SVGs */
+svg {
+  display: block;
+  vertical-align: middle;
+  fill: currentColor;
+}
+
+/* Visually hidden but available to screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Ensure consistent form control sizing across browsers */
+select {
+  background-image: none;
+}
+
+/* Remove inner padding in Chrome and Safari on macOS */
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/* Use the system's monospace stack for code elements */
+pre,
+code,
+kbd,
+samp {
+  font-family: monospace;
+}
+
+/* Prevent horizontal scrolling on mobile */
+body {
+  overflow-x: hidden;
+}
+
+/* Set a consistent base font size */
+html {
+  font-size: 16px;
+}
+
+/* Remove the default vertical resize on textareas */
+textarea {
+  resize: vertical;
+}
+
+/* Fix browser inconsistency with font-size in headings */
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Fix browser inconsistency with font weight in bold elements */
+b, strong {
+  font-weight: bolder;
+}
+
+/* Fix SVG overflow in IE */
+svg:not(:root) {
+  overflow: hidden;
+} 

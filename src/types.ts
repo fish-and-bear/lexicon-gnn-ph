@@ -28,7 +28,14 @@ export interface Example {
   translation?: string | null;
   reference?: string | null;
   example_type?: string | null; // dump_default="example"
-  metadata?: Record<string, any> | null; // Changed to match backend schema naming
+  example_metadata?: { 
+    romanization?: string;
+    [key: string]: any; // Allow other potential metadata fields
+  };
+  metadata?: { 
+    romanization?: string;
+    [key: string]: any;
+  };
   sources?: string | null; // TEXT column
   // Derived fields from post_dump
   romanization?: string | null; // Extracted from metadata
@@ -48,6 +55,7 @@ export interface DefinitionCategory {
   category_kind?: string | null; // TEXT column
   parents?: string[] | null; // JSONB storing list of strings
   sources?: string | null; // TEXT column
+  category_metadata?: Record<string, any> | null; // ADDED: Aligned with Backend Schema
   // Timestamps (dump_only)
   created_at?: string | null;
   updated_at?: string | null;
@@ -146,7 +154,6 @@ export interface Pronunciation {
   value: string; // IPA text or URL
   tags?: Record<string, any> | null; // From MetadataField
   pronunciation_metadata?: Record<string, any> | null; // From MetadataField (can include source info)
-  sources?: string | null; // Added to match backend schema
   // Timestamps (dump_only)
   created_at?: string | null;
   updated_at?: string | null;
@@ -390,7 +397,7 @@ export interface WordSuggestion {
 // --- Statistics Type ---
 
 /**
- * Represents the structure of dictionary statistics.
+ * Represents overall statistics about the dictionary data.
  * Aligned with StatisticsSchema.
  */
 export interface Statistics {
@@ -398,6 +405,8 @@ export interface Statistics {
   total_definitions?: number | null;
   total_etymologies?: number | null;
   total_relations?: number | null;
+  descendant_relations?: number | null; // ADDED: From backend update
+  homophone_relations?: number | null; // ADDED: From backend update
   total_affixations?: number | null;
   words_with_examples?: number | null;
   words_with_etymology?: number | null;
@@ -442,6 +451,7 @@ export interface NetworkLink {
   type: string; // Relation type
   weight?: number | null; // Renamed from value to match backend 'weight'
   directed?: boolean | null; // Added from backend route
+  metadata?: Record<string, any> | null; // <<< ADDED metadata field
   [key: string]: any; // Allow extra properties from graph libraries
 }
 
