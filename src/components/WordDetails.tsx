@@ -4,6 +4,8 @@ import { RawDefinition, WordInfo, WordForm, WordTemplate, Affixation, Credit, Ba
 import './WordDetails.css';
 // Import color utility functions needed
 import { getNodeColor, getTextColorForBackground } from '../utils/colorUtils'; 
+// *** ADD IMPORT for new language utility ***
+import { getLanguageDisplayName } from '../utils/languageUtils';
 // import './Tabs.css';
 
 // MUI Imports
@@ -383,10 +385,13 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             {/* Language Code Chip */}
             {wordData.language_code && (
               <Chip 
-                label={wordData.language_code.toUpperCase()} 
+                // *** USE THE NEW FUNCTION HERE ***
+                label={getLanguageDisplayName(wordData.language_code)} 
                 size="small" 
                 variant="outlined" 
                 sx={{ fontWeight: 500, mb: 1, mr: 1 }} 
+                // Keep tooltip showing raw code for debugging/info
+                title={`Raw code: ${wordData.language_code}`}
               />
             )}
             
@@ -744,6 +749,10 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     
     // Create relations from semantic network if needed
     const semanticRelations = useSemanticNetwork ? createRelationsFromNetwork() : [];
+    console.log(`[REL TAB] Using semantic network fallback: ${useSemanticNetwork}`); // Log fallback status
+    if (useSemanticNetwork) {
+      console.log("[REL TAB] Fallback semanticRelations:", semanticRelations);
+    }
     
     // Check if there are any standard relations or fallback relations
     const hasStandardRelations = (incoming_relations.length > 0 || outgoing_relations.length > 0);
@@ -827,16 +836,30 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     const allRelations = useSemanticNetwork ? semanticRelations : [...incoming_relations, ...outgoing_relations];
     
     // Add degree information for regular relations
-    const relationsWithDegree = allRelations.map(rel => ({
-      ...rel, 
-      wordObj: rel.source_word || rel.target_word || rel.wordObj, // Ensure wordObj exists
-      degree: rel.degree || 1 // Default to 1 (direct connection) if not specified
-    }));
+    const relationsWithDegree = allRelations.map(rel => {
+      // Determine the correct related word object based on direction
+      let relatedWordObj = null;
+      if (rel.target_word) { // Check if it's an outgoing relation structure from wordData
+          relatedWordObj = rel.target_word;
+      } else if (rel.source_word) { // Check if it's an incoming relation structure from wordData
+          relatedWordObj = rel.source_word;
+      } else { // Fallback for semantic network structure or other formats
+          relatedWordObj = rel.wordObj;
+      }
+
+      return {
+        ...rel,
+        wordObj: relatedWordObj, // Assign the determined related word object
+        degree: rel.degree || 1 // Default to 1 (direct connection) if not specified
+      };
+    });
     
     // Filter out self-references (where the related word is the same as the main word)
+    console.log("[REL TAB] Relations before self-ref filter (relationsWithDegree):", relationsWithDegree); // <-- ADD LOG HERE
     const filteredRelations = relationsWithDegree.filter(rel => {
       return rel.wordObj?.lemma !== wordData.lemma;
     });
+    console.log("[REL TAB] Filtered relations (after self-ref check):", filteredRelations); // Log filtered relations
     
     // Define relation categories and their types
     const relationCategories = [
@@ -936,10 +959,12 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     relationCategories.forEach(category => {
       categorizedWords[category.name] = [];
     });
+    categorizedWords["Other"] = []; // *** ADD THIS LINE TO INITIALIZE "Other" ***
     
     // Debug the data we're working with
     console.log("Deduplicating relations. Unique words count:", wordMap.size);
     console.log("Word lemmas:", Array.from(wordMap.keys()));
+    console.log("[REL TAB] Word Map content before count:", wordMap); // Log wordMap content
     
     // Process each unique word
     wordMap.forEach((relation) => {

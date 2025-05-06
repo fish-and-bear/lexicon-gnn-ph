@@ -2,7 +2,7 @@
 Marshmallow schemas for API serialization with enhanced validation and performance.
 """
 
-from marshmallow import Schema, fields, pre_dump, post_dump, validates, ValidationError, validate
+from marshmallow import Schema, fields, pre_dump, post_dump, validates, ValidationError, validate, EXCLUDE, validates_schema, post_load, pre_load
 from marshmallow.validate import Length, Range, OneOf
 import datetime
 from typing import Dict, Any, List, Optional, Union
@@ -398,6 +398,7 @@ class WordSchema(Schema):
     lemma = fields.String(required=True, validate=Length(min=1))
     normalized_lemma = fields.String(dump_only=True)
     language_code = fields.String(dump_default='tl', validate=Length(min=2, max=20))
+    language_name = fields.String(dump_only=True)
     has_baybayin = fields.Boolean(dump_default=False)
     baybayin_form = fields.String(allow_none=True)
     romanized_form = fields.String(dump_only=True)

@@ -303,12 +303,13 @@ const WordExplorer: React.FC = () => {
       const data = await getEtymologyTree(wordId, 3);
       console.log("Etymology tree data received:", data);
       
-      if (data && Array.isArray(data.nodes) && data.nodes.length > 0) {
-        console.log(`Received valid etymology tree with ${data.nodes.length} nodes`);
+      // Accept tree even if nodes array is empty (contains only root or nothing)
+      if (data && Array.isArray(data.nodes)) { 
+        console.log(`Received etymology tree structure with ${data.nodes.length} nodes`);
         setEtymologyTree(data);
         return data;
       } else {
-        console.warn("Received empty etymology tree or invalid structure");
+        console.warn("Received invalid etymology tree structure (not an object or missing nodes array)");
         setEtymologyTree(null);
         return null;
       }

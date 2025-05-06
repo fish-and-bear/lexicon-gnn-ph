@@ -46,8 +46,6 @@ NON_WORD_STRINGS = {
     "formal", "informal", "slang", "colloquial", "figurative", "literal",
     "standard", "nonstandard", "proscribed", "dated", "rare", "poetic",
     "historical", "uncommon", "inclusive", "abbr.", "fig.", "lit.",
-    # Place Names / Regions
-    "Batangas", "Marinduque", "Rizal",
     # Placeholders or fragments
     "-", "?", "*", "+", "...",
 }
@@ -927,6 +925,17 @@ def get_language_mapping():
     """Dynamically build language mapping from dictionary files."""
     # Base ISO 639-3 codes for Philippine languages
     base_language_map = {
+        # Standard Codes (Ensure these are always present)
+        "english": "en",
+        "en": "en",
+        "tagalog": "tgl",
+        "tl": "tgl", # Map 'tl' to 'tgl' for consistency
+        "filipino": "tgl",
+        "pilipino": "tgl",
+        "spanish": "es",
+        "es": "es",
+
+        # Philippine Languages
         "onhan": "onx",
         "waray": "war",
         "ibanag": "ibg",
@@ -937,7 +946,7 @@ def get_language_mapping():
         "kinaray-a": "krj",
         "kinaraya": "krj",
         "kinaray": "krj",
-        "asi": "asi",
+        "asi": "bno",
         "bikol": "bik",
         "bikolano": "bik",
         "bicol": "bik",
@@ -945,9 +954,6 @@ def get_language_mapping():
         "aklanon": "akl",
         "masbatenyo": "msb",
         "chavacano": "cbk",
-        "tagalog": "tgl",
-        "filipino": "tgl", # Use tgl for Filipino as primary Tagalog code
-        "pilipino": "tgl",
         "pangasinan": "pag",
         "kapampangan": "pam",
         "manobo": "mbt", # Default to Erumanen Manobo
@@ -960,6 +966,8 @@ def get_language_mapping():
         "gaddang": "gad",
         "cuyonon": "cyo",
         "blaan": "bpr",  # Default to Koronadal Blaan
+        "buhid": "bku",
+        "hanunoo": "hnn",
     }
 
     # Add regional variants
@@ -1073,8 +1081,9 @@ def get_language_code(language: str) -> str:
         return general_codes[language]
 
     # Fallback for unknown languages
-    logger.warning(f"Could not map language: '{language}'")
-    return "und" # Undetermined language code 
+    logger.warning(f"Could not map language: '{language}'. Storing original code.") # Log clearly
+    # return "und" # REMOVED: Don't return 'und' as fallback
+    return language # Return the original (cleaned, lowercased) code if unmapped
 
 
 def process_kaikki_lemma(lemma):

@@ -2449,22 +2449,57 @@ def get_or_create_word_id(
         result = cur.fetchone()
 
         if result:
-            word_id, current_source_info = result
+            # --- FIX: Extract existing language code from the initial query --- #
+            # Query needs to select language_code: "SELECT id, source_info, language_code FROM ..."
+            # Assuming the query is updated or we re-query here for simplicity:
+            cur.execute("SELECT language_code, source_info FROM words WHERE id = %s", (result['id'],))
+            existing_data = cur.fetchone()
+            word_id = result['id']
+            existing_lang_code = existing_data['language_code'] if existing_data else 'und' # Fallback
+            current_source_info = existing_data['source_info'] if existing_data else None
+
             logger.debug(
-                f"Found existing word '{processed_lemma}' ({lang_code}) with ID: {word_id}"
+                f"Found existing word '{processed_lemma}' ({existing_lang_code}) with ID: {word_id}"
             )
-            # Update source info if a new source is provided
+
+            # --- START: Update Logic --- #
+            updates = []
+            params = [word_id] # Start params with word_id for WHERE clause
+            needs_update = False
+
+            # 1. Check if language needs updating
+            should_update_lang = (existing_lang_code in ['und', 'unc']) and (lang_code not in ['und', 'unc'])
+            if should_update_lang:
+                updates.append("language_code = %s")
+                params.insert(0, lang_code) # Add lang_code to the beginning of params for SET clause
+                logger.debug(f"Updating language for word ID {word_id} from '{existing_lang_code}' to '{lang_code}'")
+                needs_update = True
+
+            # 2. Check if source info needs updating
+            updated_source_info_json = None
             if source_identifier:
                 updated_source_info_json = update_word_source_info(
                     current_source_info, source_identifier
                 )
-                # Check if update is needed
-                if updated_source_info_json != (current_source_info if isinstance(current_source_info, str) else json.dumps(current_source_info)):
-                    cur.execute(
-                        "UPDATE words SET source_info = %s::jsonb, updated_at = CURRENT_TIMESTAMP WHERE id = %s",
-                        (updated_source_info_json, word_id),
-                    )
-                    logger.debug(f"Updated source info for word ID {word_id}")
+                # Check if source info actually changed
+                current_source_info_str = current_source_info if isinstance(current_source_info, str) else json.dumps(current_source_info)
+                if updated_source_info_json != current_source_info_str:
+                    updates.append("source_info = %s::jsonb")
+                    # Insert source_info param *after* language_code if it exists, otherwise first
+                    params.insert(1 if should_update_lang else 0, updated_source_info_json)
+                    logger.debug(f"Updating source info for word ID {word_id} with source '{source_identifier}'")
+                    needs_update = True
+
+            # --- Execute Update if needed --- #
+            if needs_update:
+                updates.append("updated_at = CURRENT_TIMESTAMP") # Always update timestamp
+                set_clause = ", ".join(updates)
+                sql_update = f"UPDATE words SET {set_clause} WHERE id = %s"
+                # Ensure param order matches SET clause + WHERE id
+                cur.execute(sql_update, tuple(params)) # Pass params as a tuple
+                logger.debug(f"Executed update for word ID {word_id}")
+            # --- END: Update Logic --- #
+
             # Update cache (optional)
             # cache.set(cache_key, word_id, timeout=3600)
             return word_id

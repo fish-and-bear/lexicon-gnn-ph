@@ -74,7 +74,6 @@ export const mapRelationshipToGroup = (relationship?: string): string => {
       case 'see_also':
       case 'compare_with':
       case 'usage': 
-      case 'associated': 
       // Also map 'other' here if consolidating fully
       case 'other': group = 'related'; break; // Map to related
       // Default fallback group

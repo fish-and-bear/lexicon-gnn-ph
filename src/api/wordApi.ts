@@ -711,7 +711,16 @@ export async function fetchWordNetwork(
     }
     // Ensure metadata reflects correct node/link counts AFTER potential mapping/validation
     const finalNodes = response.data.nodes;
-    const finalLinks = response.data.links || []; // Default links to empty array
+    // --- MAP relation_type to relationship for links --- 
+    const finalLinks = (response.data.links || []).map((link: any) => ({
+      ...link,
+      // Ensure source/target are strings
+      source: String(link.source),
+      target: String(link.target),
+      // *** FIX: Use link.type from API response, not link.relation_type ***
+      relationship: link.type || 'related' // Map API's 'type' to frontend's 'relationship', default to 'related'
+    }));
+
     const finalMetadata: NetworkMetadata = {
       root_word: response.data.metadata?.root_word || word,
       normalized_lemma: response.data.metadata?.normalized_lemma || normalizeLemma(word), // Requires normalizeLemma helper

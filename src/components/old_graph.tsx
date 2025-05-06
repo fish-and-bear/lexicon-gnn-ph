@@ -210,6 +210,7 @@ import React, {
     isMobile,
     isLoading
   }) => {
+    console.log("[WordGraph] Received wordNetwork prop:", wordNetwork); // <-- ADD THIS LOG
     const { themeMode } = useAppTheme();
     const muiTheme = useMuiTheme();
     const svgRef = useRef<SVGSVGElement>(null);
@@ -466,52 +467,61 @@ import React, {
       console.log("[BASE] Processing wordNetwork nodes:", wordNetwork.nodes.length);
       console.log("[BASE] Main word:", mainWord);
   
+      // Find the main word node data first to get its ID
+      const mainWordNodeData = wordNetwork.nodes.find((n: ImportedNetworkNode) => n.label === mainWord);
+      const mainWordIdStr = mainWordNodeData ? String(mainWordNodeData.id) : null;
+  
+      if (!mainWordIdStr) {
+        console.error(`[BASE] Could not find mainWord node data for '${mainWord}' to get its ID.`);
+        // Handle error case - maybe return empty or just the main word if found by label
+        return [];
+      }
+  
       const mappedNodes = wordNetwork.nodes.map((node: ImportedNetworkNode) => {
-        let calculatedGroup = 'related'; // Default group to 'related' (light blue) instead of 'associated'
+        let calculatedGroup = 'related'; 
         let relationshipToMainWord: string | undefined = undefined;
-        
-        if (node.label === mainWord) {
+        const currentNodeIdStr = String(node.id);
+  
+        if (currentNodeIdStr === mainWordIdStr) {
           calculatedGroup = 'main';
           relationshipToMainWord = 'main';
         } else {
-          // Find direct connection to main word first using baseLinks
-          const connectingLink = baseLinks.find(link => // Use baseLinks
-            (link.source === mainWord && link.target === node.label) ||
-            (link.source === node.label && link.target === mainWord)
+          // Find direct connection using STRING IDs
+          const connectingLink = baseLinks.find(link => 
+            (link.source === mainWordIdStr && link.target === currentNodeIdStr) ||
+            (link.source === currentNodeIdStr && link.target === mainWordIdStr)
           );
           
-          // If direct connection exists, use its relationship type to determine group
-          if (connectingLink) { // Check if connectingLink was found
+          if (connectingLink) { 
             relationshipToMainWord = connectingLink.relationship;
-            // Use mapRelationshipToGroup to get the correct group name
             calculatedGroup = mapRelationshipToGroup(connectingLink.relationship);
-            // More detailed log
-            console.log(`[BASE] Node ${node.label}: Found direct link [${connectingLink.relationship}]. Assigned group: ${calculatedGroup}`);
+            console.log(`[BASE] Node ${node.label} (ID: ${node.id}): Found direct link [${connectingLink.relationship}] to main ID ${mainWordIdStr}. Assigned group: ${calculatedGroup}`);
           } else {
-            // Explicitly keep 'related' if no direct link is found
-            calculatedGroup = 'related';
-            console.log(`[BASE] Node ${node.label}: No direct link to main word found. Assigned group: ${calculatedGroup}`);
+            calculatedGroup = 'related'; // Default if no link found
+            console.log(`[BASE] Node ${node.label} (ID: ${node.id}): No direct link to main ID ${mainWordIdStr} found. Assigned group: ${calculatedGroup}`);
           }
         }
         
-        // Count connections for potential sizing later using baseLinks
-        const connections = baseLinks.filter(l => l.source === node.label || l.target === node.label).length; // Use baseLinks
+        // Count connections using string IDs
+        const connections = baseLinks.filter(l => 
+            l.source === currentNodeIdStr || l.target === currentNodeIdStr
+        ).length;
   
         // Create the node with proper attributes
         return {
-          id: node.label,
+          id: node.label, // Use label for D3 node ID as before
           word: node.word || node.label,
           label: node.label,
-          group: calculatedGroup, // Ensure the determined group is used
-          connections: connections, // Store connection count
+          group: calculatedGroup, 
+          connections: connections, 
           relationshipToMain: relationshipToMainWord,
           pathToMain: node.label === mainWord ? [node.label] : undefined,
-              pinned: false,
-          originalId: node.id,
-              language: node.language || undefined,
+          pinned: false,
+          originalId: node.id, // Keep original numeric ID
+          language: node.language || undefined,
           definitions: (node as any).definitions?.map((def: any) => def.text || def.definition_text).filter(Boolean) || [],
-              has_baybayin: node.has_baybayin || false,
-              baybayin_form: node.baybayin_form || null,
+          has_baybayin: node.has_baybayin || false,
+          baybayin_form: node.baybayin_form || null,
           index: undefined, x: undefined, y: undefined, vx: undefined, vy: undefined, fx: undefined, fy: undefined
         };
       });
@@ -536,6 +546,10 @@ import React, {
       
       return uniqueNodes;
     }, [wordNetwork, mainWord, baseLinks, mapRelationshipToGroup]); // Use baseLinks dependency
+  
+    // >>> ADD LOGS HERE <<<
+    console.log("[DEBUG] baseLinks:", baseLinks); 
+    console.log("[DEBUG] baseNodes (before filtering):", baseNodes);
   
     // Add the getNodeRadius function that was missing from the setupNodeInteractions dependency array
     const getNodeRadius = useCallback((node: CustomNode) => {
@@ -1435,177 +1449,139 @@ import React, {
   
     // Create nodes and links directly based on filter state
     const { filteredNodes, filteredLinks } = useMemo<{ filteredNodes: CustomNode[], filteredLinks: CustomLink[] }>(() => {
-      if (!mainWord || baseNodes.length === 0) {
+      // Ensure prerequisites are met
+      if (!mainWord || baseNodes.length === 0 || !wordNetwork?.nodes) {
         return { filteredNodes: [], filteredLinks: [] };
       }
-      
+  
       console.log("[FILTER] Applying depth/breadth and relationship filters");
       console.log("[FILTER] Main word:", mainWord);
       console.log("[FILTER] Base nodes:", baseNodes.length);
-      console.log("[FILTER] Base links:", baseLinks.length); // Use baseLinks for logging (Already Corrected)
+      console.log("[FILTER] Base links:", baseLinks.length);
       console.log("[FILTER] Depth limit:", depth);
       console.log("[FILTER] Breadth limit:", breadth);
-      
-      // First, verify if the main word exists in our node set
-      const mainWordNode = baseNodes.find(n => n.id === mainWord);
-      if (!mainWordNode) {
-        console.error(`[FILTER] ERROR: Main word "${mainWord}" not found in baseNodes!`);
-        // Return just the single mainWord node if we can construct it
-        return {
-          filteredNodes: [{ 
-            id: mainWord, 
-            word: mainWord, 
-            label: mainWord, 
-            group: 'main',
-            index: undefined, x: undefined, y: undefined, vx: undefined, vy: undefined, fx: undefined, fy: undefined 
-          }],
-          filteredLinks: []
-        };
+  
+      // --- Perform BFS to limit depth and breadth using String IDs ---
+      const connectedNodeIds = new Set<string>();
+      const queue: { nodeId: string; currentDepth: number }[] = [];
+      const nodeMap = new Map<string, CustomNode>(baseNodes.map(n => [n.id, n])); // Map ID string -> Node
+  
+      // Find the main word's Node ID string
+      const mainWordNode = baseNodes.find(node => node.group === 'main');
+      const mainWordIdString = mainWordNode ? mainWordNode.id : null;
+  
+      if (mainWordIdString) {
+        console.log(`[FILTER] Starting BFS with mainWord ID: ${mainWordIdString}`);
+        queue.push({ nodeId: mainWordIdString, currentDepth: 0 });
+        connectedNodeIds.add(mainWordIdString);
+      } else {
+        console.warn('[FILTER] Cannot start BFS: Main word node not found in baseNodes.');
       }
-      
-      // Step 1: First collect ALL connected nodes based on depth/breadth limits (ignoring relationship filters)
-      const nodeMap = new Map(baseNodes.map(n => [n.id, n]));
-      const connectedNodeIds = new Set<string>([mainWord]); // Start with main word
-      const queue: [string, number][] = [[mainWord, 0]]; // [nodeId, depth]
-      const visited = new Set<string>();
   
-      // Log some debug information
-      console.log("[FILTER] Starting BFS with mainWord:", mainWord);
-      console.log("[FILTER] Node map size:", nodeMap.size);
-      
-      // Do BFS traversal to find all nodes within depth/breadth
-      while (queue.length > 0) {
-        const [currentWordId, currentDepth] = queue.shift()!;
+      console.log('[FILTER] Node map size:', nodeMap.size);
   
-        if (currentDepth >= depth) {
-          continue;
+      let head = 0;
+      const nodesAddedAtDepth: { [key: number]: number } = {}; // Track nodes added per depth level for breadth limit
+  
+      while (head < queue.length) {
+        const { nodeId, currentDepth } = queue[head++];
+  
+        if (currentDepth >= depth) continue; // Stop if max depth reached
+  
+        // Initialize counter for the current depth if not present
+        if (nodesAddedAtDepth[currentDepth] === undefined) {
+          nodesAddedAtDepth[currentDepth] = 0;
         }
-        
-        if (visited.has(currentWordId)) {
-          continue;
-        }
-        
-        visited.add(currentWordId);
   
-        // Find all links connected to this node using baseLinks
-        const relatedLinks = baseLinks.filter(link => { // Use baseLinks (Already Corrected)
-          const sourceId = typeof link.source === 'string' ? link.source : (link.source as any)?.id || link.source;
-          const targetId = typeof link.target === 'string' ? link.target : (link.target as any)?.id || link.target;
-          return sourceId === currentWordId || targetId === currentWordId;
-        });
+        // Find neighbors (both incoming and outgoing links)
+        baseLinks.forEach(link => {
+          let neighborId: string | null = null;
+          const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+          const targetId = typeof link.target === 'object' ? link.target.id : link.target;
   
-        // Get all connected nodes
-        const relatedWordIds = relatedLinks.map(link => {
-          const sourceId = typeof link.source === 'string' ? link.source : (link.source as any)?.id || link.source;
-          const targetId = typeof link.target === 'string' ? link.target : (link.target as any)?.id || link.target;
-          return sourceId === currentWordId ? targetId : sourceId;
-        }).filter(id => !visited.has(id)); // Parameter 'id' implicitly has 'any' - Add type
-        // .filter((id: string) => !visited.has(id)); // Tentative fix for implicit any
+          // --- FIX: Explicit type assertion for check --- 
+          if (sourceId === nodeId && !connectedNodeIds.has(targetId as string)) {
+            neighborId = targetId;
+          } else if (targetId === nodeId && !connectedNodeIds.has(sourceId as string)) {
+            neighborId = sourceId;
+          }
   
-        // Sort nodes by relationship type for consistent breadth application
-        const sortedWords = [...relatedWordIds].sort((aId, bId) => {
-           const aNode = nodeMap.get(aId);
-           const bNode = nodeMap.get(bId);
-          
-          if (!aNode) return 1;
-          if (!bNode) return -1;
-          
-          const aGroup = aNode.group.toLowerCase();
-          const bGroup = bNode.group.toLowerCase();
-          
-          const groupOrder = [
-              'main', 'root', 'root_of', 'synonym', 'antonym', 'derived',
-              'variant', 'related', 'kaugnay', 'component_of', 'cognate',
-              'etymology', 'derivative', 'associated', 'other'
-          ];
-          
-          return groupOrder.indexOf(aGroup) - groupOrder.indexOf(bGroup);
-        });
+          // If a new neighbor is found AND the node actually exists in our map
+          if (neighborId && nodeMap.has(neighborId)) {
+             // Check breadth limit for the *neighbor's* depth level (currentDepth + 1)
+             const nextDepth = currentDepth + 1;
+             if (nodesAddedAtDepth[nextDepth] === undefined) {
+               nodesAddedAtDepth[nextDepth] = 0;
+             }
   
-        // Apply breadth limit and add to traversal queue
-        const wordsToAdd = sortedWords.slice(0, breadth);
-        
-        wordsToAdd.forEach(wordId => {
-           if (nodeMap.has(wordId)) {
-               connectedNodeIds.add(wordId);
-               queue.push([wordId, currentDepth + 1]);
+             // Add neighbor only if breadth limit for *its* depth level is not exceeded
+             // (Allow unlimited at level 0/direct connections if breadth > 0)
+             if (breadth === 0 || nodesAddedAtDepth[nextDepth] < breadth) {
+               connectedNodeIds.add(neighborId);
+               queue.push({ nodeId: neighborId, currentDepth: nextDepth });
+               nodesAddedAtDepth[nextDepth]++;
+             }
           }
         });
       }
+      console.log(`[FILTER-BFS] BFS finished. Found ${connectedNodeIds.size} connected node IDs within limits.`);
   
-      // Step 2: Create lists of depth-limited nodes and links
-      const depthLimitedNodes = baseNodes.filter(node => connectedNodeIds.has(node.id));
-      
-      // Find links where both source and target are in our depth-limited node set using baseLinks
-      const depthLimitedLinks = baseLinks.map(link => { // Use baseLinks (Already Corrected)
-          const sourceId = typeof link.source === 'string' ? link.source : (link.source as any)?.id || link.source;
-          const targetId = typeof link.target === 'string' ? link.target : (link.target as any)?.id || link.target;
-        
-        return {
-          source: sourceId,
-          target: targetId,
-          relationship: link.relationship
-        } as CustomLink;
-      }).filter(link => { // Filter based on nodes (parameter 'link' implicitly has 'any' - Add type)
-      // }).filter((link: CustomLink) => { // Tentative fix for implicit any
-        const sourceId = typeof link.source === 'string' ? link.source : (link.source as any)?.id || link.source;
-        const targetId = typeof link.target === 'string' ? link.target : (link.target as any)?.id || link.target;
-        
-        return connectedNodeIds.has(sourceId) && connectedNodeIds.has(targetId);
+      // --- Filter nodes and links based ONLY on BFS results FIRST ---
+      const bfsFilteredNodes = baseNodes.filter(node => connectedNodeIds.has(node.id));
+      // CRITICAL FIX: Filter links to ONLY include those connecting nodes within the connectedNodeIds set
+      const bfsFilteredLinks = baseLinks.filter(link => {
+          const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+          const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+          // --- FIX: Explicit type assertion for check --- 
+          return connectedNodeIds.has(sourceId as string) && connectedNodeIds.has(targetId as string);
       });
-      
-      console.log(`[FILTER] After depth/breadth: ${depthLimitedNodes.length}/${baseNodes.length} nodes and ${depthLimitedLinks.length}/${baseLinks.length} links`);
-      
-      // Step 3: Apply relationship filtering if any filters are active
-      if (filteredRelationships.length === 0) {
-        // No relationship filters, so return all depth-limited nodes and links
-        console.log(`[FILTER] No relationship filters active - showing all nodes and links`);
-        return { 
-          filteredNodes: depthLimitedNodes, 
-          filteredLinks: depthLimitedLinks 
-        };
+  
+      console.log(`[FILTER] After depth/breadth (using String IDs): ${bfsFilteredNodes.length}/${baseNodes.length} nodes and ${bfsFilteredLinks.length}/${baseLinks.length} links`);
+  
+      // --- Now apply relationship type filters if any are active ---
+      let finalFilteredNodes = bfsFilteredNodes;
+      let finalFilteredLinks = bfsFilteredLinks;
+  
+      if (filteredRelationships.length > 0) {
+          console.log('[FILTER] Applying relationship type filters:', filteredRelationships);
+  
+          // Filter links further based on the selected relationship types
+          finalFilteredLinks = bfsFilteredLinks.filter(link =>
+              filteredRelationships.includes(link.relationship)
+          );
+  
+          // Filter nodes: Keep main node + nodes connected by the selected link types
+          // Recalculate the set of nodes involved in the *final* filtered links
+          const nodesConnectedByFinalLinks = new Set<string>();
+          if (mainWordIdString) nodesConnectedByFinalLinks.add(mainWordIdString); // Always keep main word
+  
+          finalFilteredLinks.forEach(link => {
+              const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+              const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+              // --- FIX: Explicit type assertion for check --- 
+              nodesConnectedByFinalLinks.add(sourceId as string);
+              nodesConnectedByFinalLinks.add(targetId as string);
+          });
+  
+          finalFilteredNodes = bfsFilteredNodes.filter(node =>
+              nodesConnectedByFinalLinks.has(node.id)
+          );
+          console.log(`[FILTER] After relationship filters: ${finalFilteredNodes.length} nodes, ${finalFilteredLinks.length} links`);
+  
+      } else {
+        console.log('[FILTER] No relationship filters active - showing all depth/breadth limited nodes and links');
       }
-      
-      // Filter nodes by relationship type
-      const relationshipFilteredNodes = depthLimitedNodes.filter(node => {
-        // Always include the main word node
-        if (node.id === mainWord) {
-          return true;
-        }
-        
-        // Check if this node's group is in the filtered list
-        const nodeGroup = node.group.toLowerCase();
-        const isGroupFiltered = filteredRelationships.includes(nodeGroup);
-        
-        // Keep nodes whose group is NOT in the filtered list
-        return !isGroupFiltered;
-      });
-      
-      // Only include links where both source and target remain in the filtered node set
-      const relationshipFilteredNodeIds = new Set(relationshipFilteredNodes.map(n => n.id));
-      const relationshipFilteredLinks = depthLimitedLinks.filter(link => {
-        // Ensure both nodes are still included
-        const sourceId = typeof link.source === 'string' ? link.source : (link.source as any)?.id || link.source;
-        const targetId = typeof link.target === 'string' ? link.target : (link.target as any)?.id || link.target;
-        
-        const sourceIncluded = relationshipFilteredNodeIds.has(sourceId);
-        const targetIncluded = relationshipFilteredNodeIds.has(targetId);
-        
-        // If either endpoint is filtered out, don't include the link
-        if (!sourceIncluded || !targetIncluded) {
-          return false;
-        }
-        
-        return true;
-      });
-      
-      console.log(`[FILTER] After relationship filtering: ${relationshipFilteredNodes.length}/${depthLimitedNodes.length} nodes and ${relationshipFilteredLinks.length}/${depthLimitedLinks.length} links`);
-      
-      return {
-        filteredNodes: relationshipFilteredNodes,
-        filteredLinks: relationshipFilteredLinks
-      };
-    }, [baseNodes, baseLinks, mainWord, depth, breadth, filteredRelationships]);
+  
+      // Ensure the main word node is *always* included if it was originally present
+      if (mainWordNode && !finalFilteredNodes.some(n => n.id === mainWordIdString)) {
+          console.warn("[FILTER] Main word node was filtered out, re-adding it.");
+          finalFilteredNodes.push(mainWordNode); // Add it back if filters removed it
+      }
+  
+  
+      return { filteredNodes: finalFilteredNodes, filteredLinks: finalFilteredLinks };
+  
+    }, [baseNodes, baseLinks, depth, breadth, filteredRelationships, mainWord, getRelationshipTypeLabel]); // Ensure all dependencies are listed
   
     // Define functions needed for the simulation
     const setupSimulation = useCallback((nodes: CustomNode[], links: CustomLink[], width: number, height: number) => {
