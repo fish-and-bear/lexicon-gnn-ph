@@ -43,8 +43,7 @@
 /* Nodes - Remove Drop Shadow */
 .node {
   cursor: pointer;
-  /* Opacity is now handled dynamically in JS */
-  /* opacity: 0.8; */
+  /* Opacity is now handled dynamically in JS, should default to 1 */
   transition: opacity 0.2s ease-out, transform 0.2s ease-out; /* Added transform */
 }
 
@@ -71,13 +70,14 @@
   user-select: none;
   transition: opacity 0.2s ease-out, font-weight 0.2s ease-out;
   font-family: system-ui, -apple-system, sans-serif;
-  /* Font size/weight handled dynamically in JS */
+  fill: #000000; /* MODIFIED: Default fill to black for light mode */
+  /* Font size/weight handled dynamically in JS, should default to opacity 1 */
 }
 
 /* Links */
 .link {
   stroke: #ccc;
-  stroke-opacity: 0.6;
+  stroke-opacity: 1; /* MODIFIED: Default link stroke opacity to full */
   stroke-width: 1px;
   transition: stroke-opacity 0.2s ease-out, 
               stroke-width 0.2s ease-out, 
@@ -350,7 +350,7 @@
   pointer-events: auto;
 }
 .link:not(.filtered) {
-  stroke-opacity: 0.5;
+  stroke-opacity: 1; /* MODIFIED: Ensure this matches the new default if not filtered */
 }
 
 /* Splash effect (Optional - add if desired) */
@@ -435,7 +435,7 @@
 }
 
 .link:not(.filtered) {
-  opacity: 0.6;
+  opacity: 1; /* MODIFIED: This refers to stroke-opacity effectively. Set to 1 for full visibility. */
   pointer-events: all;
 }
 
@@ -466,7 +466,7 @@
 }
 
 .link:not(.filtered) {
-  opacity: 0.6;
+  opacity: 1; /* MODIFIED: This refers to stroke-opacity effectively. Set to 1 for full visibility. */
   pointer-events: all;
 }
 

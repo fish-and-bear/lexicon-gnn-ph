@@ -46,6 +46,8 @@ NON_WORD_STRINGS = {
     "formal", "informal", "slang", "colloquial", "figurative", "literal",
     "standard", "nonstandard", "proscribed", "dated", "rare", "poetic",
     "historical", "uncommon", "inclusive", "abbr.", "fig.", "lit.",
+    # Place Names
+    "batangas", "marinduque", "rizal",
     # Placeholders or fragments
     "-", "?", "*", "+", "...",
 }
@@ -1080,10 +1082,10 @@ def get_language_code(language: str) -> str:
     if language in general_codes:
         return general_codes[language]
 
-    # Fallback for unknown languages - Preserve the original code if not found in mappings
-    logger.warning(f"Could not map language: '{language}'. Preserving original code.")
-    return language # Return the original (cleaned, lowercased) code if unmapped
-    # return "tgl" # REMOVED: Do not default to Tagalog if unmapped
+    # Fallback for unknown languages
+    logger.warning(f"Could not map language: '{language}'. Defaulting to 'tgl'.")
+    return "tgl" # Default to Tagalog if unmapped
+    # return language # OLD: Return the original (cleaned, lowercased) code if unmapped
 
 
 def process_kaikki_lemma(lemma):

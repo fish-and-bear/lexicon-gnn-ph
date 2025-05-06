@@ -5047,8 +5047,8 @@ def api_suggestions():
         sql = text("""
             SELECT id, lemma, language_code 
             FROM words
-            WHERE lemma ILIKE :query
-            ORDER BY lemma, (lemma = :exact_query) DESC, length(lemma)
+            WHERE normalized_lemma ILIKE :query -- MODIFIED: Ensure querying normalized_lemma
+            ORDER BY (normalized_lemma = :exact_query) DESC, length(normalized_lemma), normalized_lemma -- MODIFIED: Order by normalized_lemma too
             LIMIT :limit;
         """)
         

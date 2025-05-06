@@ -43,7 +43,7 @@ export const mapRelationshipToGroup = (relationship?: string): string => {
       case 'associated': group = 'related'; break;
       // Add translation types to the 'related' group for color consistency
       case 'has_translation':
-      case 'translation_of': group = 'related'; break;
+      case 'translation_of': group = 'translation'; break;
       case 'variant':
       case 'spelling_variant':
       case 'regional_variant':
@@ -55,6 +55,7 @@ export const mapRelationshipToGroup = (relationship?: string): string => {
       case 'derivative':
       case 'sahod':
       case 'isahod': group = 'derived'; break; // Keep general 'derived' group
+      case 'affix': group = 'affix'; break; // ADDED: New group for affix
       case 'root': 
       case 'root_of': group = 'root_of'; break; // Consolidated group for root/root_of
       case 'derived_from': group = 'derived_from'; break; // Specific group for derived_from
@@ -92,28 +93,29 @@ export const getNodeColor = (group: string): string => {
     // Colors organized by semantic relationship categories
     switch (group.toLowerCase()) {
       // Core Word
-      case "main": return "#0e4a86"; // Deep blue
+      case "main": return "#003f5c"; // Slightly different deep blue
       
       // Origin Group (Root/Etymology/Cognate)
-      case "root_of": return "#e63946"; // Bright red for 'root_of' (consolidated root)
-      case "derived_from": return "#f77f00"; // Orange for 'derived_from'
-      case "etymology": return "#d00000"; // Dark red
-      case "cognate": return "#ff5c39"; // Light orange
+      case "root_of": return "#c00000"; // Strong Red (was #d00000)
+      case "derived_from": return "#8B4513"; // SaddleBrown (was #e04e14)
+      case "etymology": return "#D87093"; // PaleVioletRed (was #c94072)
+      case "cognate": return "#FFA500"; // Standard Orange (was #ff8c00)
       
       // Meaning Group (Synonym/Related/Antonym)
-      case "synonym": return "#457b9d"; // Medium blue
-      case "related": return "#48cae4"; // Light blue
-      case "antonym": return "#023e8a"; // Dark blue
+      case "synonym": return "#457b9d"; // Muted Slate Blue (was #2a9d8f)
+      case "related": return "#80ced6"; // Lighter, softer blue/cyan (was #48cae4)
+      case "antonym": return "#6a0dad"; // Distinct Purple (was #023e8a)
       
       // Form Group (Variant)
-      case "variant": return "#7d4fc3"; // Medium purple
+      case "variant": return "#c34f9a"; // Different purple/magenta (was #7d4fc3)
       
-      // Hierarchy Group (Taxonomic/Part-Whole)
-      case "taxonomic": return "#2a9d8f"; // Teal
-      case "part_whole": return "#40916c"; // Forest green
+      // Structure Group (Taxonomic/Part-Whole)
+      case "taxonomic": return "#588c7e"; // Muted, darker Green/Teal (was #2a9d8f)
+      case "part_whole": return "#8c9a58"; // Olive/Khaki Green (was #40916c)
       
       // Derivation Group (Derived/Affix)
-      case "derived": return "#2a9d8f"; // Teal (Same as Taxonomic for visual consistency)
+      case "derived": return "#f4a261"; // Sandy Brown/Orange (was #fab422)
+      case "affix": return "#2a9d8f"; // Teal (New for affix)
       
       // Info Group (Usage) - REMOVED as it maps to related
       // case "usage_info": return "#fca311"; 
@@ -129,11 +131,6 @@ export const getNodeColor = (group: string): string => {
  * @returns An object containing the group name and a display-friendly label.
  */
 export const getRelationshipTypeLabel = (type: string): { group: string, label: string } => {
-  // Handle specific translation labels first
-  if (type.toLowerCase() === 'has_translation' || type.toLowerCase() === 'translation_of') {
-    return { group: 'Meaning', label: 'Translation' };
-  }
-
   // Map the specific type to its broader group first
   const group = mapRelationshipToGroup(type);
 
@@ -150,7 +147,9 @@ export const getRelationshipTypeLabel = (type: string): { group: string, label: 
     case 'variant': return { group: 'Form', label: 'Variant' };
     case 'taxonomic': return { group: 'Structure', label: 'Taxonomic' };
     case 'part_whole': return { group: 'Structure', label: 'Component/Part' };
-    case 'derived': return { group: 'Derivation', label: 'Derivatives / Affixes' };
+    case 'derived': return { group: 'Derivation', label: 'Constructions' };
+    case 'affix': return { group: 'Derivation', label: 'Affix' };
+    case 'translation': return { group: 'Meaning', label: 'Translation' };
     // case 'usage_info': return { group: 'Info', label: 'Usage / Info' }; // REMOVED consolidated label
     // Fallback: Format the original type if no specific group label is defined
     default: 

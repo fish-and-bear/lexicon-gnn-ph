@@ -205,11 +205,11 @@ import React, {
         etymology: { category: "Origin", label: "Etymology", color: getNodeColor("etymology") },
         cognate: { category: "Origin", label: "Cognate", color: getNodeColor("cognate") },
         // Derivation Category
-        derived: { category: "Derivation", label: "Derived", color: getNodeColor("derived") }, 
-        derivative: { category: "Derivation", label: "Derived", color: getNodeColor("derived") }, // Map derivative here too
-        sahod: { category: "Derivation", label: "Derived", color: getNodeColor("derived") }, 
-        isahod: { category: "Derivation", label: "Derived", color: getNodeColor("derived") }, 
-        affix: { category: "Derivation", label: "Affix", color: getNodeColor("derived") }, // Add affix here
+        derived: { category: "Derivation", label: "Constructions", color: getNodeColor("derived") }, 
+        derivative: { category: "Derivation", label: "Constructions", color: getNodeColor("derived") }, 
+        sahod: { category: "Derivation", label: "Constructions", color: getNodeColor("derived") }, 
+        isahod: { category: "Derivation", label: "Constructions", color: getNodeColor("derived") }, 
+        affix: { category: "Derivation", label: "Affix", color: getNodeColor("affix") },
         // Meaning Category
         synonym: { category: "Meaning", label: "Synonym", color: getNodeColor("synonym") },
         antonym: { category: "Meaning", label: "Antonym", color: getNodeColor("antonym") },
@@ -218,8 +218,8 @@ import React, {
         similar: { category: "Meaning", label: "Related", color: getNodeColor("related") },
         kaugnay: { category: "Meaning", label: "Related", color: getNodeColor("related") },
         kahulugan: { category: "Meaning", label: "Related", color: getNodeColor("related") },
-        has_translation: { category: "Meaning", label: "Translation", color: getNodeColor("related") },
-        translation_of: { category: "Meaning", label: "Translation", color: getNodeColor("related") },
+        has_translation: { category: "Meaning", label: "Translation", color: getNodeColor("translation") },
+        translation_of: { category: "Meaning", label: "Translation", color: getNodeColor("translation") },
         // Form Category
         variant: { category: "Form", label: "Variant", color: getNodeColor("variant") },
         spelling_variant: { category: "Form", label: "Variant", color: getNodeColor("variant") },
@@ -339,16 +339,16 @@ import React, {
             if (!sourceLabel || !targetLabel) {
                  console.warn(`[BASELINKS-LABEL] Could not determine label for link source='${link.source}' (Key: ${sourceIdKey}) or target='${link.target}' (Key: ${targetIdKey}). Skipping link.`);
                  return null; // Skip if labels couldn't be found
-            }
-            
-            return {
+          }
+          
+          return {
               source: sourceLabel, // Use looked-up LABEL
               target: targetLabel, // Use looked-up LABEL
-              relationship: link.relationship,
+            relationship: link.relationship,
               metadata: link.metadata
             } as CustomLink;
         })
-        .filter((link): link is CustomLink => link !== null);
+        .filter((link): link is CustomLink => link !== null); 
         console.log("[BASELINKS-LABEL] Processed links:", links.length);
         return links;
     }, [wordNetwork]); // Dependency is only on the raw network data
@@ -373,13 +373,13 @@ import React, {
             .attr("y2", d => (typeof d.target === 'object' ? d.target.y ?? 0 : 0))
             // Add title element for link tooltip
             .call(enter => enter.append("title").text((d: CustomLink) => d.relationship))
-            .call(enter => enter.transition().duration(300).attr("stroke-opacity", 0.7)), // CHANGED: Default opacity 0.7
+            .call(enter => enter.transition().duration(300).attr("stroke-opacity", 1)), // MODIFIED: Default opacity 1
           update => update
             // Ensure updates reset to default style before transitions
             .attr("stroke", themeMode === "dark" ? "#666" : "#ccc")
             .attr("stroke-width", 1.5)
             .call(update => update.transition().duration(300)
-                  .attr("stroke-opacity", 0.7)), // CHANGED: Default opacity 0.7
+                  .attr("stroke-opacity", 1)), // MODIFIED: Default opacity 1
           exit => exit
             .call(exit => exit.transition().duration(300).attr("stroke-opacity", 0))
             .remove()
@@ -404,7 +404,7 @@ import React, {
           let calculatedGroup = 'related';
           let relationshipToMainWord: string | undefined = undefined;
           const isMainNode = nodeIdLabel === mainWord;
-
+  
           if (isMainNode) {
             calculatedGroup = 'main';
             relationshipToMainWord = 'main';
@@ -414,7 +414,7 @@ import React, {
               (link.source === mainWord && link.target === nodeIdLabel) ||
               (link.source === nodeIdLabel && link.target === mainWord)
             );
-            if (connectingLink) { 
+            if (connectingLink) {
               relationshipToMainWord = connectingLink.relationship;
               calculatedGroup = mapRelationshipToGroup(connectingLink.relationship);
             } else {
@@ -432,29 +432,29 @@ import React, {
             word: node.word || node.label, // Keep word property distinct if needed
             label: node.label, // Store label explicitly
             group: calculatedGroup, 
-            connections: connections, 
+              connections: connections,
             relationshipToMain: relationshipToMainWord,
             pathToMain: isMainNode ? [mainWord] : undefined,
-            pinned: false,
+              pinned: false,
             originalId: node.id, // Keep original numeric ID if needed elsewhere
-            language: node.language || undefined,
-            definitions: (node as any).definitions?.map((def: any) => def.text || def.definition_text).filter(Boolean) || [],
-            has_baybayin: node.has_baybayin || false,
-            baybayin_form: node.baybayin_form || null,
+              language: node.language || undefined,
+              definitions: (node as any).definitions?.map((def: any) => def.text || def.definition_text).filter(Boolean) || [],
+              has_baybayin: node.has_baybayin || false,
+              baybayin_form: node.baybayin_form || null,
             // D3 properties
-            index: undefined, x: undefined, y: undefined, vx: undefined, vy: undefined, fx: undefined, fy: undefined
+              index: undefined, x: undefined, y: undefined, vx: undefined, vy: undefined, fx: undefined, fy: undefined
           };
       })
       .filter(node => node !== null);
-
+  
       // Deduplication based on label ID
       const uniqueNodes: CustomNode[] = [];
       const seenIds = new Set<string>();
       // MappedNodes now guaranteed to not contain nulls
-      for (const node of mappedNodes) { 
-        if (!seenIds.has(node.id)) { 
-          uniqueNodes.push(node);
-          seenIds.add(node.id);
+      for (const node of mappedNodes) {
+          if (!seenIds.has(node.id)) {
+              uniqueNodes.push(node);
+              seenIds.add(node.id);
         }
       }
       console.log("[BASENODES-LABEL] Final unique nodes:", uniqueNodes.length);
@@ -554,74 +554,80 @@ import React, {
       // Enhanced hover effect - EXACT match to the latest screenshots + Path Highlighting
       nodeSelection.on("mouseenter", (event, d) => {
         const currentTargetElement = event.currentTarget as SVGGElement;
-        // <<< CHANGE: Use mainWord string for check, find main node ID via nodeMap >>>
         const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord);
         const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
         if (isDraggingRef.current || !mainWordIdString) return; 
-        // REMOVED: setPeekedNode(null); // This line was making the peek card disappear on any mouseenter
-  
+
         console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
-        // console.log('[HOVER ENTER] baseLinks available inside handler (first 5):', baseLinks.slice(0, 5)); // Can remove this now
-  
+
         // --- Find Path to Main Word (BFS Backwards) --- 
-        const pathNodeIds = new Set<string>();
-        const pathLinkIds = new Set<string>(); 
-        const queue: [string, string[]][] = [[d.id, [d.id]]]; 
-        const visited = new Set<string>([d.id]);
         let foundPath = false;
-  
+        let calculatedPath: string[] | undefined = undefined; // Use a different name for clarity
+        const pathNodeIds = new Set<string>(); // Initialize here
+        const pathLinkIds = new Set<string>(); // Initialize here
+
+        console.log(`[BFS Start] Starting BFS for node: ${d.id} to find main word: ${mainWordIdString}`);
+
         if (d.id !== mainWordIdString) { 
+          const queue: [string, string[]][] = [[d.id, [d.id]]]; 
+          const visited = new Set<string>([d.id]);
+
           while (queue.length > 0 && !foundPath) {
             const [currentId, currentPath] = queue.shift()!;
-  
-            // --- REVERTED: Treat link source/target as STRINGS from baseLinks ---
+            console.log(`[BFS Loop] Processing: ${currentId}, Current Path: ${currentPath.join('->')}`);
+
             const incomingLinks = baseLinks.filter(l => l.target === currentId);
             const outgoingLinks = baseLinks.filter(l => l.source === currentId);
-            // --- END REVERT ---
-            
             const potentialLinks = [...incomingLinks, ...outgoingLinks];
-  
+
             for (const link of potentialLinks) {
-                // --- REVERTED: Treat link source/target as STRINGS --- 
-                const sourceId = link.source as string;
-                const targetId = link.target as string;
-                // --- END REVERT ---
-                const neighborId = sourceId === currentId ? targetId : sourceId;
-                
-                if (!visited.has(neighborId)) {
-                    visited.add(neighborId);
-                    const newPath = [...currentPath, neighborId];
-                    const linkId = `${sourceId}_${targetId}`;
-  
-                    if (neighborId === mainWordIdString) { 
-                        // Path found!
-                        newPath.forEach(id => pathNodeIds.add(id));
-                        for(let i = 0; i < newPath.length - 1; i++) {
-                            const pathStartNodeId = newPath[i];
-                            const pathEndNodeId = newPath[i+1];
-                            // Find the actual link and add its ID
-                            // --- REVERTED: Use string comparison for finding actualLink --- 
-                            const actualLink = baseLinks.find(fl => 
-                                       ((fl.source === pathStartNodeId && fl.target === pathEndNodeId) || 
-                                        (fl.source === pathEndNodeId && fl.target === pathStartNodeId))
-                            );
-                            // --- END REVERT ---
-                            if (actualLink) {
-                                pathLinkIds.add(`${actualLink.source}_${actualLink.target}`); 
-                            }
-                        }
-                        foundPath = true;
-                        break; 
-                    }
-                    queue.push([neighborId, newPath]);
-                }
+              const sourceId = link.source as string; 
+              const targetId = link.target as string;
+              const neighborId = sourceId === currentId ? targetId : sourceId;
+
+              if (!visited.has(neighborId)) {
+                  visited.add(neighborId);
+                  const newPathForThisBranch = [...currentPath, neighborId]; // Create path first
+
+                  if (neighborId === mainWordIdString) { 
+                    console.log(`[BFS PATH FOUND] Found main word '${mainWordIdString}' via neighbor '${neighborId}' from node '${currentId}'`);
+                    calculatedPath = newPathForThisBranch.reverse(); // Assign to outer scope variable
+                    foundPath = true;
+                    break; // Exit inner loop
+                  }
+                  queue.push([neighborId, newPathForThisBranch]); // Use the created path
+              }
             }
+            if (foundPath) break; // Exit outer loop if path found
           }
-        } else {
-            pathNodeIds.add(mainWordIdString); 
+          console.log(`[BFS End] For node ${d.id}, foundPath = ${foundPath}`);
+        } else { 
+            calculatedPath = [mainWordIdString];
+            foundPath = true; // Mark as found for main node
         }
         // --- End Path Finding --- 
+
+        // Assign the found path to the node's data
+        d.pathToMain = calculatedPath; // Assign the final calculated path
+        console.log(`[HOVER PATH ASSIGN] Node: '${d.word}' (ID: ${d.id}), Assigned Path:`, d.pathToMain);
   
+        // Populate pathNodeIds and pathLinkIds *after* BFS completes if path was found
+        if (d.pathToMain) { 
+            d.pathToMain.forEach((id: string) => pathNodeIds.add(id));
+            for (let i = 0; i < d.pathToMain.length - 1; i++) { 
+                const pathStartNodeId = d.pathToMain[i];
+                const pathEndNodeId = d.pathToMain[i+1];
+                const actualLink = baseLinks.find(fl => 
+                    ((fl.source === pathStartNodeId && fl.target === pathEndNodeId) || 
+                     (fl.source === pathEndNodeId && fl.target === pathStartNodeId))
+                );
+                if (actualLink) {
+                    pathLinkIds.add(`${actualLink.source as string}_${actualLink.target as string}`);
+                }
+            }
+        }
+        // --- End populating path sets --- 
+
         // Find direct connections (neighbors) using baseLinks
         const directNeighborIds = new Set<string>();
         baseLinks.forEach((l) => { 
@@ -672,8 +678,8 @@ import React, {
         // --- Diagnostic Logging (Keep this as well) ---
         console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
         console.log('[HOVER ENTER] Main Word ID:', mainWordIdString);
-        console.log('[HOVER ENTER] Path Node IDs:', Array.from(pathNodeIds));
-        console.log('[HOVER ENTER] Path Link IDs:', Array.from(pathLinkIds));
+        console.log('[HOVER ENTER] Path Node IDs:', Array.from(pathNodeIds)); // Now populated correctly
+        console.log('[HOVER ENTER] Path Link IDs:', Array.from(pathLinkIds)); // Now populated correctly
         console.log('[HOVER ENTER] Direct Neighbor IDs:', Array.from(directNeighborIds)); // Log the final result
         console.log('[HOVER ENTER] Highlight Node IDs:', Array.from(highlightNodeIds));
         // --- END DIAGNOSTIC LOGGING --- 
@@ -683,7 +689,7 @@ import React, {
           // <<< CHANGE: Filter using string ID >>>
           .filter(n => !highlightNodeIds.has(n.id)) 
           .transition().duration(250)
-          .style("opacity", 0.7);
+          .style("opacity", 0.6); // MODIFIED: Dim non-highlighted nodes to 0.6
   
         d3.selectAll<SVGLineElement, CustomLink>(".link")
           .filter((l: CustomLink) => {
@@ -696,13 +702,13 @@ import React, {
                       (targetId === d.id && directNeighborIds.has(sourceId)) ||
                       pathLinkIds.has(linkId) || pathLinkIds.has(`${targetId}_${sourceId}`) ); 
           })
-          .style("stroke-opacity", 0.5);
+          .style("stroke-opacity", 0.5); // MODIFIED: Dim non-highlighted links to 0.5
   
         d3.selectAll<SVGTextElement, CustomNode>(".node-label")
           // <<< CHANGE: Filter using string ID >>>
           .filter(n => !highlightNodeIds.has(n.id)) 
           .transition().duration(250)
-          .style("opacity", 0.7);
+          .style("opacity", 0.6); // MODIFIED: Dim non-highlighted labels to 0.6
   
         // --- Highlight elements in the path and direct connections --- 
         // Nodes
@@ -739,7 +745,7 @@ import React, {
   
         // Links (Directly connected OR on the path)
         d3.selectAll<SVGLineElement, CustomLink>(".link")
-          .filter((l: CustomLink) => {
+          .filter((l: CustomLink) => { 
             // Correctly access source and target IDs from CustomNode objects
             const sourceNodeId = (l.source as CustomNode).id;
             const targetNodeId = (l.target as CustomNode).id;
@@ -755,7 +761,7 @@ import React, {
                      pathLinkIds.has(linkIdForward) || pathLinkIds.has(linkIdBackward) );
           })
           .raise()
-          .style("stroke-opacity", 0.9)
+          .style("stroke-opacity", 0.9) 
           .attr("stroke-width", 2.5)
           .each(function(l: CustomLink) {
             let determinedColor: string;
@@ -781,7 +787,7 @@ import React, {
             d3.select(this).style("stroke", color);
           });
           */
-
+  
         // Labels (Directly connected OR on the path)
         d3.selectAll<SVGTextElement, CustomNode>(".node-label")
           // <<< CHANGE: Filter using string ID >>>
@@ -801,29 +807,29 @@ import React, {
         // --- REMOVED TRANSITIONS for reset ---
         d3.selectAll<SVGGElement, CustomNode>(".node")
           //.transition().duration(200) // REMOVED TRANSITION
-          .style("opacity", 1) // CHANGED: Reset all nodes to opacity 1
-          .attr("transform", n => `translate(${n.x || 0},${n.y || 0})`)
+          .style("opacity", 1) // Reset all nodes to opacity 1
+          .attr("transform", n => `translate(${n.x || 0},${n.y || 0})`) 
           .select("circle")
-            .attr("stroke-width", 0.5)
-            .attr("stroke-opacity", 0.6)
+            .attr("stroke-width", 0.5) 
+            .attr("stroke-opacity", 0.6) // This is for the circle's own stroke, not the node group opacity
             // <<< CHANGE: Compare string IDs for main node filter >>>
-            .attr("filter", n => n.id === mainWordIdString ? `url(#apple-node-shadow) brightness(1.15)` : `url(#apple-node-shadow)`)
-            .attr("stroke", n => {
+            .attr("filter", n => n.id === mainWordIdString ? `url(#apple-node-shadow) brightness(1.15)` : `url(#apple-node-shadow)`) 
+            .attr("stroke", n => { 
               const baseColor = d3.color(getNodeColor(n.group)) || d3.rgb("#888");
               return themeMode === 'dark' ? baseColor.brighter(0.3).toString() : baseColor.brighter(0.5).toString();
-            });
-
+            }); 
+            
         d3.selectAll<SVGLineElement, CustomLink>(".link")
           //.transition().duration(200) // REMOVED TRANSITION
-          .style("stroke-opacity", 0.7) // CHANGED: Reset to new default 0.7
+          .style("stroke-opacity", 1) // MODIFIED: Reset to new default 1
           .attr("stroke-width", 1.5)
-          .style("stroke", themeMode === "dark" ? "#666" : "#ccc");
-
+          .style("stroke", themeMode === "dark" ? "#666" : "#ccc"); 
+          
         d3.selectAll<SVGTextElement, CustomNode>(".node-label")
           //.transition().duration(200) // REMOVED TRANSITION
-          .style("opacity", 0.9)
+          .style("opacity", 1) // Reset labels to opacity 1
           // <<< CHANGE: Compare string IDs for main node font weight >>>
-          .style("font-weight", n => n.id === mainWordIdString ? "bold" : "normal");
+          .style("font-weight", n => n.id === mainWordIdString ? "bold" : "normal"); 
       });
       
       // Double-click to navigate with improved visual feedback
@@ -917,13 +923,13 @@ import React, {
         }
         
         // MODIFIED: Always set hovered node for tooltip, as peek is removed
-        setHoveredNode({ 
-            ...d, 
-            // relationshipToMain is removed, relationshipFromParent is already in d 
-        });
-        
-        const { clientX, clientY } = event;
-        setTooltipPosition({ x: clientX, y: clientY });
+             setHoveredNode({ 
+                 ...d, 
+                 // relationshipToMain is removed, relationshipFromParent is already in d 
+             });
+             
+             const { clientX, clientY } = event;
+             setTooltipPosition({ x: clientX, y: clientY });
       });
       
       nodeSelection.on("mouseout", (event, d) => {
@@ -1001,14 +1007,17 @@ import React, {
   
                   // Halo creation remains the same
                   textElement.clone(true)
-                      // ...
-                      .attr("stroke", themeMode === "dark" ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)");
+                      .attr("class", "node-label-halo") // Ensure this class is defined or handled
+                      .attr("fill", "none")
+                      .attr("stroke", themeMode === "dark" ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)")
+                      .attr("stroke-width", 3)
+                      .attr("stroke-linejoin", "round");
   
                   // Text fill remains the same
-                  textElement.attr("fill", themeMode === "dark" ? "#eee" : "#222");
+                  textElement.attr("fill", themeMode === "dark" ? "#f5f5f7" : "#000000"); // MODIFIED: Light mode to #000000, dark to #f5f5f7
   
                   // <<< CHANGE: Use mainWord string for opacity check >>>
-                  textElement.call(enter => enter.transition().duration(300).style("opacity", d => d.id === mainWord ? 1 : 0.9)); 
+                  textElement.call(enter => enter.transition().duration(300).style("opacity", 1)); // Default opacity 1
                   return textElement;
               },
               update => update,
@@ -1439,9 +1448,9 @@ import React, {
              }
              if (breadth === 0 || nodesAddedAtDepth[nextDepth] < breadth) {
                if (!connectedNodeIds.has(neighborId)) { // Double check before adding to queue
-                    connectedNodeIds.add(neighborId);
-                    queue.push({ nodeId: neighborId, currentDepth: nextDepth });
-                    nodesAddedAtDepth[nextDepth]++;
+               connectedNodeIds.add(neighborId);
+               queue.push({ nodeId: neighborId, currentDepth: nextDepth });
+               nodesAddedAtDepth[nextDepth]++;
                     // if (shouldLogThisLink) console.log(`[FILTER DEBUG BFS Detail]       Added neighbor '${neighborId}' to queue. connectedNodeIds size: ${connectedNodeIds.size}`);
                }
              }
@@ -1603,24 +1612,24 @@ import React, {
       }
   
       // --- MODIFIED: Pass original filteredNodes to centerOnMainWord ---
-      const centerTimeout = setTimeout(() => centerOnMainWord(svg, filteredNodes), 800); 
+      const centerTimeout = setTimeout(() => centerOnMainWord(svg, filteredNodes), 800);
       // --- END MODIFICATION ---
   
       // --- Cleanup --- 
       return () => {
-          if (currentSim) currentSim.stop();
-          clearTimeout(centerTimeout);
-          if (cleanup) cleanup(); // Call the cleanup function from setupSvgDimensions
-          if (svgRef.current) {
-            const svg = d3.select(svgRef.current);
-            // Clean up D3 event listeners specifically
-            svg.selectAll(".node").on(".drag", null).on(".click", null).on(".dblclick", null).on(".mouseover", null).on(".mouseout", null).on(".contextmenu", null);
-            svg.selectAll(".graph-legend-svg .legend-item-svg").on(".click", null).on(".mouseover", null).on(".mouseout", null);
-            svg.on(".zoom", null);
-            console.log("[Cleanup] D3 listeners removed.");
-          } else {
-            console.log("[Cleanup] SVG ref not found, skipping listener removal.");
-          }
+        if (currentSim) currentSim.stop();
+        clearTimeout(centerTimeout);
+        if (cleanup) cleanup(); // Call the cleanup function from setupSvgDimensions
+        if (svgRef.current) {
+          const svg = d3.select(svgRef.current);
+          // Clean up D3 event listeners specifically
+          svg.selectAll(".node").on(".drag", null).on(".click", null).on(".dblclick", null).on(".mouseover", null).on(".mouseout", null).on(".contextmenu", null);
+          svg.selectAll(".graph-legend-svg .legend-item-svg").on(".click", null).on(".mouseover", null).on(".mouseout", null);
+          svg.on(".zoom", null);
+          console.log("[Cleanup] D3 listeners removed.");
+        } else {
+          console.log("[Cleanup] SVG ref not found, skipping listener removal.");
+        }
       };
     }, [
       // Keep existing dependencies, ensure renderOrUpdateLegend and setupSvgDimensions are included if defined inside
@@ -1666,6 +1675,7 @@ import React, {
   
     // Improved tooltip with relationship info directly from old_src_2
     const renderTooltip = useCallback(() => {
+      console.log('[WordGraph] Checking getRelationshipTypeLabel:', typeof getRelationshipTypeLabel, getRelationshipTypeLabel);
       // MODIFIED: Simplified condition, as peekedNode is removed
       if (!hoveredNode?.id || !hoveredNode?.x || !hoveredNode?.y || !svgRef.current) {
            return null;
@@ -1764,6 +1774,34 @@ import React, {
                     {hoveredNode.definitions[0].length > 100 ? hoveredNode.definitions[0].substring(0, 97) + '...' : hoveredNode.definitions[0]}
             </p>
           )}
+           {/* Path to Main Info */}
+           {hoveredNode.pathToMain && hoveredNode.pathToMain.length > 1 && (
+             <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: `1px solid ${themeMode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'}`, fontSize: '11px', color: themeMode === 'dark' ? '#c9d1d9' : '#57606a' }}>
+               {/* Path Display */}
+               <div style={{ marginBottom: '4px' }}>
+                 <span style={{ fontWeight: '600', color: themeMode === 'dark' ? '#8b949e' : '#6e7781', marginRight: '5px' }}>Path:</span>
+                 <span>{hoveredNode.pathToMain.map((nodeId, index) => (
+                   <React.Fragment key={nodeId}>
+                     {index > 0 && <span style={{ margin: '0 3px', opacity: 0.6 }}>→</span>}
+                     <span style={{ fontStyle: index === 0 ? 'italic' : 'normal' }}>{nodeId}</span>
+                   </React.Fragment>
+                 ))}</span>
+               </div>
+               {/* Degrees and Via */}
+               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                 <div>
+                   <span style={{ fontWeight: '600', color: themeMode === 'dark' ? '#8b949e' : '#6e7781', marginRight: '5px' }}>Degrees:</span>
+                   <span style={{ fontWeight: '500' }}>{hoveredNode.pathToMain.length - 1}</span>
+                 </div>
+                 {hoveredNode.pathToMain.length > 2 && (
+                   <div style={{ borderLeft: `1px solid ${themeMode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'}`, paddingLeft: '10px' }}>
+                     <span style={{ fontWeight: '600', color: themeMode === 'dark' ? '#8b949e' : '#6e7781', marginRight: '5px' }}>Via:</span>
+                     <span style={{ fontWeight: '500', fontStyle: 'italic', color: getNodeColor(hoveredNode.group) }}>{hoveredNode.pathToMain[hoveredNode.pathToMain.length - 2]}</span>
+                   </div>
+                 )}
+               </div>
+             </div>
+           )}
            <div style={{ 
              fontSize: "11px", 
              marginTop: "8px", 
@@ -1784,7 +1822,7 @@ import React, {
                <span>Navigate</span>
              </div>
              {/* Add hint for Peek interaction */}
-             <div style={{ display: "flex", alignItems: "center", gap: "4px", opacity: 0.7 }}>
+             {/* <div style={{ display: "flex", alignItems: "center", gap: "4px", opacity: 0.7 }}>
                <span style={{ 
                  fontSize: "10px", 
                  background: themeMode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.06)", 
@@ -1792,7 +1830,7 @@ import React, {
                  padding: "1px 4px"
                }}>Right-click</span>
                <span>Peek</span>
-             </div>
+             </div> */}
           </div>
         </div>
       );
@@ -1865,7 +1903,7 @@ import React, {
                 />
               </div>
               
-        {/* Tooltip */}
+              {/* Tooltip */}
         {renderTooltip()}
       </div>
     );
