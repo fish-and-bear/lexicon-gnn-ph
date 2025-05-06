@@ -5052,8 +5052,9 @@ def api_suggestions():
             LIMIT :limit;
         """)
         
-        
-        results = db.session.execute(sql, {'query': query + '%', 'exact_query': query, 'limit': limit})
+        # Normalize the input query and use standard LIKE
+        normalized_q = normalize_query(query) # Use helper function
+        results = db.session.execute(sql, {'query': normalized_q + '%', 'exact_query': normalized_q, 'limit': limit})
         
         # Update the list comprehension to include the ID
         suggestions_data = [

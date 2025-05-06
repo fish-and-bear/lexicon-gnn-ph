@@ -1080,10 +1080,10 @@ def get_language_code(language: str) -> str:
     if language in general_codes:
         return general_codes[language]
 
-    # Fallback for unknown languages
-    logger.warning(f"Could not map language: '{language}'. Storing original code.") # Log clearly
-    # return "und" # REMOVED: Don't return 'und' as fallback
+    # Fallback for unknown languages - Preserve the original code if not found in mappings
+    logger.warning(f"Could not map language: '{language}'. Preserving original code.")
     return language # Return the original (cleaned, lowercased) code if unmapped
+    # return "tgl" # REMOVED: Do not default to Tagalog if unmapped
 
 
 def process_kaikki_lemma(lemma):

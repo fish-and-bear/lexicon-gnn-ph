@@ -52,9 +52,9 @@ import React, {
   }
   
   interface CustomNode extends d3.SimulationNodeDatum {
-    id: string; // Keep as string ID from BFS calculation
+    id: string; // Will be node.label
     word: string;
-    label?: string;
+    label: string; // CHANGED: Made label required
     group: string;
     connections?: number;
     pinned?: boolean;
@@ -386,51 +386,79 @@ import React, {
       };
     }, []);
     
-    // Memoize base links processing to avoid recomputing on every render
-    const baseLinks = useMemo((): CustomLink[] => { // Explicit return type
-      // *** ADD LOGGING HERE ***
-      console.log("[BASELINKS] Recalculating baseLinks. Input wordNetwork:", wordNetwork);
-      if (!wordNetwork?.nodes || !wordNetwork.links) {
-        console.log("[BASELINKS] Prerequisites missing or links empty. Returning empty array.");
-        return [];
-      }
-      console.log("[BASE] Processing wordNetwork links:", wordNetwork.links.length);
-      // Log the first few raw links if available
-      if (wordNetwork.links.length > 0) {
-        console.log("[BASELINKS] Raw input links (first 5):", wordNetwork.links.slice(0, 5));
-      }
+    // Memoize base links processing - USE LABEL AS ID
+    const baseLinks = useMemo((): CustomLink[] => {
+      if (!wordNetwork?.nodes || !wordNetwork.links) return [];
+      console.log("[BASELINKS-LABEL] Processing links using LABEL as ID");
+
+      // --- START: Create map from numeric ID string/number to label --- 
+      const nodeIdToLabelMap = new Map<string, string>(); // Key is now string
+      wordNetwork.nodes.forEach((node, index) => {
+        let nodeIdKey: string | null = null;
+        // Handle both numeric and string IDs from raw data
+        if (typeof node.id === 'number') {
+            nodeIdKey = String(node.id);
+        } else if (typeof node.id === 'string' && node.id) { // Check if string and non-empty, remove trim
+            nodeIdKey = node.id; // Removed trim
+        }
+
+        // Ensure we have a valid key and a non-empty label
+        if (nodeIdKey && typeof node.label === 'string' && node.label) {
+          nodeIdToLabelMap.set(nodeIdKey, node.label);
+        } else if (index < 5) { // Log why first few nodes might fail
+             console.warn(`[BASELINKS-LABEL MAP DEBUG] Skipping node #${index}: Invalid id ('${node.id}', type: ${typeof node.id}) or label ('${node.label}', type: ${typeof node.label})`);
+        }
+      });
+      console.log(`[BASELINKS-LABEL] Created nodeIdToLabelMap with ${nodeIdToLabelMap.size} entries`);
+      // --- END: Map creation ---
+
       const links = wordNetwork.links
         .map(link => {
-          // Ensure source and target are strings (IDs) if they are objects
-          const sourceId = typeof link.source === 'object' && link.source !== null ? link.source.id : link.source;
-          const targetId = typeof link.target === 'object' && link.target !== null ? link.target.id : link.target;
-          
-          // Validate that sourceId and targetId are defined and are strings
-          if (typeof sourceId !== 'string' || typeof targetId !== 'string') {
-              console.warn("Invalid link structure detected, skipping:", link);
-              return null; // Skip this link if structure is invalid
-          }
-          
-          return {
-            source: sourceId,
-            target: targetId,
-            relationship: link.relationship,
-            metadata: link.metadata // Keep metadata if it exists
-          } as CustomLink; // Cast to CustomLink here
+            // --- MODIFIED: Look up LABEL using numeric ID string from map --- 
+            let sourceLabel: string | null = null;
+            let targetLabel: string | null = null;
+
+            // Get string key for source ID
+            let sourceIdKey: string | null = null;
+            if (typeof link.source === 'string') {
+                sourceIdKey = link.source; // Assume it's the string ID
+            } else if (typeof link.source === 'number') {
+                sourceIdKey = String(link.source);
+            }
+
+            // Get string key for target ID
+            let targetIdKey: string | null = null;
+            if (typeof link.target === 'string') {
+                targetIdKey = link.target; // Assume it's the string ID
+            } else if (typeof link.target === 'number') {
+                targetIdKey = String(link.target);
+            }
+
+            // Look up labels using string ID keys
+            if (sourceIdKey && nodeIdToLabelMap.has(sourceIdKey)) {
+                sourceLabel = nodeIdToLabelMap.get(sourceIdKey)!;
+            }
+            if (targetIdKey && nodeIdToLabelMap.has(targetIdKey)) {
+                targetLabel = nodeIdToLabelMap.get(targetIdKey)!;
+            }
+           // --- END MODIFICATION ---
+
+            if (!sourceLabel || !targetLabel) {
+                 console.warn(`[BASELINKS-LABEL] Could not determine label for link source='${link.source}' (Key: ${sourceIdKey}) or target='${link.target}' (Key: ${targetIdKey}). Skipping link.`);
+                 return null; // Skip if labels couldn't be found
+            }
+            
+            return {
+              source: sourceLabel, // Use looked-up LABEL
+              target: targetLabel, // Use looked-up LABEL
+              relationship: link.relationship,
+              metadata: link.metadata
+            } as CustomLink;
         })
-        // Filter out nulls introduced by mapping invalid links
-        .filter((link): link is CustomLink => link !== null); 
-        
-      console.log("[BASE] Processed links (after filtering nulls):", links.length);
-      if (links.length > 0) {
-        console.log("[BASE] Sample links:");
-        links.slice(0, 5).forEach(link => {
-          // No need for null check here as links array is filtered
-          console.log(`  ${link.source} -[${link.relationship}${link.metadata ? ' (meta)' : ''}]-> ${link.target}`); 
-        });
-      }
-      return links; // Return the filtered array
-    }, [wordNetwork]);
+        .filter((link): link is CustomLink => link !== null);
+        console.log("[BASELINKS-LABEL] Processed links:", links.length);
+        return links;
+    }, [wordNetwork]); // Dependency is only on the raw network data
   
     // Fix the createLinks function to match the old_src_2 implementation exactly
     const createLinks = useCallback((g: d3.Selection<SVGGElement, unknown, null, undefined>, linksData: CustomLink[]) => {
@@ -452,13 +480,13 @@ import React, {
             .attr("y2", d => (typeof d.target === 'object' ? d.target.y ?? 0 : 0))
             // Add title element for link tooltip
             .call(enter => enter.append("title").text((d: CustomLink) => d.relationship))
-            .call(enter => enter.transition().duration(300).attr("stroke-opacity", 0.6)), // Default opacity slightly higher
+            .call(enter => enter.transition().duration(300).attr("stroke-opacity", 0.7)), // CHANGED: Default opacity 0.7
           update => update
             // Ensure updates reset to default style before transitions
             .attr("stroke", themeMode === "dark" ? "#666" : "#ccc")
             .attr("stroke-width", 1.5)
             .call(update => update.transition().duration(300)
-                  .attr("stroke-opacity", 0.6)),
+                  .attr("stroke-opacity", 0.7)), // CHANGED: Default opacity 0.7
           exit => exit
             .call(exit => exit.transition().duration(300).attr("stroke-opacity", 0))
             .remove()
@@ -468,138 +496,77 @@ import React, {
   
     // Fix baseNodes calculation to use stringified numeric ID for D3
     const baseNodes = useMemo<CustomNode[]>(() => {
-      // *** ADD LOGGING HERE ***
-      console.log("[BASENODES] Recalculating baseNodes. Input wordNetwork:", wordNetwork);
-      console.log("[BASENODES] Input mainWord:", mainWord);
-      console.log("[BASENODES] Input baseLinks count:", baseLinks?.length); // Log dependency state
-  
-      // Ensure wordNetwork and mainWord exist before proceeding
-      if (!wordNetwork?.nodes || !mainWord || !baseLinks) {
-        console.log("[BASE] Prerequisites missing (wordNetwork, mainWord, or baseLinks). Returning empty nodes.");
-        return []; // Return empty array if prerequisites are missing
-      }
-  
-      console.log("[BASE] Processing wordNetwork nodes:", wordNetwork.nodes.length);
-      console.log("[BASE] Main word:", mainWord);
-      console.log("[BASE] Base links count:", baseLinks.length); // Log link count
-  
-      // Find the main word node data first to get its STRING ID
-      // *** CHANGE: Use node.word for matching ***
-      let mainWordNodeData = wordNetwork.nodes.find((n: ImportedNetworkNode) => n.word === mainWord);
-      let mainWordIdStr: string | null = null; // Initialize as null
-      let mainWordMatchMethod = "";
-  
-      if (mainWordNodeData) {
-        mainWordIdStr = String(mainWordNodeData.id);
-        mainWordMatchMethod = "word";
-      } else {
-         console.warn(`[BASE] Could not find mainWord node data for '${mainWord}' using node.word. Falling back to node.label.`);
-         mainWordNodeData = wordNetwork.nodes.find((n: ImportedNetworkNode) => n.label === mainWord);
-         if (mainWordNodeData) {
-             mainWordIdStr = String(mainWordNodeData.id);
-             mainWordMatchMethod = "label";
-         } else {
-             console.error(`[BASE] CRITICAL: Could not find mainWord node data for '${mainWord}' using word or label matching. Cannot determine relationships correctly.`);
-             return []; // Cannot proceed without main word ID
-         }
-      }
-  
-      console.log(`[BASE] Found mainWordIdStr: ${mainWordIdStr} (for word: ${mainWord}, matched via node.${mainWordMatchMethod})`);
-  
-      const mappedNodes = wordNetwork.nodes.map((node: ImportedNetworkNode, index: number) => {
-          let calculatedGroup = 'related'; // Default group
+      if (!wordNetwork?.nodes || !mainWord) return [];
+      console.log("[BASENODES-LABEL] Processing nodes using LABEL as ID");
+
+      const mappedNodes = wordNetwork.nodes.map((node: ImportedNetworkNode) => {
+          // --- MODIFIED: Use label as the primary ID --- 
+          const nodeIdLabel = node.label; 
+          if (!nodeIdLabel) {
+               console.warn("Node missing label, cannot use as ID. Skipping node:", node);
+               return null; // Skip nodes without labels
+          }
+          // --- END MODIFICATION ---
+
+          let calculatedGroup = 'related';
           let relationshipToMainWord: string | undefined = undefined;
-          const currentNodeIdStr = String(node.id); // Current node's string ID
-          let connectingLink: CustomLink | undefined = undefined; // Store the link if found
-          const isMainNode = currentNodeIdStr === mainWordIdStr; // Check if this is the main node
-  
+          const isMainNode = nodeIdLabel === mainWord;
+
           if (isMainNode) {
             calculatedGroup = 'main';
             relationshipToMainWord = 'main';
-            // Log main node identification
-            if (index < 20 || isMainNode) { // Log more nodes initially or if it's the main word
-                console.log(`[BASE MAP #${index}] Node: '${node.word || node.label}' (ID: ${currentNodeIdStr}) - IDENTIFIED AS MAIN WORD. Group: ${calculatedGroup}`);
-            }
-          } else if (mainWordIdStr) { // Only search for links if mainWordId was found and it's not the main node
-            // Find direct connection using STRING IDs
-            connectingLink = baseLinks.find(link => {
-              // Explicitly get string IDs from link source/target, ensuring they are treated as strings
-              const sourceId = typeof link.source === 'object' && link.source !== null ? String(link.source.id) : String(link.source);
-              const targetId = typeof link.target === 'object' && link.target !== null ? String(link.target.id) : String(link.target);
-              return (sourceId === mainWordIdStr && targetId === currentNodeIdStr) ||
-                     (targetId === mainWordIdStr && sourceId === currentNodeIdStr);
-            });
-  
-            if (connectingLink) {
-              relationshipToMainWord = connectingLink.relationship;
-              calculatedGroup = mapRelationshipToGroup(connectingLink.relationship); // Get group from mapping
-              // Log direct connection found
-              if (index < 20) {
-                   console.log(`[BASE MAP #${index}] Node: '${node.word || node.label}' (ID: ${currentNodeIdStr}) - DIRECT LINK FOUND to main (${mainWordIdStr}). Rel: '${relationshipToMainWord}', RawGroup: '${calculatedGroup}'`);
-              }
-            } else {
-              calculatedGroup = 'related'; // Default if no direct link
-              // Log no direct connection found
-              if (index < 20) {
-                  console.log(`[BASE MAP #${index}] Node: '${node.word || node.label}' (ID: ${currentNodeIdStr}) - NO DIRECT LINK to main (${mainWordIdStr}). Group: ${calculatedGroup}`);
-              }
-            }
           } else {
-            // Log if mainWordIdStr was missing (shouldn't happen if initial check passed, but safety net)
-            if (index < 20) {
-                console.warn(`[BASE MAP #${index}] Node: '${node.word || node.label}' (ID: ${currentNodeIdStr}) - Cannot determine relationship because mainWordIdStr is missing.`);
+            // Find direct connection using LABEL IDs from baseLinks
+            const connectingLink = baseLinks.find(link => 
+              (link.source === mainWord && link.target === nodeIdLabel) ||
+              (link.source === nodeIdLabel && link.target === mainWord)
+            );
+            if (connectingLink) { 
+              relationshipToMainWord = connectingLink.relationship;
+              calculatedGroup = mapRelationshipToGroup(connectingLink.relationship);
+            } else {
+              calculatedGroup = 'related';
             }
-            calculatedGroup = 'related'; // Default if main word ID is missing
           }
-  
-          // Count connections (using string IDs for safety)
-          const connections = baseLinks.filter(l => {
-              const sourceId = typeof l.source === 'object' && l.source !== null ? String(l.source.id) : String(l.source);
-              const targetId = typeof l.target === 'object' && l.target !== null ? String(l.target.id) : String(l.target);
-              return sourceId === currentNodeIdStr || targetId === currentNodeIdStr;
-          }).length;
-  
-          // Create the node object
+          
+          // Count connections using LABEL IDs
+          const connections = baseLinks.filter(l => 
+              l.source === nodeIdLabel || l.target === nodeIdLabel
+          ).length;
+
           return {
-              id: currentNodeIdStr, // Use the stringified numeric ID
-              word: node.word || node.label, // Prefer 'word', fallback to 'label'
-              label: node.label, // Keep original label if needed
-              group: calculatedGroup, // Assigned group
-              connections: connections,
-              relationshipToMain: relationshipToMainWord, // Assigned relationship string
-              // *** CHANGE: Use word property for path check consistent with main word check ***
-              pathToMain: (node.word === mainWord || (mainWordMatchMethod === 'label' && node.label === mainWord)) ? [mainWord] : undefined, // Path based on how main word was matched
-              pinned: false,
-              originalId: node.id, // Keep original numeric ID
-              language: node.language || undefined,
-              definitions: (node as any).definitions?.map((def: any) => def.text || def.definition_text).filter(Boolean) || [],
-              has_baybayin: node.has_baybayin || false,
-              baybayin_form: node.baybayin_form || null,
-              // D3 simulation properties initialized as undefined
-              index: undefined, x: undefined, y: undefined, vx: undefined, vy: undefined, fx: undefined, fy: undefined
+            id: nodeIdLabel, // Use LABEL as the ID
+            word: node.word || node.label, // Keep word property distinct if needed
+            label: node.label, // Store label explicitly
+            group: calculatedGroup, 
+            connections: connections, 
+            relationshipToMain: relationshipToMainWord,
+            pathToMain: isMainNode ? [mainWord] : undefined,
+            pinned: false,
+            originalId: node.id, // Keep original numeric ID if needed elsewhere
+            language: node.language || undefined,
+            definitions: (node as any).definitions?.map((def: any) => def.text || def.definition_text).filter(Boolean) || [],
+            has_baybayin: node.has_baybayin || false,
+            baybayin_form: node.baybayin_form || null,
+            // D3 properties
+            index: undefined, x: undefined, y: undefined, vx: undefined, vy: undefined, fx: undefined, fy: undefined
           };
-      });
-  
-      // Deduplication based on string ID (should be rare if original nodes are unique)
+      })
+      .filter(node => node !== null);
+
+      // Deduplication based on label ID
       const uniqueNodes: CustomNode[] = [];
       const seenIds = new Set<string>();
-      for (const node of mappedNodes) {
-          if (!seenIds.has(node.id)) {
-              uniqueNodes.push(node);
-              seenIds.add(node.id);
-          } else {
-               console.warn(`[BASE] Skipping duplicate node during final mapping with ID: ${node.id} (Word: ${node.word || node.label})`);
-          }
+      // MappedNodes now guaranteed to not contain nulls
+      for (const node of mappedNodes) { 
+        if (!seenIds.has(node.id)) { 
+          uniqueNodes.push(node);
+          seenIds.add(node.id);
+        }
       }
-      console.log("[BASE] Final unique nodes count:", uniqueNodes.length);
-      if (uniqueNodes.length > 0) {
-        console.log("[BASE] Sample final nodes (first 5):");
-        uniqueNodes.slice(0, 5).forEach(n => console.log(`  Node Word: '${n.word}', ID: ${n.id}, Group: ${n.group}, RelToMain: ${n.relationshipToMain}`));
-      }
-  
+      console.log("[BASENODES-LABEL] Final unique nodes:", uniqueNodes.length);
       return uniqueNodes;
-  
-    }, [wordNetwork, mainWord, baseLinks, mapRelationshipToGroup]); // Dependencies include mapRelationshipToGroup
+    }, [wordNetwork, mainWord, baseLinks, mapRelationshipToGroup]);
   
     // >>> ADD LOGS HERE <<<
     // REMOVE OLD LOGS
@@ -700,89 +667,123 @@ import React, {
         if (isDraggingRef.current || !mainWordIdString) return; 
         setPeekedNode(null);
   
+        console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
+        // console.log('[HOVER ENTER] baseLinks available inside handler (first 5):', baseLinks.slice(0, 5)); // Can remove this now
+  
         // --- Find Path to Main Word (BFS Backwards) --- 
         const pathNodeIds = new Set<string>();
         const pathLinkIds = new Set<string>(); 
-        // <<< CHANGE: Start BFS with the node's string numeric ID >>>
         const queue: [string, string[]][] = [[d.id, [d.id]]]; 
         const visited = new Set<string>([d.id]);
         let foundPath = false;
   
-        // <<< CHANGE: Check against mainWordIdString >>>
         if (d.id !== mainWordIdString) { 
           while (queue.length > 0 && !foundPath) {
             const [currentId, currentPath] = queue.shift()!;
   
-            // Find links connected TO the current node using baseLinks
-            const incomingLinks = baseLinks.filter(l => { 
-              // <<< CHANGE: baseLinks source/target are already strings >>>
-              return l.target === currentId; 
-            });
-            
-            // Also check links FROM the current node using baseLinks
-            const outgoingLinks = baseLinks.filter(l => { 
-              return l.source === currentId;
-            });
+            // --- REVERTED: Treat link source/target as STRINGS from baseLinks ---
+            const incomingLinks = baseLinks.filter(l => l.target === currentId);
+            const outgoingLinks = baseLinks.filter(l => l.source === currentId);
+            // --- END REVERT ---
             
             const potentialLinks = [...incomingLinks, ...outgoingLinks];
   
             for (const link of potentialLinks) {
-              // <<< CHANGE: source/target are strings from baseLinks >>>
-              const sourceId = link.source as string; 
-              const targetId = link.target as string;
-              const neighborId = sourceId === currentId ? targetId : sourceId;
+                // --- REVERTED: Treat link source/target as STRINGS --- 
+                const sourceId = link.source as string;
+                const targetId = link.target as string;
+                // --- END REVERT ---
+                const neighborId = sourceId === currentId ? targetId : sourceId;
+                
+                if (!visited.has(neighborId)) {
+                    visited.add(neighborId);
+                    const newPath = [...currentPath, neighborId];
+                    const linkId = `${sourceId}_${targetId}`;
   
-              if (!visited.has(neighborId)) {
-                  visited.add(neighborId);
-                const newPath = [...currentPath, neighborId];
-                const linkId = `${sourceId}_${targetId}`;
-                const reverseLinkId = `${targetId}_${sourceId}`;
-  
-                // <<< CHANGE: Check neighbor against mainWordIdString >>>
-                if (neighborId === mainWordIdString) { 
-                  // Path found!
-                  newPath.forEach(id => pathNodeIds.add(id));
-                  // Add links along the path
-                  for(let i = 0; i < newPath.length - 1; i++) {
-                    const pathLinkId = `${newPath[i]}_${newPath[i+1]}`;
-                    const pathReverseLinkId = `${newPath[i+1]}_${newPath[i]}`;
-                      // Find the actual link and add its ID using baseLinks
-                       const actualLink = baseLinks.find(fl => 
-                         // <<< CHANGE: Source/target are strings >>>
-                         (`${fl.source}_${fl.target}` === pathLinkId) || 
-                         (`${fl.source}_${fl.target}` === pathReverseLinkId)
-                     );
-                     if (actualLink) {
-                         // <<< CHANGE: Source/target are strings >>>
-                         pathLinkIds.add(`${actualLink.source}_${actualLink.target}`); 
-                     }
-                  }
-                  foundPath = true;
-                  break; // Exit inner loop
+                    if (neighborId === mainWordIdString) { 
+                        // Path found!
+                        newPath.forEach(id => pathNodeIds.add(id));
+                        for(let i = 0; i < newPath.length - 1; i++) {
+                            const pathStartNodeId = newPath[i];
+                            const pathEndNodeId = newPath[i+1];
+                            // Find the actual link and add its ID
+                            // --- REVERTED: Use string comparison for finding actualLink --- 
+                            const actualLink = baseLinks.find(fl => 
+                                       ((fl.source === pathStartNodeId && fl.target === pathEndNodeId) || 
+                                        (fl.source === pathEndNodeId && fl.target === pathStartNodeId))
+                            );
+                            // --- END REVERT ---
+                            if (actualLink) {
+                                pathLinkIds.add(`${actualLink.source}_${actualLink.target}`); 
+                            }
+                        }
+                        foundPath = true;
+                        break; 
+                    }
+                    queue.push([neighborId, newPath]);
                 }
-                queue.push([neighborId, newPath]);
-              }
             }
           }
         } else {
-            // <<< CHANGE: Path for main word is its string ID >>>
             pathNodeIds.add(mainWordIdString); 
         }
         // --- End Path Finding --- 
   
         // Find direct connections (neighbors) using baseLinks
         const directNeighborIds = new Set<string>();
-        baseLinks.forEach(l => { // <<< CHANGE: Use string IDs >>>
+        baseLinks.forEach((l) => { 
+            // --- REVERTED: Treat link source/target as STRINGS --- 
             const sourceId = l.source as string;
             const targetId = l.target as string;
             if (sourceId === d.id) directNeighborIds.add(targetId);
             if (targetId === d.id) directNeighborIds.add(sourceId);
+            // --- END REVERT ---
         });
+  
+        // Combine path nodes and direct neighbors for highlighting (using string IDs)
+        // --- ADDED: Detailed logging for neighbor finding ---
+        console.log(`[HOVER NEIGHBOR] Finding neighbors for hovered node ID: ${d.id} (Type: ${typeof d.id})`);
+        baseLinks.forEach((l, index) => { 
+            const sourceId = l.source as string;
+            const targetId = l.target as string;
+            // Log the comparison attempt
+            if (index < 15) { // Log first 15 link comparisons
+                 console.log(`[HOVER NEIGHBOR #${index}] Comparing d.id='${d.id}'(type:${typeof d.id}) with link src='${sourceId}'(type:${typeof sourceId}), tgt='${targetId}'(type:${typeof targetId})`);
+            }
+            // Explicitly check types before comparison
+            let matchFound = false;
+            if (typeof d.id === 'string' && typeof sourceId === 'string' && sourceId === d.id) {
+                 if (typeof targetId === 'string') {
+                      directNeighborIds.add(targetId);
+                      matchFound = true;
+                 }
+            }
+            if (typeof d.id === 'string' && typeof targetId === 'string' && targetId === d.id) {
+                 if (typeof sourceId === 'string') {
+                     directNeighborIds.add(sourceId);
+                     matchFound = true;
+                 }
+            }
+            if (index < 15 && matchFound) {
+                 console.log(`[HOVER NEIGHBOR #${index}]   MATCH FOUND! Added neighbor.`);
+            }
+        });
+        console.log('[HOVER NEIGHBOR] Finished loop. Found neighbors:', Array.from(directNeighborIds));
+        // --- END: Detailed logging ---
   
         // Combine path nodes and direct neighbors for highlighting (using string IDs)
         const highlightNodeIds = new Set<string>([d.id]);
         pathNodeIds.forEach(id => highlightNodeIds.add(id));
         directNeighborIds.forEach(id => highlightNodeIds.add(id));
+  
+        // --- Diagnostic Logging (Keep this as well) ---
+        console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
+        console.log('[HOVER ENTER] Main Word ID:', mainWordIdString);
+        console.log('[HOVER ENTER] Path Node IDs:', Array.from(pathNodeIds));
+        console.log('[HOVER ENTER] Path Link IDs:', Array.from(pathLinkIds));
+        console.log('[HOVER ENTER] Direct Neighbor IDs:', Array.from(directNeighborIds)); // Log the final result
+        console.log('[HOVER ENTER] Highlight Node IDs:', Array.from(highlightNodeIds));
+        // --- END DIAGNOSTIC LOGGING --- 
   
         // --- Dim non-highlighted elements --- 
         d3.selectAll<SVGGElement, CustomNode>(".node")
@@ -802,7 +803,6 @@ import React, {
                       (targetId === d.id && directNeighborIds.has(sourceId)) ||
                       pathLinkIds.has(linkId) || pathLinkIds.has(`${targetId}_${sourceId}`) ); 
           })
-          .transition().duration(250)
           .style("stroke-opacity", 0.5);
   
         d3.selectAll<SVGTextElement, CustomNode>(".node-label")
@@ -847,7 +847,7 @@ import React, {
         // Links (Directly connected OR on the path)
         d3.selectAll<SVGLineElement, CustomLink>(".link")
           .filter((l: CustomLink) => { 
-            // <<< CHANGE: Use string IDs >>>
+            // ... filter logic for highlighting remains the same ...
             const sourceId = l.source as string; 
             const targetId = l.target as string;
             const linkId = `${sourceId}_${targetId}`;
@@ -856,28 +856,23 @@ import React, {
                      pathLinkIds.has(linkId) || pathLinkIds.has(`${targetId}_${sourceId}`) );
           })
           .raise()
-          .transition().duration(200)
           .style("stroke-opacity", 0.9) 
           .attr("stroke-width", 2.5)
-          .each(function(l: CustomLink) {
-            // <<< CHANGE: Use string IDs >>>
-            const sourceId = l.source as string; 
-            const targetId = l.target as string;
-            const linkId = `${sourceId}_${targetId}`;
-            const reverseLinkId = `${targetId}_${sourceId}`;
-            let connectedNodeId: string;
-  
-            if (pathLinkIds.has(linkId) || pathLinkIds.has(reverseLinkId)) {
-              connectedNodeId = sourceId === d.id ? targetId : sourceId;
-            } else {
-              connectedNodeId = sourceId === d.id ? targetId : sourceId;
-            }
-            // <<< CHANGE: Use nodeMap with string ID >>>
-            const connectedNode = nodeMap.get(connectedNodeId); 
-            const color = connectedNode ? getNodeColor(connectedNode.group) : (themeMode === "dark" ? "#aaa" : "#666");
+          // --- REVERTED: Restore dynamic coloring based on target node --- 
+          // .style("stroke", themeMode === 'dark' ? "#FFD700" : "#FFA500") // REMOVED Fixed color
+          .each(function(l: CustomLink) { // ADDED .each block back
+            const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
+            const targetNode = nodeMap.get(targetId);
+            const color = targetNode ? getNodeColor(targetNode.group) : (themeMode === 'dark' ? "#aaa" : "#555");
             d3.select(this).style("stroke", color);
           });
-  
+          /* REMOVED .each() block: // Keep comment showing previous state if desired
+          .each(function(l: CustomLink) {
+            // ... old coloring logic ...
+            d3.select(this).style("stroke", color);
+          });
+          */
+
         // Labels (Directly connected OR on the path)
         d3.selectAll<SVGTextElement, CustomNode>(".node-label")
           // <<< CHANGE: Filter using string ID >>>
@@ -894,32 +889,32 @@ import React, {
         const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
         if (isDraggingRef.current) return;
   
+        // --- REMOVED TRANSITIONS for reset ---
         d3.selectAll<SVGGElement, CustomNode>(".node")
-          .transition().duration(200) 
-          // <<< CHANGE: Compare string IDs for main node opacity >>>
-          .style("opacity", n => n.id === mainWordIdString ? 1 : 0.8) 
-          .attr("transform", n => `translate(${n.x || 0},${n.y || 0})`) 
+          //.transition().duration(200) // REMOVED TRANSITION
+          .style("opacity", 1) // CHANGED: Reset all nodes to opacity 1
+          .attr("transform", n => `translate(${n.x || 0},${n.y || 0})`)
           .select("circle")
-            .attr("stroke-width", 0.5) 
-            .attr("stroke-opacity", 0.6) 
+            .attr("stroke-width", 0.5)
+            .attr("stroke-opacity", 0.6)
             // <<< CHANGE: Compare string IDs for main node filter >>>
-            .attr("filter", n => n.id === mainWordIdString ? `url(#apple-node-shadow) brightness(1.15)` : `url(#apple-node-shadow)`) 
-            .attr("stroke", n => { 
+            .attr("filter", n => n.id === mainWordIdString ? `url(#apple-node-shadow) brightness(1.15)` : `url(#apple-node-shadow)`)
+            .attr("stroke", n => {
               const baseColor = d3.color(getNodeColor(n.group)) || d3.rgb("#888");
               return themeMode === 'dark' ? baseColor.brighter(0.3).toString() : baseColor.brighter(0.5).toString();
-            }); 
-            
+            });
+
         d3.selectAll<SVGLineElement, CustomLink>(".link")
-          .transition().duration(200) 
-          .style("stroke-opacity", 0.6)
+          //.transition().duration(200) // REMOVED TRANSITION
+          .style("stroke-opacity", 0.7) // CHANGED: Reset to new default 0.7
           .attr("stroke-width", 1.5)
-          .style("stroke", themeMode === "dark" ? "#666" : "#ccc"); 
-          
+          .style("stroke", themeMode === "dark" ? "#666" : "#ccc");
+
         d3.selectAll<SVGTextElement, CustomNode>(".node-label")
-          .transition().duration(200) 
-          .style("opacity", 0.9) 
+          //.transition().duration(200) // REMOVED TRANSITION
+          .style("opacity", 0.9)
           // <<< CHANGE: Compare string IDs for main node font weight >>>
-          .style("font-weight", n => n.id === mainWordIdString ? "bold" : "normal"); 
+          .style("font-weight", n => n.id === mainWordIdString ? "bold" : "normal");
       });
       
       // Double-click to navigate with improved visual feedback
@@ -1029,7 +1024,7 @@ import React, {
           setHoveredNode(null);
       });
   
-    }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, baseLinks, getNodeRadius, peekedNode]); 
+    }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, getNodeRadius, peekedNode, baseLinks]); // ADDED baseLinks dependency
   
     // Function to create nodes in D3 - adjusted for exact styling 
     const createNodes = useCallback((g: d3.Selection<SVGGElement, unknown, null, undefined>, nodesData: CustomNode[], simulation: d3.Simulation<CustomNode, CustomLink>) => {
@@ -1043,7 +1038,7 @@ import React, {
             enter => {
                 // <<< CHANGE: Use mainWord string for main node class check >>>
                 const nodeGroup = enter.append("g")
-                    .attr("class", d => `node node-group-${d.group} ${d.word === mainWord ? "main-node" : ""}`) 
+                    .attr("class", d => `node node-group-${d.group} ${d.id === mainWord ? "main-node" : ""}`) 
                     // <<< CHANGE: Use string ID for data-id >>>
                     .attr("data-id", d => d.id) 
                     .style("opacity", 0);
@@ -1058,12 +1053,12 @@ import React, {
                   .attr("fill-opacity", 1)
                   .attr("stroke", d => d3.color(getNodeColor(d.group))?.darker(0.8).formatHex() ?? "#888")
                   // <<< CHANGE: Use mainWord string for stroke width check >>>
-                  .attr("stroke-width", d => d.word === mainWord ? 2.5 : 1.5) 
+                  .attr("stroke-width", d => d.id === mainWord ? 2.5 : 1.5) 
                   .attr("stroke-opacity", 0.7)
                   .attr("shape-rendering", "geometricPrecision");
   
                 // <<< CHANGE: Use mainWord string for opacity check >>>
-                nodeGroup.call(enter => enter.transition().duration(300).style("opacity", d => d.word === mainWord ? 1 : 0.8)); 
+                nodeGroup.call(enter => enter.transition().duration(300).style("opacity", d => d.id === mainWord ? 1 : 0.8)); 
                 return nodeGroup;
             },
             update => update,
@@ -1086,8 +1081,8 @@ import React, {
                       .attr("data-id", d => d.id) 
                       .attr("text-anchor", "middle")
                       // <<< CHANGE: Use mainWord string for font size/weight check >>>
-                      .attr("font-size", d => d.word === mainWord ? "12px" : "10px") 
-                      .attr("font-weight", d => d.word === mainWord ? "bold" : "normal") 
+                      .attr("font-size", d => d.id === mainWord ? "12px" : "10px") 
+                      .attr("font-weight", d => d.id === mainWord ? "bold" : "normal") 
                       // <<< CHANGE: Use word for text content >>>
                       .text(d => d.word) 
                       .attr("x", d => d.x ?? 0)
@@ -1105,7 +1100,7 @@ import React, {
                   textElement.attr("fill", themeMode === "dark" ? "#eee" : "#222");
   
                   // <<< CHANGE: Use mainWord string for opacity check >>>
-                  textElement.call(enter => enter.transition().duration(300).style("opacity", d => d.word === mainWord ? 1 : 0.9)); 
+                  textElement.call(enter => enter.transition().duration(300).style("opacity", d => d.id === mainWord ? 1 : 0.9)); 
                   return textElement;
               },
               update => update,
@@ -1135,7 +1130,7 @@ import React, {
         const dragDuration = dragEndTime - dragStartTimeRef.current;
         if (!event.active) simulation.alphaTarget(0);
         // <<< CHANGE: Use mainWord string for check >>>
-        if (d.word !== mainWord) { 
+        if (d.id !== mainWord) { 
           d.fx = null;
           d.fy = null;
         }
@@ -1422,7 +1417,7 @@ import React, {
       if (!zoomRef.current || isDraggingRef.current || !mainWord) return;
       
       // Main node is now pinned at (0,0) in the simulation space
-      const mainNodeData = nodesToSearch.find(n => n.word === mainWord); 
+      const mainNodeData = nodesToSearch.find(n => n.id === mainWord); 
       const containerRect = svg.node()?.parentElement?.getBoundingClientRect();
       const width = containerRect ? containerRect.width : 800;
       const height = containerRect ? containerRect.height : 600;
@@ -1454,15 +1449,17 @@ import React, {
     const { filteredNodes, filteredLinks } = useMemo<{ filteredNodes: CustomNode[], filteredLinks: CustomLink[] }>(() => {
       // Ensure prerequisites are met
       if (!mainWord || baseNodes.length === 0 || !wordNetwork?.nodes) {
+        console.log("[FILTER DEBUG] Prerequisites not met, returning empty arrays."); // <-- ADDED DEBUG
         return { filteredNodes: [], filteredLinks: [] };
       }
   
-      console.log("[FILTER] Applying depth/breadth and relationship filters");
-      console.log("[FILTER] Main word:", mainWord);
-      console.log("[FILTER] Base nodes:", baseNodes.length);
-      console.log("[FILTER] Base links:", baseLinks.length);
-      console.log("[FILTER] Depth limit:", depth);
-      console.log("[FILTER] Breadth limit:", breadth);
+      console.log("[FILTER DEBUG] Applying depth/breadth and relationship filters"); // <-- ADDED DEBUG
+      console.log("[FILTER DEBUG] Main word:", mainWord); // <-- ADDED DEBUG
+      console.log("[FILTER DEBUG] Base nodes count:", baseNodes.length); // <-- ADDED DEBUG
+      console.log("[FILTER DEBUG] Base links count:", baseLinks.length); // <-- ADDED DEBUG
+      console.log("[FILTER DEBUG] Depth limit:", depth); // <-- ADDED DEBUG
+      console.log("[FILTER DEBUG] Breadth limit:", breadth); // <-- ADDED DEBUG
+      console.log("[FILTER DEBUG] Active relationship filters:", filteredRelationships); // <-- ADDED DEBUG
   
       // --- Perform BFS to limit depth and breadth using String IDs ---
       const connectedNodeIds = new Set<string>();
@@ -1486,68 +1483,81 @@ import React, {
       let head = 0;
       const nodesAddedAtDepth: { [key: number]: number } = {}; // Track nodes added per depth level for breadth limit
   
+      // console.log(`[FILTER DEBUG BFS Start] Queue:`, JSON.stringify(queue)); // Optional: Log initial queue state
+  
       while (head < queue.length) {
         const { nodeId, currentDepth } = queue[head++];
   
+        // console.log(`[FILTER DEBUG BFS Loop] Processing nodeId: ${nodeId} at depth ${currentDepth}`); // Optional
+  
         if (currentDepth >= depth) continue; // Stop if max depth reached
   
-        // Initialize counter for the current depth if not present
         if (nodesAddedAtDepth[currentDepth] === undefined) {
           nodesAddedAtDepth[currentDepth] = 0;
         }
   
-        // Find neighbors (both incoming and outgoing links)
-        baseLinks.forEach(link => {
+        baseLinks.forEach((link, linkIndex) => {
           let neighborId: string | null = null;
           const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
           const targetId = typeof link.target === 'object' ? link.target.id : link.target;
   
-          // --- FIX: Explicit type assertion for check --- 
+          // --- DETAILED LOGS FOR NEIGHBOR FINDING ---
+          // Log first few links, and any link that involves the current nodeId, to reduce log spam
+          const shouldLogThisLink = linkIndex < 5 || sourceId === nodeId || targetId === nodeId;
+          if (shouldLogThisLink) {
+            console.log(`[FILTER DEBUG BFS Detail] Current BFS Node ID: '${nodeId}' (Depth: ${currentDepth})`);
+            console.log(`[FILTER DEBUG BFS Detail] Iterating Link #${linkIndex}: source='${link.source}' (becomes '${sourceId}'), target='${link.target}' (becomes '${targetId}')`);
+            console.log(`[FILTER DEBUG BFS Detail]   Comparing with source: ('${sourceId}' === '${nodeId}') is ${sourceId === nodeId}`);
+            console.log(`[FILTER DEBUG BFS Detail]   Comparing with target: ('${targetId}' === '${nodeId}') is ${targetId === nodeId}`);
+          }
+          // --- END DETAILED LOGS ---
+  
           if (sourceId === nodeId && !connectedNodeIds.has(targetId as string)) {
             neighborId = targetId;
+            // if (shouldLogThisLink) console.log(`[FILTER DEBUG BFS Detail]     Found potential neighbor via source: ${neighborId}`);
           } else if (targetId === nodeId && !connectedNodeIds.has(sourceId as string)) {
             neighborId = sourceId;
+            // if (shouldLogThisLink) console.log(`[FILTER DEBUG BFS Detail]     Found potential neighbor via target: ${neighborId}`);
           }
   
-          // If a new neighbor is found AND the node actually exists in our map
+          if (neighborId && shouldLogThisLink) {
+             console.log(`[FILTER DEBUG BFS Detail]   Neighbor ID determined for Link #${linkIndex}: ${neighborId}`);
+          }
+  
           if (neighborId && nodeMap.has(neighborId)) {
-             // Check breadth limit for the *neighbor's* depth level (currentDepth + 1)
              const nextDepth = currentDepth + 1;
              if (nodesAddedAtDepth[nextDepth] === undefined) {
                nodesAddedAtDepth[nextDepth] = 0;
              }
-  
-             // Add neighbor only if breadth limit for *its* depth level is not exceeded
-             // (Allow unlimited at level 0/direct connections if breadth > 0)
              if (breadth === 0 || nodesAddedAtDepth[nextDepth] < breadth) {
-               connectedNodeIds.add(neighborId);
-               queue.push({ nodeId: neighborId, currentDepth: nextDepth });
-               nodesAddedAtDepth[nextDepth]++;
+               if (!connectedNodeIds.has(neighborId)) { // Double check before adding to queue
+                    connectedNodeIds.add(neighborId);
+                    queue.push({ nodeId: neighborId, currentDepth: nextDepth });
+                    nodesAddedAtDepth[nextDepth]++;
+                    // if (shouldLogThisLink) console.log(`[FILTER DEBUG BFS Detail]       Added neighbor '${neighborId}' to queue. connectedNodeIds size: ${connectedNodeIds.size}`);
+               }
              }
           }
         });
       }
-      console.log(`[FILTER-BFS] BFS finished. Found ${connectedNodeIds.size} connected node IDs within limits.`);
+      console.log(`[FILTER DEBUG] BFS finished. Found ${connectedNodeIds.size} connected node IDs.`); // <-- ADDED DEBUG
   
       // --- Filter nodes and links based ONLY on BFS results FIRST ---
       const bfsFilteredNodes = baseNodes.filter(node => connectedNodeIds.has(node.id));
-      // CRITICAL FIX: Filter links to ONLY include those connecting nodes within the connectedNodeIds set
       const bfsFilteredLinks = baseLinks.filter(link => {
           const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
           const targetId = typeof link.target === 'object' ? link.target.id : link.target;
-          // --- FIX: Explicit type assertion for check --- 
           return connectedNodeIds.has(sourceId as string) && connectedNodeIds.has(targetId as string);
       });
   
-      console.log(`[FILTER] After depth/breadth (using String IDs): ${bfsFilteredNodes.length}/${baseNodes.length} nodes and ${bfsFilteredLinks.length}/${baseLinks.length} links`);
+      console.log(`[FILTER DEBUG] After BFS: ${bfsFilteredNodes.length} nodes, ${bfsFilteredLinks.length} links`); // <-- ADDED DEBUG
   
       // --- Now apply relationship type filters if any are active ---
       let finalFilteredNodes = bfsFilteredNodes;
       let finalFilteredLinks = bfsFilteredLinks;
   
       if (filteredRelationships.length > 0) {
-          console.log('[FILTER] Applying relationship type filters:', filteredRelationships);
-  
+          console.log('[FILTER DEBUG] Applying relationship type filters:', filteredRelationships); // <-- ADDED DEBUG
           // Filter links further based on the selected relationship types
           finalFilteredLinks = bfsFilteredLinks.filter(link =>
               filteredRelationships.includes(link.relationship)
@@ -1569,19 +1579,21 @@ import React, {
           finalFilteredNodes = bfsFilteredNodes.filter(node =>
               nodesConnectedByFinalLinks.has(node.id)
           );
-          console.log(`[FILTER] After relationship filters: ${finalFilteredNodes.length} nodes, ${finalFilteredLinks.length} links`);
+          console.log(`[FILTER DEBUG] After relationship filters: ${finalFilteredNodes.length} nodes, ${finalFilteredLinks.length} links`); // <-- ADDED DEBUG
   
       } else {
-        console.log('[FILTER] No relationship filters active - showing all depth/breadth limited nodes and links');
+        console.log('[FILTER DEBUG] No relationship filters active.'); // <-- ADDED DEBUG
       }
   
       // Ensure the main word node is *always* included if it was originally present
-      if (mainWordNode && !finalFilteredNodes.some(n => n.id === mainWordIdString)) {
-          console.warn("[FILTER] Main word node was filtered out, re-adding it.");
+      // const mainWordNode = baseNodes.find(node => node.group === 'main'); // Reuse mainWordNode - REMOVED REDECLARATION
+      // const mainWordIdString = mainWordNode ? mainWordNode.id : null; // REMOVED REDECLARATION
+      if (mainWordNode && mainWordIdString && !finalFilteredNodes.some(n => n.id === mainWordIdString)) { // Check mainWordIdString exists too
+          console.warn("[FILTER DEBUG] Main word node was filtered out, re-adding it."); // <-- ADDED DEBUG
           finalFilteredNodes.push(mainWordNode); // Add it back if filters removed it
       }
   
-  
+      console.log(`[FILTER DEBUG] Returning: ${finalFilteredNodes.length} nodes, ${finalFilteredLinks.length} links`); // <-- ADDED DEBUG
       return { filteredNodes: finalFilteredNodes, filteredLinks: finalFilteredLinks };
   
     }, [baseNodes, baseLinks, depth, breadth, filteredRelationships, mainWord, getRelationshipTypeLabel]); // Ensure all dependencies are listed
@@ -1652,18 +1664,29 @@ import React, {
       const zoom = setupZoom(svg, g);
       zoomRef.current = zoom;
   
-      const currentSim = setupSimulation(filteredNodes, filteredLinks, width, height);
-  
-      const linkElements = createLinks(g, filteredLinks);
-      const nodeElements = createNodes(g, filteredNodes, currentSim);
+      // --- MODIFIED: Create copies for D3 simulation/rendering --- 
+      // This prevents D3 from mutating the original arrays used by React logic
+      console.log("[D3 INIT] Creating copies of nodes/links for simulation.");
+      console.log(`[D3 INIT] Filtered nodes count: ${filteredNodes.length}, Filtered links count: ${filteredLinks.length}`);
+      const nodesCopy = filteredNodes.map(n => ({ ...n })); 
+      const linksCopy = filteredLinks.map(l => ({ ...l })); 
+      // --- END MODIFICATION ---
+
+      // --- Pass COPIES to D3 functions --- 
+      const currentSim = setupSimulation(nodesCopy, linksCopy, width, height);
+      const linkElements = createLinks(g, linksCopy); 
+      const nodeElements = createNodes(g, nodesCopy, currentSim);
+      // --- END --- 
+
       setupNodeInteractions(nodeElements);
   
       // --- Render Initial Legend --- 
       renderOrUpdateLegend(svg, width);
-      // --- End Render Initial Legend ---
   
       if (currentSim) {
-        const mainNodeData = filteredNodes.find(n => n.id === mainWord);
+        // --- MODIFIED: Find main node in the COPY --- 
+        const mainNodeData = nodesCopy.find(n => n.id === mainWord); // Use label ID
+        // --- END MODIFICATION ---
         if (mainNodeData) {
             mainNodeData.fx = 0;
             mainNodeData.fy = 0;
@@ -1671,22 +1694,25 @@ import React, {
         currentSim.alpha(1).restart();
       }
   
-      const centerTimeout = setTimeout(() => centerOnMainWord(svg, filteredNodes), 800);
+      // --- MODIFIED: Pass original filteredNodes to centerOnMainWord ---
+      const centerTimeout = setTimeout(() => centerOnMainWord(svg, filteredNodes), 800); 
+      // --- END MODIFICATION ---
   
+      // --- Cleanup --- 
       return () => {
-        if (currentSim) currentSim.stop();
-        clearTimeout(centerTimeout);
-        if (cleanup) cleanup(); // Call the cleanup function from setupSvgDimensions
-        if (svgRef.current) {
-          const svg = d3.select(svgRef.current);
-          // Clean up D3 event listeners specifically
-          svg.selectAll(".node").on(".drag", null).on(".click", null).on(".dblclick", null).on(".mouseover", null).on(".mouseout", null).on(".contextmenu", null);
-          svg.selectAll(".graph-legend-svg .legend-item-svg").on(".click", null).on(".mouseover", null).on(".mouseout", null);
-          svg.on(".zoom", null);
-          console.log("[Cleanup] D3 listeners removed.");
-        } else {
-          console.log("[Cleanup] SVG ref not found, skipping listener removal.");
-        }
+          if (currentSim) currentSim.stop();
+          clearTimeout(centerTimeout);
+          if (cleanup) cleanup(); // Call the cleanup function from setupSvgDimensions
+          if (svgRef.current) {
+            const svg = d3.select(svgRef.current);
+            // Clean up D3 event listeners specifically
+            svg.selectAll(".node").on(".drag", null).on(".click", null).on(".dblclick", null).on(".mouseover", null).on(".mouseout", null).on(".contextmenu", null);
+            svg.selectAll(".graph-legend-svg .legend-item-svg").on(".click", null).on(".mouseover", null).on(".mouseout", null);
+            svg.on(".zoom", null);
+            console.log("[Cleanup] D3 listeners removed.");
+          } else {
+            console.log("[Cleanup] SVG ref not found, skipping listener removal.");
+          }
       };
     }, [
       // Keep existing dependencies, ensure renderOrUpdateLegend and setupSvgDimensions are included if defined inside
@@ -1721,12 +1747,14 @@ import React, {
     useEffect(() => {
       if (prevMainWordRef.current && prevMainWordRef.current !== mainWord && svgRef.current) {
         const recenterTimeout = setTimeout(() => {
+          // --- MODIFIED: Pass original filteredNodes to centerOnMainWord ---
           if (svgRef.current) centerOnMainWord(d3.select(svgRef.current), filteredNodes);
+          // --- END MODIFICATION ---
         }, 800);
         return () => clearTimeout(recenterTimeout);
       }
       prevMainWordRef.current = mainWord;
-    }, [mainWord, centerOnMainWord, filteredNodes]);
+    }, [mainWord, centerOnMainWord, filteredNodes]); // Keep filteredNodes dependency
   
     // Improved tooltip with relationship info directly from old_src_2
     const renderTooltip = useCallback(() => {

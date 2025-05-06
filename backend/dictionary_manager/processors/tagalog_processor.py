@@ -27,9 +27,20 @@ from backend.dictionary_manager.db_helpers import (
     get_standardized_pos_id,
     with_transaction,
 )
-from backend.dictionary_manager.text_helpers import normalize_lemma, SourceStandardization
+from backend.dictionary_manager.text_helpers import normalize_lemma, SourceStandardization, remove_trailing_numbers
 
 logger = logging.getLogger(__name__)
+
+# Define known affixes (can be expanded)
+KNOWN_PREFIXES = {
+    "mag", "nag", "pag", "nagpa", "pagpa", "pa", "ma", "na", "ipa", "ipag", "ika", "ikapang", "mala", "mapa", "tag", 
+    "maka", "naka", "paka", "pinaka", "sing", "kasing", "magkasing", "magsing", "ka",
+    # Added common prefixes:
+    "pang", "pinag", "nakipag", "makipag", "pakiki", "taga", "tig", "mang", "nang", "pam", "pan", "mai", "maipa", "makapa",
+    "nga" # Added 'nga'
+}
+KNOWN_SUFFIXES = {"in", "hin", "an", "han", "on", "hon"} # Added 'hon' just in case
+KNOWN_INFIXES = {"um", "in"} # Less common to see explicitly with '+' but useful
 
 # Moved from dictionary_manager.py (originally around line 97 in old structure)
 def process_definition_relations(cur, word_id: int, definition: str, source: str):
@@ -207,73 +218,59 @@ def _process_single_tagalog_word_entry(
             if ety_id:
                 stats["etymologies_added"] += 1
 
-        # Process terms/other_terms for potential relations
-        etymology_terms = etymology_obj.get("terms", []) + etymology_obj.get(
-            "other_terms", []
+        # --- NEW: Call improved etymology term processor ---
+        _process_etymology_terms_improved(
+            cur, word_id, etymology_obj, relations_batch, source_identifier
         )
-        if etymology_terms and isinstance(etymology_terms, list):
-            for term_data in etymology_terms:
-                related_word_str = None
-                term_metadata = {"context": "etymology"} # Base metadata
-
-                if isinstance(term_data, str) and term_data.strip():
-                    term_str_cleaned = term_data.strip()
-                    # --- NEW LOGIC: Check for affix+root pattern ---
-                    if term_str_cleaned.count('+') == 1:
-                        parts = term_str_cleaned.split('+')
-                        affix = parts[0].strip()
-                        root = parts[1].strip()
-                        if affix and root: # Both parts must be non-empty
-                            logger.debug(f"Detected affix+root pattern: {affix}+{root} from '{term_str_cleaned}'")
-                            # Relate main word to the ROOT word
-                            relations_batch.append({
-                                "from_word": word_id,
-                                "to_word": root, # Use the extracted root
-                                "relation_type": "derived_from",
-                                "source": source_identifier,
-                                "metadata": {"context": "etymology_affix", "affix": affix}, # Store affix in metadata
-                                "def_id": None,
-                            })
-                            continue # Skip further processing for this term_data
-
-                    # --- Fallback: Process as regular related term ---
-                    related_word_str = term_str_cleaned # Use the original cleaned string if pattern didn't match
-                    rel_type_to_use = "related" # Use 'related' for generic terms
-
-                elif isinstance(term_data, dict):
-                    related_word_str = term_data.get("term")
-                    rel_lang = term_data.get("lang")
-                    if rel_lang:
-                        term_metadata["lang"] = rel_lang # Add language if available
-                    rel_type_to_use = "related" # Assume 'related' for dict terms too
-
-                # --- Add to batch if a related word string was found ---
-                if related_word_str and isinstance(related_word_str, str) and related_word_str.strip():
-                    relations_batch.append(
-                        {
-                            "from_word": word_id,
-                            "to_word": related_word_str.strip(),
-                            "relation_type": rel_type_to_use, # Use determined relation type
-                            "source": source_identifier,
-                            "metadata": term_metadata, # Use collected metadata
-                            "def_id": None,
-                        }
-                    )
 
     # --- Process Top-Level Derivative ---
     derivative = entry_data.get("derivative")
     if derivative and isinstance(derivative, str) and derivative.strip():
-        # Assume derivative is a word derived FROM the current word
-        relations_batch.append(
-            {
-                "from_word": word_id,  # Changed from "word_id" to "from_word"
-                "to_word": derivative.strip(),  # Changed from "related_word" to "to_word"
-                "relation_type": "root_of",  # FIXED: Changed from rel_type to relation_type
-                "source": source_identifier,  # FIXED: Changed from source_identifier to source
-                "metadata": {"context": "derivative"},
-                "def_id": None,
-            }
-        )
+        # --- MODIFIED: Split derivative string by comma and process each part ---
+        derived_parts = [part.strip() for part in derivative.split(',') if part.strip()]
+        # --- ADDED: Define known trailing tags to strip ---
+        TRAILING_TAGS = {"Med", "Fig", "Lit", "Bot", "Zool", "Chem"} # Add more as needed
+
+        for part in derived_parts:
+            original_part = part # Keep original for logging if needed
+            cleaned_part = part
+            identified_tag = None
+
+            # --- ADDED: Check for and strip trailing tags ---
+            potential_tag_match = re.search(r"\s([A-Z][a-zA-Z]{1,3})$", cleaned_part)
+            if potential_tag_match:
+                potential_tag = potential_tag_match.group(1)
+                if potential_tag in TRAILING_TAGS:
+                    identified_tag = potential_tag
+                    # Strip the tag and the preceding space
+                    cleaned_part = cleaned_part[:potential_tag_match.start()].strip()
+                    logger.debug(f"Stripped tag '{identified_tag}' from derivative part '{original_part}', result: '{cleaned_part}'")
+
+            # --- ADDED: Remove middle dot (·) --- 
+            if '·' in cleaned_part:
+                cleaned_part = cleaned_part.replace('·', '')
+                logger.debug(f"Removed middle dot from derivative part '{original_part}', result: '{cleaned_part}'")
+
+            # Check if the cleaned part looks like a word (use cleaned_part)
+            # Simple check: contains lowercase or is longer than 3 chars. Adjust as needed.
+            # Note: Adjusted regex slightly to be less strict if dots were removed.
+            if re.search(r"[a-z-]", cleaned_part) or len(cleaned_part) > 3:
+                relation_metadata = {"context": "derivative"}
+                if identified_tag:
+                    relation_metadata["tag"] = identified_tag # Add stripped tag to metadata
+
+                relations_batch.append(
+                    {
+                        "from_word": word_id,
+                        "to_word": cleaned_part, # Use the cleaned part
+                        "relation_type": "root_of", # Current word is root_of the derivative
+                        "source": source_identifier,
+                        "metadata": relation_metadata, # Use updated metadata
+                        "def_id": None,
+                    }
+                )
+            else:
+                logger.debug(f"Ignoring non-word derivative part '{original_part}' (cleaned: '{cleaned_part}') for word ID {word_id}")
 
     # --- Process Senses / Definitions ---
     senses = entry_data.get("senses", [])
@@ -334,18 +331,22 @@ def _process_single_tagalog_word_entry(
                 metadata_dict["original_pos"] = pos_code_to_use
             if usage_notes_str:
                  metadata_dict["usage_notes"] = usage_notes_str
-            # Add other sense-level data if available (e.g., domains, tags)
 
-            # --- NEW: Check for Sense-Level Etymology for Language Origin ---
+            # --- NEW: Process Sense-Level Etymology ---
             sense_etymology_obj = sense.get("etymology")
             if isinstance(sense_etymology_obj, dict) and sense_etymology_obj:
-                sense_langs = sense_etymology_obj.get("languages")
-                if isinstance(sense_langs, list) and sense_langs:
-                    # Store the first language code found (or join if multiple needed)
-                    first_lang = next((str(lang).strip() for lang in sense_langs if lang and isinstance(lang, str)), None)
+                sense_ety_raw = sense_etymology_obj.get("raw", "").strip()
+                sense_ety_langs = sense_etymology_obj.get("languages", [])
+                if sense_ety_raw:
+                    metadata_dict["sense_etymology_raw"] = sense_ety_raw
+                if sense_ety_langs and isinstance(sense_ety_langs, list):
+                     # Store list directly, can be processed later if needed
+                    metadata_dict["sense_etymology_langs"] = [str(l).strip() for l in sense_ety_langs if l and isinstance(l, str)]
+                # Extract first language for sense_language_origin (optional, keep existing?)
+                if metadata_dict.get("sense_etymology_langs"):
+                    first_lang = metadata_dict["sense_etymology_langs"][0]
                     if first_lang:
-                        metadata_dict["sense_language_origin"] = first_lang
-                        logger.debug(f"Found sense language origin '{first_lang}' for '{lemma}', sense {sense_idx}")
+                         metadata_dict["sense_language_origin"] = first_lang # Overwrites if already set by terms
 
             # Pass sense data to insert_definition
             definition_id = insert_definition(
@@ -416,36 +417,46 @@ def _process_single_tagalog_word_entry(
             if isinstance(synonyms, list):
                 for syn_text in synonyms:
                     if syn_text and isinstance(syn_text, str) and syn_text.strip():
-                        relations_batch.append({
-                            "from_word": word_id,
-                            "to_word": syn_text.strip(),
-                            "relation_type": "synonym",
-                            "source": source_identifier,
-                            "metadata": {"context": "definition_sense", "definition_id": definition_id},
-                            "def_id": definition_id,
-                        })
+                        # --- ADDED: Strip trailing numbers ---
+                        cleaned_syn = remove_trailing_numbers(syn_text.strip())
+                        if cleaned_syn: # Ensure it's not empty after stripping
+                            relations_batch.append({
+                                "from_word": word_id,
+                                "to_word": cleaned_syn,
+                                "relation_type": "synonym",
+                                "source": source_identifier,
+                                "metadata": {"context": "definition_sense", "definition_id": definition_id},
+                                "def_id": definition_id,
+                            })
+                        else:
+                            logger.debug(f"Synonym '{syn_text}' became empty after stripping numbers for word ID {word_id}, sense {sense_idx}.")
 
             # --- NEW: Process Definition Affix Forms ---
             affix_forms = sense.get("affix_forms", [])
             # Optionally get types: affix_types = sense.get("affix_types", [])
             if isinstance(affix_forms, list):
                 for idx, form_text in enumerate(affix_forms):
-                    if form_text and isinstance(form_text, str) and form_text.strip():
-                        form_metadata = {"context": "definition_sense_affix", "definition_id": definition_id}
-                        # Optional: Add affix type if available and lists align
-                        # try:
-                        #    if affix_types and isinstance(affix_types, list) and len(affix_types) > idx:
-                        #        form_metadata["pos_hint"] = affix_types[idx]
-                        # except IndexError: pass
+                    if form_text and isinstance(form_text, str):
+                        # --- MODIFIED: Strip trailing punctuation (e.g., periods) and check if non-empty ---
+                        cleaned_form_text = form_text.strip().rstrip('.?!,;')
+                        if cleaned_form_text: 
+                            form_metadata = {"context": "definition_sense_affix", "definition_id": definition_id}
+                            # Optional: Add affix type if available and lists align
+                            # try:
+                            #    if affix_types and isinstance(affix_types, list) and len(affix_types) > idx:
+                            #        form_metadata["pos_hint"] = affix_types[idx]
+                            # except IndexError: pass
 
-                        relations_batch.append({
-                            "from_word": word_id, # Link from the main word (root)
-                            "to_word": form_text.strip(), # To the derived form
-                            "relation_type": "derived", # Relationship is 'derived'
-                            "source": source_identifier,
-                            "metadata": form_metadata,
-                            "def_id": definition_id, # Link to the specific definition where it was mentioned
-                        })
+                            relations_batch.append({
+                                "from_word": word_id, # Link from the main word (root)
+                                "to_word": cleaned_form_text, # To the derived form (use cleaned text)
+                                "relation_type": "derived", # Relationship is 'derived'
+                                "source": source_identifier,
+                                "metadata": form_metadata,
+                                "def_id": definition_id, # Link to the specific definition where it was mentioned
+                            })
+                        else:
+                             logger.debug(f"Affix form '{form_text}' became empty after cleaning for word ID {word_id}, sense {sense_idx}.")
 
             # --- Process Sense Domains ---
             # Add sense domains to definition tags or metadata if needed
@@ -471,6 +482,63 @@ def _process_single_tagalog_word_entry(
     # Note: No explicit return, function mutates stats, error_types, relations_batch
     # Exceptions are raised on critical errors to be caught by the caller
 
+# --- MOVED & UPDATED: Helper function for root finding from '+' parts ---
+def find_root_from_parts(parts):
+    """Applies the heuristic to find the root from parts split by '+'"""
+    identified_prefixes = []
+    identified_suffixes = []
+    potential_root_parts = list(parts) # Copy parts to modify
+
+    # Identify prefixes
+    while potential_root_parts and potential_root_parts[0] in KNOWN_PREFIXES:
+        identified_prefixes.append(potential_root_parts.pop(0))
+
+    # Identify suffixes
+    while potential_root_parts and potential_root_parts[-1] in KNOWN_SUFFIXES:
+        identified_suffixes.insert(0, potential_root_parts.pop(-1)) # Insert at beginning to maintain order
+
+    # --- Determine Root ---
+    root_word = None
+    remaining_for_log = []
+    num_remaining = len(potential_root_parts)
+
+    if num_remaining == 1:
+        # Common case: one part remaining is the root
+        root_word = potential_root_parts[0]
+    elif num_remaining == 2:
+        # --- MODIFIED: Assume second part is root if two remain (prefix + root pattern) ---
+        root_word = potential_root_parts[1]
+        remaining_for_log = [potential_root_parts[0]] # Log the assumed prefix
+        logger.debug(f"Assuming second part '{root_word}' is root, remaining: {remaining_for_log}")
+    elif num_remaining > 2:
+        # --- Keep longest part heuristic, but log clearer warning ---
+        potential_root_parts.sort(key=len, reverse=True)
+        root_word = potential_root_parts[0] # Take the longest
+        remaining_for_log = potential_root_parts[1:]
+        logger.warning(f"Multiple ({num_remaining}) potential root parts remain. Assuming longest '{root_word}' is root. Remaining parts: {remaining_for_log}")
+    # Else: num_remaining is 0, root_word remains None
+
+    affixes = identified_prefixes + identified_suffixes
+    return root_word, affixes, remaining_for_log
+
+# Note: This function replaces the previous etymology term processing logic within _process_single_tagalog_word_entry
+def _process_etymology_terms_improved(
+    cur, word_id, etymology_obj, relations_batch, source_identifier
+):
+    """
+    Improved logic to process etymology terms from tagalog-words.json,
+    handling both '+' separated terms and the ['root'], ['affix'] structure.
+    """
+    # --- REMOVED INNER find_root_from_parts FUNCTION ---
+
+    # --- Process terms list ---
+    # ... (rest of _process_etymology_terms_improved remains the same, including the call to the now module-level find_root_from_parts) ...
+    # Example of how the call should look now:
+    # if "+" in term_str_cleaned:
+    #     parts = [...]
+    #     if len(parts) >= 2:
+    #         root, affixes, remaining = find_root_from_parts(parts) # Uses module-level function
+    #         # ... rest of processing ...
 
 # Moved from dictionary_manager.py (originally around line 1311)
 def process_tagalog_words(
