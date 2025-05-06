@@ -2452,11 +2452,12 @@ def get_or_create_word_id(
             # --- FIX: Extract existing language code from the initial query --- #
             # Query needs to select language_code: "SELECT id, source_info, language_code FROM ..."
             # Assuming the query is updated or we re-query here for simplicity:
-            cur.execute("SELECT language_code, source_info FROM words WHERE id = %s", (result['id'],))
+            cur.execute("SELECT language_code, source_info FROM words WHERE id = %s", (result[0],)) # Use index 0 for ID
             existing_data = cur.fetchone()
-            word_id = result['id']
-            existing_lang_code = existing_data['language_code'] if existing_data else 'und' # Fallback
-            current_source_info = existing_data['source_info'] if existing_data else None
+            word_id = result[0] # Use index 0 for ID
+            # Use index-based access for tuple from fetchone()
+            existing_lang_code = existing_data[0] if existing_data else 'und' # Fallback
+            current_source_info = existing_data[1] if existing_data else None
 
             logger.debug(
                 f"Found existing word '{processed_lemma}' ({existing_lang_code}) with ID: {word_id}"
