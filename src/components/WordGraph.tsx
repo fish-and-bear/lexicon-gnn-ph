@@ -14,7 +14,6 @@ import React, {
   import Typography from "@mui/material/Typography";
   import axios from 'axios';
   import NetworkControls from './NetworkControls';
-  import { createPortal } from 'react-dom';
   // Import color utility functions
   import { 
     mapRelationshipToGroup, 
@@ -37,7 +36,6 @@ import React, {
   import Divider from '@mui/material/Divider';
   import { useTheme as useMuiTheme } from '@mui/material/styles';
   import { alpha } from '@mui/material/styles';
-  import Paper from '@mui/material/Paper';
   import { CircularProgress } from '@mui/material';
   
   interface WordGraphProps {
@@ -96,110 +94,6 @@ import React, {
     categories: Array<{ name: string; labels: RelationshipLabelInfo[] }>;
   }
   
-  // NodePeekCard Component
-  const NodePeekCard = ({ peekedNodeData, onClose }: { peekedNodeData: { node: CustomNode, x: number, y: number } | null, onClose: () => void }) => {
-    const cardRef = useRef<HTMLDivElement>(null);
-    const muiTheme = useMuiTheme();
-    const [isVisible, setIsVisible] = useState(false);
-  
-    useEffect(() => {
-      if (peekedNodeData) {
-        // Delay visibility slightly to allow transition
-        const timer = setTimeout(() => setIsVisible(true), 10);
-        return () => clearTimeout(timer);
-      } else {
-        setIsVisible(false);
-      }
-    }, [peekedNodeData]);
-  
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (isVisible && cardRef.current && !cardRef.current.contains(event.target as Node)) {
-          const targetElement = event.target as Element;
-          if (!targetElement.closest('.node')) {
-             onClose();
-          }
-        }
-      };
-      const handleEscape = (event: KeyboardEvent) => {
-        if (isVisible && event.key === 'Escape') {
-          onClose();
-        }
-      };
-      // Add listeners only when visible
-      if (isVisible) {
-          document.addEventListener('mousedown', handleClickOutside);
-          document.addEventListener('keydown', handleEscape);
-      } else {
-          document.removeEventListener('mousedown', handleClickOutside);
-          document.removeEventListener('keydown', handleEscape);
-      }
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-        document.removeEventListener('keydown', handleEscape);
-      };
-    }, [isVisible, onClose]);
-  
-    if (!peekedNodeData) return null;
-  
-    const { node, x, y } = peekedNodeData;
-    const groupLabel = node.group.charAt(0).toUpperCase() + node.group.slice(1).replace(/_/g, ' ');
-    const definition = node.definitions && node.definitions.length > 0
-      ? (node.definitions[0].length > 80 ? node.definitions[0].substring(0, 77) + '...' : node.definitions[0])
-      : 'No definition available.';
-  
-    // Basic positioning logic (needs refinement for edge cases)
-    const cardWidth = 220; // Increased width slightly
-    const cardHeight = 120; // Estimate
-    let offsetX = 15; // Default offset to the right
-    let offsetY = 15; // Default offset below
-  
-    // Adjust position based on click coordinates relative to window boundaries
-    if (x + cardWidth + offsetX > window.innerWidth) {
-      offsetX = -cardWidth - 15; // Place to the left
-    }
-    if (y + cardHeight + offsetY > window.innerHeight) {
-      offsetY = -cardHeight - 15; // Place above
-    }
-  
-    // Use Portal for rendering
-    return createPortal(
-      <Paper
-        ref={cardRef}
-        elevation={5} // Slightly higher elevation than tooltip
-        sx={{
-          position: 'fixed', // Use fixed position relative to viewport
-          left: `${x + offsetX}px`,
-          top: `${y + offsetY}px`,
-          zIndex: 1100, // Above tooltip (tooltip is 1000)
-          padding: '12px 16px',
-          width: `${cardWidth}px`,
-          pointerEvents: 'auto',
-          backgroundColor: 'var(--card-bg-color-elevated, background.paper)', // Use elevated background
-          border: `1px solid ${alpha(muiTheme.palette.divider, 0.4)}`,
-          borderRadius: '10px',
-          backdropFilter: 'blur(5px)', // Add blur for modern feel
-          transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
-          opacity: isVisible ? 1 : 0, // Control visibility
-          transform: isVisible ? 'scale(1)' : 'scale(0.95)', // Control visibility
-          animation: isVisible ? 'fadeInTooltip 0.2s ease-out' : 'none', // Reuse tooltip animation
-          boxShadow: muiTheme.palette.mode === 'dark' ? '0 6px 20px rgba(0,0,0,0.3)' : '0 6px 20px rgba(0,0,0,0.1)',
-        }}
-      >
-        <Typography variant="h6" sx={{ fontSize: '1rem', mb: 0.5, color: getNodeColor(node.group), fontWeight: 600 }}>
-          {node.word}
-        </Typography>
-        <Typography variant="caption" display="block" sx={{ color: 'text.secondary', mb: 1, fontSize: '0.75rem' }}>
-          {groupLabel}
-        </Typography>
-        <Typography variant="body2" sx={{ fontSize: '0.8rem', color: 'text.primary', lineHeight: 1.4 }}>
-          {definition}
-        </Typography>
-      </Paper>,
-      document.body // Render in body
-    );
-  };
-  
   const WordGraph: React.FC<WordGraphProps> = ({
     wordNetwork,
     mainWord,
@@ -234,7 +128,6 @@ import React, {
   
     const [hoveredNode, setHoveredNode] = useState<CustomNode | null>(null);
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-    const [peekedNode, setPeekedNode] = useState<{ node: CustomNode, x: number, y: number } | null>(null);
     const [depth, setDepth] = useState<number>(initialDepth);
     const [breadth, setBreadth] = useState<number>(initialBreadth);
     const [error, setError] = useState<string | null>(null);
@@ -653,8 +546,8 @@ import React, {
         console.log(`Peek triggered for node: ${d.word} [ID: ${d.id}]`); 
         const xPos = event.clientX;
         const yPos = event.clientY;
-        setPeekedNode({ node: d, x: xPos, y: yPos });
-        setHoveredNode(null);
+        // REMOVED: setPeekedNode({ node: d, x: xPos, y: yPos }); // This line was causing the error as setPeekedNode is removed
+        setHoveredNode(null); // Ensure tooltip is hidden when peek is activated
       });
       // --- End Peek Interaction ---
   
@@ -665,7 +558,7 @@ import React, {
         const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord);
         const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
         if (isDraggingRef.current || !mainWordIdString) return; 
-        setPeekedNode(null);
+        // REMOVED: setPeekedNode(null); // This line was making the peek card disappear on any mouseenter
   
         console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
         // console.log('[HOVER ENTER] baseLinks available inside handler (first 5):', baseLinks.slice(0, 5)); // Can remove this now
@@ -846,25 +739,41 @@ import React, {
   
         // Links (Directly connected OR on the path)
         d3.selectAll<SVGLineElement, CustomLink>(".link")
-          .filter((l: CustomLink) => { 
-            // ... filter logic for highlighting remains the same ...
-            const sourceId = l.source as string; 
-            const targetId = l.target as string;
-            const linkId = `${sourceId}_${targetId}`;
-            return ( (sourceId === d.id && directNeighborIds.has(targetId)) || 
-                     (targetId === d.id && directNeighborIds.has(sourceId)) ||
-                     pathLinkIds.has(linkId) || pathLinkIds.has(`${targetId}_${sourceId}`) );
+          .filter((l: CustomLink) => {
+            // Correctly access source and target IDs from CustomNode objects
+            const sourceNodeId = (l.source as CustomNode).id;
+            const targetNodeId = (l.target as CustomNode).id;
+
+            const linkIdForward = `${sourceNodeId}_${targetNodeId}`;
+            const linkIdBackward = `${targetNodeId}_${sourceNodeId}`;
+
+            // Highlight if:
+            // 1. Directly connected to the hovered node (d)
+            // 2. Part of the path to the main word (pathLinkIds)
+            return ( (sourceNodeId === d.id && directNeighborIds.has(targetNodeId)) ||
+                     (targetNodeId === d.id && directNeighborIds.has(sourceNodeId)) ||
+                     pathLinkIds.has(linkIdForward) || pathLinkIds.has(linkIdBackward) );
           })
           .raise()
-          .style("stroke-opacity", 0.9) 
+          .style("stroke-opacity", 0.9)
           .attr("stroke-width", 2.5)
-          // --- REVERTED: Restore dynamic coloring based on target node --- 
-          // .style("stroke", themeMode === 'dark' ? "#FFD700" : "#FFA500") // REMOVED Fixed color
-          .each(function(l: CustomLink) { // ADDED .each block back
-            const targetId = typeof l.target === 'object' ? (l.target as CustomNode).id : l.target as string;
-            const targetNode = nodeMap.get(targetId);
-            const color = targetNode ? getNodeColor(targetNode.group) : (themeMode === 'dark' ? "#aaa" : "#555");
-            d3.select(this).style("stroke", color);
+          .each(function(l: CustomLink) {
+            let determinedColor: string;
+
+            // Log the link being processed, accessing IDs from CustomNode objects
+            console.log(`[HOVER LINK COLOR] Processing link: source=${(l.source as CustomNode).id}, target=${(l.target as CustomNode).id}, relationship=${l.relationship}`);
+
+            if (l.relationship) {
+              // Color the link based on its own relationship type
+              determinedColor = getNodeColor(l.relationship);
+              console.log(`[HOVER LINK COLOR]   Link relationship: '${l.relationship}', Determined color: ${determinedColor}`);
+            } else {
+              // Fallback for links with no relationship type
+              determinedColor = themeMode === 'dark' ? "#999" : "#777";
+              console.warn(`[HOVER LINK COLOR]   Link has no relationship type. Using fallback color.`);
+            }
+
+            d3.select(this).style("stroke", determinedColor);
           });
           /* REMOVED .each() block: // Keep comment showing previous state if desired
           .each(function(l: CustomLink) {
@@ -924,7 +833,7 @@ import React, {
         event.stopPropagation();
         
         if (isDraggingRef.current) return;
-        setPeekedNode(null);
+        // REMOVED: setPeekedNode(null);
         
         const nodeGroup = d3.select(currentTargetElement);
         const circleElement = nodeGroup.select("circle");
@@ -1007,24 +916,23 @@ import React, {
             }
         }
         
-        // Pass relationship to tooltip only if peek isn't active
-        if (!peekedNode || peekedNode.node.id !== d.id) {
-             setHoveredNode({ 
-                 ...d, 
-                 // relationshipToMain is removed, relationshipFromParent is already in d 
-             });
-             
-             const { clientX, clientY } = event;
-             setTooltipPosition({ x: clientX, y: clientY });
-        }
+        // MODIFIED: Always set hovered node for tooltip, as peek is removed
+        setHoveredNode({ 
+            ...d, 
+            // relationshipToMain is removed, relationshipFromParent is already in d 
+        });
+        
+        const { clientX, clientY } = event;
+        setTooltipPosition({ x: clientX, y: clientY });
       });
       
       nodeSelection.on("mouseout", (event, d) => {
           if (isDraggingRef.current) return;
+          // MODIFIED: Always hide tooltip on mouseout, as peek is removed
           setHoveredNode(null);
       });
   
-    }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, getNodeRadius, peekedNode, baseLinks]); // ADDED baseLinks dependency
+    }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, getNodeRadius, baseLinks]); // MODIFIED: Removed peekedNode from dependencies
   
     // Function to create nodes in D3 - adjusted for exact styling 
     const createNodes = useCallback((g: d3.Selection<SVGGElement, unknown, null, undefined>, nodesData: CustomNode[], simulation: d3.Simulation<CustomNode, CustomLink>) => {
@@ -1112,7 +1020,7 @@ import React, {
       // Setup drag behavior
       function dragStarted(this: SVGGElement, event: d3.D3DragEvent<SVGGElement, CustomNode, any>, d: CustomNode) {
         dragStartTimeRef.current = Date.now();
-        setPeekedNode(null);
+        // REMOVED: setPeekedNode(null);
         if (!event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
@@ -1158,7 +1066,7 @@ import React, {
       
       return nodeGroup;
       // <<< CHANGE: Dependencies include mainWord string >>>
-    }, [mainWord, getNodeRadius, getNodeColor, themeMode, setupNodeInteractions, ticked, svgRef, dragStartTimeRef, setPeekedNode]); 
+    }, [mainWord, getNodeRadius, getNodeColor, themeMode, setupNodeInteractions, ticked, svgRef, dragStartTimeRef]); 
   
     // Add improved zoom setup function with better UX
     const setupZoom = useCallback((svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, g: d3.Selection<SVGGElement, unknown, null, undefined>) => {
@@ -1758,8 +1666,8 @@ import React, {
   
     // Improved tooltip with relationship info directly from old_src_2
     const renderTooltip = useCallback(() => {
-      // Hide tooltip if peek card is showing for the same node
-      if (!hoveredNode?.id || !hoveredNode?.x || !hoveredNode?.y || !svgRef.current || (peekedNode && peekedNode.node.id === hoveredNode.id)) {
+      // MODIFIED: Simplified condition, as peekedNode is removed
+      if (!hoveredNode?.id || !hoveredNode?.x || !hoveredNode?.y || !svgRef.current) {
            return null;
       }
   
@@ -1888,7 +1796,7 @@ import React, {
           </div>
         </div>
       );
-    }, [hoveredNode, themeMode, getNodeColor, mainWord, peekedNode, svgRef, baseLinks, nodeMap, getRelationshipTypeLabel]); // Keep dependencies
+    }, [hoveredNode, themeMode, getNodeColor, mainWord, svgRef, baseLinks, nodeMap, getRelationshipTypeLabel]); // MODIFIED: Removed peekedNode from dependencies
   
     // Make sure to return the JSX at the end
     return (
@@ -1957,15 +1865,7 @@ import React, {
                 />
               </div>
               
-        {/* Peek Card for Node Detail View */}
-              {peekedNode && (
-                <NodePeekCard 
-                  peekedNodeData={peekedNode} 
-                  onClose={() => setPeekedNode(null)} 
-                />
-              )}
-              
-              {/* Tooltip */}
+        {/* Tooltip */}
         {renderTooltip()}
       </div>
     );
