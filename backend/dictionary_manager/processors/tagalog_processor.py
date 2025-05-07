@@ -27,7 +27,13 @@ from backend.dictionary_manager.db_helpers import (
     get_standardized_pos_id,
     with_transaction,
 )
-from backend.dictionary_manager.text_helpers import normalize_lemma, SourceStandardization, remove_trailing_numbers
+from backend.dictionary_manager.text_helpers import (
+    normalize_lemma, 
+    SourceStandardization, 
+    remove_trailing_numbers,
+    get_standard_code,  # ADDED: Import get_standard_code
+    standardize_entry_pos # ADDED: Import standardize_entry_pos (handles lists)
+)
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +47,51 @@ KNOWN_PREFIXES = {
 }
 KNOWN_SUFFIXES = {"in", "hin", "an", "han", "on", "hon"} # Added 'hon' just in case
 KNOWN_INFIXES = {"um", "in"} # Less common to see explicitly with '+' but useful
+
+# --- ADDED: POS Mapping for tagalog-words.json specific POS tags ---
+TAGALOG_WORDS_POS_MAP = {
+    # Common abbreviations found in this source
+    "pnb.": "pangngalan",         # Pangngalan (Noun)
+    "pnl.": "pandiwa",            # Pandiwa (Verb)
+    "pu.": "pang-uri",            # Pang-uri (Adjective)
+    "pnbb.": "pang-abay",          # Pang-abay (Adverb)
+    "pnh.": "panghalip",          # Panghalip (Pronoun)
+    "pnu.": "pang-ukol",          # Pang-ukol (Preposition)
+    "pnt.": "pangatnig",          # Pangatnig (Conjunction)
+    "pndm.": "pandamdam",         # Pandamdam (Interjection)
+    "pntk.": "pantukoy",          # Pantukoy (Determiner/Article)
+    "pnm.": "pamilang",           # Pamilang (Numeral)
+    "prl.": "parirala",           # Parirala (Phrase/Expression)
+    "dag.": "daglat",             # Daglat (Abbreviation)
+    "sl.": "salitang lansangan", # Salitang Lansangan (Slang) - map to a general category or specific if available
+    "salitang lansangan": "balbal", # Map to standard slang term
+
+    # Full Tagalog terms (if they appear and need to be standardized further, or ensure they pass through)
+    "pangngalan": "pangngalan",
+    "pandiwa": "pandiwa",
+    "pang-uri": "pang-uri",
+    "pang-abay": "pang-abay",
+    "panghalip": "panghalip",
+    "pang-ukol": "pang-ukol",
+    "pangatnig": "pangatnig",
+    "pandamdam": "pandamdam",
+    "pantukoy": "pantukoy",
+    "pamilang": "pamilang",
+    "parirala": "parirala",
+    "daglat": "daglat",
+    "balbal": "balbal",
+
+    # Add any other specific codes encountered in tagalog-words.json
+    # Example: If "png" is used for Noun without a period
+    "png": "pangngalan", 
+    "pnr": "pangngalan", # Common alternative for noun
+    # Further English terms if they are sometimes used in this specific JSON
+    "noun": "pangngalan",
+    "verb": "pandiwa",
+    "adjective": "pang-uri",
+    "adverb": "pang-abay",
+}
+# --- END ADDED: POS Mapping ---
 
 # Moved from dictionary_manager.py (originally around line 97 in old structure)
 def process_definition_relations(cur, word_id: int, definition: str, source: str):
@@ -314,8 +365,17 @@ def _process_single_tagalog_word_entry(
                 )
                 continue # Must have a POS to insert definition
 
-            # Get standardized POS ID
-            standardized_pos_id = get_standardized_pos_id(cur, pos_code_to_use)
+            # --- Apply POS Mapping using text_helpers ---
+            # pos_code_to_use will be a string like "pnl." or "pangngalan"
+            # standardize_entry_pos can handle lists, but here pos_code_to_use is a string
+            mapped_pos_code = get_standard_code(pos_code_to_use)
+            if pos_code_to_use and mapped_pos_code == "unc" and pos_code_to_use.lower() != "unc":
+                logger.debug(f"POS '{pos_code_to_use}' for '{lemma}' (sense {sense_idx}) mapped to 'unc' by get_standard_code.")
+            # --- End POS Mapping ---
+
+            # Get standardized POS ID (this function now internally calls get_standard_code if needed, 
+            # but we've already standardized it, so it should be a direct lookup or simple validation)
+            standardized_pos_id = get_standardized_pos_id(cur, mapped_pos_code)
 
             # --- Extract Usage Notes ---
             sense_notes = sense.get("notes") # Could be list or string
@@ -327,8 +387,8 @@ def _process_single_tagalog_word_entry(
 
             # Create metadata dictionary
             metadata_dict = {}
-            if pos_code_to_use:
-                metadata_dict["original_pos"] = pos_code_to_use
+            if mapped_pos_code:
+                metadata_dict["original_pos"] = mapped_pos_code
             if usage_notes_str:
                  metadata_dict["usage_notes"] = usage_notes_str
 
@@ -353,7 +413,7 @@ def _process_single_tagalog_word_entry(
                 cur,
                 word_id,
                 definition_text,
-                part_of_speech=pos_code_to_use,
+                part_of_speech=mapped_pos_code, # Use the mapped POS code from get_standard_code
                 usage_notes=usage_notes_str if usage_notes_str else None,
                 metadata=metadata_dict if metadata_dict else None,
                 sources=source_identifier,  # Changed from source_identifier to sources

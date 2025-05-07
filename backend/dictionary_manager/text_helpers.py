@@ -15,8 +15,10 @@ import os
 import json
 import glob
 from psycopg2.extras import Json # Ensure Json is imported
+import regex as re # For more advanced Unicode regex features if needed
 
-from backend.dictionary_manager.enums import BaybayinCharType
+from backend.dictionary_manager.enums import BaybayinCharType, DEFAULT_LANGUAGE_CODE # MODIFIED IMPORT
+from backend.source_standardization import SourceStandardization # ADDED IMPORT
 
 # Try to import BeautifulSoup for robust HTML cleaning
 try:
@@ -51,116 +53,6 @@ NON_WORD_STRINGS = {
     # Placeholders or fragments
     "-", "?", "*", "+", "...",
 }
-
-# POS Mapping Constants (Moved from dictionary_manager.py)
-POS_MAPPING = {
-    # Nouns - Pangngalan ('n')
-    "noun": "n", "pangngalan": "n", "name": "n", "n": "n", "pangalan": "n",
-    "pangngalang pantangi": "n", "pangngalang pambalana": "n", "salitang ugat": "n",
-    "salitang hango": "n", "pulutong": "n", "sangkap": "n", "uri": "n",
-    "simbolo": "n", "dinidiinang pantig": "n", "pagbabago": "n", "palatandaan": "n",
-    "pahiwatig": "n", "tugma": "n", "kahulugan": "n", "salitang hiram": "n",
-    "damdamin": "n", "katumbas na salita": "n", "kabaligtaran": "n", "aspekto": "n",
-    "kasarian": "n", "anyo": "n", "kayarian": "n", "gamit": "n", "pagkakaugnay": "n",
-    "Pangngalan": "n", "sa sanga ng punongkahoy": "n", "sa anumang bukás na bahagi": "n",
-    "sa isang tao": "n", "sa isang sakít na": "n", "sa isang rabáw": "n",
-    "sa isang sasakyang-dagat": "n", "sa isang serbisyo, binili, o inutang": "n",
-    "sa isang súgat": "n", "kung sa bakal": "n", "sa pananim": "n", "sa isang pook": "n",
-    "sa isang materyal": "n", "sa dalawang tao": "n", "sa mga pananim": "n",
-    "sa isang likido": "n", "sa isang salita": "n", "sa isang kilos": "n",
-    "sa kagamitan": "n", "sa gamot": "n", "sa isang halaga": "n", "sa buhok": "n",
-    "sa lupa": "n", "sa damit": "n", "sa isang sawsáwan": "n", "sa sakít": "n",
-    "sa pagluluto": "n", "kung sa batok o ilong": "n", "png": "n",
-    # Verbs - Pandiwa ('v')
-    "verb": "v", "pandiwa": "v", "v": "v", "action": "v", "Pandiwa": "v", "pnd": "v",
-    # Adjectives - Pang-uri ('adj')
-    "adjective": "adj", "pang-uri": "adj", "adj": "adj", "quality": "adj",
-    "uri": "adj", "antas na paghahambing": "adj", "Pang-uri": "adj",
-    "pang-uri sa panlagay": "adj", "pang-uri sa panlapi": "adj", "pnr": "adj",
-    # Adverbs - Pang-abay ('adv')
-    "adverb": "adv", "pang-abay": "adv", "adv": "adv", "manner": "adv", "abay": "adv",
-    "Pang-abay": "adv", "pang-abay na pamaraan": "adv", "pang-abay na panlunan": "adv",
-    "pang-abay na pamanahon": "adv", "pang-abay na pang-uring": "adv", "pnb": "adv",
-    # Pronouns - Panghalip ('pron')
-    "pronoun": "pron", "panghalip": "pron", "pron": "pron", "halip": "pron",
-    "Panghalip": "pron", "panghalip panao": "pron", "panghalip pamatlig": "pron",
-    "panghalip pananong": "pron", "panghalip paari": "pron", "pnh": "pron",
-    # Prepositions - Pang-ukol ('prep')
-    "preposition": "prep", "pang-ukol": "prep", "prep": "prep", "ukol": "prep",
-    "Pang-ukol": "prep", "pnu": "prep",
-    # Conjunctions - Pangatnig ('conj')
-    "conjunction": "conj", "pangatnig": "conj", "conj": "conj", "katnig": "conj",
-    "Pangatnig": "conj", "pnt": "conj",
-    # Interjections - Pandamdam ('intj')
-    "interjection": "intj", "pandamdam": "intj", "padamdam": "intj", "intj": "intj",
-    "damdam": "intj", "Pandamdam": "intj", "Padamdam": "intj", "pdd": "intj",
-    # Determiners / Articles - Pantukoy ('det')
-    "determiner": "det", "pantukoy": "det", "article": "det", "art": "det",
-    "tukoy": "det", "Pantukoy": "det", "panuri": "det", "ptk": "det",
-    # Affixes - Panlapi ('affix')
-    "affix": "affix", "panlapi": "affix", "aff": "affix", "lapi": "affix",
-    "prefix": "affix", "unlapi": "affix", "pref": "affix", "suffix": "affix",
-    "hulapi": "affix", "suff": "affix", "infix": "affix", "gitlapi": "affix",
-    "inf": "affix", "Panlapi": "affix", "Pangkayarian": "affix", "pnl": "affix",
-    # Ligatures - Pang-angkop ('lig')
-    "ligature": "lig", "linker": "lig", "pang-angkop": "lig", "Pang-angkop": "lig", "pnk": "lig",
-    # Particles - Kataga ('part')
-    "particle": "part", "kataga": "part", "part": "part",
-    # Numbers - Pamilang ('num')
-    "number": "num", "bilang": "num", "num": "num", "pamilang": "num", "karamihan": "num",
-    # Expressions / Phrases ('expr')
-    "expression": "expr", "pahayag": "expr", "expr": "expr", "phrase": "expr", "parirala": "expr", "phr": "expr",
-    # Punctuation ('punc')
-    "punctuation": "punc", "bantas": "punc", "punto": "punc",
-    # Other Categories / Mappings
-    "idm": "idm", "kol": "col", "syn": "unc", "ant": "unc", "eng": "unc", "spa": "unc",
-    "tx": "unc", "var": "var", "st": "unc", "auxiliary": "unc", "pantulong": "unc", "aux": "unc",
-    "unknown": "unc", "unc": "unc",
-    # Daglat
-    "id": "idm", "kol": "col",
-}
-LOWERCASE_POS_MAPPING = {k.lower(): v for k, v in POS_MAPPING.items()}
-
-
-# Replacing placeholder with the original from dictionary_manager.py
-class SourceStandardization:
-    @staticmethod
-    def standardize_sources(source: str) -> str:
-        """Convert source filenames to standardized display names."""
-        if not source:
-            return "unknown"
-
-        source_mapping = {
-            "kaikki-ceb.jsonl": "kaikki.org (Cebuano)",
-            "kaikki.jsonl": "kaikki.org (Tagalog)",
-            "kwf_dictionary.json": "KWF Diksiyonaryo ng Wikang Filipino",
-            "root_words_with_associated_words_cleaned.json": "tagalog.com",
-            "tagalog-words.json": "diksiyonaryo.ph",
-        }
-
-        # Try direct mapping first
-        norm_source = str(source).lower().strip()
-        if norm_source in source_mapping:
-            return source_mapping[norm_source]
-
-        # Handle cases where only part of the filename is matched
-        for key, value in source_mapping.items():
-            if key in norm_source:
-                return value
-
-        # Special case for Marayum dictionaries
-        if "marayum" in norm_source:
-            return "Project Marayum"
-
-        # Return the original if no mapping is found
-        return source
-
-    @staticmethod
-    def get_display_name(source: str) -> str:
-        """Get a display-friendly name for a source."""
-        return SourceStandardization.standardize_sources(source)
-
-
 
 # Moved from dictionary_manager.py
 def standardize_source_identifier(source_identifier: str) -> str:
@@ -299,27 +191,123 @@ def restore_preserved_acronyms(text: str) -> str:
 # Moved from dictionary_manager.py
 def get_standard_code(pos_string: Optional[str]) -> str:
     """
-    Convert a part of speech string to a standardized short code (e.g., 'n', 'v', 'adj').
+    Convert a part of speech string to a standardized code that matches the database parts_of_speech table codes.
+    IMPORTANT: The returned codes must match existing entries in the parts_of_speech table.
     """
     if not pos_string:
         return "unc"
 
     pos_key = str(pos_string).lower().strip()
-    pos_key = re.sub(r"\([^)]*\)", "", pos_key).strip()
+    pos_key = re.sub(r"\([^)]*\)", "", pos_key).strip() # Remove content in parentheses
+    pos_key = pos_key.rstrip('.') # Remove trailing periods often found in abbreviations
+
     if not pos_key:
         return "unc"
+
+    # Comprehensive mapping based on all processor-specific maps and general terms.
+    # Target values are the standardized codes expected in the parts_of_speech table.
+    LOWERCASE_POS_MAPPING = {
+        # Standard Codes (self-mapping to ensure they pass through if already standard)
+        "noun": "noun", "verb": "verb", "adj": "adj", "adjective": "adj", "adv": "adv", "adverb": "adv",
+        "pron": "pron", "pronoun": "pron", "prep": "prep", "preposition": "prep", "conj": "conj", "conjunction": "conj",
+        "interj": "interj", "interjection": "interj", "det": "det", "determiner": "det", "article": "det",
+        "num": "num", "numeral": "num", "part": "part", "particle": "part", "phrase": "phrase", "expression": "phrase",
+        "propn": "propn", "proper noun": "propn", "abbr": "abbr", "abbreviation": "abbr", "affix": "affix",
+        "prefix": "prefix", "suffix": "suffix", "infix": "affix", "circumfix": "affix", "interfix": "affix",
+        "root": "root", "unc": "unc", "uncategorized": "unc", "punct": "punct", "symbol": "sym",
+
+        # Tagalog POS terms and their common abbreviations
+        "pangngalan": "noun", "pnb": "noun", "png": "noun", "pnr": "noun", # pnr was pang-uri in one old map, but generally used for noun
+        "pandiwa": "verb", "pnl": "verb", "pd": "verb",
+        "pang-uri": "adj", "pu": "adj",
+        "pang-abay": "adv", "pnbb": "adv", "pa": "adv", "abay": "adv",
+        "panghalip": "pron", "pnh": "pron", "halip": "pron",
+        "pang-ukol": "prep", "pnu": "prep", "puk": "prep", "ukol": "prep",
+        "pangatnig": "conj", "pnt": "conj", "ptg": "conj", "katnig": "conj",
+        "pandamdam": "interj", "pndm": "interj", "pdd": "interj", "exclamation": "interj", "padamdam": "interj",
+        "pantukoy": "det", "pntk": "det", "art": "det", "tukoy": "det", "panuri": "det",
+        "pamilang": "num", "pnm": "num", "pml": "num", "bilang": "num", "karamihan": "num",
+        "partikula": "part", "kataga": "part",
+        "parirala": "phrase", "prl": "phrase", "pal": "phrase", "phr": "phrase",
+        "idyoma": "phrase", 
+        "salawikain": "phrase", "proverb": "phrase",
+        "pangngalang pantangi": "propn", "name": "propn",
+        "daglat": "abbr", "acronym": "abbr", "initialism": "abbr", "pagpapaikli": "abbr", "contraction": "abbr", "dag": "abbr",
+        "panlapi": "affix", "gitlapi": "affix", "kabilaan": "affix", "lapi": "affix", "pangkayarian": "affix", "unlapi": "prefix", "hulapi": "suffix",
+        "salitang-ugat": "root", "root word": "root", "stm": "root", "salitang ugat": "root",
+        "pang-angkop": "part", "linker": "part", "ligature": "part", "pnk": "part",
+        
+        # More descriptive/functional Tagalog terms often used in POS-like contexts
+        "balbal": "phrase", "salitang lansangan": "phrase", "sl": "phrase",
+        "kolokyal": "phrase", "colloquial": "phrase", "kol": "phrase",
+        "pormal": "phrase", "formal": "phrase",
+        "di-pormal": "phrase", "informal": "phrase",
+        "hiram na salita": "phrase", "loanword": "phrase",
+        "pananong": "pron", "question word": "pron", "interrogative": "pron", 
+        
+        # Specific Noun types / related terms
+        "pangngalang pambalana": "noun", "common noun": "noun",
+        "simbolo": "sym", # Prefer 'sym' if it exists in DB, else 'noun'
+        "character": "sym", "titik": "sym", "letter": "sym", # letter/char mapped to 'sym' or 'noun'
+        "romanization": "noun", # romanization as a concept
+        "salitang hango": "noun", "pulutong": "noun", "sangkap": "noun",
+        "dinidiinang pantig": "noun", "pagbabago": "noun", "palatandaan": "noun",
+        "pahiwatig": "noun", "tugma": "noun", "kahulugan": "noun", 
+        "damdamin": "noun", # "feeling" as a noun, distinct from interjection
+        "katumbas na salita": "noun", "kabaligtaran": "noun", "aspekto": "noun",
+        "kasarian": "noun", "anyo": "noun", "kayarian": "noun", "gamit": "noun", "pagkakaugnay": "noun",
+        "uri": "noun", # type/kind as a noun
+
+        # Specific Adjective/Adverb types
+        "quality": "adj", "antas na paghahambing": "adj", "pang-uri sa panlagay": "adj", "pang-uri sa panlapi": "adj",
+        "manner": "adv", "pang-abay na pamaraan": "adv", "pang-abay na panlunan": "adv", 
+        "pang-abay na pamanahon": "adv", "pang-abay na pang-uring": "adv",
+
+        # Specific Pronoun types
+        "panghalip panao": "pron", "panghalip pamatlig": "pron", 
+        "panghalip pananong": "pron", "panghalip paari": "pron",
+        "demonstrative ang pronoun": "pron", "demonstrative ng pronoun": "pron", "demonstrative pronoun": "pron",
+
+        # Specific Verb types
+        "transitive verb": "verb", "intransitive verb": "verb", "auxiliary verb": "verb", "v tr": "verb", "v int": "verb",
+        
+        # Phrase types (if needing to distinguish from general 'phrase', though current target is 'phrase')
+        "noun phrase": "phrase", "verb phrase": "phrase", "adjective phrase": "phrase", "adverbial phrase": "phrase", "prepositional phrase": "phrase", "prep_phrase": "phrase",
+
+        # Other potentially encountered terms
+        "classifier": "num", # Numeral classifiers
+        "onomatopoeia": "phrase",
+        "equation": "phrase",
+        "punto": "punct", # Punctuation mark
+        "headline": "phrase",
+        "variant": "phrase", # "var" might be a variant form, treat as phrase if POS needed
+        "fig": "phrase", # figurative
+        "lit": "phrase", # literal
+        "pddm": "interj", # another possible abbrev for pandamdam
+
+        # Kaikki specific (if not covered by general English)
+        "prop": "propn", # common abbrev for proper noun
+        "name": "propn", # Kaikki uses 'name' for proper nouns
+        "abbrev": "abbr", # Kaikki
+        "init": "abbr", # Kaikki for initialism
+        # Kaikki also uses 'sym' for symbol, 'class' for classifier, 'rom' for romanization.
+        # Let's ensure these map if they are standard codes you want.
+        "class": "num", # Mapping classifier to numeral/pamilang
+        "rom": "noun",  # Romanization as a concept/noun
+        
+        # Ensure very short common abbrevs (post-stripping) are present
+        "n": "noun", "v": "verb", 
+        # adj, adv, pron, prep, conj, interj, det, num, art are already handled by self-mapping or direct key.
+    }
 
     if pos_key in LOWERCASE_POS_MAPPING:
         return LOWERCASE_POS_MAPPING[pos_key]
 
-    # Check original mapping keys if needed, though lowercase lookup is primary
-    # if pos_string in POS_MAPPING:
-    #     return POS_MAPPING[pos_string]
-
+    # Handle cases like "sa XXX" which often imply a noun phrase context
     if pos_key.startswith("sa ") or pos_key.startswith("kung sa "):
-        return "n"
+        return "noun"
 
-    logger.debug(f"Unmapped POS: '{pos_string}' -> mapped to 'unc'")
+    logger.debug(f"Unmapped POS: '{pos_string}' (processed as '{pos_key}') -> mapped to 'unc'")
     return "unc"
 
 # Moved from dictionary_manager.py
@@ -1054,18 +1042,30 @@ def get_language_mapping():
 LANGUAGE_MAPPING_CACHE = get_language_mapping()
 
 
-def get_language_code(language: str) -> str:
-    """Get standardized ISO 639-3 language code."""
+def get_language_code(language: str) -> Tuple[str, str]:
+    """Get standardized ISO 639-1 language code and return the original input.
+    
+    Returns:
+        Tuple[str, str]: (standard_iso_code, original_cleaned_input_language)
+                         Returns (DEFAULT_LANGUAGE_CODE, original_cleaned_input_language) if unmapped.
+    """
+    original_input = language # Preserve original input for return
     if not language:
-        return ""
+        return DEFAULT_LANGUAGE_CODE, original_input if original_input is not None else ""
 
-    language = language.lower().strip()
+    cleaned_language = language.lower().strip()
+    # Preserve the cleaned version of the original input for the second part of the tuple
+    raw_language_for_metadata = cleaned_language 
+
+    # Special handling for Tagalog variations
+    if cleaned_language in ["tgl", "tagalog", "filipino", "pilipino"]:
+        return "tl", raw_language_for_metadata
 
     # Use the cached mapping
-    if language in LANGUAGE_MAPPING_CACHE:
-        return LANGUAGE_MAPPING_CACHE[language]
+    if cleaned_language in LANGUAGE_MAPPING_CACHE:
+        return LANGUAGE_MAPPING_CACHE[cleaned_language], raw_language_for_metadata
 
-    # General ISO 639-1 mappings (add more as needed)
+    # General ISO 639-1 mappings
     general_codes = {
         "english": "en",
         "spanish": "es",
@@ -1078,14 +1078,14 @@ def get_language_code(language: str) -> str:
         "french": "fr",
         "german": "de",
         "portuguese": "pt",
+        # Add other common ISO 639-1 codes as needed
     }
-    if language in general_codes:
-        return general_codes[language]
+    if cleaned_language in general_codes:
+        return general_codes[cleaned_language], raw_language_for_metadata
 
     # Fallback for unknown languages
-    logger.warning(f"Could not map language: '{language}'. Defaulting to 'tgl'.")
-    return "tgl" # Default to Tagalog if unmapped
-    # return language # OLD: Return the original (cleaned, lowercased) code if unmapped
+    logger.warning(f"Could not map language: '{cleaned_language}'. Defaulting to '{DEFAULT_LANGUAGE_CODE}'.")
+    return DEFAULT_LANGUAGE_CODE, raw_language_for_metadata
 
 
 def process_kaikki_lemma(lemma):

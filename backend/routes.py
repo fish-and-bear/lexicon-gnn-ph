@@ -46,7 +46,6 @@ from .metrics import API_REQUESTS, API_ERRORS, REQUEST_LATENCY, REQUEST_COUNT
 
 # Absolute imports from dictionary_manager
 from backend.dictionary_manager.db_helpers import (
-    DEFAULT_LANGUAGE_CODE,  # Assuming DEFAULT_LANGUAGE_CODE is here
     Json,
     RelationshipType,  # Assuming RelationshipType enum is exposed here or in enums directly
     add_linguistic_note,
@@ -74,7 +73,7 @@ from backend.dictionary_manager.text_helpers import (
     # process_kaikki_lemma, # Moved to text_helpers, should be imported if needed, but seems unused now
 )
 from backend.dictionary_manager.enums import (
-    RelationshipType, RelationshipCategory # Import Enums separately
+    RelationshipType, RelationshipCategory, DEFAULT_LANGUAGE_CODE # ADDED DEFAULT_LANGUAGE_CODE here
 )
 # Import enums directly (if RelationshipType isn't in db_helpers)
 # from backend.dictionary_manager.enums import RelationshipType

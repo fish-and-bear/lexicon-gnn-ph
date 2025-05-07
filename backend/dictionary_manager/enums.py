@@ -9,6 +9,8 @@ import dataclasses
 # If using logger.warning in from_string, ensure logger is defined
 logger = logging.getLogger() # Use root logger for simplicity here
 
+DEFAULT_LANGUAGE_CODE = "tl"  # ADDED: Default language code
+
 class RelationshipCategory(enum.Enum):
     """Categories for organizing relationship types"""
 

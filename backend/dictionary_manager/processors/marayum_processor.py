@@ -18,7 +18,6 @@ from tqdm import tqdm
 
 # Absolute imports from dictionary_manager
 from backend.dictionary_manager.db_helpers import (
-    DEFAULT_LANGUAGE_CODE,
     get_or_create_word_id,
     insert_definition,
     insert_pronunciation,
@@ -33,12 +32,84 @@ from backend.dictionary_manager.text_helpers import (
     SourceStandardization,
     normalize_lemma, # Needed by get_or_create_word_id implicitly?
     clean_html, # Likely needed for definition text
-    get_language_code # Added missing import
+    get_language_code, # Added missing import
+    get_standard_code, # Added get_standard_code import
 )
 # Import enums directly
-from backend.dictionary_manager.enums import RelationshipType
+from backend.dictionary_manager.enums import RelationshipType, DEFAULT_LANGUAGE_CODE
 
 logger = logging.getLogger(__name__)
+
+# --- ADDED: POS Mapping (similar to other processors, adapt if Marayum POS terms differ) ---
+MARAYUM_POS_TO_STANDARD_MAP = {
+    # Core POS - Assuming Marayum might use Tagalog terms or English ones
+    "pangngalan": "pangngalan",
+    "noun": "pangngalan",
+    "pandiwa": "pandiwa",
+    "verb": "pandiwa",
+    "pang-uri": "pang-uri",
+    "adjective": "pang-uri",
+    "pang-abay": "pang-abay",
+    "adverb": "pang-abay",
+    "panghalip": "panghalip",
+    "pronoun": "panghalip",
+    "pang-ukol": "pang-ukol",
+    "preposition": "pang-ukol",
+    "pangatnig": "pangatnig",
+    "conjunction": "pangatnig",
+    "pandamdam": "pandamdam",
+    "interjection": "pandamdam",
+    "pantukoy": "pantukoy",
+    "determiner": "pantukoy",
+    "article": "pantukoy",
+    "pamilang": "pamilang",
+    "numeral": "pamilang",
+    "partikula": "partikula",
+    "particle": "partikula",
+    "pang-angkop": "pang-angkop",
+    "linker": "pang-angkop",
+
+    # Descriptive / Functional types
+    "parirala": "parirala",
+    "expression": "parirala",
+    "phrase": "parirala",
+    "idyoma": "idyoma",
+    "idiom": "idyoma",
+    "daglat": "daglat",
+    "abbreviation": "daglat",
+    "akronim": "akronim",
+    "acronym": "akronim",
+    "initialism": "daglat", 
+    "pagpapaikli": "pagpapaikli",
+    "contraction": "pagpapaikli",
+    "pangngalang pantangi": "pangngalang pantangi",
+    "proper noun": "pangngalang pantangi",
+    "pangngalang pambalana": "pangngalang pambalana",
+    "common noun": "pangngalang pambalana",
+    "pagbati": "pagbati",
+    "greeting": "pagbati",
+    "pananong": "pananong",
+    "question word": "pananong",
+    "interrogative": "pananong",
+    
+    # Other specific terms Marayum might use for POS/grammatical info
+    "png.": "pangngalan", # Abbreviation for pangngalan
+    "pnd.": "pandiwa",   # Abbreviation for pandiwa
+    "pu.": "pang-uri",    # Abbreviation for pang-uri
+    "pa.": "pang-abay",   # Abbreviation for pang-abay
+    "ph.": "panghalip",  # Abbreviation for panghalip
+    "pal.": "parirala",  # Common for phrase/expression
+    "stm.": "salitang-ugat", # Salitang-ugat / Root word, if used in POS context
+    "adj.": "pang-uri", # Common English abbreviation
+    "adv.": "pang-abay", # Common English abbreviation
+    "prep.": "pang-ukol", # Common English abbreviation
+    "conj.": "pangatnig", # Common English abbreviation
+    "int.": "pandamdam", # Common English abbreviation
+    "pron.": "panghalip", # Common English abbreviation
+
+    # Add more based on actual POS tags found in Marayum JSON files
+}
+# --- END ADDED: POS Mapping ---
 
 # -------------------------------------------------------------------
 # Marayum Processing Logic (Moved from dictionary_manager.py)
@@ -103,19 +174,31 @@ def process_marayum_json(
     # --- Determine Language Code for the entire file ---
     dict_info = data.get("dictionary_info", {})
     base_language_name = dict_info.get("base_language", "")
-    language_code = "unk"  # Default before mapping attempt
+    
+    # MODIFIED: Unpack tuple from get_language_code and set initial default for language_code
+    standardized_language_code = DEFAULT_LANGUAGE_CODE 
+    raw_input_language_for_file = base_language_name.lower().strip() if base_language_name else ""
+
     if base_language_name:
-        normalized_lang_name = base_language_name.lower().strip()
-        language_code = get_language_code(normalized_lang_name)
-        if not language_code:
+        normalized_lang_name = base_language_name.lower().strip() # This is the raw input
+        std_code, raw_input = get_language_code(normalized_lang_name)
+        standardized_language_code = std_code
+        raw_input_language_for_file = raw_input # This will be normalized_lang_name or original if mapping changed it
+
+        if not standardized_language_code or standardized_language_code == DEFAULT_LANGUAGE_CODE and normalized_lang_name != DEFAULT_LANGUAGE_CODE:
             logger.warning(
-                f"get_language_code returned empty for '{base_language_name}' (normalized: '{normalized_lang_name}') in {filename}. Defaulting to 'unk'."
+                f"Could not map base_language '{base_language_name}' (raw_input: '{raw_input_language_for_file}') for {filename}. Defaulting to '{DEFAULT_LANGUAGE_CODE}'."
             )
-            language_code = "unk"
-        elif language_code != "unk":
+            standardized_language_code = DEFAULT_LANGUAGE_CODE
+            # raw_input_language_for_file remains the initial attempt from base_language_name
+        else:
             logger.info(
-                f"Determined language code '{language_code}' for {filename} from base language '{base_language_name}'."
+                f"Determined language code '{standardized_language_code}' (from raw: '{raw_input_language_for_file}') for {filename} from base language '{base_language_name}'."
             )
+    else: # No base_language_name provided in dictionary_info
+        logger.warning(f"No base_language specified in dictionary_info for {filename}. Defaulting to '{DEFAULT_LANGUAGE_CODE}'. Raw input will be empty.")
+        standardized_language_code = DEFAULT_LANGUAGE_CODE
+        raw_input_language_for_file = "" # No raw input to store
 
     # Initialize counters for this file's processing run
     stats = {
@@ -182,6 +265,7 @@ def process_marayum_json(
                             "see_also",  # Handled separately
                             "credits",  # Handled separately
                             "examples",  # Often duplicated in definitions, handled there
+                            "pos", # Word-level POS is handled below if not overridden by definition-level POS
                         ]
                     }
 
@@ -191,9 +275,10 @@ def process_marayum_json(
                         word_id = get_or_create_word_id(
                             cur,
                             lemma,
-                            language_code=language_code,  # Use file-level language code
+                            language_code=standardized_language_code,  # Use file-level standardized language code
                             source_identifier=effective_source_identifier,
                             word_metadata=word_metadata,
+                            raw_input_language=raw_input_language_for_file # ADDED: Pass raw language for file
                         )
                         if not word_id:
                             # This case should ideally be handled within get_or_create_word_id by raising an error
@@ -202,7 +287,7 @@ def process_marayum_json(
                             )
                         # Use debug level for successful creation log
                         logger.debug(
-                            f"Word '{lemma}' ({language_code}) created/found (ID: {word_id}) from source '{effective_source_identifier}'."
+                            f"Word '{lemma}' ({standardized_language_code}) created/found (ID: {word_id}) from source '{effective_source_identifier}'."
                         )
 
                     except Exception as word_err:
@@ -275,6 +360,7 @@ def process_marayum_json(
                                 not in [
                                     "definition",  # Stored directly
                                     "examples",  # Stored directly via 'examples' arg
+                                    "gram" # Handled for POS below
                                 ]
                             }
 
@@ -285,22 +371,34 @@ def process_marayum_json(
                                 examples_processed = process_examples(
                                     examples_raw
                                 )  # Use helper
+                            
+                            # --- Determine POS for this definition ---
+                            definition_pos_raw = def_item.get("gram") # Check definition-level POS (e.g., from 'gram' key)
+                            word_level_pos_raw = entry.get("pos")     # Fallback to word-level POS from the main entry
+                            
+                            final_pos_to_map = None
+                            if definition_pos_raw and isinstance(definition_pos_raw, str) and definition_pos_raw.strip():
+                                final_pos_to_map = definition_pos_raw.strip()
+                            elif word_level_pos_raw and isinstance(word_level_pos_raw, str) and word_level_pos_raw.strip():
+                                final_pos_to_map = word_level_pos_raw.strip()
+                            
+                            # --- Use get_standard_code for POS mapping --- 
+                            part_of_speech_for_db = get_standard_code(final_pos_to_map)
+                            if final_pos_to_map and part_of_speech_for_db == "unc" and final_pos_to_map.lower() != "unc":
+                                logger.debug(f"POS '{final_pos_to_map}' for '{lemma}' mapped to 'unc' by get_standard_code.")
+                            # --- End POS Determination and Mapping ---
 
                             # Insert definition
                             try:
-                                # Use provided ID or index as fallback order (now stored in metadata)
-                                # def_order = def_item.get("definition_id", def_idx + 1)
-                                # Extract entry-level part of speech (also stored in word_metadata)
-                                part_of_speech = entry.get("pos", "")
-                                usage_notes = None
+                                usage_notes = None # Marayum definitions might have notes in def_metadata
                                 def_id = insert_definition(
                                     cur,
                                     word_id,
                                     definition_text,
-                                    part_of_speech=part_of_speech,
+                                    part_of_speech=part_of_speech_for_db, # Use mapped POS
                                     usage_notes=usage_notes,
-                                    tags=None,
-                                    sources=source_identifier,
+                                    tags=None, # Marayum tags are often in def_metadata via 'domain' or 'region'
+                                    sources=effective_source_identifier,
                                     metadata=def_metadata,
                                 )
                                 if def_id:
@@ -414,33 +512,59 @@ def process_marayum_json(
                                 error_types[error_key] = error_types.get(error_key, 0) + 1
 
                     # --- Process Etymology (if available) ---
-                    etymology = entry.get("etymology")
-                    if etymology and isinstance(etymology, str) and etymology.strip():
-                        try:
-                            ety_id = insert_etymology(
-                                cur, word_id, etymology, effective_source_identifier
-                            )
-                            if ety_id:
-                                stats["etymologies"] += 1
+                    etymology_data = entry.get("etymology") # Changed variable name
+                    if etymology_data:
+                        etymology_text_to_insert = None
+                        etymology_lang_codes = None
+
+                        if isinstance(etymology_data, str) and etymology_data.strip():
+                            etymology_text_to_insert = etymology_data.strip()
+                        elif isinstance(etymology_data, dict):
+                            etymology_text_to_insert = etymology_data.get("text", "") or etymology_data.get("notes", "") # Prefer text, fallback to notes
+                            if isinstance(etymology_text_to_insert, str):
+                                etymology_text_to_insert = etymology_text_to_insert.strip()
                             else:
-                                logger.warning(
-                                    f"insert_etymology failed for '{lemma}' (ID: {word_id}). Check internal logs."
+                                etymology_text_to_insert = None # Ensure it's None if not a string
+                            
+                            source_lang = etymology_data.get("source_language")
+                            if isinstance(source_lang, str) and source_lang.strip():
+                                etymology_lang_codes = source_lang.strip()
+                            elif isinstance(source_lang, list) and source_lang:
+                                etymology_lang_codes = ",".join(filter(None, [str(l).strip() for l in source_lang]))
+
+                        if etymology_text_to_insert:
+                            try:
+                                ety_id = insert_etymology(
+                                    cur, 
+                                    word_id, 
+                                    etymology_text_to_insert, 
+                                    effective_source_identifier,
+                                    language_codes=etymology_lang_codes
                                 )
-                                error_key = f"EtymologyInsertFailure"
+                                if ety_id:
+                                    stats["etymologies"] += 1
+                                else:
+                                    logger.warning(
+                                        f"insert_etymology failed for '{lemma}' (ID: {word_id}). Text: '{etymology_text_to_insert[:50]}...'. Check internal logs."
+                                    )
+                                    error_key = f"EtymologyInsertFailure"
+                                    error_types[error_key] = error_types.get(error_key, 0) + 1
+                            except Exception as ety_err:
+                                logger.error(
+                                    f"Error during etymology insertion for '{lemma}' (ID: {word_id}): {ety_err}",
+                                    exc_info=True,
+                                )
+                                error_key = f"EtymologyInsertError: {type(ety_err).__name__}"
                                 error_types[error_key] = error_types.get(error_key, 0) + 1
-                        except Exception as ety_err:
-                            logger.error(
-                                f"Error during etymology insertion for '{lemma}' (ID: {word_id}): {ety_err}",
-                                exc_info=True,
-                            )
-                            error_key = f"EtymologyInsertError: {type(ety_err).__name__}"
-                            error_types[error_key] = error_types.get(error_key, 0) + 1
+                        elif isinstance(etymology_data, dict):
+                             logger.debug(f"Skipping etymology for '{lemma}' (ID: {word_id}) due to missing text in object: {etymology_data}")
+
 
                     # --- Process See Also (as Relations) ---
                     see_also = entry.get("see_also", [])
                     if isinstance(see_also, list):
                         # Assuming process_see_also returns list of related word strings
-                        see_also_words = process_see_also(see_also, language_code)
+                        see_also_words = process_see_also(see_also, standardized_language_code)
                         for related_word_str in see_also_words:
                             if (
                                 related_word_str.lower() != lemma.lower()
@@ -453,9 +577,10 @@ def process_marayum_json(
                                     related_word_id = get_or_create_word_id(
                                         cur,
                                         related_word_str,
-                                        language_code=language_code,  # Use same language code
-                                        source_identifier=effective_source_identifier,  # Attribute creation to this source if new
-                                        word_metadata=None,  # Do not add metadata when creating via relation
+                                        language_code=standardized_language_code,  # Use same standardized language code
+                                        source_identifier=effective_source_identifier,  
+                                        word_metadata=None,  
+                                        raw_input_language=raw_input_language_for_file # ADDED: Pass raw language of the file
                                     )
                                     if (
                                         related_word_id and related_word_id != word_id
@@ -560,8 +685,8 @@ def process_examples(examples_list):
 
         if isinstance(ex_item, str) and ex_item.strip():
             cleaned_text = clean_html(ex_item.strip())
-            if cleaned_text:
-                processed_item = {"text": cleaned_text}
+            # if cleaned_text: # This check is redundant if we only append if cleaned_text later
+            #     processed_item = {"text": cleaned_text} # This line was causing issues if cleaned_text was empty
         elif isinstance(ex_item, dict):
             # Handle common keys like 'text' or 'example'
             raw_text = None
@@ -572,18 +697,20 @@ def process_examples(examples_list):
             
             if raw_text and raw_text.strip():
                 cleaned_text = clean_html(raw_text.strip())
-                if cleaned_text:
+                if cleaned_text: # Only proceed if cleaning results in non-empty text
                     # Keep other fields from the original dict
                     processed_item = ex_item.copy()
                     processed_item["text"] = cleaned_text # Standardize key to 'text'
-                    # Remove original key if it wasn't 'text'
-                    if "example" in processed_item and "text" != "example": 
+                    # Remove original key if it wasn't 'text' and was 'example'
+                    if "example" in processed_item and "example" != "text": 
                         del processed_item["example"] 
 
-        if cleaned_text and processed_item: # Ensure we have valid data
-             processed.append(processed_item)
-        elif cleaned_text and not processed_item: # Handle case where only cleaned text exists (from str input)
-             processed.append({"text": cleaned_text})
+        # Only append if we have a valid, cleaned text and a corresponding item structure
+        if cleaned_text: # This check is crucial
+            if processed_item and "text" in processed_item: # If item came from dict
+                processed.append(processed_item)
+            elif not processed_item: # If item came from string, create new dict
+                processed.append({"text": cleaned_text})
 
     return processed
 

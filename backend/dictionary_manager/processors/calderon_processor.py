@@ -27,6 +27,7 @@ from backend.dictionary_manager.text_helpers import (
     clean_html,
     normalize_lemma,
     standardize_source_identifier,
+    get_standard_code
     # Add other necessary imports:
     # extract_parenthesized_text, etc.
 )
@@ -36,30 +37,6 @@ logger = logging.getLogger(__name__)
 
 # Define the source identifier for this dictionary
 SOURCE_IDENTIFIER_CALDERON = "Calderon Diccionario 1915"
-
-# --- Part of Speech Standardization Map ---
-POS_MAP_CALDERON = {
-    "v.": "verb",
-    "n.": "noun",
-    "adj.": "adjective",
-    "adv.": "adverb",
-    "pron.": "pronoun",
-    "prep.": "preposition",
-    "conj.": "conjunction",
-    "art.": "article", # Or perhaps 'determiner'? Let's use article for now.
-    "interj.": "interjection",
-    # Add any other observed abbreviations if necessary
-    # Handle cases without a dot? e.g. "v" -> "verb"
-    "v": "verb",
-    "n": "noun",
-    "adj": "adjective",
-    "adv": "adverb",
-    "pron": "pronoun",
-    "prep": "preposition",
-    "conj": "conjunction",
-    "art": "article",
-    "interj": "interjection",
-}
 
 def _process_single_calderon_entry(cur, entry_dict: Dict[str, Any], source_identifier: str, word_id_cache: Dict) -> Dict:
     """Processes a single entry object from the Calderon dictionary JSON list."""
@@ -96,8 +73,8 @@ def _process_single_calderon_entry(cur, entry_dict: Dict[str, Any], source_ident
 
     # --- 2. Get or Create English Word ID & Handle POS/Pronunciation ---
     english_word_id = None
-    original_pos = None
-    standardized_pos = None
+    original_pos = None         # Will store the raw POS string like "v.", "n."
+    standardized_pos = None     # Will store the mapped POS string like "verb", "noun"
     pronunciation_text = None
 
     try:
@@ -109,17 +86,19 @@ def _process_single_calderon_entry(cur, entry_dict: Dict[str, Any], source_ident
 
         # Process POS
         if original_pos_str and isinstance(original_pos_str, str):
-            original_pos = original_pos_str.strip()
+            original_pos = original_pos_str.strip() # Store the raw original POS
             if original_pos:
                 word_metadata['calderon_pos'] = original_pos
-                # Standardize POS
-                standardized_pos = POS_MAP_CALDERON.get(original_pos.lower()) # Use lower case for matching
-                if standardized_pos:
+                # Standardize POS using get_standard_code
+                standardized_pos = get_standard_code(original_pos)
+                if standardized_pos != 'unc': # Check if mapping was successful (not uncategorized)
                      stats["pos_standardized"] += 1
                      word_metadata['standardized_pos'] = standardized_pos
                 else:
-                     logger.debug(f"[Calderon:{cleaned_headword}] Unmapped POS: '{original_pos}'")
-                     word_metadata['standardized_pos'] = None # Explicitly mark as not mapped
+                     if original_pos.lower() != 'unc': # Avoid logging if original was already 'unc' or similar
+                         logger.debug(f"[Calderon:{cleaned_headword}] POS '{original_pos}' mapped to 'unc' by get_standard_code.")
+                     word_metadata['standardized_pos'] = None # Explicitly mark as not mapped or mapped to unc
+            # If original_pos was empty after strip, original_pos remains None here
 
         # Process Pronunciation (store as-is after stripping)
         if pronunciation_str and isinstance(pronunciation_str, str):
@@ -194,7 +173,7 @@ def _process_single_calderon_entry(cur, entry_dict: Dict[str, Any], source_ident
                         relation_metadata_tl = {
                             "context": "Calderon Dictionary Tagalog Equivalent"
                         }
-                        if standardized_pos: # Use the standardized POS here
+                        if standardized_pos: # Use the mapped POS here
                             relation_metadata_tl["english_pos_context"] = standardized_pos
                         elif original_pos: # Fallback to original if not standardized
                              relation_metadata_tl["english_pos_context"] = original_pos
@@ -329,11 +308,15 @@ def _process_single_calderon_entry(cur, entry_dict: Dict[str, Any], source_ident
     if definition_text and isinstance(definition_text, str):
         cleaned_definition = definition_text.strip()
         if cleaned_definition:
+            # Determine POS to use for this definition entry
+            # Prioritize standardized_pos, fallback to original_pos if standardization failed but original exists
+            pos_for_definition = standardized_pos if standardized_pos else original_pos
             try:
                 def_id = insert_definition(
                     cur,
                     english_word_id,
                     definition_text=cleaned_definition,
+                    part_of_speech=pos_for_definition, # Pass the determined POS
                     sources=source_identifier, # Pass source identifier string directly
                     metadata={"context": "Calderon Dictionary Combined ES/TL Definition"}
                 )

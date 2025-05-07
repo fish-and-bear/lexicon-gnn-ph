@@ -26,6 +26,7 @@ from backend.dictionary_manager.db_helpers import (
     purge_database_tables,
     repair_database_issues,
     check_baybayin_consistency,
+    setup_parts_of_speech, # ADDED IMPORT
 )
 # Text helpers needed directly
 from backend.dictionary_manager.text_helpers import (
@@ -178,7 +179,7 @@ def create_argument_parser() -> argparse.ArgumentParser:
         "--check-exists", action="store_true", help="Skip identical existing entries"
     )
     migrate_parser.add_argument(
-        "--force", action="store_true", help="Force migration without confirmation"
+        "--force", action="store_true", help="Drop existing dictionary data and re-migrate all sources."
     )
     migrate_parser.add_argument(
         "--data-dir", type=str, help="Directory containing dictionary data files"
@@ -404,8 +405,28 @@ def migrate_data(args):
 
     try:
         cur = conn.cursor()
+
+        # --- ADDED: Purge data if --force is specified ---
+        if hasattr(args, 'force') and args.force:
+            console.print("[bold yellow]--force specified: Purging existing dictionary data before migration...[/]")
+            try:
+                # Calling the purge_database_tables defined locally in dictionary_manager.py
+                # This function is decorated with @with_transaction(commit=True)
+                # and expects a cursor.
+                purge_database_tables(cur) 
+                console.print("[green]Existing dictionary data purged successfully.[/]")
+            except Exception as e:
+                logger.error(f"Error during forced purge: {str(e)}", exc_info=True)
+                console.print(f"[bold red]Failed to purge existing data: {str(e)}[/]")
+                # Re-raise to stop the migration if purge fails when forced.
+                raise
+        # --- END ADDED CODE ---
+
         console.print("[bold]Setting up database schema...[/]")
         create_or_update_tables(conn)  # This function handles its own commit/rollback
+
+        logger.info("Setting up initial parts of speech...") # ADDED
+        setup_parts_of_speech(cur) # ADDED: Call the setup function
 
         console.print("[bold]Processing data sources...[/]")
         # --- Transaction for Data Processing is already implicitly started ---

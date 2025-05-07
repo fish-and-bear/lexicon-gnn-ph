@@ -26,12 +26,16 @@ from backend.dictionary_manager.db_helpers import (
 from backend.dictionary_manager.text_helpers import (
     SourceStandardization, # Use the class directly
     standardize_source_identifier, # Or the helper function if preferred
+    get_standard_code # ADDED IMPORT
 )
 from backend.dictionary_manager.enums import RelationshipType
 
 logger = logging.getLogger(__name__)
 
 # Moved from dictionary_manager.py (originally around line 949)
+
+# --- REMOVED: TAGALOG_COM_POS_TO_STANDARD_MAP ---
+# --- END REMOVED: POS Mapping ---
 
 def process_root_words_cleaned(cur, filename: str):
     """
@@ -164,7 +168,7 @@ def process_root_words_cleaned(cur, filename: str):
                     )
                     stats["skipped"] += 1
                     cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                    pbar.update(1)
+                    if pbar: pbar.update(1)
                     continue
 
                 language_code = "tl"
@@ -183,7 +187,7 @@ def process_root_words_cleaned(cur, filename: str):
                     cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
                     stats["errors"] += 1
                     error_types["RootWordCreationFailed"] = error_types.get("RootWordCreationFailed", 0) + 1
-                    pbar.update(1)
+                    if pbar: pbar.update(1)
                     continue
                     
                 logger.debug(f"Processing root word '{root_word}' (ID: {word_id})")
@@ -191,14 +195,18 @@ def process_root_words_cleaned(cur, filename: str):
                 # --- Process definition for the root word itself ---
                 if isinstance(data, dict):
                     # In dict format, root word details are in the details[root_word] if it exists
-                    root_word_details = root_details.get(root_word, {})
-                    if isinstance(root_word_details, dict):
-                        definition_text = root_word_details.get(
+                    root_word_details_for_def = root_details.get(root_word, {})
+                    if isinstance(root_word_details_for_def, dict):
+                        definition_text = root_word_details_for_def.get(
                             "definition", ""
                         ).strip()
-                        part_of_speech = (
-                            root_word_details.get("type", "").strip() or None
+                        part_of_speech_raw = (
+                            root_word_details_for_def.get("type", "").strip() or None
                         )
+                        # --- APPLY MAPPING using get_standard_code ---
+                        part_of_speech = get_standard_code(part_of_speech_raw)
+                        if part_of_speech_raw and part_of_speech == "unc" and part_of_speech_raw.lower() != "unc":
+                            logger.debug(f"Root POS '{part_of_speech_raw}' for '{root_word}' mapped to 'unc' by get_standard_code.")
 
                         if definition_text:
                             if definition_text.endswith("..."):
@@ -209,6 +217,7 @@ def process_root_words_cleaned(cur, filename: str):
                                 word_id,
                                 definition_text,
                                 part_of_speech=part_of_speech,
+                                sources=source_identifier # Pass source_identifier
                             )
                             if def_id:
                                 stats["definitions_added"] += 1
@@ -217,14 +226,14 @@ def process_root_words_cleaned(cur, filename: str):
                                 )
                 else:
                     # Process list format definitions
-                    definitions = root_details.get("definitions", [])
-                    if isinstance(definitions, list):
-                        for def_idx, definition_item in enumerate(definitions):
+                    definitions_list = root_details.get("definitions", [])
+                    if isinstance(definitions_list, list):
+                        for def_idx, definition_item in enumerate(definitions_list):
                             definition_text = None
                             part_of_speech = None
-                            examples_json = None
-                            tags_str = None
-                            usage_notes = None
+                            # examples_json = None # Not used
+                            # tags_str = None # Not used
+                            # usage_notes = None # Not used
 
                             if isinstance(definition_item, str):
                                 definition_text = definition_item.strip()
@@ -233,13 +242,15 @@ def process_root_words_cleaned(cur, filename: str):
                                     definition_item.get("text", "").strip()
                                     or definition_item.get("definition", "").strip()
                                 )
-                                part_of_speech = (
+                                part_of_speech_raw = (
                                     definition_item.get("pos")
                                     or definition_item.get("part_of_speech")
                                     or definition_item.get("type")
                                 )
-                                if part_of_speech:
-                                    part_of_speech = part_of_speech.strip()
+                                # --- APPLY MAPPING using get_standard_code ---
+                                part_of_speech = get_standard_code(part_of_speech_raw)
+                                if part_of_speech_raw and part_of_speech == "unc" and part_of_speech_raw.lower() != "unc":
+                                    logger.debug(f"Root POS '{part_of_speech_raw}' for '{root_word}' mapped to 'unc' by get_standard_code.")
 
                             if definition_text and definition_text.endswith("..."):
                                 definition_text = definition_text[:-3].strip()
@@ -250,6 +261,7 @@ def process_root_words_cleaned(cur, filename: str):
                                     word_id,
                                     definition_text,
                                     part_of_speech=part_of_speech,
+                                    sources=source_identifier # Pass source_identifier
                                 )
                                 if def_id:
                                     stats["definitions_added"] += 1
@@ -257,12 +269,12 @@ def process_root_words_cleaned(cur, filename: str):
                 # --- Process associated words ---
                 if isinstance(data, dict):
                     # In dictionary format, each key other than the root word is an associated word
-                    associated_words = {
+                    associated_words_map = {
                         k: v for k, v in root_details.items() if k != root_word
                     }
 
-                    for assoc_idx, (assoc_word, assoc_details) in enumerate(
-                        associated_words.items()
+                    for assoc_idx, (assoc_word, assoc_details_item) in enumerate(
+                        associated_words_map.items()
                     ):
                         if assoc_word and assoc_word != root_word:
                             stats["associated_processed"] += 1
@@ -303,15 +315,17 @@ def process_root_words_cleaned(cur, filename: str):
                                     source_identifier=source_identifier,
                                     metadata=inverse_rel_metadata
                                 )
-                                if rel_id:
+                                if rel_id: # Check if first relation was successful before counting
                                     stats["relations_added"] += 1
+                                if inverse_rel_id: # Could also count inverse if desired, or count pairs
+                                    # stats["relations_added"] += 1 # If counting each direction separately
                                     logger.debug(
-                                        f"Added relation: '{assoc_word}' DERIVED_FROM '{root_word}'"
+                                        f"Added relation: '{assoc_word}' DERIVED_FROM '{root_word}' (and inverse)"
                                     )
 
                                 # Add definition for the associated word
-                                if isinstance(assoc_details, dict):
-                                    assoc_def_text = assoc_details.get(
+                                if isinstance(assoc_details_item, dict):
+                                    assoc_def_text = assoc_details_item.get(
                                         "definition", ""
                                     ).strip()
                                     if assoc_def_text and assoc_def_text.endswith(
@@ -319,9 +333,13 @@ def process_root_words_cleaned(cur, filename: str):
                                     ):
                                         assoc_def_text = assoc_def_text[:-3].strip()
 
-                                    assoc_pos = (
-                                        assoc_details.get("type", "").strip() or None
+                                    assoc_pos_raw = (
+                                        assoc_details_item.get("type", "").strip() or None
                                     )
+                                    # --- APPLY MAPPING using get_standard_code ---
+                                    assoc_pos = get_standard_code(assoc_pos_raw)
+                                    if assoc_pos_raw and assoc_pos == "unc" and assoc_pos_raw.lower() != "unc":
+                                        logger.debug(f"Assoc POS '{assoc_pos_raw}' for '{assoc_word}' mapped to 'unc' by get_standard_code.")
 
                                     if assoc_def_text:
                                         assoc_def_id = insert_definition(
@@ -329,6 +347,7 @@ def process_root_words_cleaned(cur, filename: str):
                                             assoc_word_id,
                                             assoc_def_text,
                                             part_of_speech=assoc_pos,
+                                            sources=source_identifier # Pass source_identifier
                                         )
                                         if assoc_def_id:
                                             stats["definitions_added"] += 1
@@ -337,10 +356,10 @@ def process_root_words_cleaned(cur, filename: str):
                                             )
                 else:
                     # Process original list format associated words
-                    associated_data = root_details.get("associated_words", {})
+                    associated_data_list = root_details.get("associated_words", {}) # Default to dict for safety
                     associated_items_iterator = None
 
-                    if isinstance(associated_data, dict):
+                    if isinstance(associated_data_list, dict):
 
                         def assoc_dict_iterator(d):
                             for i, (key, value) in enumerate(d.items()):
@@ -351,37 +370,37 @@ def process_root_words_cleaned(cur, filename: str):
                                         f"Skipping non-dict value for associated word key '{key}' in root '{root_word}'"
                                     )
 
-                        associated_items_iterator = assoc_dict_iterator(associated_data)
-                    elif isinstance(associated_data, list):
+                        associated_items_iterator = assoc_dict_iterator(associated_data_list)
+                    elif isinstance(associated_data_list, list):
 
                         def assoc_list_iterator(l):
                             for i, item in enumerate(l):
-                                word_str, details = None, {}
+                                word_str, details_dict = None, {}
                                 if isinstance(item, str):
                                     word_str = item.strip()
                                 elif isinstance(item, dict):
                                     word_str = item.get("word", "").strip()
-                                    details = item
+                                    details_dict = item
                                 if word_str:
-                                    yield i, word_str, details
+                                    yield i, word_str, details_dict
                                 else:
                                     logger.warning(
                                         f"Skipping invalid associated word item at index {i} in root '{root_word}' (list format)"
                                     )
 
-                        associated_items_iterator = assoc_list_iterator(associated_data)
+                        associated_items_iterator = assoc_list_iterator(associated_data_list)
                     else:
                         logger.warning(
-                            f"Unexpected format for 'associated_words' for root '{root_word}': {type(associated_data)}. Skipping."
+                            f"Unexpected format for 'associated_words' for root '{root_word}': {type(associated_data_list)}. Skipping."
                         )
                         associated_items_iterator = iter([])
 
-                    if associated_data:
+                    if associated_data_list: # Check if it's not empty
                         processed_assoc_count_for_root = 0
                         for (
                             assoc_idx,
                             assoc_word,
-                            assoc_details,
+                            assoc_details_item,
                         ) in associated_items_iterator:
                             if assoc_word and assoc_word != root_word:
                                 stats["associated_processed"] += 1
@@ -410,12 +429,8 @@ def process_root_words_cleaned(cur, filename: str):
                                         source_identifier=source_identifier,
                                         metadata=rel_metadata
                                     )
-                                    if rel_id:
-                                        stats["relations_added"] += 1
-                                        logger.debug(
-                                            f"Added relation: '{assoc_word}' DERIVED_FROM '{root_word}'"
-                                        )
-                                    # FIX 2: Add inverse ROOT_OF relationship (root -> assoc)
+                                    
+                                    # Add inverse ROOT_OF relationship (root -> assoc)
                                     inverse_rel_metadata = { # Re-add metadata dictionary
                                         "source": source_identifier,
                                         "index": assoc_idx,
@@ -429,17 +444,29 @@ def process_root_words_cleaned(cur, filename: str):
                                         source_identifier=source_identifier,
                                         metadata=inverse_rel_metadata
                                     )
+                                    if rel_id: # Check if first relation was successful before counting
+                                        stats["relations_added"] += 1
+                                    if inverse_rel_id: # Could also count inverse if desired, or count pairs
+                                        # stats["relations_added"] += 1 # If counting each direction separately
+                                        logger.debug(
+                                            f"Added relation: '{assoc_word}' DERIVED_FROM '{root_word}' (and inverse)"
+                                        )
+
                                     # Process definition for associated word
-                                    assoc_def_text = assoc_details.get(
+                                    assoc_def_text = assoc_details_item.get(
                                         "definition", ""
                                     ).strip()
                                     if assoc_def_text and assoc_def_text.endswith(
                                         "..."
                                     ):
                                         assoc_def_text = assoc_def_text[:-3].strip()
-                                    assoc_pos = (
-                                        assoc_details.get("type", "").strip() or None
+                                    assoc_pos_raw = (
+                                        assoc_details_item.get("type", "").strip() or None
                                     )
+                                    # --- APPLY MAPPING using get_standard_code ---
+                                    assoc_pos = get_standard_code(assoc_pos_raw)
+                                    if assoc_pos_raw and assoc_pos == "unc" and assoc_pos_raw.lower() != "unc":
+                                        logger.debug(f"Assoc POS '{assoc_pos_raw}' for '{assoc_word}' mapped to 'unc' by get_standard_code.")
 
                                     if assoc_def_text:
                                         assoc_def_id = insert_definition(
@@ -447,6 +474,7 @@ def process_root_words_cleaned(cur, filename: str):
                                             assoc_word_id,
                                             assoc_def_text,
                                             part_of_speech=assoc_pos,
+                                            sources=source_identifier # Pass source_identifier
                                         )
                                         if assoc_def_id:
                                             stats["definitions_added"] += 1
@@ -492,19 +520,19 @@ def process_root_words_cleaned(cur, filename: str):
                         cur.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name}")
                         logger.info(f"Successfully rolled back to savepoint {savepoint_name}")
                         try:
-                            cur.execute(f"RELEASE SAVEPOINT {savepoint_name}")
-                            logger.debug(f"Released savepoint {savepoint_name}")
-                        except Exception as rel_error:
-                            logger.warning(f"Error releasing savepoint {savepoint_name}: {rel_error}")
-                            # Not fatal if we can't release the savepoint
-                    except psycopg2.errors.InvalidSavepointSpecification as sv_error:
-                        logger.error(f"Savepoint {savepoint_name} does not exist: {sv_error}")
+                            cur.execute(f"RELEASE SAVEPOINT {savepoint_name}") # This is okay to try, might fail if savepoint is gone
+                            logger.debug(f"Released savepoint {savepoint_name} after rollback (or it was already gone).")
+                        except Exception as rel_error: # Catch if release fails (e.g. savepoint does not exist)
+                            logger.warning(f"Could not release savepoint {savepoint_name} after rollback (may have already been consumed): {rel_error}")
+                    except psycopg2.errors.InvalidSavepointSpecification as sv_error: # type: ignore
+                        logger.error(f"Savepoint {savepoint_name} does not exist or is invalid, cannot rollback to it: {sv_error}")
                         # If the savepoint doesn't exist but transaction is not aborted, 
-                        # we can still continue with the next entry
+                        # we might still be able to continue with the next entry.
+                        # The transaction state needs careful watching here.
                     except Exception as rb_error:
-                        logger.error(f"Error during savepoint rollback: {rb_error}")
+                        logger.error(f"Error during savepoint rollback for {savepoint_name}: {rb_error}")
                         # If we can't rollback to the savepoint but the transaction isn't
-                        # aborted yet, we can try to continue with the next entry
+                        # aborted yet, we can try to continue with the next entry.
             
             finally:
                 if pbar: # Update pbar even if entry fails
@@ -512,14 +540,16 @@ def process_root_words_cleaned(cur, filename: str):
                 
         # After the loop, check if the transaction is aborted
         if hasattr(conn, 'info') and conn.info and conn.info.transaction_status == psycopg2.extensions.TRANSACTION_STATUS_INERROR:
-            logger.error("Transaction is in aborted state after processing all entries")
+            logger.error("Transaction is in aborted state after processing all entries for this source.")
             try:
-                conn.rollback()
-                logger.info("Successfully rolled back transaction after processing")
-                raise RuntimeError("Transaction was aborted during processing, rolled back")
+                conn.rollback() # Attempt to rollback the main transaction for this processor
+                logger.info("Successfully rolled back the main transaction for this processor due to prior abort.")
+                # Raise an error to inform migrate_data that this source failed critically
+                raise RuntimeError(f"Processing for {filename} failed critically due to transaction abort, and was rolled back.")
             except Exception as rb_error:
-                logger.critical(f"Failed to rollback transaction after processing: {rb_error}")
-                raise RuntimeError(f"Critical database state - failed to rollback aborted transaction: {rb_error}")
+                logger.critical(f"Failed to rollback main transaction for {filename} after processing: {rb_error}")
+                # This is a very bad state, data might be inconsistent.
+                raise RuntimeError(f"CRITICAL: Failed to rollback aborted transaction for {filename}: {rb_error}")
 
     finally: # ADDED FINALLY for pbar cleanup
         if pbar:
@@ -531,10 +561,15 @@ def process_root_words_cleaned(cur, filename: str):
         logger.warning(
             f"Error summary for {filename}: {json.dumps(error_types, indent=2)}"
         )
-    if stats["roots_processed"] == 0 and total_roots > 0:
-        logger.warning(
-            f"No root entries were successfully processed from {filename} despite finding {total_roots} entries."
+    if stats["roots_processed"] == 0 and total_roots > 0 and stats["errors"] == total_roots:
+        logger.error( # Changed to error if ALL entries failed
+            f"ALL {total_roots} root entries failed processing from {filename}."
         )
+    elif stats["roots_processed"] == 0 and total_roots > 0:
+         logger.warning(
+            f"No root entries were successfully processed from {filename} despite finding {total_roots} entries. Errors: {stats['errors']}, Skipped: {stats['skipped']}."
+        )
+
 
     # <<< Log the final statistics >>>
     logger.info(f"Statistics for {filename}: {json.dumps(stats, indent=2)}")

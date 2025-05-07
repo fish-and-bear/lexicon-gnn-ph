@@ -30,6 +30,7 @@ from backend.dictionary_manager.text_helpers import (
     SourceStandardization,
     standardize_source_identifier,
     normalize_lemma,
+    get_standard_code
 )
 from backend.dictionary_manager.enums import RelationshipType
 
@@ -199,6 +200,8 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
                     if pos_list and isinstance(pos_list[0], str) and pos_list[0].strip()
                     else None
                 )
+                
+                # --- End POS Mapping ---
 
                 # --- Process Usage Labels as Word Tags ---
                 # Add usage labels to the word's tags column
@@ -253,7 +256,7 @@ def process_gay_slang_json(cur, filename: str) -> Tuple[int, int]:
                                     word_id,
                                     def_meaning,
                                     sources=source_identifier,
-                                    part_of_speech=raw_pos_str,
+                                    part_of_speech=get_standard_code(raw_pos_str),
                                 )
                                 if def_id:
                                     stats["definitions"] += 1

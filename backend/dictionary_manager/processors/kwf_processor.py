@@ -238,22 +238,29 @@ def process_kwf_dictionary(cur, filename: str) -> Tuple[int, int]:
                 if isinstance(definitions_by_pos, dict):
                     for raw_pos, definitions_list in definitions_by_pos.items():
                         if not isinstance(definitions_list, list): logger.debug(f"Skipping invalid definitions list for POS '{raw_pos}' in word '{lemma}'"); continue
-                        standardized_pos_code = get_standard_code(raw_pos); pos_id = None
+                        
+                        # --- Apply POS Mapping using text_helpers.get_standard_code ---
+                        mapped_pos_str = get_standard_code(raw_pos) # Use the centralized function
+                        if raw_pos and mapped_pos_str == "unc" and raw_pos.strip().lower() != "unc":
+                            logger.debug(f"POS '{raw_pos}' for '{lemma}' mapped to 'unc' by get_standard_code.")
+                        # --- End POS Mapping ---
+                        
+                        pos_id = None
                         try:
-                            # Use get_standardized_pos_id directly to get the ID
-                            pos_id = get_standardized_pos_id(cur, raw_pos)
+                            # Use get_standardized_pos_id directly with the mapped POS string
+                            pos_id = get_standardized_pos_id(cur, mapped_pos_str) 
                             if not pos_id:
-                                 logger.warning(f"Failed to get standardized POS ID for '{raw_pos}' (Word: '{lemma}'). Using 'unc'.")
+                                 logger.warning(f"Failed to get standardized POS ID for mapped POS '{mapped_pos_str}' (from raw '{raw_pos}', Word: '{lemma}'). Using 'unc'.")
                                  pos_id = get_uncategorized_pos_id(cur)
                         except Exception as pos_err:
-                            logger.warning(f"Error getting POS ID for '{raw_pos}' (Word: '{lemma}'): {pos_err}. Using 'unc'.")
+                            logger.warning(f"Error getting POS ID for mapped POS '{mapped_pos_str}' (from raw '{raw_pos}', Word: '{lemma}'): {pos_err}. Using 'unc'.")
                             try:
                                 pos_id = get_uncategorized_pos_id(cur)
                             except Exception as unc_err:
-                                logger.error(f"CRITICAL: Failed to get even 'unc' POS ID: {unc_err}. Skipping definitions for '{raw_pos}' of '{lemma}'.")
+                                logger.error(f"CRITICAL: Failed to get even 'unc' POS ID: {unc_err}. Skipping definitions for POS '{raw_pos}' of '{lemma}'.")
                                 continue # Skip definitions for this POS
 
-                        if pos_id is None:
+                        if pos_id is None: # Should not happen if get_uncategorized_pos_id works
                             logger.error(f"Critical error: pos_id is None after fallbacks for POS '{raw_pos}' of '{lemma}'. Skipping definitions.")
                             continue
 
@@ -288,7 +295,7 @@ def process_kwf_dictionary(cur, filename: str) -> Tuple[int, int]:
                                     cur,
                                     word_id=word_id,
                                     definition_text=definition_text,
-                                    part_of_speech=raw_pos,  # Changed from original_pos
+                                    part_of_speech=mapped_pos_str,  # Pass the mapped POS string
                                     usage_notes=usage_note_text,
                                     tags=def_tags_list,
                                     metadata=metadata_dict, # Pass dictionary or None directly

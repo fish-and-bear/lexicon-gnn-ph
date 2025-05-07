@@ -559,13 +559,13 @@ import React, {
         if (isDraggingRef.current || !mainWordIdString) return; 
 
         console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
-
+  
         // --- Find Path to Main Word (BFS Backwards) --- 
         let foundPath = false;
         let calculatedPath: string[] | undefined = undefined; // Use a different name for clarity
         const pathNodeIds = new Set<string>(); // Initialize here
         const pathLinkIds = new Set<string>(); // Initialize here
-
+  
         console.log(`[BFS Start] Starting BFS for node: ${d.id} to find main word: ${mainWordIdString}`);
 
         if (d.id !== mainWordIdString) { 
@@ -579,29 +579,29 @@ import React, {
             const incomingLinks = baseLinks.filter(l => l.target === currentId);
             const outgoingLinks = baseLinks.filter(l => l.source === currentId);
             const potentialLinks = [...incomingLinks, ...outgoingLinks];
-
+  
             for (const link of potentialLinks) {
               const sourceId = link.source as string; 
               const targetId = link.target as string;
               const neighborId = sourceId === currentId ? targetId : sourceId;
-
+  
               if (!visited.has(neighborId)) {
                   visited.add(neighborId);
                   const newPathForThisBranch = [...currentPath, neighborId]; // Create path first
-
-                  if (neighborId === mainWordIdString) { 
+  
+                if (neighborId === mainWordIdString) { 
                     console.log(`[BFS PATH FOUND] Found main word '${mainWordIdString}' via neighbor '${neighborId}' from node '${currentId}'`);
                     calculatedPath = newPathForThisBranch.reverse(); // Assign to outer scope variable
-                    foundPath = true;
-                    break; // Exit inner loop
-                  }
+                  foundPath = true;
+                  break; // Exit inner loop
+                }
                   queue.push([neighborId, newPathForThisBranch]); // Use the created path
               }
             }
             if (foundPath) break; // Exit outer loop if path found
           }
           console.log(`[BFS End] For node ${d.id}, foundPath = ${foundPath}`);
-        } else { 
+        } else {
             calculatedPath = [mainWordIdString];
             foundPath = true; // Mark as found for main node
         }
@@ -627,7 +627,7 @@ import React, {
             }
         }
         // --- End populating path sets --- 
-
+  
         // Find direct connections (neighbors) using baseLinks
         const directNeighborIds = new Set<string>();
         baseLinks.forEach((l) => { 
@@ -1801,7 +1801,7 @@ import React, {
                  )}
                </div>
              </div>
-           )}
+          )}
            <div style={{ 
              fontSize: "11px", 
              marginTop: "8px", 

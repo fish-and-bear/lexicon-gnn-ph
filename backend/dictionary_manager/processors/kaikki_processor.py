@@ -45,14 +45,12 @@ from backend.dictionary_manager.text_helpers import (
     normalize_lemma,
     standardize_source_identifier,
     get_language_code, # <-- Import the robust helper
-    BaybayinRomanizer
+    BaybayinRomanizer,
+    get_standard_code # Ensure get_standard_code is imported
 )
-from backend.dictionary_manager.enums import RelationshipType
+from backend.dictionary_manager.enums import RelationshipType, DEFAULT_LANGUAGE_CODE # MODIFIED IMPORT
 
 logger = logging.getLogger(__name__)
-
-# Default language code for Tagalog entries
-DEFAULT_LANGUAGE_CODE = "tl"
 
 # For simple Baybayin validation
 VALID_BAYBAYIN_REGEX = re.compile(r'^[\u1700-\u171F\s\u1735]+$')
@@ -81,10 +79,88 @@ NON_WORD_STRINGS = [
     "spanish-based orthography",
 ]
 
+# --- ADDED: POS Mapping for Kaikki data ---
+KAIKKI_POS_TO_STANDARD_MAP = {
+    # Common English POS tags and their Tagalog equivalents (or standardized English if preferred)
+    "noun": "noun", # Changed from "pangngalan" to "noun" to use standard POS codes
+    "verb": "verb", # Changed from "pandiwa" to "verb"
+    "adj": "adj", # Changed from "pang-uri" to "adj"
+    "adjective": "adj",
+    "adv": "adv", # Changed from "pang-abay" to "adv"
+    "adverb": "adv",
+    "pron": "pron", # Changed from "panghalip" to "pron"
+    "pronoun": "pron",
+    "prep": "prep", # Changed from "pang-ukol" to "prep"
+    "preposition": "prep",
+    "conj": "conj", # Changed from "pangatnig" to "conj"
+    "conjunction": "conj",
+    "interj": "interj", # Changed from "pandamdam" to "interj"
+    "interjection": "interj",
+    "num": "num", # Changed from "pamilang" to "num"
+    "numeral": "num",
+    "det": "det", # Changed from "pantukoy" to "det"
+    "determiner": "det",
+    "article": "det", # Often synonymous with determiner
+    "particle": "part", # Changed from "partikula" to "part"
+    "part": "part",
+    "phrase": "phrase", # Kept as is
+    "proverb": "phrase", # Changed from "salawikain" to "phrase"
+    "proper noun": "propn", # Changed from "pangngalang pantangi" to "propn"
+    "propn": "propn",
+    "name": "propn", # Often used for proper nouns
+    "initialism": "abbr", # Changed from "daglat" to "abbr"
+    "acronym": "abbr",
+    "abbreviation": "abbr", # Changed from "daglat" to "abbr"
+    "abbr": "abbr",
+    "symbol": "sym", # Changed from "simbolo" to "sym"
+    "suffix": "suffix", # Kept as is
+    "prefix": "prefix", # Kept as is
+    "infix": "affix", # Changed from "gitlapi" to "affix"
+    "circumfix": "affix", # Changed from "kabilaan" to "affix"
+    "interfix": "affix", # Changed from "panlapi" to "affix"
+    "affix": "affix",
+    "root": "root", # Changed from "salitang-ugat" to "root"
+    "character": "char", # Changed from "titik" to "char"
+    "letter": "char",
+    "romanization": "rom", # Changed from "romanisasyon" to "rom"
+    "expression": "phrase", # Changed from "parirala" to "phrase"
+    "idiom": "phrase", # Changed from "idyoma" to "phrase"
+    "contraction": "contraction", # Kept as is
+    "classifier": "class", # Changed from "pamilang" to "class"
+    "headline": "phrase", # Changed from "ulohang balita" to "phrase"
+    "prep_phrase": "phrase", # Changed from "parirala" to "phrase"
+    "punct": "punct", # Kept as is
+    # Map Tagalog POS terms to standard codes
+    "pangngalan": "noun",
+    "pandiwa": "verb",
+    "pang-uri": "adj",
+    "pang-abay": "adv",
+    "panghalip": "pron",
+    "pang-ukol": "prep",
+    "pangatnig": "conj",
+    "pandamdam": "interj",
+    "pamilang": "num",
+    "pantukoy": "det",
+    "partikula": "part",
+    "parirala": "phrase",
+    "pangngalang pantangi": "propn",
+    "daglat": "abbr",
+    "simbolo": "sym",
+    "gitlapi": "affix",
+    "kabilaan": "affix",
+    "panlapi": "affix",
+    "salitang-ugat": "root",
+    "titik": "char",
+    "romanisasyon": "rom",
+    "idyoma": "phrase",
+    "salawikain": "phrase"
+}
+# --- END ADDED: POS Mapping ---
+
 # --- NEW HELPER FUNCTION ---
 # Replaced with adapted logic from dictionary_manager_orig.py.backup
 def extract_script_info(
-    entry: Dict[str, Any], script_name_in_template: str, script_tag: str
+    entry: Dict[str, Any], script_tag: str
 ) -> Tuple[Optional[str], Optional[str]]:
     """
     Extracts specific script form and explicit romanization if available,
@@ -93,7 +169,6 @@ def extract_script_info(
 
     Args:
         entry: The dictionary entry dictionary.
-        script_name_in_template: (Currently unused after removing head_template logic) The name for potential future use.
         script_tag: The tag used to identify the script in the 'forms' array (e.g., "Baybayin", "Badlit").
 
     Returns:
@@ -139,6 +214,19 @@ def extract_script_info(
     # If not found in forms, return None, None (head_templates fallback removed)
     return None, None
 # --- END NEW HELPER FUNCTION ---
+
+# --- ADDED: get_non_word_note_type helper ---
+def get_non_word_note_type(non_word_str: str) -> str:
+    """Categorize a non-word string into a note type."""
+    s = non_word_str.lower()
+    if s in NON_WORD_STRINGS: # Use the existing list for general usage notes
+        return "Usage"
+    # Add more specific categorizations if needed based on observed non-word strings
+    # For example, could check for patterns indicating language codes, place names etc.
+    # if re.match(r"^[a-z]{2,3}(-([A-Za-z]{2}|[0-9]{3}))?$", s): # Basic lang code regex
+    #     return "Language Code"
+    return "Descriptor" # Default category
+# --- END ADDED: get_non_word_note_type helper ---
 
 # Helper function to normalize relation types
 def normalize_relation_type(rel_type_str):
@@ -207,7 +295,7 @@ def collect_related_words_batch(entry, language_code, word_cache):
                     if comp and isinstance(comp, str): # Check type
                         comp_clean = clean_html(comp).strip()
                         if comp_clean and comp_clean.lower() != main_word and comp_clean.lower() not in NON_WORD_STRINGS:
-                            words_to_lookup.add((comp_clean, language_code))
+                            words_to_lookup.add((comp_clean, language_code)) # Blend uses main entry lang code (string)
             # ... Add similar isinstance checks for other template types ...
             elif template_name in ['inh', 'inherited']:
                 proto_lang = args.get('2', '')
@@ -217,8 +305,9 @@ def collect_related_words_batch(entry, language_code, word_cache):
                     proto_word_clean = clean_html(proto_word).lstrip('*').strip()
                     if proto_word_clean and proto_word_clean.lower() != main_word and proto_word_clean.lower() not in NON_WORD_STRINGS:
                         # Standardize proto_lang if needed
-                        proto_lang_std = get_language_code(proto_lang) or proto_lang # Attempt standardization
-                        words_to_lookup.add((proto_word_clean, proto_lang_std))
+                        std_proto_lang_tuple = get_language_code(proto_lang) 
+                        db_proto_lang_code = std_proto_lang_tuple[0] if std_proto_lang_tuple else DEFAULT_LANGUAGE_CODE # Use index 0
+                        words_to_lookup.add((proto_word_clean, db_proto_lang_code)) # MODIFIED: Add only std code
 
             elif template_name in ['cog', 'cognate']:
                 cog_lang = args.get('1', '')
@@ -227,8 +316,9 @@ def collect_related_words_batch(entry, language_code, word_cache):
                 if cog_lang and isinstance(cog_lang, str) and cog_word and isinstance(cog_word, str):
                      cog_clean = clean_html(cog_word).strip()
                      if cog_clean and cog_clean.lower() != main_word and cog_clean.lower() not in NON_WORD_STRINGS:
-                         cog_lang_std = get_language_code(cog_lang) or cog_lang
-                         words_to_lookup.add((cog_clean, cog_lang_std))
+                         std_cog_lang_tuple = get_language_code(cog_lang)
+                         db_cog_lang_code = std_cog_lang_tuple[0] if std_cog_lang_tuple else DEFAULT_LANGUAGE_CODE # Use index 0
+                         words_to_lookup.add((cog_clean, db_cog_lang_code)) # MODIFIED: Add only std code
 
             elif template_name == 'doublet':
                  doublet_lang_raw = args.get('1', '')
@@ -238,8 +328,10 @@ def collect_related_words_batch(entry, language_code, word_cache):
                      doublet_clean = clean_html(doublet_word).strip()
                      if doublet_clean and doublet_clean.lower() != main_word and doublet_clean.lower() not in NON_WORD_STRINGS:
                         # Use entry language if specific lang isn't provided or invalid
-                        doublet_lang = get_language_code(doublet_lang_raw) or language_code
-                        words_to_lookup.add((doublet_clean, doublet_lang))
+                        std_doublet_lang_tuple = get_language_code(doublet_lang_raw) 
+                        # If mapping fails for doublet lang, default to main entry's language code (which is already a string)
+                        db_doublet_lang_code = std_doublet_lang_tuple[0] if std_doublet_lang_tuple else language_code # Use index 0 or main entry lang code
+                        words_to_lookup.add((doublet_clean, db_doublet_lang_code)) # MODIFIED: Add only std code
 
             elif template_name in ['derived', 'borrowing', 'derived from', 'borrowed from', 'bor', 'der', 'bor+']:
                 source_lang_raw = ''
@@ -250,8 +342,10 @@ def collect_related_words_batch(entry, language_code, word_cache):
                      source_clean = clean_html(source_word).strip()
                      if source_clean and source_clean.lower() != main_word and source_clean.lower() not in NON_WORD_STRINGS:
                          # Standardize and default language
-                         source_lang = get_language_code(source_lang_raw) or language_code
-                         words_to_lookup.add((source_clean, source_lang))
+                         std_source_lang_tuple = get_language_code(source_lang_raw)
+                         # Default to main entry lang code if standardization fails
+                         db_source_lang_code = std_source_lang_tuple[0] if std_source_lang_tuple else language_code # Use index 0 or main entry lang code
+                         words_to_lookup.add((source_clean, db_source_lang_code)) # MODIFIED: Add only std code
 
 
     # 2. Process senses for semantic relations
@@ -279,7 +373,9 @@ def collect_related_words_batch(entry, language_code, word_cache):
                             # Check if language is specified and standardize it
                             item_lang_raw = rel_item.get('lang')
                             if item_lang_raw and isinstance(item_lang_raw, str):
-                                rel_lang = get_language_code(item_lang_raw) or language_code # Use standardized or default
+                                std_rel_lang_tuple = get_language_code(item_lang_raw)
+                                # Default to main entry lang code if standardization fails
+                                rel_lang = std_rel_lang_tuple[0] if std_rel_lang_tuple else language_code # Use index 0 or main entry lang code
                             # If 'lang' key exists but is empty/None, rel_lang remains the default (language_code)
 
                         # Check if rel_word is a non-empty string before cleaning
@@ -476,10 +572,9 @@ def process_kaikki_jsonl(cur, filename: str):
                         if not transaction_aborted:
                            try:
                                cur.execute(f"ROLLBACK TO SAVEPOINT {entry_savepoint_name}")
-                               # RELEASE only if rollback succeeded 
-                               cur.execute(f"RELEASE SAVEPOINT {entry_savepoint_name}")
+                               # --- REMOVED LINE: cur.execute(f"RELEASE SAVEPOINT {entry_savepoint_name}") ---
                            except Exception as rb_err:
-                               logger.error(f"Error during savepoint rollback/release after unexpected error for entry {entry_index}: {rb_err}. Transaction likely aborted.")
+                               logger.error(f"Error during savepoint rollback after unexpected error for entry {entry_index}: {rb_err}. Transaction likely aborted.")
                                # Mark transaction as aborted if rollback fails
                                transaction_aborted = True
                         else:
@@ -581,13 +676,15 @@ def process_kaikki_jsonl(cur, filename: str):
         logger.debug(f"--- Starting processing for entry: '{word}' ---")
 
         # --- EARLY Language Code Determination ---
-        lang_raw = entry.get("lang", "") or entry.get("lang_code", "") # Check both common keys
-        language_code = get_language_code(lang_raw) or DEFAULT_LANGUAGE_CODE # Use imported helper
-        if not language_code: # Should not happen with default, but safety check
-             logger.critical(f"CRITICAL: Could not determine language code for entry '{word}' (lang: {lang_raw}). Using default '{DEFAULT_LANGUAGE_CODE}'.")
-             language_code = DEFAULT_LANGUAGE_CODE # Ensure it's set
+        lang_raw_from_entry = entry.get("lang", "") or entry.get("lang_code", "") # Check both common keys
+        # MODIFIED: Unpack tuple from get_language_code
+        language_code, raw_input_lang = get_language_code(lang_raw_from_entry) 
+        if not language_code: # Should not happen with default in get_language_code
+             logger.critical(f"CRITICAL: Could not determine language code for entry '{word}' (lang: {lang_raw_from_entry}). Using default '{DEFAULT_LANGUAGE_CODE}'.")
+             language_code = DEFAULT_LANGUAGE_CODE 
+             # raw_input_lang would be the original lang_raw_from_entry here if get_language_code returns it even on empty input
 
-        logger.debug(f"[{word}] Language code determined: {language_code} (from raw: '{lang_raw}')")
+        logger.debug(f"[{word}] Language code determined: {language_code} (from raw: '{raw_input_lang}')")
 
         # --- Initialize variables ---
         word_id = None
@@ -601,10 +698,10 @@ def process_kaikki_jsonl(cur, filename: str):
             # Extract Baybayin and other script info
             logger.debug(f"[{word}] Extracting script info...")
             baybayin_form, baybayin_romanized = extract_script_info(
-                entry, "Baybayin", "Baybayin"
+                entry, "Baybayin"
             )
             badlit_form, badlit_romanized = extract_script_info(
-                entry, "Badlit", "Badlit"
+                entry, "Badlit"
             )
             logger.debug(f"[{word}] Script info extracted. Baybayin: '{baybayin_form}', Badlit: '{badlit_form}'")
 
@@ -717,34 +814,14 @@ def process_kaikki_jsonl(cur, filename: str):
 
                 # Create or get word ID - use original 'word', normalization is internal
                 logger.debug(f"[{word}] Calling get_or_create_word_id...")
-                # --- DEBUG: Log arguments before calling get_or_create_word_id ---
-                log_get_or_create_args = {
-                    "lemma": word, # Use original word
-                    "language_code": language_code,
-                    "source_identifier": source_identifier,
-                    "preserve_numbers": True, # Keep this if Kaikki lemmas need numbers preserved
-                    "has_baybayin": has_baybayin,
-                    "baybayin_form": validated_baybayin_form,
-                    "romanized_form": romanized_form, # Pass the determined romanization
-                    "badlit_form": badlit_form, # Pass Badlit form if found
-                    "hyphenation": hyphenation, # Pass the validated list/None
-                    "is_proper_noun": is_proper_noun,
-                    "is_abbreviation": is_abbreviation,
-                    "is_initialism": is_initialism,
-                    "tags": word_tags_str,
-                    "word_metadata": word_metadata,
-                }
-                # Truncate long strings for logging clarity
-                truncated_log_args = {k: (str(v)[:100] + '...' if isinstance(v, str) and len(v) > 100 else v)
-                                      for k, v in log_get_or_create_args.items()}
-                logger.debug(f"[{word}] Args for get_or_create_word_id (truncated): {truncated_log_args}")
-                # --- END DEBUG LOG ---
+                
+                # ADDED raw_input_language to parameters for get_or_create_word_id
                 word_id = get_or_create_word_id(
                     cur,
-                    lemma=word, # Use original word
+                    lemma=word, 
                     language_code=language_code,
                     source_identifier=source_identifier,
-                    preserve_numbers=True, # Keep this if needed
+                    preserve_numbers=True, 
                     has_baybayin=has_baybayin,
                     baybayin_form=validated_baybayin_form,
                     romanized_form=romanized_form,
@@ -754,7 +831,8 @@ def process_kaikki_jsonl(cur, filename: str):
                     is_abbreviation=is_abbreviation,
                     is_initialism=is_initialism,
                     tags=word_tags_str,
-                    word_metadata=word_metadata,
+                    word_metadata=word_metadata, # Original word_metadata
+                    raw_input_language=raw_input_lang # Pass the raw language string
                 )
                 logger.debug(f"[{word}] get_or_create_word_id returned ID: {word_id}")
 
@@ -770,8 +848,8 @@ def process_kaikki_jsonl(cur, filename: str):
             # --- BATCH PROCESSING FOR RELATED WORDS ---
             logger.debug(f"[{word}] Collecting related words for batch lookup...")
             try:
-                # Ensure language_code is passed correctly
-                related_words_batch = collect_related_words_batch(entry, language_code, word_cache)
+                # Ensure language_code is passed correctly (this is the standardized one for the main entry)
+                related_words_batch = collect_related_words_batch(entry, language_code, word_cache) 
                 # Check if the result is None (indicating an error in collection)
                 if related_words_batch is None:
                     logger.warning(f"[{word}] collect_related_words_batch returned None, possibly due to invalid entry data. Skipping batch lookup.")
@@ -878,8 +956,9 @@ def process_kaikki_jsonl(cur, filename: str):
                                     homophone_word_id = get_or_create_word_id(
                                         cur,
                                         homophone_clean,
-                                        homophone_lang,
+                                        homophone_lang, # Standardized language of the homophone (often same as main entry)
                                         source_identifier,
+                                        raw_input_language=raw_input_lang if homophone_lang == language_code else homophone_lang # Pass main raw_input_lang if same lang, else just the code
                                     )
                                     if homophone_word_id:
                                         word_cache[homophone_cache_key] = homophone_word_id
@@ -2025,6 +2104,7 @@ def process_kaikki_jsonl(cur, filename: str):
                                         desc_word_clean,
                                         desc_lang,
                                         source_identifier,
+                                        raw_input_language=desc_lang # Pass the code itself as raw
                                     )
                                     if descendant_word_id:
                                         word_cache[desc_cache_key] = descendant_word_id
@@ -2166,6 +2246,12 @@ def process_kaikki_jsonl(cur, filename: str):
                     # Get POS information - inherit from top-level or use sense-specific if available
                     original_pos = sense.get("pos", pos)  # Use sense pos if available, otherwise top-level pos
 
+                    # --- Apply POS Mapping using get_standard_code ---
+                    mapped_pos_for_sense = get_standard_code(original_pos) # MODIFIED LINE
+                    if original_pos and mapped_pos_for_sense == "unc" and original_pos.lower() != "unc":
+                        logger.debug(f"POS '{original_pos}' for '{word}' (sense {sense_idx}) mapped to 'unc' by get_standard_code.")
+                    # --- End POS Mapping ---
+
                     # Create metadata to store additional sense information
                     metadata = {}
                     
@@ -2284,7 +2370,7 @@ def process_kaikki_jsonl(cur, filename: str):
                             word_id,
                             definition_text,
                             sources=source_identifier,  # Correct argument name is 'sources'
-                            part_of_speech=original_pos,  # Pass the ORIGINAL string here using the correct argument name
+                            part_of_speech=mapped_pos_for_sense,  # Pass the mapped POS string for this sense
                             usage_notes=usage_notes if usage_notes else None,
                             tags=final_tags,
                             metadata=metadata  # Pass the collected metadata to the definition insert
@@ -2528,6 +2614,7 @@ def process_kaikki_jsonl(cur, filename: str):
                                                             related_word_clean,
                                                             language_code,
                                                             source_identifier,
+                                                            raw_input_language=raw_input_lang # Main entry's raw_input_lang
                                                         )
                                                     )
                                                     if related_word_id:
@@ -2647,7 +2734,7 @@ def process_kaikki_jsonl(cur, filename: str):
                                 if not main_syn_lemma: continue # Skip if empty after potential split
 
                                 # Get ID for the main synonym lemma
-                                target_syn_id = get_or_create_word_id(cur, main_syn_lemma, lang_code, source_identifier)
+                                target_syn_id = get_or_create_word_id(cur, main_syn_lemma, language_code, source_identifier, raw_input_language=raw_input_lang)
                                 if target_syn_id:
                                     # Insert relation using potentially updated metadata
                                     insert_relation(cur, word_id, target_syn_id, RelationshipType.SYNONYM.value, source_identifier, syn_metadata)

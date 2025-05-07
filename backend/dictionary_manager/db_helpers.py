@@ -34,7 +34,7 @@ except ImportError:
     logging.warning("SQLAlchemy not found, DATABASE_URL parsing may be limited.")
 
 # Absolute imports for enums and text helpers
-from backend.dictionary_manager.enums import RelationshipType
+from backend.dictionary_manager.enums import RelationshipType, DEFAULT_LANGUAGE_CODE
 from backend.dictionary_manager.text_helpers import (
     SourceStandardization,
     standardize_source_identifier,
@@ -53,7 +53,6 @@ logger = logging.getLogger(__name__)
 
 # Moved from dictionary_manager.py
 # Define default language code
-DEFAULT_LANGUAGE_CODE = "tl"
 # VALID_BAYBAYIN_REGEX = re.compile(r'^[\u1700-\u171F\u1735\u1736\s]+$') # Original with +
 VALID_BAYBAYIN_REGEX = re.compile(r'^[\u1700-\u171F\u1735\u1736\s]*$') # Use * to match SQL constraint
 # Generate the negative regex pattern from the valid one for easier use in SQL queries
@@ -405,17 +404,29 @@ def add_linguistic_note(
 # Note: This function does NOT use the transaction decorator directly.
 def update_word_source_info(
     current_source_info: Optional[Union[str, dict]],
-    new_source_identifier: Optional[str],
+    new_source_identifier: Optional[str], # This is the original input (e.g., filename)
 ) -> str:
     """
     Updates the source_info JSON for a word entry.
+    Stores the original identifier in 'files' and uses display_name for 'last_updated' key.
     """
     SOURCE_INFO_FILES_KEY = "files"
-    if not new_source_identifier:
+    # --- Handle empty/invalid input --- #
+    if not new_source_identifier or not isinstance(new_source_identifier, str):
+        # If no new source, just return the current info formatted as JSON
+        if isinstance(current_source_info, dict): return json.dumps(current_source_info)
+        elif isinstance(current_source_info, str): return current_source_info
+        else: return "{}"
+    
+    # Clean the original input identifier (likely filename)
+    original_source_input = new_source_identifier.strip()
+    if not original_source_input: # Check again after stripping
+        # Return current info if input becomes empty after stripping
         if isinstance(current_source_info, dict): return json.dumps(current_source_info)
         elif isinstance(current_source_info, str): return current_source_info
         else: return "{}"
 
+    # --- Load current source_info --- #
     source_info_dict = {}
     if isinstance(current_source_info, dict):
         source_info_dict = current_source_info.copy()
@@ -423,21 +434,30 @@ def update_word_source_info(
         try:
             loaded = json.loads(current_source_info)
             if isinstance(loaded, dict): source_info_dict = loaded
-        except (json.JSONDecodeError, TypeError): source_info_dict = {}
-
+        except (json.JSONDecodeError, TypeError): 
+            logger.warning(f"Could not parse existing source_info: {current_source_info}")
+            source_info_dict = {} # Initialize if parsing fails
+    
+    # --- Ensure 'files' list exists --- #
     if SOURCE_INFO_FILES_KEY not in source_info_dict or not isinstance(source_info_dict[SOURCE_INFO_FILES_KEY], list):
         source_info_dict[SOURCE_INFO_FILES_KEY] = []
 
-    standardized_source = SourceStandardization.standardize_sources(new_source_identifier)
-
-    if standardized_source not in source_info_dict[SOURCE_INFO_FILES_KEY]:
-        source_info_dict[SOURCE_INFO_FILES_KEY].append(standardized_source)
+    # --- Add ORIGINAL identifier to 'files' list --- #
+    if original_source_input not in source_info_dict[SOURCE_INFO_FILES_KEY]:
+        source_info_dict[SOURCE_INFO_FILES_KEY].append(original_source_input)
         source_info_dict[SOURCE_INFO_FILES_KEY].sort()
 
+    # --- Standardize for 'last_updated' key --- #
+    standardized_source_canonical_id = SourceStandardization.standardize_sources(new_source_identifier)
+
+    # --- Ensure 'last_updated' dict exists --- #
     if "last_updated" not in source_info_dict or not isinstance(source_info_dict["last_updated"], dict):
         source_info_dict["last_updated"] = {}
 
-    source_info_dict["last_updated"][standardized_source] = datetime.now().isoformat()
+    # --- Get display name and update 'last_updated' --- # 
+    display_name = SourceStandardization.get_display_name(standardized_source_canonical_id)
+    source_info_dict["last_updated"][display_name] = datetime.now().isoformat()
+    
     return json.dumps(source_info_dict)
 
 # Moved from dictionary_manager.py
@@ -2055,44 +2075,53 @@ def get_uncategorized_pos_id(cur) -> int:
         )
         return cur.fetchone()[0]
 
-# @with_transaction(commit=True) # Commit changes after setting up POS
-# def setup_parts_of_speech(cur):
-#     """Insert standard parts of speech into the database if they don't exist."""
-#     logger.info("Setting up standard parts of speech...")
-#     standard_pos = [
-#         # code, name_en, name_tl, description
-#         ('n', 'Noun', 'Pangngalan', 'Represents a person, place, thing, or idea.'),
-#         ('v', 'Verb', 'Pandiwa', 'Represents an action or state of being.'),
-#         ('adj', 'Adjective', 'Pang-uri', 'Describes or modifies a noun.'),
-#         ('adv', 'Adverb', 'Pang-abay', 'Describes or modifies a verb, adjective, or other adverb.'),
-#         ('pron', 'Pronoun', 'Panghalip', 'Replaces a noun.'),
-#         ('prep', 'Preposition', 'Pang-ukol', 'Shows relationship between a noun/pronoun and other words.'),
-#         ('conj', 'Conjunction', 'Pangatnig', 'Connects words, phrases, or clauses.'),
-#         ('intj', 'Interjection', 'Pandamdam', 'Expresses strong emotion.'),
-#         ('det', 'Determiner', 'Pantukoy', 'Introduces a noun (e.g., articles.'),
-#         ('affix', 'Affix', 'Panlapi', 'Morpheme added to a word base (prefix, suffix, infix).'),
-#         ('lig', 'Ligature', 'Pang-angkop', 'Connects words grammatically (e.g., na, ng).'),
-#         ('part', 'Particle', 'Kataga', 'Function word that doesn\'t fit other categories.'),
-#         ('num', 'Number', 'Pamilang', 'Represents a quantity.'),
-#         ('expr', 'Expression', 'Pahayag', 'A fixed phrase or idiom.'),
-#         ('punc', 'Punctuation', 'Bantas', 'Marks used to structure writing.'),
-#         ('idm', 'Idiom', 'Idyoma', 'Idiomatic expression.'),
-#         ('col', 'Colloquial', 'Kolokyal', 'Informal language.'),
-#         ('var', 'Variant', 'Baryant', 'Alternative form or spelling.'),
-#         ('unc', 'Uncategorized', 'Hindi Tiyak', 'Part of speech not yet determined or ambiguous.'),
-#         # Add any other essential codes here if needed
-#     ]
-#     try:
-#         insert_query = """
-#             INSERT INTO parts_of_speech (code, name_en, name_tl, description)
-#             VALUES (%s, %s, %s, %s)
-#             ON CONFLICT (code) DO NOTHING;
-#         """
-#         execute_values(cur, insert_query, standard_pos, template=None, page_size=100)
-#         logger.info(f"Ensured standard parts of speech entries exist (processed {len(standard_pos)} codes).")
-#     except Exception as e:
-#         logger.error(f"Error setting up parts of speech: {e}", exc_info=True)
-#         raise # Re-raise to allow transaction rollback
+@with_transaction(commit=True) # Commit changes after setting up POS
+def setup_parts_of_speech(cur):
+    """Insert standard parts of speech into the database if they don't exist."""
+    logger.info("Setting up standard parts of speech...")
+    standard_pos = [
+        # code, name_en, name_tl, description
+        ('noun', 'Noun', 'Pangngalan', 'Represents a person, place, thing, or idea.'),
+        ('verb', 'Verb', 'Pandiwa', 'Represents an action or state of being.'),
+        ('adj', 'Adjective', 'Pang-uri', 'Describes or modifies a noun.'),
+        ('adv', 'Adverb', 'Pang-abay', 'Describes or modifies a verb, adjective, or other adverb.'),
+        ('pron', 'Pronoun', 'Panghalip', 'Replaces a noun.'),
+        ('prep', 'Preposition', 'Pang-ukol', 'Shows relationship between a noun/pronoun and other words.'),
+        ('conj', 'Conjunction', 'Pangatnig', 'Connects words, phrases, or clauses.'),
+        ('interj', 'Interjection', 'Pandamdam', 'Expresses strong emotion.'),
+        ('det', 'Determiner', 'Pantukoy', 'Introduces a noun (e.g., articles).'),
+        ('affix', 'Affix', 'Panlapi', 'Morpheme added to a word base (prefix, suffix, infix).'),
+        ('prefix', 'Prefix', 'Unlapi', 'An affix placed before the stem of a word.'),
+        ('suffix', 'Suffix', 'Hulapi', 'An affix placed after the stem of a word.'),
+        # ('lig', 'Ligature', 'Pang-angkop', 'Connects words grammatically (e.g., na, ng).'), # Already in text_helpers map as 'part'
+        ('part', 'Particle', 'Kataga', 'Function word that doesn\'t fit other categories.'),
+        ('num', 'Numeral', 'Pamilang', 'Represents a quantity.'),
+        ('phrase', 'Phrase', 'Parirala', 'A small group of words standing together as a conceptual unit.'),
+        # ('expr', 'Expression', 'Pahayag', 'A fixed phrase or idiom.'), # Covered by phrase
+        ('punct', 'Punctuation', 'Bantas', 'Marks used to structure writing.'),
+        ('propn', 'Proper Noun', 'Pangngalang Pantangi', 'A name used for an individual person, place, or organization.'),
+        ('abbr', 'Abbreviation', 'Daglat', 'A shortened form of a word or phrase.'),
+        ('root', 'Root', 'Salitang Ugat', 'A base word without affixes.'),
+        ('sym', 'Symbol', 'Simbolo', 'A mark or character used as a conventional representation of an object, function, or process.'),
+        ('char', 'Character', 'Titik', 'A letter, number, or other symbol.'), # From Kaikki mapping
+        ('rom', 'Romanization', 'Romanisasyon', 'Conversion of text into the Latin script.'), # From Kaikki mapping
+        ('contraction', 'Contraction', 'Pagpapaikli', 'A shortened version of a word or group of words.'), # From Kaikki mapping
+        ('class', 'Classifier', 'Pamilang', 'A word or morpheme used to classify the noun with which it is associated.'), # From Kaikki, maps to num
+        ('unc', 'Uncategorized', 'Hindi Tiyak', 'Part of speech not yet determined or ambiguous.'),
+        # Add any other essential codes here if needed
+    ]
+    try:
+        insert_query = """
+            INSERT INTO parts_of_speech (code, name_en, name_tl, description)
+            VALUES %s
+            ON CONFLICT (code) DO NOTHING;
+        """ # Note: execute_values expects %s for the VALUES part, not the whole query.
+        # Using a direct loop for clarity and explicit ON CONFLICT handling per item if needed, execute_values is also fine.
+        execute_values(cur, insert_query, standard_pos, template=None, page_size=100)
+        logger.info(f"Ensured standard parts of speech entries exist (processed {len(standard_pos)} codes).")
+    except Exception as e:
+        logger.error(f"Error setting up parts of speech: {e}", exc_info=True)
+        raise # Re-raise to allow transaction rollback
 
 # --- Add functions from backup --- 
 def create_or_update_tables(conn):
@@ -2429,14 +2458,20 @@ def get_or_create_word_id(
     # Safeguard: Ensure language_code defaults correctly if None is passed
     lang_code_input = language_code or DEFAULT_LANGUAGE_CODE
     # --- CHANGE HERE: Use get_language_code instead of get_standard_code ---
-    # lang_code = get_standard_code(lang_code_input, code_type='language') or DEFAULT_LANGUAGE_CODE
-    lang_code = get_language_code(lang_code_input) or DEFAULT_LANGUAGE_CODE # Use the specific language helper
+    # lang_code will be a tuple: (standard_iso_code, original_cleaned_input_language)
+    lang_code_tuple = get_language_code(lang_code_input) # Ensure it's always a tuple, even if lang_code_input is empty
+
+    # The standardized code to be used for DB operations
+    db_lang_code = lang_code_tuple[0] if lang_code_tuple else DEFAULT_LANGUAGE_CODE
+    # The raw input language to be stored in metadata (if needed, though not directly used in this function by default)
+    # raw_input_lang = lang_code_tuple[1] if lang_code_tuple else (lang_code_input or "")
+
 
     # Check cache first (optional)
-    # cache_key = f"word_id:{normalized}:{lang_code}"
+    # cache_key = f"word_id:{normalized}:{db_lang_code}" # Use db_lang_code for cache key
     # cached_id = cache.get(cache_key)
     # if cached_id:
-    #     logger.debug(f"Cache hit for {normalized} ({lang_code}): {cached_id}")
+    #     logger.debug(f"Cache hit for {normalized} ({db_lang_code}): {cached_id}")
     #     return cached_id
 
     # Query database
@@ -2444,7 +2479,7 @@ def get_or_create_word_id(
         # Prioritize exact normalized match
         cur.execute(
             "SELECT id, source_info FROM words WHERE normalized_lemma = %s AND language_code = %s",
-            (normalized, lang_code),
+            (normalized, db_lang_code), # MODIFIED: Use db_lang_code
         )
         result = cur.fetchone()
 
@@ -2469,11 +2504,11 @@ def get_or_create_word_id(
             needs_update = False
 
             # 1. Check if language needs updating
-            should_update_lang = (existing_lang_code in ['und', 'unc']) and (lang_code not in ['und', 'unc'])
+            should_update_lang = (existing_lang_code in ['und', 'unc']) and (db_lang_code not in ['und', 'unc'])
             if should_update_lang:
                 updates.append("language_code = %s")
-                params.insert(0, lang_code) # Add lang_code to the beginning of params for SET clause
-                logger.debug(f"Updating language for word ID {word_id} from '{existing_lang_code}' to '{lang_code}'")
+                params.insert(0, db_lang_code) # Add lang_code to the beginning of params for SET clause
+                logger.debug(f"Updating language for word ID {word_id} from '{existing_lang_code}' to '{db_lang_code}'")
                 needs_update = True
 
             # 2. Check if source info needs updating
@@ -2495,10 +2530,22 @@ def get_or_create_word_id(
             if needs_update:
                 updates.append("updated_at = CURRENT_TIMESTAMP") # Always update timestamp
                 set_clause = ", ".join(updates)
+                # Ensure correct order of params for update
+                # If lang_code was updated, it's at the start of 'params' list due to insert(0,...)
+                # If source_info was updated, it's after lang_code (or at start if lang not updated)
+                # word_id is always the last one for WHERE clause.
+                
+                # Reconstruct params to be sure of order
+                final_update_params = []
+                if db_lang_code is not None: # If language_code was being updated
+                    final_update_params.append(db_lang_code)
+                if updated_source_info_json is not None: # If source_info was being updated
+                    final_update_params.append(updated_source_info_json)
+                final_update_params.append(word_id) # word_id for WHERE
+
                 sql_update = f"UPDATE words SET {set_clause} WHERE id = %s"
-                # Ensure param order matches SET clause + WHERE id
-                cur.execute(sql_update, tuple(params)) # Pass params as a tuple
-                logger.debug(f"Executed update for word ID {word_id}")
+                cur.execute(sql_update, tuple(final_update_params))
+                logger.debug(f"Executed update for word ID {word_id}. Updated fields: {set_clause}")
             # --- END: Update Logic --- #
 
             # Update cache (optional)
@@ -2506,7 +2553,7 @@ def get_or_create_word_id(
             return word_id
         else:
             # Word not found, create it
-            logger.debug(f"Word '{processed_lemma}' ({lang_code}) not found. Creating new entry...")
+            logger.debug(f"Word '{processed_lemma}' ({db_lang_code}) not found. Creating new entry...") # MODIFIED: Use db_lang_code
             # --- Prepare Baybayin, Romanized, etc. from kwargs --- #
             has_baybayin = bool(kwargs.get("has_baybayin")) # Default to False
             if not has_baybayin and "has_baybayin" in kwargs: # Allow explicit False
@@ -2576,7 +2623,7 @@ def get_or_create_word_id(
             insert_params = {
                 "lemma": processed_lemma,
                 "norm_lemma": normalized,
-                "lang": lang_code,
+                "lang": db_lang_code, # MODIFIED: Use db_lang_code
                 "has_bb": has_baybayin,
                 "bb_form": baybayin_form_to_store, # Use the validated/cleaned form
                 "rom_form": romanized_form,
@@ -2617,7 +2664,7 @@ def get_or_create_word_id(
             cur.execute(insert_sql, insert_params)
             new_word_id = cur.fetchone()[0]
             logger.info(
-                f"Created new word '{processed_lemma}' ({lang_code}) with ID: {new_word_id} from source '{source_identifier}'"
+                f"Created new word '{processed_lemma}' ({db_lang_code}) with ID: {new_word_id} from source '{source_identifier}'"
             )
             # Update cache (optional)
             # cache.set(cache_key, new_word_id, timeout=3600)
@@ -2627,7 +2674,7 @@ def get_or_create_word_id(
         # Specific handling for unique constraint violation
         # Ensure psycopg2.errorcodes is imported
         if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION: # Correct check
-            logger.warning(f"Unique constraint violation during insert attempt for '{normalized}' ({lang_code}). Retrying fetch. Error: {e.pgerror}")
+            logger.warning(f"Unique constraint violation during insert attempt for '{normalized}' ({db_lang_code}). Retrying fetch. Error: {e.pgerror}")
             # Rollback the failed insert attempt before retrying fetch
             try:
                 cur.connection.rollback()
@@ -2640,24 +2687,24 @@ def get_or_create_word_id(
             try:
                 cur.execute(
                     "SELECT id FROM words WHERE normalized_lemma = %s AND language_code = %s",
-                    (normalized, lang_code),
+                    (normalized, db_lang_code),
                 )
                 result = cur.fetchone()
                 if result:
                     # TODO: Consider updating source_info here as well if needed after failed insert
-                    logger.info(f"Successfully fetched ID {result[0]} for '{normalized}' ({lang_code}) after unique violation.")
+                    logger.info(f"Successfully fetched ID {result[0]} for '{normalized}' ({db_lang_code}) after unique violation.")
                     return result[0]
                 else:
-                    logger.error(f"Could not fetch ID for '{normalized}' ({lang_code}) even after unique violation. Data inconsistency suspected.")
+                    logger.error(f"Could not fetch ID for '{normalized}' ({db_lang_code}) even after unique violation. Data inconsistency suspected.")
                     return None
             except Exception as fetch_err:
-                logger.error(f"Error fetching ID for '{normalized}' ({lang_code}) after unique violation: {fetch_err}", exc_info=True)
+                logger.error(f"Error fetching ID for '{normalized}' ({db_lang_code}) after unique violation: {fetch_err}", exc_info=True)
                 return None
             # --- FIX Indentation END --- #
         else:
             # Handle other integrity errors (e.g., check constraints, FK violations)
             logger.error(
-                f"Database integrity error processing word '{original_lemma}' ({lang_code}): {e.pgcode} {e.pgerror}",
+                f"Database integrity error processing word '{original_lemma}' ({db_lang_code}): {e.pgcode} {e.pgerror}",
                 exc_info=True, # Include traceback for DB errors
             )
             # Rollback handled by decorator
@@ -2665,7 +2712,7 @@ def get_or_create_word_id(
     except psycopg2.Error as e:
         # Handle other database errors
         logger.error(
-            f"Database error processing word '{original_lemma}' ({lang_code}): {e.pgcode} {e.pgerror}",
+            f"Database error processing word '{original_lemma}' ({db_lang_code}): {e.pgcode} {e.pgerror}",
             exc_info=True,
         )
         # Rollback handled by decorator
@@ -2673,7 +2720,7 @@ def get_or_create_word_id(
     except Exception as e:
         # Handle unexpected errors
         logger.error(
-            f"Unexpected error processing word '{original_lemma}' ({lang_code}): {e}",
+            f"Unexpected error processing word '{original_lemma}' ({db_lang_code}): {e}",
             exc_info=True,
         )
         # Rollback handled by decorator
@@ -2721,9 +2768,15 @@ def batch_get_or_create_word_ids(
             if unique_entries:
                 query_params = []
                 placeholders = []
-                for (lemma, lang) in unique_entries:
-                    norm_lemma = normalized_map[(lemma, lang)]
-                    query_params.extend([norm_lemma, lang])
+                for (lemma, lang_input) in unique_entries: # lang_input might be str or tuple
+                    # --- ADDED: Ensure lang is the string part --- 
+                    lang_code_str = lang_input[0] if isinstance(lang_input, tuple) else lang_input
+                    if not lang_code_str or not isinstance(lang_code_str, str):
+                        logger.warning(f"Invalid language code found in batch entry for lemma '{lemma}': {lang_input}. Using default.")
+                        lang_code_str = DEFAULT_LANGUAGE_CODE
+                    # --- END ADDED ---    
+                    norm_lemma = normalized_map[(lemma, lang_input)] # Use original lang_input for map lookup
+                    query_params.extend([norm_lemma, lang_code_str]) # MODIFIED: Use lang_code_str
                     placeholders.append("(%s, %s)")
 
                 if placeholders:
