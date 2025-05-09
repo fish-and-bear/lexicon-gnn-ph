@@ -217,7 +217,6 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     etymologyTree,
     isLoadingEtymology,
     etymologyError,
-    onFetchEtymology,
     onWordClick,
     isMobile,
     isLoading
@@ -229,8 +228,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   const [activeTab, setActiveTab] = useState<string>('definitions');
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
-  const audioPlayerRef = useRef<HTMLAudioElement | null>(null); // Keep this useRef, it IS used.
-  
+  // const audioPlayerRef = useRef<HTMLAudioElement | null>(null); // Keep this useRef, it IS used.
   // Import NetworkLink and NetworkNode for typing
   // (Assuming they are exported from ../types)
   type NetworkLink = import('../types').NetworkLink;

@@ -1903,9 +1903,6 @@ export const convertToBaybayin = async (text: string, language: string = 'fil'):
   }
 };
 
-// Use relative path for production, Vite proxy handles it in development
-const API_BASE_URL = import.meta.env.PROD ? '/api/v2' : (import.meta.env.VITE_API_URL || 'http://localhost:10000/api/v2');
-
 /**
  * Fetches word suggestions based on the search query.
  * @param query - The search term prefix.
