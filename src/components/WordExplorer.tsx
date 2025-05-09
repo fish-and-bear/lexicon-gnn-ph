@@ -1128,7 +1128,7 @@ const renderSearchBar = () => {
            autoComplete
            includeInputInList
            value={inputValue}
-           onInputChange={(event, newInputValue, reason) => {
+           onInputChange={(_event, newInputValue, reason) => {
              setInputValue(newInputValue);
              if (reason === 'input') {
                 // Call the custom debounced handler
@@ -1142,7 +1142,7 @@ const renderSearchBar = () => {
                 setIsSuggestionsLoading(false);
              }
            }}
-           onChange={(event, newValue, reason) => {
+           onChange={(_event, newValue, reason) => {
              if ((reason === 'selectOption' || reason === 'createOption') && newValue) {
                handleSearch(newValue);
              }
@@ -1317,7 +1317,7 @@ const renderMobileHeader = () => {
             autoComplete
             includeInputInList
             value={inputValue}
-            onInputChange={(event, newInputValue, reason) => {
+            onInputChange={(_event, newInputValue, reason) => {
               setInputValue(newInputValue);
               if (reason === 'input') {
                  // Call the custom debounced handler
@@ -1331,7 +1331,7 @@ const renderMobileHeader = () => {
                  setIsSuggestionsLoading(false);
               }
             }}
-            onChange={(event, newValue, reason) => {
+            onChange={(_event, newValue, reason) => {
               if ((reason === 'selectOption' || reason === 'createOption') && newValue) {
                 handleSearch(newValue);
               }

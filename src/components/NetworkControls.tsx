@@ -50,7 +50,7 @@ const ControlContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-const SliderContainer = styled(Box)(({ theme }) => ({
+const SliderContainer = styled(Box)(({/* theme */}) => ({
   display: 'flex',
   alignItems: 'center',
   flex: 1,
@@ -63,7 +63,7 @@ const SliderContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-const ControlLabel = styled(Typography)(({ theme }) => ({
+const ControlLabel = styled(Typography)(({/* theme */}) => ({
   display: 'flex',
   alignItems: 'center',
   whiteSpace: 'nowrap',
@@ -74,7 +74,7 @@ const ControlLabel = styled(Typography)(({ theme }) => ({
   fontFamily: 'system-ui, -apple-system, sans-serif',
 }));
 
-const StyledSlider = styled(Slider)(({ theme }) => ({
+const StyledSlider = styled(Slider)(({/* theme */}) => ({
   color: 'var(--primary-color)',
   height: 3,
   padding: '8px 0',

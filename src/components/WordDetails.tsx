@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
-import { RawDefinition, WordInfo, Affixation, BasicWord, EtymologyTree, WordSuggestion, Example, WordNetwork } from '../types'; // Removed WordForm, WordTemplate, Credit, NetworkLink, NetworkNode
+import { RawDefinition, WordInfo, WordForm, WordTemplate, Affixation, Credit, BasicWord, EtymologyTree, WordSuggestion, Example, WordNetwork, NetworkLink, NetworkNode } from '../types'; // Added EtymologyTree and WordSuggestion
 // import { convertToBaybayin } from '../api/wordApi';
 import './WordDetails.css';
 // Import color utility functions needed
@@ -27,8 +27,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import Link from '@mui/material/Link';
 import { styled, useTheme, alpha, Theme } from '@mui/material/styles'; // Import Theme type
-// import useMediaQuery from '@mui/material/useMediaQuery'; // Removed unused import
-// import Button from '@mui/material/Button'; // Removed unused Button import
+import useMediaQuery from '@mui/material/useMediaQuery'; // Import useMediaQuery
+import Button from '@mui/material/Button';
 
 // MUI Icons
 // import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -217,6 +217,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     etymologyTree,
     isLoadingEtymology,
     etymologyError,
+    onFetchEtymology,
     onWordClick,
     isMobile,
     isLoading
@@ -228,7 +229,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
   const [activeTab, setActiveTab] = useState<string>('definitions');
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
-  // const audioPlayerRef = useRef<HTMLAudioElement | null>(null); // Keep this useRef, it IS used.
+  
   // Import NetworkLink and NetworkNode for typing
   // (Assuming they are exported from ../types)
   type NetworkLink = import('../types').NetworkLink;
@@ -283,7 +284,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     }
   }, [wordData]);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => { // Restored event parameter
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setActiveTab(newValue);
   };
 
