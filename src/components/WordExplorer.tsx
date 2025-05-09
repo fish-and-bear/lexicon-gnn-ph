@@ -356,15 +356,7 @@ const WordExplorer: React.FC = () => {
 
       try {
         // Fetch using the determined identifier (lemma or "id:...")
-        wordData = await fetchWordDetails(wordToFetch, {
-          include_definitions: true, 
-          include_pronunciations: true,
-          include_etymologies: true, 
-          include_relations: true, 
-          include_forms: true,
-          include_templates: true,
-          include_related_words: true,
-        });
+        wordData = await fetchWordDetails(wordToFetch);
       } catch (error: any) {
         console.warn(`Initial fetch failed for '${wordToFetch}', error:`, error.message);
         fallbackToSearch = true;
@@ -388,15 +380,7 @@ const WordExplorer: React.FC = () => {
                 console.log(`Fallback search successful`);
                 const firstResult = searchResults.results[0];
                 // Fetch details using the ID from search result
-                wordData = await fetchWordDetails(`id:${firstResult.word_id}`, {
-                  include_definitions: true, 
-                  include_pronunciations: true,
-                  include_etymologies: true, 
-                  include_relations: true, 
-                  include_forms: true,
-                  include_templates: true,
-                  include_related_words: true,
-                });
+                wordData = await fetchWordDetails(`id:${firstResult.word_id}`);
                 fallbackToSearch = false; // Success
               } else {
                 // If fallback search finds nothing, throw the original error
@@ -527,15 +511,7 @@ const WordExplorer: React.FC = () => {
       let wordData: WordInfo | null = null;
       
       try {
-        wordData = await fetchWordDetails(word, {
-          include_definitions: true, 
-          include_pronunciations: true,
-          include_etymologies: true, 
-          include_relations: true, 
-          include_forms: true,
-          include_templates: true,
-          include_related_words: true,
-        });
+        wordData = await fetchWordDetails(word);
       } catch (error: any) {
         console.warn(`Failed to fetch details for selected word '${word}', error:`, error.message);
       }
@@ -736,15 +712,7 @@ const WordExplorer: React.FC = () => {
       setWordNetwork(null);
       
       Promise.all([
-        fetchWordDetails(detailsIdentifier, {
-          include_definitions: true, 
-          include_pronunciations: true,
-          include_etymologies: true, 
-          include_relations: true, 
-          include_forms: true,
-          include_templates: true,
-          include_related_words: true,
-        }), // Use ID or lemma string for details
+        fetchWordDetails(detailsIdentifier), // Use ID or lemma string for details
         fetchWordNetworkData(networkIdentifier, historyDepth, historyBreadth) // Use restored settings
       ])
       .then(([wordData, networkData]) => {

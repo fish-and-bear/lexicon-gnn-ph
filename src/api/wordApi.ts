@@ -6,18 +6,11 @@ import {
   WordInfo, 
   SearchOptions, 
   SearchResults, 
-  Etymology,
   PartOfSpeech,
   Statistics,
   EtymologyTree,
-  RawDefinition,
-  Credit,
   SearchResultItem,
-  RawWordComprehensiveData,
-  Pronunciation,
   Relation,
-  Affixation,
-  BasicWord,
   WordNetwork as ImportedWordNetwork,
   WordSuggestion // Import the correct type
 } from "../types";
@@ -587,12 +580,6 @@ interface NetworkLink {
   metadata?: any; // Add metadata field
 }
 
-interface LocalWordNetwork {
-  nodes: NetworkNode[];
-  links: NetworkLink[];
-  metadata: NetworkMetadata;
-}
-
 export async function fetchWordNetwork(
   word: string, 
   options: WordNetworkOptions = {},
@@ -855,6 +842,12 @@ function normalizeWordData(rawData: any): WordInfo {
   if (typeof data.is_root !== 'boolean') {
     data.is_root = !data.root_word_id;
   }
+
+  // Construct the full path from which data was fetched
+  const backendUrl = getApiBaseURL().replace('/api/v2', ''); // Assuming API v2 is part of the base
+  // const successfulApiEndpoint = `${backendUrl}${apiPath}`; // Removed unused variable
+  // console.log("Data fetched from:", successfulApiEndpoint);
+  // console.log("Data to save to cache:", data);
 
   return data as WordInfo;
 }
