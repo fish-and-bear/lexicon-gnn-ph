@@ -284,7 +284,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     }
   }, [wordData]);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => { // Restored event parameter
     setActiveTab(newValue);
   };
 
@@ -2004,7 +2004,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
          {hasSourceInfo && renderStructuredSourceInfo(sourceInfo)}
 
          {/* Completeness Info - Use score - ONLY IN DEV */}
-         {process.env.NODE_ENV === 'development' && hasScore && (
+         {import.meta.env.DEV && hasScore && (
             <Box sx={{ mt: 3 }}>
               <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600 }}>Completeness Score</Typography>
               <Chip 

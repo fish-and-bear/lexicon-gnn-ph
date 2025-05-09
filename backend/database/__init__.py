@@ -34,6 +34,33 @@ _state_lock = threading.RLock()  # Reentrant lock for all state changes
 REDIS_TIMEOUT = int(os.getenv('REDIS_TIMEOUT', 3600))  # 1 hour default
 REDIS_ENABLED = os.getenv('REDIS_ENABLED', 'true').lower() == 'true'
 
+# Initialize redis_client to None globally
+redis_client: Optional[redis.Redis] = None
+
+if REDIS_ENABLED:
+    try:
+        redis_host = os.getenv('REDIS_HOST', 'localhost')
+        redis_port = int(os.getenv('REDIS_PORT', 6379))
+        redis_db = int(os.getenv('REDIS_DB', 0))
+        
+        # Attempt to connect to Redis
+        _temp_redis_client = redis.StrictRedis(
+            host=redis_host, 
+            port=redis_port, 
+            db=redis_db, 
+            decode_responses=True,
+            socket_connect_timeout=5 # Add a connection timeout
+        )
+        _temp_redis_client.ping() # Verify connection
+        redis_client = _temp_redis_client # Assign to global if successful
+        logger.info(f"Successfully connected to Redis at {redis_host}:{redis_port}/{redis_db}.")
+    except redis.exceptions.ConnectionError as e:
+        logger.warning(f"Could not connect to Redis (host: {os.getenv('REDIS_HOST', 'localhost')}, port: {os.getenv('REDIS_PORT', 6379)}): {e}. Caching will be disabled.")
+        # redis_client remains None as initialized
+    except Exception as e: # Catch other potential errors during setup
+        logger.error(f"An unexpected error occurred during Redis client initialization: {e}. Caching will be disabled.")
+        # redis_client remains None
+
 def create_tables(app):
     """Create all database tables."""
     try:
