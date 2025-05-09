@@ -1109,13 +1109,13 @@ import React, {
   
     // --- START: Dedicated Legend Rendering Function ---
     const renderOrUpdateLegend = useCallback((svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, width: number) => {
-      // if (isMobile) return; // Don't render SVG legend on mobile --- REMOVE THIS LINE TO ALWAYS RENDER
+      if (isMobile) return; // <<< ADDED: Don't render SVG legend on mobile
 
       // Remove previous legend if it exists
       svg.select(".legend").remove();
 
       // --- ADJUST SIZES BASED ON isMobile ---
-      const pcScaleFactor = 0.85; // Scale down PC legend a bit
+      const pcScaleFactor = 0.75; // <<< MODIFIED: Scale down PC legend a bit more
       const legendPadding = isMobile ? 16 : Math.round(16 * pcScaleFactor);
       const legendItemHeight = isMobile ? 24 : Math.round(24 * pcScaleFactor);
       const dotRadius = isMobile ? 4 : Math.round(4 * pcScaleFactor);
@@ -1123,10 +1123,10 @@ import React, {
       const categorySpacing = isMobile ? 12 : Math.round(12 * pcScaleFactor);
       const maxLabelWidth = isMobile ? 120 : Math.round(120 * pcScaleFactor);
 
-      const titleFontSize = isMobile ? 13 : 11;
-      const subtitleFontSize = isMobile ? 10 : 9;
-      const categoryHeaderFontSize = isMobile ? 11 : 10;
-      const itemLabelFontSize = isMobile ? 11 : 10;
+      const titleFontSize = isMobile ? 13 : 10; // <<< MODIFIED PC
+      const subtitleFontSize = isMobile ? 10 : 8; // <<< MODIFIED PC
+      const categoryHeaderFontSize = isMobile ? 11 : 9; // <<< MODIFIED PC
+      const itemLabelFontSize = isMobile ? 11 : 9; // <<< MODIFIED PC
       // --- END ADJUST SIZES ---
 
       // Use theme for styling

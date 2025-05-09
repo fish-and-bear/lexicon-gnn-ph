@@ -471,7 +471,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     });
 
     return (
-      <Box sx={{ pt: isMobile ? 0.5 : 1, width: '100%', maxWidth: '100%', pb: isMobile ? theme.spacing(8) : theme.spacing(2) }}> 
+      <Box sx={{ pt: isMobile ? 0.5 : 1, width: '100%', maxWidth: '100%', pb: isMobile ? theme.spacing(12) : theme.spacing(2) }}> 
         {/* Iterate using the new combined key */}
         {Object.entries(definitionsByCombinedPosThenSource).map(([combinedPosKey, defsBySource]) => {
           return (
@@ -1024,7 +1024,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     );
                 
                 return (
-      <Box sx={{ pt: theme.spacing(1), width: '100%', maxWidth: '100%', overflow: 'hidden', pb: isMobile ? theme.spacing(8) : theme.spacing(2) }}>
+      <Box sx={{ pt: theme.spacing(1), width: '100%', maxWidth: '100%', overflow: 'hidden', pb: isMobile ? theme.spacing(12) : theme.spacing(2) }}>
         {/* ADDED Call to render Affixations */} 
         {renderAffixations()}
 
@@ -1384,7 +1384,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     };
 
     return (
-      <Box sx={{ p: isMobile ? 1 : 2, pb: isMobile ? theme.spacing(8) : theme.spacing(2) }}>
+      <Box sx={{ p: isMobile ? 1 : 2, pb: isMobile ? theme.spacing(12) : theme.spacing(2) }}>
         {/* Word Forms Section */}
         {hasForms && (
           <Box mb={hasTemplates ? 3 : 0}>
@@ -1511,7 +1511,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     // Handle case where there's no etymology data from either source
     if (!hasWordEtymologies && !hasEtymologyTreeData) {
       return (
-        <Box sx={{ p: isMobile ? 1.5 : 2, pb: isMobile ? theme.spacing(8) : theme.spacing(2) }}>
+        <Box sx={{ p: isMobile ? 1.5 : 2, pb: isMobile ? theme.spacing(12) : theme.spacing(2) }}>
           <Alert severity="info" sx={{ mb: 2 }}>No etymology information available for word ID: {wordData.id} ({wordData.lemma}).</Alert>
           
           {/* Add links to external etymology resources */}
@@ -1611,7 +1611,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     // If there's etymology data in the word itself, display it regardless of tree
     if (hasWordEtymologies) {
       return (
-        <Box sx={{ p: isMobile ? 1 : 2, pb: isMobile ? theme.spacing(8) : theme.spacing(2) }}>
+        <Box sx={{ p: isMobile ? 1 : 2, pb: isMobile ? theme.spacing(12) : theme.spacing(2) }}>
           <Stack spacing={isMobile ? 1.5 : 2}>
             {wordData.etymologies!.map((etym, index) => {
               const components = etym.normalized_components?.split(/\s+/).filter(c => c.trim()) || [];
@@ -1686,7 +1686,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
     
     // If only etymology tree data is available, render that
     return (
-      <Box sx={{ p: 0, pb: isMobile ? theme.spacing(8) : 0 }}>
+      <Box sx={{ p: 0, pb: isMobile ? theme.spacing(12) : 0 }}> {/* Ensure mobile padding for etymology tree only view */}
         {renderEtymologyTreeVisualization()}
       </Box>
     );
@@ -1975,7 +1975,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
      // --- END NEW Helper ---
 
      return (
-       <Box sx={{ p: theme.spacing(2), pb: isMobile ? theme.spacing(8) : theme.spacing(2) }}>
+       <Box sx={{ p: theme.spacing(2), pb: isMobile ? theme.spacing(12) : theme.spacing(2) }}>
          {/* Credits List */}
          {hasCredits && (
            <>
