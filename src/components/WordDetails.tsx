@@ -81,9 +81,9 @@ const relationColors: { [key: string]: string } = {
   
   // Origin group - Reds and oranges
   root_of: "#e63946",       // Add color for root_of (same as root)
-  derived_from: "#ff5c39",  // Swapped: Was #f77f00 (orange)
+  derived_from: "#f77f00",  // Color for derived_from
   etymology: "#d00000", // Dark red
-  cognate: "#f77f00",   // Swapped: Was #ff5c39 (Light orange)
+  cognate: "#ff5c39",   // Color for cognate
   
   // Form group - Purples
   variant: "#7d4fc3",   // Medium purple
@@ -1315,7 +1315,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
             <Typography variant="subtitle2" sx={{ mb: theme.spacing(1) }}>
               Completeness Score
             </Typography>
-            {/* Display the score directly */} 
+            {/* Display the score directly */ 
             <Chip 
                 label={`${(wordData.completeness_score * 100).toFixed(0)}%`} 
                 color="success" 
@@ -2103,7 +2103,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           display: 'flex', 
           flexDirection: 'row', // Always row now
           flexGrow: 1, 
-          overflow: 'hidden' 
+          overflow: 'hidden',
+          height: isMobile ? '0px' : 'auto' // ADDED: Help mobile height calculation for scrolling
         }}>
         
           <Tabs

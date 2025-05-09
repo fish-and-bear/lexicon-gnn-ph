@@ -1109,64 +1109,72 @@ import React, {
   
     // --- START: Dedicated Legend Rendering Function ---
     const renderOrUpdateLegend = useCallback((svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, width: number) => {
-      if (isMobile) return; // Don't render SVG legend on mobile
-  
+      // if (isMobile) return; // Don't render SVG legend on mobile --- REMOVE THIS LINE TO ALWAYS RENDER
+
       // Remove previous legend if it exists
       svg.select(".legend").remove();
-  
-      const legendPadding = 16; // Original padding
-      const legendItemHeight = 24; // Original height
-      const dotRadius = 4; // Original radius
-      const textPadding = 12; // Original padding
-      const categorySpacing = 12; // Original spacing
-      const maxLabelWidth = 120;
-  
+
+      // --- ADJUST SIZES BASED ON isMobile ---
+      const pcScaleFactor = 0.85; // Scale down PC legend a bit
+      const legendPadding = isMobile ? 16 : Math.round(16 * pcScaleFactor);
+      const legendItemHeight = isMobile ? 24 : Math.round(24 * pcScaleFactor);
+      const dotRadius = isMobile ? 4 : Math.round(4 * pcScaleFactor);
+      const textPadding = isMobile ? 12 : Math.round(12 * pcScaleFactor);
+      const categorySpacing = isMobile ? 12 : Math.round(12 * pcScaleFactor);
+      const maxLabelWidth = isMobile ? 120 : Math.round(120 * pcScaleFactor);
+
+      const titleFontSize = isMobile ? 13 : 11;
+      const subtitleFontSize = isMobile ? 10 : 9;
+      const categoryHeaderFontSize = isMobile ? 11 : 10;
+      const itemLabelFontSize = isMobile ? 11 : 10;
+      // --- END ADJUST SIZES ---
+
       // Use theme for styling
-      const bgColor = themeMode === 'dark' 
+      const bgColor = themeMode === 'dark'
         ? 'var(--card-bg-color-elevated)' // Use var for dark, looks better
         : muiTheme.palette.background.paper; // Use MUI paper for light mode
       const textColorPrimary = muiTheme.palette.text.primary;
       const textColorSecondary = muiTheme.palette.text.secondary;
       const dividerColor = alpha(muiTheme.palette.divider, 0.5); // Use alpha for divider
-  
+
       const legendContainer = svg.append("g").attr("class", "legend");
-  
+
       const { categories: legendCategories } = getUniqueRelationshipGroups();
-  
+
       // --- Text Measurement ---
       const tempText = svg.append("text")
           .style("font-family", muiTheme.typography.fontFamily || "system-ui, -apple-system, sans-serif")
-          .style("font-size", muiTheme.typography.pxToRem(11))
+          .style("font-size", muiTheme.typography.pxToRem(itemLabelFontSize)) // Use adjusted itemLabelFontSize
         .style("opacity", 0);
       let maxTextWidth = 0;
       let maxCategoryWidth = 0;
       legendCategories.forEach((category) => {
-        tempText.style("font-weight", 600).text(category.name);
+        tempText.style("font-weight", 600).style("font-size", muiTheme.typography.pxToRem(categoryHeaderFontSize)).text(category.name); // Use adjusted categoryHeaderFontSize
         const categoryWidth = tempText.node()?.getBBox().width || 0;
         maxCategoryWidth = Math.max(maxCategoryWidth, categoryWidth);
         category.labels.forEach(labelInfo => {
-          tempText.style("font-weight", 400).text(labelInfo.label);
+          tempText.style("font-weight", 400).style("font-size", muiTheme.typography.pxToRem(itemLabelFontSize)).text(labelInfo.label); // Use adjusted itemLabelFontSize
           const textWidth = tempText.node()?.getBBox().width || 0;
           maxTextWidth = Math.max(maxTextWidth, Math.min(textWidth, maxLabelWidth));
         });
       });
       tempText.remove();
-  
-      // --- Calculate Legend Dimensions --- 
+
+      // --- Calculate Legend Dimensions ---
       const legendWidth = Math.max(
           maxCategoryWidth,
           maxTextWidth + dotRadius * 2 + textPadding // Dot + padding + text
       ) + (legendPadding * 2);
       legendWidthRef.current = legendWidth; // Store legend width in ref
-  
-      // Position container top-right 
+
+      // Position container top-right
       legendContainer.attr("transform", `translate(${width - legendWidth - 20}, 20)`);
       legendContainerRef.current = legendContainer; // Store legend container selection in ref
-  
-      // Calculate height dynamically 
+
+      // Calculate height dynamically
       let calculatedHeight = legendPadding;
-      calculatedHeight += 24; // Space for title
-      calculatedHeight += 18; // Space for subtitle
+      calculatedHeight += isMobile ? 24 : Math.round(24 * pcScaleFactor); // Space for title (adjusted)
+      calculatedHeight += isMobile ? 18 : Math.round(18 * pcScaleFactor); // Space for subtitle (adjusted)
       calculatedHeight += categorySpacing;
       legendCategories.forEach(category => {
         calculatedHeight += legendItemHeight; // Space for category header
@@ -1175,35 +1183,35 @@ import React, {
       });
       calculatedHeight += legendPadding;
       const legendHeight = calculatedHeight - categorySpacing;
-  
-      // --- Render Legend Elements --- 
+
+      // --- Render Legend Elements ---
       // Background Rectangle
       legendContainer.append("rect")
         .attr("width", legendWidth).attr("height", legendHeight)
         .attr("rx", 10).attr("ry", 10)
         .attr("fill", bgColor)
         .attr("stroke", dividerColor).attr("stroke-width", 0.5);
-  
+
       // Title & Subtitle
       legendContainer.append("text") // Title
-        .attr("x", legendWidth / 2).attr("y", legendPadding + 10).attr("text-anchor", "middle")
-        .style("font-size", muiTheme.typography.pxToRem(13)).style("font-weight", 600)
+        .attr("x", legendWidth / 2).attr("y", legendPadding + (isMobile ? 10 : Math.round(10 * pcScaleFactor))).attr("text-anchor", "middle")
+        .style("font-size", muiTheme.typography.pxToRem(titleFontSize)).style("font-weight", 600)
         .attr("fill", textColorPrimary).text("Relationship Types");
       legendContainer.append("text") // Subtitle
-        .attr("x", legendWidth / 2).attr("y", legendPadding + 26).attr("text-anchor", "middle")
-        .style("font-size", muiTheme.typography.pxToRem(10)).attr("fill", textColorSecondary)
+        .attr("x", legendWidth / 2).attr("y", legendPadding + (isMobile ? 26 : Math.round(26 * pcScaleFactor))).attr("text-anchor", "middle")
+        .style("font-size", muiTheme.typography.pxToRem(subtitleFontSize)).attr("fill", textColorSecondary)
         .text("Click to filter");
-  
-      let yPos = legendPadding + 40 + categorySpacing;
-  
+
+      let yPos = legendPadding + (isMobile ? 40 : Math.round(40 * pcScaleFactor)) + categorySpacing; // Adjusted starting yPos
+
       legendCategories.forEach((category) => {
         // Category Header
         legendContainer.append("text")
           .attr("x", legendPadding).attr("y", yPos + legendItemHeight / 2).attr("dy", ".35em")
-          .style("font-weight", 600).style("font-size", muiTheme.typography.pxToRem(11))
+          .style("font-weight", 600).style("font-size", muiTheme.typography.pxToRem(categoryHeaderFontSize))
           .attr("fill", textColorPrimary).text(category.name);
         yPos += legendItemHeight;
-  
+
         // Category Items (Labels)
         category.labels.forEach(labelInfo => {
           const allOriginalTypesFiltered = labelInfo.types.every(t =>
@@ -1245,7 +1253,7 @@ import React, {
             // Label Text
             entry.append("text")
               .attr("x", dotRadius * 2 + textPadding).attr("y", 0).attr("dy", ".35em")
-              .style("font-size", muiTheme.typography.pxToRem(11))
+              .style("font-size", muiTheme.typography.pxToRem(itemLabelFontSize))
               .style("font-weight", 400).attr("fill", textColorPrimary)
               .text(labelInfo.label);
   
@@ -1327,7 +1335,7 @@ import React, {
           }
         }
       };
-    }, [mainWord, renderOrUpdateLegend]); // Add renderOrUpdateLegend dependency
+    }, [mainWord, renderOrUpdateLegend, isMobile]); // Add isMobile dependency
   
     // Center on main word function
     const centerOnMainWord = useCallback((svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, nodesToSearch: CustomNode[]) => {
@@ -1834,7 +1842,7 @@ import React, {
           </div>
         </div>
       );
-    }, [hoveredNode, themeMode, getNodeColor, mainWord, svgRef, baseLinks, nodeMap, getRelationshipTypeLabel]); // MODIFIED: Removed peekedNode from dependencies
+    }, [hoveredNode, themeMode, getNodeColor, mainWord, svgRef, baseLinks, nodeMap, getRelationshipTypeLabel, isMobile]); // MODIFIED: Removed peekedNode from dependencies, ADDED isMobile
   
     // Make sure to return the JSX at the end
     return (
