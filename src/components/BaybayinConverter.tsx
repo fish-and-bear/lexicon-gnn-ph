@@ -63,7 +63,7 @@ const BaybayinDisplay = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-const BaybayinText = styled(Typography)(({ theme }) => ({
+const BaybayinText = styled(Typography)(({/* theme */}) => ({
   fontSize: '2.5rem',
   color: 'rgba(29, 53, 87, 0.85)',
   fontFamily: 'Arial, sans-serif',

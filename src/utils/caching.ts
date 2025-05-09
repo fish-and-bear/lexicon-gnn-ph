@@ -101,7 +101,7 @@ export function getCachedData<T extends CacheableData>(key: string): T | null {
   if (!item) return null;
 
   try {
-    const { data, timestamp, type, size }: CacheItem<T> = JSON.parse(item);
+    const { data, timestamp, type/*, size*/ }: CacheItem<T> = JSON.parse(item);
     
   if (Date.now() - timestamp > CACHE_EXPIRATION) {
       localStorage.removeItem(cacheKey);

@@ -689,7 +689,7 @@ const safeParse = (jsonString: string | null | undefined): Record<string, any> |
 
 // Function to convert RawWordComprehensiveData to EditableWordData for form binding
 export function convertToEditable(rawData: RawWordComprehensiveData): EditableWordData {
-  const tempId = generateTempId(); // Generate one ID for the root if needed later
+  // const tempId = generateTempId(); // Unused: Generate one ID for the root if needed later
 
   // Helper to add temp_id to array items
   const addTempIds = <T extends object>(items: T[] | null | undefined): (T & BaseEditable)[] => {

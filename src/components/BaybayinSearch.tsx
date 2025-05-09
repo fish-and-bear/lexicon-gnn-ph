@@ -55,7 +55,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
 }));
 
-const BaybayinChar = styled(Typography)(({ theme }) => ({
+const BaybayinChar = styled(Typography)(({/* theme */}) => ({
   fontSize: '1.75rem',
   fontFamily: 'Arial, sans-serif',
   color: '#1d3557',

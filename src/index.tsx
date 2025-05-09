@@ -11,7 +11,7 @@ import './styles/global.css';
 // Step 3: Import App component directly
 import App from './App';
 import './index.css';
-import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from './reportWebVitals'; // Unused import
 import { AppThemeProvider, useAppTheme } from './contexts/ThemeContext';
 import { createTheme, ThemeProvider as MuiThemeProvider, CssBaseline } from '@mui/material';
 
@@ -68,12 +68,12 @@ const AppWithMuiTheme: React.FC = () => {
         // Add slider styling overrides
         MuiSlider: {
           styleOverrides: {
-            root: ({ ownerState, theme }) => ({
+            root: ({ /*ownerState,*/ theme }) => ({
               // Use theme palette for color
               color: theme.palette.primary.main,
               height: 3,
             }),
-            thumb: ({ ownerState, theme }) => ({
+            thumb: ({ /*ownerState,*/ theme }) => ({
               height: 12,
               width: 12,
               // Use theme palette for color
@@ -82,29 +82,29 @@ const AppWithMuiTheme: React.FC = () => {
                 boxShadow: 'none',
               },
             }),
-            track: ({ ownerState, theme }) => ({
+            track: ({ /*ownerState,*/ theme }) => ({
               height: 3,
               border: 'none',
               // Use accent color for light mode track, primary for dark mode track
               backgroundColor: theme.palette.mode === 'light' ? 'var(--accent-color)' : theme.palette.primary.main,
             }),
-            rail: ({ ownerState, theme }) => ({
+            rail: ({ /*ownerState,*/ theme }) => ({
               height: 3,
               opacity: 1,
               backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.15)',
             }),
-            mark: ({ ownerState, theme }) => ({
+            mark: ({ /*ownerState,*/ theme }) => ({
               height: 4,
               width: 1,
               marginTop: -1,
               backgroundColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)',
             }),
-            markActive: ({ ownerState, theme }) => ({
+            markActive: ({ /*ownerState,*/ theme }) => ({
               opacity: 1,
               // Use accent for light, primary for dark
               backgroundColor: theme.palette.mode === 'light' ? 'var(--accent-color)' : theme.palette.primary.main,
             }),
-            valueLabel: ({ ownerState, theme }) => ({
+            valueLabel: ({ /*ownerState,*/ theme }) => ({
               fontSize: '0.7rem',
               padding: '2px 6px',
               borderRadius: '4px',

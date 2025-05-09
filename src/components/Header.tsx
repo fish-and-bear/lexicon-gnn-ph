@@ -22,7 +22,7 @@ interface HeaderProps {
   apiConnected?: boolean | null;
 }
 
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
+const StyledAppBar = styled(AppBar)(({/* theme */}) => ({
   backgroundColor: 'var(--primary-color)',
   boxShadow: 'none',
   borderBottom: '1px solid var(--card-border-color)',

@@ -636,7 +636,7 @@ export async function fetchWordNetwork(
     }
 
     // Normalize and validate each node
-    const _nodes = response.data.nodes.map((n: any) => {
+    response.data.nodes = response.data.nodes.map((n: any) => {
       const node = n as Partial<NetworkNode>;
       if (!node.id) {
         console.warn('Node missing ID:', node);
@@ -658,7 +658,7 @@ export async function fetchWordNetwork(
     });
 
     // Normalize and validate each edge
-    const _links = response.data.links.map((e: any) => {
+    response.data.links = response.data.links.map((e: any) => {
       if (!e.source || !e.target) {
         console.warn('Edge missing source or target:', e);
         throw new Error('Invalid edge data: missing source or target');
@@ -740,24 +740,6 @@ function normalizeLemma(text: string): string {
 }
 
 // --- Data Normalization Helpers --- 
-
-// Helper function to split strings by semicolon, trimming whitespace - Reverted Signature
-function splitSemicolonSeparated(value: string | undefined): string[] { // Use string | undefined
-  // No need to check for array input anymore
-  if (typeof value === 'string') {
-    return value.split(';').map(s => s.trim()).filter(s => s !== '');
-  }
-  return [];
-}
-
-// Helper function to split strings by comma, trimming whitespace - Reverted Signature
-function splitCommaSeparated(value: string | undefined): string[] { // Use string | undefined
-  // No need to check for array input anymore
-  if (typeof value === 'string') {
-    return value.split(',').map(s => s.trim()).filter(s => s !== '');
-  }
-  return [];
-}
 
 // --- Main Data Normalization Function --- 
 
