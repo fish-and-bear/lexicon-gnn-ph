@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
-import Chip from '@mui/material/Chip';
+// import Chip from '@mui/material/Chip'; // Chip seems unused according to Vercel log
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Card from '@mui/material/Card';
@@ -53,7 +53,7 @@ const StatValue = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
-const StatLabel = styled(Typography)(({ theme }) => ({
+const StatLabel = styled(Typography)(({/* theme */}) => ({
   fontSize: '0.9rem',
   color: 'rgba(0, 0, 0, 0.6)',
   textAlign: 'center',
@@ -152,7 +152,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
         let totalChars = 0;
         
         // Flatten character frequency data from all languages
-        Object.entries(data.character_frequency).forEach(([langCode, characters]) => {
+        Object.entries(data.character_frequency).forEach(([_langCode, characters]) => {
           // Ensure characters is treated as a record of string to number
           const charObj = characters as Record<string, number>;
           
@@ -223,7 +223,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
 
       {/* Overall Statistics */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={4}>
+        <Grid component="div" xs={12} sm={4}>
           <StatCard>
             <CardContent>
               <StatValue>{stats.overview.with_baybayin.toLocaleString()}</StatValue>
@@ -231,7 +231,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
             </CardContent>
           </StatCard>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid xs={12} sm={4}>
           <StatCard>
             <CardContent>
               <StatValue>{stats.overview.percentage.toFixed(1)}%</StatValue>
@@ -239,7 +239,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
             </CardContent>
           </StatCard>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid xs={12} sm={4}>
           <StatCard>
             <CardContent>
               <StatValue>{languagesWithBaybayin}</StatValue>
@@ -254,7 +254,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
         Completeness Score Comparison
       </Typography>
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6}>
+        <Grid xs={12} sm={6}>
           <StatCard>
             <CardContent>
               <StatValue>{stats.completeness.with_baybayin.toFixed(2)}</StatValue>
@@ -262,7 +262,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
             </CardContent>
           </StatCard>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid xs={12} sm={6}>
           <StatCard>
             <CardContent>
               <StatValue>{stats.completeness.without_baybayin.toFixed(2)}</StatValue>
