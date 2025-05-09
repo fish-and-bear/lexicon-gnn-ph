@@ -88,7 +88,7 @@ const FrequencyText = styled(Typography)({
   color: 'rgba(0, 0, 0, 0.6)',
 });
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+const BorderLinearProgress = styled(LinearProgress)(({/* theme */}) => ({
   height: 10,
   borderRadius: 5,
   [`&.MuiLinearProgress-colorPrimary`]: {
@@ -223,7 +223,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
 
       {/* Overall Statistics */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid component="div" xs={12} sm={4}>
+        <Grid>
           <StatCard>
             <CardContent>
               <StatValue>{stats.overview.with_baybayin.toLocaleString()}</StatValue>
@@ -231,7 +231,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
             </CardContent>
           </StatCard>
         </Grid>
-        <Grid xs={12} sm={4}>
+        <Grid>
           <StatCard>
             <CardContent>
               <StatValue>{stats.overview.percentage.toFixed(1)}%</StatValue>
@@ -239,7 +239,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
             </CardContent>
           </StatCard>
         </Grid>
-        <Grid xs={12} sm={4}>
+        <Grid>
           <StatCard>
             <CardContent>
               <StatValue>{languagesWithBaybayin}</StatValue>
@@ -254,7 +254,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
         Completeness Score Comparison
       </Typography>
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid xs={12} sm={6}>
+        <Grid>
           <StatCard>
             <CardContent>
               <StatValue>{stats.completeness.with_baybayin.toFixed(2)}</StatValue>
@@ -262,7 +262,7 @@ const BaybayinStatistics: React.FC<BaybayinStatsProps> = () => {
             </CardContent>
           </StatCard>
         </Grid>
-        <Grid xs={12} sm={6}>
+        <Grid>
           <StatCard>
             <CardContent>
               <StatValue>{stats.completeness.without_baybayin.toFixed(2)}</StatValue>
