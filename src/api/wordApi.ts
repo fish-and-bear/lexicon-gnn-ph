@@ -644,7 +644,7 @@ export async function fetchWordNetwork(
       }
 
       return {
-        id: String(node.id),
+        id: Number(node.id), // Corrected: Ensure ID is a number
         label: node.label || node.word || String(node.id),
         word: node.word || node.label || String(node.id),
         language: node.language || 'tl',
@@ -666,8 +666,8 @@ export async function fetchWordNetwork(
 
       return {
         id: e.id || `${e.source}-${e.target}-${e.type || 'related'}`,
-        source: String(e.source),
-        target: String(e.target),
+        source: Number(e.source), // Corrected: Ensure source ID is a number
+        target: Number(e.target), // Corrected: Ensure target ID is a number
         type: e.type || 'related',
         directed: e.directed ?? false,
         weight: typeof e.weight === 'number' ? e.weight : 1,
