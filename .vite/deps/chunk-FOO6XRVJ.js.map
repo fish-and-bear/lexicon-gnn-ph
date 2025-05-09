@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../node_modules/@mui/material/useMediaQuery/index.js"],
+  "sourcesContent": ["export { default } from '@mui/system/useMediaQuery';"],
+  "mappings": ";;;;;;;;;;;;;;;AAAA;AAAA,IAAAA,eAAA;AAAA,IAAAA,eAAA;",
+  "names": ["import_dist"]
+}
