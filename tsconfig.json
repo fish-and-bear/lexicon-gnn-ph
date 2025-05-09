@@ -19,7 +19,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["jest"],
+    "types": ["jest", "node"],
 
     /* Path Aliases (optional, if you use them) */
     "baseUrl": ".",

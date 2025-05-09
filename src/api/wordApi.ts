@@ -570,16 +570,6 @@ interface NetworkNode {
   main: boolean;
 }
 
-interface NetworkLink {
-  id: string;
-  source: string;
-  target: string;
-  type: string;
-  directed: boolean;
-  weight: number;
-  metadata?: any; // Add metadata field
-}
-
 export async function fetchWordNetwork(
   word: string, 
   options: WordNetworkOptions = {},
@@ -646,7 +636,7 @@ export async function fetchWordNetwork(
     }
 
     // Normalize and validate each node
-    const nodes = response.data.nodes.map((n: any) => {
+    const _nodes = response.data.nodes.map((n: any) => {
       const node = n as Partial<NetworkNode>;
       if (!node.id) {
         console.warn('Node missing ID:', node);
@@ -668,7 +658,7 @@ export async function fetchWordNetwork(
     });
 
     // Normalize and validate each edge
-    const links = response.data.links.map((e: any) => {
+    const _links = response.data.links.map((e: any) => {
       if (!e.source || !e.target) {
         console.warn('Edge missing source or target:', e);
         throw new Error('Invalid edge data: missing source or target');
@@ -844,8 +834,7 @@ function normalizeWordData(rawData: any): WordInfo {
   }
 
   // Construct the full path from which data was fetched
-  const backendUrl = getApiBaseURL().replace('/api/v2', ''); // Assuming API v2 is part of the base
-  // const successfulApiEndpoint = `${backendUrl}${apiPath}`; // Removed unused variable
+  // const backendUrl = getApiBaseURL().replace('/api/v2', ''); // Removed unused variable
   // console.log("Data fetched from:", successfulApiEndpoint);
   // console.log("Data to save to cache:", data);
 
@@ -1934,8 +1923,6 @@ export const convertToBaybayin = async (text: string, language: string = 'fil'):
 
 // Use relative path for production, Vite proxy handles it in development
 const API_BASE_URL = import.meta.env.PROD ? '/api/v2' : (import.meta.env.VITE_API_URL || 'http://localhost:10000/api/v2');
-
-let successfulApiEndpoint = API_BASE_URL;
 
 /**
  * Fetches word suggestions based on the search query.
