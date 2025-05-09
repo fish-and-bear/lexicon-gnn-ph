@@ -992,6 +992,7 @@ def process_tagalog_words(
             # --- Savepoint logic ---
             savepoint_name = f"tagalog_entry_{entry_index}"
             lemma_for_log = entry_data.get("word", word_key) # Get original lemma for logging
+            cleaned_lemma = None # Initialize cleaned_lemma
 
             try:
                 # Create savepoint for this entry
