@@ -558,7 +558,7 @@ interface NetworkMetadata {
 }
 
 interface NetworkNode {
-  id: string;
+  id: number; // Corrected to number to match src/types.ts and usage
   label: string;
   word: string;
   language: string;
