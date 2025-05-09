@@ -913,54 +913,107 @@ def get_romanized_text(text: str) -> str:
 
 def get_language_mapping():
     """Dynamically build language mapping from dictionary files."""
-    # Base ISO 639-3 codes for Philippine languages
+    # Base ISO-639-3 codes and their common aliases
     base_language_map = {
-        # Standard Codes (Ensure these are always present)
-        "english": "en",
-        "en": "en",
-        "tagalog": "tgl",
-        "tl": "tgl", # Map 'tl' to 'tgl' for consistency
-        "filipino": "tgl",
-        "pilipino": "tgl",
-        "spanish": "es",
-        "es": "es",
+        # ─────────── WORLD MAJORS ──────────────────────────────────────────
+        "arabic": "ar",  "ara": "ar", "ar": "ar",
+        "burmese": "my", "my": "my",
+        "chinese": "zh", "mandarin": "zh", "chi": "zh", "zh": "zh",
+        "english": "en", "en": "en", "ing": "en", # Added "ing"
+        "french": "fr",  "fra": "fr", "fre": "fr", "fr": "fr",
+        "german": "de",  "deu": "de", "ger": "de", "de": "de",
+        "hindi": "hi",   "hin": "hi", "hi": "hi",
+        "italian": "it", "ita": "it", "it": "it",
+        "japanese": "ja","jap": "ja", "ja": "ja",
+        "korean": "ko",  "kor": "ko", "ko": "ko",
+        "latin": "la",   "lat": "la", "la": "la",
+        "malay": "ms",   "mal": "ms", "bahasa melayu": "ms", "ms": "ms",
+        "persian": "fa", "farsi": "fa", "fa": "fa",
+        "portuguese": "pt", "por": "pt", "pt": "pt",
+        "russian": "ru", "rus": "ru", "ruso": "ru", "ru": "ru",
+        "sanskrit": "sa","san": "sa", "sans": "sa", "skr": "sa", "sa": "sa",
+        "spanish": "es", "castilian": "es", "español": "es", "es": "es", "esp": "es", # Added "esp"
+        "swahili": "sw", "swa": "sw", "sw": "sw",
+        "thai": "th",    "tha": "th", "th": "th",
+        "turkish": "tr", "tur": "tr", "tr": "tr",
+        "vietnamese": "vi", "vie": "vi", "vi": "vi",
+        "hebrew": "he",  "heb": "he", "he": "he",
 
-        # Philippine Languages
-        "onhan": "onx",
-        "waray": "war",
-        "ibanag": "ibg",
-        "iranon": "iro",
-        "ilocano": "ilo",
-        "cebuano": "ceb",
-        "hiligaynon": "hil",
-        "kinaray-a": "krj",
-        "kinaraya": "krj",
-        "kinaray": "krj",
-        "asi": "bno",
-        "bikol": "bik",
-        "bikolano": "bik",
-        "bicol": "bik",
-        "surigaonon": "sgd",
-        "aklanon": "akl",
-        "masbatenyo": "msb",
-        "chavacano": "cbk",
-        "pangasinan": "pag",
-        "kapampangan": "pam",
-        "manobo": "mbt", # Default to Erumanen Manobo
-        "manide": "abd",
-        "maguindanaon": "mdh",
-        "ivatan": "ivv",
-        "itawis": "itv",
-        "isneg": "isd",
-        "ifugao": "ifk",
-        "gaddang": "gad",
-        "cuyonon": "cyo",
-        "blaan": "bpr",  # Default to Koronadal Blaan
-        "buhid": "bku",
-        "hanunoo": "hnn",
+        # ─────────── NATIONAL / COMMON PHILIPPINE ────────────────────────
+        "filipino": "tl", "tagalog": "tl", "pilipino": "tl", "fil": "tl", "tl": "tl",
+
+        # ─────────── BISAYAN GROUP ───────────────────────────────────────
+        "asi": "bno", "bno": "bno",
+        "cebuano": "ceb", "bisaya": "ceb", "visayan": "ceb", "ceb": "ceb", "seb": "ceb", # Added "seb"
+        "hiligaynon": "hil", "ilongo": "hil", "hgn": "hil", "hil": "hil",
+        "masbatenyo": "msb", "masbateño": "msb", "masbateno": "msb", "msb": "msb",
+        "onhan": "onx", "onx": "onx",
+        "surigaonon": "sgd", "sgd": "sgd",
+        "waray": "war", "waray-waray": "war", "war": "war",
+
+        # ─────────── LUZON LANGUAGES ─────────────────────────────────────
+        "aklanon": "akl", "akn": "akl", "akl": "akl",
+        "bikol": "bik", "bicol": "bik", "bikolano": "bik", "bik": "bik",
+        "bicol-central": "bcl", "bikol-central": "bcl", "bcl": "bcl",
+        "bontok": "bnc", "bnc": "bnc",
+        "gaddang": "gad", "gad": "gad",
+        "ibanag": "ibg", "ibn": "ibg", "ibg": "ibg",
+        "ifugao": "ifk", "tuwali": "ifk", "ifk": "ifk", "ifu": "ifk", # Added "ifu"
+        "ilocano": "ilo", "ilokano": "ilo", "ilk": "ilo", "ilo": "ilo",
+        "isneg": "isd", "yapayao": "isd", "isd": "isd",
+        "ivatan": "ivv", "ivv": "ivv",
+        "kapampangan": "pam", "pampangan": "pam", "kap": "pam", "pam": "pam",
+        "kinaray-a": "krj", "kinaraya": "krj", "kry": "krj", "krj": "krj",
+        "pangasinan": "pag", "pag": "pag", "pan": "pag", # Added "pan"
+        "palaweño": "plw", "palawano": "plw", "plw": "plw",
+        "tagbanwa": "tbw", "tagb": "tbw", "tbw": "tbw",
+
+        # ─────────── MINDANAO LANGUAGES ─────────────────────────────────
+        "blaan": "bpr", "blaan-koronadal": "bpr", "bpr": "bpr",
+        "blaan-sarangani": "bps", "bps": "bps",
+        "bukidnon": "buk", "buk": "buk",
+        "iranon": "iro", "iro": "iro",
+        "maguindanaon": "mdh", "magindanawn": "mdh", "mag": "mdh", "mdh": "mdh",
+        "manobo": "mbt", "erumanen": "mbt", "mnb": "mbt", "mbt": "mbt",
+        "maranao": "mrw", "mar": "mrw", "mrw": "mrw",
+        "subanen": "sub", "sub": "sub",
+        "tausug": "tsg", "tau": "tsg", "tsg": "tsg",
+        "tiruray": "tiy", "tir": "tiy", "tiy": "tiy",
+        "yakan": "yka", "yak": "yka", "yka": "yka",
+
+        # ─────────── MANGYAN / PALAWAN CLUSTER ─────────────────────────
+        "buhid": "bku", "bku": "bku",
+        "hanunoo": "hnn", "han": "hnn", "hnn": "hnn",
+
+        # ─────────── CREOLE & OTHER PH LANGS ────────────────────────────
+        "chavacano": "cbk", "zamboanga": "cbk", "cbk": "cbk",
+
+        # ─────────── YOUR "TREAT-AS-DISTINCT" CODES (kept verbatim) ────
+        #       (If you later decide these should funnel to "und", just
+        #        change the RHS to "und" – the keys are already present.)
+        "aby": "aby", "agt": "agt", "agu": "agu", "am": "am", "apa": "apa",
+        "asia": "asia", "ata": "ata", "ayt": "ayt", "bag": "bag", "baj": "baj",
+        "bal": "bal", "bat": "bat", "ben": "ben", "bit": "bit", "boh": "boh",
+        "btg": "btg", "btk": "btk", "chii": "chii", "chsi": "chsi", "cor": "cor",
+        "cot": "cot", "csi": "csi", "cze": "cze", "don": "don", "dum": "dum",
+        "ehi": "ehi", "elmo": "elmo", "ep": "ep", "eso": "eso", "eva": "eva",
+        "exp": "exp", "gran": "gran", "gre": "gre", "gri": "gri", "gui": "gui",
+        "hik": "hik", "hsil": "hsil", "hwi": "hwi", "iba": "iba", "iby": "iby",
+        "igo": "igo", "ilt": "ilt", "isp": "isp", "itn": "itn", "iwa": "iwa",
+        "jm": "jm", "juan": "juan", "jova": "jova", "kal": "kal", "kan": "kan",
+        "kas": "kas", "kay": "kay", "kbn": "kbn", "kem": "kem", "klg": "klg",
+        "kol": "kol", "krw": "krw", "lit": "lit", "mad": "mad", "mam": "mam",
+        "man": "man", "mbk": "mbk", "mex": "mex", "mgk": "mgk", "mgn": "mgn",
+        "min": "min", "misa": "misa", "mmw": "mmw", "mns": "mns", "mny": "mny",
+        "mts": "mts", "mwr": "mwr", "nawa": "nawa", "neg": "neg", "noe": "noe",
+        "paz": "paz", "png": "png", "pny": "pny", "rom": "rom", "sam": "sam",
+        "sava": "sava", "sco": "sco", "sma": "sma", "sml": "sml", "snk": "snk",
+        "sul": "sul", "tb": "tb", "tbn": "tbn", "tbo": "tbo", "tib": "tib",
+        "tin": "tin", "tng": "tng", "tsi": "tsi", "ted": "ted", "tgk": "tgk",
+        "zam": "zam", "zoo": "zoo",
     }
 
-    # Add regional variants
+    # Add regional variants (ensure they map to valid codes)
     regional_variants = {
         "bikol-central": "bcl",
         "bikol-albay": "bik",
@@ -976,7 +1029,7 @@ def get_language_mapping():
         "blaan-sarangani": "bps",
         "cebuano-cotabato": "ceb",
         "hiligaynon-cotabato": "hil",
-        "tagalog-marinduque": "tgl",
+        "tagalog-marinduque": "tl",
         "manobo-erumanen": "mbt",
         "isneg-yapayao": "isd",
         "ifugao-tuwali-ihapo": "ifk",
@@ -1084,8 +1137,8 @@ def get_language_code(language: str) -> Tuple[str, str]:
         return general_codes[cleaned_language], raw_language_for_metadata
 
     # Fallback for unknown languages
-    logger.warning(f"Could not map language: '{cleaned_language}'. Defaulting to '{DEFAULT_LANGUAGE_CODE}'.")
-    return DEFAULT_LANGUAGE_CODE, raw_language_for_metadata
+    logger.warning(f"Could not map language: '{cleaned_language}'. Defaulting to 'tl'.")
+    return "tl", raw_language_for_metadata
 
 
 def process_kaikki_lemma(lemma):

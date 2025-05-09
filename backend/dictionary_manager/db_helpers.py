@@ -71,7 +71,7 @@ class DatabaseConnectionError(DatabaseError):
 DB_CONFIG = {
     "dbname": os.getenv("DB_NAME", "fil_dict_db"),
     "user": os.getenv("DB_USER", "postgres"),
-    "password": os.getenv("DB_PASSWORD", "postgres"),
+    "password": os.getenv("DB_PASSWORD"),  # Removed default "postgres"
     "host": os.getenv("DB_HOST", "localhost"),
     "port": os.getenv("DB_PORT", "5432"),
 }
@@ -96,12 +96,12 @@ def get_connection():
         logger.debug("DATABASE_URL not set, using individual DB_* variables.")
         try:
              conn = psycopg2.connect(
-                 dbname=os.getenv("DB_NAME", DB_CONFIG['dbname']),
-                 user=os.getenv("DB_USER", DB_CONFIG['user']),
-                 password=os.getenv("DB_PASSWORD", DB_CONFIG['password']),
-                 host=os.getenv("DB_HOST", DB_CONFIG['host']),
-                 port=os.getenv("DB_PORT", DB_CONFIG['port']),
-                 client_encoding='UTF8' # <<< Explicitly set encoding
+                dbname=os.getenv("DB_NAME", DB_CONFIG['dbname']),
+                user=os.getenv("DB_USER", DB_CONFIG['user']),
+                password=os.getenv("DB_PASSWORD"),  # Use getenv directly, no default from DB_CONFIG here
+                host=os.getenv("DB_HOST", DB_CONFIG['host']),
+                port=os.getenv("DB_PORT", DB_CONFIG['port']),
+                client_encoding='UTF8' # <<< Explicitly set encoding
              )
         except psycopg2.OperationalError as e:
              logger.error(f"Failed to connect using DB_* variables: {e}")
@@ -442,13 +442,14 @@ def update_word_source_info(
     if SOURCE_INFO_FILES_KEY not in source_info_dict or not isinstance(source_info_dict[SOURCE_INFO_FILES_KEY], list):
         source_info_dict[SOURCE_INFO_FILES_KEY] = []
 
-    # --- Add ORIGINAL identifier to 'files' list --- #
-    if original_source_input not in source_info_dict[SOURCE_INFO_FILES_KEY]:
-        source_info_dict[SOURCE_INFO_FILES_KEY].append(original_source_input)
-        source_info_dict[SOURCE_INFO_FILES_KEY].sort()
+    # --- Get standardized ID and display name --- #
+    standardized_source_canonical_id = SourceStandardization.standardize_sources(original_source_input)
+    display_name = SourceStandardization.get_display_name(standardized_source_canonical_id)
 
-    # --- Standardize for 'last_updated' key --- #
-    standardized_source_canonical_id = SourceStandardization.standardize_sources(new_source_identifier)
+    # --- Add DISPLAY NAME to 'files' list --- #
+    if display_name not in source_info_dict[SOURCE_INFO_FILES_KEY]:
+        source_info_dict[SOURCE_INFO_FILES_KEY].append(display_name)
+        source_info_dict[SOURCE_INFO_FILES_KEY].sort()
 
     # --- Ensure 'last_updated' dict exists --- #
     if "last_updated" not in source_info_dict or not isinstance(source_info_dict["last_updated"], dict):
@@ -574,11 +575,26 @@ def propagate_source_info(cur, word_id: int, source_identifier: str) -> bool:
     Assumes target 'sources' columns are JSONB arrays.
     """
     try:
-        standardized_source = standardize_source_identifier(source_identifier)
-        if not standardized_source or standardized_source == 'unknown':
-             logger.warning(f"Skipping source propagation for word ID {word_id}: Invalid source '{source_identifier}'")
+        canonical_id = standardize_source_identifier(source_identifier)
+        # Use the constant from SourceStandardization for comparison
+        if not canonical_id or canonical_id == SourceStandardization.UNKNOWN_SOURCE_CANONICAL_ID:
+             logger.warning(f"Skipping source propagation for word ID {word_id}: Invalid or unknown source identifier '{source_identifier}' resulting in canonical_id '{canonical_id}'")
              return False
-        source_json = Json([standardized_source])
+        
+        display_name = SourceStandardization.get_display_name(canonical_id)
+        propagated_name: str # Add type hint
+
+        if not display_name or display_name == SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME:
+            logger.warning(f"Skipping source propagation for word ID {word_id}: Could not determine display name for canonical_id '{canonical_id}' (raw input: '{source_identifier}')")
+            # Fallback: if display name is unknown, propagate a formatted version of the canonical_id
+            # This should be rare if standardize_source_identifier and get_display_name are robust.
+            # We already checked for UNKNOWN_SOURCE_CANONICAL_ID for canonical_id itself.
+            propagated_name = canonical_id.replace('_', ' ').replace('-', ' ').title()
+            logger.info(f"Propagating formatted canonical ID '{propagated_name}' for word ID {word_id} as display name was not found or was '{SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME}'.")
+        else:
+            propagated_name = display_name
+
+        source_json = Json([propagated_name]) # Use the determined name for propagation
 
         # Update definitions
         cur.execute("""
@@ -603,11 +619,12 @@ def propagate_source_info(cur, word_id: int, source_identifier: str) -> bool:
              WHERE word_id = %s AND NOT (pronunciation_metadata->'sources' @> %s::jsonb);
          """, (source_json, word_id, source_json))
 
-        logger.info(f"Propagated source '{standardized_source}' for word ID {word_id}")
+        logger.info(f"Propagated source display name '{propagated_name}' (from canonical ID '{canonical_id}') for word ID {word_id}")
         return True
     except Exception as e:
-        logger.error(f"Error propagating source info for word ID {word_id}, source '{source_identifier}': {e}", exc_info=True)
-        raise
+        logger.error(f"Error propagating source information for word ID {word_id}, source '{source_identifier}': {e}", exc_info=True)
+        # Ensure to return False or re-raise if that's the desired contract on error
+        return False # Or raise e
 
 TABLE_CREATION_SQL = r"""
 -- Create timestamp update function if it doesn't exist
@@ -1502,14 +1519,50 @@ def insert_etymology(
             f"Skipping etymology insert for word ID {word_id} from source '{source_identifier}': Missing etymology text."
         )
         return None
-    if not source_identifier:
+    if not source_identifier: # Initial guard for mandatory source_identifier
         logger.error(
             f"CRITICAL: Skipping etymology insert for word ID {word_id}: Missing MANDATORY source identifier."
         )
         return None
 
+    source_identifier_stripped = source_identifier.strip()
+    db_source_name = source_identifier_stripped # Default if standardization fails or not applicable
+    log_source_detail = f"(original: '{source_identifier_stripped}')"
+
+    if source_identifier_stripped: # Proceed only if there's a non-empty stripped identifier
+        try:
+            canonical_id = standardize_source_identifier(source_identifier_stripped)
+            if not canonical_id or canonical_id == SourceStandardization.UNKNOWN_SOURCE_CANONICAL_ID:
+                db_source_name = SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME
+                logger.warning(f"[insert_etymology] Source '{source_identifier_stripped}' resolved to unknown canonical_id '{canonical_id}'. Using '{db_source_name}'.")
+                log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+            else:
+                display_name = SourceStandardization.get_display_name(canonical_id)
+                log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+                if not display_name or display_name == SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME:
+                    db_source_name = canonical_id.replace('_', ' ').replace('-', ' ').title()
+                    logger.info(f"[insert_etymology] Source '{source_identifier_stripped}' (canonical: {canonical_id}) has no display name. Using formatted ID: '{db_source_name}'.")
+                else:
+                    db_source_name = display_name
+        except Exception as e_std:
+            logger.error(f"[insert_etymology] Error during source standardization for '{source_identifier_stripped}': {e_std}. Using original value '{source_identifier_stripped}'.", exc_info=True)
+            db_source_name = source_identifier_stripped # Fallback to original stripped on error
+            log_source_detail = f"(original: '{source_identifier_stripped}', standardization_error)"
+    else: # source_identifier was None or empty to begin with (should be caught by initial guard if mandatory)
+        # This path implies source_identifier was not mandatory or guard failed.
+        # If it's crucial, the function should have already returned. If optional, db_source_name remains as initialized.
+        logger.warning("[insert_etymology] source_identifier_stripped was empty, db_source_name will be based on initial source_identifier value.")
+        db_source_name = source_identifier # Re-assign original if it was None/empty initially for clarity
+        log_source_detail = f"(original: '{source_identifier}' -> empty_stripped)"
+
+    # If, after all processing, db_source_name is None or empty, and it's mandatory for the DB operation:
+    if not db_source_name: # Check if the final db_source_name is empty
+        logger.error(
+            f"CRITICAL [insert_etymology]: db_source_name is empty for word ID {word_id} after processing original '{source_identifier}'. Skipping etymology."
+        )
+        return None
+
     try:
-        # Prepare data, ensuring None is passed for empty optional fields
         params = {
             "word_id": word_id,
             "etym_text": etymology_text,
@@ -1526,10 +1579,9 @@ def insert_etymology(
             "lang_codes": (
                 language_codes.strip() if isinstance(language_codes, str) else None
             ),
-            "sources": source_identifier.strip(), # Ensure source is stripped
+            "sources": db_source_name, # MODIFIED: Use db_source_name
         }
 
-        # Ensure cur.execute is correctly indented within the try block
         cur.execute(
             """
             INSERT INTO etymologies (
@@ -1538,13 +1590,11 @@ def insert_etymology(
             )
             VALUES (%(word_id)s, %(etym_text)s, %(norm_comp)s,
                     %(etym_struct)s, %(lang_codes)s, %(sources)s)
-            ON CONFLICT (word_id, etymology_text) -- Conflict on word and exact text match
+            ON CONFLICT (word_id, etymology_text)
             DO UPDATE SET
-                -- Update optional fields only if the new value is not NULL
                 normalized_components = COALESCE(EXCLUDED.normalized_components, etymologies.normalized_components),
                 etymology_structure = COALESCE(EXCLUDED.etymology_structure, etymologies.etymology_structure),
                 language_codes = COALESCE(EXCLUDED.language_codes, etymologies.language_codes),
-                -- Append sources: Add new source if not already present in the comma-separated list
                 sources = CASE
                               WHEN etymologies.sources IS NULL THEN EXCLUDED.sources
                               WHEN EXCLUDED.sources IS NULL THEN etymologies.sources
@@ -1560,26 +1610,21 @@ def insert_etymology(
         if etymology_id_tuple:
              etymology_id = etymology_id_tuple[0]
              logger.debug(
-                 f"Inserted/Updated etymology (ID: {etymology_id}) for word ID {word_id} from source '{source_identifier}'. Text: '{etymology_text[:50]}...'")
+                 f"[insert_etymology] Inserted/Updated etymology (ID: {etymology_id}) for word ID {word_id}. Source: '{db_source_name}' {log_source_detail}. Text: '{etymology_text[:50]}...'")
              return etymology_id
         else:
-             # This case should ideally not happen with RETURNING id, but handle defensively
-             logger.warning(f"Upsert for etymology word_id={word_id}, text='{etymology_text[:50]}...' did not return an ID.")
-             # Attempt to refetch if needed, though the transaction might rollback anyway
-             # cur.execute("SELECT id FROM etymologies WHERE word_id=%(word_id)s AND etymology_text=%(etym_text)s", params)
-             # refetched_id = cur.fetchone()
-             # return refetched_id[0] if refetched_id else None
-             return None # Indicate potential issue
+             logger.warning(f"[insert_etymology] Upsert for word_id={word_id}, text='{etymology_text[:50]}...' {log_source_detail} did not return an ID.")
+             return None
 
     except psycopg2.Error as e:
         logger.error(
-            f"Database error inserting etymology for word ID {word_id} from '{source_identifier}': {e.pgcode} {e.pgerror}",
+            f"[insert_etymology] Database error for word ID {word_id}, source: '{db_source_name}' {log_source_detail}: {e.pgcode} {e.pgerror}",
             exc_info=True,
         )
         return None
     except Exception as e:
         logger.error(
-            f"Unexpected error inserting etymology for word ID {word_id} from '{source_identifier}': {e}",
+            f"[insert_etymology] Unexpected error for word ID {word_id}, source: '{db_source_name}' {log_source_detail}: {e}",
             exc_info=True,
         )
         return None
@@ -1592,12 +1637,12 @@ def insert_pronunciation(
     value: str,
     tags: Optional[Union[List[str], Dict]] = None,
     metadata: Optional[Dict] = None,
-    source_identifier: Optional[str] = None,
+    source_identifier: Optional[str] = None, # This is the raw source identifier
 ) -> Optional[int]:
     """
     Inserts or updates a pronunciation record for a given word.
     Uses ON CONFLICT on (word_id, type, value) to update tags and metadata.
-    Source information is stored within the 'pronunciation_metadata' JSONB column.
+    Source information (display_name) is stored within the 'pronunciation_metadata' JSONB column.
 
     Args:
         cur: Database cursor.
@@ -1606,7 +1651,7 @@ def insert_pronunciation(
         value: The pronunciation value (e.g., phonetic transcription, audio URL).
         tags: List of strings or dictionary to be stored in the 'tags' JSONB column.
         metadata: Dictionary for additional metadata (stored in 'pronunciation_metadata' JSONB column).
-        source_identifier: Identifier for the data source (stored within metadata).
+        source_identifier: Identifier for the data source (will be standardized to display_name for metadata).
 
     Returns:
         The ID of the inserted/updated pronunciation record, or None if failed.
@@ -1624,53 +1669,76 @@ def insert_pronunciation(
         )
         return None
 
+    # --- Standardize Source Identifier for metadata ---
+    db_source_name_for_meta = None # Default if source_identifier is None or empty
+    log_source_detail = f"(original source_identifier: '{source_identifier}')"
+
+    if source_identifier:
+        source_identifier_stripped = source_identifier.strip()
+        if source_identifier_stripped: # Check if not empty after stripping
+            db_source_name_for_meta = source_identifier_stripped # Fallback if standardization fails
+            try:
+                canonical_id = standardize_source_identifier(source_identifier_stripped)
+                if not canonical_id or canonical_id == SourceStandardization.UNKNOWN_SOURCE_CANONICAL_ID:
+                    db_source_name_for_meta = SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME
+                    logger.warning(f"[insert_pronunciation] Source '{source_identifier_stripped}' resolved to unknown canonical_id '{canonical_id}'. Using '{db_source_name_for_meta}' for metadata.")
+                    log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+                else:
+                    display_name = SourceStandardization.get_display_name(canonical_id)
+                    log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+                    if not display_name or display_name == SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME:
+                        # Use formatted canonical_id if display_name is unknown but canonical_id is known
+                        db_source_name_for_meta = canonical_id.replace('_', ' ').replace('-', ' ').title()
+                        logger.info(f"[insert_pronunciation] Source '{source_identifier_stripped}' (canonical: {canonical_id}) has no display name. Using formatted ID: '{db_source_name_for_meta}' for metadata.")
+                    else:
+                        db_source_name_for_meta = display_name
+            except Exception as e_std:
+                logger.error(f"[insert_pronunciation] Error standardizing source '{source_identifier_stripped}': {e_std}. Using original value '{source_identifier_stripped}' for metadata.", exc_info=True)
+                # db_source_name_for_meta remains source_identifier_stripped (the fallback)
+                log_source_detail = f"(original: '{source_identifier_stripped}', standardization_error)"
+        else: # source_identifier was all whitespace
+            log_source_detail = "(original source_identifier was whitespace)"
+            # db_source_name_for_meta remains None, so no source will be added to metadata
+    else: # source_identifier was None
+        log_source_detail = "(original source_identifier: None)"
+        # db_source_name_for_meta remains None, so no source will be added to metadata
+
     # --- Prepare Tags (JSONB) ---
     tags_json = None
+    tags_data = {}
     if isinstance(tags, list):
-        # Ensure items are strings and handle potential non-string items gracefully
         processed_tags = [str(t).strip() for t in tags if t is not None]
         tags_data = {"tags": processed_tags} if processed_tags else {}
     elif isinstance(tags, dict):
         tags_data = tags
-    else:
-        tags_data = {}  # Default to empty dict
 
     try:
-        # Only dump if tags_data is not empty
         tags_json = json.dumps(tags_data, default=str) if tags_data else None
     except TypeError as e:
         logger.error(
             f"Could not serialize tags for pronunciation (Word ID {word_id}, Type {pron_type}): {e}. Tags: {tags_data}",
             exc_info=True,
         )
-        tags_json = None  # Proceed without tags
+        tags_json = None
 
     # --- Prepare Metadata (JSONB) ---
-    # Start with a copy of input metadata or an empty dict
     pronunciation_metadata = metadata.copy() if isinstance(metadata, dict) else {}
 
-    # Add/Update source identifier within metadata
-    if source_identifier:
-        source_identifier = source_identifier.strip()
-        if source_identifier:  # Ensure source_identifier is not empty after stripping
-            existing_sources = pronunciation_metadata.get("sources", [])
-            # Ensure existing_sources is a list
-            if not isinstance(existing_sources, list):
-                logger.warning(
-                    f"Existing 'sources' in pronunciation metadata for word ID {word_id} (Type: {pron_type}) is not a list ({type(existing_sources)}). Overwriting with new source."
-                )
-                existing_sources = []
+    # Add/Update standardized source name within metadata["sources"] list
+    if db_source_name_for_meta: # Only add if we have a processed and non-empty source name
+        existing_sources_in_meta = pronunciation_metadata.get("sources", [])
+        if not isinstance(existing_sources_in_meta, list):
+            logger.warning(
+                f"Existing 'sources' in pronunciation metadata for word ID {word_id} (Type: {pron_type}) is not a list ({type(existing_sources_in_meta)}). Overwriting with new source."
+            )
+            existing_sources_in_meta = []
 
-            # Add the new source if it's not already present
-            if source_identifier not in existing_sources:
-                existing_sources.append(source_identifier)
-
-            # Update the metadata dictionary
-            pronunciation_metadata["sources"] = existing_sources
+        if db_source_name_for_meta not in existing_sources_in_meta:
+            existing_sources_in_meta.append(db_source_name_for_meta)
+        pronunciation_metadata["sources"] = existing_sources_in_meta
 
     metadata_json = None
     try:
-        # Only dump if pronunciation_metadata is not empty
         metadata_json = (
             json.dumps(pronunciation_metadata, default=str)
             if pronunciation_metadata
@@ -1681,22 +1749,18 @@ def insert_pronunciation(
             f"Could not serialize metadata for pronunciation (Word ID {word_id}, Type {pron_type}): {e}. Metadata: {pronunciation_metadata}",
             exc_info=True,
         )
-        metadata_json = None  # Proceed without metadata
+        metadata_json = None
 
     # --- Database Operation ---
     params = {
         "word_id": word_id,
         "type": pron_type,
         "value": value.strip(),
-        # "tags": tags_json,  # Pass None if serialization failed or data was empty
-        "tags": Json(tags_data) if tags_data else None, # Use Json adapter
-        # "metadata": metadata_json,  # Pass None if serialization failed or data was empty
-        "metadata": Json(pronunciation_metadata) if pronunciation_metadata else None, # Use Json adapter
-        # "sources": source_identifier, # Removed: Stored in metadata
+        "tags": Json(tags_data) if tags_data else None, 
+        "metadata": Json(pronunciation_metadata) if pronunciation_metadata else None, 
     }
 
     try:
-        # Note: Using explicit NULLIF for JSONB fields in VALUES to handle None params correctly
         cur.execute(
             """
             INSERT INTO pronunciations (word_id, type, value, tags, pronunciation_metadata)
@@ -1704,14 +1768,10 @@ def insert_pronunciation(
                 %(word_id)s, %(type)s, %(value)s,
                 %(tags)s,
                 %(metadata)s
-                -- sources column removed
             )
             ON CONFLICT (word_id, type, value) DO UPDATE SET
-                -- Merge tags and metadata JSONB fields using || operator
-                -- Handles cases where existing or excluded values might be NULL
                 tags = COALESCE(pronunciations.tags, '{}'::jsonb) || COALESCE(EXCLUDED.tags, '{}'::jsonb),
                 pronunciation_metadata = COALESCE(pronunciations.pronunciation_metadata, '{}'::jsonb) || COALESCE(EXCLUDED.pronunciation_metadata, '{}'::jsonb),
-                -- sources update removed
                 updated_at = CURRENT_TIMESTAMP
             RETURNING id
             """,
@@ -1719,15 +1779,14 @@ def insert_pronunciation(
         )
         pronunciation_id = cur.fetchone()[0]
         logger.debug(
-            f"Inserted/Updated pronunciation (ID: {pronunciation_id}) for word ID {word_id}. Type: {pron_type}, Value: '{value[:50]}...'"
+            f"[insert_pronunciation] Inserted/Updated pronunciation (ID: {pronunciation_id}) for word ID {word_id}. Type: {pron_type}, Value: '{value[:50]}...'. Source info for metadata: {log_source_detail}"
         )
         return pronunciation_id
 
     except psycopg2.IntegrityError as e:
         logger.error(
-            f"Integrity error inserting pronunciation for word ID {word_id} (Type: {pron_type}, Value: '{value[:50]}...'). Error: {e.pgcode} {e.pgerror}"
+            f"[insert_pronunciation] Integrity error for word ID {word_id} (Type: {pron_type}, Value: '{value[:50]}...'). Source for metadata: {log_source_detail}. Error: {e.pgcode} {e.pgerror}"
         )
-        # Rollback might be handled by decorator, but can be explicit
         try:
             cur.connection.rollback()
         except Exception as rb_e:
@@ -1735,7 +1794,7 @@ def insert_pronunciation(
         return None
     except psycopg2.Error as e:
         logger.error(
-            f"Database error inserting pronunciation for word ID {word_id} (Type: {pron_type}): {e.pgcode} {e.pgerror}",
+            f"[insert_pronunciation] Database error for word ID {word_id} (Type: {pron_type}). Source for metadata: {log_source_detail}. Error: {e.pgcode} {e.pgerror}",
             exc_info=True,
         )
         try:
@@ -1745,13 +1804,15 @@ def insert_pronunciation(
         return None
     except Exception as e:
         logger.error(
-            f"Unexpected error inserting pronunciation for word ID {word_id} (Type: {pron_type}): {e}",
+            f"[insert_pronunciation] Unexpected error for word ID {word_id} (Type: {pron_type}). Source for metadata: {log_source_detail}. Error: {e}",
             exc_info=True,
         )
         try:
             cur.connection.rollback()
         except Exception as rb_e:
-            logger.warning(f"Rollback failed after Unexpected Error: {rb_e}")
+            logger.error(
+                f"Failed to rollback transaction after unexpected error: {rb_e}"
+            )
         return None
 
 @with_transaction(commit=True)
@@ -1773,9 +1834,43 @@ def insert_credit(
     Returns:
         The ID of the inserted/updated credit record, or None if failed.
     """
-    if not source_identifier:
+    if not source_identifier: # Initial guard
         logger.error(
             f"CRITICAL: Skipping credit insert for word ID {word_id}: Missing MANDATORY source identifier."
+        )
+        return None
+
+    source_identifier_stripped = source_identifier.strip()
+    db_source_name = source_identifier_stripped # Default if standardization fails
+    log_source_detail = f"(original: '{source_identifier_stripped}')"
+
+    if source_identifier_stripped:
+        try:
+            canonical_id = standardize_source_identifier(source_identifier_stripped)
+            if not canonical_id or canonical_id == SourceStandardization.UNKNOWN_SOURCE_CANONICAL_ID:
+                db_source_name = SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME
+                logger.warning(f"[insert_credit] Source '{source_identifier_stripped}' resolved to unknown canonical_id '{canonical_id}'. Using '{db_source_name}'.")
+                log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+            else:
+                display_name = SourceStandardization.get_display_name(canonical_id)
+                log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+                if not display_name or display_name == SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME:
+                    db_source_name = canonical_id.replace('_', ' ').replace('-', ' ').title()
+                    logger.info(f"[insert_credit] Source '{source_identifier_stripped}' (canonical: {canonical_id}) has no display name. Using formatted ID: '{db_source_name}'.")
+                else:
+                    db_source_name = display_name
+        except Exception as e_std:
+            logger.error(f"[insert_credit] Error during source standardization for '{source_identifier_stripped}': {e_std}. Using original value '{source_identifier_stripped}'.", exc_info=True)
+            db_source_name = source_identifier_stripped # Fallback
+            log_source_detail = f"(original: '{source_identifier_stripped}', standardization_error)"
+    else: # source_identifier was None or empty (should be caught by guard if mandatory)
+        logger.warning("[insert_credit] source_identifier_stripped was empty, db_source_name will be based on initial source_identifier value.")
+        db_source_name = source_identifier
+        log_source_detail = f"(original: '{source_identifier}' -> empty_stripped)"
+
+    if not db_source_name: # Check final db_source_name
+        logger.error(
+            f"CRITICAL [insert_credit]: db_source_name is empty for word ID {word_id} after processing original '{source_identifier}'. Skipping credit."
         )
         return None
 
@@ -1793,13 +1888,13 @@ def insert_credit(
             credit_text = credit_data.strip()
         else:
             logger.warning(
-                f"Invalid credit_data type for word ID {word_id} (source '{source_identifier}'): {type(credit_data)}. Skipping."
+                f"[insert_credit] Invalid credit_data type for word ID {word_id} {log_source_detail}: {type(credit_data)}. Skipping."
             )
             return None
 
         if not credit_text:
             logger.warning(
-                f"Empty credit text for word ID {word_id} (source '{source_identifier}'). Skipping."
+                f"[insert_credit] Empty credit text for word ID {word_id} {log_source_detail}. Skipping."
             )
             return None
 
@@ -1807,7 +1902,7 @@ def insert_credit(
         params = {
             "word_id": word_id,
             "credit": credit_text,
-            "sources": source_identifier,  # Use mandatory source_identifier directly
+            "sources": db_source_name,  # MODIFIED: Use db_source_name
         }
 
         # Insert or update credit
@@ -1826,19 +1921,19 @@ def insert_credit(
         )
         credit_id = cur.fetchone()[0]
         logger.debug(
-            f"Inserted/Updated credit (ID: {credit_id}) for word ID {word_id} from source '{source_identifier}'. Credit: '{credit_text}'"
+            f"[insert_credit] Inserted/Updated credit (ID: {credit_id}) for word ID {word_id}. Source: '{db_source_name}' {log_source_detail}. Credit: '{credit_text}'"
         )
         return credit_id
 
     except psycopg2.Error as e:
         logger.error(
-            f"Database error inserting credit for word ID {word_id} from '{source_identifier}': {e.pgcode} {e.pgerror}",
+            f"[insert_credit] Database error for word ID {word_id}, source: '{db_source_name}' {log_source_detail}: {e.pgcode} {e.pgerror}",
             exc_info=True,
         )
         return None
     except Exception as e:
         logger.error(
-            f"Unexpected error inserting credit for word ID {word_id} from '{source_identifier}': {e}",
+            f"[insert_credit] Unexpected error for word ID {word_id}, source: '{db_source_name}' {log_source_detail}: {e}",
             exc_info=True,
         )
         return None
@@ -1848,44 +1943,26 @@ def insert_definition(
     cur,
     word_id: int,
     definition_text: str,
-    part_of_speech: Optional[str] = None, # Accept raw part_of_speech
-    # notes: Optional[str] = None, # Removed - No 'notes' column in schema
-    # examples: Optional[List[Dict]] = None, # Removed: Examples are handled by insert_definition_example
+    part_of_speech: Optional[str] = None, 
     usage_notes: Optional[str] = None,
-    # cultural_notes: Optional[str] = None, # Removed - No 'cultural_notes' column in schema
-    # etymology_notes: Optional[str] = None, # Removed - No 'etymology_notes' column in schema
-    # scientific_name: Optional[str] = None, # Removed - No 'scientific_name' column in schema
-    # verified: Optional[bool] = False, # Removed - No 'verified' column in schema
-    # verification_notes: Optional[str] = None, # Removed - No 'verification_notes' column in schema
     tags: Optional[List[str]] = None,
     metadata: Optional[Dict] = None,
-    # popularity_score: Optional[float] = 0.0, # Removed - column doesn't exist in schema
-    sources: Optional[str] = None,
+    sources: Optional[str] = None, # This is the raw source_identifier for this definition
 ) -> Optional[int]:
     """
     Inserts or updates a definition for a word.
     Uses ON CONFLICT to update existing definitions based on (word_id, definition_text, standardized_pos_id).
-    Examples are handled separately by insert_definition_example.
+    The 'sources' parameter is standardized to a display_name before storage.
 
     Args:
         cur: Database cursor.
         word_id: ID of the word.
         definition_text: The text of the definition.
         part_of_speech: Raw part of speech string from source.
-        # original_pos: Original part of speech tag from source. Removed.
-        # standardized_pos_id: Foreign key to the standardized part_of_speech table. Removed.
-        # notes: General notes about the definition. Removed.
-        # examples: List of example dictionaries. Removed.
         usage_notes: Notes on usage.
-        # cultural_notes: Cultural context notes. Removed.
-        # etymology_notes: Notes related to etymology within the definition context. Removed.
-        # scientific_name: Scientific name if applicable. Removed.
-        # verified: Boolean flag indicating verification status. Removed.
-        # verification_notes: Notes regarding verification. Removed.
         tags: List of tags associated with the definition (stored as comma-separated text).
         metadata: JSONB dictionary for additional metadata.
-        # popularity_score: Numeric score indicating definition popularity/importance. Removed.
-        sources: Comma-separated string of source identifiers.
+        sources: Raw source identifier for this definition (will be standardized to display_name).
 
     Returns:
         The ID of the inserted/updated definition record, or None if failed.
@@ -1896,7 +1973,42 @@ def insert_definition(
         )
         return None
 
-    # --- Determine original_pos and standardized_pos_id from part_of_speech ---
+    # --- Standardize Source Identifier (from 'sources' parameter) ---
+    db_source_name = None # Default if sources input is None or empty after strip
+    log_source_detail = f"(original sources_param: '{sources}')"
+
+    if sources: # Only process if 'sources' input is provided
+        source_identifier_stripped = sources.strip()
+        if source_identifier_stripped: # Check if not empty after stripping
+            db_source_name = source_identifier_stripped # Fallback if standardization fails
+            try:
+                canonical_id = standardize_source_identifier(source_identifier_stripped)
+                if not canonical_id or canonical_id == SourceStandardization.UNKNOWN_SOURCE_CANONICAL_ID:
+                    db_source_name = SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME
+                    logger.warning(f"[insert_definition] Source '{source_identifier_stripped}' resolved to unknown canonical_id '{canonical_id}'. Using '{db_source_name}' for DB.")
+                    log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+                else:
+                    display_name = SourceStandardization.get_display_name(canonical_id)
+                    log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+                    if not display_name or display_name == SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME:
+                        db_source_name = canonical_id.replace('_', ' ').replace('-', ' ').title()
+                        logger.info(f"[insert_definition] Source '{source_identifier_stripped}' (canonical: {canonical_id}) has no display name. Using formatted ID: '{db_source_name}' for DB.")
+                    else:
+                        db_source_name = display_name
+            except Exception as e_std:
+                logger.error(f"[insert_definition] Error standardizing source '{source_identifier_stripped}': {e_std}. Using original value '{source_identifier_stripped}' for DB.", exc_info=True)
+                # db_source_name remains source_identifier_stripped (the fallback)
+                log_source_detail = f"(original: '{source_identifier_stripped}', standardization_error)"
+        else: # sources param was all whitespace
+             log_source_detail = f"(original sources_param '{sources}' was all whitespace)"
+             # db_source_name remains None
+    else: # sources param was None
+        log_source_detail = "(original sources_param was None)"
+        # db_source_name remains None
+    
+    # If sources column in DB is NOT NULL and db_source_name is None here, it might cause an error.
+    # Current schema for definitions.sources is TEXT, allowing NULL.
+
     original_pos = part_of_speech.strip() if part_of_speech else None
     standardized_pos_id = None
     if original_pos:
@@ -1904,66 +2016,43 @@ def insert_definition(
             standardized_pos_id = get_standardized_pos_id(cur, original_pos)
         except Exception as pos_err:
             logger.error(f"Error getting standardized POS ID for '{original_pos}' (Word ID {word_id}): {pos_err}", exc_info=True)
-            # Optionally fall back to 'unc' or None depending on desired behavior
-            standardized_pos_id = get_uncategorized_pos_id(cur) # Fallback to 'unc' ID
+            standardized_pos_id = get_uncategorized_pos_id(cur) 
 
-    # Prepare data, ensuring None is passed for empty optional fields
-    tags_string = ",".join(tags) if tags else None # Corrected: join tags, not empty string
-
+    tags_string = ",".join(tags) if tags else None
 
     params = {
         "word_id": word_id,
         "def_text": definition_text.strip(),
-        "orig_pos": original_pos, # Use determined original_pos
-        "std_pos_id": standardized_pos_id, # Use determined standardized_pos_id
-        # "notes": notes.strip() if notes else None, # Removed
-        # "examples": examples_json, # Removed
+        "orig_pos": original_pos, 
+        "std_pos_id": standardized_pos_id, 
         "usage_notes": usage_notes.strip() if usage_notes else None,
-        # "cult_notes": cultural_notes.strip() if cultural_notes else None, # Removed
-        # "etym_notes": etymology_notes.strip() if etymology_notes else None, # Removed
-        # "sci_name": scientific_name.strip() if scientific_name else None, # Removed
-        # "verif_notes": verification_notes.strip() if verification_notes else None, # REMOVED key
         "tags": tags_string,
-        "metadata": Json(metadata) if metadata else None, # Wrap metadata in Json
-        # "pop_score": float(popularity_score) if popularity_score is not None else 0.0, # REMOVED - column doesn't exist
-        "sources": sources.strip() if sources else None,
+        "metadata": Json(metadata) if metadata else None, 
+        "sources": db_source_name, # MODIFIED: Use standardized db_source_name for the 'sources' column
     }
 
     sql_insert = """
         INSERT INTO definitions (
-            word_id, definition_text, original_pos, standardized_pos_id, -- notes,
-            usage_notes, -- cultural_notes,
-            -- etymology_notes,
-            -- scientific_name,
+            word_id, definition_text, original_pos, standardized_pos_id,
+            usage_notes,
             tags,
-            definition_metadata, -- Corrected column name
+            definition_metadata,
             sources
-            -- popularity_score,
-            -- examples
         )
         VALUES (
-            %(word_id)s, %(def_text)s, %(orig_pos)s, %(std_pos_id)s, -- Removed notes placeholder
-            %(usage_notes)s, -- cultural_notes removed below
-            -- etymology_notes removed below
-            -- sci_name removed
+            %(word_id)s, %(def_text)s, %(orig_pos)s, %(std_pos_id)s,
+            %(usage_notes)s,
             %(tags)s,
-            %(metadata)s, -- Parameter name is still metadata
+            %(metadata)s,
             %(sources)s
-            -- popularity_score removed
-            -- examples value removed
         )
         ON CONFLICT (word_id, definition_text, standardized_pos_id) DO UPDATE SET
             original_pos = EXCLUDED.original_pos,
-            -- notes = EXCLUDED.notes,
             usage_notes = EXCLUDED.usage_notes,
-            -- cultural_notes = EXCLUDED.cultural_notes,
-            -- etymology_notes = EXCLUDED.etymology_notes,
-            -- scientific_name = EXCLUDED.scientific_name,
             tags = EXCLUDED.tags,
-            definition_metadata = EXCLUDED.definition_metadata, -- Corrected column name
-            sources = EXCLUDED.sources
-            -- popularity_score = EXCLUDED.popularity_score,
-            -- examples = EXCLUDED.examples
+            definition_metadata = EXCLUDED.definition_metadata,
+            sources = EXCLUDED.sources,
+            updated_at = CURRENT_TIMESTAMP
         RETURNING id;
         """
 
@@ -1971,57 +2060,46 @@ def insert_definition(
         cur.execute(sql_insert, params)
         definition_id = cur.fetchone()[0]
         logger.debug(
-            f"Inserted/Updated definition (ID: {definition_id}) for word ID {word_id}. Text: '{definition_text[:50]}...'")
+            f"[insert_definition] Inserted/Updated definition (ID: {definition_id}) for word ID {word_id}. Source for DB: '{db_source_name}' {log_source_detail}. Text: '{definition_text[:50]}...'")
         return definition_id
 
     except psycopg2.IntegrityError as e:
-        # Handle potential FK violation for standardized_pos_id
-        if e.pgcode == "23503":  # foreign_key_violation
+        if e.pgcode == "23503":  
             logger.warning(
-                f"Integrity error inserting definition for word ID {word_id}. Standardized POS ID {standardized_pos_id} likely doesn't exist. Setting to NULL. Error: {e.pgerror}"
+                f"[insert_definition] Integrity error for word ID {word_id}. Source for DB: '{db_source_name}' {log_source_detail}. POS ID {standardized_pos_id} likely doesn't exist. Setting to NULL. Error: {e.pgerror}"
             )
-            params["std_pos_id"] = None  # Retry with NULL POS ID
+            params["std_pos_id"] = None  
             try:
-                # Re-execute the same SQL but with updated params where std_pos_id is None
                 cur.execute(sql_insert, params)
                 definition_id = cur.fetchone()[0]
                 logger.debug(
-                    f"Inserted/Updated definition (ID: {definition_id}) for word ID {word_id} with NULL POS ID after FK error."
+                    f"[insert_definition] Inserted/Updated definition (ID: {definition_id}) for word ID {word_id} with NULL POS ID after FK error. Source for DB: '{db_source_name}' {log_source_detail}."
                 )
                 return definition_id
             except psycopg2.Error as retry_e:
                 logger.error(
-                    f"Database error on retry inserting definition for word ID {word_id} with NULL POS ID: {retry_e.pgcode} {retry_e.pgerror}",
+                    f"[insert_definition] Database error on retry for word ID {word_id} with NULL POS ID. Source for DB: '{db_source_name}' {log_source_detail}. Error: {retry_e.pgcode} {retry_e.pgerror}",
                     exc_info=True,
                 )
-                cur.connection.rollback()  # Rollback the retry attempt
+                cur.connection.rollback()  
                 return None
         else:
             logger.error(
-                f"Integrity error inserting definition for word ID {word_id}: {e.pgcode} {e.pgerror}",
+                f"[insert_definition] Integrity error for word ID {word_id}. Source for DB: '{db_source_name}' {log_source_detail}. Error: {e.pgcode} {e.pgerror}",
                 exc_info=True,
             )
-            # Consider rolling back explicitly here if the transaction decorator doesn't handle it
-            # try: cur.connection.rollback()
-            # except Exception: pass
-            return None  # Indicate failure
+            return None
     except psycopg2.Error as e:
         logger.error(
-            f"Database error inserting definition for word ID {word_id}: {e.pgcode} {e.pgerror}",
+            f"[insert_definition] Database error for word ID {word_id}. Source for DB: '{db_source_name}' {log_source_detail}. Error: {e.pgcode} {e.pgerror}",
             exc_info=True,
         )
-        # Consider rolling back
-        # try: cur.connection.rollback()
-        # except Exception: pass
         return None
     except Exception as e:
         logger.error(
-            f"Unexpected error inserting definition for word ID {word_id}: {e}",
+            f"[insert_definition] Unexpected error for word ID {word_id}. Source for DB: '{db_source_name}' {log_source_detail}. Error: {e}",
             exc_info=True,
         )
-        # Consider rolling back
-        # try: cur.connection.rollback()
-        # except Exception: pass
         return None
 
 
@@ -2169,93 +2247,117 @@ def insert_relation(
     from_word_id: int,
     to_word_id: int,
     relation_type: str,
-    source_identifier: str,
+    source_identifier: str, # Raw source identifier
     metadata: Optional[Dict] = None,
 ) -> Optional[int]:
     """
     Create (or merge) a relation row in `relations`.
-    – `source_identifier` is appended to the comma‑separated `sources` column.
-    – `metadata` is kept as JSONB and deep‑merged on conflict.
+    - `source_identifier` is standardized to display_name and then appended to the comma-separated `sources` column.
+    - `metadata` is kept as JSONB and deep-merged on conflict.
 
     Returns the relation's id, or None on failure/skip.
     """
     # ---------- quick guards -------------------------------------------------
-    if not source_identifier:
-        logger.warning("insert_relation‑skip: source_identifier is required")
+    if not source_identifier: # Initial guard for the raw identifier
+        logger.warning("[insert_relation]-skip: raw source_identifier is required")
         return None
     if from_word_id == to_word_id:
-        logger.debug("insert_relation‑skip: self‑relation")
+        logger.debug("[insert_relation]-skip: self-relation")
         return None
     if not relation_type or not isinstance(relation_type, str):
-        logger.warning("insert_relation‑skip: empty relation_type")
+        logger.warning("[insert_relation]-skip: empty relation_type")
         return None
 
     relation_type = relation_type.strip().lower()
-    source_identifier = source_identifier.strip()
+    source_identifier_stripped = source_identifier.strip()
+
+    # --- Standardize Source Identifier ---
+    db_source_name_for_append = source_identifier_stripped # Fallback if standardization fails or input is empty
+    log_source_detail = f"(original: '{source_identifier_stripped}')"
+
+    if not source_identifier_stripped: # If original was all whitespace
+        logger.warning(f"[insert_relation] Original source_identifier '{source_identifier}' was empty after stripping. The 'sources' field in DB might be empty or skip append for this entry.")
+        # db_source_name_for_append remains empty, SQL CASE will handle it.
+    else:
+        try:
+            canonical_id = standardize_source_identifier(source_identifier_stripped)
+            if not canonical_id or canonical_id == SourceStandardization.UNKNOWN_SOURCE_CANONICAL_ID:
+                db_source_name_for_append = SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME
+                logger.warning(f"[insert_relation] Source '{source_identifier_stripped}' (canonical: '{canonical_id}') resolved to unknown. Using '{db_source_name_for_append}' for appending.")
+                log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+            else:
+                display_name = SourceStandardization.get_display_name(canonical_id)
+                log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+                if not display_name or display_name == SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME:
+                    db_source_name_for_append = canonical_id.replace('_', ' ').replace('-', ' ').title()
+                    logger.info(f"[insert_relation] Source '{source_identifier_stripped}' (canonical: {canonical_id}) has no display name. Using formatted ID: '{db_source_name_for_append}' for appending.")
+                else:
+                    db_source_name_for_append = display_name
+        except Exception as e_std:
+            logger.error(f"[insert_relation] Error standardizing source '{source_identifier_stripped}': {e_std}. Using original value '{source_identifier_stripped}' for appending.", exc_info=True)
+            # db_source_name_for_append remains source_identifier_stripped (the fallback)
+            log_source_detail = f"(original: '{source_identifier_stripped}', standardization_error)"
+    
+    # If db_source_name_for_append became empty after standardization (e.g. unknown source), SQL CASE handles it.
+    # If it's critical that this is never empty, add a check here.
+    if not db_source_name_for_append:
+         logger.warning(f"[insert_relation] db_source_name_for_append is empty for relation {from_word_id}->{to_word_id}. Original: '{source_identifier}'. The CASE statement will handle appending nothing or just a comma.")
 
     # ---------- build params -------------------------------------------------
-    json_metadata = Json(metadata or {})          # never NULL → avoids jsonb || NULL
+    json_metadata = Json(metadata or {})          
     params = dict(
         from_id=from_word_id,
         to_id=to_word_id,
         rel_type=relation_type,
-        sources=source_identifier,
+        sources_to_append=db_source_name_for_append, # Use the standardized name for appending
         metadata=json_metadata,
     )
 
     # ---------- upsert -------------------------------------------------------
+    # Note: EXCLUDED.sources in the SQL refers to the 'sources_to_append' value from params.
     upsert_sql = """
             INSERT INTO relations (from_word_id, to_word_id, relation_type, sources, metadata)
-            VALUES (%(from_id)s, %(to_id)s, %(rel_type)s, %(sources)s, %(metadata)s)
+            VALUES (%(from_id)s, %(to_id)s, %(rel_type)s, %(sources_to_append)s, %(metadata)s)
     ON CONFLICT (from_word_id, to_word_id, relation_type) DO UPDATE
     SET
-        -- append source if it is new
-                sources = CASE
-                    WHEN relations.sources IS NULL
-                         OR relations.sources = '' THEN EXCLUDED.sources
-                    WHEN string_to_array(relations.sources, ', ')
-                         @> ARRAY[EXCLUDED.sources] THEN relations.sources
-                              ELSE relations.sources || ', ' || EXCLUDED.sources
-                          END,
-        -- deep‑merge JSONB safely even when either side is NULL
+        sources = CASE
+                    WHEN relations.sources IS NULL OR relations.sources = '' THEN EXCLUDED.sources
+                    WHEN EXCLUDED.sources IS NULL OR EXCLUDED.sources = '' THEN relations.sources
+                    WHEN string_to_array(relations.sources, ', ') @> ARRAY[EXCLUDED.sources] THEN relations.sources
+                    ELSE relations.sources || ', ' || EXCLUDED.sources
+                  END,
         metadata = COALESCE(relations.metadata, '{}'::jsonb)
                    || COALESCE(EXCLUDED.metadata, '{}'::jsonb),
-                updated_at = CURRENT_TIMESTAMP
+        updated_at = CURRENT_TIMESTAMP
     RETURNING id;
     """
 
     try:
         cur.execute(upsert_sql, params)
         rid = cur.fetchone()[0]
-        # Indent the logger call correctly under the try block where rid is available
         logger.debug(
-            "relation %s → %s [%s] (id %s) recorded from " "%s",
-            from_word_id,
-            to_word_id,
-            relation_type,
-            rid,
-            source_identifier,
+            f"[insert_relation] Relation {from_word_id} → {to_word_id} [{relation_type}] (id {rid}). Appended source: '{db_source_name_for_append}' {log_source_detail}",
         )
         return rid
 
-    except psycopg2.IntegrityError as e:            # FK problems etc.
-        logger.error("insert_relation FK/unique failure: %s", e.pgerror.strip())
-    except psycopg2.Error as e:                     # any other PG error
-        logger.error("insert_relation PG error: %s", e.pgerror.strip(), exc_info=True)
-    except Exception as e:                          # python‑side
-        logger.exception("insert_relation unexpected error: %s", e)
+    except psycopg2.IntegrityError as e: 
+        logger.error(f"[insert_relation] FK/unique failure for relation {from_word_id}->{to_word_id} type '{relation_type}'. Appended source: '{db_source_name_for_append}' {log_source_detail}. Error: {e.pgerror.strip() if e.pgerror else e}")
+    except psycopg2.Error as e: 
+        logger.error(f"[insert_relation] PG error for relation {from_word_id}->{to_word_id} type '{relation_type}'. Appended source: '{db_source_name_for_append}' {log_source_detail}. Error: {e.pgerror.strip() if e.pgerror else e}", exc_info=True)
+    except Exception as e: 
+        logger.exception(f"[insert_relation] Unexpected error for relation {from_word_id}->{to_word_id} type '{relation_type}'. Appended source: '{db_source_name_for_append}' {log_source_detail}. Error: {e}")
 
-    # Ensure None is returned if any exception occurred
     return None
 
 
 @with_transaction(commit=True)
 def insert_definition_example(
-    cur, definition_id: int, example_data: Dict, source_identifier: str
+    cur, definition_id: int, example_data: Dict, source_identifier: str # Raw source identifier
 ) -> Optional[int]:
     """
     Insert an example associated with a definition.
     Stores romanization within the 'metadata' JSON column.
+    The `source_identifier` is standardized to display_name and then appended to the `sources` column.
 
     Args:
         cur: Database cursor.
@@ -2462,7 +2564,8 @@ def get_or_create_word_id(
     lang_code_tuple = get_language_code(lang_code_input) # Ensure it's always a tuple, even if lang_code_input is empty
 
     # The standardized code to be used for DB operations
-    db_lang_code = lang_code_tuple[0] if lang_code_tuple else DEFAULT_LANGUAGE_CODE
+    # Use the standardized code directly, even if it's 'und'
+    db_lang_code = lang_code_tuple[0] if lang_code_tuple else "und" 
     # The raw input language to be stored in metadata (if needed, though not directly used in this function by default)
     # raw_input_lang = lang_code_tuple[1] if lang_code_tuple else (lang_code_input or "")
 
@@ -2504,10 +2607,10 @@ def get_or_create_word_id(
             needs_update = False
 
             # 1. Check if language needs updating
-            should_update_lang = (existing_lang_code in ['und', 'unc']) and (db_lang_code not in ['und', 'unc'])
+            should_update_lang = (existing_lang_code in ['und', 'unc', None, ''] and db_lang_code not in ['und', 'unc', None, ''])
             if should_update_lang:
                 updates.append("language_code = %s")
-                params.insert(0, db_lang_code) # Add lang_code to the beginning of params for SET clause
+                params.insert(0, db_lang_code) # Add db_lang_code (could be 'tl', 'ceb', 'und', etc.)
                 logger.debug(f"Updating language for word ID {word_id} from '{existing_lang_code}' to '{db_lang_code}'")
                 needs_update = True
 
@@ -2537,7 +2640,7 @@ def get_or_create_word_id(
                 
                 # Reconstruct params to be sure of order
                 final_update_params = []
-                if db_lang_code is not None: # If language_code was being updated
+                if should_update_lang: # Use the flag indicating if lang update was added
                     final_update_params.append(db_lang_code)
                 if updated_source_info_json is not None: # If source_info was being updated
                     final_update_params.append(updated_source_info_json)
@@ -2553,7 +2656,7 @@ def get_or_create_word_id(
             return word_id
         else:
             # Word not found, create it
-            logger.debug(f"Word '{processed_lemma}' ({db_lang_code}) not found. Creating new entry...") # MODIFIED: Use db_lang_code
+            logger.debug(f"Word '{processed_lemma}' ({db_lang_code}) not found. Creating new entry...") # Log uses db_lang_code
             # --- Prepare Baybayin, Romanized, etc. from kwargs --- #
             has_baybayin = bool(kwargs.get("has_baybayin")) # Default to False
             if not has_baybayin and "has_baybayin" in kwargs: # Allow explicit False
@@ -2623,7 +2726,7 @@ def get_or_create_word_id(
             insert_params = {
                 "lemma": processed_lemma,
                 "norm_lemma": normalized,
-                "lang": db_lang_code, # MODIFIED: Use db_lang_code
+                "lang": db_lang_code, # Use db_lang_code directly (can be 'und')
                 "has_bb": has_baybayin,
                 "bb_form": baybayin_form_to_store, # Use the validated/cleaned form
                 "rom_form": romanized_form,
@@ -3328,148 +3431,139 @@ def insert_definition_category(
     Upserts a category link for a definition.
     Handles string category names or dictionary structures.
     Merges metadata and appends unique sources on conflict.
+    The `source_identifier` is standardized to display_name and then appended to the `sources` column.
     """
-    if not source_identifier:
-        logger.warning("insert_definition_category skipped: source_identifier missing.")
+    if not source_identifier: # Initial guard for raw identifier
+        logger.warning("[insert_definition_category] skipped: raw source_identifier missing.")
         return None
+
+    source_identifier_stripped = source_identifier.strip()
+    db_source_name_for_append = source_identifier_stripped # Fallback
+    log_source_detail = f"(original: '{source_identifier_stripped}')"
+
+    if not source_identifier_stripped:
+        logger.warning(f"[insert_definition_category] Original source_identifier '{source_identifier}' was empty after stripping for def ID {definition_id}. 'sources' field in DB may be empty or skip append.")
+    else:
+        try:
+            canonical_id = standardize_source_identifier(source_identifier_stripped)
+            if not canonical_id or canonical_id == SourceStandardization.UNKNOWN_SOURCE_CANONICAL_ID:
+                db_source_name_for_append = SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME
+                logger.warning(f"[insert_definition_category] Source '{source_identifier_stripped}' (canonical: '{canonical_id}') for def ID {definition_id} resolved to unknown. Using '{db_source_name_for_append}' for appending.")
+                log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+            else:
+                display_name = SourceStandardization.get_display_name(canonical_id)
+                log_source_detail = f"(original: '{source_identifier_stripped}', canonical: '{canonical_id}')"
+                if not display_name or display_name == SourceStandardization.UNKNOWN_SOURCE_DISPLAY_NAME:
+                    db_source_name_for_append = canonical_id.replace('_', ' ').replace('-', ' ').title()
+                    logger.info(f"[insert_definition_category] Source '{source_identifier_stripped}' (canonical: {canonical_id}) for def ID {definition_id} has no display name. Using formatted ID: '{db_source_name_for_append}' for appending.")
+                else:
+                    db_source_name_for_append = display_name
+        except Exception as e_std:
+            logger.error(f"[insert_definition_category] Error standardizing source '{source_identifier_stripped}' for def ID {definition_id}: {e_std}. Using original value '{source_identifier_stripped}' for appending.", exc_info=True)
+            log_source_detail = f"(original: '{source_identifier_stripped}', standardization_error)"
+   
+    if not db_source_name_for_append:
+        logger.warning(f"[insert_definition_category] db_source_name_for_append is empty for def ID {definition_id}. Original: '{source_identifier}'. SQL CASE will handle appending.")
 
     cat_name: Optional[str] = None
     cat_kind: Optional[str] = None
     cat_parents: Optional[List[str]] = None
-    cat_source: Optional[str] = None
-    cat_metadata: Optional[Dict] = None
+    cat_source_from_data: Optional[str] = None # Renamed to avoid confusion with source_identifier param
+    cat_metadata: Optional[Dict] = {}
 
-    # --- Type Handling & Extraction ---
     if isinstance(category_data, str):
         cat_name = category_data.strip()
-        cat_metadata = {} # Initialize empty metadata for string input
     elif isinstance(category_data, dict):
         cat_name = category_data.get("name")
         cat_kind = category_data.get("kind")
-        cat_parents = category_data.get("parents") # Should be a list or None
-        cat_source = category_data.get("source")
-        cat_metadata = category_data.copy() # Work on a copy
-        # Remove core fields from metadata if they exist
-        cat_metadata.pop("name", None)
-        cat_metadata.pop("kind", None)
-        cat_metadata.pop("parents", None)
-        cat_metadata.pop("source", None)
+        cat_parents = category_data.get("parents")
+        cat_source_from_data = category_data.get("source") # Source from within the category_data dict
+        cat_metadata = category_data.copy()
+        cat_metadata.pop("name", None); cat_metadata.pop("kind", None);
+        cat_metadata.pop("parents", None); cat_metadata.pop("source", None);
     else:
-        logger.warning(f"Invalid category_data type for Def ID {definition_id}: {type(category_data)}. Skipping category.")
-        # --- FIX Indentation START --- #
-        return None # Align this with the logger.warning above
-        # --- FIX Indentation END --- #
+        logger.warning(f"[insert_definition_category] Invalid category_data type for Def ID {definition_id}: {type(category_data)}. Skipping.")
+        return None
 
     if not cat_name:
-        logger.warning(f"Category name missing for Def ID {definition_id}. Skipping category. Data: {category_data}")
+        logger.warning(f"[insert_definition_category] Category name missing for Def ID {definition_id}. Skipping. Data: {category_data}")
+        return None
 
-    # --- Validation & Preparation ---
     if cat_parents is not None and not isinstance(cat_parents, list):
-        logger.warning(f"Category 'parents' for '{cat_name}' (Def ID {definition_id}) is not a list: {cat_parents}. Converting to list.")
-        # Attempt conversion, default to empty list on failure
-        try:
-            cat_parents = list(cat_parents) if hasattr(cat_parents, '__iter__') and not isinstance(cat_parents, str) else [str(cat_parents)]
-        except Exception:
-            logger.error(f"Could not convert category parents to list for '{cat_name}'. Setting to empty.", exc_info=True)
-            cat_parents = []
+        logger.warning(f"[insert_definition_category] Category 'parents' for '{cat_name}' (Def ID {definition_id}) is not a list: {cat_parents}. Converting.")
+        try: cat_parents = list(cat_parents) if hasattr(cat_parents, '__iter__') and not isinstance(cat_parents, str) else [str(cat_parents)]
+        except Exception: cat_parents = []
 
-    sources_str = source_identifier.strip()
+    # The `sources` column in DB will store the standardized db_source_name_for_append (from the function's source_identifier param)
+    # If cat_source_from_data exists and is different, it goes into metadata.
+    if cat_source_from_data and cat_source_from_data.strip() != db_source_name_for_append:
+        cat_source_from_data_stripped = cat_source_from_data.strip()
+        if cat_source_from_data_stripped: # Ensure it's not empty
+            if 'original_sources_from_data' not in cat_metadata:
+                cat_metadata['original_sources_from_data'] = []
+            if isinstance(cat_metadata.get('original_sources_from_data'), list):
+                if cat_source_from_data_stripped not in cat_metadata['original_sources_from_data']:
+                    cat_metadata['original_sources_from_data'].append(cat_source_from_data_stripped)
+            else: # It was not a list, overwrite
+                cat_metadata['original_sources_from_data'] = [cat_source_from_data_stripped]
 
-    # Ensure metadata is a dict
-    if cat_metadata is None:
-        cat_metadata = {}
-    elif not isinstance(cat_metadata, dict):
-        logger.warning(f"Category metadata for '{cat_name}' is not a dict: {cat_metadata}. Resetting to empty dict.")
-        cat_metadata = {}
-
-    # Add original source from category data to metadata if different
-    if cat_source and cat_source != source_identifier:
-        if 'original_sources' not in cat_metadata:
-            cat_metadata['original_sources'] = []
-        # Ensure original_sources is a list before appending
-        if isinstance(cat_metadata.get('original_sources'), list):
-            if cat_source not in cat_metadata['original_sources']:
-                 cat_metadata['original_sources'].append(cat_source)
-    else:
-            logger.warning(f"'original_sources' in metadata for '{cat_name}' was not a list. Overwriting with new source.")
-            cat_metadata['original_sources'] = [cat_source]
-
-    # --- Parameter Assembly (Using Json Adapter) ---
     params = {
         "def_id": definition_id,
         "name": cat_name,
-        "kind": cat_kind, # Let DB handle NULL if None
-        "parents": Json(cat_parents or []), # Use Json adapter for list -> JSONB
-        "sources": sources_str,
-        "metadata": Json(cat_metadata or {}) # Use Json adapter for dict -> JSONB
+        "kind": cat_kind,
+        "parents": Json(cat_parents or []),
+        "sources_to_append": db_source_name_for_append, # Standardized name from source_identifier param
+        "metadata": Json(cat_metadata or {})
     }
 
-    # --- Detailed Type Logging --- #
-    param_types = {k: type(v).__name__ for k, v in params.items()}
-    logger.debug(f"Parameter types for insert_definition_category: {param_types}")
-    logger.debug(f"Parameter values (metadata truncated): def_id={params['def_id']}, name='{params['name']}', kind='{params['kind']}', sources='{params['sources']}'")
-    # Avoid logging potentially large JSON objects directly unless necessary
-    # logger.debug(f"Full Params: {params}")
-
-    # --- SQL Query (No ::jsonb casts in VALUES) ---
     upsert_sql = r"""
         INSERT INTO definition_categories (
             definition_id, category_name, category_kind, parents, sources, category_metadata
         )
         VALUES (
-            %(def_id)s, %(name)s, %(kind)s, %(parents)s, %(sources)s, %(metadata)s
+            %(def_id)s, %(name)s, %(kind)s, %(parents)s, %(sources_to_append)s, %(metadata)s
         )
             ON CONFLICT (definition_id, category_name)
             DO UPDATE SET
-            -- *** FIX: Use correct column name from EXCLUDED ***
             category_kind = COALESCE(EXCLUDED.category_kind, definition_categories.category_kind),
-                parents = CASE
-                              WHEN EXCLUDED.parents IS NOT NULL THEN EXCLUDED.parents
-                              ELSE definition_categories.parents
-                          END,
+            parents = CASE
+                          WHEN EXCLUDED.parents IS NOT NULL THEN EXCLUDED.parents
+                          ELSE definition_categories.parents
+                      END,
             sources = CASE
-                        WHEN definition_categories.sources IS NULL
-                             OR definition_categories.sources = '' THEN EXCLUDED.sources
-                        -- Check if the source already exists as a whole word/item
-                        WHEN string_to_array(definition_categories.sources, '; ') @> ARRAY[EXCLUDED.sources] THEN
-                             definition_categories.sources
+                        WHEN definition_categories.sources IS NULL OR definition_categories.sources = '' THEN EXCLUDED.sources
+                        WHEN EXCLUDED.sources IS NULL OR EXCLUDED.sources = '' THEN definition_categories.sources
+                        WHEN string_to_array(definition_categories.sources, '; ') @> ARRAY[EXCLUDED.sources] THEN definition_categories.sources
                         ELSE definition_categories.sources || '; ' || EXCLUDED.sources
                       END,
-            category_metadata =
-                   COALESCE(definition_categories.category_metadata,'{}'::jsonb)
-                   || COALESCE(EXCLUDED.category_metadata,'{}'::jsonb),
-                updated_at = CURRENT_TIMESTAMP
+            category_metadata = COALESCE(definition_categories.category_metadata,'{}'::jsonb) || COALESCE(EXCLUDED.category_metadata,'{}'::jsonb),
+            updated_at = CURRENT_TIMESTAMP
         RETURNING id;
     """
 
-    # --- Execution --- ---
     try:
         cur.execute(upsert_sql, params)
         cat_id_tuple = cur.fetchone()
         if cat_id_tuple:
             cat_id = cat_id_tuple[0]
-            logger.info(f"Inserted/Updated definition category (ID: {cat_id}) for def ID {definition_id} from source '{source_identifier}'. Name: '{cat_name}'")
+            logger.info(f"[insert_definition_category] Upserted ID: {cat_id} for def ID {definition_id}. Appended source: '{db_source_name_for_append}' {log_source_detail}. Name: '{cat_name}'")
             return cat_id
         else:
-            logger.warning(f"Upsert for definition category '{cat_name}' (Def ID {definition_id}) did not return an ID.")
-            return None # Should not happen with RETURNING id, but safety check
+            logger.warning(f"[insert_definition_category] Upsert for '{cat_name}' (Def ID {definition_id}) {log_source_detail} did not return ID.")
+            return None
 
     except psycopg2.Error as pg_err:
         pg_error_msg = str(pg_err.pgerror).strip() if pg_err.pgerror else str(pg_err).strip()
-        # Log the formatted message and include SQL/params for context
         log_message = (
-            f"definition_category PG-error [{pg_err.pgcode or 'No Code'}]: {pg_error_msg}\n\t" + 
-            f"SQL: {upsert_sql}\n\t" +
-            f"Params: {params}" # Show the params dict that caused the error
+            f"[insert_definition_category] PG-error [{pg_err.pgcode or 'No Code'}] for def ID {definition_id}, cat '{cat_name}'. Appended source: '{db_source_name_for_append}' {log_source_detail}. Error: {pg_error_msg}\n\t" +
+            f"SQL: {upsert_sql}\n\tParams: {params}"
         )
         logger.error(log_message, exc_info=True)
-
     except Exception as exc:
         logger.exception(
-            f"definition_category unexpected error for def ID {definition_id}, cat '{cat_name}': {exc}"
+            f"[insert_definition_category] Unexpected error for def ID {definition_id}, cat '{cat_name}'. Appended source: '{db_source_name_for_append}' {log_source_detail}. Error: {exc}"
         )
-
-    return None # Return None on any error
+    return None
 
 @with_transaction(commit=True)
 def insert_definition_link(

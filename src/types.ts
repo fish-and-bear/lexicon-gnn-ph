@@ -153,7 +153,7 @@ export interface Pronunciation {
   type: string; // e.g., 'ipa', 'audio'
   value: string; // IPA text or URL
   tags?: Record<string, any> | null; // From MetadataField
-  pronunciation_metadata?: Record<string, any> | null; // From MetadataField (can include source info)
+  pronunciation_metadata?: Record<string, any> | null; // From MetadataField (can include source information)
   // Timestamps (dump_only)
   created_at?: string | null;
   updated_at?: string | null;

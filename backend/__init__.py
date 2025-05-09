@@ -32,8 +32,14 @@ def create_app():
     """Create and configure the Flask application."""
     app = Flask(__name__)
     
-    # Configure database
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/fil_dict_db')
+    # Database configuration
+    # Fallback to a default local DB URL if not set, but prefer DATABASE_URL from env
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+    if not app.config['SQLALCHEMY_DATABASE_URI']:
+        print("WARNING: DATABASE_URL environment variable not set. Application may not connect to the database.")
+        # Optionally, you could raise an error here or set a default that does not include credentials:
+        # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost:5432/fil_dict_db' # Example without user/pass
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_size': 10,

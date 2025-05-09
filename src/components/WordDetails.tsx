@@ -1890,7 +1890,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
        );
      };
      
-     // --- NEW: Helper to render Source Info specifically ---
+     // --- NEW: Helper to render Source Information specifically ---
      const renderStructuredSourceInfo = (info: Record<string, any>) => {
         if (!info || Object.keys(info).length === 0) return null;
 
@@ -1999,8 +1999,8 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
           </>
          )}
 
-         {/* Source Info (Use new renderer instead of Accordion) */}
-         {/* {renderJsonData('Source Info', sourceInfo)} */}
+         {/* Source Information (Use new renderer instead of Accordion) */}
+         {/* {renderJsonData('Source Information', sourceInfo)} */}
          {hasSourceInfo && renderStructuredSourceInfo(sourceInfo)}
 
          {/* Completeness Info - Use score - ONLY IN DEV */}

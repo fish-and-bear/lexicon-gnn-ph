@@ -37,7 +37,7 @@ from .models import (
 )
 from .database import db, cached_query, get_cache_client
 from .utils.word_processing import normalize_word
-from .utils.rate_limiting import limiter
+from .extensions import limiter # MODIFIED: Was from .utils.rate_limiting import limiter
 from .utils.ip import get_remote_address
 from .schemas import WordSchema, SearchQuerySchema, SearchFilterSchema, StatisticsSchema, ExportFilterSchema, QualityAssessmentFilterSchema, PartOfSpeechSchema, RelationSchema, EtymologySchema, PronunciationType, DefinitionSchema, AffixationSchema, CreditSchema, WordFormSchema, WordTemplateSchema, DefinitionCategorySchema, DefinitionLinkSchema, DefinitionRelationSchema # Added missing schema imports
 

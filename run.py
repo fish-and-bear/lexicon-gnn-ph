@@ -8,10 +8,6 @@ import sys
 # Set environment variable to skip migrations before importing any modules
 os.environ["SKIP_DB_SETUP"] = "true"
 
-# Import our inline source_standardization module first
-# This ensures the module is available to all other modules that need it
-import backend.inline_source_standardization
-
 # Now import the app
 from backend.app import create_app
 

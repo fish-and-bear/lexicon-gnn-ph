@@ -1,6 +1,7 @@
 """
-Database utilities for the backend API.
+Utilities package for the backend.
 """
 
-# Import key functions to make them available at the package level
-from .db_helpers import _fetch_word_details 
+# from .db_helpers import _fetch_word_details # REMOVED
+from .ip import get_remote_address
+from .word_processing import normalize_word 

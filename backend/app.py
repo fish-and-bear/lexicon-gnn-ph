@@ -12,6 +12,7 @@ from flask_migrate import Migrate
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_limiter.util import get_remote_address
 from flask_compress import Compress
+from flask_talisman import Talisman
 import logging
 import structlog
 from dotenv import load_dotenv
@@ -38,12 +39,12 @@ import psycopg2
 # except ImportError:
 #     # When running as a standalone script
 # Use explicit relative imports as the app is run from within the backend directory
-from .search_tasks import log_search_query
+# from .search_tasks import log_search_query
 from .database import db
 from .routes import bp
-from . import gql as gql_module # Use relative import for gql
+# from . import gql as gql_module # Use relative import for gql
 from .extensions import limiter
-from .baybayin_routes import bp as baybayin_bp
+# from .baybayin_routes import bp as baybayin_bp
 
 # Prometheus for metrics (if not already imported)
 try:
@@ -332,11 +333,14 @@ def create_app(testing=False):
     app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False  # Don't prettify JSON in production
     
     # Apply ProxyFix middleware to handle reverse proxies correctly
-    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
     
     # Initialize Flask-Compress for response compression
     compress = Compress(app)
     
+    # Initialize Talisman for security headers
+    Talisman(app)
+
     # Enhanced rate limiter configuration (storage URI)
     redis_enabled = os.getenv("REDIS_ENABLED", "false").lower() == "true"
     storage_uri = "memory://"
@@ -414,7 +418,7 @@ def create_app(testing=False):
                 
             # Initialize GraphQL
             # schema, context = init_graphql()  # Comment out or replace with proper initialization
-            schema, context = gql_module.init_graphql()  # Use the module reference
+            # schema, context = gql_module.init_graphql()  # Use the module reference
         except Exception as e:
             logger.error(f"Error initializing GraphQL: {str(e)}")
     
@@ -565,7 +569,7 @@ def create_app(testing=False):
     
     # Import and register blueprints
     app.register_blueprint(bp, url_prefix='/api/v2')
-    app.register_blueprint(baybayin_bp, url_prefix='/api/v2')
+    # app.register_blueprint(baybayin_bp, url_prefix='/api/v2')
     
     # Register teardown
     @app.teardown_appcontext
@@ -576,8 +580,9 @@ def create_app(testing=False):
     # Initialize search background tasks
     if not testing:
         # Initialize search tasks if the module has the initialize function
-        if hasattr(log_search_query, 'initialize'):
-            search_tasks_thread = log_search_query.initialize()
+        # if hasattr(log_search_query, 'initialize'):
+        #     search_tasks_thread = log_search_query.initialize()
+        pass # Add pass if this block becomes empty
         
         # Start system metrics thread if Prometheus is available
         # if has_prometheus:
@@ -587,8 +592,9 @@ def create_app(testing=False):
     @app.teardown_appcontext
     def cleanup_search_tasks(exception=None):
         # Clean up search tasks if the module has the cleanup function
-        if hasattr(log_search_query, 'cleanup'):
-            log_search_query.cleanup()
+        # if hasattr(log_search_query, 'cleanup'):
+        #     log_search_query.cleanup()
+        pass # Ensure the function is not empty
     
     # Initialize OpenTelemetry for distributed tracing
     # if config.get('JAEGER_HOST'):
@@ -654,8 +660,3 @@ if __name__ == '__main__':
     debug = os.getenv('ENVIRONMENT', 'development') == 'development'
     logger.info(f"Starting Flask application on http://0.0.0.0:{port}", environment=os.getenv('ENVIRONMENT', 'development'))
     app.run(host='0.0.0.0', port=port, debug=debug, threaded=True)
-
-# Define init_graphql locally if needed
-def init_graphql(app=None):
-    """Wrapper for gql.init_graphql to avoid circular imports"""
-    return gql_module.init_graphql(app)

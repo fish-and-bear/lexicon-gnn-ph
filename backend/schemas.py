@@ -102,7 +102,7 @@ class DefinitionLinkSchema(Schema):
     link_text = fields.String(required=True) # The visible text of the link
     link_metadata = MetadataField(dump_default={}) # Stores target_url, is_external, sources etc.
     tags = fields.String(allow_none=True) # Added from DB schema (TEXT)
-    sources = fields.String(allow_none=True) # Added sources TEXT column
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a string.
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -137,7 +137,7 @@ class DefinitionCategorySchema(Schema):
     category_name = fields.String(required=True)
     category_kind = fields.String(allow_none=True) # Matches DB (TEXT)
     parents = fields.List(fields.String(), allow_none=True) # Matches DB (JSONB assumed to store list of strings)
-    sources = fields.String(allow_none=True) # Added sources field (TEXT)
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a string.
     category_metadata = MetadataField(dump_default={}) # Added metadata field
     # Removed tags, description, and category_metadata as they are not in the final DB schema
     created_at = fields.DateTime(dump_only=True)
@@ -152,7 +152,7 @@ class ExampleSchema(Schema):
     reference = fields.String(allow_none=True)
     example_type = fields.String(dump_default="example")
     metadata = MetadataField(dump_default={})
-    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a string.
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -195,7 +195,7 @@ class DefinitionSchema(Schema):
     popularity_score = fields.Float(dump_default=0.0)
     links = fields.List(fields.Nested(DefinitionLinkSchema), dump_default=[])
     categories = fields.List(fields.Nested(DefinitionCategorySchema), dump_default=[])
-    sources = fields.String(allow_none=True)
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a string.
     
     # Track timestamps
     created_at = fields.DateTime(dump_only=True)
@@ -241,7 +241,7 @@ class PronunciationType(Schema):
     type = fields.String(required=True, validate=Length(min=1, max=50))
     value = fields.String(required=True)
     tags = MetadataField(dump_default={})  # Changed to JSONB
-    pronunciation_metadata = MetadataField(dump_default={}) # Includes source info
+    pronunciation_metadata = MetadataField(dump_default={}) # Includes source information (display name).
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -275,7 +275,7 @@ class RelationSchema(Schema):
     from_word_id = fields.Integer(required=True)
     to_word_id = fields.Integer(required=True)
     relation_type = fields.String(required=True)
-    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a comma-separated string.
     metadata = MetadataField(dump_default={}) # Added metadata field
     
     # Fields for nested data (dump_only)
@@ -309,7 +309,7 @@ class AffixationSchema(Schema):
     root_word_id = fields.Integer(required=True)
     affixed_word_id = fields.Integer(required=True)
     affix_type = fields.String(required=True)
-    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a comma-separated string.
     root_word = fields.Nested("WordSimpleSchema", dump_only=True)
     affixed_word = fields.Nested("WordSimpleSchema", dump_only=True)
     created_at = fields.DateTime(dump_only=True)
@@ -323,7 +323,7 @@ class EtymologySchema(Schema):
     normalized_components = fields.String()
     etymology_structure = fields.String()
     language_codes = fields.String(allow_none=True) # Changed to String to match DB TEXT
-    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a comma-separated string.
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -332,7 +332,7 @@ class CreditSchema(Schema):
     id = fields.Integer(dump_only=True)
     word_id = fields.Integer(required=True)
     credit = fields.String(required=True)
-    sources = fields.String(allow_none=True) # Changed to String to match DB TEXT
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a comma-separated string.
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -342,7 +342,7 @@ class DefinitionRelationSchema(Schema):
     definition_id = fields.Integer(required=True)
     word_id = fields.Integer(required=True)
     relation_type = fields.String(required=True)
-    sources = fields.String(allow_none=True)
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a comma-separated string.
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
     
@@ -358,7 +358,7 @@ class WordFormSchema(Schema):
     is_canonical = fields.Boolean(dump_default=False)
     is_primary = fields.Boolean(dump_default=False)
     tags = MetadataField(dump_default={})
-    sources = fields.String(allow_none=True) # Added sources field (TEXT)
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a string.
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
@@ -369,7 +369,7 @@ class WordTemplateSchema(Schema):
     template_name = fields.String(required=True)
     args = MetadataField(dump_default={})
     expansion = fields.String(allow_none=True)
-    sources = fields.String(allow_none=True) # Added sources field
+    sources = fields.String(allow_none=True) # Stores the source display name(s), typically a string.
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
 
