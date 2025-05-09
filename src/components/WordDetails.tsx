@@ -81,9 +81,9 @@ const relationColors: { [key: string]: string } = {
   
   // Origin group - Reds and oranges
   root_of: "#e63946",       // Add color for root_of (same as root)
-  derived_from: "#f77f00",  // Add color for derived_from (orange)
+  derived_from: "#ff5c39",  // Swapped: Was #f77f00 (orange)
   etymology: "#d00000", // Dark red
-  cognate: "#ff5c39",   // Light orange
+  cognate: "#f77f00",   // Swapped: Was #ff5c39 (Light orange)
   
   // Form group - Purples
   variant: "#7d4fc3",   // Medium purple
@@ -1310,7 +1310,7 @@ const WordDetailsComponent = React.forwardRef<HTMLDivElement, WordDetailsProps>(
         </Box>
         
         {/* Display completeness info if available */}
-        {typeof wordData.completeness_score === 'number' && (
+        {import.meta.env.DEV && typeof wordData.completeness_score === 'number' && (
           <Box sx={{ mt: theme.spacing(3), pt: theme.spacing(2), borderTop: `1px solid ${theme.palette.divider}` }}>
             <Typography variant="subtitle2" sx={{ mb: theme.spacing(1) }}>
               Completeness Score

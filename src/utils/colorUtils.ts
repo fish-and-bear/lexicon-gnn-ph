@@ -97,9 +97,9 @@ export const getNodeColor = (group: string): string => {
       
       // Origin Group (Root/Etymology/Cognate)
       case "root_of": return "#c00000"; // Strong Red (was #d00000)
-      case "derived_from": return "#8B4513"; // SaddleBrown (was #e04e14)
+      case "derived_from": return "#FFA500"; // Swapped: Was #8B4513 (SaddleBrown)
       case "etymology": return "#D87093"; // PaleVioletRed (was #c94072)
-      case "cognate": return "#FFA500"; // Standard Orange (was #ff8c00)
+      case "cognate": return "#8B4513"; // Swapped: Was #FFA500 (Standard Orange)
       
       // Meaning Group (Synonym/Related/Antonym)
       case "synonym": return "#457b9d"; // Muted Slate Blue (was #2a9d8f)
