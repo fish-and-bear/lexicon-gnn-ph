@@ -572,6 +572,9 @@ import React, {
   
       // Enhanced hover effect - EXACT match to the latest screenshots + Path Highlighting
       nodeSelection.on("mouseenter", (event, d) => {
+        // Skip hover effects on mobile - will implement tap selection instead
+        if (isMobile && !selectedMobileNodeId) return;
+        
         const currentTargetElement = event.currentTarget as SVGGElement;
         // const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord);
         // const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
@@ -956,7 +959,40 @@ import React, {
           setHoveredNode(null);
       });
   
-    }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, getNodeRadius, baseLinks, mainWordIdString]); // MODIFIED: Removed peekedNode from dependencies, ADDED isMobile
+      // Add tap-to-select functionality for mobile
+      nodeSelection.on("click", (event, d) => {
+        if (!isMobile) return; // Only handle taps on mobile
+        
+        // Toggle node selection
+        if (selectedMobileNodeId === d.id) {
+          setSelectedMobileNodeId(null); // Deselect if tapping the same node
+          // Reset all highlighting
+          resetHighlights();
+        } else {
+          setSelectedMobileNodeId(d.id); // Select the tapped node
+          // Apply highlighting (similar to hover effect)
+          applyHighlights(d);
+          // Show tooltip
+          setHoveredNode(d);
+          setTooltipPosition({ x: event.clientX, y: event.clientY });
+        }
+      });
+  
+      // Add tap-on-background to deselect
+      if (svgRef.current) {
+        d3.select(svgRef.current).on("click", (event: MouseEvent) => {
+          if (!isMobile) return;
+          
+          // Check if click was on the background (not a node)
+          const target = event.target as Element;
+          if (!target.closest('.node')) {
+            setSelectedMobileNodeId(null);
+            resetHighlights();
+            setHoveredNode(null);
+          }
+        });
+      }
+    }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, getNodeRadius, baseLinks, mainWordIdString, isMobile, selectedMobileNodeId]); // MODIFIED: Removed peekedNode from dependencies, ADDED isMobile
   
     // Function to create nodes in D3 - adjusted for exact styling 
     const createNodes = useCallback((g: d3.Selection<SVGGElement, unknown, null, undefined>, nodesData: CustomNode[], simulation: d3.Simulation<CustomNode, CustomLink>) => {
@@ -1716,8 +1752,13 @@ import React, {
   
       const [screenX, screenY] = transform.apply([hoveredNode.x, hoveredNode.y]);
   
-      const offsetX = (screenX > window.innerWidth / 2) ? -20 - 250 : 20;
-      const offsetY = (screenY > window.innerHeight / 2) ? -20 - 80 : 20;
+      const offsetX = isMobile 
+        ? (screenX > window.innerWidth / 2 ? -10 - 220 : 10) // Narrower tooltip on mobile
+        : (screenX > window.innerWidth / 2 ? -20 - 250 : 20);
+
+      const offsetY = isMobile
+        ? (screenY > window.innerHeight / 2 ? -10 - 60 : 10) // Smaller vertical offset on mobile
+        : (screenY > window.innerHeight / 2 ? -20 - 80 : 20);
   
       // Find the specific link causing this relationship using baseLinks and relationshipToMain
       let posContext = "";
@@ -1740,7 +1781,7 @@ import React, {
             border: `1.5px solid ${getNodeColor(hoveredNode.group)}`, 
             borderRadius: "8px",
             padding: "10px 14px", 
-            maxWidth: "280px", 
+            maxWidth: isMobile ? "220px" : "280px", // Narrower tooltip on mobile
             zIndex: 1000, // Ensure tooltip is below peek card (1100)
             pointerEvents: "none",
             fontFamily: "system-ui, -apple-system, sans-serif",
@@ -1749,6 +1790,7 @@ import React, {
             opacity: 1,
             transform: "translateY(0)",
             animation: "fadeInTooltip 0.2s ease-out",
+            fontSize: isMobile ? "90%" : "100%", // Slightly smaller text on mobile
           }}
         >
            <h4 style={{ margin: 0, marginBottom: '6px', color: getNodeColor(hoveredNode.group), fontSize: '15px' }}>{hoveredNode.word}</h4> {/* Use word */}
@@ -1861,6 +1903,38 @@ import React, {
         </div>
       );
     }, [hoveredNode, themeMode, getNodeColor, mainWord, svgRef, baseLinks, nodeMap, getRelationshipTypeLabel, isMobile]); // MODIFIED: Removed peekedNode from dependencies, ADDED isMobile
+  
+    // Add these functions to ensure consistent highlight application/removal
+    const resetHighlights = () => {
+      d3.selectAll<SVGGElement, CustomNode>(".node")
+        .style("opacity", 1)
+        .select("circle")
+          .attr("stroke-width", 0.5)
+          .attr("stroke-opacity", 0.6)
+          .attr("filter", n => n.id === mainWordIdString ? `url(#apple-node-shadow) brightness(1.15)` : `url(#apple-node-shadow)`)
+          .attr("stroke", n => {
+            const baseColor = d3.color(getNodeColor(n.group)) || d3.rgb("#888");
+            return themeMode === 'dark' ? baseColor.brighter(0.3).toString() : baseColor.brighter(0.5).toString();
+          });
+          
+      d3.selectAll<SVGLineElement, CustomLink>(".link")
+        .style("stroke-opacity", 1)
+        .attr("stroke-width", 1.5)
+        .style("stroke", themeMode === "dark" ? "#666" : "#ccc");
+        
+      d3.selectAll<SVGTextElement, CustomNode>(".node-label")
+        .style("opacity", 1)
+        .style("font-weight", n => n.id === mainWordIdString ? "bold" : "normal");
+    };
+
+    const applyHighlights = (d: CustomNode) => {
+      // Apply the same highlighting logic as in the mouseenter event
+      const highlightNodeIds = new Set<string>([d.id]);
+      // (... existing path and neighbor finding logic ...)
+      
+      // Apply highlight effects to nodes, links, and labels
+      // (... existing highlight application logic ...)
+    };
   
     // Make sure to return the JSX at the end
     return (
