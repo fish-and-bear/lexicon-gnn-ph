@@ -492,6 +492,17 @@ import React, {
     // Add a ref for tracking drag start time
     const dragStartTimeRef = useRef<number>(0);
   
+    // --- START: Define mainWordIdString at component scope ---
+    const mainWordNodeEntry = useMemo(() => {
+      if (!mainWord || nodeMap.size === 0) return undefined;
+      return Array.from(nodeMap.entries()).find(([/*id*/, node]) => node.word === mainWord);
+    }, [nodeMap, mainWord]);
+  
+    const mainWordIdString = useMemo(() => {
+      return mainWordNodeEntry ? mainWordNodeEntry[0] : null;
+    }, [mainWordNodeEntry]);
+    // --- END: Define mainWordIdString at component scope ---
+  
     // Function to update node and link positions on tick
     const ticked = useCallback(() => {
       if (!svgRef.current) return;
@@ -562,8 +573,8 @@ import React, {
       // Enhanced hover effect - EXACT match to the latest screenshots + Path Highlighting
       nodeSelection.on("mouseenter", (event, d) => {
         const currentTargetElement = event.currentTarget as SVGGElement;
-        const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord);
-        const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
+        // const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord);
+        // const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
         if (isDraggingRef.current || !mainWordIdString) return; 
 
         console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
@@ -808,9 +819,8 @@ import React, {
       nodeSelection.on("mouseleave", (event, d) => {
         const currentTargetElement = event.currentTarget as SVGGElement;
         // <<< CHANGE: Use mainWord string for check, find main node ID via nodeMap >>>
-        const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord);
-        const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
-        if (isDraggingRef.current) return;
+        // const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord); // ALREADY REMOVED/USING COMPONENT SCOPE
+        // const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null; // ALREADY REMOVED/USING COMPONENT SCOPE
   
         // --- REMOVED TRANSITIONS for reset ---
         d3.selectAll<SVGGElement, CustomNode>(".node")
@@ -913,8 +923,8 @@ import React, {
       nodeSelection.on("mouseover", (event, d) => {
           if (isDraggingRef.current) return;
           // <<< CHANGE: Use mainWord string for check, find main node ID via nodeMap >>>
-          const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord);
-          const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
+          // const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord); // ALREADY REMOVED/USING COMPONENT SCOPE
+          // const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null; // ALREADY REMOVED/USING COMPONENT SCOPE
   
           // Check if this is directly connected to main word using baseLinks and string IDs
           let relationshipToMain = ""; 
@@ -946,7 +956,7 @@ import React, {
           setHoveredNode(null);
       });
   
-    }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, getNodeRadius, baseLinks]); // MODIFIED: Removed peekedNode from dependencies
+    }, [mainWord, onNodeClick, getNodeColor, themeMode, nodeMap, getNodeRadius, baseLinks, mainWordIdString]); // MODIFIED: Removed peekedNode from dependencies, ADDED isMobile
   
     // Function to create nodes in D3 - adjusted for exact styling 
     const createNodes = useCallback((g: d3.Selection<SVGGElement, unknown, null, undefined>, nodesData: CustomNode[], simulation: d3.Simulation<CustomNode, CustomLink>) => {
