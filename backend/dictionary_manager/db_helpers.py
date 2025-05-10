@@ -96,12 +96,12 @@ def get_connection():
         logger.debug("DATABASE_URL not set, using individual DB_* variables.")
         try:
              conn = psycopg2.connect(
-                dbname=os.getenv("DB_NAME", DB_CONFIG['dbname']),
-                user=os.getenv("DB_USER", DB_CONFIG['user']),
+                 dbname=os.getenv("DB_NAME", DB_CONFIG['dbname']),
+                 user=os.getenv("DB_USER", DB_CONFIG['user']),
                 password=os.getenv("DB_PASSWORD"),  # Use getenv directly, no default from DB_CONFIG here
-                host=os.getenv("DB_HOST", DB_CONFIG['host']),
-                port=os.getenv("DB_PORT", DB_CONFIG['port']),
-                client_encoding='UTF8' # <<< Explicitly set encoding
+                 host=os.getenv("DB_HOST", DB_CONFIG['host']),
+                 port=os.getenv("DB_PORT", DB_CONFIG['port']),
+                 client_encoding='UTF8' # <<< Explicitly set encoding
              )
         except psycopg2.OperationalError as e:
              logger.error(f"Failed to connect using DB_* variables: {e}")
@@ -417,7 +417,7 @@ def update_word_source_info(
         if isinstance(current_source_info, dict): return json.dumps(current_source_info)
         elif isinstance(current_source_info, str): return current_source_info
         else: return "{}"
-    
+
     # Clean the original input identifier (likely filename)
     original_source_input = new_source_identifier.strip()
     if not original_source_input: # Check again after stripping
@@ -437,7 +437,7 @@ def update_word_source_info(
         except (json.JSONDecodeError, TypeError): 
             logger.warning(f"Could not parse existing source_info: {current_source_info}")
             source_info_dict = {} # Initialize if parsing fails
-    
+
     # --- Ensure 'files' list exists --- #
     if SOURCE_INFO_FILES_KEY not in source_info_dict or not isinstance(source_info_dict[SOURCE_INFO_FILES_KEY], list):
         source_info_dict[SOURCE_INFO_FILES_KEY] = []
@@ -1728,9 +1728,9 @@ def insert_pronunciation(
     if db_source_name_for_meta: # Only add if we have a processed and non-empty source name
         existing_sources_in_meta = pronunciation_metadata.get("sources", [])
         if not isinstance(existing_sources_in_meta, list):
-            logger.warning(
+                logger.warning(
                 f"Existing 'sources' in pronunciation metadata for word ID {word_id} (Type: {pron_type}) is not a list ({type(existing_sources_in_meta)}). Overwriting with new source."
-            )
+                )
             existing_sources_in_meta = []
 
         if db_source_name_for_meta not in existing_sources_in_meta:
@@ -2320,15 +2320,15 @@ def insert_relation(
             VALUES (%(from_id)s, %(to_id)s, %(rel_type)s, %(sources_to_append)s, %(metadata)s)
     ON CONFLICT (from_word_id, to_word_id, relation_type) DO UPDATE
     SET
-        sources = CASE
+                sources = CASE
                     WHEN relations.sources IS NULL OR relations.sources = '' THEN EXCLUDED.sources
                     WHEN EXCLUDED.sources IS NULL OR EXCLUDED.sources = '' THEN relations.sources
                     WHEN string_to_array(relations.sources, ', ') @> ARRAY[EXCLUDED.sources] THEN relations.sources
-                    ELSE relations.sources || ', ' || EXCLUDED.sources
-                  END,
+                              ELSE relations.sources || ', ' || EXCLUDED.sources
+                          END,
         metadata = COALESCE(relations.metadata, '{}'::jsonb)
                    || COALESCE(EXCLUDED.metadata, '{}'::jsonb),
-        updated_at = CURRENT_TIMESTAMP
+                updated_at = CURRENT_TIMESTAMP
     RETURNING id;
     """
 
@@ -3526,10 +3526,10 @@ def insert_definition_category(
             ON CONFLICT (definition_id, category_name)
             DO UPDATE SET
             category_kind = COALESCE(EXCLUDED.category_kind, definition_categories.category_kind),
-            parents = CASE
-                          WHEN EXCLUDED.parents IS NOT NULL THEN EXCLUDED.parents
-                          ELSE definition_categories.parents
-                      END,
+                parents = CASE
+                              WHEN EXCLUDED.parents IS NOT NULL THEN EXCLUDED.parents
+                              ELSE definition_categories.parents
+                          END,
             sources = CASE
                         WHEN definition_categories.sources IS NULL OR definition_categories.sources = '' THEN EXCLUDED.sources
                         WHEN EXCLUDED.sources IS NULL OR EXCLUDED.sources = '' THEN definition_categories.sources
@@ -3537,7 +3537,7 @@ def insert_definition_category(
                         ELSE definition_categories.sources || '; ' || EXCLUDED.sources
                       END,
             category_metadata = COALESCE(definition_categories.category_metadata,'{}'::jsonb) || COALESCE(EXCLUDED.category_metadata,'{}'::jsonb),
-            updated_at = CURRENT_TIMESTAMP
+                updated_at = CURRENT_TIMESTAMP
         RETURNING id;
     """
 

@@ -36,7 +36,9 @@ import React, {
   import Divider from '@mui/material/Divider';
   import { useTheme as useMuiTheme } from '@mui/material/styles';
   import { alpha } from '@mui/material/styles';
-  import { CircularProgress } from '@mui/material';
+  import { CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'; // Added Dialog imports
+  import InfoIcon from '@mui/icons-material/Info'; // Icon for legend button
+  import ListItemButton from '@mui/material/ListItemButton'; // Added ListItemButton import
   
   interface WordGraphProps {
     wordNetwork: ImportedWordNetwork | null;
@@ -135,6 +137,8 @@ import React, {
     const simulationRef = useRef<d3.Simulation<CustomNode, CustomLink> | null>(null);
     const [filteredRelationships, setFilteredRelationships] = useState<string[]>([]);
     const [forceUpdate, setForceUpdate] = useState<number>(0);
+    const [mobileLegendOpen, setMobileLegendOpen] = useState(false); // New state for mobile legend
+    const [selectedMobileNodeId, setSelectedMobileNodeId] = useState<string | null>(null); // <-- ADD THIS LINE
   
     // Drawer state
     const [controlsOpen, setControlsOpen] = useState(false);
@@ -148,6 +152,10 @@ import React, {
     const filterUpdateKey = useMemo(() => {
       return filteredRelationships.join(',');
     }, [filteredRelationships]);
+  
+    const handleToggleMobileLegend = () => {
+      setMobileLegendOpen(!mobileLegendOpen);
+    };
   
     // Check if network data is valid
     useEffect(() => {
@@ -1109,13 +1117,13 @@ import React, {
   
     // --- START: Dedicated Legend Rendering Function ---
     const renderOrUpdateLegend = useCallback((svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, width: number) => {
-      if (isMobile) return; // <<< ADDED: Don't render SVG legend on mobile
-
+      if (isMobile) return; // Ensure this line is present to hide legend on mobile
+  
       // Remove previous legend if it exists
       svg.select(".legend").remove();
-
+  
       // --- ADJUST SIZES BASED ON isMobile ---
-      const pcScaleFactor = 0.75; // <<< MODIFIED: Scale down PC legend a bit more
+      const pcScaleFactor = 0.75; // Ensure PC scale factor is 0.75
       const legendPadding = isMobile ? 16 : Math.round(16 * pcScaleFactor);
       const legendItemHeight = isMobile ? 24 : Math.round(24 * pcScaleFactor);
       const dotRadius = isMobile ? 4 : Math.round(4 * pcScaleFactor);
@@ -1123,24 +1131,24 @@ import React, {
       const categorySpacing = isMobile ? 12 : Math.round(12 * pcScaleFactor);
       const maxLabelWidth = isMobile ? 120 : Math.round(120 * pcScaleFactor);
 
-      const titleFontSize = isMobile ? 13 : 10; // <<< MODIFIED PC
-      const subtitleFontSize = isMobile ? 10 : 8; // <<< MODIFIED PC
-      const categoryHeaderFontSize = isMobile ? 11 : 9; // <<< MODIFIED PC
-      const itemLabelFontSize = isMobile ? 11 : 9; // <<< MODIFIED PC
+      const titleFontSize = isMobile ? 13 : 10; // Ensure PC titleFontSize is 10
+      const subtitleFontSize = isMobile ? 10 : 8; // Ensure PC subtitleFontSize is 8
+      const categoryHeaderFontSize = isMobile ? 11 : 9; // Ensure PC categoryHeaderFontSize is 9
+      const itemLabelFontSize = isMobile ? 11 : 9; // Ensure PC itemLabelFontSize is 9
       // --- END ADJUST SIZES ---
-
+  
       // Use theme for styling
-      const bgColor = themeMode === 'dark'
+      const bgColor = themeMode === 'dark' 
         ? 'var(--card-bg-color-elevated)' // Use var for dark, looks better
         : muiTheme.palette.background.paper; // Use MUI paper for light mode
       const textColorPrimary = muiTheme.palette.text.primary;
       const textColorSecondary = muiTheme.palette.text.secondary;
       const dividerColor = alpha(muiTheme.palette.divider, 0.5); // Use alpha for divider
-
+  
       const legendContainer = svg.append("g").attr("class", "legend");
-
+  
       const { categories: legendCategories } = getUniqueRelationshipGroups();
-
+  
       // --- Text Measurement ---
       const tempText = svg.append("text")
           .style("font-family", muiTheme.typography.fontFamily || "system-ui, -apple-system, sans-serif")
@@ -1159,19 +1167,19 @@ import React, {
         });
       });
       tempText.remove();
-
-      // --- Calculate Legend Dimensions ---
+  
+      // --- Calculate Legend Dimensions --- 
       const legendWidth = Math.max(
           maxCategoryWidth,
           maxTextWidth + dotRadius * 2 + textPadding // Dot + padding + text
       ) + (legendPadding * 2);
       legendWidthRef.current = legendWidth; // Store legend width in ref
-
-      // Position container top-right
+  
+      // Position container top-right 
       legendContainer.attr("transform", `translate(${width - legendWidth - 20}, 20)`);
       legendContainerRef.current = legendContainer; // Store legend container selection in ref
-
-      // Calculate height dynamically
+  
+      // Calculate height dynamically 
       let calculatedHeight = legendPadding;
       calculatedHeight += isMobile ? 24 : Math.round(24 * pcScaleFactor); // Space for title (adjusted)
       calculatedHeight += isMobile ? 18 : Math.round(18 * pcScaleFactor); // Space for subtitle (adjusted)
@@ -1183,15 +1191,15 @@ import React, {
       });
       calculatedHeight += legendPadding;
       const legendHeight = calculatedHeight - categorySpacing;
-
-      // --- Render Legend Elements ---
+  
+      // --- Render Legend Elements --- 
       // Background Rectangle
       legendContainer.append("rect")
         .attr("width", legendWidth).attr("height", legendHeight)
         .attr("rx", 10).attr("ry", 10)
         .attr("fill", bgColor)
         .attr("stroke", dividerColor).attr("stroke-width", 0.5);
-
+  
       // Title & Subtitle
       legendContainer.append("text") // Title
         .attr("x", legendWidth / 2).attr("y", legendPadding + (isMobile ? 10 : Math.round(10 * pcScaleFactor))).attr("text-anchor", "middle")
@@ -1201,9 +1209,9 @@ import React, {
         .attr("x", legendWidth / 2).attr("y", legendPadding + (isMobile ? 26 : Math.round(26 * pcScaleFactor))).attr("text-anchor", "middle")
         .style("font-size", muiTheme.typography.pxToRem(subtitleFontSize)).attr("fill", textColorSecondary)
         .text("Click to filter");
-
+  
       let yPos = legendPadding + (isMobile ? 40 : Math.round(40 * pcScaleFactor)) + categorySpacing; // Adjusted starting yPos
-
+  
       legendCategories.forEach((category) => {
         // Category Header
         legendContainer.append("text")
@@ -1211,7 +1219,7 @@ import React, {
           .style("font-weight", 600).style("font-size", muiTheme.typography.pxToRem(categoryHeaderFontSize))
           .attr("fill", textColorPrimary).text(category.name);
         yPos += legendItemHeight;
-
+  
         // Category Items (Labels)
         category.labels.forEach(labelInfo => {
           const allOriginalTypesFiltered = labelInfo.types.every(t =>
@@ -1873,6 +1881,25 @@ import React, {
           
         {/* Bottom Controls - Slider Area (fixed at bottom) */}
               <div className="controls-container">
+                {isMobile && (
+                  <IconButton
+                    onClick={handleToggleMobileLegend}
+                    color="primary"
+                    aria-label="view legend"
+                    size="small" // Make button smaller for mobile
+                    sx={{
+                      mr: 0.5, // Adjust margin
+                      padding: '6px',
+                      border: `1px solid ${alpha(muiTheme.palette.primary.main, 0.3)}`,
+                      backgroundColor: alpha(muiTheme.palette.primary.main, 0.05),
+                       '&:hover': {
+                          backgroundColor: alpha(muiTheme.palette.primary.main, 0.1),
+                       }
+                    }}
+                  >
+                    <InfoIcon fontSize="medium" /> {/* Slightly larger icon */}
+                  </IconButton>
+                )}
                 {/* Zoom Controls */}
                 <div className="zoom-controls">
                     <button onClick={() => { if (zoomRef.current && svgRef.current) d3.select(svgRef.current).call(zoomRef.current.scaleBy, 1.3); }} className="zoom-button" title="Zoom In">+</button>
@@ -1913,6 +1940,91 @@ import React, {
               
               {/* Tooltip */}
         {renderTooltip()}
+
+        {/* Mobile Legend Dialog */}
+        <Dialog open={mobileLegendOpen} onClose={handleToggleMobileLegend} fullWidth maxWidth="xs" scroll="paper">
+          <DialogTitle sx={{ pb: 1, fontSize: '1.1rem', borderBottom: `1px solid ${muiTheme.palette.divider}` }}>
+            Graph Legend
+          </DialogTitle>
+          <DialogContent dividers sx={{ p: 0, '& .MuiListSubheader-root': { lineHeight: '32px', py: 0.25 } }}>
+            <List dense disablePadding>
+              {getUniqueRelationshipGroups().categories.map((category, catIndex) => (
+                <React.Fragment key={category.name}>
+                  <ListSubheader
+                    disableSticky
+                    sx={{
+                      bgcolor: alpha(muiTheme.palette.background.default, 0.95), // Use default for slight transparency
+                      fontSize: '0.75rem',
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      color: muiTheme.palette.text.secondary,
+                      borderTop: catIndex > 0 ? `1px solid ${muiTheme.palette.divider}` : 'none',
+                      // borderBottom: `1px solid ${muiTheme.palette.divider}`, // Removed bottom border from subheader
+                      py: 0.75,
+                      px: 2, // Add padding to subheader
+                    }}
+                  >
+                    {category.name}
+                  </ListSubheader>
+                  {category.labels.map((labelInfo) => {
+                    const isFiltered = labelInfo.types.every(t => filteredRelationships.includes(t.toLowerCase()));
+                    return (
+                      <ListItemButton
+                        key={labelInfo.label}
+                        dense
+                        onClick={() => {
+                          handleToggleRelationshipFilter(labelInfo.types);
+                        }}
+                        sx={{
+                          pl: 2, // Indent items under subheader
+                          opacity: isFiltered ? 0.45 : 1,
+                          transition: 'opacity 0.2s ease-in-out, background-color 0.15s linear',
+                          '&:hover': {
+                            backgroundColor: alpha(labelInfo.color, 0.12),
+                          },
+                          borderBottom: `1px solid ${muiTheme.palette.divider}`, // Add border to each item
+                           '&:last-child': { // Remove border from last item in group (if needed, but might look okay)
+                             // borderBottom: 'none', 
+                           },
+                        }}
+                      >
+                        <ListItemIcon sx={{ minWidth: 28, pl: 0 }}>
+                          <Box
+                            sx={{
+                              width: 12,
+                              height: 12,
+                              borderRadius: '50%',
+                              backgroundColor: labelInfo.color,
+                              border: `1px solid ${alpha(labelInfo.color, isFiltered ? 0.3 : 0.7)}`,
+                              boxShadow: `0 0 4px ${alpha(labelInfo.color, isFiltered ? 0.2 : 0.4)}`,
+                              transition: 'all 0.2s ease-in-out',
+                            }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={labelInfo.label}
+                          primaryTypographyProps={{
+                            fontSize: '0.875rem',
+                            fontWeight: isFiltered ? 300 : 400,
+                            color: isFiltered ? muiTheme.palette.text.disabled : muiTheme.palette.text.primary,
+                            style: {
+                               textDecoration: isFiltered ? 'line-through' : 'none',
+                               textDecorationColor: alpha(muiTheme.palette.text.disabled, 0.7)
+                            }
+                          }}
+                        />
+                      </ListItemButton>
+                    );
+                  })}
+                </React.Fragment>
+              ))}
+            </List>
+          </DialogContent>
+          <DialogActions sx={{ pt: 1.5, pb: 1.5, pr: 2, borderTop: `1px solid ${muiTheme.palette.divider}` }}>
+            <Button onClick={handleToggleMobileLegend} variant="outlined" size="small">Close</Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   };

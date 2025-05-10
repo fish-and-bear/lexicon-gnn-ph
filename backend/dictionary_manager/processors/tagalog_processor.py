@@ -450,12 +450,12 @@ def _process_single_tagalog_word_entry(
                     relation_metadata["pronunciation_guide_for_to_word"] = pron_guide_for_derivative
 
                 relations_batch.append({
-                    "from_word": word_id,
+                            "from_word": word_id,
                     "to_word": cleaned_part_for_relation,
                     "relation_type": "root_of",
-                    "source": source_identifier,
+                            "source": source_identifier,
                     "metadata": relation_metadata,
-                    "def_id": None,
+                            "def_id": None,
                 })
             else:
                 logger.debug(f"Ignoring non-word derivative part '{original_part_for_log}' (cleaned: '{cleaned_part_for_relation}') for word ID {word_id}")
@@ -623,14 +623,14 @@ def _process_single_tagalog_word_entry(
                             syn_metadata = {"context": "definition_sense", "definition_id": definition_id}
                             if pron_guide_for_syn:
                                 syn_metadata["pronunciation_guide_for_to_word"] = pron_guide_for_syn
-                            relations_batch.append({
-                                "from_word": word_id,
+                        relations_batch.append({
+                            "from_word": word_id,
                                 "to_word": cleaned_syn_for_relation,
-                                "relation_type": "synonym",
-                                "source": source_identifier,
+                            "relation_type": "synonym",
+                            "source": source_identifier,
                                 "metadata": syn_metadata,
-                                "def_id": definition_id,
-                            })
+                            "def_id": definition_id,
+                        })
                         else:
                             logger.debug(f"Synonym '{syn_text_raw}' became empty after cleaning for word ID {word_id}, sense {sense_idx}.")
 
@@ -643,18 +643,18 @@ def _process_single_tagalog_word_entry(
                         cleaned_form_text, pron_guide_for_affix = clean_and_extract_pronunciation_guide(form_text_for_processing)
 
                         if cleaned_form_text: 
-                            form_metadata = {"context": "definition_sense_affix", "definition_id": definition_id}
+                        form_metadata = {"context": "definition_sense_affix", "definition_id": definition_id}
                             if pron_guide_for_affix:
                                 form_metadata["pronunciation_guide_for_to_word"] = pron_guide_for_affix
-                            
-                            relations_batch.append({
+
+                        relations_batch.append({
                                 "from_word": word_id,
                                 "to_word": cleaned_form_text,
                                 "relation_type": "derived",
-                                "source": source_identifier,
-                                "metadata": form_metadata,
+                            "source": source_identifier,
+                            "metadata": form_metadata,
                                 "def_id": definition_id,
-                            })
+                        })
                             # Logging of potential pronunciation guide already handled by the previous edit for affix_forms
                             # We just ensure it's correctly added to metadata here.
                         else:
