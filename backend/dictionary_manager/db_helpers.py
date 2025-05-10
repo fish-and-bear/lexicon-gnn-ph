@@ -1731,11 +1731,11 @@ def insert_pronunciation(
                 logger.warning(
                 f"Existing 'sources' in pronunciation metadata for word ID {word_id} (Type: {pron_type}) is not a list ({type(existing_sources_in_meta)}). Overwriting with new source."
                 )
-            existing_sources_in_meta = []
+                existing_sources_in_meta = []
 
-        if db_source_name_for_meta not in existing_sources_in_meta:
-            existing_sources_in_meta.append(db_source_name_for_meta)
-        pronunciation_metadata["sources"] = existing_sources_in_meta
+                if db_source_name_for_meta not in existing_sources_in_meta:
+                    existing_sources_in_meta.append(db_source_name_for_meta)
+                pronunciation_metadata["sources"] = existing_sources_in_meta
 
     metadata_json = None
     try:
