@@ -476,12 +476,12 @@ import React, {
   
     // Add the getNodeRadius function that was missing from the setupNodeInteractions dependency array
     const getNodeRadius = useCallback((node: CustomNode) => {
-      // Exact sizing from old_src_2 implementation
-      // <<< CHANGE: Check node word/label against mainWord string for main node check >>>
-      if (node.word === mainWord) return 22; 
-      if (node.group === 'root') return 17;
-      return 14; // Standard size for other nodes
-    }, [mainWord]);
+      // Larger hit targets on mobile devices
+      const mobileFactor = isMobile ? 1.3 : 1;
+      if (node.word === mainWord) return 22 * mobileFactor; 
+      if (node.group === 'root') return 17 * mobileFactor;
+      return 14 * mobileFactor; // Standard size for other nodes
+    }, [mainWord, isMobile]);
   
     // Create a map from filteredNodes for quick lookups (used in setupNodeInteractions)
     // <<< CHANGE: nodeMap key is now the string numeric ID >>>
@@ -1114,7 +1114,8 @@ import React, {
       }
       
       const drag = d3.drag<SVGGElement, CustomNode>()
-        .filter(event => !event.ctrlKey && event.button === 0) 
+        // Remove the filter that blocks touch events
+        // .filter(event => !event.ctrlKey && event.button === 0) 
         .on("start", dragStarted)
         .on("drag", dragged)
         .on("end", dragEnded);
@@ -1149,7 +1150,11 @@ import React, {
           // Optionally adjust label visibility based on zoom (k = event.transform.k)
           // ... (keep existing label logic if desired)
         })
-        .filter(event => !event.ctrlKey && event.button === 0); // Standard filter, allow wheel zoom
+        // Important: Update filter to allow touch events
+        .filter(event => {
+          // Allow all touch events and mouse left-button events
+          return (!event.ctrlKey && event.button === 0) || (event.type.startsWith('touch'));
+        });
       
       svg.call(zoom)
          .on("dblclick.zoom", null); // Disable double-click zoom
@@ -1943,7 +1948,13 @@ import React, {
         <div className="graph-wrapper">
           <div className="graph-svg-container">
             {isLoading && (
-              <div className="loading-overlay"><div className="spinner"></div><p>Loading Network...</p></div>
+              <div className="loading-overlay" style={{ 
+                fontSize: isMobile ? '0.9rem' : '1rem',
+                padding: isMobile ? '10px' : '20px'
+              }}>
+                <div className="spinner" style={{ scale: isMobile ? '0.8' : '1' }}></div>
+                <p>Loading Network...</p>
+              </div>
             )}
             {error && (
               <div className="error-overlay">
