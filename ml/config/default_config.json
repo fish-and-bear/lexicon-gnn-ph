@@ -1,0 +1,126 @@
+{
+    "db_config": {
+        "db_type": "sqlite",
+        "db_path": "fil_relex_colab.sqlite"
+    },
+    "data": {
+        "use_xlmr": true,
+        "use_transformer_embeddings": true,
+        "use_char_ngrams": true,
+        "use_phonetic_features": true,
+        "use_etymology_features": true,
+        "use_baybayin_features": true,
+        "normalize_features": true,
+        "max_nodes": 100000,
+        "valid_split": 0.1,
+        "test_split": 0.2,
+        "negative_sampling_ratio": 5,
+        "relation_types_to_predict": [
+            "synonym", 
+            "antonym", 
+            "derived_from", 
+            "cognate_of", 
+            "has_translation", 
+            "translation_of",
+            "root_of", 
+            "derived", 
+            "variant",
+            "doublet_of", 
+            "related", 
+            "see_also"
+        ],
+        "pos_tags_to_predict": true,
+        "target_languages": [
+            "tl", "ceb", "ilo", "hil", "war"
+        ],
+        "node_feature_dim": 768,
+        "edge_feature_dim": 32
+    },
+    "model": {
+        "architecture": "hgnn",
+        "in_dim": 768,
+        "hidden_dim": 256,
+        "out_dim": 128,
+        "num_layers": 3,
+        "num_heads": 8,
+        "num_bases": 8,
+        "dropout": 0.2,
+        "residual": true,
+        "layer_norm": true,
+        "sparsity": 0.8,
+        "link_prediction_score_type": "distmult",
+        "use_node_types": true,
+        "node_types": ["word", "definition", "etymology"],
+        "use_attention": true
+    },
+    "training": {
+        "batch_size": 4096,
+        "num_epochs": 50,
+        "learning_rate": 1e-4,
+        "weight_decay": 1e-5,
+        "lr_scheduler": "cosine",
+        "warmup_steps": 1000,
+        "early_stopping_patience": 10,
+        "gradient_clip_norm": 1.0,
+        "eval_every": 1,
+        "log_every": 100,
+        "link_prediction_loss_weight": 1.0,
+        "node_classification_loss_weight": 0.5
+    },
+    "inference": {
+        "prediction_threshold": 0.75,
+        "max_predictions_per_word": 20,
+        "confidence_threshold": 0.6,
+        "min_relation_frequency": 5,
+        "export_predictions": true,
+        "export_embeddings": true
+    },
+    "logging": {
+        "log_dir": "logs",
+        "save_dir": "checkpoints",
+        "tensorboard": true,
+        "save_every": 5,
+        "save_best": true,
+        "debug": false
+    },
+    "baybayin_features": {
+        "enabled": true,
+        "use_visual_features": false,
+        "embedding_dim": 64
+    },
+    "etymology_features": {
+        "enabled": true,
+        "language_embeddings_dim": 32,
+        "component_embeddings_dim": 64,
+        "max_components": 8,
+        "max_languages": 5
+    },
+    "reconstruction_features": {
+        "enabled": true,
+        "relation_prediction_weight": 1.0,
+        "definition_prediction_weight": 0.5,
+        "reconstruction_loss_weight": 0.1
+    },
+    "evaluation": {
+        "metrics": [
+            "accuracy",
+            "precision",
+            "recall",
+            "f1",
+            "hits@1",
+            "hits@5",
+            "hits@10",
+            "mrr",
+            "map"
+        ],
+        "export_confusion_matrix": true,
+        "per_language_evaluation": true,
+        "per_relation_evaluation": true
+    },
+    "active_learning": {
+        "enabled": false,
+        "uncertainty_sampling": true,
+        "diversity_sampling": true,
+        "sampling_batch_size": 100
+    }
+} 

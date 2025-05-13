@@ -1,0 +1,41 @@
+# Requirements for the ML/AI Component
+# Core ML libraries
+numpy>=1.21.0
+scipy>=1.7.0
+torch>=1.12.0
+dgl>=1.0.0
+# pytorch-geometric>=2.2.0
+transformers>=4.26.0
+datasets>=2.10.0
+
+# Graph Neural Network libraries
+dgllife>=0.3.0
+torch-scatter>=2.1.0
+torch-sparse>=0.6.16
+
+# NLP and Multilingual libraries
+sentencepiece>=0.1.97
+tokenizers>=0.13.2
+
+# Data processing and utilities
+pandas>=1.5.3
+scikit-learn>=1.2.2
+tqdm>=4.65.0
+
+# Visualization and explanation
+matplotlib>=3.7.1
+seaborn>=0.12.2
+shap>=0.41.0
+captum>=0.6.0
+
+# Retrieval-Augmented Generation
+faiss-cpu>=1.7.4
+sentence-transformers>=2.2.2
+
+# Database connectivity (for accessing the lexical database)
+psycopg2-binary>=2.9.6
+SQLAlchemy>=2.0.0
+
+# Experiment tracking and logging
+mlflow>=2.2.2
+tensorboard>=2.12.0 

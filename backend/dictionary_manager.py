@@ -5,25 +5,16 @@ import logging
 import os
 import io
 import traceback # Keep traceback for error logging in lookup_word
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple, Any, Union
+import re # Add import for regex
 
 # Database connection and core helpers
 from backend.dictionary_manager.db_helpers import (
     get_connection,
-    get_cursor,
     with_transaction,
     create_or_update_tables,
-    deduplicate_definitions,
-    cleanup_relations,
-    cleanup_dictionary_data,
-    check_pg_version,
-    check_extensions,
-    check_data_access,
-    check_tables_exist,
-    check_query_performance,
-    purge_database_tables,
     repair_database_issues,
     check_baybayin_consistency,
     setup_parts_of_speech, # ADDED IMPORT
@@ -61,6 +52,14 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.box import ROUNDED as box_ROUNDED # Use alias to avoid potential name clash
 from rich.text import Text
+from rich.syntax import Syntax
+
+# Add the project root to the Python path
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
+# Initialize Rich Console
+console = Console()
 
 # -------------------------------------------------------------------
 # Setup Logging (Moved from original backup)
@@ -171,7 +170,9 @@ def create_argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Manage dictionary data in PostgreSQL."
     )
-    subparsers = parser.add_subparsers(dest="command")
+    subparsers = parser.add_subparsers(dest="command", help="Available commands", required=True)
+
+    # --- Migrate Command (Keeping existing args) ---
     migrate_parser = subparsers.add_parser(
         "migrate", help="Create/update schema and load data"
     )
@@ -190,22 +191,43 @@ def create_argument_parser() -> argparse.ArgumentParser:
     migrate_parser.add_argument(
         "--file", type=str, help="Specific data file to process"
     )
+
+    # --- Verify Command ---
     verify_parser = subparsers.add_parser("verify", help="Verify data integrity")
     verify_parser.add_argument(
-        "--quick", action="store_true", help="Run quick verification"
+        "--quick", action="store_true", help="Run quick verification checks"
     )
     verify_parser.add_argument(
-        "--repair", action="store_true", help="Attempt to repair issues"
+        "--repair", action="store_true", help="Attempt to repair found issues"
     )
-    update_parser = subparsers.add_parser("update", help="Update DB with new data")
+    verify_parser.add_argument(
+        "--checks", type=str, default="all", help="Comma-separated list of checks to run (e.g., orphans,duplicates,search_vectors,baybayin)"
+    )
+    verify_parser.add_argument(
+        "--repair-tasks", type=str, default="all", help="Comma-separated list of issues to attempt repairing (if --repair is used)"
+    )
+
+    # --- Update Command ---
+    update_parser = subparsers.add_parser("update", help="Update DB with new data from a file")
     update_parser.add_argument(
-        "--file", type=str, required=True, help="JSON or JSONL file to use"
+        "--file", type=str, required=True, help="JSON or JSONL file containing new/updated entries"
     )
     update_parser.add_argument(
         "--dry-run", action="store_true", help="Preview changes without applying"
     )
+    # Add other relevant options for update if needed (e.g., --source-name)
+
+    # --- Lookup Command ---
     lookup_parser = subparsers.add_parser("lookup", help="Look up word information")
-    lookup_parser.add_argument("word", help="Word to look up")
+    lookup_parser.add_argument(
+        "term", help="Word lemma or ID to look up"
+    )
+    lookup_parser.add_argument(
+        "--id", action="store_true", help="Indicates that 'term' is a word ID"
+    )
+    lookup_parser.add_argument(
+        "--lang", type=str, help="Specify language code (e.g., tl, ceb) to narrow search"
+    )
     lookup_parser.add_argument(
         "--debug", action="store_true", help="Show debug information"
     )
@@ -215,27 +237,43 @@ def create_argument_parser() -> argparse.ArgumentParser:
         default="rich",
         help="Output format",
     )
+
+    # --- Stats Command ---
     stats_parser = subparsers.add_parser("stats", help="Display dictionary statistics")
     stats_parser.add_argument(
-        "--detailed", action="store_true", help="Show detailed statistics"
+        "--detailed", action="store_true", help="Show detailed statistics (may be slower)"
     )
-    stats_parser.add_argument("--export", type=str, help="Export statistics to file")
-    subparsers.add_parser("leaderboard", help="Display top contributors")
-    subparsers.add_parser("help", help="Display help information")
-    subparsers.add_parser("test", help="Run database connectivity tests")
-    subparsers.add_parser("explore", help="Interactive dictionary explorer")
-    purge_parser = subparsers.add_parser("purge", help="Safely delete all data")
+    stats_parser.add_argument(
+        "--export", type=str, help="Export statistics to file (e.g., stats.json, stats.csv)"
+    )
+    stats_parser.add_argument(
+        "--table", type=str, help="Show detailed stats only for a specific table"
+    )
+
+    # --- Leaderboard Command ---
+    leaderboard_parser = subparsers.add_parser("leaderboard", help="Display top contributors/sources")
+    leaderboard_parser.add_argument(
+        "--limit", type=int, default=10, help="Limit the number of entries shown per category"
+    )
+    leaderboard_parser.add_argument(
+        "--sort-by", type=str, default="count", help="Specify sorting criteria (e.g., count, words, examples)"
+    )
+
+    # --- Help Command ---
+    subparsers.add_parser("help", help="Display detailed help information")
+
+    # --- Explore Command ---
+    subparsers.add_parser("explore", help="Interactive dictionary explorer (CLI)")
+
+    # --- Purge Command ---
+    purge_parser = subparsers.add_parser("purge", help="Safely delete data from dictionary tables")
     purge_parser.add_argument(
-        "--force", action="store_true", help="Skip confirmation prompt"
+        "--force", action="store_true", help="Skip confirmation prompt (USE WITH CAUTION!)"
     )
-    subparsers.add_parser(
-        "cleanup",
-        help="Clean up dictionary data by removing duplicates and standardizing formats",
+    purge_parser.add_argument(
+        "--tables", type=str, help="Comma-separated list of specific tables to purge (default: all dictionary tables)"
     )
-    subparsers.add_parser(
-        "migrate-relationships",
-        help="Migrate existing relationships to the new RelationshipType system",
-    )
+
     return parser
 
 
@@ -316,7 +354,6 @@ def migrate_data(args):
     # Check if any data directories exist
     existing_dirs = [d for d in data_dirs if os.path.isdir(d)]
     if not existing_dirs:
-        console = Console()
         console.print("[bold red]No data directories found![/]")
         console.print("Searched in:", ", ".join(data_dirs))
         console.print("\n[bold]To fix this issue:[/]")
@@ -830,281 +867,328 @@ Both tables might be empty if no specialized linguistic analysis has been perfor
 
 
 def display_help(args):
+    """Displays comprehensive help information using Rich components."""
     console = Console()
-    console.print("\n[bold cyan]📖 Dictionary Manager CLI Help[/]", justify="center")
+    console.print("[bold cyan]📖 Dictionary Manager CLI Help[/]", justify="center")
     console.print(
-        "[dim]A comprehensive tool for managing Filipino dictionary data[/]\n",
+        "[dim]A comprehensive tool for managing Filipino dictionary data in PostgreSQL[/]",
         justify="center",
     )
     usage_panel = Panel(
-        Text.from_markup("python dictionary_manager.py [command] [options]"),
+        Text.from_markup("python dictionary_manager.py [command] [options...]"),
         title="Basic Usage",
         border_style="blue",
+        expand=False
     )
     console.print(usage_panel)
     console.print()
-    commands = [
+
+    console.print("[bold underline]Available Commands:[/]")
+
+    # --- Command Details --- 
+    # Using a list of dictionaries for better structure
+    commands_info = [
         {
             "name": "migrate",
-            "description": "Create/update schema and load data from sources",
-            "options": [
-                ("--check-exists", "Skip identical existing entries"),
-                ("--force", "Skip confirmation prompt"),
-            ],
-            "example": "python dictionary_manager.py migrate --check-exists",
             "icon": "🔄",
-        },
-        {
-            "name": "lookup",
-            "description": "Look up comprehensive information about a word",
-            "options": [
-                ("word", "The word to look up"),
-                ("--format", "Output format (text/json/rich)"),
+            "description": "Create/update database schema and load data from various sources.",
+            "arguments": [
+                ("--check-exists", "Skip inserting entries if an identical one already exists."),
+                ("--force", "Purge existing dictionary data before migrating. Use with caution!"),
+                ("--data-dir <dir>", "Specify the directory containing data files (default: searches './data', '../data', etc.)."),
+                ("--sources <s1,s2..>", "Comma-separated list of source names to process (e.g., 'Kaikki', 'KWF'). Matches names/filenames."),
+                ("--file <path>", "Process only a specific data file (JSON or JSONL). Overrides --sources.")
             ],
-            "example": "python dictionary_manager.py lookup kamandag",
-            "icon": "🔍",
-        },
-        {
-            "name": "stats",
-            "description": "Display comprehensive dictionary statistics",
-            "options": [
-                ("--detailed", "Show detailed statistics"),
-                ("--export", "Export statistics to file"),
-            ],
-            "example": "python dictionary_manager.py stats --detailed",
-            "icon": "📊",
+            "example": "python dictionary_manager.py migrate --force --sources Kaikki,KWF"
         },
         {
             "name": "verify",
-            "description": "Verify data integrity",
-            "options": [
-                ("--quick", "Run quick verification"),
-                ("--repair", "Attempt to repair issues"),
-            ],
-            "example": "python dictionary_manager.py verify --repair",
             "icon": "✅",
+            "description": "Check database integrity, statistics, and consistency.",
+            "arguments": [
+                ("--quick", "Show basic table counts and sample entries."),
+                ("--repair", "[bold red]Not Implemented[/] Attempt to repair found issues automatically."), # Marked as not implemented
+                ("--checks <c1,c2..>", "Comma-separated list of specific checks (default: all). Checks: orphans, duplicates, search_vectors, baybayin."),
+                ("--repair-tasks <t1..>", "[bold red]Not Implemented[/] Comma-separated list of repair tasks (used with --repair).") # Marked as not implemented
+            ],
+            "example": "python dictionary_manager.py verify --checks orphans,baybayin"
+        },
+        {
+            "name": "lookup",
+            "icon": "🔍",
+            "description": "Look up detailed information for a specific word by lemma or ID.",
+            "arguments": [
+                ("term", "The word lemma or ID to look up (required)."),
+                ("--id", "Indicates that 'term' is a numerical word ID, not a lemma."),
+                ("--lang <lc>", "Specify a language code (e.g., 'tl', 'ceb') to narrow the search."),
+                ("--format <fmt>", "Output format: 'rich' (default, colored tables), 'text' (plain), 'json'."),
+                ("--debug", "Show additional debug information during lookup.")
+            ],
+            "example": "python dictionary_manager.py lookup \"puso\" --lang tl --format rich"
+        },
+        {
+            "name": "stats",
+            "icon": "📊",
+            "description": "Display detailed statistics about the dictionary content.",
+            "arguments": [
+                ("--detailed", "Show more detailed statistics (e.g., breakdown by POS, relation type)."),
+                ("--export <file>", "Export statistics to a file (e.g., stats.json, stats.csv - [bold red]Not Implemented[/])."), # Marked as not implemented
+                ("--table <table>", "Show detailed stats only for a specific table ([bold red]Not Implemented[/]).") # Marked as not implemented
+            ],
+            "example": "python dictionary_manager.py stats --detailed"
+        },
+        {
+            "name": "leaderboard",
+            "icon": "🏆",
+            "description": "Show contribution leaderboards based on data sources.",
+            "arguments": [
+                ("--limit <num>", "Number of top entries to display per category (default: 10)."),
+                ("--sort-by <crit>", "Sorting criteria (default: 'count'). See specific tables for valid options (e.g., 'definitions', 'words', 'examples' for Definition Contributors).")
+            ],
+            "example": "python dictionary_manager.py leaderboard --limit 5 --sort-by examples"
+        },
+         {
+            "name": "explore",
+            "icon": "🧭",
+            "description": "Launch an interactive CLI explorer to browse the dictionary.",
+            "arguments": [], # No arguments for explore
+            "example": "python dictionary_manager.py explore"
         },
         {
             "name": "purge",
-            "description": "Safely delete all data from the database",
-            "options": [("--force", "Skip confirmation prompt")],
-            "example": "python dictionary_manager.py purge --force",
             "icon": "🗑️",
+            "description": "Purge (delete) data from dictionary tables. [bold red]Use with extreme caution![/]",
+            "arguments": [
+                ("--force", "Skip the confirmation prompt. DANGEROUS!"),
+                ("--tables <t1,t2..>", "Comma-separated list of specific tables to purge (default: purges all main dictionary tables).")
+            ],
+            "example": "python dictionary_manager.py purge --tables words,definitions"
         },
+        {
+            "name": "update",
+            "icon": "📝",
+            "description": "[bold yellow](Placeholder)[/] Update dictionary with new data from a file.",
+            "arguments": [
+                 ("--file <path>", "JSON or JSONL file with entries to update/add (required)."),
+                 ("--dry-run", "Preview changes without applying them.")
+            ],
+            "example": "python dictionary_manager.py update --file new_words.json --dry-run"
+        },
+        {
+            "name": "help",
+            "icon": "❓",
+            "description": "Display this detailed help message.",
+            "arguments": [],
+            "example": "python dictionary_manager.py help"
+        }
     ]
-    data_commands = Table(
-        title="Data Management Commands", box=box_ROUNDED, border_style="cyan"
-    )
-    data_commands.add_column("Command", style="bold yellow")
-    data_commands.add_column("Description", style="white")
-    data_commands.add_column("Options", style="cyan")
-    data_commands.add_column("Example", style="green")
-    query_commands = Table(
-        title="Query Commands", box=box_ROUNDED, border_style="magenta"
-    )
-    query_commands.add_column("Command", style="bold yellow")
-    query_commands.add_column("Description", style="white")
-    query_commands.add_column("Options", style="cyan")
-    query_commands.add_column("Example", style="green")
-    for cmd in commands:
-        options_text = (
-            "\n".join([f"[cyan]{opt[0]}[/]: {opt[1]}" for opt in cmd["options"]]) or "-"
-        )
-        row = [
-            f"{cmd['icon']} {cmd['name']}",
-            cmd["description"],
-            options_text,
-            f"[dim]{cmd['example']}[/]",
-        ]
-        if cmd["name"] in ["migrate", "update", "purge"]:
-            data_commands.add_row(*row)
+
+    for cmd_info in commands_info:
+        # Create a panel for each command
+        cmd_panel_content = Text()
+        cmd_panel_content.append(Text.from_markup(f"{cmd_info['description']}\n"))
+        
+        if cmd_info['arguments']:
+            cmd_panel_content.append(Text.from_markup("[bold]Arguments:[/]\n"))
+            for arg, desc in cmd_info['arguments']:
+                # Simple heuristic to separate argument name from description for formatting
+                arg_parts = arg.split(" ", 1)
+                arg_name = arg_parts[0]
+                arg_val = f" {arg_parts[1]}" if len(arg_parts) > 1 else ""
+                cmd_panel_content.append(Text.from_markup(f"  [bold cyan]{arg_name}[/][dim]{arg_val}[/]: {desc}\n"))
         else:
-            query_commands.add_row(*row)
-    console.print(data_commands)
-    console.print()
-    console.print(query_commands)
-    console.print()
+            cmd_panel_content.append(Text.from_markup("[dim]No arguments for this command.[/]\n"))
+
+        cmd_panel_content.append(Text.from_markup("\n[bold]Example:[/]\n"))
+        cmd_panel_content.append(Text.from_markup(f"  [green]{cmd_info['example']}[/]"))
+
+        cmd_panel = Panel(
+            cmd_panel_content,
+            title=f"{cmd_info['icon']} [bold yellow]{cmd_info['name']}[/]",
+            border_style="blue" if cmd_info['name'] != 'purge' else "red", # Highlight purge
+            expand=False,
+            padding=(1, 2)
+        )
+        console.print(cmd_panel)
+        console.print() # Add space between panels
+
+    # Keep the footer note
     console.print(
-        "\n[dim]For more detailed information, visit the documentation.[/]",
+        "\n[dim]For the most up-to-date and detailed information, please refer to the project documentation.[/]",
         justify="center",
     )
     console.print()
 
 
 def lookup_word(args):
-    """Look up a word and display its information."""
-    word = args.word
-    logger.info(f"Starting lookup for word: '{word}'")
-    
+    """Look up a word and display its information, handling format and filtering."""
+    term = args.term
+    is_id_lookup = args.id
+    lang_filter = args.lang
+    output_format = args.format
+    debug_mode = args.debug
+
+    logger.info(f"Starting lookup for {'ID' if is_id_lookup else 'term'}: '{term}', Lang: {lang_filter or 'any'}, Format: {output_format}, Debug: {debug_mode}")
+
+    conn = None
     try:
-        # First attempt with standard connection method
-        conn = None
-        try:
-            logger.info("Attempting to use standard connection method...")
-            conn = get_connection()
-            cur = conn.cursor()
-        except Exception as conn_err:
-            logger.warning(f"Standard connection failed: {conn_err}. Trying direct psycopg2 connection.")
-            # If standard connection fails, try direct psycopg2 connection using postgres defaults
-            import psycopg2
-            db_uri = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/fil_dict_db')
-            logger.info(f"Connecting directly using: {db_uri.split('@')[0].split(':')[0]}:***@{db_uri.split('@')[1] if '@' in db_uri else db_uri}")
-            conn = psycopg2.connect(db_uri)
-            cur = conn.cursor()
-            logger.info("Direct connection successful")
-            
+        conn = get_connection()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) # Use DictCursor for easier access
+        console = Console()
+
+        if is_id_lookup:
+            try:
+                word_id = int(term)
+                lookup_by_id(cur, word_id, console, output_format, debug_mode)
+            except ValueError:
+                logger.error(f"Invalid ID provided: {term}")
+                console.print(f"[red]Invalid ID: '{term}'. Please provide a number when using --id.[/]")
+            except Exception as e:
+                logger.error(f"Error looking up ID {term}: {e}", exc_info=True)
+                console.print(f"[red]Error looking up ID {term}: {e}[/]")
+            return # Exit after ID lookup attempt
+
+        # --- Term Lookup Logic --- 
         with conn:
             with cur:
-                normalized_word = normalize_lemma(word)
-                logger.info(f"pg_trgm extension installed: {check_pg_trgm_installed(cur)}")
-                
-                # Try exact match first
-                logger.info(f"Executing exact match query for '{word}'")
-                cur.execute(
-                    """
+                normalized_word = normalize_lemma(term)
+                if debug_mode:
+                    logger.info(f"Normalized term: '{normalized_word}'")
+                    logger.info(f"pg_trgm installed: {check_pg_trgm_installed(cur)}")
+
+                base_query = """
                     SELECT id, lemma, language_code, root_word_id
                     FROM words 
-                    WHERE normalized_lemma = %s
-                    """,
-                    (normalized_word,),
-                )
+                    WHERE {match_clause}
+                """
+                lang_clause = " AND language_code = %s " if lang_filter else ""
+                params = []
+
+                # 1. Try exact match
+                logger.info(f"Executing exact match query for '{term}' (Lang: {lang_filter or 'any'})")
+                exact_match_clause = " normalized_lemma = %s " + lang_clause
+                exact_params = [normalized_word]
+                if lang_filter: exact_params.append(lang_filter)
+                
+                cur.execute(base_query.format(match_clause=exact_match_clause), tuple(exact_params))
                 results = cur.fetchall()
                 logger.info(f"Found {len(results)} exact matches")
-                
-                # If no exact matches, try fuzzy search
-                if not results:
-                    logger.info(f"No exact matches, trying fuzzy search for '{word}'")
+
+                # 2. If no exact matches, try fuzzy search (if pg_trgm available)
+                if not results and check_pg_trgm_installed(cur):
+                    logger.info(f"No exact matches, trying fuzzy search for '{term}' (Lang: {lang_filter or 'any'})")
+                    fuzzy_match_clause = " similarity(normalized_lemma, %s) > 0.4 " + lang_clause
+                    fuzzy_query = """
+                        SELECT id, lemma, language_code, root_word_id, 
+                               similarity(normalized_lemma, %s) as sim
+                        FROM words 
+                        WHERE {match_clause}
+                        ORDER BY sim DESC
+                        LIMIT 10
+                    """
+                    fuzzy_params = [normalized_word, normalized_word] # Similarity needs it twice
+                    if lang_filter: fuzzy_params.append(lang_filter)
+                    
                     try:
-                        # Only use similarity if pg_trgm extension is installed
-                        if check_pg_trgm_installed(cur):
-                            cur.execute(
-                                """
-                                SELECT id, lemma, language_code, root_word_id, 
-                                       similarity(normalized_lemma, %s) as sim
-                                FROM words 
-                                WHERE similarity(normalized_lemma, %s) > 0.4
-                                ORDER BY sim DESC
-                                LIMIT 10
-                                """,
-                                (normalized_word, normalized_word),
-                            )
-                            results = cur.fetchall()
-                            logger.info(f"Found {len(results)} fuzzy matches")
-                        else:
-                            logger.warning("pg_trgm extension not installed, skipping fuzzy search")
+                        cur.execute(fuzzy_query.format(match_clause=fuzzy_match_clause), tuple(fuzzy_params))
+                        results = cur.fetchall()
+                        logger.info(f"Found {len(results)} fuzzy matches")
                     except Exception as e:
                         logger.warning(f"Error in fuzzy search: {e}")
-                
-                # If still no matches, try a simpler ILIKE search
+                        results = [] # Reset results if fuzzy search fails
+                elif not results:
+                    logger.info("Skipping fuzzy search as pg_trgm is not installed or not needed.")
+
+                # 3. If still no matches, try ILIKE search
                 if not results:
-                    logger.info(f"No fuzzy matches, falling back to ILIKE search")
-                    logger.info(f"Trying ILIKE search for '{word}'")
-                    cur.execute(
-                        """
-                        SELECT id, lemma, language_code, root_word_id 
-                        FROM words 
-                        WHERE lemma ILIKE %s OR normalized_lemma ILIKE %s
-                        """,
-                        (f"%{word}%", f"%{normalized_word}%"),
-                    )
+                    logger.info(f"No fuzzy matches, falling back to ILIKE search for '{term}' (Lang: {lang_filter or 'any'})")
+                    ilike_match_clause = " (lemma ILIKE %s OR normalized_lemma ILIKE %s) " + lang_clause
+                    ilike_params = [f"%{term}%", f"%{normalized_word}%"]
+                    if lang_filter: ilike_params.append(lang_filter)
+                    
+                    cur.execute(base_query.format(match_clause=ilike_match_clause), tuple(ilike_params))
                     results = cur.fetchall()
                     logger.info(f"ILIKE search found {len(results)} matches")
-                    
-                # Run diagnostics if no results found
+
+                # --- Process Results ---
                 if not results:
-                    logger.info("Diagnostic: checking if word exists in any form")
-                    cur.execute(
-                        """
-                        SELECT EXISTS(
-                            SELECT 1 FROM words 
-                            WHERE lemma = %s OR normalized_lemma = %s
+                    # Run diagnostics if requested
+                    if debug_mode:
+                        logger.info("Diagnostic: checking if word exists in any form")
+                        cur.execute(
+                            "SELECT EXISTS(SELECT 1 FROM words WHERE lemma = %s OR normalized_lemma = %s)",
+                            (term, normalized_word),
                         )
-                        """,
-                        (word, normalized_word),
-                    )
-                    exists = cur.fetchone()[0]
-                    logger.info(f"Diagnostic result: Word '{word}' exists (exact match): {exists}")
-                    
-                    # Check for partial matches as well
-                    cur.execute(
-                        """
-                        SELECT EXISTS(
-                            SELECT 1 FROM words 
-                            WHERE lemma LIKE %s OR normalized_lemma LIKE %s
+                        logger.info(f"Diagnostic result: Word '{term}' exists (exact match): {cur.fetchone()[0]}")
+                        cur.execute(
+                            "SELECT EXISTS(SELECT 1 FROM words WHERE lemma LIKE %s OR normalized_lemma LIKE %s)",
+                            (f"%{term}%", f"%{normalized_word}%"),
                         )
-                        """,
-                        (f"%{word}%", f"%{normalized_word}%"),
-                    )
-                    partial_exists = cur.fetchone()[0]
-                    logger.info(f"Diagnostic result: Word '{word}' exists (partial match): {partial_exists}")
+                        logger.info(f"Diagnostic result: Word '{term}' exists (partial match): {cur.fetchone()[0]}")
+                        logger.info("Diagnostic: verifying words table schema")
+                        cur.execute(
+                            "SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'words' ORDER BY ordinal_position"
+                        )
+                        columns = cur.fetchall()
+                        logger.info(f"Diagnostic: words table columns: {[(c['column_name'], c['data_type']) for c in columns]}")
                     
-                    # Verify the database schema
-                    logger.info("Diagnostic: verifying database schema")
-                    cur.execute(
-                        """
-                        SELECT column_name, data_type 
-                        FROM information_schema.columns
-                        WHERE table_name = 'words'
-                        ORDER BY ordinal_position
-                        """
-                    )
-                    columns = cur.fetchall()
-                    logger.info(f"Diagnostic: words table has {len(columns)} columns")
-                    for column_name, data_type in columns:
-                        logger.info(f"  Column: {column_name}, Type: {data_type}")
-                    
-                    console = Console()
-                    console.print(f"\nNo entries found for '{word}'")
+                    console.print(f"\nNo entries found for '{term}'{f' in language {lang_filter}' if lang_filter else ''}.")
                     return
 
-                console = Console()
                 if len(results) == 1:
-                    word_id = results[0][0]
-                    return lookup_by_id(cur, word_id, console)
+                    word_id = results[0]['id']
+                    lookup_by_id(cur, word_id, console, output_format, debug_mode)
+                else:
+                    # Multiple results - Display selection table (Rich format only for selection)
+                    console.print("\n[bold]Multiple matches found:[/]")
+                    table = Table(show_header=True, header_style="bold", box=box_ROUNDED)
+                    table.add_column("ID", style="dim")
+                    table.add_column("Word")
+                    table.add_column("Language")
+                    table.add_column("Root")
 
-                # Multiple results
-                console.print("\n[bold]Multiple matches found:[/]")
-                table = Table(show_header=True, header_style="bold")
-                table.add_column("ID")
-                table.add_column("Word")
-                table.add_column("Language")
-                table.add_column("Root")
+                    result_ids = []
+                    for row in results:
+                        result_ids.append(row['id'])
+                        # Get root word if available
+                        root_word = "N/A"
+                        if row['root_word_id']:
+                            cur.execute("SELECT lemma FROM words WHERE id = %s", (row['root_word_id'],))
+                            root_row = cur.fetchone()
+                            if root_row: root_word = root_row['lemma']
 
-                for word_id, lemma, lang_code, root_id in results:
-                    # Get root word if available
-                    root_word = None
-                    if root_id:
-                        cur.execute(
-                            "SELECT lemma FROM words WHERE id = %s", (root_id,)
+                        table.add_row(
+                            str(row['id']),
+                            row['lemma'],
+                            row['language_code'] or "unknown",
+                            root_word,
                         )
-                        root_row = cur.fetchone()
-                        if root_row:
-                            root_word = root_row[0]
 
-                    table.add_row(
-                        str(word_id),
-                        lemma,
-                        lang_code or "unknown",
-                        root_word or "N/A",
-                    )
+                    console.print(table)
+                    choice = input("\nEnter ID to view details (or press Enter to exit): ")
+                    if choice.strip():
+                        try:
+                            chosen_id = int(choice.strip())
+                            if chosen_id in result_ids:
+                                lookup_by_id(cur, chosen_id, console, output_format, debug_mode)
+                            else:
+                                console.print("[red]Invalid ID entered.[/]")
+                        except ValueError:
+                            console.print("[red]Invalid ID. Please enter a number.[/]")
+                        except Exception as e:
+                            logger.error(f"Error looking up chosen ID {choice}: {e}", exc_info=True)
+                            console.print(f"[red]Error looking up word: {str(e)}[/]")
 
-                console.print(table)
-                choice = input("\nEnter ID to view details (or press Enter to exit): ")
-                if choice.strip():
-                    try:
-                        word_id = int(choice.strip())
-                        return lookup_by_id(cur, word_id, console)
-                    except ValueError:
-                        console.print("[red]Invalid ID. Please enter a number.[/]")
-                    except Exception as e:
-                        console.print(f"[red]Error looking up word: {str(e)}[/]")
-
+    except psycopg2.OperationalError as db_err:
+        logger.error(f"Database connection failed during lookup: {db_err}", exc_info=True)
+        console = Console() # Ensure console exists for error message
+        console.print(f"[bold red]Database connection error:[/]\n[dim]{db_err}[/]")
     except Exception as e:
         logger.error(f"Error during word lookup: {str(e)}", exc_info=True)
-        console = Console()
-        console.print(f"[red]Error looking up word: {str(e)}[/]")
+        console = Console() # Ensure console exists
+        console.print(f"[red]An unexpected error occurred during lookup: {str(e)}[/]")
     finally:
-        if 'conn' in locals() and conn is not None:
+        if conn is not None:
             try:
                 conn.close()
                 logger.info("Database connection closed")
@@ -1132,359 +1216,531 @@ def display_dictionary_stats_cli(args):
 def display_dictionary_stats(cur):
     """Display comprehensive dictionary statistics."""
     console = Console()
+    conn = cur.connection # Get connection from cursor for potential rollback
+
+    # --- Overall Statistics ---
     try:
-        # Overall Statistics
+        console.print("\n[bold]Dictionary Statistics[/]")
         overall_table = Table(title="[bold blue]Overall Statistics[/]", box=box_ROUNDED)
         overall_table.add_column("Metric", style="cyan")
         overall_table.add_column("Count", justify="right", style="green")
         overall_table.add_column("Details", style="dim")
 
-        # Check which columns exist in the words table
         cur.execute(
             """
             SELECT column_name 
             FROM information_schema.columns 
-            WHERE table_name = 'words'
+            WHERE table_name = 'words' AND table_schema = 'public'
         """
         )
         available_columns = {row[0] for row in cur.fetchall()}
 
-        # Basic counts with details - build dynamically based on available columns
+        # Pre-fetch schema data needed for checks (if not already available)
+        # This is a placeholder; ideally, schema info would be passed or cached.
+        schema_data = {} # Initialize schema_data HERE, before basic_queries
+        # TODO: Implement schema fetching or passing if needed for robust column/table checks
+        # logger.warning("Schema checks in stats are currently disabled; results may be inaccurate if tables/columns are missing.")
+
         basic_queries = {
+            # --- Counts from 'words' table ---
             "Total Words": ("SELECT COUNT(*) FROM words", None),
-            "Total Definitions": ("SELECT COUNT(*) FROM definitions", None),
-            "Total Relations": ("SELECT COUNT(*) FROM relations", None),
-            "Total Etymologies": ("SELECT COUNT(*) FROM etymologies", None),
-            "Total Pronunciations": ("SELECT COUNT(*) FROM pronunciations", None),
-            "Total Credits": ("SELECT COUNT(*) FROM credits", None),
-            "Words with Baybayin": (
+            "Words with Root": (
+                "SELECT COUNT(*) FROM words WHERE root_word_id IS NOT NULL",
+                None,
+            ) if "root_word_id" in available_columns else None,
+            "Proper Nouns": (
+                "SELECT COUNT(*) FROM words WHERE is_proper_noun = TRUE",
+                None,
+            ) if "is_proper_noun" in available_columns else None,
+            "Abbreviations": (
+                "SELECT COUNT(*) FROM words WHERE is_abbreviation = TRUE",
+                None,
+            ) if "is_abbreviation" in available_columns else None,
+            "Initialisms": (
+                "SELECT COUNT(*) FROM words WHERE is_initialism = TRUE",
+                None,
+            ) if "is_initialism" in available_columns else None,
+             "Words with Baybayin": (
                 "SELECT COUNT(*) FROM words WHERE has_baybayin = TRUE",
                 None,
-            ),
-            "Words with Examples": (
+            ) if "has_baybayin" in available_columns else None,
+            "Words with Idioms": (
+                "SELECT COUNT(*) FROM words WHERE idioms IS NOT NULL AND jsonb_array_length(idioms) > 0",
+                 None,
+            ) if "idioms" in available_columns else None,
+            "Words with Tags": (
+                "SELECT COUNT(*) FROM words WHERE tags IS NOT NULL AND tags != ''",
+                 None,
+            ) if "tags" in available_columns else None,
+             "Words with Word Metadata": (
+                "SELECT COUNT(*) FROM words WHERE word_metadata IS NOT NULL AND word_metadata != '{}'::jsonb",
+                 None,
+            ) if "word_metadata" in available_columns else None,
+            "Words with Pronunciation Data (JSON)": (
+                 "SELECT COUNT(*) FROM words WHERE pronunciation_data IS NOT NULL AND pronunciation_data != '{}'::jsonb",
+                 None,
+            ) if "pronunciation_data" in available_columns else None,
+             "Words with Hyphenation Data (JSON)": (
+                 "SELECT COUNT(*) FROM words WHERE hyphenation IS NOT NULL AND hyphenation != '{}'::jsonb",
+                 None,
+            ) if "hyphenation" in available_columns else None,
+
+            # --- Counts from 'definitions' table ---
+            "Total Definitions": ("SELECT COUNT(*) FROM definitions", None),
+             "Definitions with Inline Examples": ( # Clarified metric
                 """
-                SELECT COUNT(DISTINCT word_id) 
+                SELECT COUNT(*) 
                 FROM definitions 
-                WHERE examples IS NOT NULL
+                WHERE examples IS NOT NULL AND examples != ''
             """,
-                None,
-            ),
-            "Words with Etymology": (
+                """
+                SELECT COUNT(DISTINCT word_id)
+                FROM definitions
+                WHERE examples IS NOT NULL AND examples != ''
+            """,
+            ), # Removed the schema_data check here
+            "Definitions with Linked Examples": (
+                 "SELECT COUNT(DISTINCT definition_id) FROM definition_examples",
+                 None, # Could add detail on total examples if needed
+            ), # Removed the schema_data check here
+            "Definitions with Usage Notes": (
+                 "SELECT COUNT(*) FROM definitions WHERE usage_notes IS NOT NULL AND usage_notes != ''",
+                 "SELECT COUNT(DISTINCT word_id) FROM definitions WHERE usage_notes IS NOT NULL AND usage_notes != ''",
+            ), # Removed the schema_data check here
+            "Definitions with Tags": (
+                 "SELECT COUNT(*) FROM definitions WHERE tags IS NOT NULL AND tags != ''",
+                 "SELECT COUNT(DISTINCT word_id) FROM definitions WHERE tags IS NOT NULL AND tags != ''",
+            ), # Removed the schema_data check here
+            "Definitions with Definition Metadata": (
+                 "SELECT COUNT(*) FROM definitions WHERE definition_metadata IS NOT NULL AND definition_metadata != '{}'::jsonb",
+                 "SELECT COUNT(DISTINCT word_id) FROM definitions WHERE definition_metadata IS NOT NULL AND definition_metadata != '{}'::jsonb",
+            ), # Removed the schema_data check here
+
+            # --- Counts from related tables ---
+            "Total Relations": ("SELECT COUNT(*) FROM relations", None), # Removed check
+            "Relations with Metadata": (
+                 "SELECT COUNT(*) FROM relations WHERE metadata IS NOT NULL AND metadata != '{}'::jsonb",
+                 None,
+            ), # Removed check
+            "Total Etymologies": ("SELECT COUNT(*) FROM etymologies", None), # Removed check
+            "Words with Etymology (Distinct)": (
                 """
                 SELECT COUNT(DISTINCT word_id) 
                 FROM etymologies
             """,
                 None,
-            ),
-            "Words with Pronunciation": (
+            ), # Removed check
+            "Total Pronunciations (Entries)": ("SELECT COUNT(*) FROM pronunciations", None), # Removed check
+             "Words with Pronunciation Entries (Distinct)": (
                 """
                 SELECT COUNT(DISTINCT word_id) 
                 FROM pronunciations
             """,
                 None,
-            ),
+            ), # Removed check
+            "Total Credits": ("SELECT COUNT(*) FROM credits", None), # Removed check
         }
 
-        # Add optional columns if they exist
-        if "is_proper_noun" in available_columns:
-            basic_queries["Proper Nouns"] = (
-                "SELECT COUNT(*) FROM words WHERE is_proper_noun = TRUE",
-                None,
-            )
-        if "is_abbreviation" in available_columns:
-            basic_queries["Abbreviations"] = (
-                "SELECT COUNT(*) FROM words WHERE is_abbreviation = TRUE",
-                None,
-            )
-        if "is_initialism" in available_columns:
-            basic_queries["Initialisms"] = (
-                "SELECT COUNT(*) FROM words WHERE is_initialism = TRUE",
-                None,
-            )
-        if "root_word_id" in available_columns:
-            basic_queries["Words with Root"] = (
-                "SELECT COUNT(*) FROM words WHERE root_word_id IS NOT NULL",
-                None,
-            )
+        # Filter out None values from basic_queries in case columns/tables don't exist
+        # (This primarily filters based on `available_columns` checks now)
+        active_basic_queries = {k: v for k, v in basic_queries.items() if v is not None}
 
-        for label, (query, detail_query) in basic_queries.items():
+        # logger.warning("Schema checks in stats are currently disabled; results may be inaccurate if tables/columns are missing.")
+
+        total_word_count_for_overall = 0 # Store total word count for details calc
+        for label, queries in active_basic_queries.items():
+            query = queries[0]
+            detail_query = queries[1] if len(queries) > 1 else None
             try:
                 cur.execute(query)
-                count = cur.fetchone()[0]
+                count_result = cur.fetchone()
+                count = count_result[0] if count_result else 0
+
+                if label == "Total Words":
+                    total_word_count_for_overall = count # Capture for percentage calc
+
                 details = ""
                 if detail_query:
                     cur.execute(detail_query)
-                    details = cur.fetchone()[0]
-                overall_table.add_row(label, f"{count:,}", details)
-            except Exception as e:
-                logger.warning(f"Error getting stats for {label}: {e}")
-                overall_table.add_row(label, "N/A", f"Error: {str(e)}")
+                    detail_result = cur.fetchone()
+                    detail_count = detail_result[0] if detail_result else 0
 
-        # Language Statistics with more details
-        try:
-            cur.execute(
-                """
+                    # Improved detail formatting
+                    if detail_count > 0 and total_word_count_for_overall > 0:
+                        percent_words = (detail_count / total_word_count_for_overall * 100)
+                        details = f"from {detail_count:,} unique words ({percent_words:.1f}%)"
+                    elif detail_count > 0:
+                         details = f"from {detail_count:,} unique words"
+                    else:
+                        details = "(0 unique words)" # Explicitly show zero
+
+                overall_table.add_row(label, f"{count:,}", details or "")
+            except psycopg2.Error as e:
+                logger.warning(f"Error getting overall stats for {label}: {e}")
+                overall_table.add_row(label, "[red]Error[/]", f"{e.pgcode}")
+                conn.rollback() # Reset transaction state after error in this section
+            except Exception as e:
+                 logger.warning(f"Non-DB error getting overall stats for {label}: {e}", exc_info=True) # Added exc_info
+                 overall_table.add_row(label, "[red]Error[/]", "Non-DB Err")
+
+        console.print(overall_table)
+
+    except Exception as e:
+        logger.error(f"Error displaying Overall statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error displaying Overall statistics: {str(e)}[/]")
+        if conn and not conn.closed:
+            try:
+                conn.rollback() # Ensure rollback if error occurs early
+            except psycopg2.Error as rb_err:
+                 logger.warning(f"Rollback failed after Overall stats error: {rb_err}")
+
+    # --- Language Statistics ---
+    try:
+        cur.execute(
+            """
+            WITH LangCounts AS (
                 SELECT 
                     w.language_code,
-                    COUNT(*) as word_count,
-                    COUNT(DISTINCT d.id) as def_count,
-                    COUNT(DISTINCT e.id) as etym_count,
-                    COUNT(DISTINCT p.id) as pron_count,
-                    COUNT(DISTINCT CASE WHEN w.has_baybayin THEN w.id END) as baybayin_count
+                    COUNT(DISTINCT w.id) as word_count -- Count distinct words per language
                 FROM words w
-                LEFT JOIN definitions d ON w.id = d.word_id
-                LEFT JOIN etymologies e ON w.id = e.word_id
-                LEFT JOIN pronunciations p ON w.id = p.word_id
                 GROUP BY w.language_code
-                ORDER BY word_count DESC
-            """
+            ), TotalWords AS (
+                SELECT SUM(word_count) as total_count FROM LangCounts
             )
+            SELECT 
+                lc.language_code,
+                lc.word_count,
+                COUNT(DISTINCT d.id) as def_count,
+                COUNT(DISTINCT e.id) as etym_count,
+                COUNT(DISTINCT p.id) as pron_count,
+                COUNT(DISTINCT CASE WHEN w_main.has_baybayin THEN w_main.id END) as baybayin_count,
+                tw.total_count -- Include total word count for percentage calculation
+            FROM LangCounts lc
+            JOIN words w_main ON lc.language_code = w_main.language_code -- Join back to words to link other tables
+            LEFT JOIN definitions d ON w_main.id = d.word_id
+            LEFT JOIN etymologies e ON w_main.id = e.word_id
+            LEFT JOIN pronunciations p ON w_main.id = p.word_id
+            CROSS JOIN TotalWords tw -- Get the total word count
+            GROUP BY lc.language_code, lc.word_count, tw.total_count -- Group by per-language word count and total
+            ORDER BY lc.word_count DESC;
+        """
+        )
 
-            lang_table = Table(title="[bold blue]Words by Language[/]", box=box_ROUNDED)
-            lang_table.add_column("Language", style="yellow")
-            lang_table.add_column("Words", justify="right", style="green")
-            lang_table.add_column("Definitions", justify="right", style="green")
-            lang_table.add_column("Etymologies", justify="right", style="green")
-            lang_table.add_column("Pronunciations", justify="right", style="green")
-            lang_table.add_column("Baybayin", justify="right", style="green")
+        lang_table = Table(title="[bold blue]Words by Language[/]", box=box_ROUNDED)
+        lang_table.add_column("Language", style="yellow")
+        lang_table.add_column("Words (%)", justify="right", style="green") # Combined Col
+        lang_table.add_column("Definitions", justify="right", style="green")
+        lang_table.add_column("Etymologies", justify="right", style="green")
+        lang_table.add_column("Pronunciations", justify="right", style="green")
+        lang_table.add_column("Baybayin", justify="right", style="green")
 
-            total_words = 0
-            results = cur.fetchall()
-            for row in results:
-                total_words += row[1]
+        results = cur.fetchall()
+        if results:
+            total_words = results[0][-1] if results else 0 # Get total from first row
 
-            for lang_code, words, defs, etyms, prons, bayb in results:
-                percentage = (words / total_words) * 100 if total_words > 0 else 0
+            for lang_code, words, defs, etyms, prons, bayb, _ in results:
+                percentage = (words / total_words * 100) if total_words > 0 else 0
                 lang_table.add_row(
-                    lang_code,
+                    lang_code or "[NULL]", # Handle potential NULL lang code
                     f"{words:,} ({percentage:.1f}%)",
                     f"{defs:,}",
                     f"{etyms:,}",
                     f"{prons:,}",
                     f"{bayb:,}",
                 )
-
-            console.print("\n[bold]Dictionary Statistics[/]")
-            console.print(overall_table)
-            console.print()
             console.print(lang_table)
-        except Exception as e:
-            logger.error(f"Error displaying language statistics: {str(e)}")
-            console.print(f"[red]Error displaying language statistics: {str(e)}[/]")
-            console.print(overall_table)
+        else:
+             console.print("[yellow]No language statistics found.[/]")
 
-        # Parts of Speech Statistics with examples
-        try:
-            # Check if standardized_pos_id exists
-            cur.execute(
-                """
-                SELECT EXISTS (
-                    SELECT FROM information_schema.columns 
-                    WHERE table_name = 'definitions' AND column_name = 'standardized_pos_id'
-                )
+    except psycopg2.Error as e:
+        logger.error(f"Error displaying language statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error displaying language statistics: {e.pgcode}[/]")
+        if conn and not conn.closed: conn.rollback() # Reset transaction state
+    except Exception as e:
+         logger.error(f"Non-DB error displaying language statistics: {str(e)}", exc_info=True)
+         console.print(f"[red]Error displaying language statistics: Non-DB Err[/]")
+
+
+    # --- Parts of Speech Statistics ---
+    try:
+        cur.execute(
             """
+            SELECT EXISTS (
+                SELECT FROM information_schema.columns 
+                WHERE table_schema = 'public' AND table_name = 'definitions' AND column_name = 'standardized_pos_id'
             )
+        """
+        )
+        has_standardized_pos = cur.fetchone()[0]
 
-            has_standardized_pos = cur.fetchone()[0]
-
-            if has_standardized_pos:
-                cur.execute(
-                    """
-                    SELECT 
-                        p.name_tl,
-                        COUNT(*) as count,
-                        COUNT(DISTINCT d.word_id) as unique_words,
-                        COUNT(CASE WHEN d.examples IS NOT NULL THEN 1 END) as with_examples
-                    FROM definitions d
-                    JOIN parts_of_speech p ON d.standardized_pos_id = p.id
-                    GROUP BY p.name_tl
-                    ORDER BY count DESC
-                """
-                )
-            else:
-                # Fallback to using part_of_speech text field
-                cur.execute(
-                    """
-                    SELECT 
-                        COALESCE(part_of_speech, 'Unknown'),
-                        COUNT(*) as count,
-                        COUNT(DISTINCT word_id) as unique_words,
-                        COUNT(CASE WHEN examples IS NOT NULL THEN 1 END) as with_examples
-                    FROM definitions
-                    GROUP BY part_of_speech
-                    ORDER BY count DESC
-                """
-                )
-
-            pos_table = Table(title="[bold blue]Parts of Speech[/]", box=box_ROUNDED)
-            pos_table.add_column("Part of Speech", style="yellow")
-            pos_table.add_column("Definitions", justify="right", style="green")
-            pos_table.add_column("Unique Words", justify="right", style="green")
-            pos_table.add_column("With Examples", justify="right", style="green")
-
-            pos_results = cur.fetchall()
-            if pos_results:
-                for pos, count, unique_words, with_examples in pos_results:
-                    pos_table.add_row(
-                        pos or "Uncategorized",
-                        f"{count:,}",
-                        f"{unique_words:,}",
-                        f"{with_examples:,}",
-                    )
-
-                console.print()
-                console.print(pos_table)
-        except Exception as e:
-            logger.error(f"Error displaying part of speech statistics: {str(e)}")
-            console.print(
-                f"[red]Error displaying part of speech statistics: {str(e)}[/]"
-            )
-
-        # Relationship Statistics by category
-        try:
+        if has_standardized_pos:
             cur.execute(
                 """
                 SELECT 
-                    r.relation_type,
+                    p.name_tl,
                     COUNT(*) as count,
-                    COUNT(DISTINCT r.from_word_id) as unique_sources,
-                    COUNT(DISTINCT r.to_word_id) as unique_targets
-                FROM relations r
-                GROUP BY r.relation_type
+                    COUNT(DISTINCT d.word_id) as unique_words,
+                    COUNT(CASE WHEN d.examples IS NOT NULL AND d.examples != '' THEN 1 END) as with_examples -- Fixed condition
+                FROM definitions d
+                JOIN parts_of_speech p ON d.standardized_pos_id = p.id
+                GROUP BY p.name_tl
+                ORDER BY count DESC
+            """
+            )
+        else:
+            # Fallback if standardized_pos_id doesn't exist
+             cur.execute(
+                """
+                SELECT 
+                    COALESCE(original_pos, 'Unknown'), -- Use original_pos
+                    COUNT(*) as count,
+                    COUNT(DISTINCT word_id) as unique_words,
+                    COUNT(CASE WHEN examples IS NOT NULL AND examples != '' THEN 1 END) as with_examples -- Fixed condition
+                FROM definitions
+                GROUP BY original_pos -- Group by original_pos
                 ORDER BY count DESC
             """
             )
 
-            rel_results = cur.fetchall()
-            if rel_results:
-                rel_table = Table(
-                    title="[bold blue]Relationship Types[/]", box=box_ROUNDED
+
+        pos_table = Table(title="[bold blue]Parts of Speech[/]", box=box_ROUNDED)
+        pos_table.add_column("Part of Speech", style="yellow")
+        pos_table.add_column("Definitions", justify="right", style="green")
+        pos_table.add_column("Unique Words", justify="right", style="green")
+        pos_table.add_column("With Examples", justify="right", style="green")
+
+        pos_results = cur.fetchall()
+        if pos_results:
+            for pos, count, unique_words, with_examples in pos_results:
+                pos_table.add_row(
+                    pos or "Uncategorized",
+                    f"{count:,}",
+                    f"{unique_words:,}",
+                    f"{with_examples:,}", # Show the corrected count
                 )
-                rel_table.add_column("Type", style="yellow")
-                rel_table.add_column("Total", justify="right", style="green")
-                rel_table.add_column("Unique Sources", justify="right", style="green")
-                rel_table.add_column("Unique Targets", justify="right", style="green")
+            console.print()
+            console.print(pos_table)
+        else:
+            console.print("\n[yellow]No Part of Speech statistics found.[/]")
 
-                for rel_type, count, sources, targets in rel_results:
-                    rel_table.add_row(
-                        rel_type or "Unknown",
-                        f"{count:,}",
-                        f"{sources:,}",
-                        f"{targets:,}",
-                    )
+    except psycopg2.Error as e:
+        logger.error(f"Error displaying part of speech statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error displaying Part of Speech statistics: {e.pgcode}[/]")
+        if conn and not conn.closed: conn.rollback() # Reset transaction state
+    except Exception as e:
+        logger.error(f"Non-DB error displaying part of speech statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error displaying Part of Speech statistics: Non-DB Err[/]")
 
-                console.print()
-                console.print(rel_table)
-        except Exception as e:
-            logger.error(f"Error displaying relationship statistics: {str(e)}")
-            console.print(f"[red]Error displaying relationship statistics: {str(e)}[/]")
 
-        # Source Statistics with more details
-        try:
-            # First check if source_info column exists
-            if "source_info" in available_columns:
-                # Get source statistics from source_info
+    # --- Relationship Statistics ---
+    try:
+        cur.execute(
+            """
+            SELECT 
+                r.relation_type,
+                COUNT(*) as count,
+                COUNT(DISTINCT r.from_word_id) as unique_sources,
+                COUNT(DISTINCT r.to_word_id) as unique_targets
+            FROM relations r
+            GROUP BY r.relation_type
+            ORDER BY count DESC
+        """
+        )
+
+        rel_results = cur.fetchall()
+        if rel_results:
+            rel_table = Table(
+                title="[bold blue]Relationship Types[/]", box=box_ROUNDED
+            )
+            rel_table.add_column("Type", style="yellow")
+            rel_table.add_column("Total", justify="right", style="green")
+            rel_table.add_column("Unique Sources", justify="right", style="green")
+            rel_table.add_column("Unique Targets", justify="right", style="green")
+
+            for rel_type, count, sources, targets in rel_results:
+                rel_table.add_row(
+                    rel_type or "Unknown",
+                    f"{count:,}",
+                    f"{sources:,}",
+                    f"{targets:,}",
+                )
+            console.print()
+            console.print(rel_table)
+        else:
+             console.print("\n[yellow]No Relationship statistics found.[/]")
+
+    except psycopg2.Error as e:
+        logger.error(f"Error displaying relationship statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error displaying Relationship statistics: {e.pgcode}[/]")
+        if conn and not conn.closed: conn.rollback() # Reset transaction state
+    except Exception as e:
+         logger.error(f"Non-DB error displaying relationship statistics: {str(e)}", exc_info=True)
+         console.print(f"[red]Error displaying Relationship statistics: Non-DB Err[/]")
+
+
+    # --- Source Statistics ---
+    try:
+        # Check which source columns exist
+        cur.execute(
+            """
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name IN ('words', 'definitions') AND table_schema = 'public'
+            AND column_name IN ('source_info', 'sources')
+        """
+        )
+        available_source_columns = {row[0] for row in cur.fetchall()}
+
+        # Source Stats from words.source_info (JSONB)
+        if "source_info" in available_source_columns:
+            try:
+                # Ensure the correct query with JSON extraction is used
                 cur.execute(
                     """
-                    SELECT 
-                        COALESCE(source_info, 'Unknown') as source_name,
+                    SELECT
+                        COALESCE((source_info -> 'files') ->> 0, 'Unknown') as source_name, -- Extract first element of 'files' array as text
                         COUNT(*) as word_count
                     FROM words
-                    GROUP BY source_name
-                    ORDER BY word_count DESC
+                    GROUP BY source_name -- Group by the extracted source name
+                    ORDER BY word_count DESC;
                 """
                 )
-
                 source_results = cur.fetchall()
                 if source_results:
                     source_table = Table(
-                        title="[bold blue]Source Distribution[/]", box=box_ROUNDED
+                        title="[bold blue]Source Distribution (from Words)[/]", box=box_ROUNDED
                     )
                     source_table.add_column("Source", style="yellow")
                     source_table.add_column("Words", justify="right", style="green")
 
                     for source, count in source_results:
-                        source_table.add_row(source or "Unknown", f"{count:,}")
+                        # The ->> operator extracts as text, should be clean
+                        display_source = source if source else 'Unknown'
+                        source_table.add_row(display_source, f"{count:,}")
 
                     console.print()
                     console.print(source_table)
+                else:
+                    console.print("\n[yellow]No source statistics found in 'words' table.[/]")
 
-            # Also check definitions sources
-            cur.execute(
+            except psycopg2.Error as e:
+                # Catch error specifically for this query
+                logger.error(f"Error querying words.source_info statistics: {str(e)}", exc_info=True)
+                console.print(f"[red]Error displaying Word Source statistics: {e.pgcode}[/]")
+                if conn and not conn.closed: conn.rollback() # Rollback this specific error
+            except Exception as e:
+                 logger.error(f"Non-DB error querying words.source_info statistics: {str(e)}", exc_info=True)
+                 console.print(f"[red]Error displaying Word Source statistics: Non-DB Err[/]")
+
+
+        # Source Stats from definitions.sources (TEXT)
+        if "sources" in available_source_columns:
+            try:
+                cur.execute(
+                    """
+                    SELECT 
+                        COALESCE(sources, 'Unknown') as source_name,
+                        COUNT(*) as def_count,
+                        COUNT(DISTINCT word_id) as word_count,
+                        COUNT(CASE WHEN examples IS NOT NULL AND examples != '' THEN 1 END) as example_count -- Fixed condition
+                    FROM definitions
+                    GROUP BY sources
+                    ORDER BY def_count DESC;
                 """
-                SELECT 
-                    COALESCE(sources, 'Unknown') as source_name,
-                    COUNT(*) as def_count,
-                    COUNT(DISTINCT word_id) as word_count,
-                    COUNT(CASE WHEN examples IS NOT NULL THEN 1 END) as example_count
-                FROM definitions
-                GROUP BY sources
-                ORDER BY def_count DESC
-            """
-            )
-
-            def_source_results = cur.fetchall()
-            if def_source_results:
-                def_source_table = Table(
-                    title="[bold blue]Definition Sources[/]", box=box_ROUNDED
-                )
-                def_source_table.add_column("Source", style="yellow")
-                def_source_table.add_column(
-                    "Definitions", justify="right", style="green"
-                )
-                def_source_table.add_column("Words", justify="right", style="green")
-                def_source_table.add_column(
-                    "With Examples", justify="right", style="green"
                 )
 
-                for source, def_count, word_count, example_count in def_source_results:
-                    def_source_table.add_row(
-                        source or "Unknown",
-                        f"{def_count:,}",
-                        f"{word_count:,}",
-                        f"{example_count:,}",
+                def_source_results = cur.fetchall()
+                if def_source_results:
+                    def_source_table = Table(
+                        title="[bold blue]Definition Sources[/]", box=box_ROUNDED
+                    )
+                    def_source_table.add_column("Source", style="yellow")
+                    def_source_table.add_column(
+                        "Definitions", justify="right", style="green"
+                    )
+                    def_source_table.add_column("Unique Words", justify="right", style="green")
+                    def_source_table.add_column(
+                        "With Examples", justify="right", style="green"
                     )
 
-                console.print()
-                console.print(def_source_table)
-        except Exception as e:
-            logger.error(f"Error displaying source statistics: {str(e)}")
-            console.print(f"[yellow]Could not generate source statistics: {str(e)}[/]")
+                    for source, def_count, word_count, example_count in def_source_results:
+                        def_source_table.add_row(
+                            source or "Unknown",
+                            f"{def_count:,}",
+                            f"{word_count:,}",
+                            f"{example_count:,}", # Show corrected count
+                        )
 
-        # Baybayin Statistics with details
-        try:
-            baybayin_table = Table(
-                title="[bold blue]Baybayin Statistics[/]", box=box_ROUNDED
+                    console.print()
+                    console.print(def_source_table)
+                else:
+                     console.print("\n[yellow]No source statistics found in 'definitions' table.[/]")
+            except psycopg2.Error as e:
+                 # Catch error specifically for this query
+                logger.error(f"Error querying definitions.sources statistics: {str(e)}", exc_info=True)
+                console.print(f"[red]Error displaying Definition Source statistics: {e.pgcode}[/]")
+                if conn and not conn.closed: conn.rollback() # Rollback this specific error
+            except Exception as e:
+                 logger.error(f"Non-DB error querying definitions.sources statistics: {str(e)}", exc_info=True)
+                 console.print(f"[red]Error displaying Definition Source statistics: Non-DB Err[/]")
+
+    except Exception as e:
+        # Catch errors in the outer source stats logic (e.g., checking columns)
+        logger.error(f"Error displaying Source statistics section: {str(e)}", exc_info=True)
+        console.print(f"[red]Error displaying Source statistics section: {str(e)}[/]")
+        if conn and not conn.closed:
+            try:
+                conn.rollback() # Rollback if outer section fails
+            except psycopg2.Error as rb_err:
+                 logger.warning(f"Rollback failed after Source stats error: {rb_err}")
+
+
+    # --- Baybayin Statistics ---
+    try:
+        # Re-fetch available columns in case transaction was rolled back
+        cur.execute(
+            """
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name = 'words' AND table_schema = 'public'
+        """
+        )
+        available_columns = {row[0] for row in cur.fetchall()}
+
+        baybayin_table = Table(
+            title="[bold blue]Baybayin Statistics[/]", box=box_ROUNDED
+        )
+        baybayin_table.add_column("Metric", style="yellow")
+        baybayin_table.add_column("Count", justify="right", style="green")
+        baybayin_table.add_column("Details", style="dim")
+
+        baybayin_queries = {}
+        if "baybayin_form" in available_columns:
+             baybayin_queries["Total Baybayin Forms"] = (
+                "SELECT COUNT(*) FROM words WHERE baybayin_form IS NOT NULL",
+                """SELECT COUNT(DISTINCT language_code) 
+                FROM words WHERE baybayin_form IS NOT NULL""",
             )
-            baybayin_table.add_column("Metric", style="yellow")
-            baybayin_table.add_column("Count", justify="right", style="green")
-            baybayin_table.add_column("Details", style="dim")
+        if "romanized_form" in available_columns:
+             baybayin_queries["With Romanization"] = (
+                "SELECT COUNT(*) FROM words WHERE romanized_form IS NOT NULL",
+                None,
+            )
+        if "has_baybayin" in available_columns and "baybayin_form" in available_columns:
+            baybayin_queries["Verified Forms (has_baybayin=T)"] = ( # Clarified metric
+                """SELECT COUNT(*) FROM words 
+                WHERE has_baybayin = TRUE 
+                AND baybayin_form IS NOT NULL""",
+                None,
+            )
 
-            baybayin_queries = {
-                "Total Baybayin Forms": (
-                    "SELECT COUNT(*) FROM words WHERE baybayin_form IS NOT NULL",
-                    """SELECT COUNT(DISTINCT language_code) 
-                    FROM words WHERE baybayin_form IS NOT NULL""",
-                ),
-                "With Romanization": (
-                    "SELECT COUNT(*) FROM words WHERE romanized_form IS NOT NULL",
-                    None,
-                ),
-                "Verified Forms": (
-                    """SELECT COUNT(*) FROM words 
-                    WHERE has_baybayin = TRUE 
-                    AND baybayin_form IS NOT NULL""",
-                    None,
-                ),
-            }
-
-            # Only add Badlit stats if the column exists
-            if "badlit_form" in available_columns:
-                baybayin_queries["With Badlit"] = (
-                    "SELECT COUNT(*) FROM words WHERE badlit_form IS NOT NULL",
-                    None,
-                )
-                baybayin_queries["Complete Forms"] = (
+        if "badlit_form" in available_columns:
+            baybayin_queries["With Badlit"] = (
+                "SELECT COUNT(*) FROM words WHERE badlit_form IS NOT NULL",
+                None,
+            )
+            if "baybayin_form" in available_columns and "romanized_form" in available_columns:
+                baybayin_queries["Complete Forms (Baybayin+Roman+Badlit)"] = ( # Clarified metric
                     """SELECT COUNT(*) FROM words 
                     WHERE baybayin_form IS NOT NULL 
                     AND romanized_form IS NOT NULL 
@@ -1492,7 +1748,10 @@ def display_dictionary_stats(cur):
                     None,
                 )
 
-            for label, (query, detail_query) in baybayin_queries.items():
+        if baybayin_queries: # Only proceed if there are queries to run
+            for label, queries in baybayin_queries.items():
+                query = queries[0]
+                detail_query = queries[1] if len(queries) > 1 else None
                 try:
                     cur.execute(query)
                     count = cur.fetchone()[0]
@@ -1500,134 +1759,181 @@ def display_dictionary_stats(cur):
                     if detail_query:
                         cur.execute(detail_query)
                         details = f"across {cur.fetchone()[0]} languages"
-                    baybayin_table.add_row(label, f"{count:,}", details)
-                except Exception as e:
+                    baybayin_table.add_row(label, f"{count:,}", details or "")
+                except psycopg2.Error as e:
                     logger.warning(f"Error getting Baybayin stats for {label}: {e}")
-                    baybayin_table.add_row(label, "N/A", f"Error: {str(e)}")
+                    baybayin_table.add_row(label, "[red]Error[/]", f"{e.pgcode}")
+                    # No rollback here, let the outer handler manage final state
+                except Exception as e:
+                     logger.warning(f"Non-DB error getting Baybayin stats for {label}: {e}")
+                     baybayin_table.add_row(label, "[red]Error[/]", "Non-DB Err")
 
             console.print()
             console.print(baybayin_table)
-        except Exception as e:
-            logger.error(f"Error displaying Baybayin statistics: {str(e)}")
-            console.print(
-                f"[yellow]Could not generate Baybayin statistics: {str(e)}[/]"
-            )
+        else:
+            console.print("\n[yellow]No Baybayin related columns found for statistics.[/]")
 
-        # Print timestamp
-        console.print(
-            f"\n[dim]Statistics generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}[/]"
+    except psycopg2.Error as e:
+        logger.error(f"Error displaying Baybayin statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error displaying Baybayin statistics: {e.pgcode}[/]")
+        # No rollback here, final state handled by decorator
+    except Exception as e:
+        logger.error(f"Non-DB error displaying Baybayin statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error displaying Baybayin statistics: Non-DB Err[/]")
+
+
+    # Print timestamp
+    console.print(
+        f"\n[dim]Statistics generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}[/]"
+    )
+
+# --- End of display_dictionary_stats function ---
+
+def normalize_source_name(source_str: Optional[str]) -> str:
+    """Standardizes source names using common patterns."""
+    if not source_str:
+        return "Unknown"
+    
+    s_lower = source_str.lower()
+    
+    # More specific checks first
+    if re.search(r'marayum', s_lower): return "Project Marayum"
+    if re.search(r'kaikki.*ceb', s_lower): return "kaikki.org (Cebuano)"
+    if re.search(r'kaikki', s_lower): return "kaikki.org (Tagalog)" # General kaikki after specific ceb
+    if re.search(r'kwf', s_lower): return "KWF Diksiyonaryo"
+    if re.search(r'tagalog\.com|root_words', s_lower): return "tagalog.com"
+    if re.search(r'diksiyonaryo\.ph|tagalog-words', s_lower): return "diksiyonaryo.ph"
+    if re.search(r'calderon', s_lower): return "Calderon Diccionario 1915"
+    if re.search(r'gay.?slang', s_lower): return "Philippine Slang/Gay Dictionary"
+    
+    # Fallback to the original string if no pattern matches
+    # Optionally, could add more patterns or cleanup here
+    return source_str # Return original if no match
+
+
+@with_transaction(commit=False) # Read-only operations
+def display_leaderboard(cur, console, args):
+    """Displays various contribution leaderboards, respecting limit and sort_by args."""
+    # Ensure cursor is DictCursor for name-based access
+    if not isinstance(cur.description, list) or not all(isinstance(col, psycopg2.extensions.Column) for col in cur.description):
+         # This check might be overly simplistic. A better check might be needed
+         # If not a DictCursor, raise an error or try to get one.
+         # For now, assume the caller provided the right cursor type.
+         logger.warning("display_leaderboard expected a DictCursor, but might have received a standard cursor.")
+
+    limit = args.limit
+    sort_by = args.sort_by.lower() if args.sort_by else 'count' # Default to count if not specified
+    
+    logger.info(f"Generating leaderboard with limit={limit}, sort_by='{sort_by}'")
+
+    console.print(
+        "\n[bold magenta underline]📊 Dictionary Contributors Leaderboard[/]\n"
+    )
+
+    # --- Overall Stats ---
+    # (This section remains unchanged as limit/sort don't apply)
+    overall_stats_table = Table(
+        title="[bold blue]Overall Statistics[/]",
+        box=box_ROUNDED,
+        show_header=False,
+    )
+    overall_stats_table.add_column("Statistic", style="cyan")
+    overall_stats_table.add_column("Value", justify="right", style="green")
+    try:
+        cur.execute("SELECT COUNT(*) FROM words")
+        total_words = cur.fetchone()[0]
+        overall_stats_table.add_row("Total Words", f"{total_words:,}")
+        
+        cur.execute("SELECT COUNT(*) FROM definitions")
+        total_definitions = cur.fetchone()[0]
+        overall_stats_table.add_row(
+            "Total Definitions", f"{total_definitions:,}"
         )
 
+        cur.execute("SELECT COUNT(*) FROM relations")
+        total_relations = cur.fetchone()[0]
+        overall_stats_table.add_row("Total Relations", f"{total_relations:,}")
+
+        cur.execute("SELECT COUNT(*) FROM etymologies")
+        total_etymologies = cur.fetchone()[0]
+        overall_stats_table.add_row(
+            "Total Etymologies", f"{total_etymologies:,}"
+        )
+
+        cur.execute(
+            "SELECT COUNT(DISTINCT standardized_pos_id) FROM definitions WHERE standardized_pos_id IS NOT NULL"
+        )
+        total_pos = cur.fetchone()[0]
+        overall_stats_table.add_row("Unique Parts of Speech", str(total_pos))
+
+        cur.execute(
+            "SELECT COUNT(*) FROM words WHERE has_baybayin = TRUE OR baybayin_form IS NOT NULL"
+        )
+        words_with_baybayin = cur.fetchone()[0]
+        overall_stats_table.add_row(
+            "Words w/ Baybayin", f"{words_with_baybayin:,}"
+        )
+        console.print(overall_stats_table)
+        console.print()
     except Exception as e:
-        logger.error(f"Error displaying dictionary stats: {str(e)}")
-        console.print(f"[red]Error: {str(e)}[/]")
+        logger.error(f"Error generating overall statistics: {str(e)}", exc_info=True)
+        console.print(
+            f"[yellow]Could not generate overall statistics: {str(e)}[/]"
+        )
+        if cur.connection and not cur.connection.closed: cur.connection.rollback() # Ensure rollback if error occurs
 
-
-def display_leaderboard(cur, console):
-    """Displays various contribution leaderboards."""
-    # Get a fresh connection and cursor instead of using the one passed in
-    # This ensures we start with a clean transaction state
-    conn = None
+    # --- Definition Contributors ---
     try:
-        from contextlib import closing
-        import psycopg2
-        from psycopg2.extras import DictCursor
+        valid_def_sorts = {
+            'definitions': 'def_count', 'defs': 'def_count', 'count': 'def_count', 
+            'words': 'unique_words', 'examples': 'with_examples', 'notes': 'with_notes', 
+            'pos': 'pos_count', 'example_coverage': 'example_percentage', 
+            'notes_coverage': 'notes_percentage'
+        }
+        def_order_by_col = valid_def_sorts.get(sort_by, 'def_count')
+        logger.info(f"Sorting Definition Contributors by: {def_order_by_col}")
 
-        # Get a fresh connection from the pool
-        conn = get_connection()
-
-        # Use a context manager to ensure proper closing
-        with closing(conn.cursor(cursor_factory=DictCursor)) as fresh_cur:
-            console.print(
-                "\n[bold magenta underline]📊 Dictionary Contributors Leaderboard[/]\n"
-            )
-
-            overall_stats_table = Table(
-                title="[bold blue]Overall Statistics[/]",
-                box=box_ROUNDED,
-                show_header=False,
-            )
-            overall_stats_table.add_column("Statistic", style="cyan")
-            overall_stats_table.add_column("Value", justify="right", style="green")
-
-            try:
-                # Overall stats
-                fresh_cur.execute("SELECT COUNT(*) FROM words")
-                total_words = fresh_cur.fetchone()[0]
-                overall_stats_table.add_row("Total Words", f"{total_words:,}")
-
-                fresh_cur.execute("SELECT COUNT(*) FROM definitions")
-                total_definitions = fresh_cur.fetchone()[0]
-                overall_stats_table.add_row(
-                    "Total Definitions", f"{total_definitions:,}"
-                )
-
-                fresh_cur.execute("SELECT COUNT(*) FROM relations")
-                total_relations = fresh_cur.fetchone()[0]
-                overall_stats_table.add_row("Total Relations", f"{total_relations:,}")
-
-                fresh_cur.execute("SELECT COUNT(*) FROM etymologies")
-                total_etymologies = fresh_cur.fetchone()[0]
-                overall_stats_table.add_row(
-                    "Total Etymologies", f"{total_etymologies:,}"
-                )
-
-                fresh_cur.execute(
-                    "SELECT COUNT(DISTINCT standardized_pos_id) FROM definitions WHERE standardized_pos_id IS NOT NULL"
-                )
-                total_pos = fresh_cur.fetchone()[0]
-                overall_stats_table.add_row("Unique Parts of Speech", str(total_pos))
-
-                fresh_cur.execute(
-                    "SELECT COUNT(*) FROM words WHERE has_baybayin = TRUE OR baybayin_form IS NOT NULL"
-                )
-                words_with_baybayin = fresh_cur.fetchone()[0]
-                overall_stats_table.add_row(
-                    "Words w/ Baybayin", f"{words_with_baybayin:,}"
-                )
-
-                console.print(overall_stats_table)
-                console.print()
-
-            except Exception as e:
-                logger.error(f"Error generating overall statistics: {str(e)}")
-                console.print(
-                    f"[yellow]Could not generate overall statistics: {str(e)}[/]"
-                )
-                # Roll back to clean state
-                conn.rollback()
-
-            # Definition Contributors
-            try:
-                fresh_cur.execute(
-                    """
-                    WITH source_stats AS (
+        # Use Python triple-quoted f-string for the SQL query
+        def_query = f'''
+            WITH source_mapping AS (
                         SELECT
+                    id,
                             CASE
-                                WHEN sources ILIKE '%project marayum%' THEN 'Project Marayum'
-                                WHEN sources ILIKE '%marayum%' THEN 'Project Marayum'
-                                WHEN sources ILIKE '%kaikki-ceb%' THEN 'kaikki.org (Cebuano)'
-                                WHEN sources ILIKE '%kaikki.jsonl%' THEN 'kaikki.org (Tagalog)'
-                                WHEN sources ILIKE '%kaikki%' AND sources ILIKE '%ceb%' THEN 'kaikki.org (Cebuano)'
-                                WHEN sources ILIKE '%kaikki%' THEN 'kaikki.org (Tagalog)'
-                                WHEN sources ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                                WHEN sources ILIKE '%kwf_dictionary%' THEN 'KWF Diksiyonaryo'
-                                WHEN sources ILIKE '%tagalog.com%' THEN 'tagalog.com'
-                                WHEN sources ILIKE '%root_words%' THEN 'tagalog.com'
-                                WHEN sources ILIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
-                                WHEN sources ILIKE '%tagalog-words%' THEN 'diksiyonaryo.ph'
+                                WHEN sources ILIKE '%%project marayum%%' THEN 'Project Marayum'
+                                WHEN sources ILIKE '%%marayum%%' THEN 'Project Marayum'
+                                WHEN sources ILIKE '%%kaikki-ceb%%' THEN 'kaikki.org (Cebuano)'
+                                WHEN sources ILIKE '%%kaikki.jsonl%%' THEN 'kaikki.org (Tagalog)'
+                                WHEN sources ILIKE '%%kaikki%%' AND sources ILIKE '%%ceb%%' THEN 'kaikki.org (Cebuano)'
+                                WHEN sources ILIKE '%%kaikki%%' THEN 'kaikki.org (Tagalog)'
+                                WHEN sources ILIKE '%%kwf%%' THEN 'KWF Diksiyonaryo'
+                                WHEN sources ILIKE '%%kwf_dictionary%%' THEN 'KWF Diksiyonaryo'
+                                WHEN sources ILIKE '%%tagalog.com%%' THEN 'tagalog.com'
+                                WHEN sources ILIKE '%%root_words%%' THEN 'tagalog.com'
+                                WHEN sources ILIKE '%%diksiyonaryo.ph%%' THEN 'diksiyonaryo.ph'
+                                WHEN sources ILIKE '%%tagalog-words%%' THEN 'diksiyonaryo.ph'
+                        WHEN sources ILIKE '%%calderon%%' THEN 'Calderon Diccionario 1915'
+                        WHEN sources ILIKE '%%gay-slang%%' OR sources ILIKE '%%gay slang%%' THEN 'Philippine Slang/Gay Dictionary'
                                 ELSE COALESCE(sources, 'Unknown')
-                            END AS source_name,
+                    END AS normalized_source_name,
+                    word_id,
+                    standardized_pos_id,
+                    (examples IS NOT NULL AND examples != \'\') as has_example,
+                    (usage_notes IS NOT NULL AND usage_notes != \'\') as has_notes
+                FROM definitions
+            ),
+            source_stats AS (
+                SELECT
+                    normalized_source_name,
                             COUNT(*) AS def_count,
                             COUNT(DISTINCT word_id) AS unique_words,
-                            COUNT(CASE WHEN examples IS NOT NULL AND examples != '' THEN 1 END) AS with_examples,
+                    COUNT(CASE WHEN has_example THEN 1 END) AS with_examples,
                             COUNT(DISTINCT standardized_pos_id) AS pos_count,
-                            COUNT(CASE WHEN usage_notes IS NOT NULL AND usage_notes != '' THEN 1 END) AS with_notes
-                        FROM definitions
-                        GROUP BY source_name
+                    COUNT(CASE WHEN has_notes THEN 1 END) AS with_notes
+                FROM source_mapping
+                GROUP BY normalized_source_name
                     )
                     SELECT
-                        source_name,
+                normalized_source_name AS source_name, 
                         def_count,
                         unique_words,
                         with_examples,
@@ -1636,244 +1942,249 @@ def display_leaderboard(cur, console):
                         ROUND(100.0 * with_examples / NULLIF(def_count, 0), 1) as example_percentage,
                         ROUND(100.0 * with_notes / NULLIF(def_count, 0), 1) as notes_percentage
                     FROM source_stats
-                    ORDER BY def_count DESC
-                    """
+            ORDER BY {def_order_by_col} DESC NULLS LAST
+            LIMIT %s
+            '''
+        
+        cur.execute(def_query, (limit,))
+        def_results = cur.fetchall()
+        
+        if def_results:
+            def_table = Table(
+                title=f"[bold blue]Top {limit} Definition Contributors (Sorted by {sort_by})[/]", 
+                box=box_ROUNDED
+            )
+            def_table.add_column("Source", style="yellow")
+            def_table.add_column("Definitions", justify="right", style="green")
+            def_table.add_column("Words", justify="right", style="green")
+            def_table.add_column("Examples", justify="right", style="cyan")
+            def_table.add_column("POS Types", justify="right", style="cyan")
+            def_table.add_column("Notes", justify="right", style="cyan")
+            def_table.add_column("Coverage (%)", style="dim") # Combined coverage
+
+            for row in def_results:
+                ex_pct = row.get('example_percentage', 0) or 0.0
+                notes_pct = row.get('notes_percentage', 0) or 0.0
+                coverage = f"Ex: {ex_pct:.1f}, Notes: {notes_pct:.1f}"
+
+                def_table.add_row(
+                    row.get('source_name', 'Unknown'),
+                    f"{row.get('def_count', 0):,}",
+                    f"{row.get('unique_words', 0):,}",
+                    f"{row.get('with_examples', 0):,}",
+                    str(row.get('pos_count', 0)),
+                    f"{row.get('with_notes', 0):,}",
+                    coverage,
                 )
+            console.print(def_table)
+            console.print()
+        else:
+             console.print("[yellow]No definition contributor data found.[/]")
 
-                def_results = fresh_cur.fetchall()
-                if def_results:
-                    def_table = Table(
-                        title="[bold blue]Definition Contributors[/]", box=box_ROUNDED
-                    )
-                    def_table.add_column("Source", style="yellow")
-                    def_table.add_column("Definitions", justify="right", style="green")
-                    def_table.add_column("Words", justify="right", style="green")
-                    def_table.add_column("Examples", justify="right", style="cyan")
-                    def_table.add_column("POS Types", justify="right", style="cyan")
-                    def_table.add_column("Notes", justify="right", style="cyan")
-                    def_table.add_column("Coverage", style="dim")
+    except psycopg2.Error as db_err:
+        logger.error(f"Error generating definition statistics: {str(db_err)}", exc_info=True)
+        console.print(
+            f"[red]Error generating definition statistics: {db_err.pgcode}[/]"
+        )
+        if cur.connection and not cur.connection.closed: cur.connection.rollback() # Ensure rollback
+    except Exception as e:
+        logger.error(f"Non-DB error generating definition statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error: {str(e)}[/]")
 
-                    for row in def_results:
-                        source = (
-                            row["source_name"] if "source_name" in row else "Unknown"
-                        )
-                        defs = row["def_count"] if "def_count" in row else 0
-                        words = row["unique_words"] if "unique_words" in row else 0
-                        examples = row["with_examples"] if "with_examples" in row else 0
-                        pos = row["pos_count"] if "pos_count" in row else 0
-                        notes = row["with_notes"] if "with_notes" in row else 0
-                        ex_pct = (
-                            row["example_percentage"]
-                            if "example_percentage" in row
-                            else 0.0
-                        )
-                        notes_pct = (
-                            row["notes_percentage"]
-                            if "notes_percentage" in row
-                            else 0.0
-                        )
 
-                        coverage = (
-                            f"Examples: {ex_pct or 0.0}%, Notes: {notes_pct or 0.0}%"
-                        )
-                        def_table.add_row(
-                            source,
-                            f"{defs:,}",
-                            f"{words:,}",
-                            f"{examples:,}",
-                            str(pos),
-                            f"{notes:,}",
-                            coverage,
-                        )
+    # --- Etymology Contributors ---
+    try:
+        valid_etym_sorts = {
+            'etymologies': 'etym_count', 'count': 'etym_count', 'words': 'unique_words',
+            'components': 'with_components', 'langs': 'with_lang_codes',
+            'comp_coverage': 'comp_percentage', 'lang_coverage': 'lang_percentage'
+        }
+        etym_order_by_col = valid_etym_sorts.get(sort_by, 'etym_count')
+        logger.info(f"Sorting Etymology Contributors by: {etym_order_by_col}")
 
-                    console.print(def_table)
-                    console.print()
-            except Exception as e:
-                logger.error(f"Error generating definition statistics: {str(e)}")
-                console.print(
-                    f"[red]Error:[/][yellow] Could not generate definition statistics: {str(e)}[/]"
-                )
-                # Roll back to clean state
-                conn.rollback()
-
-            # Etymology Contributors
-            try:
-                fresh_cur.execute(
-                    """
-                    WITH etym_stats AS (
+        etym_query = f'''
+            WITH source_mapping AS (
                         SELECT
                             CASE
-                                WHEN sources ILIKE '%project marayum%' THEN 'Project Marayum'
-                                WHEN sources ILIKE '%marayum%' THEN 'Project Marayum'
-                                WHEN sources ILIKE '%kaikki-ceb%' THEN 'kaikki.org (Cebuano)'
-                                WHEN sources ILIKE '%kaikki.jsonl%' THEN 'kaikki.org (Tagalog)'
-                                WHEN sources ILIKE '%kaikki%' AND sources ILIKE '%ceb%' THEN 'kaikki.org (Cebuano)'
-                                WHEN sources ILIKE '%kaikki%' THEN 'kaikki.org (Tagalog)'
-                                WHEN sources ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                                WHEN sources ILIKE '%kwf_dictionary%' THEN 'KWF Diksiyonaryo'
-                                WHEN sources ILIKE '%tagalog.com%' THEN 'tagalog.com'
-                                WHEN sources ILIKE '%root_words%' THEN 'tagalog.com'
-                                WHEN sources ILIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
-                                WHEN sources ILIKE '%tagalog-words%' THEN 'diksiyonaryo.ph'
+                                WHEN sources ILIKE '%%project marayum%%' THEN 'Project Marayum'
+                                WHEN sources ILIKE '%%marayum%%' THEN 'Project Marayum'
+                                WHEN sources ILIKE '%%kaikki-ceb%%' THEN 'kaikki.org (Cebuano)'
+                                WHEN sources ILIKE '%%kaikki.jsonl%%' THEN 'kaikki.org (Tagalog)'
+                                WHEN sources ILIKE '%%kaikki%%' AND sources ILIKE '%%ceb%%' THEN 'kaikki.org (Cebuano)'
+                                WHEN sources ILIKE '%%kaikki%%' THEN 'kaikki.org (Tagalog)'
+                                WHEN sources ILIKE '%%kwf%%' THEN 'KWF Diksiyonaryo'
+                                WHEN sources ILIKE '%%kwf_dictionary%%' THEN 'KWF Diksiyonaryo'
+                                WHEN sources ILIKE '%%tagalog.com%%' THEN 'tagalog.com'
+                                WHEN sources ILIKE '%%root_words%%' THEN 'tagalog.com'
+                                WHEN sources ILIKE '%%diksiyonaryo.ph%%' THEN 'diksiyonaryo.ph'
+                                WHEN sources ILIKE '%%tagalog-words%%' THEN 'diksiyonaryo.ph'
+                        WHEN sources ILIKE '%%calderon%%' THEN 'Calderon Diccionario 1915'
+                        WHEN sources ILIKE '%%gay-slang%%' OR sources ILIKE '%%gay slang%%' THEN 'Philippine Slang/Gay Dictionary'
                                 ELSE COALESCE(sources, 'Unknown')
-                            END AS source_name,
+                    END AS normalized_source_name,
+                    word_id,
+                    CASE 
+                        WHEN normalized_components LIKE '[%%' AND normalized_components LIKE '%%]' THEN -- Check if it looks like an array
+                            (jsonb_typeof(normalized_components::jsonb) = 'array' AND jsonb_array_length(normalized_components::jsonb) > 0)
+                        ELSE FALSE
+                    END as has_components,
+                    CASE
+                        WHEN language_codes LIKE '[%%' AND language_codes LIKE '%%]' THEN -- Check if it looks like an array
+                            (jsonb_typeof(language_codes::jsonb) = 'array' AND jsonb_array_length(language_codes::jsonb) > 0)
+                        ELSE FALSE
+                    END as has_lang_codes
+                FROM etymologies
+            ),
+            etym_stats AS (
+                SELECT
+                    normalized_source_name,
                             COUNT(*) AS etym_count,
                             COUNT(DISTINCT word_id) AS unique_words,
-                            COUNT(CASE WHEN normalized_components IS NOT NULL THEN 1 END) AS with_components,
-                            COUNT(CASE WHEN language_codes IS NOT NULL THEN 1 END) AS with_lang_codes
-                        FROM etymologies
-                        GROUP BY source_name
-                    )
-                    SELECT *,
+                    COUNT(CASE WHEN has_components THEN 1 END) AS with_components,
+                    COUNT(CASE WHEN has_lang_codes THEN 1 END) AS with_lang_codes
+                FROM source_mapping
+                GROUP BY normalized_source_name
+            )
+            SELECT 
+                normalized_source_name AS source_name, 
+                etym_count,
+                unique_words,
+                with_components,
+                with_lang_codes,
                         ROUND(100.0 * with_components / NULLIF(etym_count, 0), 1) as comp_percentage,
                         ROUND(100.0 * with_lang_codes / NULLIF(etym_count, 0), 1) as lang_percentage
                     FROM etym_stats
-                    ORDER BY etym_count DESC
-                    """
+            ORDER BY {etym_order_by_col} DESC NULLS LAST
+            LIMIT %s
+            '''
+        
+        cur.execute(etym_query, (limit,))
+        etym_results = cur.fetchall()
+
+        if etym_results:
+            etym_table = Table(
+                title=f"[bold blue]Top {limit} Etymology Contributors (Sorted by {sort_by})[/]", 
+                box=box_ROUNDED
+            )
+            etym_table.add_column("Source", style="yellow")
+            etym_table.add_column("Etymologies", justify="right", style="green")
+            etym_table.add_column("Words", justify="right", style="green")
+            etym_table.add_column("Components", justify="right", style="cyan")
+            etym_table.add_column("Lang Codes", justify="right", style="cyan")
+            etym_table.add_column("Coverage (%)", style="dim") # Combined coverage
+
+            for row in etym_results:
+                 comp_pct = row.get('comp_percentage', 0) or 0.0
+                 lang_pct = row.get('lang_percentage', 0) or 0.0
+                 coverage = f"Comp: {comp_pct:.1f}, Lang: {lang_pct:.1f}"
+
+                 etym_table.add_row(
+                    row.get('source_name', 'Unknown'),
+                    f"{row.get('etym_count', 0):,}",
+                    f"{row.get('unique_words', 0):,}",
+                    f"{row.get('with_components', 0):,}",
+                    f"{row.get('with_lang_codes', 0):,}",
+                    coverage,
                 )
+            console.print(etym_table)
+            console.print()
+        else:
+             console.print("[yellow]No etymology contributor data found.[/]")
+             
+    except psycopg2.Error as db_err:
+        logger.error(f"Error generating etymology statistics: {str(db_err)}", exc_info=True)
+        console.print(
+            f"[red]Error generating etymology statistics: {db_err.pgcode}[/]"
+        )
+        if cur.connection and not cur.connection.closed: cur.connection.rollback() # Ensure rollback
+    except Exception as e:
+        logger.error(f"Non-DB error generating etymology statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error: {str(e)}[/]")
 
-                etym_results = fresh_cur.fetchall()
-                if etym_results:
-                    etym_table = Table(
-                        title="[bold blue]Etymology Contributors[/]", box=box_ROUNDED
-                    )
-                    etym_table.add_column("Source", style="yellow")
-                    etym_table.add_column("Etymologies", justify="right", style="green")
-                    etym_table.add_column("Words", justify="right", style="green")
-                    etym_table.add_column("Components", justify="right", style="cyan")
-                    etym_table.add_column("Lang Codes", justify="right", style="cyan")
-                    etym_table.add_column("Coverage", style="dim")
 
-                    for row in etym_results:
-                        source = (
-                            row["source_name"] if "source_name" in row else "Unknown"
-                        )
-                        count = row["etym_count"] if "etym_count" in row else 0
-                        words = row["unique_words"] if "unique_words" in row else 0
-                        comps = (
-                            row["with_components"] if "with_components" in row else 0
-                        )
-                        langs = (
-                            row["with_lang_codes"] if "with_lang_codes" in row else 0
-                        )
-                        comp_pct = (
-                            row["comp_percentage"] if "comp_percentage" in row else 0.0
-                        )
-                        lang_pct = (
-                            row["lang_percentage"] if "lang_percentage" in row else 0.0
-                        )
-
-                        coverage = f"Components: {comp_pct or 0.0}%, Languages: {lang_pct or 0.0}%"
-                        etym_table.add_row(
-                            source,
-                            f"{count:,}",
-                            f"{words:,}",
-                            f"{comps:,}",
-                            f"{langs:,}",
-                            coverage,
-                        )
-
-                    console.print(etym_table)
-                    console.print()
-            except Exception as e:
-                logger.error(f"Error generating etymology statistics: {str(e)}")
-                console.print(
-                    f"[red]Error:[/][yellow] Could not generate etymology statistics: {str(e)}[/]"
-                )
-                # Roll back to clean state
-                conn.rollback()
-
-            # Relationship Contributors
-            try:
-                fresh_cur.execute(
-                    """
-                    WITH rel_stats AS (
+    # --- Relationship Contributors ---
+    # (Limit and sort are less applicable here without more specific metrics)
+    try:
+        # Use Python triple-quoted f-string for the SQL query
+        rel_query = f'''
+            WITH source_mapping AS (
                         SELECT
+                    relation_type,
                             CASE
-                                WHEN sources ILIKE '%project marayum%' THEN 'Project Marayum'
-                                WHEN sources ILIKE '%marayum%' THEN 'Project Marayum'
-                                WHEN sources ILIKE '%kaikki-ceb%' THEN 'kaikki.org (Cebuano)'
-                                WHEN sources ILIKE '%kaikki.jsonl%' THEN 'kaikki.org (Tagalog)'
-                                WHEN sources ILIKE '%kaikki%' AND sources ILIKE '%ceb%' THEN 'kaikki.org (Cebuano)'
-                                WHEN sources ILIKE '%kaikki%' THEN 'kaikki.org (Tagalog)'
-                                WHEN sources ILIKE '%kwf%' THEN 'KWF Diksiyonaryo'
-                                WHEN sources ILIKE '%kwf_dictionary%' THEN 'KWF Diksiyonaryo'
-                                WHEN sources ILIKE '%tagalog.com%' THEN 'tagalog.com'
-                                WHEN sources ILIKE '%root_words%' THEN 'tagalog.com'
-                                WHEN sources ILIKE '%diksiyonaryo.ph%' THEN 'diksiyonaryo.ph'
-                                WHEN sources ILIKE '%tagalog-words%' THEN 'diksiyonaryo.ph'
+                                WHEN sources ILIKE '%%project marayum%%' THEN 'Project Marayum'
+                                WHEN sources ILIKE '%%marayum%%' THEN 'Project Marayum'
+                                WHEN sources ILIKE '%%kaikki-ceb%%' THEN 'kaikki.org (Cebuano)'
+                                WHEN sources ILIKE '%%kaikki.jsonl%%' THEN 'kaikki.org (Tagalog)'
+                                WHEN sources ILIKE '%%kaikki%%' AND sources ILIKE '%%ceb%%' THEN 'kaikki.org (Cebuano)'
+                                WHEN sources ILIKE '%%kaikki%%' THEN 'kaikki.org (Tagalog)'
+                                WHEN sources ILIKE '%%kwf%%' THEN 'KWF Diksiyonaryo'
+                                WHEN sources ILIKE '%%kwf_dictionary%%' THEN 'KWF Diksiyonaryo'
+                                WHEN sources ILIKE '%%tagalog.com%%' THEN 'tagalog.com'
+                                WHEN sources ILIKE '%%root_words%%' THEN 'tagalog.com'
+                                WHEN sources ILIKE '%%diksiyonaryo.ph%%' THEN 'diksiyonaryo.ph'
+                                WHEN sources ILIKE '%%tagalog-words%%' THEN 'diksiyonaryo.ph'
+                        WHEN sources ILIKE '%%calderon%%' THEN 'Calderon Diccionario 1915'
+                        WHEN sources ILIKE '%%gay-slang%%' OR sources ILIKE '%%gay slang%%' THEN 'Philippine Slang/Gay Dictionary'
                                 ELSE COALESCE(sources, 'Unknown')
-                            END AS source_name,
+                    END AS normalized_source_name
+                FROM relations
+            )
+            SELECT 
+                normalized_source_name as source_name, 
                             relation_type,
                             COUNT(*) AS rel_count
-                        FROM relations
+            FROM source_mapping
                         GROUP BY source_name, relation_type
-                    )
-                    SELECT source_name, relation_type, rel_count
-                    FROM rel_stats
                     ORDER BY source_name, rel_count DESC
-                    """
-                )
+            ''' # No LIMIT here by default, could add if needed later
+        
+        cur.execute(rel_query)
+        rel_results = cur.fetchall()
 
-                rel_results = fresh_cur.fetchall()
-                if rel_results:
-                    rel_table = Table(
-                        title="[bold blue]Relationship Contributors[/]", box=box_ROUNDED
-                    )
-                    rel_table.add_column("Source", style="yellow")
-                    rel_table.add_column("Relation Type", style="magenta")
-                    rel_table.add_column("Count", justify="right", style="green")
-
-                    current_source = None
-                    for row in rel_results:
-                        source = (
-                            row["source_name"] if "source_name" in row else "Unknown"
-                        )
-                        rel_type = (
-                            row["relation_type"]
-                            if "relation_type" in row
-                            else "Unknown"
-                        )
-                        count = row["rel_count"] if "rel_count" in row else 0
-
-                        if source != current_source:
-                            if current_source is not None:
-                                rel_table.add_row("---", "---", "---")  # Separator
-                            rel_table.add_row(source, rel_type, f"{count:,}")
-                            current_source = source
-                        else:
-                            rel_table.add_row(
-                                "", rel_type, f"{count:,}"
-                            )  # Indent or leave source blank
-
-                    console.print(rel_table)
-                    console.print()
-            except Exception as e:
-                logger.error(
-                    f"Error generating relationship statistics: {str(e)}", exc_info=True
-                )
-                console.print(
-                    f"[red]Error:[/][yellow] Could not generate relationship statistics: {str(e)}[/]"
-                )
-                # Roll back to clean state
-                conn.rollback()
-
-            # Commit the transaction since we're done
-            conn.commit()
-
-            console.print(
-                f"Leaderboard generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        if rel_results:
+            rel_table = Table(
+                title="[bold blue]Relationship Contributors (by Source & Type)[/]", 
+                box=box_ROUNDED
             )
-    except Exception as outer_e:
-        # Handle any unexpected errors
-        logger.error(f"Unexpected error in display_leaderboard: {str(outer_e)}")
-        console.print(f"[red]Error:[/] {str(outer_e)}")
-        if conn and not conn.closed:
-            conn.rollback()
-    finally:
-        # Always close the connection when done
-        if conn and not conn.closed:
-            conn.close()
+            rel_table.add_column("Source", style="yellow")
+            rel_table.add_column("Relation Type", style="magenta")
+            rel_table.add_column("Count", justify="right", style="green")
+
+            current_source = None
+            for row in rel_results:
+                source = row.get('source_name', 'Unknown')
+                rel_type = row.get('relation_type', 'Unknown')
+                count = row.get('rel_count', 0)
+
+                # Group by source visually
+                if source != current_source:
+                    if current_source is not None: 
+                         rel_table.add_row("","","") # Simple empty row separator
+                    rel_table.add_row(source, rel_type, f"{count:,}")
+                    current_source = source
+                else:
+                    rel_table.add_row("", rel_type, f"{count:,}") # Blank source for subsequent rows
+            console.print(rel_table)
+            console.print()
+        else:
+            console.print("[yellow]No relationship contributor data found.[/]")
+
+    except psycopg2.Error as db_err:
+        logger.error(f"Error generating relationship statistics: {str(db_err)}", exc_info=True)
+        console.print(
+            f"[red]Error generating relationship statistics: {db_err.pgcode}[/]"
+        )
+        if cur.connection and not cur.connection.closed: cur.connection.rollback()
+    except Exception as e:
+        logger.error(f"Non-DB error generating relationship statistics: {str(e)}", exc_info=True)
+        console.print(f"[red]Error: {str(e)}[/]")
+        
+
+    console.print(
+        f"[dim]Leaderboard generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}[/]"
+    )
+
+# --- End of display_leaderboard function ---
 
 
 @with_transaction(commit=True)
@@ -2166,130 +2477,273 @@ def explore_dictionary():
 
 
 @with_transaction(commit=False)
-def lookup_by_id(cur, word_id: int, console: Console):
-    """Look up a word by its ID and display its information."""
+def lookup_by_id(cur, word_id: int, console: Console, format: str = 'rich', debug: bool = False):
+    """Look up a word by its ID and display its information in the specified format."""
+    if debug:
+        logger.info(f"Looking up details for Word ID: {word_id}, Format: {format}")
+    
+    word_data = {}
     try:
+        # 1. Fetch Core Word Info
         cur.execute(
             """
-            SELECT lemma, language_code, has_baybayin, baybayin_form, romanized_form
-            FROM words
-            WHERE id = %s
-        """,
-            (word_id,),
+            SELECT w.*, r.lemma as root_lemma
+            FROM words w
+            LEFT JOIN words r ON w.root_word_id = r.id
+            WHERE w.id = %s
+        """, (word_id,)
         )
+        word_info = cur.fetchone()
 
-        result = cur.fetchone()
-
-        if not result:
-            console.print(f"[yellow]Word with ID {word_id} not found.[/]")
+        if not word_info:
+            message = f"Word with ID {word_id} not found."
+            if format == 'rich':
+                console.print(f"[yellow]{message}[/]")
+            elif format == 'text':
+                print(message)
+            # JSON format will just output empty data
             return
+        
+        word_data = dict(word_info) # Convert Row object to dict
+        # Clean up potentially large/binary fields for JSON/text
+        word_data.pop('search_vector', None) 
+        # Convert datetime/jsonb for JSON serialization if needed (handled by json.dumps default)
 
-        lemma, language_code, has_baybayin, baybayin_form, romanized_form = result
-
-        console.print(f"\n[bold]Word Information - ID: {word_id}[/]")
-        console.print(f"Lemma: {lemma}")
-        console.print(f"Language: {'Tagalog' if language_code == 'tl' else 'Cebuano'}")
-
-        if has_baybayin and baybayin_form:
-            console.print(f"Baybayin Form: {baybayin_form}")
-            if romanized_form:
-                console.print(f"Romanized Form: {romanized_form}")
-
+        # 2. Fetch Definitions
         cur.execute(
             """
-            SELECT p.name_tl as pos, d.definition_text
+            SELECT d.*, p.name_tl as pos_tl, p.name_en as pos_en
             FROM definitions d
             LEFT JOIN parts_of_speech p ON d.standardized_pos_id = p.id
             WHERE d.word_id = %s
-            ORDER BY p.name_tl, d.created_at
-        """,
-            (word_id,),
+            ORDER BY p.id NULLS LAST, d.created_at
+        """, (word_id,)
         )
+        definitions = [dict(row) for row in cur.fetchall()]
+        word_data['definitions'] = definitions
 
-        definitions = cur.fetchall()
-
-        if definitions:
-            console.print("\n[bold]Definitions:[/]")
-            current_pos = None
-            for pos, definition in definitions:
-                if pos != current_pos:
-                    console.print(f"\n[cyan]{pos or 'Uncategorized'}[/]")
-                    current_pos = pos
-                console.print(f"• {definition}")
-
+        # 3. Fetch Relations (Both directions)
         cur.execute(
             """
-            SELECT r.relation_type, w.lemma
-            FROM relations r
-            JOIN words w ON r.to_word_id = w.id
+            SELECT r.relation_type, r.to_word_id as related_word_id, w.lemma as related_lemma, 'outgoing' as direction
+            FROM relations r JOIN words w ON r.to_word_id = w.id
             WHERE r.from_word_id = %s
-            ORDER BY r.relation_type, w.lemma
-        """,
-            (word_id,),
+            UNION ALL
+            SELECT r.relation_type, r.from_word_id as related_word_id, w.lemma as related_lemma, 'incoming' as direction
+            FROM relations r JOIN words w ON r.from_word_id = w.id
+            WHERE r.to_word_id = %s
+            ORDER BY relation_type, direction, related_lemma
+        """, (word_id, word_id)
         )
+        relations = [dict(row) for row in cur.fetchall()]
+        word_data['relations'] = relations
 
-        relations = cur.fetchall()
+        # 4. Fetch Etymologies
+        cur.execute(
+            "SELECT * FROM etymologies WHERE word_id = %s ORDER BY created_at", (word_id,)
+        )
+        etymologies = [dict(row) for row in cur.fetchall()]
+        word_data['etymologies'] = etymologies
+        
+        # 5. Fetch Pronunciations
+        cur.execute(
+            "SELECT * FROM pronunciations WHERE word_id = %s ORDER BY created_at", (word_id,)
+        )
+        pronunciations = [dict(row) for row in cur.fetchall()]
+        word_data['pronunciations'] = pronunciations
 
-        if relations:
-            console.print("\n[bold]Related Words:[/]")
-            current_type = None
-            for rel_type, rel_word in relations:
-                if rel_type != current_type:
-                    console.print(f"\n[magenta]{rel_type.title()}[/]")
-                    current_type = rel_type
-                console.print(f"• {rel_word}")
+        # 6. Fetch Word Forms
+        cur.execute(
+            "SELECT * FROM word_forms WHERE word_id = %s ORDER BY is_canonical DESC, form", (word_id,)
+        )
+        word_forms = [dict(row) for row in cur.fetchall()]
+        word_data['word_forms'] = word_forms
+        
+        # --- Output Formatting ---
+        if format == 'json':
+            # Default json handler deals with date/jsonb etc reasonably well
+            print(json.dumps(word_data, indent=2, default=str)) 
+        
+        elif format == 'text':
+            print(f"--- Word ID: {word_data.get('id')} ---")
+            print(f"Lemma: {word_data.get('lemma')}")
+            print(f"Language: {word_data.get('language_code')}")
+            if word_data.get('root_lemma'):
+                print(f"Root: {word_data.get('root_lemma')} (ID: {word_data.get('root_word_id')})")
+            if word_data.get('has_baybayin') and word_data.get('baybayin_form'):
+                print(f"Baybayin: {word_data.get('baybayin_form')}")
+                if word_data.get('romanized_form'): print(f"Romanized: {word_data.get('romanized_form')}")
+            # Add other simple fields: is_proper_noun, is_abbreviation etc.
+            for key in ['is_proper_noun', 'is_abbreviation', 'is_initialism', 'tags']:
+                 if word_data.get(key):
+                     print(f"{key.replace('_', ' ').title()}: {word_data.get(key)}")
+            
+            if word_data.get('definitions'):
+                print("\n--- Definitions ---")
+                current_pos = None
+                for d in word_data['definitions']:
+                    pos = d.get('pos_tl') or d.get('original_pos') or 'Uncategorized'
+                    if pos != current_pos:
+                        print(f"\n[{pos}]")
+                        current_pos = pos
+                    print(f"- {d.get('definition_text')}")
+                    if d.get('examples'): print(f"  Ex: {d.get('examples')}")
+                    if d.get('usage_notes'): print(f"  Notes: {d.get('usage_notes')}")
 
-        input("\nPress Enter to continue...")
+            if word_data.get('relations'):
+                print("\n--- Related Words ---")
+                current_type = None
+                current_dir = None
+                for r in word_data['relations']:
+                    rel_type = r.get('relation_type', 'Unknown').title()
+                    direction = r.get('direction')
+                    if rel_type != current_type or direction != current_dir:
+                        print(f"\n[{rel_type} ({direction})]")
+                        current_type = rel_type
+                        current_dir = direction
+                    print(f"- {r.get('related_lemma')} (ID: {r.get('related_word_id')})")
+            
+            # Add simple text output for Etymologies, Pronunciations, Forms
+            if word_data.get('etymologies'):
+                print("\n--- Etymology ---")
+                for e in word_data['etymologies']:
+                    print(f"- {e.get('etymology_text')}")
+                    if e.get('components'): print(f"  Components: {e.get('components')}")
+                    if e.get('language_codes'): print(f"  Languages: {e.get('language_codes')}")
 
+            if word_data.get('pronunciations'):
+                 print("\n--- Pronunciations ---")
+                 for p in word_data['pronunciations']:
+                     print(f"- IPA: {p.get('ipa_transcription')}, Audio: {p.get('audio_url') or 'N/A'}, Notes: {p.get('notes') or 'None'}")
+
+            if word_data.get('word_forms'):
+                print("\n--- Word Forms ---")
+                for wf in word_data['word_forms']:
+                    print(f"- Form: {wf.get('form')} {'(Canonical)' if wf.get('is_canonical') else ''} {'(Primary)' if wf.get('is_primary') else ''}, POS: {wf.get('standardized_pos_id')}, Tags: {wf.get('tags') or 'None'}")
+
+        elif format == 'rich': # Default Rich Output
+            # Core Info Panel
+            core_panel_content = Text()
+            core_panel_content.append(f"Lemma: {word_data.get('lemma')}\n")
+            core_panel_content.append(f"Language: {word_data.get('language_code')}\n")
+            if word_data.get('root_lemma'):
+                 core_panel_content.append(f"Root: {word_data.get('root_lemma')} (ID: {word_data.get('root_word_id')})\n")
+            if word_data.get('has_baybayin') and word_data.get('baybayin_form'):
+                core_panel_content.append(f"Baybayin: [magenta]{word_data.get('baybayin_form')}[/]\n")
+                if word_data.get('romanized_form'): core_panel_content.append(f"Romanized: {word_data.get('romanized_form')}\n")
+            # Add other flags
+            flags = []
+            if word_data.get('is_proper_noun'): flags.append("Proper Noun")
+            if word_data.get('is_abbreviation'): flags.append("Abbreviation")
+            if word_data.get('is_initialism'): flags.append("Initialism")
+            if flags: core_panel_content.append(f"Flags: {', '.join(flags)}\n")
+            if word_data.get('tags'): core_panel_content.append(f"Tags: [cyan]{word_data.get('tags')}[/]\n")
+            
+            console.print(Panel(core_panel_content, title=f"[bold cyan]Word Info - ID: {word_id}[/]"))
+
+            # Definitions Panel
+            if word_data.get('definitions'):
+                def_panel_content = Text()
+                current_pos = None
+                for d in word_data['definitions']:
+                    pos = d.get('pos_tl') or d.get('original_pos') or 'Uncategorized'
+                    if pos != current_pos:
+                        def_panel_content.append(f"\n[bold green]{pos}[/]\n")
+                        current_pos = pos
+                    def_panel_content.append(f"• {d.get('definition_text')}\n")
+                    if d.get('examples'): def_panel_content.append(f"  [dim]Ex:[/] {d.get('examples')}\n")
+                    if d.get('usage_notes'): def_panel_content.append(f"  [dim]Notes:[/] {d.get('usage_notes')}\n")
+                    if d.get('tags'): def_panel_content.append(f"  [dim]Tags:[/] [cyan]{d.get('tags')}[/]\n")
+                console.print(Panel(def_panel_content, title="[bold green]Definitions[/]", border_style="green"))
+            
+             # Word Forms Panel
+            if word_data.get('word_forms'):
+                forms_table = Table(title="[bold yellow]Word Forms[/]", box=box_ROUNDED, border_style="yellow")
+                forms_table.add_column("Form")
+                forms_table.add_column("Flags")
+                forms_table.add_column("POS ID")
+                forms_table.add_column("Tags")
+                for wf in word_data['word_forms']:
+                    flags = []
+                    if wf.get('is_canonical'): flags.append("Canonical")
+                    if wf.get('is_primary'): flags.append("Primary")
+                    forms_table.add_row(
+                        wf.get('form', ''),
+                        ', '.join(flags) or '-',
+                        str(wf.get('standardized_pos_id') or '-'),
+                        wf.get('tags') or '-' 
+                    )
+                console.print(forms_table)
+
+            # Relations Panel
+            if word_data.get('relations'):
+                rel_panel_content = Text()
+                current_type = None
+                current_dir = None
+                for r in word_data['relations']:
+                    rel_type = r.get('relation_type', 'Unknown').title()
+                    direction = r.get('direction')
+                    if rel_type != current_type or direction != current_dir:
+                         rel_panel_content.append(f"\n[bold magenta]{rel_type} ({direction.capitalize()})[/]\n")
+                         current_type = rel_type
+                         current_dir = direction
+                    rel_panel_content.append(f"• {r.get('related_lemma')} ([dim]ID: {r.get('related_word_id')}[/])\n")
+                console.print(Panel(rel_panel_content, title="[bold magenta]Related Words[/]", border_style="magenta"))
+                
+            # Etymology Panel
+            if word_data.get('etymologies'):
+                etym_panel_content = Text()
+                for e in word_data['etymologies']:
+                    etym_panel_content.append(f"• {e.get('etymology_text')}\n")
+                    if e.get('components'): etym_panel_content.append(f"  [dim]Components:[/] {e.get('components')}\n")
+                    if e.get('language_codes'): etym_panel_content.append(f"  [dim]Languages:[/] {e.get('language_codes')}\n")
+                console.print(Panel(etym_panel_content, title="[bold blue]Etymology[/]", border_style="blue"))
+
+            # Pronunciations Panel
+            if word_data.get('pronunciations'):
+                pron_table = Table(title="[bold yellow]Pronunciations[/]", box=box_ROUNDED, border_style="yellow")
+                pron_table.add_column("IPA")
+                pron_table.add_column("Audio URL")
+                pron_table.add_column("Notes")
+                for p in word_data['pronunciations']:
+                    pron_table.add_row(
+                        p.get('ipa_transcription', '-'), 
+                        p.get('audio_url') or '-', 
+                        p.get('notes') or '-' 
+                    )
+                console.print(pron_table)
+                
+            # Metadata Panels (if present)
+            if word_data.get('word_metadata') and word_data['word_metadata'] != {}:
+                console.print(Panel(json.dumps(word_data['word_metadata'], indent=2), title="Word Metadata", border_style="dim"))
+            
+            # Optionally add other tables/panels for credits, etc.
+
+            # Raw JSON dump if debug
+            if debug:
+                 console.print(Panel(json.dumps(word_data, indent=2, default=str), title="[DEBUG] Raw Word Data (JSON)", border_style="red"))
+                 
+        # Fallback for unknown format
+        else:
+            logger.warning(f"Unknown lookup format requested: {format}. Defaulting to rich.")
+            # Recursive call with default format (avoid infinite loop potential?)
+            if format != 'rich': # Prevent infinite loop if 'rich' is somehow unknown
+                 lookup_by_id(cur, word_id, console, 'rich', debug) 
+
+    except psycopg2.Error as db_err:
+        logger.error(f"Database error looking up ID {word_id}: {db_err}", exc_info=True)
+        if format == 'rich':
+            console.print(f"[red]Database Error: {db_err.pgcode} - {db_err}[/]")
+        elif format == 'text':
+            print(f"Database Error: {db_err}")
+        # JSON format handled by lack of data
     except Exception as e:
-        logger.error(f"Error looking up word ID {word_id}: {str(e)}")
-        console.print(f"[red]Error: {str(e)}[/]")
-
-
-def test_database():
-    """Run database connectivity tests."""
-    console = Console()
-    console.print("\n[bold cyan]🧪 Database Connection Tests[/]", justify="center")
-
-    tests = [
-        ("Database Connection", lambda: get_connection()),
-        ("PostgreSQL Version", lambda: check_pg_version()),
-        ("Tables Existence", lambda: check_tables_exist()),
-        ("Extensions", lambda: check_extensions()),
-        ("Data Access", lambda: check_data_access()),
-        ("Query Performance", lambda: check_query_performance()),
-    ]
-
-    test_table = Table(box=box_ROUNDED)
-    test_table.add_column("Test", style="cyan")
-    test_table.add_column("Status", style="bold")
-    test_table.add_column("Details", style="dim")
-
-    conn = None
-
-    try:
-        for test_name, test_func in tests:
-            try:
-                with Progress(
-                    SpinnerColumn(),
-                    TextColumn(f"Running {test_name} test..."),
-                    console=console,
-                ) as progress:
-                    task = progress.add_task("Testing", total=1)
-                    result, details = test_func()
-                    progress.update(task, completed=1)
-
-                    if result:
-                        test_table.add_row(test_name, "[green]PASS[/]", details)
-                    else:
-                        test_table.add_row(test_name, "[red]FAIL[/]", details)
-            except Exception as e:
-                test_table.add_row(test_name, "[red]ERROR[/]", str(e))
-    finally:
-        if conn:
-            conn.close()
-
-    console.print(test_table)
+        logger.error(f"Unexpected error looking up ID {word_id}: {str(e)}", exc_info=True)
+        if format == 'rich':
+            console.print(f"[red]Error looking up word details: {str(e)}[/]")
+        elif format == 'text':
+            print(f"Error: {str(e)}")
+        # JSON format handled by lack of data
 
 # -------------------------------------------------------------------
 # CLI Wrapper Functions
@@ -2299,6 +2753,8 @@ def create_argument_parser_cli() -> argparse.ArgumentParser:
 
 
 def migrate_data_cli(args):
+    """CLI wrapper for migrating data."""
+    logger.info(f"Migrate data called with args: {args}")
     try:
         migrate_data(args)
     except Exception as e:
@@ -2313,94 +2769,158 @@ def migrate_data_cli(args):
 
 
 def verify_database_cli(args):
+    """CLI wrapper for verifying database."""
+    logger.info(f"Verify database called with args: {args}")
+    # Example: Accessing new args
+    # checks_to_run = args.checks.split(',') if args.checks else ['all']
+    # repair_tasks_to_run = args.repair_tasks.split(',') if args.repair_tasks else ['all']
+    # logger.info(f"Running checks: {checks_to_run}, Repairing: {args.repair}, Repair tasks: {repair_tasks_to_run}")
     verify_database(args)
 
 
 def purge_database_cli(args):
-    """Run purge operations on the dictionary database."""
+    """CLI wrapper for purging database."""
+    logger.info(f"Purge database called with args: {args}")
+    # Example: Accessing new args
+    # tables_to_purge = args.tables.split(',') if args.tables else ['all']
+    # logger.info(f"Force purge: {args.force}, Tables to purge: {tables_to_purge}")
     try:
-        cur = get_cursor()
+        # Original logic, needs modification to use args.tables and args.force
         console = Console()
-        console.print("[bold blue]Starting dictionary purge process...[/]")
+        if not args.force:
+            if args.tables:
+                confirm = input(f"Are you sure you want to purge data from tables: {args.tables}? (yes/no): ")
+            else:
+                confirm = input("Are you sure you want to purge ALL dictionary data? This cannot be undone. (yes/no): ")
+            if confirm.lower() != 'yes':
+                console.print("[yellow]Purge operation cancelled by user.[/]")
+                return
 
-        console.print("[yellow]Purging all dictionary data...[/]")
-        purge_database_tables(cur)
+        conn = get_connection()
+        with conn.cursor() as cur:
+            console.print("[bold blue]Starting dictionary purge process...[/]")
+            
+            tables_to_actually_purge = []
+            if args.tables:
+                tables_to_actually_purge = [t.strip() for t in args.tables.split(',')]
+                logger.info(f"Purging specified tables: {tables_to_actually_purge}")
+            else:
+                # Default list of tables to purge if --tables is not specified
+                tables_to_actually_purge = [
+                    "definition_relations", "affixations", "relations", "etymologies",
+                    "definition_examples", "definition_links", "definition_categories",
+                    "word_forms", "word_templates", "pronunciations", "credits",
+                    "definitions", "words", "parts_of_speech", "languages"
+                ] # Added more tables
+                logger.info("Purging all default dictionary tables.")
 
-        console.print("[bold green]Dictionary purge completed successfully.[/]")
+            for table in tables_to_actually_purge:
+                try:
+                    console.print(f"Purging {table}...")
+                    cur.execute(f"DELETE FROM public.\"{table}\"") # Ensure public schema and quote table names
+                    logger.info(f"Successfully purged {table}.")
+                except psycopg2.Error as e:
+                    logger.error(f"Error purging table {table}: {e}")
+                    console.print(f"[red]Error purging table {table}: {e.pgcode}. Skipping.[/]")
+                    conn.rollback() # Rollback changes for this table and continue
+                except Exception as e_gen:
+                    logger.error(f"Unexpected error purging table {table}: {e_gen}")
+                    console.print(f"[red]Unexpected error purging table {table}. Skipping.[/]")
+
+            conn.commit()
+            console.print("[bold green]Dictionary purge completed.[/]")
+
+    except psycopg2.OperationalError as e:
+        logger.error(f"Database connection failed during purge: {e}")
+        console.print(f"[bold red]Database connection error: {e}[/]")
     except Exception as e:
-        print(f"Error during purge: {str(e)}")
+        logger.error(f"Error during purge: {str(e)}", exc_info=True)
+        console.print(f"[bold red]Error during purge: {str(e)}[/]")
+    finally:
+        if 'conn' in locals() and conn and not conn.closed:
+            conn.close()
 
 
 def lookup_word_cli(args):
+    """CLI wrapper for looking up a word."""
+    logger.info(f"Lookup word called with args: {args}")
+    # Example: Accessing new args
+    # term_is_id = args.id
+    # language_filter = args.lang
+    # logger.info(f"Looking up: {args.term}, Is ID: {term_is_id}, Language: {language_filter}")
     lookup_word(args)
 
 
+def display_dictionary_stats_cli(args):
+    """CLI wrapper for displaying dictionary stats."""
+    logger.info(f"Display dictionary stats called with args: {args}")
+    # Example: Accessing new args
+    # specific_table = args.table
+    # export_file = args.export
+    # logger.info(f"Detailed: {args.detailed}, Table: {specific_table}, Export to: {export_file}")
+    display_dictionary_stats(args) # Pass args to the main function
+
+
 def display_leaderboard_cli(args):
-    """Display a leaderboard of dictionary contributors."""
+    """CLI wrapper for displaying leaderboard."""
+    logger.info(f"Display leaderboard called with args: {args}")
     console = Console()
-    display_leaderboard(get_cursor(), console)
+    conn = None
+    try:
+        conn = get_connection()
+        # Use DictCursor for the wrapped function
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur: 
+            display_leaderboard(cur, console, args) # Pass the whole args object
+    except psycopg2.OperationalError as db_err:
+        logger.error(f"Database connection failed for leaderboard: {db_err}", exc_info=True)
+        console.print(f"[bold red]Database connection error:[/]\n[dim]{db_err}[/]")
+    except Exception as e:
+        logger.error(f"Error in display_leaderboard_cli: {e}", exc_info=True)
+        console.print(f"[red]Error displaying leaderboard: {str(e)}[/]")
+    finally:
+        if conn and not conn.closed: # Check if connection exists and is open
+            conn.close()
 
 
 def explore_dictionary_cli(args):
-    explore_dictionary()
-
-
-def test_database_cli(args):
-    test_database()
+    """CLI wrapper for interactive explorer."""
+    logger.info(f"Explore dictionary called with args: {args}")
+    explore_dictionary() # This function doesn't take args currently
 
 
 def display_help_cli(args):
+    """CLI wrapper for displaying help."""
+    logger.info(f"Display help called with args: {args}")
     display_help(args)
-
-
-def cleanup_database_cli(args):
-    """Run cleanup routines on the dictionary database."""
-    try:
-        cur = get_cursor()
-        console = Console()
-        console.print("[bold blue]Starting dictionary cleanup process...[/]")
-
-        console.print("[yellow]Deduplicating definitions...[/]")
-        deduplicate_definitions(cur)
-
-        console.print("[yellow]Cleaning up relations...[/]")
-        cleanup_relations(cur)
-
-        console.print("[yellow]Standardizing formats...[/]")
-        cleanup_dictionary_data(cur)
-
-        console.print("[bold green]Dictionary cleanup completed successfully.[/]")
-    except Exception as e:
-        print(f"Error during cleanup: {str(e)}")
-
 
 # -------------------------------------------------------------------
 # Main entry point
 # -------------------------------------------------------------------
+# ... (main function needs to be updated to map to new CLI handlers if their names changed)
+# ... and to map new commands like `update` and `migrate-relationships`
+
 def main():
     parser = create_argument_parser_cli()
     args = parser.parse_args()
-    if args.command == "migrate":
-        migrate_data_cli(args)
-    elif args.command == "verify":
-        verify_database_cli(args)
-    elif args.command == "purge":
-        purge_database_cli(args)
-    elif args.command == "lookup":
-        lookup_word_cli(args)
-    elif args.command == "stats":
-        display_dictionary_stats_cli(args)
-    elif args.command == "leaderboard":
-        display_leaderboard_cli(args)
-    elif args.command == "help":
-        display_help_cli(args)
-    elif args.command == "test":
-        test_database_cli(args)
-    elif args.command == "explore":
-        explore_dictionary_cli(args)
-    elif args.command == "cleanup":
-        cleanup_database_cli(args)
+
+    # Map commands to their handler functions
+    command_handlers = {
+        "migrate": migrate_data_cli,
+        "verify": verify_database_cli,
+        "purge": purge_database_cli,
+        "lookup": lookup_word_cli,
+        "stats": display_dictionary_stats_cli,
+        "leaderboard": display_leaderboard_cli,
+        "help": display_help_cli, # display_help_cli is correct
+        "explore": explore_dictionary_cli,
+    }
+
+    if args.command in command_handlers:
+        command_handlers[args.command](args)
     else:
+        # This case should ideally not be reached if subparsers are `required=True`
+        # but as a fallback, or if `required` is removed.
+        logger.warning(f"Unknown command: {args.command}")
         parser.print_help()
 
 

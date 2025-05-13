@@ -69,3 +69,15 @@ env/
 # IDE files
 .vscode/
 .idea/
+
+# Exported Database Files
+fil_relex_colab.sqlite
+
+# ML Output & Checkpoints
+output/
+checkpoints/
+ml/output/
+ml/checkpoints/
+ml/data/processed/
+*.result
+*.results

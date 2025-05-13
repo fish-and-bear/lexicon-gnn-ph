@@ -1,0 +1,6 @@
+{
+    "db_config": {
+        "db_type": "sqlite",
+        "db_path": "fil_relex_colab.sqlite"
+    }
+} 

@@ -1,0 +1,2972 @@
+{
+  "languages": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "code": {
+          "distinct_count": 0
+        },
+        "region": {
+          "distinct_count": 0
+        },
+        "family": {
+          "distinct_count": 0
+        },
+        "status": {
+          "distinct_count": 0
+        }
+      },
+      "row_count": 0
+    },
+    "columns": [
+      {
+        "table_name": "languages",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('languages_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "languages",
+        "column_name": "code",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 10,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "languages",
+        "column_name": "name_en",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 100,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "languages",
+        "column_name": "name_tl",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 100,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "languages",
+        "column_name": "region",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 100,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "languages",
+        "column_name": "family",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 100,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "languages",
+        "column_name": "status",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 50,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "languages",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "languages",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "languages_code_key": {
+        "type": "UNIQUE",
+        "columns": [
+          "code"
+        ],
+        "foreign_table_name": "languages",
+        "foreign_column_name": "code",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "languages_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "languages",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "idx_languages_code",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_languages_code ON public.languages USING btree (code)"
+      },
+      {
+        "name": "languages_code_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX languages_code_key ON public.languages USING btree (code)"
+      },
+      {
+        "name": "languages_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX languages_pkey ON public.languages USING btree (id)"
+      }
+    ]
+  },
+  "words": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "language_code": {
+          "distinct_count": 120,
+          "example_values": [
+            "aby",
+            "agt",
+            "agu",
+            "akl",
+            "am",
+            "apa",
+            "ar",
+            "ata",
+            "bag",
+            "baj"
+          ]
+        },
+        "is_proper_noun": {
+          "distinct_count": 2,
+          "distinct_values": [
+            false,
+            true
+          ]
+        },
+        "is_abbreviation": {
+          "distinct_count": 1,
+          "distinct_values": [
+            false
+          ]
+        },
+        "is_initialism": {
+          "distinct_count": 1,
+          "distinct_values": [
+            false
+          ]
+        }
+      },
+      "row_count": 167315
+    },
+    "columns": [
+      {
+        "table_name": "words",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('words_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "lemma",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "normalized_lemma",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "has_baybayin",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "column_default": "false",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "baybayin_form",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "romanized_form",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "language_code",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 16,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "root_word_id",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "preferred_spelling",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "tags",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "idioms",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": "'[]'::jsonb",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "pronunciation_data",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "source_info",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": "'{}'::jsonb",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "word_metadata",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": "'{}'::jsonb",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "data_hash",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "badlit_form",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "hyphenation",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "is_proper_noun",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "column_default": "false",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "is_abbreviation",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "column_default": "false",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "is_initialism",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "column_default": "false",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "search_text",
+        "data_type": "tsvector",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "words",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "words",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "words_lang_lemma_uniq": {
+        "type": "UNIQUE",
+        "columns": [
+          "normalized_lemma",
+          "language_code"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "normalized_lemma",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "words_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "words_root_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "root_word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "SET NULL",
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "idx_words_baybayin",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_words_baybayin ON public.words USING btree (baybayin_form) WHERE (has_baybayin = true)"
+      },
+      {
+        "name": "idx_words_language",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_words_language ON public.words USING btree (language_code)"
+      },
+      {
+        "name": "idx_words_lemma",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_words_lemma ON public.words USING btree (lemma)"
+      },
+      {
+        "name": "idx_words_metadata",
+        "unique": false,
+        "method": "gin",
+        "columns": [],
+        "definition": "CREATE INDEX idx_words_metadata ON public.words USING gin (word_metadata)"
+      },
+      {
+        "name": "idx_words_normalized",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_words_normalized ON public.words USING btree (normalized_lemma)"
+      },
+      {
+        "name": "idx_words_romanized",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_words_romanized ON public.words USING btree (romanized_form)"
+      },
+      {
+        "name": "idx_words_root",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_words_root ON public.words USING btree (root_word_id)"
+      },
+      {
+        "name": "idx_words_search",
+        "unique": false,
+        "method": "gin",
+        "columns": [],
+        "definition": "CREATE INDEX idx_words_search ON public.words USING gin (search_text)"
+      },
+      {
+        "name": "words_lang_lemma_uniq",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX words_lang_lemma_uniq ON public.words USING btree (normalized_lemma, language_code)"
+      },
+      {
+        "name": "words_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX words_pkey ON public.words USING btree (id)"
+      }
+    ]
+  },
+  "pronunciations": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "type": {
+          "distinct_count": 4,
+          "distinct_values": [
+            "ipa",
+            "kwf_raw",
+            "respelling_guide",
+            "text"
+          ]
+        }
+      },
+      "row_count": 95005
+    },
+    "columns": [
+      {
+        "table_name": "pronunciations",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('pronunciations_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "pronunciations",
+        "column_name": "word_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "pronunciations",
+        "column_name": "type",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": "'ipa'::character varying",
+        "character_maximum_length": 20,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "pronunciations",
+        "column_name": "value",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "pronunciations",
+        "column_name": "tags",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "pronunciations",
+        "column_name": "pronunciation_metadata",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "pronunciations",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "pronunciations",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "pronunciations_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "pronunciations",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "pronunciations_unique": {
+        "type": "UNIQUE",
+        "columns": [
+          "type",
+          "word_id",
+          "value"
+        ],
+        "foreign_table_name": "pronunciations",
+        "foreign_column_name": "type",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "pronunciations_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "idx_pronunciations_type",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_pronunciations_type ON public.pronunciations USING btree (type)"
+      },
+      {
+        "name": "idx_pronunciations_value",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_pronunciations_value ON public.pronunciations USING btree (value)"
+      },
+      {
+        "name": "idx_pronunciations_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_pronunciations_word ON public.pronunciations USING btree (word_id)"
+      },
+      {
+        "name": "pronunciations_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX pronunciations_pkey ON public.pronunciations USING btree (id)"
+      },
+      {
+        "name": "pronunciations_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX pronunciations_unique ON public.pronunciations USING btree (word_id, type, value)"
+      }
+    ]
+  },
+  "credits": {
+    "comment": null,
+    "stats": {
+      "columns": {},
+      "row_count": 2348
+    },
+    "columns": [
+      {
+        "table_name": "credits",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('credits_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "credits",
+        "column_name": "word_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "credits",
+        "column_name": "credit",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "credits",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "credits",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "credits",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "credits_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "credits",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "credits_unique": {
+        "type": "UNIQUE",
+        "columns": [
+          "word_id",
+          "credit"
+        ],
+        "foreign_table_name": "credits",
+        "foreign_column_name": "credit",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "credits_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "credits_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX credits_pkey ON public.credits USING btree (id)"
+      },
+      {
+        "name": "credits_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX credits_unique ON public.credits USING btree (word_id, credit)"
+      },
+      {
+        "name": "idx_credits_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_credits_word ON public.credits USING btree (word_id)"
+      }
+    ]
+  },
+  "definitions": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "original_pos": {
+          "distinct_count": 20,
+          "distinct_values": [
+            "abbr",
+            "adj",
+            "adv",
+            "affix",
+            "conj",
+            "det",
+            "interj",
+            "noun",
+            "num",
+            "part",
+            "phrase",
+            "prefix",
+            "prep",
+            "pron",
+            "propn",
+            "punct",
+            "suffix",
+            "sym",
+            "unc",
+            "verb",
+            null
+          ]
+        }
+      },
+      "row_count": 235180
+    },
+    "columns": [
+      {
+        "table_name": "definitions",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('definitions_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "word_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "definition_text",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "original_pos",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "standardized_pos_id",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "examples",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "usage_notes",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "tags",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "definition_metadata",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": "'{}'::jsonb",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "definitions",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "definitions_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "definitions",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "definitions_standardized_pos_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "standardized_pos_id"
+        ],
+        "foreign_table_name": "parts_of_speech",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "SET NULL",
+        "check_clause": null
+      },
+      "definitions_unique": {
+        "type": "UNIQUE",
+        "columns": [
+          "word_id",
+          "definition_text",
+          "standardized_pos_id"
+        ],
+        "foreign_table_name": "definitions",
+        "foreign_column_name": "word_id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "definitions_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "definitions_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definitions_pkey ON public.definitions USING btree (id)"
+      },
+      {
+        "name": "definitions_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definitions_unique ON public.definitions USING btree (word_id, definition_text, standardized_pos_id)"
+      },
+      {
+        "name": "idx_definitions_pos",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_definitions_pos ON public.definitions USING btree (standardized_pos_id)"
+      },
+      {
+        "name": "idx_definitions_text",
+        "unique": false,
+        "method": "gin",
+        "columns": [],
+        "definition": "CREATE INDEX idx_definitions_text ON public.definitions USING gin (to_tsvector('english'::regconfig, definition_text))"
+      },
+      {
+        "name": "idx_definitions_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_definitions_word ON public.definitions USING btree (word_id)"
+      }
+    ]
+  },
+  "parts_of_speech": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "code": {
+          "distinct_count": 25,
+          "distinct_values": [
+            "abbr",
+            "adj",
+            "adv",
+            "affix",
+            "char",
+            "class",
+            "conj",
+            "contraction",
+            "det",
+            "interj",
+            "noun",
+            "num",
+            "part",
+            "phrase",
+            "prefix",
+            "prep",
+            "pron",
+            "propn",
+            "punct",
+            "rom",
+            "root",
+            "suffix",
+            "sym",
+            "unc",
+            "verb"
+          ]
+        },
+        "name_en": {
+          "distinct_count": 25,
+          "distinct_values": [
+            "Abbreviation",
+            "Adjective",
+            "Adverb",
+            "Affix",
+            "Character",
+            "Classifier",
+            "Conjunction",
+            "Contraction",
+            "Determiner",
+            "Interjection",
+            "Noun",
+            "Numeral",
+            "Particle",
+            "Phrase",
+            "Prefix",
+            "Preposition",
+            "Pronoun",
+            "Proper Noun",
+            "Punctuation",
+            "Romanization",
+            "Root",
+            "Suffix",
+            "Symbol",
+            "Uncategorized",
+            "Verb"
+          ]
+        },
+        "name_tl": {
+          "distinct_count": 24,
+          "distinct_values": [
+            "Bantas",
+            "Daglat",
+            "Hindi Tiyak",
+            "Hulapi",
+            "Kataga",
+            "Pagpapaikli",
+            "Pamilang",
+            "Pandamdam",
+            "Pandiwa",
+            "Pang-abay",
+            "Pang-ukol",
+            "Pang-uri",
+            "Pangatnig",
+            "Panghalip",
+            "Pangngalan",
+            "Pangngalang Pantangi",
+            "Panlapi",
+            "Pantukoy",
+            "Parirala",
+            "Romanisasyon",
+            "Salitang Ugat",
+            "Simbolo",
+            "Titik",
+            "Unlapi"
+          ]
+        }
+      },
+      "row_count": 25
+    },
+    "columns": [
+      {
+        "table_name": "parts_of_speech",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('parts_of_speech_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "parts_of_speech",
+        "column_name": "code",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 32,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "parts_of_speech",
+        "column_name": "name_en",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 64,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "parts_of_speech",
+        "column_name": "name_tl",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 64,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "parts_of_speech",
+        "column_name": "description",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "parts_of_speech",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "parts_of_speech",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "parts_of_speech_code_uniq": {
+        "type": "UNIQUE",
+        "columns": [
+          "code"
+        ],
+        "foreign_table_name": "parts_of_speech",
+        "foreign_column_name": "code",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "parts_of_speech_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "parts_of_speech",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "idx_parts_of_speech_code",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_parts_of_speech_code ON public.parts_of_speech USING btree (code)"
+      },
+      {
+        "name": "idx_parts_of_speech_name",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_parts_of_speech_name ON public.parts_of_speech USING btree (name_en, name_tl)"
+      },
+      {
+        "name": "parts_of_speech_code_uniq",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX parts_of_speech_code_uniq ON public.parts_of_speech USING btree (code)"
+      },
+      {
+        "name": "parts_of_speech_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX parts_of_speech_pkey ON public.parts_of_speech USING btree (id)"
+      }
+    ]
+  },
+  "relations": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "relation_type": {
+          "distinct_count": 12,
+          "distinct_values": [
+            "antonym",
+            "cognate_of",
+            "derived",
+            "derived_from",
+            "doublet_of",
+            "has_translation",
+            "related",
+            "root_of",
+            "see_also",
+            "synonym",
+            "translation_of",
+            "variant"
+          ]
+        }
+      },
+      "row_count": 304171
+    },
+    "columns": [
+      {
+        "table_name": "relations",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('relations_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "relations",
+        "column_name": "from_word_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "relations",
+        "column_name": "to_word_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "relations",
+        "column_name": "relation_type",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 64,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "relations",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "relations",
+        "column_name": "metadata",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": "'{}'::jsonb",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "relations",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "relations",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "relations_from_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "from_word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      },
+      "relations_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "relations",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "relations_to_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "to_word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      },
+      "relations_unique": {
+        "type": "UNIQUE",
+        "columns": [
+          "from_word_id",
+          "relation_type",
+          "to_word_id"
+        ],
+        "foreign_table_name": "relations",
+        "foreign_column_name": "to_word_id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "idx_relations_from",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_relations_from ON public.relations USING btree (from_word_id)"
+      },
+      {
+        "name": "idx_relations_metadata",
+        "unique": false,
+        "method": "gin",
+        "columns": [],
+        "definition": "CREATE INDEX idx_relations_metadata ON public.relations USING gin (metadata)"
+      },
+      {
+        "name": "idx_relations_metadata_strength",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_relations_metadata_strength ON public.relations USING btree (((metadata ->> 'strength'::text)))"
+      },
+      {
+        "name": "idx_relations_to",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_relations_to ON public.relations USING btree (to_word_id)"
+      },
+      {
+        "name": "idx_relations_type",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_relations_type ON public.relations USING btree (relation_type)"
+      },
+      {
+        "name": "relations_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX relations_pkey ON public.relations USING btree (id)"
+      },
+      {
+        "name": "relations_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX relations_unique ON public.relations USING btree (from_word_id, to_word_id, relation_type)"
+      }
+    ]
+  },
+  "etymologies": {
+    "comment": null,
+    "stats": {
+      "columns": {},
+      "row_count": 92816
+    },
+    "columns": [
+      {
+        "table_name": "etymologies",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('etymologies_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "etymologies",
+        "column_name": "word_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "etymologies",
+        "column_name": "etymology_text",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "etymologies",
+        "column_name": "normalized_components",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "etymologies",
+        "column_name": "etymology_structure",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "etymologies",
+        "column_name": "language_codes",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "etymologies",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "etymologies",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "etymologies",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "etymologies_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "etymologies",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "etymologies_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      },
+      "etymologies_wordid_etymtext_uniq": {
+        "type": "UNIQUE",
+        "columns": [
+          "word_id",
+          "etymology_text"
+        ],
+        "foreign_table_name": "etymologies",
+        "foreign_column_name": "etymology_text",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "etymologies_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX etymologies_pkey ON public.etymologies USING btree (id)"
+      },
+      {
+        "name": "etymologies_wordid_etymtext_uniq",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX etymologies_wordid_etymtext_uniq ON public.etymologies USING btree (word_id, etymology_text)"
+      },
+      {
+        "name": "idx_etymologies_langs",
+        "unique": false,
+        "method": "gin",
+        "columns": [],
+        "definition": "CREATE INDEX idx_etymologies_langs ON public.etymologies USING gin (to_tsvector('simple'::regconfig, language_codes))"
+      },
+      {
+        "name": "idx_etymologies_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_etymologies_word ON public.etymologies USING btree (word_id)"
+      }
+    ]
+  },
+  "definition_relations": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "relation_type": {
+          "distinct_count": 0
+        }
+      },
+      "row_count": 0
+    },
+    "columns": [
+      {
+        "table_name": "definition_relations",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('definition_relations_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_relations",
+        "column_name": "definition_id",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_relations",
+        "column_name": "word_id",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_relations",
+        "column_name": "relation_type",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 64,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_relations",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_relations",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "definition_relations",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "definition_relations_definition_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "definition_id"
+        ],
+        "foreign_table_name": "definitions",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      },
+      "definition_relations_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "definition_relations",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "definition_relations_unique": {
+        "type": "UNIQUE",
+        "columns": [
+          "definition_id",
+          "word_id",
+          "relation_type"
+        ],
+        "foreign_table_name": "definition_relations",
+        "foreign_column_name": "definition_id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "definition_relations_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "definition_relations_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definition_relations_pkey ON public.definition_relations USING btree (id)"
+      },
+      {
+        "name": "definition_relations_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definition_relations_unique ON public.definition_relations USING btree (definition_id, word_id, relation_type)"
+      },
+      {
+        "name": "idx_def_relations_def",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_def_relations_def ON public.definition_relations USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_relations_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_def_relations_word ON public.definition_relations USING btree (word_id)"
+      }
+    ]
+  },
+  "affixations": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "affix_type": {
+          "distinct_count": 0
+        }
+      },
+      "row_count": 0
+    },
+    "columns": [
+      {
+        "table_name": "affixations",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('affixations_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "affixations",
+        "column_name": "root_word_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "affixations",
+        "column_name": "affixed_word_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "affixations",
+        "column_name": "affix_type",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": 64,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "affixations",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "affixations",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "affixations",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "affixations_affixed_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "affixed_word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      },
+      "affixations_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "affixations",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "affixations_root_word_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "root_word_id"
+        ],
+        "foreign_table_name": "words",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      },
+      "affixations_unique": {
+        "type": "UNIQUE",
+        "columns": [
+          "affix_type",
+          "affixed_word_id",
+          "root_word_id"
+        ],
+        "foreign_table_name": "affixations",
+        "foreign_column_name": "root_word_id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "affixations_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX affixations_pkey ON public.affixations USING btree (id)"
+      },
+      {
+        "name": "affixations_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX affixations_unique ON public.affixations USING btree (root_word_id, affixed_word_id, affix_type)"
+      },
+      {
+        "name": "idx_affixations_affixed",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_affixations_affixed ON public.affixations USING btree (affixed_word_id)"
+      },
+      {
+        "name": "idx_affixations_root",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_affixations_root ON public.affixations USING btree (root_word_id)"
+      }
+    ]
+  },
+  "definition_examples": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "example_type": {
+          "distinct_count": 2,
+          "distinct_values": [
+            "example",
+            "quotation",
+            null
+          ]
+        }
+      },
+      "row_count": 14575
+    },
+    "columns": [
+      {
+        "table_name": "definition_examples",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('definition_examples_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "definition_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "example_text",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "translation",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "example_type",
+        "data_type": "character varying",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": 50,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "reference",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "metadata",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "definition_examples",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "definition_examples_definition_id_fkey": {
+        "type": "FOREIGN KEY",
+        "columns": [
+          "definition_id"
+        ],
+        "foreign_table_name": "definitions",
+        "foreign_column_name": "id",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE",
+        "check_clause": null
+      },
+      "definition_examples_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "definition_examples",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "definition_examples_unique": {
+        "type": "UNIQUE",
+        "columns": [
+          "definition_id",
+          "example_text"
+        ],
+        "foreign_table_name": "definition_examples",
+        "foreign_column_name": "definition_id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "definition_examples_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definition_examples_pkey ON public.definition_examples USING btree (id)"
+      },
+      {
+        "name": "definition_examples_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definition_examples_unique ON public.definition_examples USING btree (definition_id, example_text)"
+      },
+      {
+        "name": "idx_def_examples_def",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_def_examples_def ON public.definition_examples USING btree (definition_id)"
+      }
+    ]
+  },
+  "definition_links": {
+    "comment": null,
+    "stats": {
+      "columns": {},
+      "row_count": 1379566
+    },
+    "columns": [
+      {
+        "table_name": "definition_links",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('definition_links_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_links",
+        "column_name": "definition_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_links",
+        "column_name": "link_text",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_links",
+        "column_name": "link_url",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_links",
+        "column_name": "tags",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_links",
+        "column_name": "link_metadata",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": "'{}'::jsonb",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_links",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_links",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "definition_links",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "definition_links_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "definition_links",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "definition_links_unique": {
+        "type": "UNIQUE",
+        "columns": [
+          "link_text",
+          "definition_id"
+        ],
+        "foreign_table_name": "definition_links",
+        "foreign_column_name": "definition_id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "definition_links_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definition_links_pkey ON public.definition_links USING btree (id)"
+      },
+      {
+        "name": "definition_links_unique",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definition_links_unique ON public.definition_links USING btree (definition_id, link_text)"
+      },
+      {
+        "name": "idx_def_links_def",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_def_links_def ON public.definition_links USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_links_type_trgm",
+        "unique": false,
+        "method": "gin",
+        "columns": [],
+        "definition": "CREATE INDEX idx_def_links_type_trgm ON public.definition_links USING gin (link_text gin_trgm_ops)"
+      }
+    ]
+  },
+  "definition_categories": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "category_kind": {
+          "distinct_count": 4,
+          "distinct_values": [
+            "lifeform",
+            "other",
+            "place",
+            "topical"
+          ]
+        }
+      },
+      "row_count": 1651196
+    },
+    "columns": [
+      {
+        "table_name": "definition_categories",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('definition_categories_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_categories",
+        "column_name": "definition_id",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_categories",
+        "column_name": "category_name",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_categories",
+        "column_name": "category_kind",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_categories",
+        "column_name": "parents",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_categories",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "definition_categories",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "definition_categories",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "definition_categories",
+        "column_name": "category_metadata",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": "'{}'::jsonb",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      }
+    ],
+    "constraints": {
+      "definition_categories_definition_id_category_name_key": {
+        "type": "UNIQUE",
+        "columns": [
+          "definition_id",
+          "category_name"
+        ],
+        "foreign_table_name": "definition_categories",
+        "foreign_column_name": "definition_id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "definition_categories_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "definition_categories",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "definition_categories_definition_id_category_name_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definition_categories_definition_id_category_name_key ON public.definition_categories USING btree (definition_id, category_name)"
+      },
+      {
+        "name": "definition_categories_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX definition_categories_pkey ON public.definition_categories USING btree (id)"
+      },
+      {
+        "name": "idx_def_categories_def",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_def_categories_def ON public.definition_categories USING btree (definition_id)"
+      },
+      {
+        "name": "idx_def_categories_name",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_def_categories_name ON public.definition_categories USING btree (category_name)"
+      },
+      {
+        "name": "idx_definition_categories_definition_id",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_definition_categories_definition_id ON public.definition_categories USING btree (definition_id)"
+      }
+    ]
+  },
+  "word_templates": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "template_name": {
+          "distinct_count": 114,
+          "example_values": [
+            "ceb-adj",
+            "ceb-adv",
+            "ceb-head",
+            "ceb-infl-gi-an",
+            "ceb-infl-i",
+            "ceb-infl-ma",
+            "ceb-infl-ma-an",
+            "ceb-infl-mag",
+            "ceb-infl-magka",
+            "ceb-infl-maka"
+          ]
+        }
+      },
+      "row_count": 575479
+    },
+    "columns": [
+      {
+        "table_name": "word_templates",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('word_templates_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_templates",
+        "column_name": "word_id",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_templates",
+        "column_name": "template_name",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_templates",
+        "column_name": "args",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_templates",
+        "column_name": "expansion",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_templates",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_templates",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "word_templates",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "word_templates_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "word_templates",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "word_templates_word_id_template_name_key": {
+        "type": "UNIQUE",
+        "columns": [
+          "word_id",
+          "template_name"
+        ],
+        "foreign_table_name": "word_templates",
+        "foreign_column_name": "template_name",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "idx_word_templates_name",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_word_templates_name ON public.word_templates USING btree (template_name)"
+      },
+      {
+        "name": "idx_word_templates_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_word_templates_word ON public.word_templates USING btree (word_id)"
+      },
+      {
+        "name": "word_templates_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX word_templates_pkey ON public.word_templates USING btree (id)"
+      },
+      {
+        "name": "word_templates_word_id_template_name_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX word_templates_word_id_template_name_key ON public.word_templates USING btree (word_id, template_name)"
+      }
+    ]
+  },
+  "word_forms": {
+    "comment": null,
+    "stats": {
+      "columns": {
+        "is_canonical": {
+          "distinct_count": 2,
+          "distinct_values": [
+            false,
+            true
+          ]
+        },
+        "is_primary": {
+          "distinct_count": 1,
+          "distinct_values": [
+            false
+          ]
+        }
+      },
+      "row_count": 1223492
+    },
+    "columns": [
+      {
+        "table_name": "word_forms",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": "nextval('word_forms_id_seq'::regclass)",
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_forms",
+        "column_name": "word_id",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_forms",
+        "column_name": "form",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_forms",
+        "column_name": "is_canonical",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "column_default": "false",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_forms",
+        "column_name": "is_primary",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "column_default": "false",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_forms",
+        "column_name": "tags",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_forms",
+        "column_name": "sources",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": null
+      },
+      {
+        "table_name": "word_forms",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      },
+      {
+        "table_name": "word_forms",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": "CURRENT_TIMESTAMP",
+        "character_maximum_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "datetime_precision": 6
+      }
+    ],
+    "constraints": {
+      "word_forms_pkey": {
+        "type": "PRIMARY KEY",
+        "columns": [
+          "id"
+        ],
+        "foreign_table_name": "word_forms",
+        "foreign_column_name": "id",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      },
+      "word_forms_word_id_form_key": {
+        "type": "UNIQUE",
+        "columns": [
+          "form",
+          "word_id"
+        ],
+        "foreign_table_name": "word_forms",
+        "foreign_column_name": "form",
+        "on_update": null,
+        "on_delete": null,
+        "check_clause": null
+      }
+    },
+    "indexes": [
+      {
+        "name": "idx_word_forms_form",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_word_forms_form ON public.word_forms USING btree (form)"
+      },
+      {
+        "name": "idx_word_forms_word",
+        "unique": false,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE INDEX idx_word_forms_word ON public.word_forms USING btree (word_id)"
+      },
+      {
+        "name": "word_forms_pkey",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX word_forms_pkey ON public.word_forms USING btree (id)"
+      },
+      {
+        "name": "word_forms_word_id_form_key",
+        "unique": true,
+        "method": "btree",
+        "columns": [],
+        "definition": "CREATE UNIQUE INDEX word_forms_word_id_form_key ON public.word_forms USING btree (word_id, form)"
+      }
+    ]
+  }
+}

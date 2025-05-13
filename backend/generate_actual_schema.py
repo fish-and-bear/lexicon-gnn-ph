@@ -1,43 +1,86 @@
 import os
 import json
+import re
 import psycopg2
 from psycopg2.extras import DictCursor
 from dotenv import load_dotenv
-import sys
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 
 def get_db_params():
-    """Loads database connection parameters from .env file in the parent directory."""
-    # Construct the path to the .env file in the parent directory
-    dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
-    if not os.path.exists(dotenv_path):
-        print(f"Error: .env file not found at {dotenv_path}")
-        print("Please ensure the .env file exists in the project root directory.")
-        sys.exit(1)
+    """Loads database connection parameters from .env file."""
+    load_dotenv()  # Load environment variables from .env file
 
-    load_dotenv(dotenv_path=dotenv_path)
-
-    params = {
-        'dbname': os.getenv('DB_NAME'),
-        'user': os.getenv('DB_USER'),
-        'password': os.getenv('DB_PASSWORD'),
-        'host': os.getenv('DB_HOST', 'localhost'),
-        'port': os.getenv('DB_PORT', '5432')
+    # Map environment variable names to psycopg2 parameter names
+    env_to_psycopg_map = {
+        'DB_NAME': 'dbname',
+        'DB_USER': 'user',
+        'DB_PASSWORD': 'password',
+        'DB_HOST': 'host',
+        'DB_PORT': 'port'
     }
-    if not all(params.values()):
-        print("Error: Missing database connection details in .env file.")
-        print("Required: DB_NAME, DB_USER, DB_PASSWORD. Optional: DB_HOST, DB_PORT.")
-        sys.exit(1)
-    return params
+    required_vars = list(env_to_psycopg_map.keys())
+
+    db_params = {}
+    missing_vars = []
+
+    for env_var in required_vars:
+        value = os.getenv(env_var)
+        psycopg_param = env_to_psycopg_map[env_var]
+
+        if value is None:
+            # Allow host and port to be optional, default later if needed
+            if env_var not in ['DB_HOST', 'DB_PORT']:
+                missing_vars.append(env_var)
+        else:
+            db_params[psycopg_param] = value
+
+    if missing_vars:
+        raise EnvironmentError(f"Missing required environment variables: {', '.join(missing_vars)}")
+
+    # Set defaults for host and port if not provided
+    if 'host' not in db_params:
+        db_params['host'] = 'localhost'
+        logger.info("DB_HOST not found in .env, defaulting to 'localhost'.")
+    if 'port' not in db_params:
+        db_params['port'] = '5432'
+        logger.info("DB_PORT not found in .env, defaulting to '5432'.")
+
+    return db_params
 
 def fetch_schema_data(conn):
-    """Fetches tables, columns, constraints, and indexes from the database."""
+    """Fetches tables, columns, constraints, indexes, and basic stats from the database."""
     cursor = conn.cursor(cursor_factory=DictCursor)
     schema_data = {
         'tables': {},
         'columns': {},
         'constraints': {},
-        'indexes': {}
+        'indexes': {}, # Will store {table_name: {index_definition: index_row_dict}}
+        'stats': {}
     }
+
+    # Columns to get distinct/example values for
+    # Key: table_name, Value: list of column_names
+    categorical_columns_to_analyze = {
+        'languages': ['code', 'region', 'family', 'status'],
+        'words': ['language_code', 'is_proper_noun', 'is_abbreviation', 'is_initialism'], # Added booleans
+        'definitions': ['original_pos'],
+        'parts_of_speech': ['code', 'name_en', 'name_tl'],
+        'relations': ['relation_type'],
+        'affixations': ['affix_type'],
+        'pronunciations': ['type'],
+        'definition_relations': ['relation_type'],
+        'definition_categories': ['category_kind'],
+        'definition_examples': ['example_type'], # Added
+        'word_forms': ['is_canonical', 'is_primary'], # Added booleans
+        'word_templates': ['template_name']
+    }
+    MAX_DISTINCT_VALUES_TO_LIST = 25 # Keep listing all values if count <= this
+    NUM_EXAMPLE_VALUES = 10 # Increase number of examples shown
 
     # Fetch Tables and Comments
     cursor.execute("""
@@ -55,8 +98,12 @@ def fetch_schema_data(conn):
             AND t.table_type = 'BASE TABLE'
             AND n.nspname = 'public';
     """)
+    table_names = []
     for row in cursor.fetchall():
-        schema_data['tables'][row['table_name']] = {'comment': row['table_comment']}
+        table_name = row['table_name']
+        table_names.append(table_name)
+        schema_data['tables'][table_name] = {'comment': row['table_comment']}
+        schema_data['stats'][table_name] = {'columns': {}} # Init stats for table
 
     # Fetch Columns
     cursor.execute("""
@@ -138,140 +185,176 @@ def fetch_schema_data(conn):
             ix.schemaname AS schema_name,
             ix.tablename AS table_name,
             ix.indexname AS index_name,
-            pg_get_indexdef(idx.indexrelid) AS index_definition,
+            pg_get_indexdef(idx.indexrelid) AS index_definition, -- Get the full CREATE INDEX command
             idx.indisunique AS is_unique,
-            am.amname as index_method -- Get index method (btree, gin, gist, etc.)
+            am.amname AS index_method
         FROM
-            pg_indexes ix
+            pg_catalog.pg_indexes ix
         JOIN
-            pg_class c ON c.relname = ix.tablename
+            pg_catalog.pg_class ixc ON ix.indexname = ixc.relname
         JOIN
-            pg_index idx ON idx.indrelid = c.oid
+            pg_catalog.pg_index idx ON ixc.oid = idx.indexrelid
         JOIN
-            pg_class i ON i.oid = idx.indexrelid
-        JOIN
-            pg_am am ON am.oid = i.relam -- Join with pg_am for method name
+            pg_catalog.pg_am am ON ixc.relam = am.oid
         WHERE
-            ix.schemaname = 'public'
+            ix.schemaname = 'public' -- Adjust schema if needed
         ORDER BY
             ix.tablename, ix.indexname;
     """)
-    for row in cursor.fetchall():
-        table_name = row['table_name']
-        if table_name not in schema_data['indexes']:
-            schema_data['indexes'][table_name] = []
-        schema_data['indexes'][table_name].append(dict(row))
+    raw_indexes = cursor.fetchall()
+    processed_indexes = {} # {table_name: {index_definition: index_dict}}
+    index_name_map = {} # {index_definition: first_encountered_index_name}
+
+    for index in raw_indexes:
+        table_name = index['table_name']
+        index_def = index['index_definition']
+
+        if table_name not in processed_indexes:
+            processed_indexes[table_name] = {}
+            schema_data['indexes'][table_name] = [] # Initialize list for this table
+
+        if index_def not in processed_indexes[table_name]:
+            # Store the first name encountered for this definition
+            if index_def not in index_name_map:
+                 index_name_map[index_def] = index['index_name']
+
+            index_data = {
+                "name": index_name_map[index_def], # Use consistent name
+                "unique": index['is_unique'],
+                "method": index['index_method'],
+                "columns": [], # Column names are part of the definition string
+                "definition": index_def
+            }
+            processed_indexes[table_name][index_def] = index_data
+            schema_data['indexes'][table_name].append(index_data)
+        # else: This definition is already recorded for this table, skip duplicate row from pg_indexes
+
+    # Fetch Stats (Row Counts and Distinct/Example Values)
+    logger.info("Fetching table row counts and column statistics...")
+    for table_name in schema_data['tables']:
+        if table_name not in schema_data['stats']:
+            schema_data['stats'][table_name] = {'columns': {}, 'row_count': 0}
+
+        # Get row count
+        try:
+            cursor.execute(f"SELECT COUNT(*) FROM public.{table_name};")
+            count_result = cursor.fetchone()
+            schema_data['stats'][table_name]['row_count'] = count_result[0] if count_result else 0
+        except Exception as e:
+            logger.error(f"Could not get row count for {table_name}: {e}")
+            schema_data['stats'][table_name]['row_count'] = -1 # Indicate error
+
+        # Get distinct/example values for specified columns
+        if table_name in categorical_columns_to_analyze:
+            for col_name in categorical_columns_to_analyze[table_name]:
+                # Check if column exists in fetched schema for the table
+                if col_name not in [c['column_name'] for c in schema_data['columns'].get(table_name, [])]:
+                    logger.warning(f"Column '{col_name}' specified for stats analysis not found in table '{table_name}'. Skipping stats for this column.")
+                    continue
+
+                col_stats = {}
+                try:
+                    # Get distinct count
+                    cursor.execute(f'SELECT COUNT(DISTINCT "{col_name}") FROM public."{table_name}";')
+                    distinct_count_result = cursor.fetchone()
+                    distinct_count = distinct_count_result[0] if distinct_count_result else 0
+                    col_stats['distinct_count'] = distinct_count
+
+                    # Get distinct values or examples
+                    if distinct_count > 0:
+                        if distinct_count <= MAX_DISTINCT_VALUES_TO_LIST:
+                            # Fetch all distinct values
+                            cursor.execute(f'SELECT DISTINCT "{col_name}" FROM public."{table_name}" ORDER BY "{col_name}" LIMIT {MAX_DISTINCT_VALUES_TO_LIST + 1};')
+                            values = [row[0] for row in cursor.fetchall()]
+                            col_stats['distinct_values'] = values
+                        else:
+                            # Fetch example values (including NULL if present)
+                            example_query = f'''
+                                (
+                                    SELECT DISTINCT "{col_name}"
+                                    FROM public."{table_name}"
+                                    WHERE "{col_name}" IS NOT NULL
+                                    ORDER BY "{col_name}" -- Order helps get consistent examples
+                                    LIMIT {NUM_EXAMPLE_VALUES}
+                                )
+                                UNION ALL
+                                (
+                                    SELECT NULL
+                                    WHERE EXISTS (SELECT 1 FROM public."{table_name}" WHERE "{col_name}" IS NULL)
+                                    LIMIT 1 -- Only need to know if NULL exists
+                                )
+                                LIMIT {NUM_EXAMPLE_VALUES};
+                            '''
+                            cursor.execute(example_query)
+                            values = [row[0] for row in cursor.fetchall()]
+                            # Check if NULL exists but wasn't picked
+                            if None not in values and distinct_count > 0:
+                                cursor.execute(f'SELECT EXISTS (SELECT 1 FROM public."{table_name}" WHERE "{col_name}" IS NULL);')
+                                null_exists_result = cursor.fetchone()
+                                if null_exists_result and null_exists_result[0]:
+                                    pass # UNION ALL query should include NULL if it exists within the LIMIT
+
+                            col_stats['example_values'] = values
+
+                except psycopg2.Error as pg_err: # Catch specific psycopg2 errors
+                    logger.error(f'Could not get stats for {table_name}."{col_name}": [{pg_err.pgcode}] {pg_err}')
+                    conn.rollback() # Rollback transaction on error
+                    col_stats['error'] = f"PostgreSQL Error: {pg_err.pgcode}"
+                except Exception as e:
+                    logger.error(f"Unexpected error getting stats for {table_name}.{col_name}: {e}")
+                    col_stats['error'] = str(e)
+
+                schema_data['stats'][table_name]['columns'][col_name] = col_stats
+    logger.info("Finished fetching statistics.")
 
     cursor.close()
     return schema_data
 
 def build_json_schema(data):
-    """Constructs the final JSON schema from fetched data."""
+    """Builds a JSON structure from the fetched schema data."""
     output_schema = {}
     for table_name, table_info in data['tables'].items():
         output_schema[table_name] = {
-            'comment': table_info.get('comment'),
-            'columns': [],
-            'constraints': [],
-            'indexes': []
+            "comment": table_info.get('comment'),
+            "stats": data['stats'].get(table_name, {}), # Include stats
+            "columns": data['columns'].get(table_name, []),
+            "constraints": data['constraints'].get(table_name, []),
+            "indexes": data['indexes'].get(table_name, [])
         }
+    return output_schema
 
-        # Add columns
-        if table_name in data['columns']:
-            for col in data['columns'][table_name]:
-                col_data = {
-                    'name': col['column_name'],
-                    'type': col['data_type'],
-                    'nullable': col['is_nullable'] == 'YES',
-                    'default': col['column_default'],
-                    'primary_key': False # Will be updated by constraint info
-                }
-                if col['character_maximum_length'] is not None:
-                    col_data['length'] = col['character_maximum_length']
-                if col['numeric_precision'] is not None:
-                    col_data['precision'] = col['numeric_precision']
-                if col['numeric_scale'] is not None:
-                    col_data['scale'] = col['numeric_scale']
-                if col['datetime_precision'] is not None:
-                    col_data['datetime_precision'] = col['datetime_precision']
-                output_schema[table_name]['columns'].append(col_data)
-
-        # Add constraints
-        if table_name in data['constraints']:
-            for name, constraint in data['constraints'][table_name].items():
-                constraint_data = {
-                    'name': name,
-                    'type': constraint['type'],
-                    'columns': sorted(constraint['columns']) # Ensure consistent order
-                }
-                if constraint['type'] == 'PRIMARY KEY':
-                    # Mark corresponding columns as primary keys
-                    for col in output_schema[table_name]['columns']:
-                        if col['name'] in constraint['columns']:
-                            col['primary_key'] = True
-                elif constraint['type'] == 'FOREIGN KEY':
-                    constraint_data['referred_table'] = constraint['foreign_table_name']
-                    # Assuming FK constraints link single columns in this simple case
-                    constraint_data['referred_columns'] = [constraint['foreign_column_name']]
-                    constraint_data['on_update'] = constraint['on_update']
-                    constraint_data['on_delete'] = constraint['on_delete']
-                elif constraint['type'] == 'CHECK':
-                     constraint_data['check_clause'] = constraint['check_clause']
-
-                output_schema[table_name]['constraints'].append(constraint_data)
-
-        # Add indexes
-        if table_name in data['indexes']:
-            for index in data['indexes'][table_name]:
-                # Try to parse columns from definition (simple case)
-                # This is a basic parser, might need refinement for complex index defs
-                columns = []
-                try:
-                    col_part = index['index_definition'].split('ON')[1].split('USING')[0]
-                    col_part = col_part[col_part.find('(')+1:col_part.rfind(')')]
-                    columns = [c.strip().strip('"') for c in col_part.split(',')]
-                except Exception:
-                    print(f"Warning: Could not parse columns for index {index['index_name']} from definition: {index['index_definition']}")
-
-                output_schema[table_name]['indexes'].append({
-                    'name': index['index_name'],
-                    'unique': index['is_unique'],
-                    'method': index['index_method'],
-                    'columns': columns, # Parsed columns
-                    'definition': index['index_definition'] # Include full definition
-                })
-
-    return json.dumps(output_schema, indent=2)
 
 if __name__ == "__main__":
-    print("Attempting to connect to database specified in .env...")
-    db_params = get_db_params()
-    conn = None
+    logger.info("Starting schema generation...")
+    connection = None
     try:
-        conn = psycopg2.connect(**db_params)
-        print("Database connection successful.")
-        raw_data = fetch_schema_data(conn)
-        print("Schema data fetched. Generating JSON...")
-        json_output = build_json_schema(raw_data)
-        print("\n--- DATABASE SCHEMA (JSON) ---")
-        print(json_output)
-        print("--- END SCHEMA ---")
+        db_parameters = get_db_params()
+        logger.info("Connecting to the database...")
+        connection = psycopg2.connect(**db_parameters)
+        logger.info("Database connection successful.")
 
-        # Save to file
-        output_filename = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'actual_schema.json')
-        with open(output_filename, 'w') as f:
-            f.write(json_output)
-        print(f"\nSchema successfully saved to: {output_filename}")
+        logger.info("Fetching schema data...")
+        schema_details = fetch_schema_data(connection)
+        logger.info("Schema data fetched.")
 
-    except psycopg2.OperationalError as e:
-        print(f"\nDatabase connection failed: {e}")
-        print("Please ensure the database server is running and accessible,")
-        print("and that the connection details in .env are correct.")
-        sys.exit(1)
+        logger.info("Building JSON schema...")
+        json_schema = build_json_schema(schema_details)
+        logger.info("JSON schema built.")
+
+        output_filename = "actual_schema.json"
+        logger.info(f"Writing schema to {output_filename}...")
+        with open(output_filename, 'w', encoding='utf-8') as f:
+            json.dump(json_schema, f, indent=2, ensure_ascii=False)
+        logger.info(f"Schema successfully written to {output_filename}.")
+
+    except EnvironmentError as env_err:
+        logger.error(f"Configuration error: {env_err}")
+    except psycopg2.Error as db_err:
+        logger.error(f"Database error: {db_err}", exc_info=True)
     except Exception as e:
-        print(f"\nAn error occurred: {e}")
-        sys.exit(1)
+        logger.error(f"An unexpected error occurred: {e}", exc_info=True)
     finally:
-        if conn:
-            conn.close()
-            print("Database connection closed.") 
+        if connection:
+            connection.close()
+            logger.info("Database connection closed.")
+        logger.info("Schema generation script finished.") 

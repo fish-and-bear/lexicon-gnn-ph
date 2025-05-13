@@ -1,0 +1,699 @@
+{
+  "total_words": 167315,
+  "language_counts": [
+    {
+      "language_code": "tl",
+      "count": 95850
+    },
+    {
+      "language_code": "en",
+      "count": 20617
+    },
+    {
+      "language_code": "ceb",
+      "count": 17707
+    },
+    {
+      "language_code": "es",
+      "count": 14931
+    },
+    {
+      "language_code": "ilo",
+      "count": 2796
+    },
+    {
+      "language_code": "la",
+      "count": 1588
+    },
+    {
+      "language_code": "hil",
+      "count": 1482
+    },
+    {
+      "language_code": "pam",
+      "count": 1237
+    },
+    {
+      "language_code": "bik",
+      "count": 1200
+    },
+    {
+      "language_code": "pag",
+      "count": 1060
+    },
+    {
+      "language_code": "war",
+      "count": 1052
+    },
+    {
+      "language_code": "mrw",
+      "count": 998
+    },
+    {
+      "language_code": "ms",
+      "count": 800
+    },
+    {
+      "language_code": "tsg",
+      "count": 584
+    },
+    {
+      "language_code": "krj",
+      "count": 555
+    },
+    {
+      "language_code": "bno",
+      "count": 498
+    },
+    {
+      "language_code": "fr",
+      "count": 434
+    },
+    {
+      "language_code": "iba",
+      "count": 355
+    },
+    {
+      "language_code": "sa",
+      "count": 296
+    },
+    {
+      "language_code": "ifk",
+      "count": 291
+    },
+    {
+      "language_code": "bcl",
+      "count": 278
+    },
+    {
+      "language_code": "ja",
+      "count": 244
+    },
+    {
+      "language_code": "ar",
+      "count": 226
+    },
+    {
+      "language_code": "mdh",
+      "count": 211
+    },
+    {
+      "language_code": "akl",
+      "count": 198
+    },
+    {
+      "language_code": "it",
+      "count": 159
+    },
+    {
+      "language_code": "gri",
+      "count": 130
+    },
+    {
+      "language_code": "tbo",
+      "count": 125
+    },
+    {
+      "language_code": "kal",
+      "count": 119
+    },
+    {
+      "language_code": "zh",
+      "count": 112
+    },
+    {
+      "language_code": "igo",
+      "count": 86
+    },
+    {
+      "language_code": "tsi",
+      "count": 84
+    },
+    {
+      "language_code": "he",
+      "count": 79
+    },
+    {
+      "language_code": "bag",
+      "count": 68
+    },
+    {
+      "language_code": "ted",
+      "count": 66
+    },
+    {
+      "language_code": "de",
+      "count": 55
+    },
+    {
+      "language_code": "pt",
+      "count": 47
+    },
+    {
+      "language_code": "tbw",
+      "count": 34
+    },
+    {
+      "language_code": "hi",
+      "count": 34
+    },
+    {
+      "language_code": "tiy",
+      "count": 31
+    },
+    {
+      "language_code": "mbt",
+      "count": 31
+    },
+    {
+      "language_code": "fa",
+      "count": 28
+    },
+    {
+      "language_code": "yka",
+      "count": 28
+    },
+    {
+      "language_code": "ru",
+      "count": 26
+    },
+    {
+      "language_code": "sub",
+      "count": 26
+    },
+    {
+      "language_code": "man",
+      "count": 26
+    },
+    {
+      "language_code": "ivv",
+      "count": 24
+    },
+    {
+      "language_code": "sgd",
+      "count": 23
+    },
+    {
+      "language_code": "kan",
+      "count": 22
+    },
+    {
+      "language_code": "hnn",
+      "count": 19
+    },
+    {
+      "language_code": "mex",
+      "count": 19
+    },
+    {
+      "language_code": "ibg",
+      "count": 18
+    },
+    {
+      "language_code": "iby",
+      "count": 17
+    },
+    {
+      "language_code": "buk",
+      "count": 17
+    },
+    {
+      "language_code": "dum",
+      "count": 16
+    },
+    {
+      "language_code": "msb",
+      "count": 16
+    },
+    {
+      "language_code": "min",
+      "count": 16
+    },
+    {
+      "language_code": "tin",
+      "count": 16
+    },
+    {
+      "language_code": "isd",
+      "count": 15
+    },
+    {
+      "language_code": "agt",
+      "count": 15
+    },
+    {
+      "language_code": "ko",
+      "count": 12
+    },
+    {
+      "language_code": "th",
+      "count": 11
+    },
+    {
+      "language_code": "sma",
+      "count": 10
+    },
+    {
+      "language_code": "ilt",
+      "count": 10
+    },
+    {
+      "language_code": "mns",
+      "count": 9
+    },
+    {
+      "language_code": "tr",
+      "count": 8
+    },
+    {
+      "language_code": "tng",
+      "count": 8
+    },
+    {
+      "language_code": "baj",
+      "count": 6
+    },
+    {
+      "language_code": "gad",
+      "count": 6
+    },
+    {
+      "language_code": "zam",
+      "count": 6
+    },
+    {
+      "language_code": "plw",
+      "count": 6
+    },
+    {
+      "language_code": "sul",
+      "count": 5
+    },
+    {
+      "language_code": "ata",
+      "count": 5
+    },
+    {
+      "language_code": "vi",
+      "count": 5
+    },
+    {
+      "language_code": "tbn",
+      "count": 4
+    },
+    {
+      "language_code": "my",
+      "count": 4
+    },
+    {
+      "language_code": "itn",
+      "count": 3
+    },
+    {
+      "language_code": "mad",
+      "count": 3
+    },
+    {
+      "language_code": "cbk",
+      "count": 3
+    },
+    {
+      "language_code": "sml",
+      "count": 3
+    },
+    {
+      "language_code": "rom",
+      "count": 3
+    },
+    {
+      "language_code": "mny",
+      "count": 2
+    },
+    {
+      "language_code": "agu",
+      "count": 2
+    },
+    {
+      "language_code": "bku",
+      "count": 2
+    },
+    {
+      "language_code": "btk",
+      "count": 2
+    },
+    {
+      "language_code": "gre",
+      "count": 2
+    },
+    {
+      "language_code": "hwi",
+      "count": 2
+    },
+    {
+      "language_code": "kbn",
+      "count": 2
+    },
+    {
+      "language_code": "kem",
+      "count": 2
+    },
+    {
+      "language_code": "kol",
+      "count": 2
+    },
+    {
+      "language_code": "krw",
+      "count": 2
+    },
+    {
+      "language_code": "neg",
+      "count": 2
+    },
+    {
+      "language_code": "pny",
+      "count": 1
+    },
+    {
+      "language_code": "png",
+      "count": 1
+    },
+    {
+      "language_code": "nawa",
+      "count": 1
+    },
+    {
+      "language_code": "mwr",
+      "count": 1
+    },
+    {
+      "language_code": "snk",
+      "count": 1
+    },
+    {
+      "language_code": "mts",
+      "count": 1
+    },
+    {
+      "language_code": "aby",
+      "count": 1
+    },
+    {
+      "language_code": "tb",
+      "count": 1
+    },
+    {
+      "language_code": "mgn",
+      "count": 1
+    },
+    {
+      "language_code": "mam",
+      "count": 1
+    },
+    {
+      "language_code": "kas",
+      "count": 1
+    },
+    {
+      "language_code": "iwa",
+      "count": 1
+    },
+    {
+      "language_code": "tgk",
+      "count": 1
+    },
+    {
+      "language_code": "isp",
+      "count": 1
+    },
+    {
+      "language_code": "tib",
+      "count": 1
+    },
+    {
+      "language_code": "exp",
+      "count": 1
+    },
+    {
+      "language_code": "ep",
+      "count": 1
+    },
+    {
+      "language_code": "ehi",
+      "count": 1
+    },
+    {
+      "language_code": "cze",
+      "count": 1
+    },
+    {
+      "language_code": "cor",
+      "count": 1
+    },
+    {
+      "language_code": "chsi",
+      "count": 1
+    },
+    {
+      "language_code": "chii",
+      "count": 1
+    },
+    {
+      "language_code": "btg",
+      "count": 1
+    },
+    {
+      "language_code": "bat",
+      "count": 1
+    },
+    {
+      "language_code": "bal",
+      "count": 1
+    },
+    {
+      "language_code": "apa",
+      "count": 1
+    },
+    {
+      "language_code": "am",
+      "count": 1
+    },
+    {
+      "language_code": "zoo",
+      "count": 1
+    }
+  ],
+  "words_with_definitions": 115623,
+  "words_with_etymologies": 83230,
+  "words_with_relations": 126931,
+  "total_definitions": 235180,
+  "pos_counts": [
+    {
+      "pos": "Pangngalan",
+      "count": 158959
+    },
+    {
+      "pos": "Pang-uri",
+      "count": 31053
+    },
+    {
+      "pos": "Pandiwa",
+      "count": 28457
+    },
+    {
+      "pos": "Pangngalang Pantangi",
+      "count": 8621
+    },
+    {
+      "pos": "Panghalip",
+      "count": 1644
+    },
+    {
+      "pos": "Pang-abay",
+      "count": 1533
+    },
+    {
+      "pos": "Hindi Tiyak",
+      "count": 1365
+    },
+    {
+      "pos": "Parirala",
+      "count": 656
+    },
+    {
+      "pos": "Pandamdam",
+      "count": 625
+    },
+    {
+      "pos": "Pamilang",
+      "count": 556
+    },
+    {
+      "pos": "Daglat",
+      "count": 403
+    },
+    {
+      "pos": "Pangatnig",
+      "count": 318
+    },
+    {
+      "pos": "Panlapi",
+      "count": 239
+    },
+    {
+      "pos": "Pang-ukol",
+      "count": 222
+    },
+    {
+      "pos": "Unlapi",
+      "count": 205
+    },
+    {
+      "pos": "Kataga",
+      "count": 130
+    },
+    {
+      "pos": "Pantukoy",
+      "count": 103
+    },
+    {
+      "pos": "Hulapi",
+      "count": 88
+    },
+    {
+      "pos": "Bantas",
+      "count": 2
+    },
+    {
+      "pos": "Unknown",
+      "count": 1
+    }
+  ],
+  "definitions_with_examples": 0,
+  "source_counts": [
+    {
+      "source": "diksiyonaryo.ph",
+      "count": 92565
+    },
+    {
+      "source": "Kaikki.org (Tagalog)",
+      "count": 64499
+    },
+    {
+      "source": "KWF Diksiyonaryo ng Wikang Filipino",
+      "count": 54065
+    },
+    {
+      "source": "tagalog.com",
+      "count": 16167
+    },
+    {
+      "source": "Philippine Slang and Gay Dictionary (2023)",
+      "count": 4789
+    },
+    {
+      "source": "Project Marayum",
+      "count": 2388
+    },
+    {
+      "source": "Calderon Diccionario (1915)",
+      "count": 707
+    }
+  ],
+  "total_relations": 304171,
+  "relation_type_counts": [
+    {
+      "relation_type": "synonym",
+      "count": 128290
+    },
+    {
+      "relation_type": "root_of",
+      "count": 49107
+    },
+    {
+      "relation_type": "derived_from",
+      "count": 45081
+    },
+    {
+      "relation_type": "related",
+      "count": 42570
+    },
+    {
+      "relation_type": "see_also",
+      "count": 12175
+    },
+    {
+      "relation_type": "cognate_of",
+      "count": 9828
+    },
+    {
+      "relation_type": "variant",
+      "count": 6466
+    },
+    {
+      "relation_type": "derived",
+      "count": 4842
+    },
+    {
+      "relation_type": "has_translation",
+      "count": 2441
+    },
+    {
+      "relation_type": "translation_of",
+      "count": 2441
+    },
+    {
+      "relation_type": "doublet_of",
+      "count": 876
+    },
+    {
+      "relation_type": "antonym",
+      "count": 54
+    }
+  ],
+  "self_relations": 0,
+  "avg_relations_per_word": 2.396349197595544,
+  "total_etymologies": 92816,
+  "etymologies_with_language_codes": 76507,
+  "top_source_languages": [
+    {
+      "lang_code": "Ing",
+      "count": 17383
+    },
+    {
+      "lang_code": "tl",
+      "count": 16102
+    },
+    {
+      "lang_code": "Esp",
+      "count": 10488
+    },
+    {
+      "lang_code": "ceb",
+      "count": 8593
+    },
+    {
+      "lang_code": "es",
+      "count": 8417
+    },
+    {
+      "lang_code": "ST",
+      "count": 7599
+    },
+    {
+      "lang_code": "Seb",
+      "count": 3226
+    },
+    {
+      "lang_code": "Ilk",
+      "count": 3208
+    },
+    {
+      "lang_code": "en",
+      "count": 2564
+    },
+    {
+      "lang_code": "Bik",
+      "count": 2344
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+    "db_config": {
+        "host": "localhost",
+        "port": 5432,
+        "dbname": "fil_dict_db",
+        "user": "postgres",
+        "password": "",
+        "application_name": "FilRelex-ML-SafeRun"
+    },
+    "data": {
+        "use_xlmr": true,
+        "use_fasttext": false,
+        "use_char_ngrams": true,
+        "use_phonetic_features": false,
+        "use_etymology_features": false,
+        "use_baybayin_features": false,
+        "normalize_features": true,
+        "max_nodes": 10000,
+        "valid_split": 0.1,
+        "test_split": 0.1,
+        "negative_sampling_ratio": 2,
+        "relation_types_to_predict": [
+            "synonym", 
+            "antonym",
+            "has_translation",
+            "root_of"
+        ],
+        "pos_tags_to_predict": false,
+        "target_languages": [
+            "tl", "ceb"
+        ],
+        "node_feature_dim": 384,
+        "edge_feature_dim": 16
+    },
+    "model": {
+        "architecture": "hgnn",
+        "in_dim": 384,
+        "hidden_dim": 128,
+        "out_dim": 64,
+        "num_layers": 2,
+        "num_heads": 4,
+        "num_bases": 4,
+        "dropout": 0.2,
+        "residual": true,
+        "layer_norm": true,
+        "sparsity": 0.9,
+        "link_prediction_score_type": "distmult",
+        "use_node_types": true,
+        "node_types": ["word", "definition"],
+        "use_attention": true
+    },
+    "training": {
+        "batch_size": 1024,
+        "num_epochs": 10,
+        "learning_rate": 5e-4,
+        "weight_decay": 1e-5,
+        "lr_scheduler": "cosine",
+        "warmup_steps": 200,
+        "early_stopping_patience": 3,
+        "gradient_clip_norm": 1.0,
+        "eval_every": 1,
+        "log_every": 50,
+        "link_prediction_loss_weight": 1.0,
+        "node_classification_loss_weight": 0.0
+    },
+    "inference": {
+        "prediction_threshold": 0.8,
+        "max_predictions_per_word": 10,
+        "confidence_threshold": 0.7,
+        "min_relation_frequency": 10,
+        "export_predictions": true,
+        "export_embeddings": false
+    },
+    "logging": {
+        "log_dir": "logs",
+        "save_dir": "checkpoints/safe_run",
+        "tensorboard": true,
+        "save_every": 2,
+        "save_best": true,
+        "debug": true
+    },
+    "evaluation": {
+        "metrics": [
+            "accuracy",
+            "precision",
+            "recall",
+            "f1",
+            "hits@1",
+            "hits@5"
+        ],
+        "export_confusion_matrix": false,
+        "per_language_evaluation": true,
+        "per_relation_evaluation": true
+    },
+    "active_learning": {
+        "enabled": false
+    }
+} 
