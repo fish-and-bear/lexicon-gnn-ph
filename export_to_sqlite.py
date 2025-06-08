@@ -7,15 +7,27 @@ import datetime
 import uuid as uuid_module
 import re
 
+# Load environment variables from .env file
+load_dotenv()
+
+# PostgreSQL connection parameters
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+
+# SQLite database file
+SQLITE_DB_FILE = "fil_relex_colab.sqlite"
+
 def get_pg_connection():
     """Establishes connection to PostgreSQL database."""
-    load_dotenv()
     conn = psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
+        dbname=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        host=DB_HOST,
+        port=DB_PORT
     )
     return conn
 
@@ -207,64 +219,170 @@ def copy_data(pg_cursor, sqlite_conn, sqlite_cursor, table_name, schema):
         sqlite_conn.rollback()
         raise
 
-def main():
-    sqlite_db_file = 'fil_relex_colab.sqlite'
-    if os.path.exists(sqlite_db_file):
-        try:
-            os.remove(sqlite_db_file)
-            print(f"Removed existing SQLite file: {sqlite_db_file}")
-        except OSError as e:
-            print(f"Error removing existing SQLite file {sqlite_db_file}: {e}. Please check permissions or close applications using it.")
-            return
+def get_pg_tables_and_columns(pg_conn):
+    """Inspects the public schema of the PostgreSQL database and returns table names, columns, and primary keys."""
+    tables_info = {}
+    with pg_conn.cursor() as cur:
+        # Get all tables in the public schema
+        cur.execute("""
+            SELECT tablename
+            FROM pg_tables
+            WHERE schemaname = 'public';
+        """)
+        tables = [row[0] for row in cur.fetchall()]
 
+        for table_name in tables:
+            cur.execute(f"""
+                SELECT column_name, data_type
+                FROM information_schema.columns
+                WHERE table_schema = 'public' AND table_name = '{table_name}';
+            """)
+            columns = cur.fetchall()
 
+            cur.execute(f"""
+                SELECT kcu.column_name
+                FROM information_schema.table_constraints tc
+                JOIN information_schema.key_column_usage kcu
+                  ON tc.constraint_name = kcu.constraint_name
+                  AND tc.table_schema = kcu.table_schema
+                WHERE tc.constraint_type = 'PRIMARY KEY'
+                  AND tc.table_schema = 'public'
+                  AND tc.table_name = '{table_name}';
+            """)
+            pk_columns = [row[0] for row in cur.fetchall()]
+            tables_info[table_name] = {"columns": columns, "pk_columns": pk_columns}
+            
+    return tables_info
+
+def pg_type_to_sqlite_type(pg_type):
+    """Basic mapping from PostgreSQL data types to SQLite data types."""
+    pg_type_lower = pg_type.lower()
+    if "int" in pg_type_lower or "serial" in pg_type_lower:
+        return "INTEGER"
+    elif "char" in pg_type_lower or "text" in pg_type_lower or "uuid" in pg_type_lower: # Treat UUID as TEXT
+        return "TEXT"
+    elif "numeric" in pg_type_lower or "decimal" in pg_type_lower or "double precision" in pg_type_lower or "real" in pg_type_lower:
+        return "REAL"
+    elif "timestamp" in pg_type_lower or "date" in pg_type_lower or "time" in pg_type_lower:
+        return "TEXT" # SQLite stores dates/times as TEXT, REAL, or INTEGER
+    elif "boolean" in pg_type_lower:
+        return "INTEGER" # SQLite uses 0 and 1 for booleans
+    else:
+        return "TEXT" # Default to TEXT for unhandled types
+
+def export_pg_to_sqlite():
+    """Exports data from PostgreSQL to SQLite."""
     pg_conn = None
     sqlite_conn = None
 
     try:
+        # Connect to PostgreSQL
+        print(f"Connecting to PostgreSQL database '{DB_NAME}' on {DB_HOST}:{DB_PORT}...")
         pg_conn = get_pg_connection()
-        pg_cursor = pg_conn.cursor()
+        print("Successfully connected to PostgreSQL.")
 
-        sqlite_conn = sqlite3.connect(sqlite_db_file)
-        sqlite_cursor = sqlite_conn.cursor()
+        # Get table schemas from PostgreSQL
+        print("Inspecting PostgreSQL schema...")
+        tables_info = get_pg_tables_and_columns(pg_conn)
+        if not tables_info:
+            print("No tables found in the public schema of the PostgreSQL database.")
+            return
+        print(f"Found {len(tables_info)} tables: {', '.join(tables_info.keys())}")
 
-        pg_cursor.execute("""
-            SELECT tablename
-            FROM pg_catalog.pg_tables
-            WHERE schemaname != 'pg_catalog' AND 
-                  schemaname != 'information_schema' AND
-                  tablename NOT LIKE 'pg_stat_%' AND 
-                  tablename NOT LIKE 'sql_%'; 
-        """)
-        tables = [row[0] for row in pg_cursor.fetchall()]
+        # Connect to SQLite (creates the file if it doesn't exist)
+        print(f"Creating/Connecting to SQLite database file '{SQLITE_DB_FILE}'...")
+        sqlite_conn = sqlite3.connect(SQLITE_DB_FILE)
+        sqlite_cur = sqlite_conn.cursor()
+        print("Successfully connected to SQLite.")
 
-        print(f"Found user tables: {tables}")
+        pg_cur = pg_conn.cursor()
 
-        for table_name in tables:
-            print(f"\nProcessing table: \"{table_name}\"")
-            schema = get_table_schema(pg_cursor, table_name)
-            if not schema:
-                print(f"Could not retrieve schema for table \"{table_name}\". Skipping.")
-                continue
+        for table_name, info in tables_info.items():
+            columns_with_types = info["columns"]
+            pk_columns = info["pk_columns"]
+            
+            print(f"Processing table: {table_name}")
 
-            create_sqlite_table(sqlite_cursor, table_name, schema)
-            copy_data(pg_cursor, sqlite_conn, sqlite_cursor, table_name, schema)
+            # Drop table in SQLite if it exists (for idempotency)
+            sqlite_cur.execute(f"DROP TABLE IF EXISTS {table_name}")
 
-        print(f"\nDatabase export to {sqlite_db_file} complete.")
+            # Create table in SQLite
+            column_definitions = []
+            for col_name, pg_type in columns_with_types:
+                sqlite_type = pg_type_to_sqlite_type(pg_type)
+                column_definitions.append(f'"{col_name}" {sqlite_type}') # Quote column names
+
+            # Simplified PK constraint for SQLite: uses the first PK column if multiple, or single PK.
+            # For composite PKs, this is a simplification. SQLite supports composite PKs like: PRIMARY KEY (col1, col2)
+            if pk_columns:
+                # Ensuring PK columns are part of the column definitions before marking as PK
+                pk_col_names_in_table = [c[0] for c in columns_with_types]
+                valid_pk_columns = [pk for pk in pk_columns if pk in pk_col_names_in_table]
+                if valid_pk_columns:
+                    # Quote PK column names
+                    quoted_pk_columns = [f'"{col}"' for col in valid_pk_columns]
+                    pk_definition = f"PRIMARY KEY ({', '.join(quoted_pk_columns)})"
+                    create_table_sql = f'CREATE TABLE "{table_name}" ({", ".join(column_definitions)}, {pk_definition})'
+                else: # Fallback if PK columns listed are not actual columns (should not happen with current schema query)
+                    create_table_sql = f'CREATE TABLE "{table_name}" ({", ".join(column_definitions)})'
+
+            else: # No primary key
+                create_table_sql = f'CREATE TABLE "{table_name}" ({", ".join(column_definitions)})'
+            
+            print(f"  Creating SQLite table {table_name} with SQL: {create_table_sql}")
+            sqlite_cur.execute(create_table_sql)
+
+            # Copy data from PostgreSQL to SQLite
+            pg_cur.execute(f'SELECT * FROM public."{table_name}"') # Ensure schema.table quoting
+            
+            rows_copied_count = 0
+            column_names_only = [f'"{col[0]}"' for col in columns_with_types] # Quoted column names for insert
+            placeholders = ", ".join(["?"] * len(column_names_only))
+            insert_sql = f'INSERT INTO "{table_name}" ({", ".join(column_names_only)}) VALUES ({placeholders})'
+
+            batch_size = 1000 # Process in batches
+            while True:
+                rows = pg_cur.fetchmany(batch_size)
+                if not rows:
+                    break
+                
+                # Adapt data for SQLite (e.g., boolean to int)
+                adapted_rows = []
+                for row in rows:
+                    adapted_row = []
+                    for i, value in enumerate(row):
+                        pg_col_name, pg_col_type = columns_with_types[i]
+                        if pg_col_type.lower() == "boolean":
+                            adapted_row.append(1 if value else 0)
+                        else:
+                            adapted_row.append(value)
+                    adapted_rows.append(tuple(adapted_row))
+                
+                sqlite_cur.executemany(insert_sql, adapted_rows)
+                rows_copied_count += len(adapted_rows)
+            
+            print(f"  Copied {rows_copied_count} rows from PostgreSQL to SQLite for table {table_name}.")
+            sqlite_conn.commit()
+
+        print("Database export completed successfully.")
 
     except psycopg2.Error as e:
-        print(f"PostgreSQL Connection/Query Error: {e}")
+        print(f"PostgreSQL Error: {e}")
     except sqlite3.Error as e:
         print(f"SQLite Error: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-        import traceback
-        traceback.print_exc()
     finally:
         if pg_conn:
             pg_conn.close()
+            print("PostgreSQL connection closed.")
         if sqlite_conn:
             sqlite_conn.close()
+            print("SQLite connection closed.")
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    if not all([DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT]):
+        print("Error: Database connection parameters are missing in the .env file.")
+        print("Please ensure DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, and DB_PORT are set.")
+    else:
+        export_pg_to_sqlite()

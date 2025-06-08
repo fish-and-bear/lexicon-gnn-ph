@@ -3368,8 +3368,8 @@ def get_statistics():
             "total_definitions": "SELECT COUNT(*) FROM definitions",
             "total_etymologies": "SELECT COUNT(*) FROM etymologies",
             "total_relations": "SELECT COUNT(*) FROM relations",
-            "descendant_relations": "SELECT COUNT(*) FROM relations WHERE relation_type = 'related' AND metadata->>'relation_subtype' = 'derived_into'", # Added query
-            "homophone_relations": "SELECT COUNT(*) FROM relations WHERE relation_type = 'related' AND metadata->>'relation_subtype' = 'homophone'", # Added query
+            # "descendant_relations": "SELECT COUNT(*) FROM relations WHERE relation_type = 'related' AND metadata->>'relation_subtype' = 'derived_into'", # Added query
+            # "homophone_relations": "SELECT COUNT(*) FROM relations WHERE relation_type = 'related' AND metadata->>'relation_subtype' = 'homophone'", # Added query
             "words_with_baybayin": "SELECT COUNT(*) FROM words WHERE has_baybayin = true",
             "languages": "SELECT language_code, COUNT(*) FROM words GROUP BY language_code",
             "pos": "SELECT standardized_pos_id, COUNT(*) FROM definitions GROUP BY standardized_pos_id"

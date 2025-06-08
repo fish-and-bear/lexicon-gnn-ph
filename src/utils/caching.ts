@@ -69,7 +69,7 @@ export function clearOldCache() {
           const { timestamp } = JSON.parse(item);
           if (currentTime - timestamp > CACHE_EXPIRATION) {
             localStorage.removeItem(key);
-            console.log(`Cache item ${key} removed due to expiration.`);
+            // console.log(`Cache item ${key} removed due to expiration.`);
           }
         } catch (e) {
           // If we can't parse the item, remove it
@@ -90,7 +90,7 @@ function ensureCacheCleanupInterval() {
   if (!cleanupIntervalStarted) {
     setInterval(clearOldCache, CACHE_CLEANUP_INTERVAL);
     cleanupIntervalStarted = true;
-    console.log('Cache cleanup interval started.');
+    // console.log('Cache cleanup interval started.');
   }
 }
 
@@ -279,4 +279,43 @@ export function clearCache(): void {
     }
   }
   keys.forEach(key => localStorage.removeItem(key));
+}
+
+export function initializeCache(): void {
+  try {
+    cleanupExpiredItems();
+    // console.log('Cache cleanup interval started.');
+  } catch (error) {
+    console.error('Failed to initialize cache:', error);
+  }
+}
+
+export function cleanupExpiredItems(): void {
+  const now = Date.now();
+  const keys = Object.keys(localStorage);
+  const cacheKeys = keys.filter(key => key.startsWith('cache:'));
+  
+  cacheKeys.forEach(key => {
+    const item = localStorage.getItem(key);
+    if (item) {
+      try {
+        const cacheItem: CacheItem<any> = JSON.parse(item);
+        if (cacheItem.timestamp && (now - cacheItem.timestamp) > CACHE_EXPIRATION) {
+          localStorage.removeItem(key);
+          // console.log(`Cache item ${key} removed due to expiration.`);
+        }
+      } catch (e) {
+        // Invalid cache item, remove it
+        localStorage.removeItem(key);
+      }
+    }
+  });
+}
+
+function logCacheStats(): void {
+  // Development-only cache statistics
+  if (process.env.NODE_ENV === 'development') {
+    const stats = getCacheStats();
+    // console.log('Cache Stats:', stats);
+  }
 }

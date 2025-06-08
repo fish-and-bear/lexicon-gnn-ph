@@ -1,35 +1,28 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
-// Add logging
-console.log("[INIT] ThemeContext.tsx loading");
+// console.log("[INIT] ThemeContext.tsx loading");
 
-// Define the shape of our theme context
-interface ThemeContextType {
-  themeMode: 'light' | 'dark';
+export type ThemeMode = "light" | "dark";
+
+interface ThemeContextProps {
+  themeMode: ThemeMode;
   toggleTheme: () => void;
 }
 
-// Create the context with a default value
-const ThemeContext = createContext<ThemeContextType>({
-  themeMode: 'light',
-  toggleTheme: () => console.warn('No theme provider found')
-});
+const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-// Hook to use the theme context
-export const useAppTheme = () => {
+export const useAppTheme = (): ThemeContextProps => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useAppTheme must be used within a AppThemeProvider');
+    throw new Error("useAppTheme must be used within an AppThemeProvider");
   }
   return context;
 };
 
-// Props for our theme provider
 interface AppThemeProviderProps {
   children: ReactNode;
 }
 
-// Theme provider component
 export const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
   // Get the preferred theme from localStorage or system preference
   const getInitialTheme = (): 'light' | 'dark' => {
@@ -85,7 +78,8 @@ export const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) 
     };
   }, []);
 
-  // Provide the theme context
+  // console.log("[INIT] ThemeContext.tsx loaded successfully");
+
   return (
     <ThemeContext.Provider value={{ themeMode, toggleTheme }}>
       {children}
@@ -94,5 +88,3 @@ export const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) 
 };
 
 export default ThemeContext;
-
-console.log("[INIT] ThemeContext.tsx loaded successfully");

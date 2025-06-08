@@ -27,244 +27,344 @@ class GraphEncoder(nn.Module):
     """
     
     def __init__(self, 
-                 in_dim: int, 
+                 original_feat_dims: Dict[str, int],
                  hidden_dim: int, 
                  out_dim: int,
+                 node_types: List[str],
                  rel_names: List[str],
-                 num_layers: int = 3,
+                 num_encoder_layers: int = 3,
+                 num_decoder_layers: int = 1,
                  dropout: float = 0.1,
-                 mask_rate: float = 0.3,
-                 decoder_layers: int = 1):
+                 feature_mask_rate: float = 0.3,
+                 edge_mask_rate: float = 0.3,
+                 num_heads: int = 8,
+                 residual: bool = True,
+                 layer_norm: bool = True,
+                 num_bases: int = 8,
+                 hgnn_sparsity: float = 0.9):
         """
         Initialize the graph encoder.
         
         Args:
-            in_dim: Input feature dimension
-            hidden_dim: Hidden feature dimension
-            out_dim: Output feature dimension
-            rel_names: List of relation types in the graph
-            num_layers: Number of GNN layers
-            dropout: Dropout probability
-            mask_rate: Masking rate for pretraining
-            decoder_layers: Number of layers in the decoder
+            original_feat_dims: Dict mapping node type to its original feature dimension.
+            hidden_dim: Hidden dimension for GNN layers (common internal dimension).
+            out_dim: Output feature dimension of the main encoder GNN.
+            node_types: List of all unique node type names.
+            rel_names: List of relation types in the graph.
+            num_encoder_layers: Number of GNN layers in the main encoder.
+            num_decoder_layers: Number of GNN layers in the reconstruction decoder.
+            dropout: Dropout probability.
+            feature_mask_rate: Rate for masking features within nodes.
+            edge_mask_rate: Rate for masking edges.
+            num_heads: Number of attention heads for HGNN's GraphGPSLayer.
+            residual: Whether HGNN's GraphGPSLayer uses residual connections.
+            layer_norm: Whether HGNN's GraphGPSLayer uses layer normalization.
+            num_bases: Number of bases for HGNN's RelationalGraphConv.
+            hgnn_sparsity: Sparsity factor for HGNN's GraphGPSLayer.
         """
         super().__init__()
         
-        self.in_dim = in_dim
+        self.original_feat_dims = original_feat_dims
         self.hidden_dim = hidden_dim
         self.out_dim = out_dim
+        self.node_types = sorted(list(set(node_types)))
         self.rel_names = rel_names
-        self.mask_rate = mask_rate
+        self.feature_mask_rate = feature_mask_rate
+        self.edge_mask_rate = edge_mask_rate
         
         # Encoder: core HGNN
         self.encoder = HeterogeneousGNN(
-            in_dim=in_dim,
-            hidden_dim=hidden_dim,
-            out_dim=out_dim,
-            rel_names=rel_names,
-            num_layers=num_layers,
-            dropout=dropout
+            original_feat_dims=self.original_feat_dims,
+            hidden_dim=self.hidden_dim,
+            out_dim=self.out_dim,
+            node_types=self.node_types,
+            rel_names=self.rel_names,
+            num_layers=num_encoder_layers,
+            dropout=dropout,
+            num_heads=num_heads,
+            residual=residual,
+            layer_norm=layer_norm,
+            num_bases=num_bases,
+            sparsity=hgnn_sparsity
         )
         
-        # Decoder: simpler HGNN for reconstruction
-        self.decoder = HeterogeneousGNN(
-            in_dim=out_dim,
-            hidden_dim=hidden_dim,
-            out_dim=in_dim,  # Reconstruct original feature dim
-            rel_names=rel_names,
-            num_layers=decoder_layers,
-            dropout=dropout
+        # Decoder: simpler HGNN for reconstruction of original features
+        self.feature_reconstruction_decoder = HeterogeneousGNN(
+            original_feat_dims={ntype: self.out_dim for ntype in self.node_types},
+            hidden_dim=self.hidden_dim,
+            out_dim=self.hidden_dim,
+            node_types=self.node_types,
+            rel_names=self.rel_names,
+            num_layers=num_decoder_layers,
+            dropout=dropout,
+            num_heads=num_heads,
+            residual=residual,
+            layer_norm=layer_norm,
+            num_bases=num_bases,
+            sparsity=hgnn_sparsity
         )
         
-        # Feature reconstruction head
-        self.feature_decoder = nn.Sequential(
-            nn.Linear(out_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Linear(hidden_dim, in_dim)
-        )
+        # Feature reconstruction heads (one for each node type)
+        self.feature_reconstruction_heads = nn.ModuleDict()
+        for ntype in self.node_types:
+            if ntype in self.original_feat_dims:
+                self.feature_reconstruction_heads[ntype] = nn.Sequential(
+                    nn.Linear(self.hidden_dim, self.hidden_dim // 2 if self.hidden_dim > 1 else 1),
+                    nn.ReLU(),
+                    nn.Linear(self.hidden_dim // 2 if self.hidden_dim > 1 else 1, self.original_feat_dims[ntype])
+                )
         
-        # Edge prediction head
+        # Edge prediction head (operates on encoder's output embeddings: self.out_dim)
         self.edge_predictor = nn.Sequential(
-            nn.Linear(out_dim * 2, hidden_dim),
+            nn.Linear(self.out_dim * 2, self.hidden_dim),
             nn.ReLU(),
-            nn.Linear(hidden_dim, len(rel_names))
+            nn.Linear(self.hidden_dim, len(self.rel_names))
         )
-    
-    def forward(self, g, features: Dict[str, torch.Tensor]) -> torch.Tensor:
+
+        # Masking token embeddings (scalar learnable token for each node type)
+        self.mask_value_tokens = nn.ParameterDict({
+            node_type: nn.Parameter(torch.zeros(1))
+            for node_type in self.node_types if node_type in self.original_feat_dims
+        })
+        for ntype in self.mask_value_tokens:
+            nn.init.normal_(self.mask_value_tokens[ntype], mean=0.0, std=0.02)
+
+    def forward(self, g: dgl.DGLGraph, features_dict: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
         """
         Forward pass through the encoder only (for downstream tasks).
         
         Args:
-            g: DGL heterogeneous graph
-            features: Dictionary of node features
-            
+            g: DGL heterogeneous graph.
+            features_dict: Dictionary of node features {node_type: Tensor}.
         Returns:
-            Node embeddings
+            Node embeddings_dict: Dictionary of output node embeddings {node_type: Tensor}.
         """
-        # Just use the encoder for the forward pass
-        return self.encoder(g, features)
+        return self.encoder(g, features_dict)
     
-    def encode(self, g, features: Dict[str, torch.Tensor]) -> torch.Tensor:
+    def encode(self, g: dgl.DGLGraph, features_dict: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
         """
         Encode the graph into node embeddings.
         
         Args:
             g: DGL heterogeneous graph
-            features: Dictionary of node features
+            features_dict: Dictionary of node features {node_type: Tensor}
             
         Returns:
-            Node embeddings
+            Node embeddings_dict: Dictionary of output node embeddings {node_type: Tensor}
         """
-        return self.encoder(g, features)
+        return self.encoder(g, features_dict)
     
-    def mask_features(self, 
-                     features: torch.Tensor, 
-                     mask_rate: Optional[float] = None) -> Tuple[torch.Tensor, torch.Tensor]:
+    def apply_feature_masks(self, 
+                          feats_dict: Dict[str, torch.Tensor], 
+                          mask_rate_override: Optional[float] = None) -> Tuple[Dict[str, torch.Tensor], Dict[str, torch.Tensor]]:
         """
         Mask input features for self-supervised pretraining.
+        Operates on a dictionary of features.
         
         Args:
-            features: Input node features
-            mask_rate: Masking rate (if None, use self.mask_rate)
+            feats_dict: Dictionary of node features {node_type: Tensor}
+            mask_rate_override: Rate for masking features within nodes (if None, use self.feature_mask_rate)
             
         Returns:
-            Tuple of (masked_features, mask)
+            Tuple of (masked_feats_dict, feature_masks_dict)
         """
-        mask_rate = mask_rate if mask_rate is not None else self.mask_rate
+        effective_mask_rate = mask_rate_override if mask_rate_override is not None else self.feature_mask_rate
         
-        # Create a mask tensor
-        num_nodes = features.shape[0]
-        mask = torch.zeros(num_nodes, dtype=torch.bool, device=features.device)
+        masked_feats_dict = {}
+        feature_masks_dict = {}
         
-        # Randomly select nodes to mask
-        num_masked = int(num_nodes * mask_rate)
-        masked_indices = random.sample(range(num_nodes), num_masked)
-        mask[masked_indices] = True
-        
-        # Create masked features (replace masked nodes with zeros)
-        masked_features = features.clone()
-        masked_features[mask] = 0.0
-        
-        return masked_features, mask
+        for ntype, feats in feats_dict.items():
+            if ntype not in self.original_feat_dims:
+                masked_feats_dict[ntype] = feats
+                feature_masks_dict[ntype] = torch.zeros_like(feats, dtype=torch.bool, device=feats.device)
+                continue
+
+            num_nodes, feat_dim = feats.shape
+            
+            node_feature_mask = torch.rand(num_nodes, feat_dim, device=feats.device) < effective_mask_rate
+            
+            masked_feats = feats.clone()
+            masked_feats[node_feature_mask] = self.mask_value_tokens[ntype]
+            
+            masked_feats_dict[ntype] = masked_feats
+            feature_masks_dict[ntype] = node_feature_mask
+            
+        return masked_feats_dict, feature_masks_dict
     
     def mask_edges(self, 
                   g: dgl.DGLGraph, 
-                  mask_rate: Optional[float] = None) -> Tuple[dgl.DGLGraph, Dict[str, Tuple[torch.Tensor, torch.Tensor]]]:
+                  mask_rate_override: Optional[float] = None) -> Tuple[dgl.DGLGraph, Dict[Tuple[str, str, str], torch.Tensor]]:
         """
-        Mask edges for self-supervised pretraining.
+        Similar to HGMAE.apply_structure_masks
         
         Args:
             g: DGL heterogeneous graph
-            mask_rate: Masking rate (if None, use self.mask_rate)
+            mask_rate_override: Rate for masking edges (if None, use self.edge_mask_rate)
             
         Returns:
-            Tuple of (masked_graph, masked_edges)
+            Tuple of (masked_graph, edge_masks_info)
         """
-        mask_rate = mask_rate if mask_rate is not None else self.mask_rate
+        effective_mask_rate = mask_rate_override if mask_rate_override is not None else self.edge_mask_rate
         
-        # Create a new graph with masked edges
-        masked_graph = dgl.DGLGraph()
-        masked_graph.add_nodes(g.num_nodes())
-        
-        # Dictionary to store masked edges
-        masked_edges = {}
-        
-        # Process each relation type
-        for rel in g.etypes:
-            # Get edges for this relation
-            src, dst = g.edges(etype=rel)
-            num_edges = len(src)
+        current_formats = g.formats().get('created', ['coo'])
+        if not current_formats: current_formats = ['coo']
+        masked_g = g.formats(current_formats)
+
+        for canonical_etype in g.canonical_etypes:
+            if g.num_edges(etype=canonical_etype) > 0:
+                all_eids = g.edges(etype=canonical_etype, form='eid')
+                masked_g.remove_edges(all_eids, etype=canonical_etype)
+
+        edge_masks_info = {}
+
+        for canonical_etype in g.canonical_etypes:
+            src_type, rel_name, dst_type = canonical_etype
             
-            # Randomly select edges to mask
-            num_masked = int(num_edges * mask_rate)
-            masked_indices = random.sample(range(num_edges), num_masked)
-            mask = torch.zeros(num_edges, dtype=torch.bool)
-            mask[masked_indices] = True
+            if g.num_edges(etype=rel_name) == 0:
+                continue
+                
+            src_nodes, dst_nodes = g.edges(etype=canonical_etype)
+            num_edges = len(src_nodes)
             
-            # Add non-masked edges to the new graph
-            non_masked_src = src[~mask]
-            non_masked_dst = dst[~mask]
-            masked_graph.add_edges(non_masked_src, non_masked_dst, etype=rel)
+            if num_edges == 0:
+                edge_masks_info[canonical_etype] = torch.empty(0, dtype=torch.bool, device=g.device)
+                continue
+
+            num_masked = int(num_edges * effective_mask_rate)
+            mask_indices = random.sample(range(num_edges), num_masked)
             
-            # Store masked edges
-            masked_src = src[mask]
-            masked_dst = dst[mask]
-            masked_edges[rel] = (masked_src, masked_dst)
+            edge_mask = torch.zeros(num_edges, dtype=torch.bool, device=g.device)
+            if mask_indices:
+                edge_mask[mask_indices] = True
+            
+            edge_masks_info[canonical_etype] = edge_mask
+            
+            keep_mask = ~edge_mask
+            if keep_mask.any():
+                masked_g.add_edges(src_nodes[keep_mask], dst_nodes[keep_mask], etype=canonical_etype)
         
-        return masked_graph, masked_edges
-    
+        return masked_g, edge_masks_info
+
+    def compute_feature_reconstruction_loss(self, 
+                                           reconstructed_feats_dict: Dict[str, torch.Tensor],
+                                           original_feats_dict: Dict[str, torch.Tensor],
+                                           feature_masks_dict: Dict[str, torch.Tensor]) -> torch.Tensor:
+        loss = 0.0
+        num_node_types_in_loss = 0
+        for ntype in self.node_types:
+            if ntype not in reconstructed_feats_dict or \
+               ntype not in original_feats_dict or \
+               ntype not in feature_masks_dict:
+                continue
+
+            pred_feats = reconstructed_feats_dict[ntype]
+            orig_feats = original_feats_dict[ntype]
+            mask = feature_masks_dict[ntype]
+
+            if not mask.any():
+                continue
+
+            loss += F.mse_loss(pred_feats[mask], orig_feats[mask])
+            num_node_types_in_loss += 1
+        
+        return loss / max(1, num_node_types_in_loss)
+
     def pretraining_step(self, 
                         g: dgl.DGLGraph, 
-                        features: Dict[str, torch.Tensor], 
-                        mask_features_rate: float = 0.3,
-                        mask_edges_rate: float = 0.3) -> Dict[str, torch.Tensor]:
+                        features_dict: Dict[str, torch.Tensor], 
+                        mask_features_rate_override: Optional[float] = None,
+                        mask_edges_rate_override: Optional[float] = None) -> Dict[str, torch.Tensor]:
         """
         Perform a pretraining step with both feature and edge masking.
         
         Args:
             g: DGL heterogeneous graph
-            features: Dictionary of node features
-            mask_features_rate: Rate of nodes to mask features
-            mask_edges_rate: Rate of edges to mask
+            features_dict: Dictionary of node features {node_type: Tensor}
+            mask_features_rate_override: Rate for masking features within nodes (if None, use self.feature_mask_rate)
+            mask_edges_rate_override: Rate for masking edges (if None, use self.edge_mask_rate)
             
         Returns:
             Dictionary with loss values
         """
-        device = next(iter(features.values())).device
+        # 1. Mask features and edges
+        masked_features_dict, feature_masks_dict = self.apply_feature_masks(features_dict, mask_features_rate_override)
+        masked_graph, edge_masks_info = self.mask_edges(g, mask_edges_rate_override)
         
-        # Concatenate features if needed
-        if isinstance(features, dict):
-            x = torch.cat([features[k] for k in sorted(features.keys())], dim=1)
-        else:
-            x = features
+        # 2. Encode with masked inputs using the main encoder
+        encoded_embeddings_dict = self.encoder(masked_graph, masked_features_dict)
         
-        # 1. Mask features
-        masked_features, feature_mask = self.mask_features(x, mask_features_rate)
+        # 3. Decode for feature reconstruction
+        decoded_hidden_embeddings_dict = self.feature_reconstruction_decoder(masked_graph, encoded_embeddings_dict)
+
+        #    Then, per-type heads project from self.hidden_dim to original_feat_dims.
+        reconstructed_features_dict = {}
+        for ntype, hidden_emb in decoded_hidden_embeddings_dict.items():
+            if ntype in self.feature_reconstruction_heads:
+                reconstructed_features_dict[ntype] = self.feature_reconstruction_heads[ntype](hidden_emb)
         
-        # 2. Mask edges
-        masked_graph, masked_edges = self.mask_edges(g, mask_edges_rate)
+        # 4. Compute feature reconstruction loss
+        feature_loss = self.compute_feature_reconstruction_loss(
+            reconstructed_features_dict, features_dict, feature_masks_dict
+        )
         
-        # 3. Encode with masked inputs
-        node_embeddings = self.encoder(masked_graph, masked_features)
+        # 5. Edge prediction loss
+        edge_loss = torch.tensor(0.0, device=g.device)
+        num_valid_edge_types_for_loss = 0
         
-        # 4. Decode for feature reconstruction
-        reconstructed_features = self.feature_decoder(node_embeddings)
-        
-        # 5. Compute feature reconstruction loss (only for masked nodes)
-        feature_loss = F.mse_loss(reconstructed_features[feature_mask], x[feature_mask])
-        
-        # 6. Edge prediction loss
-        edge_loss = 0.0
-        num_edge_types = 0
-        
-        for rel, (src, dst) in masked_edges.items():
-            if len(src) == 0:
+        all_masked_src_emb = []
+        all_masked_dst_emb = []
+        all_masked_rel_labels = []
+
+        rel_name_to_idx = {name: i for i, name in enumerate(self.rel_names)}
+
+        for canonical_etype, edge_mask in edge_masks_info.items():
+            if not edge_mask.any():
                 continue
-                
-            # Get embeddings for edge endpoints
-            src_emb = node_embeddings[src]
-            dst_emb = node_embeddings[dst]
+
+            src_type, rel_name, dst_type = canonical_etype
+            original_src_nodes, original_dst_nodes = g.edges(etype=canonical_etype)
             
-            # Concatenate embeddings
-            edge_emb = torch.cat([src_emb, dst_emb], dim=1)
+            masked_src_nodes_for_type = original_src_nodes[edge_mask]
+            masked_dst_nodes_for_type = original_dst_nodes[edge_mask]
+
+            if len(masked_src_nodes_for_type) == 0:
+                continue
+
+            if not (src_type in encoded_embeddings_dict and dst_type in encoded_embeddings_dict):
+                logger.warning(f"Embeddings for {src_type} or {dst_type} not found in encoder output. Skipping edge loss for {canonical_etype}.")
+                continue
+
+            src_emb = encoded_embeddings_dict[src_type][masked_src_nodes_for_type]
+            dst_emb = encoded_embeddings_dict[dst_type][masked_dst_nodes_for_type]
             
-            # Predict edge type
-            edge_preds = self.edge_predictor(edge_emb)
+            all_masked_src_emb.append(src_emb)
+            all_masked_dst_emb.append(dst_emb)
             
-            # One-hot encode the true edge type
-            rel_idx = self.rel_names.index(rel)
-            rel_labels = torch.full((len(src),), rel_idx, dtype=torch.long, device=device)
+            rel_idx = rel_name_to_idx.get(rel_name)
+            if rel_idx is None:
+                logger.error(f"Relation name {rel_name} not in self.rel_names mapping!")
+                continue
+            all_masked_rel_labels.extend([rel_idx] * len(masked_src_nodes_for_type))
+            num_valid_edge_types_for_loss +=1
+
+        if all_masked_src_emb:
+            all_masked_src_emb_cat = torch.cat(all_masked_src_emb, dim=0)
+            all_masked_dst_emb_cat = torch.cat(all_masked_dst_emb, dim=0)
+            all_masked_rel_labels_cat = torch.tensor(all_masked_rel_labels, dtype=torch.long, device=g.device)
+
+            edge_emb_for_predictor = torch.cat([all_masked_src_emb_cat, all_masked_dst_emb_cat], dim=1)
             
-            # Calculate cross entropy loss
-            rel_loss = F.cross_entropy(edge_preds, rel_labels)
-            edge_loss += rel_loss
-            num_edge_types += 1
+            edge_preds_logits = self.edge_predictor(edge_emb_for_predictor)
+            
+            if edge_preds_logits.shape[0] > 0 :
+                edge_loss = F.cross_entropy(edge_preds_logits, all_masked_rel_labels_cat)
         
-        if num_edge_types > 0:
-            edge_loss /= num_edge_types
-        
-        # 7. Combine losses
-        total_loss = feature_loss + edge_loss
+        # 6. Combine losses
+        feat_loss_weight = 0.7
+        edge_loss_weight = 0.3
+        total_loss = feat_loss_weight * feature_loss
+        if num_valid_edge_types_for_loss > 0 :
+             total_loss += edge_loss_weight * edge_loss
         
         return {
             'total_loss': total_loss,
@@ -274,69 +374,63 @@ class GraphEncoder(nn.Module):
     
     def pretrain(self, 
                 g: dgl.DGLGraph, 
-                features: Dict[str, torch.Tensor],
+                features_dict: Dict[str, torch.Tensor],
                 num_epochs: int = 100,
                 lr: float = 0.001,
-                mask_features_rate: float = 0.3,
-                mask_edges_rate: float = 0.3,
-                device: str = 'cuda'):
+                mask_features_rate_override: Optional[float] = None,
+                mask_edges_rate_override: Optional[float] = None,
+                device: Optional[str] = None):
         """
         Pretrain the encoder using masked feature and edge reconstruction.
         
         Args:
             g: DGL heterogeneous graph
-            features: Dictionary of node features
+            features_dict: Dictionary of node features {node_type: Tensor}
             num_epochs: Number of pretraining epochs
             lr: Learning rate
-            mask_features_rate: Rate of nodes to mask features
-            mask_edges_rate: Rate of edges to mask
+            mask_features_rate_override: Rate for masking features within nodes (if None, use self.feature_mask_rate)
+            mask_edges_rate_override: Rate for masking edges (if None, use self.edge_mask_rate)
             device: Device to train on ('cuda' or 'cpu')
             
         Returns:
             Dictionary of training history
         """
-        # Move model to device
+        if device is None:
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.to(device)
         
-        # Move features to device
-        features = {k: v.to(device) for k, v in features.items()}
+        g = g.to(device)
+        features_dict = {k: v.to(device) for k, v in features_dict.items()}
         
-        # Create optimizer
         optimizer = torch.optim.Adam(self.parameters(), lr=lr)
+        history = {'total_loss': [], 'feature_loss': [], 'edge_loss': []}
         
-        # Training history
-        history = {
-            'total_loss': [],
-            'feature_loss': [],
-            'edge_loss': []
-        }
-        
-        # Training loop
+        logger.info(f"Starting pretraining on device: {device}")
         for epoch in range(num_epochs):
-            # Zero gradients
+            self.train()
             optimizer.zero_grad()
             
-            # Forward pass
-            losses = self.pretraining_step(g, features, mask_features_rate, mask_edges_rate)
+            losses = self.pretraining_step(
+                g, features_dict, 
+                mask_features_rate_override, mask_edges_rate_override
+            )
             
-            # Backward pass
-            losses['total_loss'].backward()
+            if losses['total_loss'].requires_grad:
+                losses['total_loss'].backward()
+                optimizer.step()
+            else:
+                logger.warning(f"Epoch {epoch+1}: Total loss does not require grad. Skipping backward/step.")
+
+            for k, v_loss in losses.items():
+                history[k].append(v_loss.item())
             
-            # Update parameters
-            optimizer.step()
-            
-            # Record history
-            for k, v in losses.items():
-                history[k].append(v.item())
-            
-            # Log progress
             if (epoch + 1) % 10 == 0:
                 logger.info(
                     f"Epoch {epoch+1}/{num_epochs}: "
-                    f"total_loss={losses['total_loss']:.4f}, "
-                    f"feature_loss={losses['feature_loss']:.4f}, "
-                    f"edge_loss={losses['edge_loss']:.4f}"
+                    f"Total Loss={history['total_loss'][-1]:.4f}, "
+                    f"Feature Loss={history['feature_loss'][-1]:.4f}, "
+                    f"Edge Loss={history['edge_loss'][-1]:.4f}"
                 )
         
-        logger.info(f"Pretraining completed: final loss={history['total_loss'][-1]:.4f}")
+        logger.info(f"Pretraining completed: final total_loss={history['total_loss'][-1]:.4f}")
         return history 

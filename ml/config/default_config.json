@@ -51,16 +51,20 @@
         "link_prediction_score_type": "distmult",
         "use_node_types": true,
         "node_types": ["word", "definition", "etymology"],
-        "use_attention": true
+        "use_attention": true,
+        "feature_mask_rate": 0.3,
+        "edge_mask_rate": 0.25,
+        "pretrain_feat_loss_weight": 0.5,
+        "pretrain_edge_loss_weight": 0.5
     },
     "training": {
         "batch_size": 4096,
         "num_epochs": 50,
-        "learning_rate": 1e-4,
+        "learning_rate": 2e-4,
         "weight_decay": 1e-5,
         "lr_scheduler": "cosine",
-        "warmup_steps": 1000,
         "early_stopping_patience": 10,
+        "early_stopping_metric": "feature_mse",
         "gradient_clip_norm": 1.0,
         "eval_every": 1,
         "log_every": 100,
@@ -122,5 +126,30 @@
         "uncertainty_sampling": true,
         "diversity_sampling": true,
         "sampling_batch_size": 100
+    },
+    "feature_extraction": {
+        "sentence_transformer_model_name": "jcblaise/roberta-tagalog-base"
+    },
+    "analysis_params": {
+        "target_etypes_for_lp": [
+            ["word", "synonym", "word"],
+            ["word", "antonym", "word"],
+            ["word", "derived_from", "word"],
+            ["word", "has_definition", "definition"], 
+            ["definition", "defines", "word"]
+        ],
+        "kg_enhancement_new_link_threshold": 0.7,
+        "kg_enhancement_anomalous_link_threshold": 0.1,
+        "enforce_pos_match_for_synonyms": true,
+        "relation_specific_thresholds": {
+            "derived_from": {
+                "new_link_threshold": 0.95,
+                "semantic_similarity_threshold": 0.97
+            },
+            "synonym": {
+                "new_link_threshold": 0.75,
+                "semantic_similarity_threshold": 0.96
+            }
+        }
     }
 } 

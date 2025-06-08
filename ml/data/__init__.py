@@ -5,4 +5,4 @@ This package handles loading data from the lexical database, converting it to
 heterogeneous graph representations, and preparing inputs for model training.
 """
 
-from .db_adapter import LexicalDatabaseAdapter 
+from .db_adapter import DatabaseAdapter 

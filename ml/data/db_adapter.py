@@ -10,6 +10,7 @@ import pandas as pd
 import psycopg2
 import psycopg2.extras
 import sqlite3  # Added
+import os  # Added for path operations
 from typing import Dict, List, Optional, Any, Union, Tuple
 
 logger = logging.getLogger(__name__)
@@ -30,8 +31,23 @@ class DatabaseAdapter:
                        Expected keys for sqlite: db_path
                        Optional key: db_type ('postgres' or 'sqlite', defaults to 'postgres')
         """
+        self.logger = logger
         self.connection_params = db_config
         self.db_type = self.connection_params.get('db_type', 'postgres').lower()
+        
+        # Default table names, can be overridden if db_config provides them
+        default_table_names = {
+            "lemmas": "words",
+            "relations": "relations",
+            "definitions": "definitions",
+            "etymologies": "etymologies",
+            "pronunciations": "pronunciations",
+            "word_forms": "word_forms",
+            "affixations": "affixations",
+            "pos": "parts_of_speech" # Or 'pos_tags' as another common default
+        }
+        # Allow db_config to override table names if a 'table_names' key is present
+        self.table_names = self.connection_params.get('table_names', default_table_names)
         
         # Validate required params
         if self.db_type == 'sqlite':
@@ -53,7 +69,39 @@ class DatabaseAdapter:
         try:
             if self.db_type == 'sqlite':
                 db_path = self.connection_params['db_path']
+                
+                # Check if the path exists and is absolute
+                if not os.path.isabs(db_path):
+                    # Try various relative paths
+                    possible_paths = [
+                        db_path,  # Current working directory
+                        os.path.join(os.getcwd(), db_path),  # Explicit current working directory
+                        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '..', db_path),  # Project root
+                        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), db_path),  # Direct from ml directory
+                        os.path.normpath(os.path.join(os.getcwd(), '..', db_path))  # One level up
+                    ]
+                    
+                    # Try the main project root location as well (absolute path)
+                    main_root = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '..'))
+                    possible_paths.append(os.path.join(main_root, db_path))
+                    
+                    # Find the first path that exists
+                    for path in possible_paths:
+                        if os.path.exists(path):
+                            db_path = path
+                            logger.info(f"Found database file at: {db_path}")
+                            break
+                
+                # Log paths we're checking
                 logger.info(f"Connecting to SQLite database at {db_path}")
+                logger.info(f"Absolute path: {os.path.abspath(db_path)}")
+                
+                # Check if file exists
+                if not os.path.exists(db_path):
+                    logger.error(f"SQLite database file not found: {db_path}")
+                    logger.error(f"Current working directory: {os.getcwd()}")
+                    raise FileNotFoundError(f"SQLite database file not found: {db_path}")
+                
                 self.conn = sqlite3.connect(db_path)
                 self.conn.row_factory = sqlite3.Row  # Return rows that behave like dicts
                 logger.info("SQLite connection established")
@@ -104,29 +152,39 @@ class DatabaseAdapter:
              raise ConnectionError(f"Failed to establish or re-establish connection to {self.db_type} database.")
 
     def _execute_query(self, query: str, params: Optional[Union[List, Tuple, Dict]] = None) -> List[Dict]:
-        """Execute a query and return results as a list of dictionaries."""
         self._ensure_connection()
         results = []
+        cur = None  # Initialize cursor for SQLite
         try:
-            with self.conn.cursor() as cur: # Get a standard cursor first
-                if self.db_type == 'postgres':
-                     # Use RealDictCursor specifically for PostgreSQL if needed, or process rows later
-                     # Recreating the cursor with a different factory:
-                     with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
-                        dict_cur.execute(query, params)
-                        results = dict_cur.fetchall()
-                elif self.db_type == 'sqlite':
-                    cur.execute(query, params or []) # params must be a list/tuple for sqlite
-                    # Fetchall returns list of sqlite3.Row objects due to row_factory
-                    # Convert sqlite3.Row to plain dict
-                    results = [dict(row) for row in cur.fetchall()]
+            if self.db_type == 'postgres':
+                 # For PostgreSQL, use RealDictCursor within its own context
+                with self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as dict_cur:
+                    dict_cur.execute(query, params)
+                    results = dict_cur.fetchall()
+            elif self.db_type == 'sqlite':
+                cur = self.conn.cursor()  # Get a standard cursor
+                cur.execute(query, params or [])  # params must be a list/tuple for sqlite
+                # Fetchall returns list of sqlite3.Row objects due to row_factory
+                # Convert sqlite3.Row to plain dict
+                results = [dict(row) for row in cur.fetchall()]
+            
+            # No explicit commit/rollback here as these are SELECT queries primarily.
+            # Connection-level context management (if used) or explicit commit in DML methods
+            # would handle transactions.
 
             return results
         except (sqlite3.Error, psycopg2.Error) as e:
             logger.error(f"Error executing query for {self.db_type}: {e}")
             logger.error(f"Query: {query}")
             logger.error(f"Params: {params}")
+            # Rollback is typically handled at a higher transaction level or by connection context manager
             raise
+        finally:
+            if self.db_type == 'sqlite' and cur:
+                try:
+                    cur.close()  # Explicitly close SQLite cursor
+                except Exception as e_close: # pylint: disable=broad-except
+                    logger.warning(f"Could not close SQLite cursor: {e_close}")
 
     def get_lemmas_df(self, target_languages: Optional[List[str]] = None) -> pd.DataFrame:
         """Get words/lemmas from the database."""
@@ -222,28 +280,118 @@ class DatabaseAdapter:
         return df
 
     def get_affixations_df(self) -> pd.DataFrame:
-        """Get affixation data from the database."""
+        """Get affixation data."""
         query = """
-            SELECT 
-                id, root_word_id, affixed_word_id, affix_type, sources
+            SELECT id, word_id, affix_type, affix_form, description
             FROM affixations
         """
-        results = self._execute_query(query)
-        df = pd.DataFrame(results)
-        logger.info(f"Fetched {len(df)} affixations from {self.db_type} database")
-        return df
+        try:
+            results = self._execute_query(query)
+            df = pd.DataFrame(results)
+            self.logger.info(f"Fetched {len(df)} affixations from {self.db_type} database")
+            return df
+        except sqlite3.OperationalError as e:
+            self.logger.warning(f"Could not fetch affixations from {self.table_names.get('affixations', 'affixations')} table due to OperationalError (e.g., missing column like 'word_id'): {e}. Returning empty DataFrame.")
+            return pd.DataFrame()
+        except Exception as e: # Catch other potential errors during fetch
+            self.logger.error(f"An unexpected error occurred while fetching affixations: {e}")
+            return pd.DataFrame()
 
-    def get_pos_df(self) -> pd.DataFrame:
-        """Get parts of speech definitions."""
-        query = """
+    def get_pos_df(self) -> Optional[pd.DataFrame]:
+        """Get parts of speech definitions from the database."""
+        # Attempt to restore a functional get_pos_df method.
+        # Common table names for POS tags could be 'parts_of_speech' or 'pos_tags'.
+        # Common columns are 'id', 'code', 'name', 'description'.
+        # The user might need to adjust table_name or column names if this guess is incorrect.
+        table_name = self.table_names.get('pos', 'parts_of_speech') # Default to 'parts_of_speech'
+        query = f"""
             SELECT 
-                id, code, name_en, name_tl, description
-            FROM parts_of_speech
+                id, 
+                code, 
+                name,  -- Assuming a general 'name' column
+                name_en, -- Or specific language names if available
+                name_tl, 
+                description
+            FROM {table_name}
         """
-        results = self._execute_query(query)
-        df = pd.DataFrame(results)
-        logger.info(f"Fetched {len(df)} parts of speech from {self.db_type} database")
-        return df
+        # Fallback if 'name' doesn't exist, try only specific ones
+        fallback_query = f"""
+            SELECT 
+                id, 
+                code, 
+                name_en, 
+                name_tl, 
+                description
+            FROM {table_name}
+        """
+
+        try:
+            self.logger.info(f"Fetching POS data from table: {table_name}")
+            # Try the query with a general 'name' column first
+            try:
+                results = self._execute_query(query)
+            except Exception as e_general_name:
+                self.logger.warning(f"Query with general 'name' column failed for POS: {e_general_name}. Trying fallback query.")
+                results = self._execute_query(fallback_query)
+            
+            df = pd.DataFrame(results)
+            self.logger.info(f"Successfully fetched POS data: {df.shape[0]} rows from {table_name}")
+            return df
+        except Exception as e:
+            self.logger.error(f"Error fetching POS data from {table_name}: {e}")
+            return pd.DataFrame() # Return empty DataFrame on error
+
+    def get_all_dataframes(self, languages_to_include: Optional[List[str]] = None) -> Dict[str, Optional[pd.DataFrame]]:
+        """
+        Fetches all relevant dataframes from the database.
+
+        Args:
+            languages_to_include: Optional list of language codes (e.g., ['tl', 'en']) 
+                                  to filter lemmas. If None, lemmas for all languages are fetched.
+
+        Returns:
+            Dict[str, Optional[pd.DataFrame]]: A dictionary where keys are dataframe names
+                                                (e.g., 'lemmas_df', 'relations_df') and
+                                                values are the corresponding pandas DataFrames.
+                                                Returns an empty DataFrame for a key if fetching fails.
+        """
+        self.logger.info(f"Fetching all dataframes... Languages for lemmas_df: {languages_to_include if languages_to_include else 'all'}")
+        data_frames: Dict[str, Optional[pd.DataFrame]] = {} # Ensure type hint for empty dict
+        
+        fetch_map = {
+            "lemmas_df": self.get_lemmas_df,
+            "definitions_df": self.get_definitions_df,
+            "etymologies_df": self.get_etymologies_df,
+            "relations_df": self.get_relations_df,
+            "pos_df": self.get_pos_df,
+            "pronunciations_df": self.get_pronunciations_df,
+            "word_forms_df": self.get_word_forms_df,
+            "affixations_df": self.get_affixations_df
+        }
+
+        for name, fetch_func in fetch_map.items():
+            try:
+                if hasattr(self, fetch_func.__name__):
+                    if name == "lemmas_df":
+                        df_val = fetch_func(target_languages=languages_to_include)
+                    else:
+                        df_val = fetch_func()
+                    
+                    data_frames[name] = df_val
+                    if df_val is not None:
+                        self.logger.info(f"Successfully fetched '{name}': {df_val.shape[0]} rows, {df_val.shape[1]} cols")
+                    else:
+                        self.logger.warning(f"Fetching '{name}' resulted in None. Storing as empty DataFrame.")
+                        data_frames[name] = pd.DataFrame() 
+                else:
+                    self.logger.warning(f"Method {fetch_func.__name__} not found in DatabaseAdapter. Skipping for '{name}'.")
+                    data_frames[name] = pd.DataFrame()
+            except Exception as e_fetch:
+                self.logger.error(f"Error fetching dataframe '{name}': {e_fetch}", exc_info=True)
+                data_frames[name] = pd.DataFrame()
+
+        self.logger.info("Finished fetching all dataframes attempt.")
+        return data_frames
 
     # --- Methods below might need more significant adjustments for SQLite vs PG syntax/functions ---
 
@@ -302,21 +450,30 @@ class DatabaseAdapter:
         return stats
 
     def execute_custom_query(self, query: str, params: Optional[Union[List, Tuple, Dict]] = None) -> List[Dict]:
-        """Execute an arbitrary query provided by the user."""
-        logger.info(f"Executing custom query: {query[:100]}... Params: {params}")
-        # This directly uses _execute_query, which handles the db_type difference
+        """Execute a custom SQL query and return results."""
         return self._execute_query(query, params)
 
     def close(self):
-        """Close the database connection."""
-        if self.conn:
+        """Close database connection."""
+        # Check if 'conn' attribute exists and if it's not None
+        if hasattr(self, 'conn') and self.conn:
             try:
                 self.conn.close()
-                logger.info(f"{self.db_type} database connection closed")
-                self.conn = None
+                # Use getattr for db_type as well, in case __init__ failed very early
+                db_type_str = getattr(self, 'db_type', 'unknown type')
+                logger.info(f"{db_type_str} database connection closed.")
+                self.conn = None # Set to None after closing
             except (sqlite3.Error, psycopg2.Error) as e:
-                logger.error(f"Error closing {self.db_type} connection: {e}")
+                db_type_str = getattr(self, 'db_type', 'unknown type')
+                logger.error(f"Error closing {db_type_str} database connection: {e}")
+        else:
+            # Log slightly differently if 'conn' attribute didn't even exist vs. it was None
+            if not hasattr(self, 'conn'):
+                logger.info("DatabaseAdapter object did not have a 'conn' attribute to close (possibly due to an early initialization error).")
+            else: # self.conn was None or didn't exist but hasattr was false (should be caught by first check)
+                db_type_str = getattr(self, 'db_type', 'unknown type')
+                logger.info(f"No active {db_type_str} database connection to close (conn was None or attribute missing).")
 
     def __del__(self):
-        """Ensure connection is closed when object is deleted."""
+        # This will now call the more robust close method
         self.close() 

@@ -1197,23 +1197,13 @@ def lookup_word(args):
 
 
 def display_dictionary_stats_cli(args):
-    """Display dictionary statistics from the command line."""
-    try:
-        # Get a proper database connection and cursor
-        conn = get_connection()
-        with conn.cursor() as cur:
-            display_dictionary_stats(cur)
-
-        # Make sure to close the connection when done
-        if conn:
-            conn.close()
-    except Exception as e:
-        console = Console()
-        console.print(f"[red]Error displaying dictionary stats: {str(e)}[/]")
+    # setup_logging_basic() # Basic logging for CLI, consider if needed or handled by main
+    logger.info(f"Display dictionary stats called with args: {args}")
+    display_dictionary_stats(args=args) # Pass args to the main function
 
 
 @with_transaction(commit=False)
-def display_dictionary_stats(cur):
+def display_dictionary_stats(cur, args):
     """Display comprehensive dictionary statistics."""
     console = Console()
     conn = cur.connection # Get connection from cursor for potential rollback

@@ -233,8 +233,32 @@ def with_transaction(commit=True):
     """
     def decorator(func):
         @functools.wraps(func)
-        def wrapper(cur, *args, **kwargs):
-            conn = cur.connection
+        def wrapper(*args, **kwargs):
+            # Check if the first argument is already a cursor
+            # This allows functions to be called directly with a cursor
+            # or through the CLI where 'args' might be the first positional.
+            
+            # If 'cur' is passed as a keyword argument, or if the first arg is a cursor.
+            if 'cur' in kwargs or (args and hasattr(args[0], 'execute') and hasattr(args[0], 'connection')): # MODIFIED
+                # If cur is passed as a keyword argument
+                if 'cur' in kwargs:
+                    cur = kwargs.pop('cur') # Remove cur from kwargs before passing to func
+                    # The original function expects 'cur' as its first positional argument.
+                    # So we need to pass it positionally.
+                    # args here would be positional args other than 'cur'.
+                    return func(cur, *args, **kwargs) 
+                # If the first positional argument is already a cursor
+                else: # (args and hasattr(args[0], 'execute') and hasattr(args[0], 'connection'))
+                    # Here, args[0] is assumed to be 'cur'.
+                    # The original function expects 'cur' as its first positional,
+                    # and then the rest of *args followed by **kwargs.
+                    # This means the 'args' for the wrapped function starts from args[1:]
+                    return func(args[0], *args[1:], **kwargs)
+
+            # If no cursor is provided, create a new connection and cursor
+            conn = get_db_connection()
+            cur = conn.cursor()
+
             original_autocommit = None
             started_transaction = False
             

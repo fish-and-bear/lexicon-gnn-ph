@@ -1,9 +1,9 @@
 // Minimal bootstrap file with careful module loading order
-console.log('[BOOTSTRAP] Application bootstrap starting');
+// console.log('[BOOTSTRAP] Application bootstrap starting');
 
 // Step 1: Import core React dependencies only
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 
 // Step 2: Basic CSS only for initial rendering
 import './styles/global.css';
@@ -11,7 +11,7 @@ import './styles/global.css';
 // Step 3: Import App component directly
 import App from './App';
 import './index.css';
-// import reportWebVitals from './reportWebVitals'; // Unused import
+import reportWebVitals from './reportWebVitals';
 import { AppThemeProvider, useAppTheme } from './contexts/ThemeContext';
 import { createTheme, ThemeProvider as MuiThemeProvider, CssBaseline } from '@mui/material';
 
@@ -151,7 +151,7 @@ const AppWithMuiTheme: React.FC = () => {
 
 // Add error handling for React initialization
 try {
-  console.log("[INIT] index.tsx initializing...");
+  // console.log("[INIT] index.tsx initializing...");
   
   // Get the root element
   const rootElement = document.getElementById('root');
@@ -161,7 +161,7 @@ try {
   }
   
   // Create a root
-  const root = createRoot(rootElement);
+  const root = ReactDOM.createRoot(rootElement);
   
   // Render the app with proper providers
   root.render(
@@ -172,7 +172,7 @@ try {
     </React.StrictMode>
   );
   
-  console.log("[INIT] App successfully rendered");
+  // console.log("[INIT] App successfully rendered");
 } catch (error) {
   console.error('[FATAL] Failed to initialize React application:', error);
   // Display error to user
@@ -190,7 +190,7 @@ try {
   }
 }
 
-// Disable automatic performance tracking to simplify bootstrapping
-// This can be re-enabled later if needed
-// import reportWebVitals from './reportWebVitals';
-// reportWebVitals();
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

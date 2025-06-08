@@ -13,6 +13,9 @@ import dgl
 from typing import Dict, List, Tuple, Optional, Set, Any, Union
 from collections import defaultdict
 import json
+import sys
+from pathlib import Path
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +24,20 @@ class LexicalGraphBuilder:
     Builds a heterogeneous graph from lexical database contents, 
     optimized for low-resource Philippine languages.
     """
+    
+    EXPECTED_DFS: List[str] = [
+        "lemmas_df", 
+        "relations_df", 
+        "definitions_df", 
+        "etymologies_df",
+        "pos_df",  # Though not directly in build_graph, crucial for preprocessing
+        "pronunciations_df", 
+        "word_forms_df",
+        "affixations_df",
+        "definition_links_df"
+    ]
+    
+    EXPECTED_DFS_FOR_BUILD_GRAPH: List[str] = ['lemmas_df', 'relations_df', 'definitions_df', 'etymologies_df']
     
     def __init__(self, 
                  config: Dict[str, Any],
@@ -90,17 +107,25 @@ class LexicalGraphBuilder:
                 (relations_df['to_word_id'].isin(word_ids))
             ]
             
-            if pronunciations_df is not None:
+            if pronunciations_df is not None and not pronunciations_df.empty and 'word_id' in pronunciations_df.columns:
                 pronunciations_df = pronunciations_df[pronunciations_df['word_id'].isin(word_ids)]
-            
-            if word_forms_df is not None:
+            elif pronunciations_df is not None and not pronunciations_df.empty:
+                logger.warning("pronunciations_df is not empty but missing 'word_id' column. Skipping language filtering for it.")
+
+            if word_forms_df is not None and not word_forms_df.empty and 'word_id' in word_forms_df.columns:
                 word_forms_df = word_forms_df[word_forms_df['word_id'].isin(word_ids)]
+            elif word_forms_df is not None and not word_forms_df.empty:
+                logger.warning("word_forms_df is not empty but missing 'word_id' column. Skipping language filtering for it.")
             
-            if affixations_df is not None:
+            if affixations_df is not None and not affixations_df.empty and \
+               'root_word_id' in affixations_df.columns and \
+               'affixed_word_id' in affixations_df.columns:
                 affixations_df = affixations_df[
                     (affixations_df['root_word_id'].isin(word_ids)) & 
                     (affixations_df['affixed_word_id'].isin(word_ids))
                 ]
+            elif affixations_df is not None and not affixations_df.empty:
+                logger.warning("affixations_df is not empty but missing 'root_word_id' or 'affixed_word_id' column. Skipping language filtering for it.")
         
         # Create node ID mappings
         self._create_node_mappings(lemmas_df, definitions_df, etymologies_df)
@@ -406,4 +431,20 @@ class LexicalGraphBuilder:
         if 'relation_counts' in mappings:
             self.relation_counts = defaultdict(int, mappings['relation_counts'])
         
-        logger.info(f"Node mappings loaded from {filepath}") 
+        logger.info(f"Node mappings loaded from {filepath}")
+
+    # Log key package versions
+    try:
+        logger.info(f"--- Key Package Versions ---")
+        logger.info(f"  Python: {sys.version.split()[0]}")
+        logger.info(f"  PyTorch: {torch.__version__}")
+        logger.info(f"  DGL: {dgl.__version__}")
+        logger.info(f"  Pandas: {pd.__version__}")
+        logger.info(f"  Numpy: {np.__version__}")
+        #logger.info(f"  Scikit-learn: {sklearn.__version__}") # sklearn might not be imported if not used.
+        import sklearn # Ensure it's imported if version is logged
+        logger.info(f"  Scikit-learn: {sklearn.__version__}")
+
+        logger.info(f"---------------------------")
+    except Exception as e_ver:
+        logger.warning(f"Could not log all package versions: {e_ver}") 

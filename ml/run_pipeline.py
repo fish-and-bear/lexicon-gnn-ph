@@ -29,7 +29,9 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 import matplotlib.pyplot as plt
+import seaborn as sns
 import subprocess
+import shutil
 
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -105,53 +107,154 @@ def load_db_config(config_path):
 
 def run_pretraining(args, config):
     """Run the pre-training script as a separate process."""
-    logger.info("Starting pre-training step...")
-    
-    pretrain_cmd = [
+    logger.info("🚀 Running pre-training...")
+
+    out_dir = args.output_dir
+    model_dir = os.path.join(out_dir, "models", "pretrained")
+    data_dir = os.path.join(out_dir, "data", "processed")
+
+    os.makedirs(model_dir, exist_ok=True)
+    os.makedirs(data_dir, exist_ok=True)
+    # Ensure out_dir itself exists for saving plots
+    os.makedirs(out_dir, exist_ok=True)
+
+    cmd = [
         "python", "ml/pretrain_hgmae.py",
         "--config", args.config,
         "--db-config", args.db_config,
-        "--model-dir", os.path.join(args.output_dir, "models", "pretrained"),
-        "--data-dir", os.path.join(args.output_dir, "data", "processed"),
+        "--model-dir", model_dir,
+        "--data-dir", data_dir,
         "--epochs", str(args.pretraining_epochs),
         "--feature-mask-rate", str(args.feature_mask_rate),
         "--edge-mask-rate", str(args.edge_mask_rate),
     ]
     
     if args.debug:
-        pretrain_cmd.append("--debug")
+        cmd.append("--debug")
     
-    logger.info(f"Executing: {' '.join(pretrain_cmd)}")
-    
+    logger.info("📡 Starting process...")
+
+    all_stdout_lines = [] # Store all stdout lines
+
     try:
-        # Run the pre-training script
-        result = subprocess.run(
-            pretrain_cmd,
-            check=True,
-            capture_output=True,
-            text=True
+        process = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+            bufsize=1
         )
+
+        # Stream line-by-line
+        for line in process.stdout:
+            print(line, end='')  # Stream directly to notebook output
+            all_stdout_lines.append(line) # Store for later parsing
+            logger.info(line.strip())  # Optional: log it too
+
+        returncode = process.wait()
         
-        logger.info("Pre-training completed successfully")
-        logger.debug(result.stdout)
-        
-        # Find the path to the pretrained model checkpoint
-        model_dir = os.path.join(args.output_dir, "models", "pretrained")
-        model_files = [f for f in os.listdir(model_dir) if f.startswith("pretrained_hgmae_") and f.endswith(".pt")]
-        if model_files:
-            # Sort by modification time (newest first)
-            latest_model = sorted(model_files, key=lambda f: os.path.getmtime(os.path.join(model_dir, f)), reverse=True)[0]
-            pretrained_model_path = os.path.join(model_dir, latest_model)
-            logger.info(f"Found pre-trained model: {pretrained_model_path}")
-            return pretrained_model_path
-        else:
-            logger.error("No pre-trained model found")
-            return None
-            
+        training_histories = None
+        if returncode == 0:
+            logger.info("Pre-training process completed. Checking for training history...")
+            for line in reversed(all_stdout_lines): # Search from the end
+                if line.startswith("FINAL_TRAINING_HISTORY_JSON:"):
+                    try:
+                        json_str = line.replace("FINAL_TRAINING_HISTORY_JSON:", "").strip()
+                        training_histories = json.loads(json_str)
+                        logger.info("Successfully parsed training histories.")
+                        # Plot and save training curves
+                        plot_and_save_training_curves(training_histories, out_dir)
+                    except json.JSONDecodeError as e:
+                        logger.error(f"Failed to parse training_histories JSON: {e}")
+                    except Exception as e_plot:
+                        logger.error(f"Error during plotting/saving training curves: {e_plot}")
+                    break # Found the line, no need to search further
+            if training_histories is None:
+                 logger.warning("Could not find or parse training histories in pre-training output.")
+
+        if returncode != 0:
+            logger.error(f"❌ Pre-training failed (exit {returncode})")
+            return False
+
+        logger.info("✅ Pre-training completed successfully")
+        return True
+
     except subprocess.CalledProcessError as e:
         logger.error(f"Pre-training failed: {e}")
         logger.error(f"Process stderr: {e.stderr}")
-        return None
+        return False
+
+def plot_and_save_training_curves(training_histories, output_dir):
+    """Plots training curves (losses and LR) and saves them to a file with enhanced aesthetics."""
+    sns.set_theme(style="whitegrid", palette="muted")
+
+    if not training_histories or not isinstance(training_histories, dict):
+        logger.warning("Invalid or empty training_histories provided for plotting.")
+        return
+
+    epochs_data = training_histories.get("total_loss", [])
+    if not epochs_data or not isinstance(epochs_data, list):
+        logger.warning("No 'total_loss' data or invalid format in training_histories for plotting.")
+        return
+        
+    num_epochs = len(epochs_data)
+    if num_epochs == 0:
+        logger.warning("No data points found in total_loss for plotting.")
+        return
+    
+    epochs_range = range(1, num_epochs + 1)
+
+    fig, axs = plt.subplots(2, 1, figsize=(14, 10), sharex=True, gridspec_kw={'hspace': 0.15})
+
+    # Subplot 1: Loss Curves
+    ax1 = axs[0]
+    loss_colors = sns.color_palette("viridis", 3) 
+
+    if "total_loss" in training_histories and isinstance(training_histories["total_loss"], list) and len(training_histories["total_loss"]) == num_epochs:
+        ax1.plot(epochs_range, training_histories["total_loss"], label="Total Loss", marker='o', linestyle='-', linewidth=2, markersize=5, color=loss_colors[0])
+    if "feature_loss" in training_histories and isinstance(training_histories["feature_loss"], list) and len(training_histories["feature_loss"]) == num_epochs:
+        ax1.plot(epochs_range, training_histories["feature_loss"], label="Feature Loss", marker='X', linestyle='--', linewidth=2, markersize=5, color=loss_colors[1])
+    if "edge_loss" in training_histories and isinstance(training_histories["edge_loss"], list) and len(training_histories["edge_loss"]) == num_epochs:
+        ax1.plot(epochs_range, training_histories["edge_loss"], label="Edge Loss", marker='s', linestyle=':', linewidth=2, markersize=5, color=loss_colors[2])
+    
+    ax1.set_ylabel("Loss Value", fontsize=13, labelpad=10)
+    ax1.set_title("Pre-training Loss Progression", fontsize=15, pad=15, weight='bold') 
+    ax1.legend(fontsize=11, loc='best')
+    ax1.tick_params(axis='y', labelsize=11)
+    ax1.tick_params(axis='x', labelsize=11)
+    ax1.minorticks_on()
+    ax1.grid(True, which='major', linestyle='-', linewidth='0.7', alpha=0.7)
+    ax1.grid(True, which='minor', linestyle=':', linewidth='0.5', alpha=0.5)
+
+    # Subplot 2: Learning Rate Curve
+    ax2 = axs[1]
+    lr_color = sns.color_palette("rocket", 1)[0]
+    if "learning_rate" in training_histories and isinstance(training_histories["learning_rate"], list) and len(training_histories["learning_rate"]) == num_epochs:
+        ax2.plot(epochs_range, training_histories["learning_rate"], label="Learning Rate", color=lr_color, marker='.', linestyle='-', linewidth=1.8, markersize=4)
+        ax2.set_ylabel("Learning Rate", fontsize=13, labelpad=10)
+        ax2.legend(fontsize=11, loc='best')
+        ax2.tick_params(axis='y', labelsize=11)
+        ax2.tick_params(axis='x', labelsize=11) 
+        ax2.minorticks_on()
+        ax2.grid(True, which='major', linestyle='-', linewidth='0.7', alpha=0.7)
+        ax2.grid(True, which='minor', linestyle=':', linewidth='0.5', alpha=0.5)
+
+    else:
+        ax2.text(0.5, 0.5, 'Learning rate data not available', horizontalalignment='center', verticalalignment='center', transform=ax2.transAxes, fontsize=12, color='gray')
+        ax2.grid(False)
+
+    plt.xlabel("Epoch", fontsize=13, labelpad=10)
+    fig.suptitle("Pre-training Dynamics Dashboard", fontsize=20, weight='bold', y=0.99)
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95]) 
+    
+    plot_save_path = os.path.join(output_dir, "training_curves_enhanced.png")
+    try:
+        plt.savefig(plot_save_path, dpi=300, bbox_inches='tight')
+        logger.info(f"✅ Enhanced training curves saved to {plot_save_path}")
+    except Exception as e:
+        logger.error(f"Failed to save enhanced training curves plot: {e}")
+    plt.close(fig)
+    sns.reset_orig()
 
 def run_finetuning(args, config, pretrained_model_path):
     """Run the fine-tuning script as a separate process."""

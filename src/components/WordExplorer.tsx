@@ -1,17 +1,11 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 
-// Add immediate console log to track component loading
-console.log("[INIT] WordExplorer.tsx is being loaded");
-
 import WordGraph from "./WordGraph";
 import WordDetails from "./WordDetails";
 import { useAppTheme } from "../contexts/ThemeContext";
 import "./WordExplorer.css";
 import { WordNetwork, WordInfo, SearchOptions, EtymologyTree, Statistics, SearchResultItem, Relation, WordSuggestion, BasicWord } from "../types";
 import unidecode from "unidecode";
-
-// Add logging for important dependencies
-console.log("[INIT] Loading API functions...");
 
 import { 
   fetchWordNetwork, 
@@ -29,11 +23,11 @@ import {
   fetchSuggestions,
 } from "../api/wordApi";
 
-console.log("[INIT] API functions loaded:", {
-  fetchWordNetworkType: typeof fetchWordNetwork,
-  searchWordsType: typeof searchWords,
-  resetCircuitBreakerType: typeof resetCircuitBreaker
-});
+// console.log("[INIT] API functions loaded:", {
+//   fetchWordNetworkType: typeof fetchWordNetwork,
+//   searchWordsType: typeof searchWords,
+//   resetCircuitBreakerType: typeof resetCircuitBreaker
+// });
 
 import { Button } from "@mui/material";
 import { Panel, PanelGroup, PanelResizeHandle, ImperativePanelHandle } from "react-resizable-panels";
@@ -59,7 +53,7 @@ const isDevMode = () => {
 };
 
 const WordExplorer: React.FC = () => {
-  console.log("[INIT] WordExplorer component function starting");
+  // console.log("[INIT] WordExplorer component function starting");
   
   // State declarations with initialization logs
   const [wordData, setWordData] = useState<WordInfo | null>(null);
@@ -72,12 +66,12 @@ const WordExplorer: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [etymologyError, setEtymologyError] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  console.log("[INIT] Basic state variables initialized");
+  // console.log("[INIT] Basic state variables initialized");
 
   // Access theme context with logging
-  console.log("[INIT] About to access useAppTheme");
+  // console.log("[INIT] About to access useAppTheme");
   const { themeMode, toggleTheme } = useAppTheme();
-  console.log("[INIT] useAppTheme successful:", { themeMode, hasToggleTheme: !!toggleTheme });
+  // console.log("[INIT] useAppTheme successful:", { themeMode, hasToggleTheme: !!toggleTheme });
   
   const [inputValue, setInputValue] = useState<string>("");
   const [depth, setDepth] = useState<number>(2);
@@ -90,17 +84,17 @@ const WordExplorer: React.FC = () => {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState<boolean>(false);
   const [apiConnected, setApiConnected] = useState<boolean | null>(null);
-  console.log("[INIT] Secondary state variables initialized");
+  // console.log("[INIT] Secondary state variables initialized");
 
   const randomWordTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const detailsContainerRef = useRef<ImperativePanelHandle>(null);
-  console.log("[INIT] Refs initialized");
+  // console.log("[INIT] Refs initialized");
 
   const [autocompleteOpen, setAutocompleteOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([]);
   const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref for debounce timer
-  console.log("[INIT] Autocomplete state initialized");
+  // console.log("[INIT] Autocomplete state initialized");
 
   // Custom debounce implementation within useCallback
   const handleInputChangeDebounced = useCallback((inputValue: string) => {
@@ -120,11 +114,11 @@ const WordExplorer: React.FC = () => {
     // Set a new timer
     debounceTimeoutRef.current = setTimeout(async () => {
       try {
-        console.log(`Debounced fetch executing for: ${inputValue}`);
+        // console.log(`Debounced fetch executing for: ${inputValue}`);
         const results = await fetchSuggestions(inputValue);
         setSuggestions(results);
       } catch (error) {
-        console.error("Error fetching suggestions after debounce:", error);
+        // console.error("Error fetching suggestions after debounce:", error);
         setSuggestions([]); // Clear suggestions on error
       } finally {
         setIsSuggestionsLoading(false); // Set loading false after fetch completes/fails
@@ -150,7 +144,6 @@ const WordExplorer: React.FC = () => {
           // We can't reliably get the underlying DOM node's style this way.
           // If resizing needs to be restored, it should likely use Panel API methods.
           // For now, just log that we have the handle.
-          console.log("Panel ref is available, but restoring width via direct style access is unreliable.");
           // const savedWidth = localStorage.getItem('wordDetailsWidth');
           // if (savedWidth && !isNaN(parseFloat(savedWidth))) {
           //   // This won't work reliably: detailsContainerRef.current.style.width = `${savedWidth}px`;
@@ -169,7 +162,7 @@ const WordExplorer: React.FC = () => {
     const panelElement = document.getElementById("details-panel");
 
     if (!panelElement) {
-      console.warn("Could not find details panel element for ResizeObserver");
+      // console.warn("Could not find details panel element for ResizeObserver");
       return; // Exit if element not found
     }
     
@@ -200,7 +193,7 @@ const WordExplorer: React.FC = () => {
       setIsLoadingNetwork(true);
       setError(null);
       
-      console.log('Fetching word network data for:', word);
+      // console.log('Fetching word network data for:', word);
       const data = await fetchWordNetwork(word, { 
         depth: depthParam,
         breadth: breadthParam,
@@ -210,8 +203,8 @@ const WordExplorer: React.FC = () => {
       });
       
       if (data && data.nodes && data.links) {
-        console.log('Word network data received:', data);
-        console.log(`Network has ${data.nodes.length} nodes and ${data.links.length} links`);
+        // console.log('Word network data received:', data);
+        // console.log(`Network has ${data.nodes.length} nodes and ${data.links.length} links`);
         setWordNetwork(data);
         
         if (wordData && wordData.id) {
@@ -255,10 +248,10 @@ const WordExplorer: React.FC = () => {
               }
             });
             
-            console.log("Syncing relations:", {
-              incoming: incomingRelations.length,
-              outgoing: outgoingRelations.length
-            });
+            // console.log("Syncing relations:", {
+            //   incoming: incomingRelations.length,
+            //   outgoing: outgoingRelations.length
+            // });
             
             setWordData(prevData => {
               if (!prevData) return prevData;
@@ -273,11 +266,11 @@ const WordExplorer: React.FC = () => {
         
         return data;
       } else {
-        console.error('Invalid network data received:', data);
+        // console.error('Invalid network data received:', data);
         throw new Error('Invalid network data structure received from API');
       }
     } catch (error) {
-      console.error("Error in fetchWordNetworkData:", error);
+      // console.error("Error in fetchWordNetworkData:", error);
       
       if (error instanceof Error) {
         setError(error.message);
@@ -299,22 +292,22 @@ const WordExplorer: React.FC = () => {
     setEtymologyError(null);
     
     try {
-      console.log("Fetching etymology tree for word ID:", wordId);
+      // console.log("Fetching etymology tree for word ID:", wordId);
       const data = await getEtymologyTree(wordId, 3);
-      console.log("Etymology tree data received:", data);
+      // console.log("Etymology tree data received:", data);
       
       // Accept tree even if nodes array is empty (contains only root or nothing)
       if (data && Array.isArray(data.nodes)) { 
-        console.log(`Received etymology tree structure with ${data.nodes.length} nodes`);
+        // console.log(`Received etymology tree structure with ${data.nodes.length} nodes`);
         setEtymologyTree(data);
         return data;
       } else {
-        console.warn("Received invalid etymology tree structure (not an object or missing nodes array)");
+        // console.warn("Received invalid etymology tree structure (not an object or missing nodes array)");
         setEtymologyTree(null);
         return null;
       }
     } catch (error) {
-      console.error("Error fetching etymology tree:", error);
+      // console.error("Error fetching etymology tree:", error);
       let errorMessage = "Failed to fetch etymology tree.";
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -329,7 +322,7 @@ const WordExplorer: React.FC = () => {
 
   const handleNodeClick = useCallback(async (identifier: string) => {
     if (!identifier) {
-      console.error("Empty identifier received in handleNodeClick");
+      // console.error("Empty identifier received in handleNodeClick");
       return;
     }
 
@@ -338,11 +331,11 @@ const WordExplorer: React.FC = () => {
 
     // Check if the identifier is an ID
     if (identifier.startsWith('id:')) {
-        console.log(`Node clicked (by ID): ${identifier}`);
+        // console.log(`Node clicked (by ID): ${identifier}`);
         isIdSearch = true;
         // Keep wordToFetch as "id:123"
     } else {
-        console.log(`Node clicked (by lemma): ${identifier}`);
+        // console.log(`Node clicked (by lemma): ${identifier}`);
         // wordToFetch remains the lemma string
     }
 
@@ -358,7 +351,7 @@ const WordExplorer: React.FC = () => {
         // Fetch using the determined identifier (lemma or "id:...")
         wordData = await fetchWordDetails(wordToFetch);
       } catch (error: any) {
-        console.warn(`Initial fetch failed for '${wordToFetch}', error:`, error.message);
+        // console.warn(`Initial fetch failed for '${wordToFetch}', error:`, error.message);
         fallbackToSearch = true;
 
         // Fallback logic: Only try searching if the initial fetch was NOT by ID
@@ -366,7 +359,7 @@ const WordExplorer: React.FC = () => {
         // or the specific database error)
         if (!isIdSearch || error.message.includes('not found') || error.message.includes('Server database error')) { 
             const lemmaToSearch = isIdSearch ? identifier.substring(3) : identifier; // Get lemma for search
-            console.log(`Falling back to search for lemma: ${lemmaToSearch}`);
+            // console.log(`Falling back to search for lemma: ${lemmaToSearch}`);
             try {
               const searchResults = await searchWords(lemmaToSearch, {
                 page: 1,
@@ -377,7 +370,7 @@ const WordExplorer: React.FC = () => {
               });
 
               if (searchResults.results && searchResults.results.length > 0) {
-                console.log(`Fallback search successful`);
+                // console.log(`Fallback search successful`);
                 const firstResult = searchResults.results[0];
                 // Fetch details using the ID from search result
                 wordData = await fetchWordDetails(`id:${firstResult.word_id}`);
@@ -387,7 +380,7 @@ const WordExplorer: React.FC = () => {
                 throw error; 
               }
             } catch(searchError: any) {
-               console.error(`Fallback search also failed for '${lemmaToSearch}':`, searchError);
+               // console.error(`Fallback search also failed for '${lemmaToSearch}':`, searchError);
                throw error; // Re-throw original error if search fails
             }
         } else {
@@ -398,7 +391,7 @@ const WordExplorer: React.FC = () => {
 
       // --- Proceed with processing wordData if fetch was successful ---
       if (wordData) {
-        console.log(`Word data retrieved successfully for '${wordToFetch}':`, wordData);
+        // console.log(`Word data retrieved successfully for '${wordToFetch}':`, wordData);
         setWordData(wordData);
         setSelectedNode(wordData.lemma);
 
@@ -428,20 +421,20 @@ const WordExplorer: React.FC = () => {
         try {
           // Use ID for network fetch if available
           const networkIdentifier = wordData.id ? `id:${wordData.id}` : wordData.lemma;
-          console.log(`[handleNodeClick] Fetching network using identifier: ${networkIdentifier}`); 
+          // console.log(`[handleNodeClick] Fetching network using identifier: ${networkIdentifier}`); 
           fetchWordNetworkData(networkIdentifier, depth, breadth) 
               .then(networkData => {
                   if (networkData) {
-                      console.log("[handleNodeClick] Network data retrieved successfully");
+                      // console.log("[handleNodeClick] Network data retrieved successfully");
                       setWordNetwork(networkData);
                   } else {
-                      console.error("[handleNodeClick] Retrieved null network data");
+                      // console.error("[handleNodeClick] Retrieved null network data");
                       setError("Failed to retrieve word relationship data");
                   }
               })
               .catch(networkError => console.error("Error fetching word network:", networkError));
         } catch (networkError) {
-          console.error("Error initiating word network fetch:", networkError);
+          // console.error("Error initiating word network fetch:", networkError);
         }
         
         try {
@@ -452,15 +445,15 @@ const WordExplorer: React.FC = () => {
                 .then(tree => setEtymologyTree(tree))
                 .catch(etymologyError => console.error("Error fetching etymology tree:", etymologyError));
           } else {
-             console.warn("No ID available to fetch etymology tree.");
+             // console.warn("No ID available to fetch etymology tree.");
              setEtymologyTree(null);
           }
         } catch (etymologyError) {
-          console.error("Error initiating etymology tree fetch:", etymologyError);
+          // console.error("Error initiating etymology tree fetch:", etymologyError);
         }
       }
     } catch (error: any) {
-      console.error(`Error in handleNodeClick processing identifier '${identifier}':`, error);
+      // console.error(`Error in handleNodeClick processing identifier '${identifier}':`, error);
       const displayTerm = identifier.startsWith('id:') ? `ID ${identifier.substring(3)}` : identifier;
       if (error.message.includes('not found')) {
         setError(`Word with ${displayTerm} was not found or could not be retrieved.`);
@@ -499,11 +492,11 @@ const WordExplorer: React.FC = () => {
 
   const handleNodeSelect = useCallback(async (word: string) => {
     if (!word) {
-      console.error("Empty word received in handleNodeSelect");
+      // console.error("Empty word received in handleNodeSelect");
       return;
     }
 
-    console.log(`Node selected: ${word}`);
+    // console.log(`Node selected: ${word}`);
     
     try {
       setError(null);
@@ -513,11 +506,11 @@ const WordExplorer: React.FC = () => {
       try {
         wordData = await fetchWordDetails(word);
       } catch (error: any) {
-        console.warn(`Failed to fetch details for selected word '${word}', error:`, error.message);
+        // console.warn(`Failed to fetch details for selected word '${word}', error:`, error.message);
       }
       
       if (wordData) {
-        console.log(`Selected word data retrieved:`, wordData);
+        // console.log(`Selected word data retrieved:`, wordData);
         setSelectedNode(wordData.lemma);
         
         try {
@@ -530,14 +523,14 @@ const WordExplorer: React.FC = () => {
               setEtymologyTree(tree);
             })
             .catch(err => {
-              console.error("Error fetching etymology tree:", err);
+              // console.error("Error fetching etymology tree:", err);
             });
         } catch (etymologyError) {
-          console.error("Error initiating etymology tree fetch:", etymologyError);
+          // console.error("Error initiating etymology tree fetch:", etymologyError);
         }
       }
     } catch (error: any) {
-      console.error(`Error in handleNodeSelect for word '${word}':`, error);
+      // console.error(`Error in handleNodeSelect for word '${word}':`, error);
     }
   }, [fetchEtymologyTree]);
 
@@ -551,20 +544,20 @@ const WordExplorer: React.FC = () => {
       // If user types and presses Enter, search by the text
       identifierToSearch = searchTerm.trim();
       displayLemma = identifierToSearch;
-      console.log(`Searching by typed text: ${identifierToSearch}`);
+      // console.log(`Searching by typed text: ${identifierToSearch}`);
     } else {
       // Prefer ID if available (WordSuggestion or BasicWord might have it)
       if (searchTerm.id) {
           identifierToSearch = `id:${searchTerm.id}`; // Use format "id:123"
           displayLemma = searchTerm.lemma; // Use lemma for display
-          console.log(`Searching by selected ID: ${identifierToSearch} (lemma: ${displayLemma})`);
+          // console.log(`Searching by selected ID: ${identifierToSearch} (lemma: ${displayLemma})`);
       } else if (searchTerm.lemma) {
           // Fallback to lemma if no ID (less common for BasicWord/WordSuggestion)
           identifierToSearch = searchTerm.lemma;
           displayLemma = searchTerm.lemma;
-          console.log(`Searching by selected Lemma (no ID found): ${identifierToSearch}`);
+          // console.log(`Searching by selected Lemma (no ID found): ${identifierToSearch}`);
       } else {
-         console.error("Selected suggestion/word object is missing ID and Lemma:", searchTerm);
+         // console.error("Selected suggestion/word object is missing ID and Lemma:", searchTerm);
          setError("Selected item is invalid. Please try again.");
          return;
       }
@@ -591,14 +584,14 @@ const WordExplorer: React.FC = () => {
     // setSelectedNode(null); 
 
     try {
-      console.log("Fetching a single random word...");
+      // console.log("Fetching a single random word...");
       // Fetch details first
       const randomWordResult = await getRandomWord();
 
       if (!randomWordResult || !randomWordResult.lemma) {
         throw new Error("Received invalid random word data from API.");
       }
-      console.log("Random word received:", randomWordResult);
+      // console.log("Random word received:", randomWordResult);
       const wordInfo: WordInfo = randomWordResult;
 
       // Update details and selected node
@@ -631,7 +624,7 @@ const WordExplorer: React.FC = () => {
           }
         })
         .catch(err => {
-          console.error("Error fetching network data for random word:", err);
+          // console.error("Error fetching network data for random word:", err);
           setError("Failed to load word network. Please try again.");
           setWordNetwork(null); // Ensure network is null on error
         })
@@ -647,7 +640,7 @@ const WordExplorer: React.FC = () => {
             setEtymologyTree(tree);
           })
           .catch(err => {
-            console.error("Error fetching etymology tree for random word:", err);
+            // console.error("Error fetching etymology tree for random word:", err);
             setEtymologyError("Failed to load etymology.");
             setEtymologyTree(null);
           })
@@ -659,7 +652,7 @@ const WordExplorer: React.FC = () => {
       }
 
     } catch (error) {
-      console.error("Error handling random word:", error);
+      // console.error("Error handling random word:", error);
       setError(error instanceof Error ? error.message : "Failed to get a random word");
       setWordData(null); // Clear data on error
       setWordNetwork(null);
@@ -697,7 +690,7 @@ const WordExplorer: React.FC = () => {
       // Set selected node *immediately* for better visual sync during load
       setSelectedNode(previousWord.lemma);
 
-      console.log(`Navigating back to: ${JSON.stringify(previousWord)} (index ${newIndex})`);
+      // console.log(`Navigating back to: ${JSON.stringify(previousWord)} (index ${newIndex})`);
       
       // Use the stored identifier and settings
       const detailsIdentifier = previousWord.identifier;
@@ -760,10 +753,10 @@ const WordExplorer: React.FC = () => {
               }
             });
             
-            console.log("Syncing relations during navigation:", {
-              incoming: incomingRelations.length,
-              outgoing: outgoingRelations.length
-            });
+            // console.log("Syncing relations during navigation:", {
+            //   incoming: incomingRelations.length,
+            //   outgoing: outgoingRelations.length
+            // });
             
             // Update word data with relations from network
             const updatedWordData = {
@@ -791,7 +784,7 @@ const WordExplorer: React.FC = () => {
               setEtymologyTree(tree);
             })
             .catch(err => {
-              console.error("Error fetching etymology tree:", err);
+              // console.error("Error fetching etymology tree:", err);
             });
         }
         
@@ -799,7 +792,7 @@ const WordExplorer: React.FC = () => {
         setIsLoadingNetwork(false);
       })
       .catch(error => {
-        console.error("Error navigating back:", error);
+        // console.error("Error navigating back:", error);
         let errorMessage = "Failed to navigate back.";
         if (error instanceof Error) {
           errorMessage = error.message;
@@ -823,7 +816,7 @@ const WordExplorer: React.FC = () => {
       // Set selected node *immediately* for better visual sync during load
       setSelectedNode(nextWord.lemma);
 
-      console.log(`Navigating forward to: ${JSON.stringify(nextWord)} (index ${newIndex})`);
+      // console.log(`Navigating forward to: ${JSON.stringify(nextWord)} (index ${newIndex})`);
       
       // Use the stored identifier and settings
       const detailsIdentifier = nextWord.identifier;
@@ -886,10 +879,10 @@ const WordExplorer: React.FC = () => {
               }
             });
             
-            console.log("Syncing relations during navigation:", {
-              incoming: incomingRelations.length,
-              outgoing: outgoingRelations.length
-            });
+            // console.log("Syncing relations during navigation:", {
+            //   incoming: incomingRelations.length,
+            //   outgoing: outgoingRelations.length
+            // });
             
             // Update word data with relations from network
             const updatedWordData = {
@@ -917,7 +910,7 @@ const WordExplorer: React.FC = () => {
               setEtymologyTree(tree);
             })
             .catch(err => {
-              console.error("Error fetching etymology tree:", err);
+              // console.error("Error fetching etymology tree:", err);
             });
         }
         
@@ -925,7 +918,7 @@ const WordExplorer: React.FC = () => {
         setIsLoadingNetwork(false);
       })
       .catch(error => {
-        console.error("Error navigating forward:", error);
+        // console.error("Error navigating forward:", error);
         let errorMessage = "Failed to navigate forward.";
         if (error instanceof Error) {
           errorMessage = error.message;
@@ -950,13 +943,13 @@ const WordExplorer: React.FC = () => {
     setApiConnected(null);
         
     try {
-      console.log("Manually testing API connection...");
+      // console.log("Manually testing API connection...");
       
       const isConnected = await testApiConnection();
       setApiConnected(isConnected);
       
       if (!isConnected) {
-      console.log("API connection test failed, showing error...");
+      // console.log("API connection test failed, showing error...");
       setError(
         "Cannot connect to the API server. Please ensure the backend server is running on port 10000 " +
         "and the /api/v2/test endpoint is accessible. You can start the backend server by running:\n" +
@@ -964,23 +957,23 @@ const WordExplorer: React.FC = () => {
         "2. python app.py"
       );
     } else {
-      console.log("API connection successful!");
+      // console.log("API connection successful!");
       
       const savedEndpoint = localStorage.getItem('successful_api_endpoint');
       if (savedEndpoint) {
-        console.log('Loaded initial API endpoint from localStorage:', savedEndpoint);
+        // console.log('Loaded initial API endpoint from localStorage:', savedEndpoint);
       }
       
       if (inputValue) {
-        console.log("Trying to search with the connected API...");
+        // console.log("Trying to search with the connected API...");
         handleSearch(inputValue);
       } else {
-        console.log("Fetching a random word to test connection further...");
+        // console.log("Fetching a random word to test connection further...");
         handleRandomWord();
       }
     }
   } catch (e) {
-    console.error("Error testing API connection:", e);
+    // console.error("Error testing API connection:", e);
     setApiConnected(false);
     setError(
       "Error testing API connection. Please ensure the backend server is running and the " +
@@ -993,14 +986,14 @@ const WordExplorer: React.FC = () => {
 const fetchStatistics = useCallback(async () => {
   try {
     const data = await getStatistics();
-    console.log('Statistics data:', data);
+    // console.log('Statistics data:', data);
   } catch (error) {
-    console.error('Error fetching statistics:', error);
+    // console.error('Error fetching statistics:', error);
   }
 }, []); // Removed stable getStatistics dependency
 
 useEffect(() => {
-  console.log("Checking API connection... 2");
+  // console.log("Checking API connection... 2");
   testApiConnection().then(connected => {
     setApiConnected(connected);
     if (connected) {
@@ -1008,14 +1001,14 @@ useEffect(() => {
         try {
           fetchStatistics();
         } catch (error) {
-          console.error("Error fetching initial data:", error);
+          // console.error("Error fetching initial data:", error);
         }
       };
       
       fetchInitialData();
     }
   }).catch(error => {
-    console.error("API connection error:", error);
+    // console.error("API connection error:", error);
     setApiConnected(false);
   });
 }, [fetchStatistics]); // Now fetchStatistics is declared before this hook
@@ -1033,7 +1026,7 @@ const handleNetworkChange = useCallback((newDepth: number, newBreadth: number) =
         setWordNetwork(networkData);
       })
       .catch(error => {
-        console.error("Error updating network:", error);
+        // console.error("Error updating network:", error);
         setError("Failed to update network. Please try again.");
       });
   }
@@ -1047,7 +1040,7 @@ useEffect(() => {
     );
     
     if (!hasRelations) {
-      console.log(`Word ${wordData.lemma} (ID: ${wordData.id}) loaded, but no relations found in the initial details fetch. Relations might be fetched separately by the network graph or may not exist.`);
+      // console.log(`Word ${wordData.lemma} (ID: ${wordData.id}) loaded, but no relations found in the initial details fetch. Relations might be fetched separately by the network graph or may not exist.`);
     }
   }
 }, [wordData]);
@@ -1056,10 +1049,10 @@ useEffect(() => {
   try {
     const savedEndpoint = localStorage.getItem('successful_api_endpoint');
     if (savedEndpoint) {
-      console.log('Loaded initial API endpoint from localStorage:', savedEndpoint);
+      // console.log('Loaded initial API endpoint from localStorage:', savedEndpoint);
     }
   } catch (e) {
-    console.error('Error reading saved API endpoint from localStorage on mount:', e);
+    // console.error('Error reading saved API endpoint from localStorage on mount:', e);
   }
 }, []);
 

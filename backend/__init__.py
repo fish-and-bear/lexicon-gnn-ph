@@ -11,9 +11,6 @@ __version__ = '2.0.0'
 # from .database import db
 # __all__ = ['create_app', 'db']
 
-# The sys.modules hack is likely unnecessary if imports are handled correctly
-# elsewhere. Removing it for now.
-
 # Note: Most initialization logic belongs in create_app() within app.py
 
 from backend.database import db

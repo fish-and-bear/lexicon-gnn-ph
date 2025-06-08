@@ -106,7 +106,7 @@ import React, {
     isMobile,
     isLoading
   }) => {
-    console.log("[WordGraph] Received wordNetwork prop:", wordNetwork); // <-- ADD THIS LOG
+    // console.log("[WordGraph] Received wordNetwork prop:", wordNetwork); // <-- REMOVED DEBUG LOG
     const { themeMode } = useAppTheme();
     const muiTheme = useMuiTheme();
     const svgRef = useRef<SVGSVGElement>(null);
@@ -124,9 +124,9 @@ import React, {
     const [zoomBehavior, setZoomBehavior] = useState<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   
     // Log the received mainWord prop
-    useEffect(() => {
-      console.log(`[WordGraph] Received mainWord prop: '${mainWord}'`);
-    }, [mainWord]);
+    // useEffect(() => {
+    //   console.log(`[WordGraph] Received mainWord prop: '${mainWord}'`);
+    // }, [mainWord]);
   
     const [hoveredNode, setHoveredNode] = useState<CustomNode | null>(null);
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -161,7 +161,6 @@ import React, {
     useEffect(() => {
       if (!wordNetwork || !wordNetwork.nodes || !Array.isArray(wordNetwork.nodes) || 
           !wordNetwork.links || !Array.isArray(wordNetwork.links)) {
-        console.error("Invalid wordNetwork structure:", wordNetwork);
         setIsValidNetwork(false);
       } else {
         setIsValidNetwork(true);
@@ -178,7 +177,7 @@ import React, {
       const typesToToggle = Array.isArray(typeOrTypes) ? typeOrTypes : [typeOrTypes];
       const typesToToggleLower = typesToToggle.map(t => t.toLowerCase());
       
-      console.log(`[FILTER] Toggling filter for type(s): '${typesToToggleLower.join(', ')}'`);
+      // console.log(`[FILTER] Toggling filter for type(s): '${typesToToggleLower.join(', ')}'`);
       
       setFilteredRelationships(prevFilters => {
         // Check if *all* types in the group are currently filtered
@@ -187,15 +186,15 @@ import React, {
         
         if (allAreFiltered) {
           // Remove all types in this group from filters
-          console.log(`[FILTER] Removing group '${typesToToggleLower.join(', ')}' from filters`);
+          // console.log(`[FILTER] Removing group '${typesToToggleLower.join(', ')}' from filters`);
           newFilters = prevFilters.filter(f => !typesToToggleLower.includes(f));
         } else {
           // Add any missing types from this group to filters
-          console.log(`[FILTER] Adding group '${typesToToggleLower.join(', ')}' to filters`);
+          // console.log(`[FILTER] Adding group '${typesToToggleLower.join(', ')}' to filters`);
           newFilters = Array.from(new Set([...prevFilters, ...typesToToggleLower]));
         }
         
-        console.log(`[FILTER] New filters:`, newFilters);
+        // console.log(`[FILTER] New filters:`, newFilters);
         return newFilters;
       });
       
@@ -290,7 +289,7 @@ import React, {
     // Memoize base links processing - USE LABEL AS ID
     const baseLinks = useMemo((): CustomLink[] => {
       if (!wordNetwork?.nodes || !wordNetwork.links) return [];
-      console.log("[BASELINKS-LABEL] Processing links using LABEL as ID");
+      // console.log("[BASELINKS-LABEL] Processing links using LABEL as ID");
 
       // --- START: Create map from numeric ID string/number to label --- 
       const nodeIdToLabelMap = new Map<string, string>(); // Key is now string
@@ -307,10 +306,10 @@ import React, {
         if (nodeIdKey && typeof node.label === 'string' && node.label) {
           nodeIdToLabelMap.set(nodeIdKey, node.label);
         } else if (index < 5) { // Log why first few nodes might fail
-             console.warn(`[BASELINKS-LABEL MAP DEBUG] Skipping node #${index}: Invalid id ('${node.id}', type: ${typeof node.id}) or label ('${node.label}', type: ${typeof node.label})`);
+          // console.warn(`[BASELINKS-LABEL MAP DEBUG] Skipping node #${index}: Invalid id ('${node.id}', type: ${typeof node.id}) or label ('${node.label}', type: ${typeof node.label})`);
         }
       });
-      console.log(`[BASELINKS-LABEL] Created nodeIdToLabelMap with ${nodeIdToLabelMap.size} entries`);
+      // console.log(`[BASELINKS-LABEL] Created nodeIdToLabelMap with ${nodeIdToLabelMap.size} entries`);
       // --- END: Map creation ---
 
       const links = wordNetwork.links
@@ -345,7 +344,7 @@ import React, {
            // --- END MODIFICATION ---
 
             if (!sourceLabel || !targetLabel) {
-                 console.warn(`[BASELINKS-LABEL] Could not determine label for link source='${link.source}' (Key: ${sourceIdKey}) or target='${link.target}' (Key: ${targetIdKey}). Skipping link.`);
+                 // console.warn(`[BASELINKS-LABEL] Could not determine label for link source='${link.source}' (Key: ${sourceIdKey}) or target='${link.target}' (Key: ${targetIdKey}). Skipping link.`);
                  return null; // Skip if labels couldn't be found
           }
           
@@ -357,7 +356,7 @@ import React, {
             } as CustomLink;
         })
         .filter((link): link is CustomLink => link !== null); 
-        console.log("[BASELINKS-LABEL] Processed links:", links.length);
+        // console.log("[BASELINKS-LABEL] Processed links:", links.length);
         return links;
     }, [wordNetwork]); // Dependency is only on the raw network data
   
@@ -398,13 +397,13 @@ import React, {
     // Fix baseNodes calculation to use stringified numeric ID for D3
     const baseNodes = useMemo<CustomNode[]>(() => {
       if (!wordNetwork?.nodes || !mainWord) return [];
-      console.log("[BASENODES-LABEL] Processing nodes using LABEL as ID");
+      // console.log("[BASENODES-LABEL] Processing nodes using LABEL as ID");
 
       const mappedNodes = wordNetwork.nodes.map((node: ImportedNetworkNode) => {
           // --- MODIFIED: Use label as the primary ID --- 
           const nodeIdLabel = node.label; 
           if (!nodeIdLabel) {
-               console.warn("Node missing label, cannot use as ID. Skipping node:", node);
+               // console.warn("Node missing label, cannot use as ID. Skipping node:", node);
                return null; // Skip nodes without labels
           }
           // --- END MODIFICATION ---
@@ -465,12 +464,11 @@ import React, {
               seenIds.add(node.id);
         }
       }
-      console.log("[BASENODES-LABEL] Final unique nodes:", uniqueNodes.length);
+      // console.log("[BASENODES-LABEL] Final unique nodes:", uniqueNodes.length);
       return uniqueNodes;
     }, [wordNetwork, mainWord, baseLinks, mapRelationshipToGroup]);
   
-    // >>> ADD LOGS HERE <<<
-    // REMOVE OLD LOGS
+    // >>> REMOVED DEBUG LOGS <<<
     // console.log("[DEBUG] baseLinks:", baseLinks);
     // console.log("[DEBUG] baseNodes (before filtering):", baseNodes);
   
@@ -561,8 +559,7 @@ import React, {
       // --- Peek Interaction (Right-Click) ---
       nodeSelection.on("contextmenu", (event: MouseEvent, d: CustomNode) => {
         event.preventDefault(); // Prevent browser context menu
-        // <<< CHANGE: Log uses word for readability >>>
-        console.log(`Peek triggered for node: ${d.word} [ID: ${d.id}]`); 
+        // console.log(`Peek triggered for node: ${d.word} [ID: ${d.id}]`); 
         const xPos = event.clientX;
         const yPos = event.clientY;
         // REMOVED: setPeekedNode({ node: d, x: xPos, y: yPos }); // This line was causing the error as setPeekedNode is removed
@@ -576,11 +573,9 @@ import React, {
         if (isMobile && !selectedMobileNodeId) return;
         
         const currentTargetElement = event.currentTarget as SVGGElement;
-        // const mainWordNodeEntry = Array.from(nodeMap.entries()).find(([id, node]) => node.word === mainWord);
-        // const mainWordIdString = mainWordNodeEntry ? mainWordNodeEntry[0] : null;
         if (isDraggingRef.current || !mainWordIdString) return; 
 
-        console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
+        // console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
   
         // --- Find Path to Main Word (BFS Backwards) --- 
         let foundPath = false;
@@ -588,7 +583,7 @@ import React, {
         const pathNodeIds = new Set<string>(); // Initialize here
         const pathLinkIds = new Set<string>(); // Initialize here
   
-        console.log(`[BFS Start] Starting BFS for node: ${d.id} to find main word: ${mainWordIdString}`);
+        // console.log(`[BFS Start] Starting BFS for node: ${d.id} to find main word: ${mainWordIdString}`);
 
         if (d.id !== mainWordIdString) { 
           const queue: [string, string[]][] = [[d.id, [d.id]]]; 
@@ -596,7 +591,7 @@ import React, {
 
           while (queue.length > 0 && !foundPath) {
             const [currentId, currentPath] = queue.shift()!;
-            console.log(`[BFS Loop] Processing: ${currentId}, Current Path: ${currentPath.join('->')}`);
+            // console.log(`[BFS Loop] Processing: ${currentId}, Current Path: ${currentPath.join('->')}`);
 
             const incomingLinks = baseLinks.filter(l => l.target === currentId);
             const outgoingLinks = baseLinks.filter(l => l.source === currentId);
@@ -612,7 +607,7 @@ import React, {
                   const newPathForThisBranch = [...currentPath, neighborId]; // Create path first
   
                 if (neighborId === mainWordIdString) { 
-                    console.log(`[BFS PATH FOUND] Found main word '${mainWordIdString}' via neighbor '${neighborId}' from node '${currentId}'`);
+                    // console.log(`[BFS PATH FOUND] Found main word '${mainWordIdString}' via neighbor '${neighborId}' from node '${currentId}'`);
                     calculatedPath = newPathForThisBranch.reverse(); // Assign to outer scope variable
                   foundPath = true;
                   break; // Exit inner loop
@@ -622,7 +617,7 @@ import React, {
             }
             if (foundPath) break; // Exit outer loop if path found
           }
-          console.log(`[BFS End] For node ${d.id}, foundPath = ${foundPath}`);
+          // console.log(`[BFS End] For node ${d.id}, foundPath = ${foundPath}`);
         } else {
             calculatedPath = [mainWordIdString];
             foundPath = true; // Mark as found for main node
@@ -631,7 +626,7 @@ import React, {
 
         // Assign the found path to the node's data
         d.pathToMain = calculatedPath; // Assign the final calculated path
-        console.log(`[HOVER PATH ASSIGN] Node: '${d.word}' (ID: ${d.id}), Assigned Path:`, d.pathToMain);
+        // console.log(`[HOVER PATH ASSIGN] Node: '${d.word}' (ID: ${d.id}), Assigned Path:`, d.pathToMain);
   
         // Populate pathNodeIds and pathLinkIds *after* BFS completes if path was found
         if (d.pathToMain) { 
@@ -652,25 +647,15 @@ import React, {
   
         // Find direct connections (neighbors) using baseLinks
         const directNeighborIds = new Set<string>();
-        baseLinks.forEach((l) => { 
-            // --- REVERTED: Treat link source/target as STRINGS --- 
-            const sourceId = l.source as string;
-            const targetId = l.target as string;
-            if (sourceId === d.id) directNeighborIds.add(targetId);
-            if (targetId === d.id) directNeighborIds.add(sourceId);
-            // --- END REVERT ---
-        });
-  
-        // Combine path nodes and direct neighbors for highlighting (using string IDs)
-        // --- ADDED: Detailed logging for neighbor finding ---
-        console.log(`[HOVER NEIGHBOR] Finding neighbors for hovered node ID: ${d.id} (Type: ${typeof d.id})`);
+        // --- REMOVED: Detailed logging for neighbor finding ---
+        // console.log(`[HOVER NEIGHBOR] Finding neighbors for hovered node ID: ${d.id} (Type: ${typeof d.id})`);
         baseLinks.forEach((l, index) => { 
             const sourceId = l.source as string;
             const targetId = l.target as string;
-            // Log the comparison attempt
-            if (index < 15) { // Log first 15 link comparisons
-                 console.log(`[HOVER NEIGHBOR #${index}] Comparing d.id='${d.id}'(type:${typeof d.id}) with link src='${sourceId}'(type:${typeof sourceId}), tgt='${targetId}'(type:${typeof targetId})`);
-            }
+            // REMOVED: Log the comparison attempt
+            // if (index < 15) { // Log first 15 link comparisons
+            //      console.log(`[HOVER NEIGHBOR #${index}] Comparing d.id='${d.id}'(type:${typeof d.id}) with link src='${sourceId}'(type:${typeof sourceId}), tgt='${targetId}'(type:${typeof targetId})`);
+            // }
             // Explicitly check types before comparison
             let matchFound = false;
             if (typeof d.id === 'string' && typeof sourceId === 'string' && sourceId === d.id) {
@@ -685,26 +670,27 @@ import React, {
                      matchFound = true;
                  }
             }
-            if (index < 15 && matchFound) {
-                 console.log(`[HOVER NEIGHBOR #${index}]   MATCH FOUND! Added neighbor.`);
-            }
+            // REMOVED: Match found logging
+            // if (index < 15 && matchFound) {
+            //      console.log(`[HOVER NEIGHBOR #${index}]   MATCH FOUND! Added neighbor.`);
+            // }
         });
-        console.log('[HOVER NEIGHBOR] Finished loop. Found neighbors:', Array.from(directNeighborIds));
-        // --- END: Detailed logging ---
+        // console.log('[HOVER NEIGHBOR] Finished loop. Found neighbors:', Array.from(directNeighborIds));
+        // --- END: Removed logging ---
   
         // Combine path nodes and direct neighbors for highlighting (using string IDs)
         const highlightNodeIds = new Set<string>([d.id]);
         pathNodeIds.forEach(id => highlightNodeIds.add(id));
         directNeighborIds.forEach(id => highlightNodeIds.add(id));
   
-        // --- Diagnostic Logging (Keep this as well) ---
-        console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
-        console.log('[HOVER ENTER] Main Word ID:', mainWordIdString);
-        console.log('[HOVER ENTER] Path Node IDs:', Array.from(pathNodeIds)); // Now populated correctly
-        console.log('[HOVER ENTER] Path Link IDs:', Array.from(pathLinkIds)); // Now populated correctly
-        console.log('[HOVER ENTER] Direct Neighbor IDs:', Array.from(directNeighborIds)); // Log the final result
-        console.log('[HOVER ENTER] Highlight Node IDs:', Array.from(highlightNodeIds));
-        // --- END DIAGNOSTIC LOGGING --- 
+        // --- REMOVED: Diagnostic Logging ---
+        // console.log(`[HOVER ENTER] Node: '${d.word}' (ID: ${d.id})`);
+        // console.log('[HOVER ENTER] Main Word ID:', mainWordIdString);
+        // console.log('[HOVER ENTER] Path Node IDs:', Array.from(pathNodeIds)); // Now populated correctly
+        // console.log('[HOVER ENTER] Path Link IDs:', Array.from(pathLinkIds)); // Now populated correctly
+        // console.log('[HOVER ENTER] Direct Neighbor IDs:', Array.from(directNeighborIds)); // Log the final result
+        // console.log('[HOVER ENTER] Highlight Node IDs:', Array.from(highlightNodeIds));
+        // --- END REMOVED LOGGING --- 
   
         // --- Dim non-highlighted elements --- 
         d3.selectAll<SVGGElement, CustomNode>(".node")
@@ -788,17 +774,17 @@ import React, {
           .each(function(l: CustomLink) {
             let determinedColor: string;
 
-            // Log the link being processed, accessing IDs from CustomNode objects
-            console.log(`[HOVER LINK COLOR] Processing link: source=${(l.source as CustomNode).id}, target=${(l.target as CustomNode).id}, relationship=${l.relationship}`);
+            // REMOVED: Log the link being processed
+            // console.log(`[HOVER LINK COLOR] Processing link: source=${(l.source as CustomNode).id}, target=${(l.target as CustomNode).id}, relationship=${l.relationship}`);
 
             if (l.relationship) {
               // Color the link based on its own relationship type
               determinedColor = getNodeColor(l.relationship);
-              console.log(`[HOVER LINK COLOR]   Link relationship: '${l.relationship}', Determined color: ${determinedColor}`);
+              // console.log(`[HOVER LINK COLOR]   Link relationship: '${l.relationship}', Determined color: ${determinedColor}`);
             } else {
               // Fallback for links with no relationship type
               determinedColor = themeMode === 'dark' ? "#999" : "#777";
-              console.warn(`[HOVER LINK COLOR]   Link has no relationship type. Using fallback color.`);
+              // console.warn(`[HOVER LINK COLOR]   Link has no relationship type. Using fallback color.`);
             }
 
             d3.select(this).style("stroke", determinedColor);
@@ -914,8 +900,7 @@ import React, {
           .remove();
         
         setTimeout(() => {
-          // <<< CHANGE: Log uses word, callback uses word >>>
-          console.log(`Double-click on node: ${d.word} [ID: ${d.id}] - Navigating`); 
+          // console.log(`Double-click on node: ${d.word} [ID: ${d.id}] - Navigating`); 
           if (onNodeClick) {
             onNodeClick(d.word); 
           }
@@ -1433,69 +1418,69 @@ import React, {
     const { filteredNodes, filteredLinks } = useMemo<{ filteredNodes: CustomNode[], filteredLinks: CustomLink[] }>(() => {
       // Ensure prerequisites are met
       if (!mainWord || baseNodes.length === 0 || !wordNetwork?.nodes) {
-        console.log("[FILTER DEBUG] Prerequisites not met, returning empty arrays."); // <-- ADDED DEBUG
+        // console.log("[FILTER DEBUG] Prerequisites not met, returning empty arrays.");
         return { filteredNodes: [], filteredLinks: [] };
       }
-  
-      console.log("[FILTER DEBUG] Applying depth/breadth and relationship filters"); // <-- ADDED DEBUG
-      console.log("[FILTER DEBUG] Main word:", mainWord); // <-- ADDED DEBUG
-      console.log("[FILTER DEBUG] Base nodes count:", baseNodes.length); // <-- ADDED DEBUG
-      console.log("[FILTER DEBUG] Base links count:", baseLinks.length); // <-- ADDED DEBUG
-      console.log("[FILTER DEBUG] Depth limit:", depth); // <-- ADDED DEBUG
-      console.log("[FILTER DEBUG] Breadth limit:", breadth); // <-- ADDED DEBUG
-      console.log("[FILTER DEBUG] Active relationship filters:", filteredRelationships); // <-- ADDED DEBUG
-  
+
+      // console.log("[FILTER DEBUG] Applying depth/breadth and relationship filters");
+      // console.log("[FILTER DEBUG] Main word:", mainWord);
+      // console.log("[FILTER DEBUG] Base nodes count:", baseNodes.length);
+      // console.log("[FILTER DEBUG] Base links count:", baseLinks.length);
+      // console.log("[FILTER DEBUG] Depth limit:", depth);
+      // console.log("[FILTER DEBUG] Breadth limit:", breadth);
+      // console.log("[FILTER DEBUG] Active relationship filters:", filteredRelationships);
+
       // --- Perform BFS to limit depth and breadth using String IDs ---
       const connectedNodeIds = new Set<string>();
       const queue: { nodeId: string; currentDepth: number }[] = [];
       const nodeMap = new Map<string, CustomNode>(baseNodes.map(n => [n.id, n])); // Map ID string -> Node
-  
+
       // Find the main word's Node ID string
       const mainWordNode = baseNodes.find(node => node.group === 'main');
       const mainWordIdString = mainWordNode ? mainWordNode.id : null;
-  
+
       if (mainWordIdString) {
-        console.log(`[FILTER] Starting BFS with mainWord ID: ${mainWordIdString}`);
+        // console.log(`[FILTER] Starting BFS with mainWord ID: ${mainWordIdString}`);
         queue.push({ nodeId: mainWordIdString, currentDepth: 0 });
         connectedNodeIds.add(mainWordIdString);
       } else {
         console.warn('[FILTER] Cannot start BFS: Main word node not found in baseNodes.');
       }
-  
-      console.log('[FILTER] Node map size:', nodeMap.size);
-  
+
+      // console.log('[FILTER] Node map size:', nodeMap.size);
+
       let head = 0;
       const nodesAddedAtDepth: { [key: number]: number } = {}; // Track nodes added per depth level for breadth limit
-  
+
       // console.log(`[FILTER DEBUG BFS Start] Queue:`, JSON.stringify(queue)); // Optional: Log initial queue state
-  
+
       while (head < queue.length) {
         const { nodeId, currentDepth } = queue[head++];
-  
+
         // console.log(`[FILTER DEBUG BFS Loop] Processing nodeId: ${nodeId} at depth ${currentDepth}`); // Optional
-  
+
         if (currentDepth >= depth) continue; // Stop if max depth reached
-  
+
         if (nodesAddedAtDepth[currentDepth] === undefined) {
           nodesAddedAtDepth[currentDepth] = 0;
         }
-  
+
         baseLinks.forEach((link, linkIndex) => {
           let neighborId: string | null = null;
           const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
           const targetId = typeof link.target === 'object' ? link.target.id : link.target;
-  
-          // --- DETAILED LOGS FOR NEIGHBOR FINDING ---
+
+          // --- REMOVED: DETAILED LOGS FOR NEIGHBOR FINDING ---
           // Log first few links, and any link that involves the current nodeId, to reduce log spam
           const shouldLogThisLink = linkIndex < 5 || sourceId === nodeId || targetId === nodeId;
-          if (shouldLogThisLink) {
-            console.log(`[FILTER DEBUG BFS Detail] Current BFS Node ID: '${nodeId}' (Depth: ${currentDepth})`);
-            console.log(`[FILTER DEBUG BFS Detail] Iterating Link #${linkIndex}: source='${link.source}' (becomes '${sourceId}'), target='${link.target}' (becomes '${targetId}')`);
-            console.log(`[FILTER DEBUG BFS Detail]   Comparing with source: ('${sourceId}' === '${nodeId}') is ${sourceId === nodeId}`);
-            console.log(`[FILTER DEBUG BFS Detail]   Comparing with target: ('${targetId}' === '${nodeId}') is ${targetId === nodeId}`);
-          }
-          // --- END DETAILED LOGS ---
-  
+          // if (shouldLogThisLink) {
+          //   console.log(`[FILTER DEBUG BFS Detail] Current BFS Node ID: '${nodeId}' (Depth: ${currentDepth})`);
+          //   console.log(`[FILTER DEBUG BFS Detail] Iterating Link #${linkIndex}: source='${link.source}' (becomes '${sourceId}'), target='${link.target}' (becomes '${targetId}')`);
+          //   console.log(`[FILTER DEBUG BFS Detail]   Comparing with source: ('${sourceId}' === '${nodeId}') is ${sourceId === nodeId}`);
+          //   console.log(`[FILTER DEBUG BFS Detail]   Comparing with target: ('${targetId}' === '${nodeId}') is ${targetId === nodeId}`);
+          // }
+          // --- END REMOVED LOGS ---
+
           if (sourceId === nodeId && !connectedNodeIds.has(targetId as string)) {
             neighborId = targetId;
             // if (shouldLogThisLink) console.log(`[FILTER DEBUG BFS Detail]     Found potential neighbor via source: ${neighborId}`);
@@ -1503,11 +1488,11 @@ import React, {
             neighborId = sourceId;
             // if (shouldLogThisLink) console.log(`[FILTER DEBUG BFS Detail]     Found potential neighbor via target: ${neighborId}`);
           }
-  
-          if (neighborId && shouldLogThisLink) {
-             console.log(`[FILTER DEBUG BFS Detail]   Neighbor ID determined for Link #${linkIndex}: ${neighborId}`);
-          }
-  
+
+          // if (neighborId && shouldLogThisLink) {
+          //    console.log(`[FILTER DEBUG BFS Detail]   Neighbor ID determined for Link #${linkIndex}: ${neighborId}`);
+          // }
+
           if (neighborId && nodeMap.has(neighborId)) {
              const nextDepth = currentDepth + 1;
              if (nodesAddedAtDepth[nextDepth] === undefined) {
@@ -1524,8 +1509,8 @@ import React, {
           }
         });
       }
-      console.log(`[FILTER DEBUG] BFS finished. Found ${connectedNodeIds.size} connected node IDs.`); // <-- ADDED DEBUG
-  
+      // console.log(`[FILTER DEBUG] BFS finished. Found ${connectedNodeIds.size} connected node IDs.`);
+
       // --- Filter nodes and links based ONLY on BFS results FIRST ---
       const bfsFilteredNodes = baseNodes.filter(node => connectedNodeIds.has(node.id));
       const bfsFilteredLinks = baseLinks.filter(link => {
@@ -1533,9 +1518,9 @@ import React, {
           const targetId = typeof link.target === 'object' ? link.target.id : link.target;
           return connectedNodeIds.has(sourceId as string) && connectedNodeIds.has(targetId as string);
       });
-  
-      console.log(`[FILTER DEBUG] After BFS: ${bfsFilteredNodes.length} nodes, ${bfsFilteredLinks.length} links`); // <-- ADDED DEBUG
-  
+
+      // console.log(`[FILTER DEBUG] After BFS: ${bfsFilteredNodes.length} nodes, ${bfsFilteredLinks.length} links`);
+
       // --- Now apply relationship type filters if any are active ---
       let finalFilteredNodes = bfsFilteredNodes;
       let finalFilteredLinks = bfsFilteredLinks;

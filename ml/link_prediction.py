@@ -26,7 +26,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ml.data.db_adapter import DatabaseAdapter
 from ml.data.lexical_graph_builder import LexicalGraphBuilder
 from ml.data.feature_extractors import LexicalFeatureExtractor
-from ml.models.hgnn import HeterogeneousGNN
+from ml.models.encoder import GraphEncoder
 from ml.utils.logging_utils import setup_logging
 from ml.utils.evaluation_utils import evaluate_link_prediction, compute_confidence_scores
 
@@ -41,7 +41,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Predict missing links in Filipino lexical knowledge graph")
     
     parser.add_argument("--model-path", type=str, required=True,
-                        help="Path to trained model checkpoint")
+                        help="Path to trained GraphEncoder model checkpoint")
     parser.add_argument("--config", type=str, default="config/default_config.json",
                         help="Path to configuration file")
     parser.add_argument("--db-config", type=str, default="my_db_config.json",
@@ -53,9 +53,9 @@ def parse_args():
     parser.add_argument("--relation-types", type=str, nargs="+",
                         help="Relation types to predict (default: all)")
     parser.add_argument("--top-k", type=int, default=10,
-                        help="Number of top predictions to output per word")
-    parser.add_argument("--threshold", type=float, default=0.75,
-                        help="Confidence threshold for predictions")
+                        help="Number of top predictions to output per relation type")
+    parser.add_argument("--threshold", type=float, default=0.5,
+                        help="Confidence threshold for predictions (0.0 to 1.0)")
     parser.add_argument("--export-visualizations", action="store_true",
                         help="Export graph visualizations")
     parser.add_argument("--debug", action="store_true",
@@ -105,48 +105,69 @@ def load_data_from_cache(data_dir):
         logger.error(f"Failed to load data from cache: {e}")
         sys.exit(1)
 
-def load_model(model_path, graph):
+def load_model_from_checkpoint(model_path: str, graph: dgl.DGLGraph, config: dict) -> GraphEncoder:
     """
-    Load a trained GNN model from checkpoint.
+    Load a trained GraphEncoder model from checkpoint.
     
     Args:
         model_path: Path to the model checkpoint
-        graph: The graph used for the model
-        
+        graph: The graph used to infer node_types if not in checkpoint
+        config: Overall configuration dict (used for model HPs if not in checkpoint)
+    
     Returns:
-        Loaded model
+        Loaded GraphEncoder model
     """
     try:
         logger.info(f"Loading model from {model_path}")
-        checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        checkpoint = torch.load(model_path, map_location=device)
         
-        # Extract model configuration
-        config = checkpoint.get('config', {})
-        model_config = config.get('model', {})
+        # Extract model configuration from checkpoint, fallback to main config
+        # The training script should save these under 'model_hyperparameters' or similar key
+        model_hp = checkpoint.get('model_hyperparameters', {})
         
-        # Create model with the same configuration
-        model = HeterogeneousGNN(
-            graph=graph,
-            in_dim=model_config.get('in_dim', 768),
-            hidden_dim=model_config.get('hidden_dim', 256), 
-            out_dim=model_config.get('out_dim', 128),
-            num_layers=model_config.get('num_layers', 3),
-            num_heads=model_config.get('num_heads', 8),
-            num_bases=model_config.get('num_bases', 8),
-            dropout=model_config.get('dropout', 0.2),
-            use_layer_norm=model_config.get('layer_norm', True),
-            use_residual=model_config.get('residual', True),
-            use_attention=model_config.get('use_attention', True),
-        )
-        
-        # Load model weights
+        # Essential parameters for GraphEncoder from its __init__ signature
+        # Try to get from checkpoint, then from general config, then provide defaults or raise error
+        original_feat_dims = model_hp.get('original_feat_dims', checkpoint.get('original_feat_dims')) # Legacy support
+        if original_feat_dims is None:
+            # This is critical and ideally should be saved. 
+            # For now, if link prediction has its own feature extraction, it could be inferred.
+            # However, the trained model depends on specific dimensions it was trained with.
+            raise ValueError("original_feat_dims not found in model checkpoint or config. This is required.")
+
+        node_types = model_hp.get('node_types', graph.ntypes)
+        rel_names = model_hp.get('rel_names', graph.etypes) # DGL graph.etypes gives relation names
+
+        # Use get with fallback to general config model section, then to a default
+        # Ensure these names match GraphEncoder __init__ params
+        graph_encoder_params = {
+            'original_feat_dims': original_feat_dims,
+            'hidden_dim': model_hp.get('hidden_dim', config.get('model', {}).get('hidden_dim', 256)),
+            'out_dim': model_hp.get('out_dim', config.get('model', {}).get('out_dim', 128)),
+            'node_types': node_types,
+            'rel_names': rel_names,
+            'num_encoder_layers': model_hp.get('num_encoder_layers', config.get('model', {}).get('num_encoder_layers', 3)),
+            'num_decoder_layers': model_hp.get('num_decoder_layers', config.get('model', {}).get('num_decoder_layers', 1)),
+            'dropout': model_hp.get('dropout', config.get('model', {}).get('dropout', 0.1)),
+            'feature_mask_rate': model_hp.get('feature_mask_rate', config.get('model', {}).get('feature_mask_rate', 0.3)),
+            'edge_mask_rate': model_hp.get('edge_mask_rate', config.get('model', {}).get('edge_mask_rate', 0.3)),
+            'num_heads': model_hp.get('num_heads', config.get('model', {}).get('num_heads', 8)),
+            'residual': model_hp.get('residual', config.get('model', {}).get('residual', True)),
+            'layer_norm': model_hp.get('layer_norm', config.get('model', {}).get('layer_norm', True)),
+            'num_bases': model_hp.get('num_bases', config.get('model', {}).get('num_bases', 8)),
+            'hgnn_sparsity': model_hp.get('hgnn_sparsity', config.get('model', {}).get('hgnn_sparsity', 0.9)),
+        }
+
+        model = GraphEncoder(**graph_encoder_params)
         model.load_state_dict(checkpoint['model_state_dict'])
-        model.eval()  # Set to evaluation mode
+        model.to(device)
+        model.eval()
         
-        logger.info(f"Model loaded successfully from epoch {checkpoint.get('epoch', 'unknown')}")
+        logger.info(f"GraphEncoder model loaded successfully from epoch {checkpoint.get('epoch', 'N/A')}")
+        logger.info(f"Model Hyperparameters used: {graph_encoder_params}")
         return model
     except Exception as e:
-        logger.error(f"Failed to load model: {e}")
+        logger.error(f"Failed to load model from {model_path}: {e}", exc_info=True)
         sys.exit(1)
 
 def generate_candidate_edges(graph, lemmas_df, mappings, relation_types):
@@ -647,7 +668,7 @@ def main():
     )
     
     # Load model
-    model = load_model(args.model_path, graph)
+    model = load_model_from_checkpoint(args.model_path, graph, config)
     
     # Determine relation types to predict
     if args.relation_types:
