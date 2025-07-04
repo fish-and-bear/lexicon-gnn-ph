@@ -1,0 +1,20 @@
+{
+  "dictionary_info": {
+    "id": "15",
+    "name": "bikol-northern-catanduanes-english",
+    "text": "Bikol-Northern Catanduanes - English",
+    "base_language": "Bikol-Northern Catanduanes",
+    "target_language": "English",
+    "total_words": 0,
+    "scrape_date": "2025-03-28"
+  },
+  "statistics": {
+    "total_words": 0,
+    "core_words": 0,
+    "with_audio": 0,
+    "with_examples": 0,
+    "parts_of_speech": {}
+  },
+  "words": [],
+  "alphabet_index": {}
+}

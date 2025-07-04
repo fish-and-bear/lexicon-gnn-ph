@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  ml-trainer:
+    build:
+      context: .
+      dockerfile: ml.Dockerfile
+    image: fil-relex-ml-trainer:latest
+    env_file:
+      - .env # Assumes your DB credentials are in a .env file
+    environment:
+      # The service name 'db' from docker-compose.local.yml becomes the hostname
+      - DATABASE_URL=postgresql://***:***@localhost:5432/fil_dict_db/fil_dict_db/${DB_NAME}
+      - HF_HUB_DISABLE_SYMLINKS_WARNING=1 # Suppress a common warning on Windows
+    volumes:
+      # Mount the entire project directory
+      # This allows the script to access configs and save models back to the host
+      - .:/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    # This tells docker-compose to use the existing network created by `docker-compose.local.yml`
+    # instead of trying to create a new one.
+    external: true 

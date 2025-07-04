@@ -1,0 +1,155 @@
+{
+  "dictionary_info": {
+    "id": "10",
+    "name": "bikol-central-english",
+    "text": "Bikol-Central - English",
+    "base_language": "Bikol-Central",
+    "target_language": "English",
+    "total_words": 4,
+    "scrape_date": "2025-03-28"
+  },
+  "statistics": {
+    "total_words": 4,
+    "core_words": 0,
+    "with_audio": 0,
+    "with_examples": 4,
+    "parts_of_speech": {
+      "adverb": 1,
+      "noun": 3
+    }
+  },
+  "words": [
+    {
+      "word": "giráray",
+      "id": 2350,
+      "is_core": false,
+      "headword": "giráray",
+      "comment": "",
+      "pos": "adverb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Diaz, Anthony (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "returning to a previous position or condition.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ikaag mo giráray dyan sa dating bugtakan.",
+              "translation": "Ilagay mo ulit diyan sa dating lalagyan.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "kudál",
+      "id": 2365,
+      "is_core": false,
+      "headword": "kudál",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Brazal, Imelda (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a fence",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Si Juan nagsakat sa kudál kan eskwelahan.",
+              "translation": "Juan climbed the school fence.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "palás",
+      "id": 2351,
+      "is_core": false,
+      "headword": "palás",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Diaz, Anthony (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "a type of a butcher's knife is usually long and narrow, used for slitting the throat of animals",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Sa liog mo itusok an palás tanganing mapuruhan.",
+              "translation": "Sa leeg mo isaksak ang patalim para mapuruhan.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "pamálit",
+      "id": 2352,
+      "is_core": false,
+      "headword": "pamálit",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Diaz, Anthony (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "an unusual and typically permanent brown or red mark on someone's body from birth.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Igwa iyan nin pamálit sa daghan.",
+              "translation": "Mayroon yan pilat sa dibdib.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    }
+  ],
+  "alphabet_index": {
+    "G": [
+      {
+        "id": 2350,
+        "word": "giráray",
+        "is_core": false
+      }
+    ],
+    "K": [
+      {
+        "id": 2365,
+        "word": "kudál",
+        "is_core": false
+      }
+    ],
+    "P": [
+      {
+        "id": 2351,
+        "word": "palás",
+        "is_core": false
+      },
+      {
+        "id": 2352,
+        "word": "pamálit",
+        "is_core": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,4187 @@
+{
+  "dictionary_info": {
+    "id": "12",
+    "name": "bikol-boienen-english",
+    "text": "Bikol-Boie&#x27;nen - English",
+    "base_language": "Bikol-Boie&#x27;nen",
+    "target_language": "English",
+    "total_words": 88,
+    "scrape_date": "2025-03-28"
+  },
+  "statistics": {
+    "total_words": 88,
+    "core_words": 0,
+    "with_audio": 0,
+    "with_examples": 88,
+    "parts_of_speech": {
+      "noun": 67,
+      "adjective": 10,
+      "verb": 11
+    }
+  },
+  "words": [
+    {
+      "word": "agran",
+      "id": 2394,
+      "is_core": false,
+      "headword": "agran",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[AG-ran]",
+      "credits": "Contributors:Claveria, Maria Taburnal (2022)\n      \n        Sadural, Samantha Jade (2021)Editors:Claveria, Tayag (2022)\n      \n        Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "a series of steps that connects one level of a vertical structure to the next level (synonymous with: steps, stair, stairway)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mala'katindeg ana agran nya baxey ninyo.",
+              "translation": "The stair of your house is so steep.",
+              "example_id": 1
+            },
+            {
+              "text": "Nagagran na sana kami ta malaandax sa elevator.",
+              "translation": "We had to use the stair because it's so stressful in the elevator.",
+              "example_id": 2
+            },
+            {
+              "text": "Malae'beg ana mga talanga nya agranan.",
+              "translation": "The staircase's tread are very thick.",
+              "example_id": 3
+            },
+            {
+              "text": "Inagrannan na yo baxey nira.",
+              "translation": "A stair has already been put in their house.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "alangaang",
+      "id": 2612,
+      "is_core": false,
+      "headword": "alangaang",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ma-ala-nga-ANG]",
+      "credits": "Contributors:Claveria, Alfonso (2021)\n      \n        Fallar, Gertrudes (2021)Reviewer:Claveria, Maria Taburnal (2021)Editors:Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "a hot and humid condition brought about by hot weather with perceptively high humidity ( synonymous with humid, muggy, sticky)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pagkatapos nya rinikrinik pagmalainit a si'lag nya aldaw - ay santang alangaang!",
+              "translation": "After a drizzle when the sun is shining hot - oh how humid (it becomes).",
+              "example_id": 1
+            },
+            {
+              "text": "Maalangaang ana panaon.",
+              "translation": "The weather is humid.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "arasa-as",
+          "pk": 2613
+        },
+        {
+          "text": "ewrasa",
+          "pk": 2615
+        }
+      ]
+    },
+    {
+      "word": "arasa-as",
+      "id": 2613,
+      "is_core": false,
+      "headword": "arasa-as",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ara-SA-AS]",
+      "credits": "Contributor:Ninofranco, Rolando (2021)Reviewer:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a hot and humid condition brought about by hot weather with perceptively high humidity (synonymous with: humid, muggy, sticky)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ay santang arasa-as pakatapos yo torotagiti kayna ta malainit nyo aldaw.",
+              "translation": "Oh how humid (it was) after it drizzled earlier when the sun was very hot.",
+              "example_id": 1
+            },
+            {
+              "text": "Malaarasaas yo pagtereng nyo torotagiti kayna.",
+              "translation": "It was so humid earlier (after) the drizzle stopped.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "alangaang",
+          "pk": 2612
+        }
+      ]
+    },
+    {
+      "word": "atep",
+      "id": 2393,
+      "is_core": false,
+      "headword": "atep",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[a-TEP]",
+      "credits": "Contributor:Claveria, Maria Luisa (Pinky) (2021)Editors:Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "the protective portion covering the topmost part of a building, car or similar structure that protects the insides from the sun and weather (synonymous with: roof, dome, awning, cupola, housetop...)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ma-ayaay a baxey a ana atep gogon.",
+              "translation": "A house with gogon-thatch roof is airy and cool.",
+              "example_id": 1
+            },
+            {
+              "text": "Yo payag namen adto sa kabelbegan inatepan nin salasala.",
+              "translation": "Our house out there in the jungle had been roofed with weaved-coconut fronds.",
+              "example_id": 2
+            },
+            {
+              "text": "Niatep pa si Ito nya pitogrok niyang baxey.",
+              "translation": "Ito is still doing the roof on the house he's building.",
+              "example_id": 3
+            },
+            {
+              "text": "Kaatepatep mo nyaan kin tomobod sanaman kina aan,  sayang! [NOTE: base-word reduplication \"suffix\"].",
+              "translation": "Your roofing effort will be for nothing if it leaks later.",
+              "example_id": 4
+            },
+            {
+              "text": "Inatepan na yo baxey.",
+              "translation": "The house already got a roof.",
+              "example_id": 5
+            },
+            {
+              "text": "Naatepan na ni Ito yo pitogrok niyang baxey kaso odma'.",
+              "translation": "Ito finished the roof already on the house he's building yesterday.",
+              "example_id": 6
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "axad",
+      "id": 2390,
+      "is_core": false,
+      "headword": "axad",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[a-XAD]",
+      "credits": "Contributors:Sadural, Samantha Jade (2021)\n      \n        Claveria, Maria Taburnal (2021)Reviewer:Sadural, Samantha Jade (2021)Editors:Claveria, Alfonso (2021)\n      \n        Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a wooden barrier placed upright on the ground to close off and surround an area",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pidpid ana axad nga kalap.",
+              "translation": "The bamboo fence is dense.",
+              "example_id": 1
+            },
+            {
+              "text": "Inaxad yo baxey nin mga bexa'.",
+              "translation": "The house was fenced with bamboo strips.",
+              "example_id": 2
+            },
+            {
+              "text": "Taynga' ta ominaxad ika nyana beke' mo?",
+              "translation": "Why did you fence what is not yours?",
+              "example_id": 3
+            },
+            {
+              "text": "Naaxad mo na yo baxey mo?",
+              "translation": "Have you fenced your house already?",
+              "example_id": 4
+            },
+            {
+              "text": "Axaden mo na ngani' ana mga masitas!",
+              "translation": "Go fence the plants already!",
+              "example_id": 5
+            },
+            {
+              "text": "Inaxadan ni Teryo yo raga' niya.",
+              "translation": "Terio fenced his land.",
+              "example_id": 6
+            },
+            {
+              "text": "Taynga' ta nangaxadan ika nya beke' saimo?",
+              "translation": "Why did you fence that which is not yours?",
+              "example_id": 7
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "balde'",
+      "id": 2426,
+      "is_core": false,
+      "headword": "balde'",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bal-DE']",
+      "credits": "Contributors:Claveria, Tayag (2023)\n      \n        Claveria, Maria Taburnal (2021)Editors:Claveria, Alfonso (2023)\n      \n        Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "the state of being unhappy, disappointed or worried (synonymous with: distressd, troubled, perturbation, disturbance, dismay, discomposure)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nabalde' yo gorang-a-axaki ta marigenkadaogali' sa kanya yo sakanyang agin.",
+              "translation": "The old man got upset due to the disrespectfulness of his  offspring to him/her.",
+              "example_id": 1
+            },
+            {
+              "text": "Nabalde' sa maray kayna yo gorang ta mari'gen ka-exey ominabot yo lolonaran.",
+              "translation": "The old (person) got upset earier because his/her ride took a long time to come.",
+              "example_id": 2
+            },
+            {
+              "text": "Bae na nyaan ta mabalde' nanaman basang ika dyan..",
+              "translation": "Leave it because it will make you upset again.",
+              "example_id": 3
+            },
+            {
+              "text": "Naborobalde' ako kayna ta marigena ringaw nyo agin.",
+              "translation": "I got a bit upset earlier because the child was so rowdy.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "gasa'",
+          "pk": 2427
+        }
+      ]
+    },
+    {
+      "word": "bangbangan",
+      "id": 2547,
+      "is_core": false,
+      "headword": "bangbangan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bang-BA-ngan]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Reviewer:Oaferina-Ranada, Dada (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the earthen-hearth of a kitchen either on the ground or an elevated platform where traditional open-fire cooking is performed (open fire cooking hearth, cooker, stove)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mari'gen a pagal ana banbangan na nasa raga' ta nakaga'dat ika pagnagioto'.",
+              "translation": "An open-fire cooking hearth on the ground is so exhausting because you have to squat when you are cooking.",
+              "example_id": 1
+            },
+            {
+              "text": "Sabinang bangbangan maray ana agin, taynga' ta napadapla' pa?",
+              "translation": "I told you to closely watch the child, why did it still fall on its face?",
+              "example_id": 2
+            },
+            {
+              "text": "Alina kamo na sanang mangagrigos sa sowong ta pibangbangan ko pa ading mga paratarok.",
+              "translation": "You all go ahead take a dip in the river - I am still watching the rice planters.",
+              "example_id": 3
+            },
+            {
+              "text": "Binangbangan ko kaso odma' yo mga paratarok ta kin indi' mangagparaeres adto.",
+              "translation": "I watched the rice planters yesterday, if not, they would just have whiled their time.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "rapog",
+          "pk": 2545
+        },
+        {
+          "text": "songo",
+          "pk": 2546
+        }
+      ]
+    },
+    {
+      "word": "banggeraan",
+      "id": 2570,
+      "is_core": false,
+      "headword": "banggeraan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bang-GE-ra-an]",
+      "credits": "Contributor:Salon-Villadares, Frances (2021)Reviewer:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the portion of the house kitchen that traditionally has the large clay-jar water vessel on a counter made of bamboo slats that overhangs outside the kitchen wall so that water would drip straight to the ground outside the house; this is where food preparation, washing of food and dishes are done and where drinking water is kept (synonymous with: kitchen sink, kitchen-sink)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Yo bangga sa banggeraan napesa'.",
+              "translation": "The clay-water jar on the kitchen-sink counter) was broken.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "banig",
+      "id": 2379,
+      "is_core": false,
+      "headword": "banig",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ba-NIG]",
+      "credits": "Contributor:Claveria, Alfonso (2024)Editors:Claveria, Tayag (2024)\n      \n        Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a handwoven mat made of long-fibrous leaves that had been cut into strips, air-dried, and handwoven together to form a broad sheet primarily made to sleep on.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pi-ewen a banig pagkamata sa pita' ag pibeklad sa ga'bi pag magitorogon na.",
+              "translation": "A sleeping mat is rolled away after getting up in the morning and unrolled at bedtime.",
+              "example_id": 1
+            },
+            {
+              "text": "Pagbanig na diyan sa saxeg.",
+              "translation": "Set the sleeping mat on the floor already.",
+              "example_id": 2
+            },
+            {
+              "text": "Banigen mo na sana ana sako.",
+              "translation": "Use the burlap sacks as your sleeping mat.",
+              "example_id": 3
+            },
+            {
+              "text": "Banigan mo na ana agin ta piroka'roka' na baga a-an.",
+              "translation": "Setup the sleeping mat for the child because it is already getting sleepy.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "baxey",
+      "id": 2392,
+      "is_core": false,
+      "headword": "baxey",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Claveria, Maria Taburnal (2022)Editors:Claveria, Alfonso (2022)\n      \n        Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a building that is used by people to live in and keep their belongings in (synonymous with: house, hut, abode, shelter)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Yo baxey naranka nyo pares.",
+              "translation": "The house was dedstroyed by the wind.",
+              "example_id": 1
+            },
+            {
+              "text": "Didi yo binaxeyan yo mga pakoapo'en mo.",
+              "translation": "This is where your grandparents had their house.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "agran",
+          "pk": 2394
+        },
+        {
+          "text": "atep",
+          "pk": 2393
+        },
+        {
+          "text": "axad",
+          "pk": 2390
+        }
+      ]
+    },
+    {
+      "word": "be-ew",
+      "id": 2430,
+      "is_core": false,
+      "headword": "be-ew",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[be-ew]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editors:Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "the part of a backside of the human foot below the ankle that curves down towards its sole (synonymous with: heel )",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nagpatambal nyo be-ew niya si Kosmi ta nasenget nin axas.",
+              "translation": "Kosmi saw a traditional healer for his heel that was bitten by a snake.",
+              "example_id": 1
+            },
+            {
+              "text": "Bine-ew sana yo epes-epes; ronot.",
+              "translation": "The cockroach was crushed with only the heel (of the foot).",
+              "example_id": 2
+            },
+            {
+              "text": "Be-ewen mo sana.",
+              "translation": "Just use your heel.",
+              "example_id": 3
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "boko-boko",
+          "pk": 2431
+        }
+      ]
+    },
+    {
+      "word": "begkes1",
+      "id": 2377,
+      "is_core": false,
+      "headword": "begkes1",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[beg-kes]",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a strip of soft material used to cover an open wound and to stop bleeding",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Begkesan mo na ana naparad sa raparapa ni Tiboy nin malinig na lagpok tanganing mapeng-peng na a karorogo'.",
+              "translation": "Bandage the cut on Tiboy's  sole with a clean piece of cloth to stop the bleeding now.",
+              "example_id": 1
+            },
+            {
+              "text": "Pibegkesan na yo naparad a raparapa ni Tiboy.",
+              "translation": "The cut on Tiboy's sole is getting bandaged now.",
+              "example_id": 2
+            },
+            {
+              "text": "Kin indi' nabegkesan yo naparad ki Tiboy di' napengpeng yo karorogo'.",
+              "translation": "Had Tiboy's cut (on his sole) not been bandaged it would not have stopped bleeding.",
+              "example_id": 3
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "begkes2",
+      "id": 2414,
+      "is_core": false,
+      "headword": "begkes2",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[beg-kes]",
+      "credits": "Contributor:Claveria, Alfonso (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "a number of identical things tied up together such as firewood, vegetables and the like",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Bagaono ana esad a begkes nya kangkong mo?",
+              "translation": "How much does one bunch of your river spinach costs?",
+              "example_id": 1
+            },
+            {
+              "text": "Bagaono ana esad a begkes nya igagatong mo?",
+              "translation": "How much does one bunch of your firewood costs?",
+              "example_id": 2
+            },
+            {
+              "text": "Nibegkes pitsay si Tonio gamit a lokoy.",
+              "translation": "Tonio is bunching up pechay using (coconut frond) leaflet.",
+              "example_id": 3
+            },
+            {
+              "text": "Paki atadoen ag borobegkesen mo na a mga nagetes tang kangkong tanganing maipasoli' ta na sa Boransan.",
+              "translation": "Please portion and bunch up the river spinach we harvested so we can already offer it for sale at the Boransan night market.",
+              "example_id": 4
+            },
+            {
+              "text": "Binegkesan na nin lagpok ni Tonio yo nageret niyang goramey.",
+              "translation": "Tonio bandaged with cloth the cut on his finger.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "begkes1",
+          "pk": 2377
+        },
+        {
+          "text": "begkes1",
+          "pk": 2377
+        }
+      ]
+    },
+    {
+      "word": "bexa'",
+      "id": 2606,
+      "is_core": false,
+      "headword": "bexa'",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[be-XA']",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a piece of long bamboo slat split away from a whole bamboo pole; also: a thin piece of wood that has been cut from a tree (synonymous with: stick, slat, switch, cane, twig, stake)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Yo axaki nakaexa' sa bexa' nakapamika'ka'.",
+              "translation": "The man is sitting on a (bamboo) slat with legs wide oepn.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "biga'",
+      "id": 2598,
+      "is_core": false,
+      "headword": "biga'",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bi-GA']",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "to make an untrue statement or show a false impression with the intent to deceive (synonymous with: lie, deceit, dishonest, fraud, hypocrisy, trick, treachery, pretense, slyness)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Panaon na naman nin eliksyon kaya' poro nanaman biga' ana bonga'bonga' nya mari'gen na kandidato.",
+              "translation": "It's election time again that's why the speeches of many candidates are purely lies.",
+              "example_id": 1
+            },
+            {
+              "text": "Biga'an ta sana ana mga tao tanganing makoko ta ana sakandang mga boto.",
+              "translation": "We will just lie to the people so that we can get their votes.",
+              "example_id": 2
+            },
+            {
+              "text": "Pibiga'an sana nyading potnayen na kandidato a mga tao.",
+              "translation": "This liar candidate just lies to the people.",
+              "example_id": 3
+            },
+            {
+              "text": "Tara! Biniga'an sana baga kita yo panaon nyo eliksyon.",
+              "translation": "See! We were just lied to during the time of the election.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "potnay",
+          "pk": 2574
+        },
+        {
+          "text": "potnay",
+          "pk": 2574
+        },
+        {
+          "text": "potnayen",
+          "pk": 2596
+        }
+      ]
+    },
+    {
+      "word": "boie'nen",
+      "id": 2419,
+      "is_core": false,
+      "headword": "boie'nen",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[BO-wE'-nen]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the proper name for the language of Boie'nen people that has the language code UBL in ISO 639-3 as classified by Ethnologue.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Lawi' pa iyang magsabing boie'nen ta nakakate-ed pa sana iya ta di' man iya nagdakexe' didi sa Boie'.",
+              "translation": "He/she speaks boie'nen (language) with difficulty as he/she has just recently learned (it) because he did not grow up here in Buhi.",
+              "example_id": 1
+            },
+            {
+              "text": "Niboie'nen si Cody.",
+              "translation": "Cody is speaking in boie'nen (language).",
+              "example_id": 2
+            },
+            {
+              "text": "Nagboie'nen sana akong kaosip si Cody kayna.",
+              "translation": "I spoke in boie'nen (language) only with Cody earlier.",
+              "example_id": 3
+            },
+            {
+              "text": "Magboie'nen sana kita kina pagkinaosip ta na si Cody.",
+              "translation": "Let's use boie'nen (language) only when we talk to Cody later.",
+              "example_id": 4
+            },
+            {
+              "text": "Yo binoie'nen ni Bening yo kantang bikol na Si Nanay Si Tatay naging Si Inay Si Itay .",
+              "translation": "When Bening translated the bikol song Si Nanay Si Tatay it became Si Inay Si Itay.",
+              "example_id": 5
+            },
+            {
+              "text": "Nibinoie'nen sana iyang pikaosip si Cody ta nakakaintindi na aan ta natoro'an na.",
+              "translation": "He/she takls to Cody in the boie'nen (language) because he/Cody had already been taught (the language).",
+              "example_id": 6
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "Boie'nen",
+          "pk": 2418
+        },
+        {
+          "text": "Boie'nen",
+          "pk": 2418
+        }
+      ]
+    },
+    {
+      "word": "Boie'nen",
+      "id": 2418,
+      "is_core": false,
+      "headword": "Boie'nen",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[BOIE'-nen]",
+      "credits": "Contributor:Claveria, Alfonso (2021)Reviewer:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "refering to the native inhabitants of the town of Buhi, Camarines Sur, Philippines",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "A mga Boie'nen pagnagisolsog sa boie'nen di' di nai-intindean nya mga beke'boie'nen ta baga kono bayong a sasabyen nira.",
+              "translation": "Boie'nen (people) when talking in boie'nen (language) are unintelligible to non-boie'nen people.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "boie'nen",
+          "pk": 2419
+        }
+      ]
+    },
+    {
+      "word": "boko-boko",
+      "id": 2431,
+      "is_core": false,
+      "headword": "boko-boko",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[boko-boko]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the visible bump on the both sides of the foot that is part of the lower leg bone where the foot is joined (synonymous with: ankle, anklebone, talus . . )",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ay a magi'gen yo apres nyo nakatonka' yo bokoboko ko adto sa bato!",
+              "translation": "Oh it was so painful when my ankle hit the rock!",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "be-ew",
+          "pk": 2430
+        }
+      ]
+    },
+    {
+      "word": "bolong",
+      "id": 2398,
+      "is_core": false,
+      "headword": "bolong",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Sadural, Samantha Jade (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a scientifically-proven substance or treatment used for preventing or curing a disease or sickness",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Onong maray a bolong sa obo?",
+              "translation": "What's a good medicine for cough?",
+              "example_id": 1
+            },
+            {
+              "text": "Pibolong yo kaapresan nyo agin nyo doktor.",
+              "translation": "The doctor is treating the child's wound.",
+              "example_id": 2
+            },
+            {
+              "text": "Nisorosadiri sanang bolong si Osoy.",
+              "translation": "Osoy is  just self medicating.",
+              "example_id": 3
+            },
+            {
+              "text": "Nagbolong na sanang sadiri si Osoy ta da' sentabo.",
+              "translation": "Osoy self-medicated because he does not have money.",
+              "example_id": 4
+            },
+            {
+              "text": "Magpabolong na ika sa doktor.",
+              "translation": "Magpabolong na ika sa doktor.",
+              "example_id": 5
+            },
+            {
+              "text": "Nagpabolong ika sa doktor?",
+              "translation": "Did you get treaded by a doctor?",
+              "example_id": 6
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "dake-xe'",
+      "id": 2624,
+      "is_core": false,
+      "headword": "dake-xe'",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[da-KE-xe']",
+      "credits": "Contributors:Claveria, Alfonso (2022)\n      \n        Claveria, Maria Taburnal (2022)\n      \n        Claveria, Tayag (2022)Editors:Claveria, Alfonso (2022)\n      \n        Claveria, Tayag (2022)",
+      "definitions": [
+        {
+          "definition": "of substantial number, weight, size, attained growth and the like (synonymous with big, larg,  huge, overzized, outgrow and the like)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Dakexe' na ana agin mong axake, naelman sana.",
+              "translation": "Your son is big now, time passed unnoticed.",
+              "example_id": 1
+            },
+            {
+              "text": "Pi-e-xat kong magdake-xe' na ading mga agin ko bago ko ba'yan sira.",
+              "translation": "I am waiting for my children to grow big befor I leave them.",
+              "example_id": 2
+            },
+            {
+              "text": "Nidake-xe' na ading mga daon nyading katnga', maelman sana getesan ko na a-an.",
+              "translation": "These taro leaves are already getting big, in no time I'll be harvesting from it already.",
+              "example_id": 3
+            },
+            {
+              "text": "Nagdake-xe' tolos adin onod nyading kakamotean kaya' pwede na ading kalyen.",
+              "translation": "The tubers of the sweet-potatoe patch grew big quickly so it can now be harvested.",
+              "example_id": 4
+            },
+            {
+              "text": "Pipadake-xe' ko pa ading mga noyog bago ko ipatipo'.",
+              "translation": "I am letting these coconuts grow big before I'll have them harvested.",
+              "example_id": 5
+            },
+            {
+              "text": "Niparadorodake-xe' na sana ading teyan ko.",
+              "translation": "My stomack is just getting bigger and bigger.",
+              "example_id": 6
+            },
+            {
+              "text": "Magpadorodake-xe' nawna ika bago mo ako so'wagen.",
+              "translation": "Make yourself a bit bigger before you challenge me.",
+              "example_id": 7
+            },
+            {
+              "text": "Dominake-xe' na yo pe'ngel nyo da'ogale' mong agin.",
+              "translation": "Your impolite child has already turned arrogant.",
+              "example_id": 8
+            },
+            {
+              "text": "Dominake-xe' sira sa mga pakoapo'en.",
+              "translation": "They grew up in their grandparens.",
+              "example_id": 9
+            },
+            {
+              "text": "Napagdake'xan mo na sana ana kada'ogale'an!",
+              "translation": "You have grown accustomed to your being disrespectful.",
+              "example_id": 10
+            },
+            {
+              "text": "Ono ana kadake'xan nyana saimong baxey?",
+              "translation": "What is the size of your house?",
+              "example_id": 11
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "e-ket",
+      "id": 2408,
+      "is_core": false,
+      "headword": "e-ket",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[e-ket]",
+      "credits": "Contributors:Claveria, Alfonso (2021)\n      \n        Claveria, Alfonso (2021)Reviewer:Sadural, Samantha Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "to fashion thin threads or filaments together by knotting them into grid mesh forming a fishnet.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Maostik mag-ekit aan si Baroy.",
+              "translation": "Baroy is skilled in fashioning threads to fishnet.",
+              "example_id": 1
+            },
+            {
+              "text": "Exey nang paraeket aan si Baroy.",
+              "translation": "Baroy has been a fishnet maker a long time.",
+              "example_id": 2
+            },
+            {
+              "text": "Eketan daw akong ba'gong pokot Baroy.",
+              "translation": "Make me a new fishnet Baroy.",
+              "example_id": 3
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "pokot",
+          "pk": 2381
+        }
+      ]
+    },
+    {
+      "word": "elka",
+      "id": 2566,
+      "is_core": false,
+      "headword": "elka",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[el-KA]",
+      "credits": "Contributor:Liesol-Morandarte, Diana Rose (2021)Reviewer:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the process of picking away the meaty content of clams, oysers or other shellfish by either removing the shell or the delicious stuff inside from the shell for cooking (synonymous with: shuck, prise, obtain)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Manay bakal na pong bogetes, enelka na po iya.",
+              "translation": "(Big) sister please kindly buy (from me) my shucked and picked (freshwater/river) clam meat.",
+              "example_id": 1
+            },
+            {
+              "text": "Nielkab na sira nyo mga bogetes.",
+              "translation": "They are already shucking the freshwater/river) clams.",
+              "example_id": 2
+            },
+            {
+              "text": "Nagelkab na sira nyo mga bogetes kayna.",
+              "translation": "They already shucked the freshwater/river) clams earlier (today).",
+              "example_id": 3
+            },
+            {
+              "text": "Elkaben na ninyo ana mga bogetes ngowan na ta maraet na aan.",
+              "translation": "You (all) have to shuck the (freshwater/river) clams now or it will go bad already.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "ewrasa",
+      "id": 2615,
+      "is_core": false,
+      "headword": "ewrasa",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ew-RA-SA]",
+      "credits": "Contributor:Tayag, Ernesto Jr. (2021)Reviewer:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a hot and humid condition brought about by hot weather with perceptively high humidity ( synonymous with humid, muggy, sticky)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Da' tereng ana inang ko ta mari'gennaewrasa nyana panaon.",
+              "translation": "I am sweating non-stop because the weather is so humid.",
+              "example_id": 1
+            },
+            {
+              "text": "Maewrasa na naman a-an kina pagtereng nyding rinikrinik ta mala init.",
+              "translation": "When this drizzle stops it will be very humid again because it's too hot.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "alangaang",
+          "pk": 2612
+        },
+        {
+          "text": "arasa-as",
+          "pk": 2613
+        }
+      ]
+    },
+    {
+      "word": "e-xa'",
+      "id": 2630,
+      "is_core": false,
+      "headword": "e-xa'",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[E-xa']",
+      "credits": "Contributor:Claveria, Maria Taburnal (2022)Editor:Claveria, Tayag (2022)",
+      "definitions": [
+        {
+          "definition": "to take the position of shifting one's body weight to the buttocks generally by resting it on a firm surface such as a chair, stool, bench, or any other stable object that will support weight  while at the same time keeping the upper body straight(synonymous with: sit, perch, rest and the like).",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Naka-e-xa' yo saday a agi sa serbisyo.",
+              "translation": "The small child is sitting in  the training-potty seat.",
+              "example_id": 1
+            },
+            {
+              "text": "Mag-exa'  nawna kita ta makeleg na ading mga paa ko.",
+              "translation": "Let's sitdown firs because my feet are already aching.",
+              "example_id": 2
+            },
+            {
+              "text": "Nagi-exa' yo agin sa sax-eg.",
+              "translation": "The child is sitting on the floor.",
+              "example_id": 3
+            },
+            {
+              "text": "Naka-exa' iya sa gangong-noyog sana.",
+              "translation": "He is sitting on a dry coconut fruit only.",
+              "example_id": 4
+            },
+            {
+              "text": "Ay tara'!  Kin siesay yo malaonas amo nana naka-exa' a lider.",
+              "translation": "Oh really!  The biggest thief is now the sitting leader.",
+              "example_id": 5
+            },
+            {
+              "text": "Napa-exa' yo gorang, irak man ta biyo' pating nasendag adto sa bato.",
+              "translation": "The elderly person fell down on his/her buttocks, what a pity smacking his/her rear hard  on the rock.",
+              "example_id": 6
+            },
+            {
+              "text": "Pwerte a boway ono? Pa-exa'exa sana baga ika.",
+              "translation": "It' a good life, isn't it? You are just chilling sitting around.",
+              "example_id": 7
+            },
+            {
+              "text": "Da' gibo ta para-exa'exa' sana baga.",
+              "translation": "Has nothing to do, just sitting around really.",
+              "example_id": 8
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "ex-ex",
+      "id": 2678,
+      "is_core": false,
+      "headword": "ex-ex",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Claveria, Maria Taburnal (2023)Editor:Claveria, Tayag (2023)",
+      "definitions": [
+        {
+          "definition": "The sensation of soreness in the muscle or joints causing bodily discomfort, ache and weakness as a result of physical overexertion or sustained activity.  (synonymous with: soreness, hurt) pain; muscle tenderness; stifness",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Moading nakoko ko sa mare'gen a katotokad ko kayna, ex-ex nin lawas.",
+              "translation": "This is what I got from my long uphill hike earlier, body ache.",
+              "example_id": 1
+            },
+            {
+              "text": "Maex-ex ading mga takyag ko.",
+              "translation": "My arms are sore.",
+              "example_id": 2
+            },
+            {
+              "text": "Tomereng na ikang kapopolag diyan; magex-ex na naman a mga pa-a mo.",
+              "translation": "Stop sprinting around; your feet will get sore again.",
+              "example_id": 3
+            },
+            {
+              "text": "E-saka ta nagex-ex na a li-eg mo!",
+              "translation": "See now; your neck got sore already.",
+              "example_id": 4
+            },
+            {
+              "text": "Naingostoan ta ominex-ex na ana lawas mo.",
+              "translation": "Serves you right your body is now sore.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "gasa'",
+      "id": 2427,
+      "is_core": false,
+      "headword": "gasa'",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ga-SA']",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the state of being very upset, displeased and even hostile (synonymous with: irate, annoyed, cross, vexed, irritated, exasperated, indignant, provoked, furious, enraged, mad, riled, ired...)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nikilaskilas pati sa kaga'san ta narakep niya yo sexed niya saka yo sambay.",
+              "translation": "HIs eyes were piercing in anger when he caught his wife with her paramour.",
+              "example_id": 1
+            },
+            {
+              "text": "Nagasa' yo sexed a babayi sa mari'gennakaoragan nyo sakanyang sexed.",
+              "translation": "The wife got furious over the many shenanigans of her spouse.",
+              "example_id": 2
+            },
+            {
+              "text": "Ayaw nyaan ta paga'san talaga ika nyaan, ke' aan potnay.",
+              "translation": "Don't do that or you will get scolded, it's not a lie.",
+              "example_id": 3
+            },
+            {
+              "text": "Tara! De' naga'san ika.",
+              "translation": "See! Yo did get a scolding.",
+              "example_id": 4
+            },
+            {
+              "text": "Ayaw pagki'ta ana agin ta piga'san nya ina' ta omibi' aan.",
+              "translation": "Don't look at the child, he/she is being disciplined by its mother as it might cry.",
+              "example_id": 5
+            },
+            {
+              "text": "Ay osto aan! Gina'san talaga kami ta di' namen naeman yo sogo' sa'men.",
+              "translation": "It is true! We got reprimanded for not finishing our task.",
+              "example_id": 6
+            },
+            {
+              "text": "Taposen ta adi ta mapaga'san kita kin di' ta adi matapos.",
+              "translation": "Let's finish this or we will get scolded if we will not finish this.",
+              "example_id": 7
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "balde'",
+          "pk": 2426
+        }
+      ]
+    },
+    {
+      "word": "gere'gede'",
+      "id": 2372,
+      "is_core": false,
+      "headword": "gere'gede'",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[gere'gede']",
+      "credits": "Contributor:Claveria, Alfonso (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "rough surface such as of a nail file, a road, a sandpaper or any surface",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Gere'gede' yo tinampo.",
+              "translation": "The road was rough.",
+              "example_id": 1
+            },
+            {
+              "text": "Malaantax sa gere'gede' a tinampo.",
+              "translation": "One gets tossed around much on a rough road.",
+              "example_id": 2
+            },
+            {
+              "text": "Kagere'gede' man daw ading saxeg.",
+              "translation": "Oh, this floor is so rough.",
+              "example_id": 3
+            },
+            {
+              "text": "Gere'gede'en mo ana saxeg nganing da' mapaaxnas diyan. (imperative).",
+              "translation": "Roughen the floor so that no one will slip on it.",
+              "example_id": 4
+            },
+            {
+              "text": "Gere'gede' an mo ana saxeg nganing da' mapaaxnas diyan.",
+              "translation": "Roughen the floor so that no one will slip on it.",
+              "example_id": 5
+            },
+            {
+              "text": "Mala'kagere'gede yo tinampo!",
+              "translation": "The road was very, very rough!",
+              "example_id": 6
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "gobing",
+      "id": 2421,
+      "is_core": false,
+      "headword": "gobing",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[go-bing]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "plant or animal fibers turned into fabrics then fashioned to be worn on the body to cover and protect it against the natural elements and for modesty; referred to as garment, apparell, clothes, dress, attire, garb, wardrobe, outfit, costume & the like.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Malasoya' daw manggobing-gobing aan si Clara.",
+              "translation": "The way Clara dresses (herself) is so unappealing.",
+              "example_id": 1
+            },
+            {
+              "text": "Mala' man kamenos ana panggobing-gobing mo ay!",
+              "translation": "Hey! The way you dress up looks very cheap.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "porao",
+          "pk": 2388
+        }
+      ]
+    },
+    {
+      "word": "inang",
+      "id": 2429,
+      "is_core": false,
+      "headword": "inang",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the moisture exuded through the pores of the skin as a reaction to heat, physical exertion or fever (synonymous with: sweat, perspire, perspiration . ..",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mari'gen yo inang nyo agin oli ta ka-ata-as yo kalintora kaynang lawed.",
+              "translation": "The child was sweating profusely midnight last night because it had a high fever.",
+              "example_id": 1
+            },
+            {
+              "text": "Pi-inang maray si Ano' sa kati-tias nin panggatong.",
+              "translation": "Ano's sweating a lot splitting firewood (using an ax).",
+              "example_id": 2
+            },
+            {
+              "text": "Ininang nang pwerte si Ano' sa katitias panggatong.",
+              "translation": "Ano's is sweating a lot splitting firewood (using an ax).",
+              "example_id": 3
+            },
+            {
+              "text": "Ay-sos! Ta pi-inang-inang na ako nin malipet sa ka-andaxan.",
+              "translation": "Gosh! I am whipping up a cold sweat from extreme anxiety.",
+              "example_id": 4
+            },
+            {
+              "text": "Ano', magpainang daw basang ika tanganing di' ika pagbilbilen.",
+              "translation": "Ano' try to break a sweat at least so that you will not suffer from chronic-fatigue syndrome.",
+              "example_id": 5
+            },
+            {
+              "text": "Ki'ta nagipainang na si Ano' ta natakot magkabilbil.",
+              "translation": "Look Ano' is breaking sweat exercising because he's scared of catching the chronic-fatigue syndrome.",
+              "example_id": 6
+            },
+            {
+              "text": "Nagpainang maray si Ano' sa katitias.",
+              "translation": "Ano' whipped up a sweat splitting firewood (with an ax).",
+              "example_id": 7
+            },
+            {
+              "text": "Bae pagsayanga ana mga igagatong ta ininangan aan maray ni Ano'.",
+              "translation": "Don't wast the firewood because Ano' work very hard for it.",
+              "example_id": 8
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "kabeg",
+      "id": 2405,
+      "is_core": false,
+      "headword": "kabeg",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "the act of grating particularly coconut meat from its shell or other fruit items (commonly associated with coconut grating)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nagikabeg si Ingray.",
+              "translation": "Ingray is grating coconut.",
+              "example_id": 1
+            },
+            {
+              "text": "Nagikabeg si Ingray inanatek sa tine'te'.",
+              "translation": "Ingray is grating coconut the milk of which will be used in cooking tine'te'.",
+              "example_id": 2
+            },
+            {
+              "text": "Si Ingray yo nagkabeg nyo ininatek diyan sa tine'te'.",
+              "translation": "Ingray was the one who grated coconut for cooking that tine'te'.",
+              "example_id": 3
+            },
+            {
+              "text": "Ipikabeg ni Ingray yo kagagin nga babayi nyo daraga niya.",
+              "translation": "Ingray is grating coconut for the mother of his girlfriend.",
+              "example_id": 4
+            },
+            {
+              "text": "Oy Ingray paoli' ta magkabeg!",
+              "translation": "Hey Ingray go home to grate (coconut).",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "kakabgan",
+          "pk": 2378
+        }
+      ]
+    },
+    {
+      "word": "kabelbegan",
+      "id": 2607,
+      "is_core": false,
+      "headword": "kabelbegan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ka-BEL-be-gan]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a large area of land covered with many trees and dense growth of shrubs and other dense and tangled vegetations and plants underneath (synonymous with: forest, jungle, thicket, woodland, bushland)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Agbay na sana ana kabelbegan na nateteda sa sa'ten a bano'an.",
+              "translation": "There are just very few forest left in our town.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "ka-esad",
+      "id": 2601,
+      "is_core": false,
+      "headword": "ka-esad",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ka-ES-ad]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "any of either the man or the woman who are together in permanent partnership and having sex as a couple outside of marriage (synonymous with: cohabitant, mate, partner, life companion)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nakakoko tolos iyang ka-esad pagkatapos nabalo.",
+              "translation": "He/she immediately found a partner after becoming a widower/widow.",
+              "example_id": 1
+            },
+            {
+              "text": "Sabet ko nagi-erentraan pa sana sira; nagi-esad na palan!",
+              "translation": "I thought they were just in the courting stage; I came to know they are already cohabiting.",
+              "example_id": 2
+            },
+            {
+              "text": "Baktat! Nagesad na palan ading mga dyaski!",
+              "translation": "Aw, shucks! These rascals are already cohabiting!",
+              "example_id": 3
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "sexed",
+          "pk": 2599
+        }
+      ]
+    },
+    {
+      "word": "kakabgan",
+      "id": 2378,
+      "is_core": false,
+      "headword": "kakabgan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributors:Sadural, Samantha Jade (2021)\n      \n        Claveria, Alfonso (2021)Reviewer:Sadural, Samantha Jade (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a specialized kitchen implement with a metal grating blade attached to the tapered end of a raised plank with legs or a log with two symetrical branches that props it in an incline position where one sits to grate coconut meat from its shell",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Oy Inray sa'ri mo sinaray yo kakabgan?",
+              "translation": "Hey Ingray where did you keep the coconut grater?",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "kabeg",
+          "pk": 2405
+        },
+        {
+          "text": "kabeg",
+          "pk": 2405
+        }
+      ]
+    },
+    {
+      "word": "kambang",
+      "id": 2460,
+      "is_core": false,
+      "headword": "kambang",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[kam-BANG]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "to purposely scratch somebody or something with fingernails or claws to cause pain or injury or to make a cut, gash or tear off something (synonymous with: scratch, abrade, )",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mari'gen yo rogo' yo kinambangan sa'ken nyo ongaw.",
+              "translation": "The scratch inflicted on me by the cat bled a lot (of blood).",
+              "example_id": 1
+            },
+            {
+              "text": "Pikambang nya ongaw ana ayam.",
+              "translation": "The cat is scratching the dog.",
+              "example_id": 2
+            },
+            {
+              "text": "Kinambang nyo ongaw yo ayam kaso odma'.",
+              "translation": "The cat scratched the dog yesterday.",
+              "example_id": 3
+            },
+            {
+              "text": "Bae pagpakilabeti ana ongaw ta kambangen ika nyaan.",
+              "translation": "Don't mess with the cat because it will scratch you.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "kilot",
+          "pk": 2459
+        },
+        {
+          "text": "kilot",
+          "pk": 2459
+        }
+      ]
+    },
+    {
+      "word": "kaponawan",
+      "id": 2572,
+      "is_core": false,
+      "headword": "kaponawan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[KA-PO-na-wan]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the state of experiencing the uneasy feeling of the need to eat (synonymous with: hunger, starvation)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Sa kaponawan ko nalibenglibeng na pati ako.",
+              "translation": "My hunger made me dazed.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "ponaw",
+          "pk": 2571
+        },
+        {
+          "text": "ponaw",
+          "pk": 2571
+        }
+      ]
+    },
+    {
+      "word": "karaba",
+      "id": 2402,
+      "is_core": false,
+      "headword": "karaba",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ka-RA-ba]",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a wooden stick with a handle on one end and a flammable part on the other",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Yo o'nang panaon a onlong nya noyog among piosar a karaba.",
+              "translation": "In the olden days the coconut-flower sheath was used as a torch.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "katabang",
+      "id": 2610,
+      "is_core": false,
+      "headword": "katabang",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ka-ta-BANG]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a person outside the nuclear family that provides the family with a number of services, including: cooking, cleaning, childcare, and assistance with elderly house members; may also help outside of the home and generally resides in the same house with the family (synonymous with: house help; helper; maid; domesti help; domistic worker; servant)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mala' na kadipisil makatorak sa ngowan nin maray na katabang.",
+              "translation": "It is hard to find good domestic helper nowadays.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "katig",
+      "id": 2383,
+      "is_core": false,
+      "headword": "katig",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ka-TIG]",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a long-narrow float made of bamboo attached parallel to each side of a small boat to improve its stability",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "A banka' a da' katig malaliga'.",
+              "translation": "A boat that does not have outriggers is very unstable.",
+              "example_id": 1
+            },
+            {
+              "text": "Kaipowan katigan ana banka' tanganing beke' malaliga' sa tobig.",
+              "translation": "The boat must be fitted with outriggers so it will not roll too much in the woter.",
+              "example_id": 2
+            },
+            {
+              "text": "Nakatigan na yo banka kaya' ke' na malaliga'.",
+              "translation": "Outriggers had already been put on the boat that's why it's not anymor unstable.",
+              "example_id": 3
+            },
+            {
+              "text": "Kinatigan na yo banka kaya' beke' na malaliga'.",
+              "translation": "The boat had already been fitted with outriggers that's why its not anymore unstable.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "kilot",
+      "id": 2459,
+      "is_core": false,
+      "headword": "kilot",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ki-lot]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editors:Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "to gently scratch or rub an itchy part of the skin with fingernails or other harmless items for relief or as an involuntary action when feeling anxious or uneasy but not to cause pain or injury (synonymous with: scratch, rub )",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Kiloten mo daw a tawtod ko? Lowayloway sana ta makamrot aan.",
+              "translation": "Will you scratch my back? Do it gently as you might scrape (the skin).",
+              "example_id": 1
+            },
+            {
+              "text": "Ki'ta ta pikilot ni Alay ana atobangan niya.",
+              "translation": "Look, Alay is scratching her privates.",
+              "example_id": 2
+            },
+            {
+              "text": "Kinilot ko kayna yo tawtod ko.",
+              "translation": "I scratched my back earlier.",
+              "example_id": 3
+            },
+            {
+              "text": "Paki kilotta daw tabi' a tawtod ko?",
+              "translation": "Do me a favor, will you please scratch my back?",
+              "example_id": 4
+            },
+            {
+              "text": "Mari'gen kakikilot ko yo kinagatan sa pa-a ko nyo mga lomalatngen kayna.",
+              "translation": "I furiously scratched the fire-ant bites on my foot earlier.",
+              "example_id": 5
+            },
+            {
+              "text": "Ana kilot na mari'genkeseg beke' na aan kilot.",
+              "translation": "A scratch that is very forceful (it) is not anymore a scratch (that relieves).",
+              "example_id": 6
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "kambang",
+          "pk": 2460
+        }
+      ]
+    },
+    {
+      "word": "kinatigan",
+      "id": 2382,
+      "is_core": false,
+      "headword": "kinatigan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ki-na-TIG-an]",
+      "credits": "Contributor:Claveria, Alfonso (2021)Editors:Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "a small boat that is manually propelled through the water using a paddle or oar that has katig fixed on it.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Di' nala-ob yo kinatigan namen maski malalong-so'.",
+              "translation": "Our outrigger (boat) did not overturn in the strong waves.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "katig",
+          "pk": 2383
+        },
+        {
+          "text": "katig",
+          "pk": 2383
+        }
+      ]
+    },
+    {
+      "word": "koyomad",
+      "id": 2373,
+      "is_core": false,
+      "headword": "koyomad",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ko-YO-mad]",
+      "credits": "Contributor:Claveria, Alfonso (2021)Reviewers:Sadural, Samantha Jade (2021)\n      \n        Ailes, Paul (2021)",
+      "definitions": [
+        {
+          "definition": "a tiny parasite tht attaches itself to human hair on the head and feeds on human blood and lays its eggs on the base of the hair.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mari'gen a gatex nyaan maski esad sanang koyomad sa payo; ono pa daw kin mari'genakoyomad mo?",
+              "translation": "It's very itchy even if you just have a single louse on your head; what if your head is infested with lice?",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "kwintas",
+      "id": 2387,
+      "is_core": false,
+      "headword": "kwintas",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[KWIN-tas]",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a piece of ornament on a person made of beads or other similar items linked together with long, thin thread and worn around the neck",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Yo mga kwintas nyadto gibo sa tino-ogto-og nga mga boskay.",
+              "translation": "Necklaces before were made of cowrie shells strung up together.",
+              "example_id": 1
+            },
+            {
+              "text": "Malakwintas nyaan ni Intyang.",
+              "translation": "Intyang has plenty of necklaces.",
+              "example_id": 2
+            },
+            {
+              "text": "Inimong korokwintas yo mga tino-ogto-og nga mga popot pang borak sampagita.",
+              "translation": "The sampaguita buds that were sturinged up together was fashioned to a necklace.",
+              "example_id": 3
+            },
+            {
+              "text": "Pikwintasan na ana rebolto ni Ina' ta magipiestaen na.",
+              "translation": "The image of the Virgin Mother is getting a necklace for the coming fiesta celebration.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "lagwerta",
+      "id": 2391,
+      "is_core": false,
+      "headword": "lagwerta",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "an area of plantable land used for growing flowers, vegetables, and other plants",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Malaoyay a mga masitas ag gogolayen sa lagwerta ni Paz.",
+              "translation": "The ornamental plants and vegetables in Paz's garder are very pretty.",
+              "example_id": 1
+            },
+            {
+              "text": "Moade ana rorolagwerta namen.",
+              "translation": "This is our small garden.",
+              "example_id": 2
+            },
+            {
+              "text": "Niyamen rorolagwertaan ana mga agin.",
+              "translation": "The children are playing gardening.",
+              "example_id": 3
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "lapok",
+      "id": 2605,
+      "is_core": false,
+      "headword": "lapok",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[la-POK]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "soft, sticky matter resulting from the mixing of earth and water (synonymous with: mud, sludge, muck)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Malapo-ot ana lapok diyan sa sinagpad sa oma.",
+              "translation": "The mud in the paddy field (segment) is so sticky.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "lawed",
+      "id": 2604,
+      "is_core": false,
+      "headword": "lawed",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[la-WED]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a substantially large body of standing water that gradually outflows downhill and whose water is regularly naturally replinished by different natural streams and rivers (synonymous with: lake, tarn)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pag malalongso' nagi-erang maray a nararakep sa pangi-ngisra' sa lawed.",
+              "translation": "When there's too much waves the fish-catch in the lake is reduced.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "sowong",
+          "pk": 2603
+        }
+      ]
+    },
+    {
+      "word": "lemay",
+      "id": 2397,
+      "is_core": false,
+      "headword": "lemay",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Sadural, Samantha Jade (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a superstitious charm that is used for making another person fall in love with the owner",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Marara ana lemay nyaan ni Obal.",
+              "translation": "Obal's love charm is potent.",
+              "example_id": 1
+            },
+            {
+              "text": "Nalemay si Ipay ki Iblas.",
+              "translation": "Ipay fell obsessively in love with Iblas.",
+              "example_id": 2
+            },
+            {
+              "text": "Pilemay ni Ipay si Iblas.",
+              "translation": "Ipay is putting a love-spell on Iblas.",
+              "example_id": 3
+            },
+            {
+              "text": "Lemayen mo daw si Ipay.",
+              "translation": "Put a love-spell on Ipay.",
+              "example_id": 4
+            },
+            {
+              "text": "Linemay gayed ni Ipay si Iblas.",
+              "translation": "Maybe Ipay put a love-spell on Iblas.",
+              "example_id": 5
+            },
+            {
+              "text": "Pinaglemay aan si Iblas ni Ipay kaya' nagkasinexdan sira.",
+              "translation": "Ipay did put a love-spell on Iblas that's why they both got married.",
+              "example_id": 6
+            },
+            {
+              "text": "Nagirilemayan yo dowang lasmeg.",
+              "translation": "The two carazies are putting love-spell on each other.",
+              "example_id": 7
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "lobid",
+      "id": 2401,
+      "is_core": false,
+      "headword": "lobid",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[lo-BID]",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a long, thick line of tightly twisted threads, and is used to tie other things together",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nitagak nin bandala' si Iya ta gibibwen lobid ni Saro.",
+              "translation": "Iya is picking and knotting (together the ends of) abaca strands that Saro will fashion to string.",
+              "example_id": 1
+            },
+            {
+              "text": "Nilobid si Saro.",
+              "translation": "Saro is making string.",
+              "example_id": 2
+            },
+            {
+              "text": "Yo mga tinagak ni Iya pilobid na ni Saro.",
+              "translation": "The abaca strands (put together) by Iya is being turned to string by Saro.",
+              "example_id": 3
+            },
+            {
+              "text": "Naglobid si Saro kayna.",
+              "translation": "Saro made some string earlier.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "lokaba",
+      "id": 2568,
+      "is_core": false,
+      "headword": "lokaba",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[lo-KA-ba]",
+      "credits": "Contributor:Liesol-Morandarte, Diana Rose (2021)Reviewer:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the semihard outside protective cover of crustaceans such as shrimp, crabs and other shellfish such as snails that has fragile shell (soft-shell, shell)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ana lokaba nyana ogama pagnilono malarogi'.",
+              "translation": "The shell of a molting-river crab is very soft.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "elka",
+          "pk": 2566
+        }
+      ]
+    },
+    {
+      "word": "lo-og",
+      "id": 2632,
+      "is_core": false,
+      "headword": "lo-og",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[lo-OG]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2023)Editor:Claveria, Alfonso (2023)",
+      "definitions": [
+        {
+          "definition": "the rigid part of fish that makes up its skeleton (fishbone)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ana mga lo-og nya matobis a isra' malasakit pangnagalinen.",
+              "translation": "It is very hard to remove the fishbones of a small fish.",
+              "example_id": 1
+            },
+            {
+              "text": "Nalo-og yo agin kaya' nipara-nge'nge'.",
+              "translation": "The child choked on a fishbone that's why it's crying.",
+              "example_id": 2
+            },
+            {
+              "text": "Paglikay maray nya pagikaen nyana isra' ta malo-og ika.",
+              "translation": "Be very careful in eating the fish as you might choke on it.",
+              "example_id": 3
+            },
+            {
+              "text": "Ew saka! Ta nalo-og na logod ika.",
+              "translation": "See now! You have already choked on a fishbone.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "to'wang2",
+          "pk": 2631
+        }
+      ]
+    },
+    {
+      "word": "mare'gen",
+      "id": 2623,
+      "is_core": false,
+      "headword": "mare'gen",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ma-RE'-gen]",
+      "credits": "Contributor:Claveria, Alfonso (2022)Reviewer:Claveria, Maria Taburnal (2022)Editor:Claveria, Tayag (2022)",
+      "definitions": [
+        {
+          "definition": "describes a numerous or uncountable number or degree of measure of anything. (synonymous with aplenty, in abundance, plentyful, numerous, excessive, a lot, great deal of, very, and other synonymous words.)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mare'gen a manga-tao adto sa daxan toyatey teng-ge sa sira sa sa'ran.",
+              "translation": "There were so many people  along the path, they were heading straight to the town market.",
+              "example_id": 1
+            },
+            {
+              "text": "Mare'gen logod a inglew nading pe'ngel ko ole sa mga solsog mo.",
+              "translation": "Now I have a bad headache because of those that you have told me.",
+              "example_id": 2
+            },
+            {
+              "text": "Mare'gen a kisil ana pe'ngel nya agin.",
+              "translation": "That child is hardheaded.",
+              "example_id": 3
+            },
+            {
+              "text": "Marire'gen omablo'.  | They eat excessively!|.",
+              "translation": "Eating excessively!    | They are eating excessively! |.",
+              "example_id": 4
+            },
+            {
+              "text": "Mare'gen!  Yo sabi nyo gorang sa kapotnayan nyo agin.",
+              "translation": "Really!  The child's elder exclaimed in response to his/her whims.",
+              "example_id": 5
+            },
+            {
+              "text": "Marire'gen man ana piayat mo!",
+              "translation": "Really? What you are asking for is excessive!",
+              "example_id": 6
+            },
+            {
+              "text": "Mare'gen inonas.  | Yo mga politiko mare'gen inonas |.",
+              "translation": "Immeasurable stolen. | The politicians stole immeasurable amount. |.",
+              "example_id": 7
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "meya",
+      "id": 2436,
+      "is_core": false,
+      "headword": "meya",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ME-ya]",
+      "credits": "Contributors:Claveria, Alfonso (2021)\n      \n        Claveria, Maria Taburnal (2021)Reviewer:Sadural, Samantha Jade (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a strong feeling of wanting to have something or someone or wishing for something) to happen (synonymous with: wish, want, fancy, inclination, aspiration, preference, yearning, longing, craving, hankering, eagerness, proclivity",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Malape'ngew ta de' nangyare yo meya ko.",
+              "translation": "It's so sad that what I desired did not happen.",
+              "example_id": 1
+            },
+            {
+              "text": "Isi ko kin siesay a meya niya diyan sa dowang daraga.",
+              "translation": "I know who he likes between those two (female) teenagers.",
+              "example_id": 2
+            },
+            {
+              "text": "Mameya aan si Kostan ki Toria sigurado ako!",
+              "translation": "Kostan will certainly fall in love with Toria, I am sure!",
+              "example_id": 3
+            },
+            {
+              "text": "Natorakan man dayaday yo meya niyang maray na kopya'.",
+              "translation": "He did find his highly-desired hat .",
+              "example_id": 4
+            },
+            {
+              "text": "Ana nakikita mong baxey aan ana meyang baxey nira.",
+              "translation": "The house that you see is the desirable house for them.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "meya-meya",
+          "pk": 2443
+        },
+        {
+          "text": "nameme'yan",
+          "pk": 2442
+        }
+      ]
+    },
+    {
+      "word": "meya-meya",
+      "id": 2443,
+      "is_core": false,
+      "headword": "meya-meya",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "showing or feeling of excitemnt, pleasure or satisfaction from a thing, at an event or a situation (synonymous with: happy, glad, delighted, thrilled, elated, overjoyed)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ogma akong nakikitang meya-meyang maray a agin nyading ba'gong baxey ta.",
+              "translation": "I am glad to see the child so excited about our new house.",
+              "example_id": 1
+            },
+            {
+              "text": "Nagmeya-meya ading mga ka-axakian ta kaga'bi; nagparaoli' poro borat.",
+              "translation": "Our boys had a celebration last night; they all came home drunk.",
+              "example_id": 2
+            },
+            {
+              "text": "Nagimeya-meya na naman ana kaabay ta kaya' malaribok sa maray.",
+              "translation": "Our nextdoor neighbor is partying that's why they're so noisy again.",
+              "example_id": 3
+            },
+            {
+              "text": "Nangagmeya-meya na naman kaga'bi yo kaabay namen kaya' napirot akong maray sa ribok di' ako nakatorog.",
+              "translation": "Our nextdoor neighbor had another celebration that's why I am sleepy because I was not able to sleep last night.",
+              "example_id": 4
+            },
+            {
+              "text": "Nimeya-meya na naman a kaabay ta.",
+              "translation": "Our nextdoor neighbor is celebrating again.",
+              "example_id": 5
+            },
+            {
+              "text": "Meya-meyang mari'gen yo agin sa oro-awto.",
+              "translation": "The child was very thrilled with the toy car.",
+              "example_id": 6
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "meya",
+          "pk": 2436
+        },
+        {
+          "text": "meya",
+          "pk": 2436
+        },
+        {
+          "text": "meya",
+          "pk": 2436
+        },
+        {
+          "text": "nameme'yan",
+          "pk": 2442
+        }
+      ]
+    },
+    {
+      "word": "moara",
+      "id": 2376,
+      "is_core": false,
+      "headword": "moara",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[moa-RA]",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a weapon or tool made of a long, thick wooden stick and has a sharp, pointed tip at one end",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nipanas nin e-ras yo mga agta' nga piosar nirang moara.",
+              "translation": "The aborigine (agta') people used sharpened (e'ras) bamboo pole as their spear.",
+              "example_id": 1
+            },
+            {
+              "text": "Pimaoara yo epen nin dowang agta'.",
+              "translation": "The wild pig is getting speared by two-agta' persons.",
+              "example_id": 2
+            },
+            {
+              "text": "Minoara yo epen nyo agta.",
+              "translation": "The wild pig was speared by an agta'.",
+              "example_id": 3
+            },
+            {
+              "text": "Mamoaraen na yo epen nyo agta' kin di' iya napadapla'.",
+              "translation": "The agta' was about to spear the wild pig had he not fallen flat on his face.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "nameme'yan",
+      "id": 2442,
+      "is_core": false,
+      "headword": "nameme'yan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[na-me-ME'-yan]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "person, place, thing or idea that is the object of strong desire or affection (synonymous with: beloved, darling, sweetheart, girlfriend, boyfriend, lover)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pi-ibi'an niya yo sakanyang nameme'yan.",
+              "translation": "He/she is crying for his/her beloved.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "meya",
+          "pk": 2436
+        },
+        {
+          "text": "meya",
+          "pk": 2436
+        },
+        {
+          "text": "meya",
+          "pk": 2436
+        }
+      ]
+    },
+    {
+      "word": "ngi'ngi'",
+      "id": 2371,
+      "is_core": false,
+      "headword": "ngi'ngi'",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ngi'-ngi']",
+      "credits": "Contributor:Claveria, Alfonso (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "exclusively to shed tears noisily as an expression of distress, pain, or sadness (not synonymous with /kagrat/ that means 'to cry out, shout, scream and the like' such as when saying something or call someone's attention in a loud manner)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ningi'ngi ana agin.",
+              "translation": "The child is crying.",
+              "example_id": 1
+            },
+            {
+              "text": "Nagngi'ngi yo agin.",
+              "translation": "The child cried.",
+              "example_id": 2
+            },
+            {
+              "text": "Ngomi'ngi' na naman ana agin kin maponaw.",
+              "translation": "The child will cry again if it gets hungry.",
+              "example_id": 3
+            },
+            {
+              "text": "Nangagngiri'ngi'an yo mga kaaginan.",
+              "translation": "The children cried.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "opaw",
+      "id": 2483,
+      "is_core": false,
+      "headword": "opaw",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[o-PAW]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a condition of lack or absence of hair on the head or referring to hills or mountains stripped of its natural vegetations (bald, denuded, stripped,",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Beyong opaw ana payo nya axaki.",
+              "translation": "The head of the man is completely bald.",
+              "example_id": 1
+            },
+            {
+              "text": "Opaw na ana agin a babayi ta dati mari'gen a koyomad nyaan kaya' inopawan.",
+              "translation": "The little girl's head is already bald; her head was shaved clean of hair as  she was head-lice infested before.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "oripen",
+      "id": 2611,
+      "is_core": false,
+      "headword": "oripen",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ORI-pen]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "an individual who serves another person and his/her family who works constantly doing hard menial tasks; a disrespectful term nowadays (synonymous with: slave, vassal, serf)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Sala' na man a-an ta ginibo nang oripen yo sakandang katabang!",
+              "translation": "That's not right that they made their domestic worker as their slave.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "katabang",
+          "pk": 2610
+        }
+      ]
+    },
+    {
+      "word": "owonan",
+      "id": 2380,
+      "is_core": false,
+      "headword": "owonan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[o-WO-nan]",
+      "credits": "Contributors:Claveria, Alfonso (2023)\n      \n        Claveria, Tayag (2023)Editors:Claveria, Alfonso (2023)\n      \n        Claveria, Tayag (2023)\n      \n        Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a case or bag made of fabric and  filled with soft material for resting one's head on when sleeping or lying down",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Malarogi' nyana owonan mo.",
+              "translation": "Your pillow is very soft.",
+              "example_id": 1
+            },
+            {
+              "text": "Among inowonan yo linokot a tameng.",
+              "translation": "The rolled sheet/blanket served as a pillow.",
+              "example_id": 2
+            },
+            {
+              "text": "A pinaowonan nisonod sa pagkamendag nya talagin.",
+              "translation": "The afterbirth/placenta comes after the new-born baby.",
+              "example_id": 3
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "pinaowonan",
+          "pk": 2681
+        }
+      ]
+    },
+    {
+      "word": "pana'",
+      "id": 2374,
+      "is_core": false,
+      "headword": "pana'",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[pa-NA']",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a weapon made with a straight wooden stick that has a sharp point at one end and a fin-like piece on the other end",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nipana' nin epen si Sarikaw.",
+              "translation": "Sarikaw is shooting arrow at a wild pig.",
+              "example_id": 1
+            },
+            {
+              "text": "Napana' ana epen aan ni Sarikaw kaynang pita'.",
+              "translation": "That wild pig was shot with an arrow by Sarikaw this morning.",
+              "example_id": 2
+            },
+            {
+              "text": "Nagpamana' si Sarikaw nin mga epen kaga'bi.",
+              "translation": "Sarikaw went hunting (with his bow and arrow) for wild pigs last night.",
+              "example_id": 3
+            },
+            {
+              "text": "Si Sarikaw magipamana'en pag da' na bolan a ga'bi.",
+              "translation": "Sarikaw will go hunting (with his bow and arrow) when the night is already moonless.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "paso'",
+      "id": 2609,
+      "is_core": false,
+      "headword": "paso'",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[pa-SO']",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a burn on the skin marked by pain, blistering or superficial skin injury (synonymous with: first-degree burn, second-degree burn,)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Agko paso' ana kamet ni Kasyo' ta nakaptan niya yo baga.",
+              "translation": "There's a burn on Kasyo's hand because he (accidentally) held an ember.",
+              "example_id": 1
+            },
+            {
+              "text": "Napaso' ako sa teged nyo kawali' ta mala-init palan.",
+              "translation": "I was burned on the handle of the wok that was unexpectedly too hot.",
+              "example_id": 2
+            },
+            {
+              "text": "Napaso' ako sa teged nyo kawali'.",
+              "translation": "I was burned on the handle of the wok.",
+              "example_id": 3
+            },
+            {
+              "text": "Pipaso' sana ana kogo nin baga nin giyey para ma-alin.",
+              "translation": "To get rid of a wart, just burn it with the ember (at the tip) of a coconut midrib.",
+              "example_id": 4
+            },
+            {
+              "text": "De' mo pagkaptan ana baga ta mapaso' ika.",
+              "translation": "Don't hold the ember as you will get burned (by it).",
+              "example_id": 5
+            },
+            {
+              "text": "Paso'en mo sana ana kogo mo kin gosto mong ma-alin a-an.",
+              "translation": "Just burn your wart if you want to get rid of it.",
+              "example_id": 6
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "sirob",
+          "pk": 2608
+        }
+      ]
+    },
+    {
+      "word": "pinaowonan",
+      "id": 2681,
+      "is_core": false,
+      "headword": "pinaowonan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Claveria, Tayag (2023)Editor:Claveria, Alfonso (2023)",
+      "definitions": [
+        {
+          "definition": "The organic matter a baby is attached to during its fetal development and until the baby's birth that come out after it attached to its navel with the umbilical cord. (synonymous with: placenta, afterbirth ...)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pagkamendag tolos nya  talagin pitaras a pinaowonan nyadi arani sa posod.",
+              "translation": "Immediately after the birth of a baby, its placenta is severed close to its navel.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "owonan",
+          "pk": 2380
+        },
+        {
+          "text": "owonan",
+          "pk": 2380
+        }
+      ]
+    },
+    {
+      "word": "pingig",
+      "id": 2434,
+      "is_core": false,
+      "headword": "pingig",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ping-IG]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the fleshy part on each side of the face that are sorrounded by the eye, ear, jaw, lip and nose (synonymous with: cheek)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Inarang ni Ikoy si Onor sa pingig.",
+              "translation": "Ikoy kissed Onor on the cheek.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "pinto'",
+      "id": 2389,
+      "is_core": false,
+      "headword": "pinto'",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[pin-TO']",
+      "credits": "Contributor:Claveria, Alfonso (2021)Reviewer:Sadural, Samantha Jade (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the movable part or assembly that slides or swings to prevent entry or exit through an opening that allows movement from one area to the next adjoining area; synonymous to barrier, door, shutter, screen door, gate",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Takremen mo ana pinto' pag-alin mo.",
+              "translation": "Shut the door when you leave.",
+              "example_id": 1
+            },
+            {
+              "text": "Di mo paglipatan pinto'en ag rawetan ana trankaan sa ga'bi.",
+              "translation": "Don't forget to shut and lock the gate in the evening.",
+              "example_id": 2
+            },
+            {
+              "text": "Ay ta napinto'an ko a sadiri ko didi sa lowas.",
+              "translation": "Oh! I locked myself out here outside.",
+              "example_id": 3
+            },
+            {
+              "text": "Tokyaben mong palowas ana poropinto'an.",
+              "translation": "Swing the small door towards the outside.",
+              "example_id": 4
+            },
+            {
+              "text": "Pininto'an ako nyo mga nao'nang nakale-eg sa trankaan.",
+              "translation": "The gate was shut on me by those who got in ahead of me.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "pinto'an",
+          "pk": 2422
+        }
+      ]
+    },
+    {
+      "word": "pinto'an",
+      "id": 2422,
+      "is_core": false,
+      "headword": "pinto'an",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[pin-TO'-an]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "an opening to enter or exit through from one area to another adjoining area by moving a movable barrier; synonymous to gate, gateway, door, doorway, passageway",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Amo dating agko pinakadakexeng pinto'an sa Boie' yo simbaan.",
+              "translation": "The church used to have the biggest doorway in Buhi.",
+              "example_id": 1
+            },
+            {
+              "text": "Yo dating pinto' nya simbaan nya Boie' pagpipinto'an nagi raget oli sa be'gat.",
+              "translation": "The old door of the church of Buhi creaked when it was being shut close due to its weight.",
+              "example_id": 2
+            },
+            {
+              "text": "Napinto'an ako sa lowas nyo baxey kaga'bi ta renawetan yo pinto' alin sa le-eg.",
+              "translation": "I was shut out of the house last night because it was latched close from the inside.",
+              "example_id": 3
+            },
+            {
+              "text": "Taynga' ta pipinto'an mo na ana pinto'an?",
+              "translation": "Why are you already shutting the doorway?",
+              "example_id": 4
+            },
+            {
+              "text": "Ay ta napinto'an ko yo agin sa lowas sa kasibotan ko kayna.",
+              "translation": "Oh I shut the door (unintentionally) on the child outside due to my haste.",
+              "example_id": 5
+            },
+            {
+              "text": "Remremen mo ta baka' mapinto'an mo yo agin sa lowas.",
+              "translation": "Keep in mind you might (accidentally) shut the doo on the child outside.",
+              "example_id": 6
+            },
+            {
+              "text": "Pininto'an ko yo agin sa lowas ta malaringaw.",
+              "translation": "I (intentionally) shut the door on the child outside because it was very rowdy.",
+              "example_id": 7
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "pinto'",
+          "pk": 2389
+        }
+      ]
+    },
+    {
+      "word": "pokot",
+      "id": 2381,
+      "is_core": false,
+      "headword": "pokot",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a tool made of long thin threads knot together forming equally-sized grid mesh used to snag and catch fish or other animals.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "A pangisra' ngagamit ni Indoy pokot.",
+              "translation": "Indoy uses a fishnet to catch fish.",
+              "example_id": 1
+            },
+            {
+              "text": "Magpokot aan si Indoy kinaodma' ta da' na sira pagsera'.",
+              "translation": "Indoy will catch fish (using a fishnet) because they do not have  viand tomorrow.",
+              "example_id": 2
+            },
+            {
+              "text": "Nagpokot si Indoy kaso odma'.",
+              "translation": "Indoy caught fish (using a fishnet) yesterday.",
+              "example_id": 3
+            },
+            {
+              "text": "Kasoodma' nakapokot kadakexing isra' si Indoy.",
+              "translation": "Yesterday Indoy caught a very big fish.",
+              "example_id": 4
+            },
+            {
+              "text": "Pinokot ni Indoy yo dakexeng isra' nga nabangrawan niya sa lawed.",
+              "translation": "Indoy caught the fish (using a fishnet ) he chanced upon in the lake.",
+              "example_id": 5
+            },
+            {
+              "text": "Onong pinokot mo Indoy?",
+              "translation": "What (kind of fish) did you catch Indoy?",
+              "example_id": 6
+            },
+            {
+              "text": "Ipinokot ni Indoy nin isra' yo sexed niya.",
+              "translation": "Indoy caught fish (using a fishnet) for his wife.",
+              "example_id": 7
+            },
+            {
+              "text": "Magipokoten na aan si Indoy ngowan.",
+              "translation": "Indoy is going fishing (using a fishnet) now.",
+              "example_id": 8
+            },
+            {
+              "text": "Kadakel yo pinokotan ni Indoy.",
+              "translation": "Indoy caught (using a fishnet) so many fish.",
+              "example_id": 9
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "ponaw",
+      "id": 2571,
+      "is_core": false,
+      "headword": "ponaw",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[po-naw]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the uneasy feeling of the need to eat (synonymous with: hungry, starved, famished)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pag-mata ko kaynang pita' ponaw na ako sa maray.",
+              "translation": "When I woke up this morning I  was so hungry.",
+              "example_id": 1
+            },
+            {
+              "text": "Naponaw yo agin kaya'man pwerte yo ngi'ngi'.",
+              "translation": "The child got hungry that's why it was crying so hard.",
+              "example_id": 2
+            },
+            {
+              "text": "Pagkaen naona bago ika maglowas ta baka' ika maponaw sa daxan.",
+              "translation": "Have something to eat first before you head out for you might go hungrs on the way.",
+              "example_id": 3
+            },
+            {
+              "text": "Pinonaw mo man yo agin ay!",
+              "translation": "Hey! You made the child hungry.",
+              "example_id": 4
+            },
+            {
+              "text": "Ponawen ko ika - di' ko ika paka'nen!",
+              "translation": "I will make you hungry - I will not let you eat!",
+              "example_id": 5
+            },
+            {
+              "text": "Yo kaponawan ko maoroenglew na yo sa'ken a alintak.",
+              "translation": "My hunger made my head achey.",
+              "example_id": 6
+            },
+            {
+              "text": "Nadismayo pati yo axaki sa kaponawan.",
+              "translation": "The man fainted due to hunger.",
+              "example_id": 7
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "porao",
+      "id": 2388,
+      "is_core": false,
+      "headword": "porao",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributors:Claveria, Alfonso (2021)\n      \n        Claveria, Maria Taburnal (2021)\n      \n        Sadural, Samantha Jade (2021)Editors:Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "fabric woven tight from abaca fiber that had been pounded to make it more flexible and pliant to be used for making different kinds of apparels.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Yo nakaaging panaon yo gobing nga gamit nyo sa'ten a mga kagororangan gibo sa porao.",
+              "translation": "The clothes in the olden days worn by our ancestors were made out of porao material.",
+              "example_id": 1
+            },
+            {
+              "text": "Maoyay a suwet ni Iya pagnakaporao iyang gobing.",
+              "translation": "Iya's outfit is beautiful when she's wearing porao clothes.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "potnay",
+      "id": 2574,
+      "is_core": false,
+      "headword": "potnay",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[POT-nay]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "to make an untrue statement or show a false impression with the intent  to deceive (synonymos with: lie, deceit, dishoest, fraud, hypcrisy, trick, treachery, pretense, slyness).",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Maglikay kamo diyan sa taong aan ta enteterek a potnayen aan.",
+              "translation": "Be careful all of you with that individual because he/she is a conginetal liar.",
+              "example_id": 1
+            },
+            {
+              "text": "Potnayan mo na sana kina pag inonga' ika nya sexed mo kin sa'ri ika alin.",
+              "translation": "Just lie to your spouse later if you are asked where you have been.",
+              "example_id": 2
+            },
+            {
+              "text": "Erak man, pipotnayan sanang pirmi a sexed nya kapanambayan niya.",
+              "translation": "It's a pity, he/she lies regularly to his/her spouse about his/her fornication.",
+              "example_id": 3
+            },
+            {
+              "text": "Pinotnayan niya yo sexed a babayi, kin indi', na-ayag na kinta'na ana pananambay niya.",
+              "translation": "He lied to his wife, if not, his fornication woud have been exposed.",
+              "example_id": 4
+            },
+            {
+              "text": "Ana sasabyen na /potnayen/ pigamit na adi ngowan imbis nyo sinao'nang sasabyen na /bebiga'en/.  Ana potnayen kasono' aan nya maonas.",
+              "translation": "This word \"liar\" that is presently in use replaces the old-fashioned word \"liar\".  A liar tandems with the thief.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "potnayen",
+      "id": 2596,
+      "is_core": false,
+      "headword": "potnayen",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[POT-na-yen]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a natural or juristic person or persons who make an untrue statement or show a false impression witht the intent to deceive (synonymous with: liar, deceiver, falsefier, perjurer)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ana presidente nya Pilipinas dapat beke' potnayen ag lasmeg!",
+              "translation": "The president of the Philippines must not be a liar and insane!",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "potnay",
+          "pk": 2574
+        },
+        {
+          "text": "potnay",
+          "pk": 2574
+        }
+      ]
+    },
+    {
+      "word": "ragom",
+      "id": 2400,
+      "is_core": false,
+      "headword": "ragom",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a small, thin, polished metal tool with a sharp point on one end and a hole at the opposite end where thread is inserted into to secure it for sewing.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Sinorsi ni mama yo rakrak nyo pantalon ko - ragom sana yo ginamit ta da' kami makina.",
+              "translation": "Mama mended the big tear on my pants - she used a needle only because we don't have a sewing machine.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "rapog",
+      "id": 2545,
+      "is_core": false,
+      "headword": "rapog",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ra-pog]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Reviewer:Noblefranca-Fallar, Gertrudes Z. (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the part of the house where food is stored, prepared and cooked and related task such as diswashing is performed; traditionally it had an open-fire cooker fashioned from three rocks arranged in a tripod-like stand to rest pots and pans to cook either set on the ground or on an elevated platform (synonymous with: cooking area, kitchen, galley)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Kalayen mo ana isra' sa rapog tanganing di' malalay nin ongaw.",
+              "translation": "Hang the fish in the kitchen so the cat can't snatch and run away with it.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "retrato",
+      "id": 2396,
+      "is_core": false,
+      "headword": "retrato",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[re-TRA-to]",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a visual and graphic representation of a given object, place, or a person taken by a camera and printed on paper or displayed on a screen.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Malapo'saw na yo mga retrato nga nagkasisemeg nyo bagyo.",
+              "translation": "The piectures that got wet during the typhoon are already very faded.",
+              "example_id": 1
+            },
+            {
+              "text": "Nagretrato ika adto sa kasalan?",
+              "translation": "Did you take pictures in thewedding?",
+              "example_id": 2
+            },
+            {
+              "text": "Pararetrato baga adtong si Batling.",
+              "translation": "The departed Batling was a photographer.",
+              "example_id": 3
+            },
+            {
+              "text": "Retratoen mo ana agin.",
+              "translation": "Take a picture of the child.",
+              "example_id": 4
+            },
+            {
+              "text": "Di ika magiron ta piretratoan kita.",
+              "translation": "Don't move because our picture is being taken.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "roeda",
+      "id": 2385,
+      "is_core": false,
+      "headword": "roeda",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ro-E-da]",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a round, flat, solid object that can turn around its center, and is used to help move other objects when attached to them",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Malalapok yo roeda nyo kariton ni Embay.",
+              "translation": "The wheel of Embay's (carabao-drawn) cart is full of mud.",
+              "example_id": 1
+            },
+            {
+              "text": "Roedaan mo na ana kariton.",
+              "translation": "Put wheels on the (carabao-drawn) cart.",
+              "example_id": 2
+            },
+            {
+              "text": "Piroedaan pa ana kariton.",
+              "translation": "The (carabao-drawn) cart is still being fixed its wheels.",
+              "example_id": 3
+            },
+            {
+              "text": "Naroedaan na yo kariton.",
+              "translation": "The (carabao-drawn) cart has already been fixed its wheels.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "ro'ro'",
+      "id": 2602,
+      "is_core": false,
+      "headword": "ro'ro'",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ro'-ro']",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a verbal argument or disagreement that quickly turns into a heated tit-for-tat, typically about a trivial issue and between people who are usually on good terms (synonymous with: quarrel, altercation, .",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "A mga sorodya'an nga baga-an pirminang napoponta sa ro'ro'.",
+              "translation": "Confrontations like that always turns into a quarrel.",
+              "example_id": 1
+            },
+            {
+              "text": "Nagiro'ro' na naman yo magsexed.",
+              "translation": "The couple are quarreling again.",
+              "example_id": 2
+            },
+            {
+              "text": "Nagro'ro' kaso esadabolan yo magsexed.",
+              "translation": "The couple quarreled last month.",
+              "example_id": 3
+            },
+            {
+              "text": "Ro'ro'an na sana ika nyaan pagsiningil mo nyo otang niya.",
+              "translation": "He/she will just quarrel with you when you will collect (payment) for his/her debt.",
+              "example_id": 4
+            },
+            {
+              "text": "Rino'ro'an ako kaso odma' nyo pisingil ko na yo otang niya.",
+              "translation": "He/she quarreled with me yesterday when I was collecting (payment) for his/her debt.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "sagwan",
+      "id": 2384,
+      "is_core": false,
+      "headword": "sagwan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a stick of wood or similar material with a long handle on one end and a broad flattened part on the other, and is used for moving a boat through water",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Yo teged nyo sagwan ni Enon nabari'.",
+              "translation": "Enon's paddle handle broke.",
+              "example_id": 1
+            },
+            {
+              "text": "Nisagwan sana sira si Enon ag si Oya pagipabano'an.",
+              "translation": "Enon & Oya just paddle (their boat) going to town.",
+              "example_id": 2
+            },
+            {
+              "text": "Nagsagwan sana si Enon ag si Oya papaoli' sa kanda kaso odma.",
+              "translation": "Enon and Oya paddled (their boat) in returning (to their house) yesterday.",
+              "example_id": 3
+            },
+            {
+              "text": "Kaso panaon, pisagwan sana namem pagipaadto sa Komaga'ka'.",
+              "translation": "In the olden days we just paddle  (our boat) when we go to Komaga'ka'.",
+              "example_id": 4
+            },
+            {
+              "text": "Magisagwanen sana kami kinaodma' paramangisra'.",
+              "translation": "We will just paddle (our boat) to go fishing tomorrow.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "samingkil",
+      "id": 2435,
+      "is_core": false,
+      "headword": "samingkil",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[sa-MING-kil]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the part of the lower body at the tip of each leg that touches the ground and has the heel, sole and toes on it (synonymous with: foot, feet, trotter)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Lapnad ana samingkil nyaan kaya' bagaan magbaklay.",
+              "translation": "He/she is flatfooted that's why he/she walks that way.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "sexed",
+      "id": 2599,
+      "is_core": false,
+      "headword": "sexed",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[se-XED]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a man or a woman partner in marriage (synonymous with: spouse, partner, wife, husband, mate)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pag ana esad-a-tao agko na sexed orog nang nagi-e-get sa boway.",
+              "translation": "When an individual already has a spouse the more he/she perseveres in life.",
+              "example_id": 1
+            },
+            {
+              "text": "Pag-sexed na ngani' tanganing makita mo!",
+              "translation": "(Why don't you) get married so you will see!",
+              "example_id": 2
+            },
+            {
+              "text": "Ay-inga'! Agko na agin yo magsexed.",
+              "translation": "Awww! The couple already has a child.",
+              "example_id": 3
+            },
+            {
+              "text": "Mag-sexed na ngani' ika tanganing makita mo!",
+              "translation": "(Why don't you) get married so you will see!",
+              "example_id": 4
+            },
+            {
+              "text": "Nagsexed sana nalipatan na baga kita.",
+              "translation": "After he/she got marrie he/she forgot about us.",
+              "example_id": 5
+            },
+            {
+              "text": "Magparasexed-sexed ika diyan ta ngowan beyo' a kabasolan mo!",
+              "translation": "(It was) you (who decided to get) married, now you are fully regretting it!",
+              "example_id": 6
+            },
+            {
+              "text": "Nagkasinexedan maski sira primerong magpinsan?",
+              "translation": "They got married (to each other) even if they are first cousins?",
+              "example_id": 7
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "sintoron",
+      "id": 2386,
+      "is_core": false,
+      "headword": "sintoron",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a long strip of leather or other flexible material that can be worn around the waist",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mala'naka-engen ana sintoron mo.",
+              "translation": "Your belt barely fits you.",
+              "example_id": 1
+            },
+            {
+              "text": "Paki sintoronan mo na daw tabi' ana agin ta mawa'wa' na ana pantalon nyaan.",
+              "translation": "Please put the belt for the child or its pants will fall down.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "sirob",
+      "id": 2608,
+      "is_core": false,
+      "headword": "sirob",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[si-rob]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "to burn something lightly or superficially with an open flame or flash fire (synonymous with: singe, burn slightly, sear, scorch)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nasirob yo dowang kiray ni Ingray ta beyong sominilyab yo kalayo nyo bino'bo'an niya nin ga-as.",
+              "translation": "Ingray's two eyebrows were singed when the fire suddenly flared up when he poured kerosene on it.",
+              "example_id": 1
+            },
+            {
+              "text": "Nasirob yo kiray ni Ingray kaso odma'.",
+              "translation": "Ingray's eyebrow was singed yesterday.",
+              "example_id": 2
+            },
+            {
+              "text": "De' mo pagbo'bo'an nin ga-as ana kalayo ta masirob ika.",
+              "translation": "Don't pour kerosene on the fire or you'll get singed.",
+              "example_id": 3
+            },
+            {
+              "text": "Mari'gennalomalatngen a pisirob ni Ingray sa saxeg nya sakanyang korob.",
+              "translation": "Ingray is scorching plenty of fire ants on the floor of his lean-to shack.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "songo",
+      "id": 2546,
+      "is_core": false,
+      "headword": "songo",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[so-ngo]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Reviewer:Noblefranca-Fallar, Gertrudes Z. (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "an open-fire cooking stand that was traditionally fashioned from three rocks placed in a tripod-footing arrangement resting on the ground or an elevated earthfilled-cooking hearth  used permanently in a house kitchen or temporarily in outside camping (synonymous with: fireplace, stove, cooker, wood burning fire pit)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Benkagan mo na ana songo ta pipaeneg na sana man ana emey.",
+              "translation": "Dampen (by taking away some firewood) the flame of the cooking stand as the rice is just finishing up (absorbing water) till fully cooked.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "rapog",
+          "pk": 2545
+        }
+      ]
+    },
+    {
+      "word": "sorang",
+      "id": 2679,
+      "is_core": false,
+      "headword": "sorang",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributors:Claveria, Maria Taburnal (2023)\n      \n        Claveria, Tayag (2023)Editors:Claveria, Alfonso (2023)\n      \n        Claveria, Tayag (2023)",
+      "definitions": [
+        {
+          "definition": "A cheeky expression of one's reaction to someone, something, situation, action and the like  that is sloppy, dull, unappetizing, unpleasant, boring that is typically spoken in an endearing or amusing manner so as not to provoke any unpleasant response from the concerned person. (synonymous with unpalatable, boring, irritating, unpleasant and the like)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mari'gen-a-sorang mo daw ta inobon mo akong mag-esad sa daxan a mari'gen-a-delem.",
+              "translation": "Oh well, you are so irritating leaving me by myself  on the very dark trail.",
+              "example_id": 1
+            },
+            {
+              "text": "Mari'genasorang manggobing-gobing nyana saimong sexed.",
+              "translation": "Your spouse is boring the way he/she dresses.",
+              "example_id": 2
+            },
+            {
+              "text": "Abangsorang nya so'wet mo ay! Malakerab.",
+              "translation": "What you are wearing is so unpleasing! So glaring.",
+              "example_id": 3
+            },
+            {
+              "text": "Kasosorangen nyading ipatngoed kong babayi.",
+              "translation": "This female sibling of mine easily gets displeased.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "sowong",
+      "id": 2603,
+      "is_core": false,
+      "headword": "sowong",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[so-WONG]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a naturally flowing stream of water in a large channel heading towards a lake, another stream, other larger body  of water of the sea (synonymous with: river, stream, brook, tributary, waterway, channel)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mari'gen a nangagipararigos sa sowon orog na kin mlainit nya panaon.",
+              "translation": "There are so many (people) taking a dip in the river especially when the weather is so hot.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "takyag",
+      "id": 2433,
+      "is_core": false,
+      "headword": "takyag",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[tak-yag]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2021)Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "the part of the upper body between the shoulder joint up to the wrist of the hand that has the elbow joint that makes it bend and flex (synonymous with: arm, forelimb, apendage)",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Naila'la' ading to-o kong takyag ta napasala' yo gabling ko nyo agin na matitikrag sa agran.",
+              "translation": "My right arm was sprained when I improperly pulled the child from falling on the stair.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "tambal",
+      "id": 2399,
+      "is_core": false,
+      "headword": "tambal",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Sadural, Samantha Jade (2021)Editors:Claveria, Alfonso (2021)\n      \n        Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "native remedy used by a village healer who is knowledgeable on the magical and chemical efficacies of various substances and rituals  in treating or curing toxic animal bites.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nagpatambal si La'ling ta nakagat iya nin daye'.",
+              "translation": "La'ling went to get treatment because she was bitten by a dog.",
+              "example_id": 1
+            },
+            {
+              "text": "Ipatambal mo na ana kinagatan saimo nyo daye'.",
+              "translation": "Get your dog bite treated already.",
+              "example_id": 2
+            },
+            {
+              "text": "Di' ika maandax ta moaan na yo paratambal.",
+              "translation": "Don't be stressed because the village helaler is here already.",
+              "example_id": 3
+            },
+            {
+              "text": "Nagpatambal si La'ling nyo  kinagatan ayam sakanya.",
+              "translation": "La'ling saw the village healer for her dog bite.",
+              "example_id": 4
+            },
+            {
+              "text": "Niparatorotambal man aan nya kagat daye' si Aton.",
+              "translation": "Aton treats dog bites also.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "bolong",
+          "pk": 2398
+        }
+      ]
+    },
+    {
+      "word": "tambobong",
+      "id": 2395,
+      "is_core": false,
+      "headword": "tambobong",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Sadural, Samantha Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "a building that is used for storing food and other products",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mari'gen nga abe' sa tambobong ni Talino.",
+              "translation": "Plenty of rats in Talino's storehouse.",
+              "example_id": 1
+            },
+            {
+              "text": "Mari'genngadelem sa le-eg nya tambobong ni Talino.",
+              "translation": "It's very dark inside Talino's storehouse.",
+              "example_id": 2
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "tarem",
+      "id": 2375,
+      "is_core": false,
+      "headword": "tarem",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Editor:Claveria, Alfonso (2021)",
+      "definitions": [
+        {
+          "definition": "a weapon or tool with a sharp cutting edge",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Maiseg si Eli kin agko sanaman iya nin tarem.",
+              "translation": "Eli is daring whenever he has a bladed weapon.",
+              "example_id": 1
+            },
+            {
+              "text": "Mataem yo sundang ni Eli.",
+              "translation": "Eli's bolo is sharp.",
+              "example_id": 2
+            },
+            {
+              "text": "Mari'gena tarem ag kapanas nya so'got ni Eli.",
+              "translation": "Eli's stiletto is very sharp and pointed.",
+              "example_id": 3
+            },
+            {
+              "text": "Nagiret yo goramey ni Eli nyo mari'geatarem nga so'got.",
+              "translation": "Eli's finger was cut by the very sharp stiletto.",
+              "example_id": 4
+            },
+            {
+              "text": "Taisen mong maray ana so'got tanganing tomarem sa maray.",
+              "translation": "Hone the stilleto very well so it will be very sharp.",
+              "example_id": 5
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "to'wang1",
+      "id": 2633,
+      "is_core": false,
+      "headword": "to'wang1",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[to'-wang]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2022)Editor:Claveria, Alfonso (2022)",
+      "definitions": [
+        {
+          "definition": "the stony part of a a fruit or vegetable some of which are inedible and serves as the vessel for propagating an identical plant to that where it came from when planted on the ground (synonymous with seed, pit, kernel, nut and the like).",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mare'gena-to'wang nyana mga atis.",
+              "translation": "Cherimoya have plenty of seeds.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "to'wang2",
+      "id": 2631,
+      "is_core": false,
+      "headword": "to'wang2",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[TO'-wang]",
+      "credits": "Contributor:Claveria, Maria Taburnal (2022)Editor:Claveria, Alfonso (2022)",
+      "definitions": [
+        {
+          "definition": "the rigid part of the body of humans, animals and birds making up their skeletal frame for supporting the body's fleshy parts and protects its delicate organs (synonymous with bone).",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nabong-go' yo nibesiklita sa awto kaya' nabare' yo to'wang niya sa walang tak'yag.",
+              "translation": "The bicycle rider hit the car and broke his/her left-arm bone.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": [
+        {
+          "text": "to'wang1",
+          "pk": 2633
+        },
+        {
+          "text": "to'wang1",
+          "pk": 2633
+        }
+      ]
+    }
+  ],
+  "alphabet_index": {
+    "A": [
+      {
+        "id": 2394,
+        "word": "agran",
+        "is_core": false
+      },
+      {
+        "id": 2612,
+        "word": "alangaang",
+        "is_core": false
+      },
+      {
+        "id": 2613,
+        "word": "arasa-as",
+        "is_core": false
+      },
+      {
+        "id": 2393,
+        "word": "atep",
+        "is_core": false
+      },
+      {
+        "id": 2390,
+        "word": "axad",
+        "is_core": false
+      }
+    ],
+    "B": [
+      {
+        "id": 2418,
+        "word": "Boie'nen",
+        "is_core": false
+      },
+      {
+        "id": 2426,
+        "word": "balde'",
+        "is_core": false
+      },
+      {
+        "id": 2547,
+        "word": "bangbangan",
+        "is_core": false
+      },
+      {
+        "id": 2570,
+        "word": "banggeraan",
+        "is_core": false
+      },
+      {
+        "id": 2379,
+        "word": "banig",
+        "is_core": false
+      },
+      {
+        "id": 2392,
+        "word": "baxey",
+        "is_core": false
+      },
+      {
+        "id": 2430,
+        "word": "be-ew",
+        "is_core": false
+      },
+      {
+        "id": 2377,
+        "word": "begkes",
+        "is_core": false
+      },
+      {
+        "id": 2414,
+        "word": "begkes",
+        "is_core": false
+      },
+      {
+        "id": 2606,
+        "word": "bexa'",
+        "is_core": false
+      },
+      {
+        "id": 2598,
+        "word": "biga'",
+        "is_core": false
+      },
+      {
+        "id": 2419,
+        "word": "boie'nen",
+        "is_core": false
+      },
+      {
+        "id": 2431,
+        "word": "boko-boko",
+        "is_core": false
+      },
+      {
+        "id": 2398,
+        "word": "bolong",
+        "is_core": false
+      }
+    ],
+    "D": [
+      {
+        "id": 2624,
+        "word": "dake-xe'",
+        "is_core": false
+      }
+    ],
+    "E": [
+      {
+        "id": 2408,
+        "word": "e-ket",
+        "is_core": false
+      },
+      {
+        "id": 2630,
+        "word": "e-xa'",
+        "is_core": false
+      },
+      {
+        "id": 2566,
+        "word": "elka",
+        "is_core": false
+      },
+      {
+        "id": 2615,
+        "word": "ewrasa",
+        "is_core": false
+      },
+      {
+        "id": 2678,
+        "word": "ex-ex",
+        "is_core": false
+      }
+    ],
+    "G": [
+      {
+        "id": 2427,
+        "word": "gasa'",
+        "is_core": false
+      },
+      {
+        "id": 2372,
+        "word": "gere'gede'",
+        "is_core": false
+      },
+      {
+        "id": 2421,
+        "word": "gobing",
+        "is_core": false
+      }
+    ],
+    "I": [
+      {
+        "id": 2429,
+        "word": "inang",
+        "is_core": false
+      }
+    ],
+    "K": [
+      {
+        "id": 2601,
+        "word": "ka-esad",
+        "is_core": false
+      },
+      {
+        "id": 2405,
+        "word": "kabeg",
+        "is_core": false
+      },
+      {
+        "id": 2607,
+        "word": "kabelbegan",
+        "is_core": false
+      },
+      {
+        "id": 2378,
+        "word": "kakabgan",
+        "is_core": false
+      },
+      {
+        "id": 2460,
+        "word": "kambang",
+        "is_core": false
+      },
+      {
+        "id": 2572,
+        "word": "kaponawan",
+        "is_core": false
+      },
+      {
+        "id": 2402,
+        "word": "karaba",
+        "is_core": false
+      },
+      {
+        "id": 2610,
+        "word": "katabang",
+        "is_core": false
+      },
+      {
+        "id": 2383,
+        "word": "katig",
+        "is_core": false
+      },
+      {
+        "id": 2459,
+        "word": "kilot",
+        "is_core": false
+      },
+      {
+        "id": 2382,
+        "word": "kinatigan",
+        "is_core": false
+      },
+      {
+        "id": 2373,
+        "word": "koyomad",
+        "is_core": false
+      },
+      {
+        "id": 2387,
+        "word": "kwintas",
+        "is_core": false
+      }
+    ],
+    "L": [
+      {
+        "id": 2391,
+        "word": "lagwerta",
+        "is_core": false
+      },
+      {
+        "id": 2605,
+        "word": "lapok",
+        "is_core": false
+      },
+      {
+        "id": 2604,
+        "word": "lawed",
+        "is_core": false
+      },
+      {
+        "id": 2397,
+        "word": "lemay",
+        "is_core": false
+      },
+      {
+        "id": 2632,
+        "word": "lo-og",
+        "is_core": false
+      },
+      {
+        "id": 2401,
+        "word": "lobid",
+        "is_core": false
+      },
+      {
+        "id": 2568,
+        "word": "lokaba",
+        "is_core": false
+      }
+    ],
+    "M": [
+      {
+        "id": 2623,
+        "word": "mare'gen",
+        "is_core": false
+      },
+      {
+        "id": 2436,
+        "word": "meya",
+        "is_core": false
+      },
+      {
+        "id": 2443,
+        "word": "meya-meya",
+        "is_core": false
+      },
+      {
+        "id": 2376,
+        "word": "moara",
+        "is_core": false
+      }
+    ],
+    "N": [
+      {
+        "id": 2442,
+        "word": "nameme'yan",
+        "is_core": false
+      },
+      {
+        "id": 2371,
+        "word": "ngi'ngi'",
+        "is_core": false
+      }
+    ],
+    "O": [
+      {
+        "id": 2483,
+        "word": "opaw",
+        "is_core": false
+      },
+      {
+        "id": 2611,
+        "word": "oripen",
+        "is_core": false
+      },
+      {
+        "id": 2380,
+        "word": "owonan",
+        "is_core": false
+      }
+    ],
+    "P": [
+      {
+        "id": 2374,
+        "word": "pana'",
+        "is_core": false
+      },
+      {
+        "id": 2609,
+        "word": "paso'",
+        "is_core": false
+      },
+      {
+        "id": 2681,
+        "word": "pinaowonan",
+        "is_core": false
+      },
+      {
+        "id": 2434,
+        "word": "pingig",
+        "is_core": false
+      },
+      {
+        "id": 2389,
+        "word": "pinto'",
+        "is_core": false
+      },
+      {
+        "id": 2422,
+        "word": "pinto'an",
+        "is_core": false
+      },
+      {
+        "id": 2381,
+        "word": "pokot",
+        "is_core": false
+      },
+      {
+        "id": 2571,
+        "word": "ponaw",
+        "is_core": false
+      },
+      {
+        "id": 2388,
+        "word": "porao",
+        "is_core": false
+      },
+      {
+        "id": 2574,
+        "word": "potnay",
+        "is_core": false
+      },
+      {
+        "id": 2596,
+        "word": "potnayen",
+        "is_core": false
+      }
+    ],
+    "R": [
+      {
+        "id": 2400,
+        "word": "ragom",
+        "is_core": false
+      },
+      {
+        "id": 2545,
+        "word": "rapog",
+        "is_core": false
+      },
+      {
+        "id": 2396,
+        "word": "retrato",
+        "is_core": false
+      },
+      {
+        "id": 2602,
+        "word": "ro'ro'",
+        "is_core": false
+      },
+      {
+        "id": 2385,
+        "word": "roeda",
+        "is_core": false
+      }
+    ],
+    "S": [
+      {
+        "id": 2384,
+        "word": "sagwan",
+        "is_core": false
+      },
+      {
+        "id": 2435,
+        "word": "samingkil",
+        "is_core": false
+      },
+      {
+        "id": 2599,
+        "word": "sexed",
+        "is_core": false
+      },
+      {
+        "id": 2386,
+        "word": "sintoron",
+        "is_core": false
+      },
+      {
+        "id": 2608,
+        "word": "sirob",
+        "is_core": false
+      },
+      {
+        "id": 2546,
+        "word": "songo",
+        "is_core": false
+      },
+      {
+        "id": 2679,
+        "word": "sorang",
+        "is_core": false
+      },
+      {
+        "id": 2603,
+        "word": "sowong",
+        "is_core": false
+      }
+    ],
+    "T": [
+      {
+        "id": 2433,
+        "word": "takyag",
+        "is_core": false
+      },
+      {
+        "id": 2399,
+        "word": "tambal",
+        "is_core": false
+      },
+      {
+        "id": 2395,
+        "word": "tambobong",
+        "is_core": false
+      },
+      {
+        "id": 2375,
+        "word": "tarem",
+        "is_core": false
+      },
+      {
+        "id": 2633,
+        "word": "to'wang",
+        "is_core": false
+      },
+      {
+        "id": 2631,
+        "word": "to'wang",
+        "is_core": false
+      }
+    ]
+  }
+}

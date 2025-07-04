@@ -1,23 +1,35 @@
-# FilRelex - Production .gitignore
+# FilRelex - EMNLP 2025 System Demonstrations .gitignore
 
-# Dependencies
+# =============================================================================
+# DEPENDENCIES
+# =============================================================================
 /node_modules
 /.pnp
 .pnp.js
 package-lock.json
 
-# Testing
+# =============================================================================
+# TESTING
+# =============================================================================
 /coverage
 .pytest_cache/
 .nyc_output
 *.lcov
+test-results/
+junit.xml
 
-# Production builds
+# =============================================================================
+# PRODUCTION BUILDS
+# =============================================================================
 /build
 /dist/
 *.tgz
+*.tar.gz
+*.zip
 
-# Virtual environments
+# =============================================================================
+# VIRTUAL ENVIRONMENTS
+# =============================================================================
 .venv/
 .venv-*/
 venv/
@@ -34,54 +46,60 @@ __pycache__/
 .installed.cfg
 *.egg
 MANIFEST
+.python-version
 
-# Environment variables and sensitive config
+# =============================================================================
+# SENSITIVE DATA & CREDENTIALS
+# =============================================================================
 .env
 .env.*
 *.env
 !.env.example
 config/local.json
 config/production.json
+config/development.json
 my_db_config.json*
 db_config.json
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.json
+credentials.json
+*.secret
+*.token
+api_keys.txt
+passwords.txt
 
-# Logs and temporary files
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# IDE and editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.history/
-
-# Database files
+# =============================================================================
+# DATABASE FILES & DUMPS
+# =============================================================================
 *.sqlite
 *.sqlite3
 *.db
+*.sql
 fil_dict_db_dump.sql
 fil_dict_db_dump_dir/
+fil_relex_colab.sqlite
+database_dumps/
+backups/
 
-# Data files (large datasets, exports, etc.)
+# =============================================================================
+# DATA FILES & LARGE DATASETS
+# =============================================================================
 /data/
 *.csv
 *.json.bak
 *.backup
+*.dump
+*.export
+datasets/
+raw_data/
+processed_data/
 
-# Machine Learning artifacts
+# =============================================================================
+# MACHINE LEARNING ARTIFACTS
+# =============================================================================
 output/
 checkpoints/
 models/
@@ -90,9 +108,31 @@ models/
 *.joblib
 *.h5
 *.hdf5
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.tflite
 .wandb/
+ml_models/
+model_cache/
+training_logs/
 
-# Academic and research files
+# =============================================================================
+# LARGE MODEL FILES (Distribute separately)
+# =============================================================================
+gatv2_*.pt
+sage_*.pt
+final_production_model_*.pt
+working_filrelex_model.pt
+linguistically_improved_model.pt
+*.bin
+*.safetensors
+
+# =============================================================================
+# ACADEMIC & RESEARCH FILES
+# =============================================================================
 *.tex
 *.pdf
 *.bib
@@ -103,16 +143,31 @@ models/
 *.fdb_latexmk
 *.fls
 *.synctex.gz
-comprehensive_presentation.md
-presentation_outline.md
-poster.tex
-main.tex
-ph-lexical-kg.bib
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.dvi
+*.ps
+*.eps
 *.jpg
+*.jpeg
 *.png
 *.gif
+*.svg
+*.ico
 
-# Analysis and experimental files
+# Keep only the EMNLP submission
+!emnlp2025_demo_submission.tex
+
+# =============================================================================
+# ANALYSIS & EXPERIMENTAL FILES
+# =============================================================================
 *analysis*.py
 *_analysis.py
 analysis_*.log
@@ -125,8 +180,57 @@ uncertainty_distribution_*.png
 *_sorted_by_entropy.csv
 *_proposed_new_links.csv
 *_anomalous_existing_links.csv
+experimental_results/
+analysis_results/
+evaluation_results/
 
-# Temporary and cache files
+# =============================================================================
+# EXPERIMENTAL & DEVELOPMENT FILES
+# =============================================================================
+cleanup_experimental_files.py
+improve_notebook_docs.py
+test_notebook.py
+post_pretraining_analysis.py
+pos_tagging_colab_script.py
+KG_Enhancement_Analysis_Colab.py
+export_to_sqlite.py
+test_ml_api.py
+cleanup_for_opensource.py
+
+# =============================================================================
+# LARGE EXPERIMENTAL FILES
+# =============================================================================
+uncertain_word_nodes_sorted_by_entropy.csv
+uncertainty_distribution_*.png
+*_proposed_new_links.csv
+*_anomalous_existing_links.csv
+training.log
+training_summary.csv
+comprehensive_training_results.json
+ultimate_sota_demonstration_results.json
+
+# =============================================================================
+# PERSONAL & ACADEMIC FILES
+# =============================================================================
+"Angelica Anne Araneta Naguio - CV (EN-FIL) (2025).pdf"
+submission_materials.txt
+PhilippineStudiesConference2025.tex
+references.bib
+main.tex
+database_schema_summary.md
+actual_schema.json
+create_tables.sql
+ENHANCED_ML_IMPLEMENTATION.md
+SEMANTIC_MODEL_ACHIEVEMENT.md
+PRODUCTION_ML_FINAL.md
+PRODUCTION_CHECKLIST.md
+ml_documentation.md
+LINGUISTIC_EVALUATION_REPORT.md
+ML_INTEGRATION_SUMMARY.md
+
+# =============================================================================
+# TEMPORARY & CACHE FILES
+# =============================================================================
 .cache/
 .vite/
 .turbo/
@@ -134,8 +238,13 @@ uncertainty_distribution_*.png
 .next/
 .nuxt/
 .vercel/
+.temp/
+tmp/
+temp/
 
-# OS generated files
+# =============================================================================
+# OS GENERATED FILES
+# =============================================================================
 .DS_Store
 .DS_Store?
 ._*
@@ -143,45 +252,255 @@ uncertainty_distribution_*.png
 .Trashes
 ehthumbs.db
 Thumbs.db
+desktop.ini
 
-# Runtime data
+# =============================================================================
+# RUNTIME DATA
+# =============================================================================
 pids
 *.pid
 *.seed
 *.pid.lock
+*.sock
+*.socket
 
-# Coverage directory used by tools like istanbul
+# =============================================================================
+# COVERAGE & TESTING
+# =============================================================================
 coverage/
 *.lcov
+.nyc_output/
+test-results/
+junit.xml
 
-# Optional npm cache directory
+# =============================================================================
+# NPM & YARN
+# =============================================================================
 .npm
-
-# Optional eslint cache
+.yarn-integrity
+.yarn/
 .eslintcache
+.stylelintcache
 
-# Microbundle cache
+# =============================================================================
+# MICROBUNDLE CACHE
+# =============================================================================
 .rpt2_cache/
 .rts2_cache_cjs/
 .rts2_cache_es/
 .rts2_cache_umd/
 
-# Optional REPL history
+# =============================================================================
+# REPL HISTORY
+# =============================================================================
 .node_repl_history
+.python_history
+.history/
 
-# Output of 'npm pack'
+# =============================================================================
+# OUTPUT FILES
+# =============================================================================
 *.tgz
+*.tar.gz
+*.zip
+*.rar
+*.7z
 
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variable files
+# =============================================================================
+# ENVIRONMENT FILES
+# =============================================================================
 .env.development.local
 .env.test.local
 .env.production.local
 .env.local
+.env.staging
 
-# Stores VSCode versions used for testing VSCode extensions
-.vscode-test
+# =============================================================================
+# IDE & EDITOR FILES
+# =============================================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.history/
+*.sublime-project
+*.sublime-workspace
+.atom/
+.brackets.json
 
-# End of .gitignore
+# =============================================================================
+# LOGS & TEMPORARY FILES
+# =============================================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+*.log.*
+debug.log
+
+# =============================================================================
+# EXPERIMENTAL ML FILES (Keep only production-ready ones)
+# =============================================================================
+ml/truly_computational_system.py
+ml/database_driven_system.py
+ml/simple_computational_system.py
+ml/ultimate_sota_*.py
+ml/improved_sota_*.py
+ml/phd_*.py
+ml/advanced_linguistic_evaluation.py
+ml/linguistic_analysis.py
+ml/technical_audit.py
+ml/audit_system.py
+ml/sota_*.py
+ml/semantic_aware_trainer.py
+ml/comprehensive_enhanced_trainer.py
+ml/enhanced_semantic_trainer_*.py
+ml/api_integration.py
+ml/semantic_demo.py
+ml/linguistic_evaluation.py
+ml/eval_linguistic.py
+ml/simple_trainer.py
+ml/simplified_sota_trainer.py
+ml/final_production_system.py
+ml/enhanced_explainer.py
+ml/explain_relationships.py
+ml/multi_criteria_predictor.py
+ml/advanced_relationship_predictor.py
+ml/live_relationship_demo.py
+ml/relationship_prediction_demo.py
+ml/quick_relationship_demo.py
+ml/relationship_demo_streamlined.py
+ml/real_ml_system.py
+ml/fixed_contrastive_system.py
+ml/iterative_linguistic_improvement.py
+ml/test_and_improve.py
+ml/working_ml_pipeline.py
+ml/improved_linguistic_ml.py
+ml/comprehensive_linguistic_eval.py
+ml/test_system.py
+ml/test_model.py
+ml/linguistic_ml_system.py
+ml/embedding_collapse_fixes.py
+ml/practical_ml_system.py
+ml/comprehensive_relationship_discovery.py
+ml/semantic_relationship_finder.py
+ml/accurate_relationship_discovery.py
+ml/practical_relationship_discovery.py
+ml/relationship_discovery_demo.py
+ml/relationship_discovery.py
+ml/sota_semantic_system.py
+ml/training_progress_demo.py
+ml/quick_contrastive_test.py
+ml/ml_evaluation_suite.py
+ml/production_ml_system.py
+ml/advanced_ml_architecture.py
+ml/comprehensive_ml_system.py
+ml/db_analyzer.py
+ml/run_fix.py
+ml/simple_loader.py
+ml/unified_config.py
+
+# =============================================================================
+# EXPERIMENTAL ML DIRECTORIES
+# =============================================================================
+ml/evaluation_results_*/
+ml/logs/
+ml/analysis_results/
+ml/experimental/
+
+# =============================================================================
+# ML DOCUMENTATION FILES
+# =============================================================================
+ml/README_WORKING.md
+ml/FIXES_SUMMARY.md
+ml/FINAL_PHD_EVALUATION_REPORT.md
+ml/PHD_CRITICAL_ANALYSIS_REPORT.md
+ml/CRITICAL_ANALYSIS_REPORT.md
+ml/phd_critical_analysis.md
+ml/ULTIMATE_SOTA_SUMMARY.md
+ml/PRODUCTION_SUCCESS_SUMMARY.md
+ml/linguistic_evaluation_report_*.txt
+
+# =============================================================================
+# ML CONFIGURATION FILES WITH SENSITIVE DATA
+# =============================================================================
+ml/my_db_config.json
+ml/db_config.json
+ml/ultimate_sota_config.json
+ml/ultimate_sota_results.json
+
+# =============================================================================
+# KEEP PRODUCTION-READY ML FILES
+# =============================================================================
+!ml/simple_model_test.py
+!ml/quick_evaluation.py
+!ml/quick_test.py
+!ml/simple_working_pipeline.py
+!ml/simple_pipeline.py
+!ml/setup_ml.py
+!ml/README.md
+!ml/README_FIXED.md
+!ml/requirements.txt
+!ml/requirements_fixed.txt
+!ml/pretrain_hgmae.py
+!ml/link_prediction.py
+!ml/train_hgnn.py
+!ml/analyze_db.py
+!ml/analyze_db_extended.py
+!ml/run_pipeline.py
+
+# =============================================================================
+# KEEP PRODUCTION ML DIRECTORY
+# =============================================================================
+!ml_production/
+
+# =============================================================================
+# KEEP CORE GNN LEXICON DIRECTORY
+# =============================================================================
+!gnn_lexicon/
+
+# =============================================================================
+# KEEP ESSENTIAL CONFIGURATION
+# =============================================================================
+!package.json
+!tsconfig.json
+!tsconfig.node.json
+!vite.config.js
+!vite.config.ts
+!requirements.txt
+!run.py
+!docker-compose.*.yml
+!.dockerignore
+!ml.Dockerfile
+!nixpacks.toml
+!railway.json
+!Procfile
+!render.yaml
+!vercel.json
+!index.html
+
+# =============================================================================
+# KEEP ESSENTIAL DOCUMENTATION
+# =============================================================================
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+!SETUP.md
+!README.local.md
+!OPEN_SOURCE_RELEASE_SUMMARY.md
+
+# =============================================================================
+# KEEP CORE APPLICATION DIRECTORIES
+# =============================================================================
+!backend/
+!src/
+!deploy/
+!public/
+!data/
+
+# =============================================================================
+# END OF .gitignore
+# =============================================================================

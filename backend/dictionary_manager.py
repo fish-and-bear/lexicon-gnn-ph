@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
+# Load environment variables from .env file
+from dotenv import load_dotenv
+import os
+load_dotenv(dotenv_path='.env')
+
 import argparse
 import json
 import logging
-import os
 import io
 import traceback # Keep traceback for error logging in lookup_word
 from collections import Counter, defaultdict
@@ -2195,7 +2199,17 @@ def purge_database_tables(cur):
 
     for table in tables:
         print(f"Purging {table}...")
-        cur.execute(f"DELETE FROM {table}")
+        try:
+            # Check if table exists before trying to delete from it
+            cur.execute(f"SELECT 1 FROM information_schema.tables WHERE table_name = '{table}'")
+            if cur.fetchone():
+                cur.execute(f"DELETE FROM {table}")
+                print(f"Successfully purged {table}")
+            else:
+                print(f"Table {table} does not exist, skipping...")
+        except Exception as e:
+            print(f"Error purging {table}: {e}")
+            # Continue with other tables even if one fails
 
     return True
 

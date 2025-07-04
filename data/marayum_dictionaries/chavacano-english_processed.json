@@ -1,0 +1,57 @@
+{
+  "dictionary_info": {
+    "id": "7",
+    "name": "chavacano-english",
+    "text": "Chavacano - English",
+    "base_language": "Chavacano",
+    "target_language": "English",
+    "total_words": 1,
+    "scrape_date": "2025-03-28"
+  },
+  "statistics": {
+    "total_words": 1,
+    "core_words": 0,
+    "with_audio": 0,
+    "with_examples": 1,
+    "parts_of_speech": {
+      "noun": 1
+    }
+  },
+  "words": [
+    {
+      "word": "comida",
+      "id": 2569,
+      "is_core": false,
+      "headword": "comida",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Casas, Ramon Paolo Joaquin (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a food or meal",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ya prepara sila comida por el bisita.",
+              "translation": "They prepared food for the visitor.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    }
+  ],
+  "alphabet_index": {
+    "C": [
+      {
+        "id": 2569,
+        "word": "comida",
+        "is_core": false
+      }
+    ]
+  }
+}

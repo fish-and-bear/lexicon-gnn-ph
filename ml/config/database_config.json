@@ -1,0 +1,24 @@
+{
+    "database": {
+        "host": "localhost",
+        "port": 5432,
+        "database": "fil_dict_db",
+        "user": "***",
+        "password": "***",
+        "ssl_mode": "require",
+        "connection_timeout": 30,
+        "pool_size": 5,
+        "max_overflow": 10
+    },
+    "admin_database": {
+        "host": "fil-dict-db-jessegarfieldscats-becf.h.aivencloud.com",
+        "port": 18251,
+        "database": "defaultdb",
+        "user": "avnadmin",
+        "password": "AVNS_RjMphxAprfpCEUs1DJA",
+        "ssl_mode": "require",
+        "connection_timeout": 30,
+        "pool_size": 5,
+        "max_overflow": 10
+    }
+} 

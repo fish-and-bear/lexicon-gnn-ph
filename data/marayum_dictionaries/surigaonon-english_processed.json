@@ -1,0 +1,588 @@
+{
+  "dictionary_info": {
+    "id": "30",
+    "name": "surigaonon-english",
+    "text": "Surigaonon - English",
+    "base_language": "Surigaonon",
+    "target_language": "English",
+    "total_words": 18,
+    "scrape_date": "2025-03-28"
+  },
+  "statistics": {
+    "total_words": 18,
+    "core_words": 0,
+    "with_audio": 0,
+    "with_examples": 18,
+    "parts_of_speech": {
+      "noun": 10,
+      "adjective": 6,
+      "verb": 2
+    }
+  },
+  "words": [
+    {
+      "word": "aban",
+      "id": 2634,
+      "is_core": false,
+      "headword": "aban",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[?a.ban]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "the act of delaying an action, movement, or schedule of a person, thing, and event",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Naaban an eroplano tungod sa bagjo.",
+              "translation": "The airplane was delayed due to typhoon.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "adlip",
+      "id": 2635,
+      "is_core": false,
+      "headword": "adlip",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[?ad.lip]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a slice of something",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Isa ka adlip nan sandiya ako tag-aju.",
+              "translation": "I asked a slice of watermelon.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "agtang",
+      "id": 2636,
+      "is_core": false,
+      "headword": "agtang",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[?ag.taŋ]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "part of a dwelling where cooking is done",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Moderno na kuman an mga agtang sa ilaja.",
+              "translation": "The stoves today in boondock are modern.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "alibuybuy",
+      "id": 2637,
+      "is_core": false,
+      "headword": "alibuybuy",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[?a.li.buy.buy]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "extreme production of annoying noise",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Alibuybuy an mga pabujong nan bag-ong tuig.",
+              "translation": "The sounds during the New Year is annoying.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "aling",
+      "id": 2638,
+      "is_core": false,
+      "headword": "aling",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[?a.liŋ]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "untamed; undomesticated",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Aling an mga amo sa guyangan.",
+              "translation": "The monkeys in the forest are untamed.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "ambaw",
+      "id": 2639,
+      "is_core": false,
+      "headword": "ambaw",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[?am.baw]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a member of rodent family that has no hair on its tail, provincially called a rat",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Hamok ambaw sa basakan.",
+              "translation": "There are so many rats in the rice paddy.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "apiki",
+      "id": 2640,
+      "is_core": false,
+      "headword": "apiki",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[?a.pi.ki]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "in close proximity with each other",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Apiki ra sa ato an Taiwan na nasod.",
+              "translation": "The country of Taiwan is close to us.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "ayum-um",
+      "id": 2641,
+      "is_core": false,
+      "headword": "ayum-um",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[?a.yum.um]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "having an insufficient amount of light",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ayum-um na man inin suga nan ato bayay.",
+              "translation": "The lightbulb in our house is dimly lit.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "badjhu",
+      "id": 2642,
+      "is_core": false,
+      "headword": "badjhu",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[badz.hu]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "the space on the human face found above the eyebrows; forehead",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ibubu an pambunjag na tubig sa badjhu.",
+              "translation": "Pour the baptismal water on the forehead.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "bagyay",
+      "id": 2643,
+      "is_core": false,
+      "headword": "bagyay",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bag.yay]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a metal with a curved end used for hanging, fetching, or catching something",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nupalit nan bagyay an mangisdaay.",
+              "translation": "The fisherman bought a hook.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "bala",
+      "id": 2645,
+      "is_core": false,
+      "headword": "bala",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ba.la?]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a form that is unpleasant to the sight",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Bala an pagkahimo nan basket.",
+              "translation": "The basket was made ugly.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "bang-ug",
+      "id": 2646,
+      "is_core": false,
+      "headword": "bang-ug",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[baŋ-ug]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "the state of decaying matter emitting unwanted odor",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Bang-ug na ato sud-an.",
+              "translation": "Our viand smells stinky.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "baung",
+      "id": 2647,
+      "is_core": false,
+      "headword": "baung",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[ba.uŋ]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a dipper made of coconut shell",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nawaya an baung.",
+              "translation": "The dipper is lost.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "bija",
+      "id": 2648,
+      "is_core": false,
+      "headword": "bija",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bi.ja?]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "any edibles left or unconsumed",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Tagbahug an bija na isda sa ido.",
+              "translation": "The leftover fish was fed to the dog.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "biliting",
+      "id": 2649,
+      "is_core": false,
+      "headword": "biliting",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bi.li.tiŋ]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a motion that twists something to effect extraction, anguish, or form",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Umay pagbiliting mo nan talinga ko?",
+              "translation": "Why did you twist my ear?",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "buwahan",
+      "id": 2651,
+      "is_core": false,
+      "headword": "buwahan",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bu.wa.han.]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a juicy tropical fruit with the mixed taste of sweetness and sourness.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Tam-is ini na buwahan?",
+              "translation": "Is this lanzones sweet?",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "buyubud",
+      "id": 2650,
+      "is_core": false,
+      "headword": "buyubud",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bu.yu.bud]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "a soft and thick long-cooked rice grain mixed with water and salt",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Lami an buyubud na tagsaktan nan gatas.",
+              "translation": "The porridge is good blended with milk.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "buyus",
+      "id": 2652,
+      "is_core": false,
+      "headword": "buyus",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "[bu.yus]",
+      "credits": "Contributor:Bano, Jelbert (2022)Editor:Sadural, Samantha Jade (2022)",
+      "definitions": [
+        {
+          "definition": "An idea or property which is not personally owned.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mambuyus kaw sa ako baro?",
+              "translation": "You want to borrow my shirt?",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    }
+  ],
+  "alphabet_index": {
+    "A": [
+      {
+        "id": 2634,
+        "word": "aban",
+        "is_core": false
+      },
+      {
+        "id": 2635,
+        "word": "adlip",
+        "is_core": false
+      },
+      {
+        "id": 2636,
+        "word": "agtang",
+        "is_core": false
+      },
+      {
+        "id": 2637,
+        "word": "alibuybuy",
+        "is_core": false
+      },
+      {
+        "id": 2638,
+        "word": "aling",
+        "is_core": false
+      },
+      {
+        "id": 2639,
+        "word": "ambaw",
+        "is_core": false
+      },
+      {
+        "id": 2640,
+        "word": "apiki",
+        "is_core": false
+      },
+      {
+        "id": 2641,
+        "word": "ayum-um",
+        "is_core": false
+      }
+    ],
+    "B": [
+      {
+        "id": 2642,
+        "word": "badjhu",
+        "is_core": false
+      },
+      {
+        "id": 2643,
+        "word": "bagyay",
+        "is_core": false
+      },
+      {
+        "id": 2645,
+        "word": "bala",
+        "is_core": false
+      },
+      {
+        "id": 2646,
+        "word": "bang-ug",
+        "is_core": false
+      },
+      {
+        "id": 2647,
+        "word": "baung",
+        "is_core": false
+      },
+      {
+        "id": 2648,
+        "word": "bija",
+        "is_core": false
+      },
+      {
+        "id": 2649,
+        "word": "biliting",
+        "is_core": false
+      },
+      {
+        "id": 2651,
+        "word": "buwahan",
+        "is_core": false
+      },
+      {
+        "id": 2650,
+        "word": "buyubud",
+        "is_core": false
+      },
+      {
+        "id": 2652,
+        "word": "buyus",
+        "is_core": false
+      }
+    ]
+  }
+}

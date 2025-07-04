@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../node_modules/@mui/material/utils/debounce.js", "../../node_modules/@mui/material/utils/ownerDocument.js", "../../node_modules/@mui/material/utils/ownerWindow.js"],
-  "sourcesContent": ["import debounce from '@mui/utils/debounce';\nexport default debounce;", "import ownerDocument from '@mui/utils/ownerDocument';\nexport default ownerDocument;", "import ownerWindow from '@mui/utils/ownerWindow';\nexport default ownerWindow;"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;AAAA;AAAA,IAAAA,eAAA;AAAA,IAAAA,eAAA;AACA,IAAO,mBAAQ;;;ACDf,IAAAC,eAAA;AAAA,IAAAA,eAAA;AAAA,IAAAA,eAAA;AACA,IAAO,wBAAQ;;;ACDf,IAAAC,eAAA;AAAA,IAAAA,eAAA;AAAA,IAAAA,eAAA;AACA,IAAO,sBAAQ;",
-  "names": ["import_dist", "import_dist", "import_dist"]
-}

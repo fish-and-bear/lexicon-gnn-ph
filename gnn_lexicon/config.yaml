@@ -1,0 +1,45 @@
+# Philippine Lexicon GNN Configuration
+
+# Model architecture - Updated to match saved model
+in_dim: 64  # Character CNN embedding dimension
+hidden_dim: 2048  # Hidden layer dimension (matches saved model)
+out_dim: 2048  # Output embedding dimension (matches saved model)
+num_layers: 2  # Number of GNN layers
+heads: 8  # Number of attention heads (matches saved model)
+num_relations: 8  # Number of relation types
+
+# Training hyperparameters
+lr: 0.001  # Learning rate
+batch_size: 128  # Batch size for neighbor sampling
+epochs: 100  # Maximum epochs
+grad_clip: 1.0  # Gradient clipping value
+early_stopping_patience: 10  # Epochs to wait before early stopping
+
+# Device settings
+device: cuda  # cuda or cpu (auto-detected if not specified)
+
+# PostgreSQL connection
+postgres:
+  dbname: fil_dict_db
+  user: postgres
+  password: postgres
+  host: localhost
+  port: 5432
+
+# Model save path
+model_path: model.pt
+
+# Data settings
+train_ratio: 0.8
+val_ratio: 0.1
+test_ratio: 0.1
+
+# Neighbor sampling
+num_neighbors: [10, 10]  # Number of neighbors per layer
+
+# Link prediction
+num_neg_samples: 1  # Negative samples per positive edge
+
+# Logging
+log_interval: 10  # Log every N batches
+save_interval: 5  # Save model every N epochs 

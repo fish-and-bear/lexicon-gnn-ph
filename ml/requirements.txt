@@ -1,41 +1,54 @@
-# Requirements for the ML/AI Component
-# Core ML libraries
-numpy>=1.21.0
-scipy>=1.7.0
-torch>=1.12.0
-dgl>=1.0.0
-# pytorch-geometric>=2.2.0
-transformers>=4.26.0
-datasets>=2.10.0
+# Fixed Requirements for FilRelex ML Components
+# Core ML libraries with compatible versions
+numpy>=1.24.0,<2.0.0
+scipy==1.13.1
+torch>=2.6.0
+torchvision==0.22.1
 
-# Graph Neural Network libraries
-dgllife>=0.3.0
-torch-scatter>=2.1.0
-torch-sparse>=0.6.16
+# Graph libraries - No longer needed for SOTA transformer model
+# dgl<2.0.0,>=1.1.0
+# torch-geometric<2.5.0,>=2.3.0
+# torch-scatter<3.0.0,>=2.1.0
+# torch-sparse<0.7.0,>=0.6.17
 
-# NLP and Multilingual libraries
-sentencepiece>=0.1.97
-tokenizers>=0.13.2
+# NLP libraries - stable versions
+transformers<5.0.0,>=4.30.0
+tokenizers<1.0.0,>=0.13.2
+# sentence-transformers<3.0.0,>=2.2.2
 
-# Data processing and utilities
-pandas>=1.5.3
-scikit-learn>=1.2.2
+# Data processing - stable versions
+pandas<3.0.0,>=2.0.0
+scikit-learn==1.5.1
+networkx>=3.0,<4.0.0
 tqdm>=4.65.0
 
-# Visualization and explanation
-matplotlib>=3.7.1
-seaborn>=0.12.2
-shap>=0.41.0
-captum>=0.6.0
-
-# Retrieval-Augmented Generation
-faiss-cpu>=1.7.4
-sentence-transformers>=2.2.2
-
-# Database connectivity (for accessing the lexical database)
+# Database connectivity
 psycopg2-binary>=2.9.6
-SQLAlchemy>=2.0.0
+SQLAlchemy>=2.0.0,<3.0.0
 
-# Experiment tracking and logging
-mlflow>=2.2.2
-tensorboard>=2.12.0 
+# Visualization and ML utilities
+matplotlib>=3.7.0,<4.0.0
+seaborn>=0.12.0,<1.0.0
+plotly>=5.15.0,<6.0.0
+
+# Explainability (optional - install separately if needed)
+# shap>=0.42.0
+# captum>=0.6.0
+
+# Development and testing
+pytest>=7.4.0
+jupyter>=1.0.0
+ipykernel>=6.25.0
+
+# Utilities
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Note: Install PyTorch first with: pip install torch torchvision
+# Then install DGL with: pip install dgl -f https://data.dgl.ai/wheels/repo.html
+# Finally install the rest with: pip install -r requirements.txt 
+
+# Add sentence-transformers for SOTA multilingual models
+sentence-transformers==3.0.1
+# Add accelerate for PyTorch Trainer
+accelerate>=0.26.0 

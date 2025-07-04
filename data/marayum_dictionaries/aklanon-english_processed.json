@@ -1,0 +1,324 @@
+{
+  "dictionary_info": {
+    "id": "13",
+    "name": "aklanon-english",
+    "text": "Aklanon - English",
+    "base_language": "Aklanon",
+    "target_language": "English",
+    "total_words": 7,
+    "scrape_date": "2025-03-28"
+  },
+  "statistics": {
+    "total_words": 7,
+    "core_words": 0,
+    "with_audio": 0,
+    "with_examples": 7,
+    "parts_of_speech": {
+      "adjective": 3,
+      "noun": 2,
+      "verb": 1,
+      "adejctive": 1
+    }
+  },
+  "words": [
+    {
+      "word": "apa",
+      "id": 2361,
+      "is_core": false,
+      "headword": "apa",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Tumanon, Russel Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "Inability to speak.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Naging apa imaw matapos nana nga madisgrasya tag unga paeang imaw.",
+              "translation": "He became mute after an accident when he was still a child.",
+              "example_id": 1
+            },
+            {
+              "text": "Bisan maeagko eon imaw hay naga inapa gihapon.",
+              "translation": "He pretends to be mute even when he is old enough to speak.",
+              "example_id": 2
+            },
+            {
+              "text": "Gina paagi nana sa pagsueat anang nahambae bangod imaw hay apa.",
+              "translation": "He communicates through writing because he is mute.",
+              "example_id": 3
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "baeatian",
+      "id": 2362,
+      "is_core": false,
+      "headword": "baeatian",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Tumanon, Russel Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "An impairment of health.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Indi imaw pwede kaguwa it baeay bangod sa anang baeatian.",
+              "translation": "He cannot go out of the house because of his sickness.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "bulag",
+      "id": 2359,
+      "is_core": false,
+      "headword": "bulag",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Tumanon, Russel Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "Inability to see due to a physical condition or state of mind.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Bisan imaw hay bulag, owa naging baeabag kana ra agod imaw hay mag-eskuyla.",
+              "translation": "Being blind did not hinder him to pursue his education.",
+              "example_id": 1
+            },
+            {
+              "text": "Bulag imaw sa kamatuuran bangod puro fake news ra gina binasa.",
+              "translation": "He is blind to the truth because he only reads fake news.",
+              "example_id": 2
+            },
+            {
+              "text": "Cataracts sa daywa ka mata ro rason haman imaw hay bulag.",
+              "translation": "He is blind in both eyes because of cataracts.",
+              "example_id": 3
+            },
+            {
+              "text": "\"Bulagon ka gid it imong pagpinueaw sa cellphone ngaron,\" prime kakon nga hambae ni nanay.",
+              "translation": "\"One of these days, sleeping late with your phone will make you blind,\" mother always said to me.",
+              "example_id": 4
+            },
+            {
+              "text": "Gingbulag imaw it diretsohang pagtan-aw sa solar eclipse.",
+              "translation": "He got blinded by directly looking at the solar eclipse.",
+              "example_id": 5
+            },
+            {
+              "text": "Tama gidman hambae ko anang nanay hay nabulag imaw sa pagpinueaw sa cellphone.",
+              "translation": "What his mother told him was true because he got blind by always sleeping late with his phone.",
+              "example_id": 6
+            },
+            {
+              "text": "Hambae it doktor hay indi ka man mabulag sa pagmantaw it maeapit sa t.v..",
+              "translation": "The doctor said that watching close to your t.v. will not make you blind.",
+              "example_id": 7
+            },
+            {
+              "text": "Nag enroll imaw sa eskuylahan nga para sa mga bulag.",
+              "translation": "He enrolled in the school for the blind.",
+              "example_id": 8
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "bungoe",
+      "id": 2360,
+      "is_core": false,
+      "headword": "bungoe",
+      "comment": "",
+      "pos": "adjective",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Tumanon, Russel Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "Inability to hear either patially or completely.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Nabaskugan nana mag-istorya sa anang Nanay bangod sa bungoe eon ra pihak nga dueunggan sa kagueangon.",
+              "translation": "He speaks loudly since his Mother's other ear has become deaf due to old age.",
+              "example_id": 1
+            },
+            {
+              "text": "Nabungoe imaw bangod sa tubi nga nag sueod sa anang dueunnggan pagligos na sa baybay.",
+              "translation": "He became deaf because water got stuck in his ears after he swam on the beach.",
+              "example_id": 2
+            },
+            {
+              "text": "Nag pabungoe imaw sa sugo it anang Nanay nga magbakae it andang ilabas sa tindahan.",
+              "translation": "He was deaf to his Mother's commands to buy their lunch in the market.",
+              "example_id": 3
+            },
+            {
+              "text": "Nagagamit it sign language do mga bungoe agod maka istorya.",
+              "translation": "Deaf people use sign language to communicate.",
+              "example_id": 4
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "kindat",
+      "id": 2357,
+      "is_core": false,
+      "headword": "kindat",
+      "comment": "",
+      "pos": "verb",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Tumanon, Russel Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "Closing and opening one eye quickly as a signal or reflex.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Ga insayo it morse code ro magbarkada gamit ro kindat it andang mga mata.",
+              "translation": "They are practicing morse code through winking.",
+              "example_id": 1
+            },
+            {
+              "text": "\"Kindati ing nailaan pag makita mo imaw,\" hambae kakon sang amigo.",
+              "translation": "\"Wink at your crush when you see her later,\" said my friend.",
+              "example_id": 2
+            },
+            {
+              "text": "Ging kindatan ko imaw tag nag sub-eang among mga mata.",
+              "translation": "I winked at her the moment our eyes met.",
+              "example_id": 3
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "matimsog",
+      "id": 2356,
+      "is_core": false,
+      "headword": "matimsog",
+      "comment": "",
+      "pos": "adejctive",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Tumanon, Russel Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "Having good health or free of any sickness.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Pasaeamat ro mag-asawa nga matimsog ro andang bag-ong unga.",
+              "translation": "The couple was thankful because their baby was born healthy.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    },
+    {
+      "word": "pana",
+      "id": 2358,
+      "is_core": false,
+      "headword": "pana",
+      "comment": "",
+      "pos": "noun",
+      "dialect": "",
+      "etymology": "",
+      "pronunciation": "",
+      "credits": "Contributor:Tumanon, Russel Jade (2021)Editor:Sadural, Samantha Jade (2021)",
+      "definitions": [
+        {
+          "definition": "A shaft with feathers or vanes at the rear and a sharpened point at the front that is fired from a bow.",
+          "definition_id": 1,
+          "examples": [
+            {
+              "text": "Mataeom ro pana nga ging gamit it mga gapangayam sa pagdakop it pispis.",
+              "translation": "The arrow that the hunters used to catch the bird was very sharp.",
+              "example_id": 1
+            }
+          ]
+        }
+      ],
+      "see_also": []
+    }
+  ],
+  "alphabet_index": {
+    "A": [
+      {
+        "id": 2361,
+        "word": "apa",
+        "is_core": false
+      }
+    ],
+    "B": [
+      {
+        "id": 2362,
+        "word": "baeatian",
+        "is_core": false
+      },
+      {
+        "id": 2359,
+        "word": "bulag",
+        "is_core": false
+      },
+      {
+        "id": 2360,
+        "word": "bungoe",
+        "is_core": false
+      }
+    ],
+    "K": [
+      {
+        "id": 2357,
+        "word": "kindat",
+        "is_core": false
+      }
+    ],
+    "M": [
+      {
+        "id": 2356,
+        "word": "matimsog",
+        "is_core": false
+      }
+    ],
+    "P": [
+      {
+        "id": 2358,
+        "word": "pana",
+        "is_core": false
+      }
+    ]
+  }
+}

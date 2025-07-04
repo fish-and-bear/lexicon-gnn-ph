@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../node_modules/@mui/material/utils/useControlled.js"],
-  "sourcesContent": ["'use client';\n\nimport useControlled from '@mui/utils/useControlled';\nexport default useControlled;"],
-  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA,IAAAA,eAAA;AAAA,IAAAA,eAAA;AAGA,IAAO,wBAAQ;",
-  "names": ["import_dist"]
-}

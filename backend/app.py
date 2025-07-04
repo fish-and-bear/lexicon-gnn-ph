@@ -71,7 +71,7 @@ def ensure_parts_of_speech_table_exists(db_uri):
             else:
                 user, password = auth, ''
         else:
-            user, password = 'postgres', ''
+            user, password = '***', '***'
             conn_str = db_uri
             
         if '/' in conn_str:
@@ -388,7 +388,15 @@ def create_app(testing=False):
     migrate = Migrate(app, db)
     
     # Register blueprints
-    # app.register_blueprint(bp) # Removed redundant registration
+    app.register_blueprint(bp, url_prefix='/api/v2')
+    
+    # Register ML blueprint
+    try:
+        from .ml_routes import ml_bp
+        app.register_blueprint(ml_bp)
+        logger.info("ML routes registered successfully")
+    except ImportError as e:
+        logger.warning(f"ML routes not available: {e}")
     
     # Initialize GraphQL
     # Only run migrations and GraphQL setup in the main worker process when reloading
@@ -567,8 +575,7 @@ def create_app(testing=False):
         
         return response
     
-    # Import and register blueprints
-    app.register_blueprint(bp, url_prefix='/api/v2')
+    # Blueprints already registered above
     # app.register_blueprint(baybayin_bp, url_prefix='/api/v2')
     
     # Register teardown

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../node_modules/@mui/material/utils/useEventCallback.js"],
-  "sourcesContent": ["'use client';\n\nimport useEventCallback from '@mui/utils/useEventCallback';\nexport default useEventCallback;"],
-  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA,IAAAA,eAAA;AAAA,IAAAA,eAAA;AAGA,IAAOC,4BAAQ;",
-  "names": ["import_dist", "useEventCallback_default"]
-}

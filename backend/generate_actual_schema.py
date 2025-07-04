@@ -19,7 +19,7 @@ def get_db_params():
     env_to_psycopg_map = {
         'DB_NAME': 'dbname',
         'DB_USER': 'user',
-        'DB_PASSWORD': 'password',
+        'DB_PASSWORD': '***',
         'DB_HOST': 'host',
         'DB_PORT': 'port'
     }

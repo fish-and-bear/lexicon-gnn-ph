@@ -687,7 +687,7 @@ CREATE TABLE IF NOT EXISTS words (
     baybayin_form VARCHAR(255),
     romanized_form VARCHAR(255),
     language_code VARCHAR(16) NOT NULL,
-    root_word_id INT REFERENCES words(id) ON DELETE SET NULL,
+    root_word_id INT,
     preferred_spelling VARCHAR(255),
     tags TEXT,
     idioms JSONB DEFAULT '[]',
@@ -2252,8 +2252,18 @@ def create_or_update_tables(conn):
 
 
             logger.info("Executing main table creation SQL...")
-            cur.execute(TABLE_CREATION_SQL)
-            logger.info("Main table creation SQL executed.")
+            print("=== TABLE_CREATION_SQL ===")
+            print(TABLE_CREATION_SQL)
+            print("=== END TABLE_CREATION_SQL ===")
+            try:
+                cur.execute(TABLE_CREATION_SQL)
+                logger.info("Main table creation SQL executed.")
+            except Exception as e:
+                print(f"ERROR executing TABLE_CREATION_SQL: {e}")
+                print(f"Error type: {type(e)}")
+                if hasattr(e, 'pgerror'):
+                    print(f"PostgreSQL error: {e.pgerror}")
+                raise
         conn.commit()
         logger.info("Tables created or updated successfully.")
     except psycopg2.Error as e:

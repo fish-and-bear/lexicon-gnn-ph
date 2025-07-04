@@ -1,0 +1,118 @@
+{
+  "id": "9",
+  "name": "masbatenyo-english",
+  "text": "Masbatenyo - English",
+  "base_name": "Masbatenyo",
+  "second_name": "English",
+  "total_words": 3,
+  "words": [
+    {
+      "pk": 2328,
+      "text": "abaga",
+      "is_core": false,
+      "details": {
+        "data": {
+          "word_entry": {
+            "headword": "abaga",
+            "definitions": [
+              {
+                "id": 1,
+                "definition": "shoulder",
+                "examples": [
+                  {
+                    "id": 1,
+                    "text": "Masakit an akon abaga san kapas'an sin mabug'at.",
+                    "translation": "My shoulder hurts because of carrying heavy loads."
+                  },
+                  {
+                    "id": 2,
+                    "text": "Igwa san uruabaga...",
+                    "translation": "With a shoulder-like appearance..."
+                  }
+                ]
+              }
+            ],
+            "see_also": [],
+            "pos": "noun",
+            "dialect": "",
+            "comment": "",
+            "pronunciation": "[a'baga]",
+            "credits": "Contributor:Balbuena, Sherwin (2021)Editor:Sadural, Samantha Jade (2021)"
+          }
+        }
+      }
+    },
+    {
+      "pk": 2329,
+      "text": "gipad",
+      "is_core": false,
+      "details": {
+        "data": {
+          "word_entry": {
+            "headword": "gipad",
+            "definitions": [
+              {
+                "id": 1,
+                "definition": "to remove the seeds by tearing the pods",
+                "examples": [
+                  {
+                    "id": 1,
+                    "text": "Gipada an latoy.",
+                    "translation": "Remove the seeds of string beans."
+                  },
+                  {
+                    "id": 2,
+                    "text": "Ginipad na an latoy.",
+                    "translation": "The seeds of string beans were already removed."
+                  },
+                  {
+                    "id": 3,
+                    "text": "Imo gipadon an latoy.",
+                    "translation": "You remove the string beans' seeds."
+                  }
+                ]
+              }
+            ],
+            "see_also": [],
+            "pos": "verb",
+            "dialect": "",
+            "comment": "",
+            "pronunciation": "[gi'pad]",
+            "credits": "Contributor:Balbuena, Sherwin (2021)Editor:Sadural, Samantha Jade (2021)"
+          }
+        }
+      }
+    },
+    {
+      "pk": 2333,
+      "text": "piko",
+      "is_core": false,
+      "details": {
+        "data": {
+          "word_entry": {
+            "headword": "piko",
+            "definitions": [
+              {
+                "id": 1,
+                "definition": "adze",
+                "examples": [
+                  {
+                    "id": 1,
+                    "text": "Naggamit si Juan san piko sa pagbukad san duta.",
+                    "translation": "Juan used an adze to dig the soil."
+                  }
+                ]
+              }
+            ],
+            "see_also": [],
+            "pos": "noun",
+            "dialect": "",
+            "comment": "",
+            "pronunciation": "['piko]",
+            "credits": "Contributor:Balbuena, Sherwin (2021)Editor:Sadural, Samantha Jade (2021)"
+          }
+        }
+      }
+    }
+  ]
+}
