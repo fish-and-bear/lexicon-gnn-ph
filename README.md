@@ -209,15 +209,10 @@ Special thanks to the Philippine linguistics experts who participated in our eva
 
 ## 📖 Citation
 
-If you use this toolkit in your research, please cite:
+If you use this toolkit in your research, please cite as:
 
-```bibtex
-@inproceedings{naguio2025philippine,
-  title={Philippine Lexicon GNN Toolkit: Live Demonstration of Heterogeneous Graph Neural Networks for Low-Resource Language Lexicon Enhancement},
-  author={Naguio, Angelica Anne A. and Roxas, Rachel Edita O.},
-  booktitle={Proceedings of EMNLP 2025 System Demonstrations},
-  year={2025}
-}
+```
+Philippine Lexicon GNN Toolkit: Interactive Heterogeneous GNN-Powered Knowledge Graph Enhancement for Low-Resource Philippine Languages, Angelica Anne A. Naguio and Rachel Edita O. Roxas, University of the Philippines Los Baños, 2025. https://github.com/fish-and-bear/lexicon-gnn-ph
 ```
 
 ## 🛡️ Code of Conduct
