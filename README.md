@@ -219,3 +219,49 @@ If you use this toolkit in your research, please cite:
   year={2025}
 }
 ```
+
+## 🛡️ Code of Conduct
+
+We are committed to fostering a welcoming and inclusive environment. Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
+
+## 🔒 Security Policy
+
+If you discover a security vulnerability, please see our [Security Policy](SECURITY.md) for responsible disclosure instructions.
+
+## 🧪 How to Reproduce Results
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/fish-and-bear/lexicon-gnn-ph.git
+   cd lexicon-gnn-ph
+   ```
+2. **Install dependencies** (see Installation section above)
+3. **Set up the database** (see Installation section above)
+4. **Run the backend and frontend** (see Usage section above)
+5. **(Optional) Use Docker Compose** for a one-command setup:
+   ```bash
+   docker-compose -f docker-compose.local.yml up -d
+   ```
+6. **Reproduce ML results**:
+   ```bash
+   cd ml
+   python quick_evaluation.py
+   ```
+
+## 🤝 How to Contribute
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to propose changes, report bugs, or suggest features.
+
+## 🐞 How to Report Issues or Vulnerabilities
+
+- For bugs or feature requests, please [open an issue](https://github.com/fish-and-bear/lexicon-gnn-ph/issues).
+- For security vulnerabilities, please follow our [Security Policy](SECURITY.md).
+
+## 💬 Community and Support
+
+- For questions, use [GitHub Discussions](https://github.com/fish-and-bear/lexicon-gnn-ph/discussions) or open an issue.
+- For direct contact, see the Contact section above.
+
+## ⚖️ License and Attribution
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details. Please attribute the original authors and cite our EMNLP 2025 paper if you use this toolkit in your research.
