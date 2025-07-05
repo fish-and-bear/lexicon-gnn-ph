@@ -1,4 +1,6 @@
-# Contributing to Philippine Lexicon GNN Toolkit
+# Contributing to Philippine Lexicon GNN Toolkit: Interactive Heterogeneous GNN-Powered Knowledge Graph Enhancement for Low-Resource Philippine Languages
+
+> The latest version of the system is publicly deployed at [https://explorer.hapinas.net/](https://explorer.hapinas.net/).
 
 Thank you for your interest in contributing to the Philippine Lexicon GNN Toolkit! This document provides guidelines for contributing to the project.
 

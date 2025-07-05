@@ -1,14 +1,19 @@
-# Philippine Lexicon GNN Toolkit
+# Philippine Lexicon GNN Toolkit: Interactive Heterogeneous GNN-Powered Knowledge Graph Enhancement for Low-Resource Philippine Languages
 
-An open-source framework for enhancing lexical knowledge graphs of low-resource Philippine languages using heterogeneous graph neural networks (GNNs).
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![EMNLP 2025](https://img.shields.io/badge/EMNLP-2025-orange.svg)](https://2025.emnlp.org/)
 
 ## 🚀 Live Demo
 
-Visit our live demonstration at: https://explorer.hapinas.net/
+The Philippine Lexicon GNN Toolkit is publicly deployed and accessible at:
+[https://explorer.hapinas.net/](https://explorer.hapinas.net/)
+
+The Philippine Lexicon GNN Toolkit addresses the critical gap in NLP resources for underrepresented languages by automatically predicting lexical relationships using trained GATv2 models. The system achieves **0.994 ROC-AUC** on link prediction tasks and provides an interactive web interface for exploring multilingual Philippine language lexicons.
 
 ## 📖 Overview
 
-The Philippine Lexicon GNN Toolkit addresses the critical gap in NLP resources for underrepresented languages by automatically predicting lexical relationships using trained GATv2 models. The system achieves strong empirical performance (AUC: 0.994) on Tagalog data and includes comprehensive evaluation by Philippine linguistics experts.
+The Philippine Lexicon GNN Toolkit addresses the critical gap in NLP resources for underrepresented languages by automatically predicting lexical relationships using trained GATv2 models. The system achieves **0.994 ROC-AUC** on link prediction tasks and provides an interactive web interface for exploring multilingual Philippine language lexicons.
 
 ## ✨ Key Features
 

@@ -1,4 +1,4 @@
-# Philippine Lexicon GNN Toolkit
+# Philippine Lexicon GNN Toolkit: Interactive Heterogeneous GNN-Powered Knowledge Graph Enhancement for Low-Resource Philippine Languages
 
 A Graph Neural Network toolkit for modeling Philippine language lexicons, supporting heterogeneous graphs with multiple node and edge types.
 
